@@ -96,21 +96,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        resetNavigationColors()
-    }
-
-    /*
-     This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-     either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did nothing
-     or the resetting wasn't permanent.
-     */
-    fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationAppearance()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -609,6 +594,15 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         isLoading = false
 
         updateViewState(for: pickerDataSource.numberOfAssets())
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        let nserror = error as NSError
+        if let mediaLibrary = self.blog.media, !mediaLibrary.isEmpty {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingNotice(title: title, error: nserror)
+        }
+        return true
     }
 }
 

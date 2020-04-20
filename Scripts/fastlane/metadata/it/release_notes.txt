@@ -1,1 +1,11 @@
-Solo un paio di cose questa settimana, perché ci sono questioni più importanti in corso nel mondo: abbiamo risolto un problema nelle Impostazioni articolo affinché le date degli articoli che saranno immediatamente pubblicati vengano visualizzate correttamente; inoltre, abbiamo apportato alcune modifiche per migliorare la velocità e la leggibilità in generale.
+La creazione del sito è stata semplificata rimuovendo alcuni passaggi intermedi. Scegli il genere di sito che vuoi, inserisci il nome di dominio ed è fatta.
+
+L'editor a blocchi è stato ulteriormente migliorato: è ora disponibile il blocco Copertina, sono presenti opzioni di allineamento nel blocco Titolo e una barra degli strumenti del menu a discesa rende più semplice gli allineamento per i blocchi Titolo, Paragrafo, Immagine e Media e testo. Abbiamo rimosso l'effetto di attenuazione sui blocchi non selezionati.
+
+Il layout della schermata Notifiche causava la perdita di testo sotto il case di alcuni modelli di telefoni cellulari. Il problema è stato risolto.
+
+Alcune volte hai provato a citare qualcuno tramite la @ in un commento e l'app ti ha suggerito dei nomi ma non te ne ha fatto selezionare uno. Questo problema è stato risolto. Ci siamo inoltre occuparti di alcuni altri problemi a causa dei quali l'app si arrestava in modo anomalo quando provavi ad accedere alla schermata Pagine del sito o a usare i pulsanti Azione rapida sull'iPad per ottenere gli articoli del tuo blog. Inoltre, parlando di pagine e articoli, le anteprime sono ora più grandi su iPad su cui è in esecuzione iOS 13.
+
+Amiamo la nostra Dark Mode come il nostro caffè: molto scura e senza alcun bug che la circonda. Erano stati riscontrati alcuni problemi tecnici per le modalità Light Mode e Dark Mode e a volte venivano riscontrati strani comportamenti quando si passava dall'una all'altra. Ora sono presenti molti meno problemi.
+
+State al sicuro. Tutti.

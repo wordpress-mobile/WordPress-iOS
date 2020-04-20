@@ -84,7 +84,7 @@
                                             </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="jt1-he-Hs1"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" priority="999" constant="360" id="jt1-he-Hs1"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>

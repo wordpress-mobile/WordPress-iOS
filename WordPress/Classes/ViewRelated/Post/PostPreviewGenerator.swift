@@ -87,7 +87,7 @@ private extension PostPreviewGenerator {
         case .draft, .publishPrivate, .pending, .scheduled, .publish:
             return true
         default:
-            return post.blog.isPrivate()
+            return post.isPrivateAtWPCom()
         }
     }
 

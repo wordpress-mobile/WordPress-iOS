@@ -16,10 +16,6 @@ import WordPressShared
 ///
 class WPRichContentView: UITextView {
 
-    /// Used to keep references to image attachments.
-    ///
-    var mediaArray = [RichMedia]()
-
     /// Manages the layout and positioning of text attachments.
     ///
     @objc lazy var attachmentManager: WPTextAttachmentManager = {
@@ -53,10 +49,7 @@ class WPRichContentView: UITextView {
         }
     }
 
-
-    /// Whether the view shows private content. Used when fetching images.
-    ///
-    @objc var isPrivate = false
+    var mediaHost: MediaHost = .publicSite
 
     @objc var content: String {
         get {
@@ -342,30 +335,21 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
-        let index = mediaArray.count
-        let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
 
-        image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
-            guard
-                let richMedia = self?.mediaArray[indexPath.row],
-                let img = weakImage
-            else {
+        image.loadImage(from: mediaHost, preferedSize: finalSize, onSuccess: { [weak self] in
+            guard let img = weakImage else {
                 return
             }
 
-            richMedia.attachment.maxSize = img.contentSize()
+            attachment.maxSize = img.contentSize()
 
             if isUsingTemporaryLayoutDimensions {
                 self?.layoutAttachmentViews()
             }
-        }, onError: { (indexPath, error) in
+        }, onError: { (error) in
             DDLogError("\(String(describing: error))")
         })
-
-        let media = RichMedia(image: image, attachment: attachment)
-        mediaArray.append(media)
 
         return image
     }
@@ -419,12 +403,13 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Returns: An NSRange optional.
     ///
     func attachmentRangeForRichTextImage(_ richTextImage: WPRichTextImage) -> NSRange? {
-        for item in mediaArray {
-            if item.image == richTextImage {
-                return rangeOfAttachment(item.attachment)
-            }
+        guard let match = attachmentManager.attachmentViews.first( where: { (_, value) -> Bool in
+            return value.view == richTextImage
+        }) else {
+            return nil
         }
-        return nil
+
+        return rangeOfAttachment(match.key)
     }
 
 
@@ -468,18 +453,6 @@ private extension WPRichContentView {
 struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
-}
-
-// MARK: - ContentInformation (ImageSourceInformation)
-
-class ContentInformation: ImageSourceInformation {
-    var isPrivateOnWPCom: Bool
-    var isSelfHostedWithCredentials: Bool
-
-    init(isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
-        self.isPrivateOnWPCom = isPrivateOnWPCom
-        self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
-    }
 }
 
 // This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted

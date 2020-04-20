@@ -25,7 +25,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "Stats", "Share", "Move to Draft", "Move to Trash"], options)
     }
 
     func testLocallyPublishedPostShowsCancelAutoUploadOption() {
@@ -70,7 +70,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "View", "Stats", "Move to Draft", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "View", "Stats", "Share", "Move to Draft", "Move to Trash"], options)
     }
 
     func testCallDelegateWhenStatsTapped() {
@@ -80,6 +80,15 @@ class PostActionSheetTests: XCTestCase {
         tap("Stats", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
+    }
+
+    func testCallDelegateWhenShareTapped() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+
+        postActionSheet.show(for: viewModel, from: view)
+        tap("Share", in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallShare)
     }
 
     func testCallDelegateWhenMoveToDraftTapped() {
@@ -168,6 +177,7 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     private(set) var didCallView = false
     private(set) var didCallRetry = false
     private(set) var didCallCancelAutoUpload = false
+    private(set) var didCallShare = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -203,5 +213,9 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func cancelAutoUpload(_ post: AbstractPost) {
         didCallCancelAutoUpload = true
+    }
+
+    func share(_ post: AbstractPost, fromView view: UIView) {
+        didCallShare = true
     }
 }

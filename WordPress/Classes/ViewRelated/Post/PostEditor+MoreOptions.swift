@@ -90,6 +90,9 @@ extension PostEditor where Self: UIViewController {
             }
             previewController.trackOpenEvent()
             let navWrapper = LightNavigationController(rootViewController: previewController)
+            if self.navigationController?.traitCollection.userInterfaceIdiom == .pad {
+                navWrapper.modalPresentationStyle = .fullScreen
+            }
             self.navigationController?.present(navWrapper, animated: true)
         }
     }

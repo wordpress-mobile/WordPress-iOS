@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
-    case postReblogging
     case unifiedAuth
     case quickActions
     case meMove
@@ -23,16 +22,14 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
-        case .postReblogging:
-            return true
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
         case .quickActions:
             return true
         case .meMove:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .floatingCreateButton:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .newReaderNavigation:
             return false
         }
@@ -57,8 +54,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
-        case .postReblogging:
-            return "Post Reblogging"
         case .unifiedAuth:
             return "Unified Auth"
         case .quickActions:
@@ -77,6 +72,8 @@ extension FeatureFlag: OverrideableFlag {
         case .debugMenu:
             return false
         case .floatingCreateButton:
+            return false
+        case .newReaderNavigation:
             return false
         default:
             return true

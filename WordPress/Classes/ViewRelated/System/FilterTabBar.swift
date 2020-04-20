@@ -70,6 +70,7 @@ class FilterTabBar: UIControl {
         didSet {
             if let oldValue = oldValue {
                 NSLayoutConstraint.deactivate([oldValue])
+                tabBarHeightConstraint.isActive = true
             }
         }
     }
@@ -204,6 +205,7 @@ class FilterTabBar: UIControl {
 
     init() {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         commonInit()
     }
 
@@ -211,16 +213,25 @@ class FilterTabBar: UIControl {
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
 
+        divider.backgroundColor = dividerColor
+        addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
+        ])
+
         addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
+            scrollView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
         ])
 
         scrollView.addSubview(stackView)
-
+        stackView.isLayoutMarginsRelativeArrangement = true
         // We will manually constrain the stack view to the content layout guide
         scrollView.contentInsetAdjustmentBehavior = .never
 
@@ -232,7 +243,7 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
+            stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor)
         ])
 
@@ -240,15 +251,6 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
-        ])
-
-        divider.backgroundColor = dividerColor
-        addSubview(divider)
-        NSLayoutConstraint.activate([
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
         ])
     }
 
@@ -312,7 +314,6 @@ class FilterTabBar: UIControl {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
         stackViewEdgeConstraints = [
-            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
@@ -455,7 +456,7 @@ class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 46.0
-        static let bottomDividerHeight: CGFloat = 0.5
+        static let bottomDividerHeight: CGFloat = .hairlineBorderWidth
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)

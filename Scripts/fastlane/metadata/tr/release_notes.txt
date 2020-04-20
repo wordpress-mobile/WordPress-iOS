@@ -1,1 +1,11 @@
-Bu hafta sadece hızlı bir kaç şey, çünkü dünyada çok daha büyük şeyler oluyor: Yazı ayarlarında hemen yayımlanan yazıların tarihlerinin düzgün görüntülenebilmesi için bir sorun düzeltildi, hız ve genel güvenilirliği artırmak için kaputun altında bir kaç değişiklik yapıldı.
+Site Oluşturma, bazı ara adımlar kaldırılarak kolaylaştırıldı. İstediğiniz site türünü seçin, bir alan adı girin ve işiniz bitti.
+
+Blok düzenleyicide daha fazla iyileştirme yapıldı: Kapak bloğu artık kullanılabilir; Başlık bloğunda hizalama seçenekleri vardır; ve bir açılır araç çubuğu Başlık, Paragraf, Resim, MediaText blokları için hizalamayı kolaylaştırır. Ve seçilmemiş bloklar üzerindeki karartma efektini kaldırdık.
+
+Bildirimler ekranının düzeni, bazı cep telefonu modellerinin gövdesi altında metnin kaybolmasına neden oldu. Bu düzeltildi!
+
+Bazen bir yorumda bir kişiyi @ belirtmeye çalışırsınız ve uygulama adları önerir, ancak bir tane seçmenize izin vermez - bu da düzeltildi. Ayrıca, Site Sayfaları ekranına erişmeye çalıştığınızda veya blog yayınlarınıza ulaşmak için iPad'lerde Hızlı İşlem düğmelerini kullandığınızda uygulamanın kilitlenmesine neden olan diğer birkaç sorunu da hallettik. Sayfalardan ve yayınlardan bahsetmişken, iOS 13 çalıştıran iPad'ler için önizlemeler artık daha büyük.
+
+Karanlık modumuzu kahvemizi sevdiğimiz gibi seviyoruz: gerçekten karanlık ve içinde yüzen herhangi bir hata olmadan. Aydınlık ve karanlık modlarında bazı aksaklıklar vardı ve bazen birinden diğerine geçtiğinizde işler garip bir şekilde davrandı. Şu anda bu hatalardan çok daha azı var.
+
+Hepiniz güvende olun.

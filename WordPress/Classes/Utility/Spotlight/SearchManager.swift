@@ -478,6 +478,9 @@ fileprivate extension SearchManager {
         let controller = PreviewWebKitViewController(post: apost)
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
+        if WPTabBarController.sharedInstance()?.traitCollection.userInterfaceIdiom == .pad {
+            navWrapper.modalPresentationStyle = .fullScreen
+        }
         WPTabBarController.sharedInstance().present(navWrapper, animated: true)
 
         openListView(for: apost)

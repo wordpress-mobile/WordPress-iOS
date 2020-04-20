@@ -662,6 +662,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
+    func share(_ apost: AbstractPost, fromView view: UIView) {
+        guard let post = apost as? Post else {
+            return
+        }
+
+        let shareController = PostSharingController()
+        shareController.sharePost(post, fromView: view, inViewController: self)
+    }
+
     // MARK: - Searching
 
     override func updateForLocalPostsMatchingSearchText() {

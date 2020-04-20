@@ -1,1 +1,11 @@
-Hanya beberapa hal yang harus dilakukan dengan cepat minggu ini, karena terdapat hal-hal lebih besar yang terjadi di dunia: Kami telah memperbaiki masalah di Pengaturan Pos sehingga tanggal pos yang akan segera dipublikasikan dapat ditampilkan dengan benar, dan kami membuat beberapa perubahan di balik kap untuk meningkatkan kecepatan dan keandalan secara umum.
+Pembuatan Situs telah disederhanakan dengan menghapus beberapa langkah yang tidak efisien. Pilih jenis situs yang Anda inginkan, masukkan nama domain, dan selesai.
+
+Penyunting Blok mendapatkan penyempurnaan: Blok Sampul kini tersedia; ada opsi perataan di blok Heading; dan bilah peralatan tarik turun memudahkan perataan untuk blok Heading, Paragraf, Gambar, dan MediaText. Kami meniadakan efek peredupan pada blok yang tidak dipilih.
+
+Tata letak layar Pemberitahuan menyebabkan teks hilang ke bawah casing sebagian model ponsel. Sudah kami perbaiki!
+
+Terkadang Anda ingin @-menyebut seseorang pada sebuah komentar, dan aplikasi akan menyarankan beberapa nama tetapi tidak dapat dipilih — kami juga telah memperbaikinya. Kami juga memperbaiki beberapa masalah lain yang menyebabkan aplikasi tertutup paksa saat Anda mencoba mengakses layar Halaman Situs atau menggunakan tombol Tindakan Cepat di iPad untuk membuka pos blog. Untuk halaman dan pos, pratinjau kini lebih besar untuk iPad yang menjalankan iOS 13.
+
+Seperti halnya kopi kesukaan kita, Mode Gelap itu seharusnya: hitam pekat dan bisa dinikmati tanpa gangguan. Ada beberapa gangguan pada Mode Gelap dan Terang, dan terkadang aplikasi menjadi aneh saat Anda beralih dari satu mode ke mode lain. Gangguan tersebut kini jauh berkurang.
+
+Tetaplah aman, kawan.

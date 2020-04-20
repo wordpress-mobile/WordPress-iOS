@@ -1,1 +1,11 @@
-Just a few quick things this week, because there are bigger things going on in the world: we fixed an issue in Post Settings so the dates of posts that will be immediately published display correctly, and we made some changes under the hood to improve speed and reliability generally.
+Site Creation has been streamlined by removing some intermediate steps. Pick the kind of site you want, enter a domain name, and you’re done.
+
+The block editor got more improvements: the Cover block is now available; there are alignment options in the Heading block; and a dropdown toolbar makes alignment easier for Heading, Paragraph, Image, MediaText blocks. And we removed the dimming effect on unselected blocks.
+
+The layout of the Notifications screen caused text to get lost under the casing of some models of mobile phone. That’s fixed!
+
+Sometimes you’d try to @-mention someone in a comment, and the app would suggest names but then not let you select one — that’s also fixed. We also took care of a few other issues that caused the app to crash when you tried to access the Site Pages screen or use the Quick Action buttons on iPads to get to your blog posts. And speaking of pages and posts, previews are now bigger for iPads running iOS 13.
+
+We like our Dark Mode like we like our coffee: really dark, and without any bugs floating around in it. There were some glitches in Light and Dark Modes, and things sometimes behaved oddly when you switched from one to the other. There are far fewer of those glitches now.
+
+Stay safe, y’all.
