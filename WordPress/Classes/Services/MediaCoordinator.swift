@@ -336,7 +336,7 @@ class MediaCoordinator: NSObject {
 
     private func trackUploadViaWPSharedOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
         guard let info = analyticsInfo,
-            let event = info.wpshared_eventForMediaType(media.mediaType) else {
+            let event = info.wpsharedEventForMediaType(media.mediaType) else {
             return
         }
 
