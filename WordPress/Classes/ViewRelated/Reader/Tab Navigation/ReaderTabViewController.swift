@@ -4,13 +4,13 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
+    private let makeReaderTabView: (ReaderTabViewModel) -> UIView
 
-    private lazy var readerTabView: ReaderTabView = {
+    private lazy var readerTabView: UIView = {
         return makeReaderTabView(viewModel)
     }()
 
-    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
@@ -32,8 +32,8 @@ class ReaderTabViewController: UIViewController {
 
     func setupSearchButton() {
       navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
-                                                          target: WPTabBarController.sharedInstance(),
-                                                          action: #selector(WPTabBarController.sharedInstance().navigateToReaderSearch))
+                                                          target: self,
+                                                          action: #selector(didTapSearchButton))
     }
 
     override func loadView() {
@@ -43,6 +43,15 @@ class ReaderTabViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearchButton()
+    }
+}
+
+
+// MARK: - Search
+extension ReaderTabViewController {
+    
+    @objc private func didTapSearchButton() {
+        viewModel.navigateToSearch()
     }
 }
 
