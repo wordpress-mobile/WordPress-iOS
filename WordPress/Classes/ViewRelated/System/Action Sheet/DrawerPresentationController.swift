@@ -4,6 +4,7 @@ public enum DrawerPosition {
     case expanded
     case collapsed
     case closed
+    case hidden
 }
 
 public enum DrawerHeight {
@@ -15,6 +16,9 @@ public enum DrawerHeight {
 
     // Height will be equal to the the content height value. A height of 0 will use the calculated height.
     case contentHeight(CGFloat)
+
+    // Height in the hidden state will be equal the screens height
+    case hidden
 }
 
 public enum DrawerWidth {
@@ -164,6 +168,10 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     /// Returns the current position of the drawer
     public var currentPosition: DrawerPosition = .collapsed
 
+    /// Returns the Y position of the drawer
+    public var yPosition: CGFloat? {
+        return presentedView?.frame.origin.y
+    }
 
     /// Animates between the drawer positions
     /// - Parameter position: The position to animate to
@@ -183,6 +191,9 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
         case .collapsed:
             margin = collapsedYPosition
+
+        case .hidden:
+            margin = hiddenYPosition
 
         default:
             margin = 0
@@ -236,6 +247,10 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return topMargin(with: height)
     }
 
+    private var hiddenYPosition: CGFloat {
+        return topMargin(with: .hidden)
+    }
+
     /// Calculates the Y position for the view based on a DrawerHeight enum
     /// - Parameter drawerHeight: The drawer height to calculate
     private func topMargin(with drawerHeight: DrawerHeight) -> CGFloat {
@@ -250,6 +265,9 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
         case .maxHeight:
             topMargin = safeAreaInsets.top
+
+        case .hidden:
+            topMargin = UIScreen.main.bounds.height
         }
 
         return topMargin
@@ -387,7 +405,8 @@ extension DrawerPresentationController: UIGestureRecognizerDelegate {
         /// Shouldn't happen; should always have container & presented view when tapped
         guard
             let containerView = containerView,
-            let presentedView = presentedView
+            let presentedView = presentedView,
+            currentPosition != .hidden
         else {
             return false
         }
@@ -407,11 +426,12 @@ private extension DrawerPresentationController {
         guard
             let scrollView = presentableViewController?.scrollableView,
             !scrollView.isScrolling,
-            let presentedView = self.presentedView
+            let presentedView = self.presentedView,
+            let presentingView = presentingViewController.view
             else { return }
 
 
-        let bottom = presentingViewController.view.safeAreaLayoutGuide.layoutFrame.origin.y
+        let bottom = presentingView.safeAreaInsets.bottom
         let margin = presentedView.frame.origin.y + bottom
 
         scrollView.contentInset.bottom = margin

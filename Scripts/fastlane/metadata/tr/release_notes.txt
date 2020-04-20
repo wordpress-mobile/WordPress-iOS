@@ -1,15 +1,11 @@
-Yeni bloklar! Güncel yazılar bloğuna hoş geldin diyoruz, yeni yazı ve sayfalarınızı vurgulamak için kullanabilirsiniz.
+Site Oluşturma, bazı ara adımlar kaldırılarak kolaylaştırıldı. İstediğiniz site türünü seçin, bir alan adı girin ve işiniz bitti.
 
-Yeni bir sayfa oluşturduğunuzda, bir kaç şablon gösteriyoruz — birini seçin, ve gerekli tüm blokları sayfanıza ekleyerek işe başlamanızı sağlayalım.
+Blok düzenleyicide daha fazla iyileştirme yapıldı: Kapak bloğu artık kullanılabilir; Başlık bloğunda hizalama seçenekleri vardır; ve bir açılır araç çubuğu Başlık, Paragraf, Resim, MediaText blokları için hizalamayı kolaylaştırır. Ve seçilmemiş bloklar üzerindeki karartma efektini kaldırdık.
 
-Bir kaç blok düzenleyici sorununu düzelttik; HTML içerik yapıştırırken çökmeler ya da koyu modda alıntı bloğunun çerçevesinin olmaması gibi problemlere son.
+Bildirimler ekranının düzeni, bazı cep telefonu modellerinin gövdesi altında metnin kaybolmasına neden oldu. Bu düzeltildi!
 
-Eğer geçmişte bir yazı zamanladıysanız "zamanlanmış" yerine "yayımlanmış" olarak gözüküyordu. Bu düzeltildi, beraberinde sitenin zaman diliminin cihazınızın zaman dilimiyle aynı olmadığı durumlarda ortaya çıkan bir sorun da düzeltildi.
+Bazen bir yorumda bir kişiyi @ belirtmeye çalışırsınız ve uygulama adları önerir, ancak bir tane seçmenize izin vermez - bu da düzeltildi. Ayrıca, Site Sayfaları ekranına erişmeye çalıştığınızda veya blog yayınlarınıza ulaşmak için iPad'lerde Hızlı İşlem düğmelerini kullandığınızda uygulamanın kilitlenmesine neden olan diğer birkaç sorunu da hallettik. Sayfalardan ve yayınlardan bahsetmişken, iOS 13 çalıştıran iPad'ler için önizlemeler artık daha büyük.
 
-Koyu modda ve okuyucu araç çubuğundaki bazı kullanıcı arabirimi uyumsuzluklarını giderdik.
+Karanlık modumuzu kahvemizi sevdiğimiz gibi seviyoruz: gerçekten karanlık ve içinde yüzen herhangi bir hata olmadan. Aydınlık ve karanlık modlarında bazı aksaklıklar vardı ve bazen birinden diğerine geçtiğinizde işler garip bir şekilde davrandı. Şu anda bu hatalardan çok daha azı var.
 
-Tam ekran modunda yorum yazarken @-anmalarını kullanabilirsiniz.
-
-Bazen üyelik ve giriş sihirli bağlantı e-postaları istenmeyen postalar arasına gidebiliyor, biz de onaylama ekranına kullanıcıların istenmeyen/önemsiz posta kutularını kontrol etmelerini hatırlatır bir açıklama ekledik.
-
-Herkese sağlık ve güvenlik.
+Hepiniz güvende olun.
