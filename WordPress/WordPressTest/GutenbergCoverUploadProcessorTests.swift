@@ -103,4 +103,28 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
     }
+
+    func testCoverBlockProcessorWithOtherAttributes() {
+
+        let postContentWithOtherAttributes = """
+           <!-- wp:cover {"url":"file:///usr/tmp/-1175513456.jpg","id":\(gutenbergMediaUploadID)} -->
+           <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(file:///usr/tmp/-1175513456.jpg);align:center"><div class="wp-block-cover__inner-container">
+           \(paragraphBlock)
+           </div></div>
+           <!-- /wp:cover -->
+           """
+
+        let postResultContentWithOtherAttributes = """
+           <!-- wp:cover {"id":\(mediaID),"url":"http:\\/\\/www.wordpress.com\\/logo.jpg"} -->
+           <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(http://www.wordpress.com/logo.jpg);align:center"><div class="wp-block-cover__inner-container">
+           \(paragraphBlock)
+           </div></div>
+           <!-- /wp:cover -->
+           """
+
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let resultContent = gutenbergCoverPostUploadProcessor.process(postContentWithOtherAttributes)
+
+        XCTAssertEqual(resultContent, postResultContentWithOtherAttributes, "Post content should be updated correctly")
+    }
 }
