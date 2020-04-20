@@ -356,6 +356,7 @@ import WordPressFlux
 
     /// Fetches a site topic for the value of the `siteID` property.
     ///
+    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchSiteTopic() {
         if isViewLoaded {
             displayLoadingStream()
@@ -385,6 +386,7 @@ import WordPressFlux
 
     /// Fetches a tag topic for the value of the `tagSlug` property
     ///
+    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchTagTopic() {
         if isViewLoaded {
             displayLoadingStream()
@@ -1723,11 +1725,18 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 }
 
 
-// MARK: - Topic Injection
-extension ReaderStreamViewController {
+// MARK: - ReaderContentViewController
+extension ReaderStreamViewController: ReaderContentViewController {
     func setTopic(_ topic: ReaderAbstractTopic?) {
-        guard let actualTopic = topic, ReaderHelpers.topicIsDiscover(actualTopic) else {
-            readerTopic = topic
+        guard let currentTopic = topic else {
+            readerTopic = nil
+            isSavedPostsController = true
+            return
+        }
+        isSavedPostsController = false
+
+        guard ReaderHelpers.topicIsDiscover(currentTopic) else {
+            readerTopic = currentTopic
             return
         }
         readerTopic = nil
@@ -1745,6 +1754,7 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
         }
     }
 }
+
 
 // MARK: - Undo
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {

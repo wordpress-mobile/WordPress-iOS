@@ -769,12 +769,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchReaderTabToSavedPosts
 {
-    [self showReaderTab];
-
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
         [self switchToSavedPosts];
     } else {
-
+        [self showReaderTab];
         // Unfortunately animations aren't disabled properly for this
         // transition unless we dispatch_async.
         dispatch_async(dispatch_get_main_queue(), ^{

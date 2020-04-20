@@ -34,7 +34,7 @@ class ReaderTabView: UIView {
                 return
             }
             readerTabView.tabBar.setSelectedIndex(index)
-            readerTabView.selectedTabDidChange(readerTabView.tabBar)
+            readerTabView.toggleButtonsView()
         }
     }
 
@@ -159,8 +159,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let readerTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
-            let childController = viewModel.makeChildViewController(with: readerTabItem) else {
+            let childController = viewModel.makeChildViewController(at: tabBar.selectedIndex) else {
                 return
         }
 
@@ -191,8 +190,7 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
-        viewModel.selectedIndex = tabBar.selectedIndex
+        viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
 
