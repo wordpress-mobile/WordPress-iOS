@@ -252,7 +252,7 @@ extension ReaderTabView {
         static let settingsButtonWidth: CGFloat = 56
 
         static let dividerWidth: CGFloat = .hairlineBorderWidth
-        static let dividerColor: UIColor = .lightGray
+        static let dividerColor: UIColor = UIColor(light: .lightGray, dark: .darkGray)
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }
