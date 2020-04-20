@@ -56,16 +56,22 @@ class GutenbergCoverUploadProcessor: Processor {
                 return nil
         }
 
+        let range = styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex)
         let matches = self.localBackgroundImageRegex.matches(in: styleAttribute,
                                                              options: [],
-                                                             range: styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex))
+                                                             range: range)
         guard matches.count == 1 else {
             return nil
         }
 
         let style = "\(HTMLKeys.backgroundImage)(\(self.remoteURLString))"
+        let updatedStyleAttribute = self.localBackgroundImageRegex.stringByReplacingMatches(in: styleAttribute,
+                                                                                            options: [],
+                                                                                            range: range,
+                                                                                            withTemplate: style)
+
         var attributes = div.attributes
-        attributes.set(.string(style), forKey: HTMLKeys.styleComponents)
+        attributes.set(.string(updatedStyleAttribute), forKey: HTMLKeys.styleComponents)
 
         let attributeSerializer = ShortcodeAttributeSerializer()
         var html = "<\(HTMLKeys.name) "

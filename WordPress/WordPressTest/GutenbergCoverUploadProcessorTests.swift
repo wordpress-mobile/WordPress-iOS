@@ -36,7 +36,7 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     let postContentWithOtherAttributes = """
        <!-- wp:cover {"url":"file:///usr/tmp/-1175513456.jpg","id":-1175513456} -->
-       <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(file:///usr/tmp/-1175513456.jpg)"><div class="wp-block-cover__inner-container">
+       <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(file:///usr/tmp/-1175513456.jpg);align:center"><div class="wp-block-cover__inner-container">
        <!-- wp:paragraph {"align":"center","placeholder":"Write title…"} -->
        <p class="has-text-align-center"></p>
        <!-- /wp:paragraph -->
@@ -46,7 +46,7 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     let postResultContentWithOtherAttributes = """
        <!-- wp:cover {"id":456,"url":"http:\\/\\/www.wordpress.com\\/logo.jpg"} -->
-       <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(http://www.wordpress.com/logo.jpg)"><div class="wp-block-cover__inner-container">
+       <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(http://www.wordpress.com/logo.jpg);align:center"><div class="wp-block-cover__inner-container">
        <!-- wp:paragraph {"align":"center","placeholder":"Write title…"} -->
        <p class="has-text-align-center"></p>
        <!-- /wp:paragraph -->
@@ -54,7 +54,7 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
        <!-- /wp:cover -->
        """
 
-    func testCoverBlockProcessor2() {
+    func testCoverBlockProcessorWithOtherAttributes() {
         let gutenbergMediaUploadID = Int32(-1175513456)
         let mediaID = 456
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
