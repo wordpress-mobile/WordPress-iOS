@@ -5,7 +5,6 @@ class BottomSheetViewController: UIViewController {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
         static let buttonSpacing: CGFloat = 8
-        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
 
         enum Header {
@@ -27,16 +26,24 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
+    private var customHeaderSpacing: CGFloat?
+
+    /// Additional safe are insets for regular horizontal size class
+    var additionalSafeAreaInsetsRegular: UIEdgeInsets = .zero
+
     private weak var childViewController: DrawerPresentableViewController?
 
-    init(childViewController: DrawerPresentableViewController) {
+    init(childViewController: DrawerPresentableViewController,
+         customHeaderSpacing: CGFloat? = nil) {
         self.childViewController = childViewController
+        self.customHeaderSpacing = customHeaderSpacing
         super.init(nibName: nil, bundle: nil)
     }
 
-    func show(from presenting: UIViewController, sourceView: UIView? = nil) {
+    func show(from presenting: UIViewController, sourceView: UIView? = nil, arrowDirections: UIPopoverArrowDirection = .any) {
         if UIDevice.isPad() {
             modalPresentationStyle = .popover
+            popoverPresentationController?.permittedArrowDirections = arrowDirections
             popoverPresentationController?.sourceView = sourceView ?? UIView()
             popoverPresentationController?.sourceRect = sourceView?.bounds ?? .zero
         } else {
@@ -57,6 +64,8 @@ class BottomSheetViewController: UIViewController {
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return button
     }()
+
+    private var stackView: UIStackView!
 
     @objc func buttonPressed() {
         dismiss(animated: true, completion: nil)
@@ -84,12 +93,12 @@ class BottomSheetViewController: UIViewController {
 
         addChild(childViewController)
 
-        let stackView = UIStackView(arrangedSubviews: [
+        stackView = UIStackView(arrangedSubviews: [
             gripButton,
             childViewController.view
         ])
 
-        stackView.setCustomSpacing(Constants.Header.spacing, after: gripButton)
+        stackView.setCustomSpacing(customHeaderSpacing ?? Constants.Header.spacing, after: gripButton)
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -107,19 +116,28 @@ class BottomSheetViewController: UIViewController {
         refreshForTraits()
     }
 
+    override var preferredContentSize: CGSize {
+        set {
+            childViewController?.preferredContentSize = newValue
+        }
+        get {
+            return childViewController?.preferredContentSize ?? super.preferredContentSize
+        }
+    }
+
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
+    }
+
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
-            additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
+            additionalSafeAreaInsets = additionalSafeAreaInsetsRegular
         } else {
             gripButton.isHidden = false
             additionalSafeAreaInsets = .zero
         }
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
     }
 
     @objc func keyboardWillShow(_ notification: NSNotification) {
@@ -147,6 +165,10 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - DrawerDelegate
 extension BottomSheetViewController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        return childViewController?.allowsUserTransition ?? true
+    }
+
     var compactWidth: DrawerWidth {
         childViewController?.compactWidth ?? .percentage(0.66)
     }

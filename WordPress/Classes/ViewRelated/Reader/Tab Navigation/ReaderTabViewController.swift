@@ -7,7 +7,14 @@ class ReaderTabViewController: UIViewController {
     init(viewModel: ReaderTabViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        self.viewModel.filterTapped = { [weak self] (fromView, completion) in
+            guard let self = self else { return }
+            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] title in
+                self?.dismiss(animated: true, completion: nil)
+                completion(title)
+            })
+        }
+        title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
     }
 
@@ -22,14 +29,26 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = ReaderTabView(viewModel: viewModel)
+        view = ReaderTabView(viewModel: viewModel)
     }
 }
 
-// MARK: - Actions
+// MARK: - Search
 extension ReaderTabViewController {
-    /// Search button
+
     @objc private func didTapSearchButton() {
-        viewModel.performSearch()
+        let searchController = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(searchController, animated: true)
+    }
+}
+
+
+// MARK: - Tab Switching
+extension ReaderTabViewController {
+    @objc func navigateToSavedPosts() {
+        guard let readerTabView = view as? ReaderTabView else {
+            return
+        }
+        readerTabView.switchToSavedPosts()
     }
 }

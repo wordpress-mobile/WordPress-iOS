@@ -104,12 +104,6 @@ class NewBlogDetailHeaderView: UIView {
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
 
-        /// Constraints for larger widths with extra padding (iPhone portrait)
-        let extraPaddingSideConstraints = [
-            buttonsStackView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsSidePadding),
-            buttonsStackView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsSidePadding)
-        ]
-
         /// Constraints for constrained widths (iPad portrait)
         let minimumPaddingSideConstraints = [
             buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 0),
@@ -119,21 +113,21 @@ class NewBlogDetailHeaderView: UIView {
         let bottomConstraint = buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding)
         bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
 
-        /// If we are able to attach to the safe area's leading edge, we should, otherwise it can break
-        let leadingSafeAreaConstraint = stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
-        leadingSafeAreaConstraint.priority = .defaultHigh
+        let widthConstraint = buttonsStackView.widthAnchor.constraint(equalToConstant: 320)
+        widthConstraint.priority = .defaultHigh
 
         let edgeConstraints = [
-            leadingSafeAreaConstraint,
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
+            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            bottomConstraint
+            bottomConstraint,
+            widthConstraint
         ]
 
-        NSLayoutConstraint.activate(extraPaddingSideConstraints + minimumPaddingSideConstraints + edgeConstraints)
+        NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
     }
 
     override init(frame: CGRect) {

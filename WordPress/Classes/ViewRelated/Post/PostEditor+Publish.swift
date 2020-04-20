@@ -55,8 +55,6 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let isPage = post is Page
-
         let publishBlock = { [unowned self] in
             if action == .saveAsDraft {
                 self.post.status = .draft
@@ -97,22 +95,11 @@ extension PostEditor where Self: UIViewController {
             }
         }
 
-        let promoBlock = { [unowned self] in
-            UserDefaults.standard.asyncPromoWasDisplayed = true
-
-            let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            self.present(controller, animated: true, completion: nil)
-        }
-
-
-        if action.isAsync &&
-            !UserDefaults.standard.asyncPromoWasDisplayed {
-            promoBlock()
-        } else if action.isAsync,
+        if action.isAsync,
             let postStatus = self.post.original?.status ?? self.post.status,
             ![.publish, .publishPrivate].contains(postStatus) {
+            WPAnalytics.track(.editorPostPublishTap)
+
             // Only display confirmation alert for unpublished posts
             displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
         } else {
@@ -144,17 +131,15 @@ extension PostEditor where Self: UIViewController {
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
-        let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = action.publishActionLabel
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+        // End editing to avoid issues with accessibility
+        view.endEditing(true)
 
-        alertController.addCancelActionWithTitle(keepEditingTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+        let prepublishing = PrepublishingViewController(post: post as! Post) { _ in
             publishAction()
         }
-        present(alertController, animated: true, completion: nil)
+        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
+        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {

@@ -1,28 +1,71 @@
 
 class ReaderTabViewModel {
 
-    var tabSelectionCallback: ((ReaderAbstractTopic) -> Void)?
+    var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
+    var selectedFilter: ReaderAbstractTopic?
+    var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
     init() {
         addNotificationsObservers()
     }
 
     func showTab(for item: FilterTabBarItem) {
-        guard let readerItem = item as? ReaderTabItem,
-            let topic = readerItem.topic else {
-                return
+
+        guard let readerItem = item as? ReaderTabItem else {
+            return
         }
-        tabSelectionCallback?(topic)
+
+        let topic = readerItem.topic
+
+        let selectedTopic: ReaderAbstractTopic?
+        if readerItem.shouldHideButtonsView == false {
+            selectedTopic = selectedFilter ?? topic
+        } else {
+            selectedTopic = topic
+        }
+
+        tabSelectionCallback?(selectedTopic)
     }
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func performSearch() { }
 
-    func presentFilter() { }
+    func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
+        let viewController = makeFilterSheetViewController(completion: completion)
+        let bottomSheet = BottomSheetViewController(childViewController: viewController)
+        bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
+    }
 
-    func resetFilter() { }
+    func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
+        filterTapped?(from, { [weak self] topic in
+            self?.selectedFilter = topic
+            if let topic = topic {
+                self?.tabSelectionCallback?(topic)
+            }
+            completion(topic?.title)
+        })
+    }
+
+    func resetFilter(selectedItem: FilterTabBarItem) {
+        selectedFilter = nil
+        if let topic = (selectedItem as? ReaderTabItem)?.topic {
+            tabSelectionCallback?(topic)
+        }
+    }
 
     func presentSettings() { }
+}
+
+// MARK: - Bottom Sheet
+
+extension ReaderTabViewModel {
+    private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
+        return FilterSheetViewController(filters:
+            [ReaderSiteTopic.filterProvider(),
+             ReaderTagTopic.filterProvider()],
+            changedFilter: completion)
+    }
 }
 
 
@@ -91,6 +134,7 @@ extension ReaderTabViewModel {
 
         self.tabSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
+            controller?.isSavedPostsController = (topic == nil)
         }
         return controller
     }
