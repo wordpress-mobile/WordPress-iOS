@@ -39,9 +39,16 @@ class GutenbergCoverUploadProcessor: Processor {
     lazy var htmlUploadProcessor = HTMLProcessor(for: "div", replacer: { (div) in
 
         guard let styleAttributeValue = div.attributes["style"]?.value,
-            case let .string(styleAttribute) = styleAttributeValue,
-            styleAttribute.hasPrefix("background-image:url(file:///") else {
+            case let .string(styleAttribute) = styleAttributeValue
+            else {
                 return nil
+        }
+
+        let matches = self.localBackgroundImageRegex.matches(in: styleAttribute,
+                                                             options: [],
+                                                             range: styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex))
+        guard matches.count == 1 else {
+            return nil
         }
 
         let style = "background-image:url(\(self.remoteURLString))"
@@ -56,6 +63,11 @@ class GutenbergCoverUploadProcessor: Processor {
         html += "</div>"
         return html
     })
+
+    private let localBackgroundImageRegex: NSRegularExpression = {
+        let pattern = ".*background-image:[ ]?url\\(file:\\/\\/\\/.*"
+        return try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+    }()
 
     func process(_ text: String) -> String {
         return coverBlockProcessor.process(text)
