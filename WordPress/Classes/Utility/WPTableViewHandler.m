@@ -384,14 +384,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(nonnull NSIndexPath *)indexPath
-{
-    if ([self.delegate respondsToSelector:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)]) {
-        return [self.delegate tableView:tableView shouldIndentWhileEditingRowAtIndexPath:indexPath];
-    }
-    return nil;
-}
-
 - (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(deletingSelectedRowAtIndexPath:)]) {

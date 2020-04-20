@@ -8,7 +8,7 @@ class ReaderTagsTableViewController: UIViewController {
         return tableView
     }()
 
-    private var tableViewHandler: ReaderTagsTableViewHandler?
+    private var tableViewHandler: OffsetTableViewHandler?
 
     init(style: UITableView.Style) {
         self.style = style
@@ -29,52 +29,13 @@ class ReaderTagsTableViewController: UIViewController {
     }
 
     private func setupTableHandler() {
-        let handler = ReaderTagsTableViewHandler(tableView: tableView)
+        let handler = OffsetTableViewHandler(tableView: tableView)
         handler.delegate = self
         tableViewHandler = handler
     }
 }
 
-class ReaderTagsTableViewHandler: WPTableViewHandler {
-
-    func object(at indexPath: IndexPath) -> NSFetchRequestResult? {
-        guard let indexPath = adjusted(indexPath: indexPath) else { return nil }
-        return resultsController.object(at: indexPath)
-    }
-
-    func adjusted(indexPath: IndexPath) -> IndexPath? {
-        guard indexPath.row > 0 else {
-            return nil
-        }
-        return IndexPath(row: indexPath.row - 1, section: indexPath.section)
-    }
-
-    func adjustedToTable(indexPath: IndexPath) -> IndexPath {
-        let newIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
-        return newIndexPath
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return super.tableView(tableView, numberOfRowsInSection: section) + 1
-    }
-
-    override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                             didChange anObject: Any,
-                             at indexPath: IndexPath?,
-                             for type: NSFetchedResultsChangeType,
-                             newIndexPath: IndexPath?) {
-
-        let oldIndexPath = indexPath.map {
-            adjustedToTable(indexPath: $0)
-        } ?? nil
-
-        let newPath = newIndexPath.map {
-            adjustedToTable(indexPath: $0)
-        } ?? nil
-
-        super.controller(controller, didChange: anObject, at: oldIndexPath, for: type, newIndexPath: newPath)
-    }
-}
+// MARK: - WPTableViewHandlerDelegate
 
 extension ReaderTagsTableViewController: WPTableViewHandlerDelegate {
 
@@ -93,21 +54,12 @@ extension ReaderTagsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-
-        guard let topic = tableViewHandler?.object(at: indexPath) as? ReaderTagTopic else {
-            cell.textLabel?.text = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
-            cell.accessoryView = UIImageView(image: UIImage.gridicon(.plusSmall))
-            return
-        }
-
-        cell.textLabel?.text = topic.title
-
-        let button = UIButton.closeAccessoryButton()
-        button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
-        cell.accessoryView = button
-        cell.selectionStyle = .none
+        let topic = tableViewHandler?.object(at: indexPath) as? ReaderTagTopic
+        configure(cell: cell, for: topic)
     }
 }
+
+// MARK: - Actions
 
 extension ReaderTagsTableViewController {
     @objc func tappedAccessory(_ sender: UIButton) {
@@ -183,7 +135,7 @@ extension ReaderTagsTableViewController {
     /// - Parameters:
     ///     - topic: The tag topic that is to be unfollowed.
     ///
-    func unfollowTagTopic(_ topic: ReaderTagTopic) {
+    private func unfollowTagTopic(_ topic: ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
@@ -210,25 +162,5 @@ extension ReaderTagsTableViewController {
                 self.tableView(self.tableView, didSelectRowAt: indexPath)
             }
         })
-    }
-
-}
-
-// Close Accessory Button
-extension UIButton {
-
-    enum Constants {
-        static let size = CGSize(width: 40, height: 40)
-        static let image = UIImage.gridicon(.crossSmall)
-        static let tintColor = MurielColor(name: .gray, shade: .shade10)
-        static let insets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8) // To better align with the plus sign accessory view
-    }
-
-    static func closeAccessoryButton() -> UIButton {
-        let button = UIButton(frame: CGRect(origin: .zero, size: Constants.size))
-        button.setImage(Constants.image, for: .normal)
-        button.imageEdgeInsets = Constants.insets
-        button.imageView?.tintColor = UIColor.muriel(color: Constants.tintColor)
-        return button
     }
 }
