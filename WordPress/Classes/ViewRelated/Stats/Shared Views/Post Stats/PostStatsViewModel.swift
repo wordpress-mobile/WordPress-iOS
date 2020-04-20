@@ -127,7 +127,10 @@ private extension PostStatsViewModel {
         let overviewData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
                                            tabData: dayData.viewCount,
                                            difference: dayData.difference,
-                                           differencePercent: dayData.percentage)
+                                           differencePercent: dayData.percentage,
+                                           date: selectedDate,
+                                           period: .day
+        )
 
         let chart = PostChart(postViews: lastTwoWeeks)
 
