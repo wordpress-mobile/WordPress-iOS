@@ -49,8 +49,6 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var comment: Comment?
 
-    @objc var blog: Blog?
-
     @objc var attributedString: NSAttributedString?
 
     @objc var showReply: Bool {
@@ -146,9 +144,8 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
 
-    @objc func configureCell(comment: Comment, blog: Blog?, attributedString: NSAttributedString) {
+    @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
-        self.blog = blog
         self.attributedString = attributedString
 
         configureAvatar()
@@ -205,16 +202,14 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        if let blog = blog {
-            textView.mediaHost = MediaHost(with: blog, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
-        }
-
-        guard let attributedString = attributedString else {
+        guard let comment = comment, let attributedString = attributedString else {
             return
         }
+
+        textView.mediaHost = MediaHost(with: comment.blog, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
 
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
