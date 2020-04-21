@@ -607,13 +607,23 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestUnsupportedBlockFallback(with content: String, blockId: String) {
-        let controller = GutenbergWebViewController(with: post, blockHTML: content)
+        guard let controller = GutenbergWebViewController(with: post, blockHTML: content) else {
+            return showUnsupportedBlockUnexpectedErrorAlert()
+        }
         controller.onSave = { [weak self] content in
             self?.gutenberg.replaceBlock(with: content, blockId: blockId)
         }
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
+    }
+
+    func showUnsupportedBlockUnexpectedErrorAlert() {
+        WPError.showAlert(
+            withTitle: NSLocalizedString("Error", comment: "Generic error alert title"),
+            message: NSLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
+            withSupportButton: false
+        )
     }
 }
 
