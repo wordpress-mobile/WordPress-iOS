@@ -52,10 +52,10 @@
                         </constraints>
                     </activityIndicatorView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-add-button" translatesAutoresizingMaskIntoConstraints="NO" id="GYR-3W-aku" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="50" y="11" width="26" height="26"/>
+                        <rect key="frame" x="48" y="15" width="24" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="26" id="gm6-03-VBa"/>
-                            <constraint firstAttribute="height" constant="26" id="uxU-Ng-JTY"/>
+                            <constraint firstAttribute="width" constant="24" id="49J-ox-VuO"/>
+                            <constraint firstAttribute="width" secondItem="GYR-3W-aku" secondAttribute="height" multiplier="1:1" id="CCT-Ge-nHv"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11G-E4-8Jh">
@@ -72,7 +72,7 @@
                     <constraint firstItem="2Ri-os-5ZW" firstAttribute="width" secondItem="SqA-Tm-XVX" secondAttribute="width" multiplier="0.5" id="MZT-fb-8wR"/>
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="Mwp-7z-bUJ"/>
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="bottom" secondItem="89f-vg-HlI" secondAttribute="bottom" id="OBY-RQ-kRg"/>
-                    <constraint firstItem="GYR-3W-aku" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="top" constant="-4" id="QV1-8T-K0y"/>
+                    <constraint firstItem="GYR-3W-aku" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="top" id="QV1-8T-K0y"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="width" secondItem="SqA-Tm-XVX" secondAttribute="width" id="dBO-2f-cNz"/>
                     <constraint firstAttribute="trailing" secondItem="89f-vg-HlI" secondAttribute="trailing" id="fIW-sh-8b3"/>
                     <constraint firstAttribute="trailing" secondItem="MbK-Ns-TbF" secondAttribute="trailing" id="hBZ-XF-2Ok"/>
@@ -85,7 +85,7 @@
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="bottom" constant="15" id="tp1-hu-yDU"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="height" secondItem="SqA-Tm-XVX" secondAttribute="height" id="vjj-dA-RLw"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" id="vv4-33-weD"/>
-                    <constraint firstItem="GYR-3W-aku" firstAttribute="trailing" secondItem="SqA-Tm-XVX" secondAttribute="trailing" constant="4" id="wL3-WH-8HH"/>
+                    <constraint firstItem="GYR-3W-aku" firstAttribute="trailing" secondItem="SqA-Tm-XVX" secondAttribute="trailing" id="wL3-WH-8HH"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
