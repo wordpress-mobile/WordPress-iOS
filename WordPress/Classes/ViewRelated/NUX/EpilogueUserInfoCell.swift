@@ -91,8 +91,7 @@ private extension EpilogueUserInfoCell {
 
     func configureColors() {
         gravatarAddIcon.tintColor = .primary
-        // TODO: update when table background updated.
-        gravatarAddIcon.backgroundColor = .listForeground
+        gravatarAddIcon.backgroundColor = .basicBackground
 
         fullNameLabel.textColor = .text
         fullNameLabel.font = fullNameFont()

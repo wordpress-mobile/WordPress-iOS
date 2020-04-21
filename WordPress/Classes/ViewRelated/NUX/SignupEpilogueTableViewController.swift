@@ -154,7 +154,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
             return
         }
 
-        cell.contentView.backgroundColor = .listForeground
+        cell.contentView.backgroundColor = .basicBackground
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
