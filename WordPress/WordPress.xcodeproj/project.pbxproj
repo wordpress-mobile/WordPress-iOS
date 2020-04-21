@@ -2072,6 +2072,7 @@
 		F59AAC16235EA46D00385EE6 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
 		F5A738BD244DF75400EDE065 /* OffsetTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A738BC244DF75400EDE065 /* OffsetTableViewHandler.swift */; };
 		F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A738BE244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift */; };
+		F5A738C3244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A738C2244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift */; };
 		F5B8A60F23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */; };
 		F5B9151F244653C100179876 /* TabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9151E244653C100179876 /* TabbedViewController.swift */; };
 		F5B9152124465FB400179876 /* ReaderTagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */; };
@@ -4683,6 +4684,7 @@
 		F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightNavigationController.swift; sourceTree = "<group>"; };
 		F5A738BC244DF75400EDE065 /* OffsetTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetTableViewHandler.swift; sourceTree = "<group>"; };
 		F5A738BE244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTagsTableViewController+Cells.swift"; sourceTree = "<group>"; };
+		F5A738C2244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsTableViewModel.swift; sourceTree = "<group>"; };
 		F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDeviceSelectionViewController.swift; sourceTree = "<group>"; };
 		F5B9151E244653C100179876 /* TabbedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedViewController.swift; sourceTree = "<group>"; };
 		F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsTableViewController.swift; sourceTree = "<group>"; };
@@ -10182,6 +10184,7 @@
 				F5A738BE244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift */,
 				F5A738BC244DF75400EDE065 /* OffsetTableViewHandler.swift */,
 				F5B9151E244653C100179876 /* TabbedViewController.swift */,
+				F5A738C2244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift */,
 			);
 			path = Manage;
 			sourceTree = "<group>";
@@ -12712,6 +12715,7 @@
 				91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
 				9A9E3FA3230D5F0A00909BC4 /* StatsStackViewCell.swift in Sources */,
+				F5A738C3244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift in Sources */,
 				73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				F59AAC10235E430F00385EE6 /* ChosenValueRow.swift in Sources */,

@@ -1,4 +1,4 @@
-extension ReaderTagsTableViewController {
+extension ReaderTagsTableViewModel {
     func configure(cell: UITableViewCell, for topic: ReaderTagTopic?) {
         guard let topic = topic else {
             configureAddTag(cell: cell)
@@ -10,7 +10,6 @@ extension ReaderTagsTableViewController {
         let button = UIButton.closeAccessoryButton()
         button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
         cell.accessoryView = button
-        cell.selectionStyle = .none
     }
 
     private func configureAddTag(cell: UITableViewCell) {
