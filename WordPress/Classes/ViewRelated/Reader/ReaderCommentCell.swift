@@ -49,8 +49,6 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var comment: Comment?
 
-    @objc var blog: Blog?
-
     @objc var attributedString: NSAttributedString?
 
     @objc var showReply: Bool {
@@ -146,9 +144,8 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
 
-    @objc func configureCell(comment: Comment, blog: Blog?, attributedString: NSAttributedString) {
+    @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
-        self.blog = blog
         self.attributedString = attributedString
 
         configureAvatar()
@@ -205,12 +202,7 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        if let blog = blog {
-            textView.mediaHost = MediaHost(with: blog, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
-        }
+        textView.mediaHost = mediaHost()
 
         guard let attributedString = attributedString else {
             return
@@ -220,7 +212,6 @@ class ReaderCommentCell: UITableViewCell {
         // correctly formatted during the sync process.
         textView.attributedText = attributedString
     }
-
 
     @objc func configureActionBar() {
         guard let comment = comment else {
@@ -252,6 +243,22 @@ class ReaderCommentCell: UITableViewCell {
         textView.updateLayoutForAttachments()
     }
 
+    /// Returns the media host for the current comment
+    private func mediaHost() -> MediaHost {
+        if let blog = comment?.blog {
+            return MediaHost(with: blog, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
+        } else if let post = comment?.post as? ReaderPost, post.isPrivate() {
+            return MediaHost(with: post, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
+        }
+
+        return .publicSite
+    }
 
     // MARK: - Actions
 
