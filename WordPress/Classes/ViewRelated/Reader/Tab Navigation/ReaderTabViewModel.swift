@@ -42,13 +42,11 @@ class ReaderTabViewModel {
         let tagsViewController = ReaderTagsTableViewController(style: .grouped)
         let sitesViewController = ReaderFollowedSitesViewController.controller(showsAccessoryFollowButtons: true, showsSectionTitle: false)
 
-        let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags",
-                                                       comment: "Followed Tags Title"),
+        let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags", comment: "Followed Tags Title"),
                                                        viewController: tagsViewController,
                                                        accessibilityIdentifier: "FollowedTags")
 
-        let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites",
-                                                        comment: "Followed Sites Title"),
+        let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"),
                                                         viewController: sitesViewController,
                                                         accessibilityIdentifier: "FollowedSites")
 
