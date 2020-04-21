@@ -216,8 +216,16 @@ class ReaderCoordinator: NSObject {
                                                                                    isFeed: isFeed)
 
         detailViewController.postLoadFailureBlock = { [weak self, failureBlock] in
-            self?.topNavigationController?.popViewController(animated: false)
+            if FeatureFlag.newReaderNavigation.enabled {
+                self?.readerNavigationController.popToRootViewController(animated: false)
+            } else {
+                self?.topNavigationController?.popViewController(animated: false)
+            }
             failureBlock?()
+        }
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().navigateToReader(detailViewController)
+            return
         }
 
         if isNavigatingFromSource {

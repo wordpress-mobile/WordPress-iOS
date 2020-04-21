@@ -234,7 +234,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (ReaderMenuViewController *)readerMenuViewController
 {
-    if (!_readerMenuViewController) {
+    if (!_readerMenuViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerMenuViewController = [ReaderMenuViewController controller];
     }
 
@@ -364,7 +364,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (UISplitViewController *)readerSplitViewController
 {
-    if (!_readerSplitViewController) {
+    if (!_readerSplitViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;

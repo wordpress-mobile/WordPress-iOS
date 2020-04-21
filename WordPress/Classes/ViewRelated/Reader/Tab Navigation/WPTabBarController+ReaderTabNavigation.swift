@@ -56,10 +56,12 @@ extension WPTabBarController {
         navigateToReader(contentController)
     }
 
-    private func navigateToReader(_ pushControlller: UIViewController? = nil) {
+    func navigateToReader(_ pushControlller: UIViewController? = nil) {
         showReaderTab()
         readerNavigationController.popToRootViewController(animated: false)
-        guard let controller = pushControlller else { return }
+        guard let controller = pushControlller else {
+            return
+        }
         readerNavigationController.pushViewController(controller, animated: true)
     }
 
