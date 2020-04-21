@@ -7,9 +7,11 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     let blockHTML: String
     var onSave: ((String) -> Void)?
 
-    var webView: WKWebView {
-        return view as! WKWebView
-    }
+    lazy var webView: WKWebView = {
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = GutenbergWebJavascriptInjection.userContent(messageHandler: self, blockHTML: blockHTML)
+        return WKWebView(frame: .zero, configuration: configuration)
+    }()
 
     init(with post: AbstractPost, blockHTML: String) {
         authenticator = RequestAuthenticator(blog: post.blog)
@@ -33,9 +35,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     override func loadView() {
-        let configuration = WKWebViewConfiguration()
-        configuration.userContentController = GutenbergWebJavascriptInjection.userContent(messageHandler: self, blockHTML: blockHTML)
-        view = WKWebView(frame: .zero, configuration: configuration)
+        view = webView
     }
 
     override func viewDidLoad() {
@@ -65,7 +65,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc func onCloseButtonPressed() {
-        presentingViewController?.dismiss(animated: true)
+        dismiss()
     }
 
     func evaluateJavascript(_ script: String) {
@@ -79,10 +79,22 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         }
     }
 
+
     func save(_ newContent: String) {
         onSave?(newContent)
-        webView.configuration.userContentController.removeAllUserScripts()
+        dismiss()
+    }
+
+    private func dismiss() {
+        cleanUpWebView()
         presentingViewController?.dismiss(animated: true)
+    }
+
+    private func cleanUpWebView() {
+        webView.configuration.userContentController.removeAllUserScripts()
+        GutenbergWebJavascriptInjection.JSMessage.allCases.forEach {
+            webView.configuration.userContentController.removeScriptMessageHandler(forName: $0.rawValue)
+        }
     }
 
     private let insertCSSScript: String = {

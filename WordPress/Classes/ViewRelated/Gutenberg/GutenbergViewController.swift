@@ -612,6 +612,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self?.gutenberg.replaceBlock(with: content, blockId: blockId)
         }
         let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
 }
