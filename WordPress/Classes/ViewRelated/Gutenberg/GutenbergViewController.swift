@@ -645,6 +645,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return
         }
 
+        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
+        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
         if keyboardFrame.height < minimumKeyboardHeight {
             mentionsBottomConstraint.constant = -self.view.safeAreaInsets.bottom
         }
