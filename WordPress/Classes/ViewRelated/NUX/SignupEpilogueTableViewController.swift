@@ -150,6 +150,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    // TODO: nix this when table background updated.
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard cell is EpilogueUserInfoCell else {
             return

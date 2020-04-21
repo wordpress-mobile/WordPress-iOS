@@ -51,7 +51,7 @@
                             <constraint firstAttribute="width" secondItem="2Ri-os-5ZW" secondAttribute="height" multiplier="1:1" id="Dlu-jo-OXt"/>
                         </constraints>
                     </activityIndicatorView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-add-button" translatesAutoresizingMaskIntoConstraints="NO" id="GYR-3W-aku">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-add-button" translatesAutoresizingMaskIntoConstraints="NO" id="GYR-3W-aku" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                         <rect key="frame" x="50" y="11" width="26" height="26"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="26" id="gm6-03-VBa"/>

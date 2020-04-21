@@ -30,8 +30,7 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        gravatarView.image = .gravatarPlaceholderImage
+        configureImages()
         configureColors()
     }
 
@@ -85,7 +84,16 @@ class EpilogueUserInfoCell: UITableViewCell {
 //
 private extension EpilogueUserInfoCell {
 
+    func configureImages() {
+        gravatarAddIcon.image = .gridicon(.add)
+        gravatarView.image = .gravatarPlaceholderImage
+    }
+
     func configureColors() {
+        gravatarAddIcon.tintColor = .primary
+        // TODO: update when table background updated.
+        gravatarAddIcon.backgroundColor = .listForeground
+
         fullNameLabel.textColor = .text
         fullNameLabel.font = fullNameFont()
 
