@@ -203,7 +203,7 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc func configureText() {
         textView.mediaHost = mediaHost()
-        
+
         guard let attributedString = attributedString else {
             return
         }
