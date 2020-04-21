@@ -234,7 +234,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 }
 
 - (NSInteger)numberOfSuggestions {
-    return self.suggestions.count;
+    return self.searchResults.count;
 }
 
 - (void)selectSuggestionAtPosition:(NSInteger)position {
