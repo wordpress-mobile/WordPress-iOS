@@ -206,10 +206,12 @@ class ReaderCommentCell: UITableViewCell {
             return
         }
 
-        textView.mediaHost = MediaHost(with: comment.blog, failure: { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
-        })
+        if let blog = comment.blog {
+            textView.mediaHost = MediaHost(with: blog, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
+        }
 
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
