@@ -246,12 +246,12 @@ class ReaderCommentCell: UITableViewCell {
     /// Returns the media host for the current comment
     private func mediaHost() -> MediaHost {
         if let blog = comment?.blog {
-            textView.mediaHost = MediaHost(with: blog, failure: { error in
+            return MediaHost(with: blog, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
                 CrashLogging.logError(error)
             })
         } else if let post = comment?.post as? ReaderPost, post.isPrivate() {
-            textView.mediaHost = MediaHost(with: post, failure: { error in
+            return MediaHost(with: post, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
                 CrashLogging.logError(error)
             })
