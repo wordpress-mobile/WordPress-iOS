@@ -39,16 +39,23 @@ class ReaderTabViewModel {
     }
 
     func presentManage(from: UIViewController) {
-        let tagsVC = ReaderTagsTableViewController(style: .grouped)
-        let sitesVC = ReaderFollowedSitesViewController.controller(showsAccessoryFollowButtons: true, showsSectionTitle: false)
+        let tagsViewController = ReaderTagsTableViewController(style: .grouped)
+        let sitesViewController = ReaderFollowedSitesViewController.controller(showsAccessoryFollowButtons: true, showsSectionTitle: false)
 
-        let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags", comment: "Followed Tags Title"), viewController: tagsVC, accessibilityIdentifier: "FollowedTags")
-        let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"), viewController: sitesVC, accessibilityIdentifier: "FollowedSites")
+        let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags",
+                                                       comment: "Followed Tags Title"),
+                                                       viewController: tagsViewController,
+                                                       accessibilityIdentifier: "FollowedTags")
 
-        let tabbedVC = TabbedViewController(items: [tagsItem, sitesItem])
-        tabbedVC.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
+        let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites",
+                                                        comment: "Followed Sites Title"),
+                                                        viewController: sitesViewController,
+                                                        accessibilityIdentifier: "FollowedSites")
 
-        let navigationController = UINavigationController(rootViewController: tabbedVC)
+        let tabbedViewController = TabbedViewController(items: [tagsItem, sitesItem])
+        tabbedViewController.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
+
+        let navigationController = UINavigationController(rootViewController: tabbedViewController)
         from.present(navigationController, animated: true, completion: nil)
     }
 
