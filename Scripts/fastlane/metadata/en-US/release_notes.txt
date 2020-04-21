@@ -1,15 +1,11 @@
-New blocks! Welcome the Latest Posts block, for highlighting your new stuff in posts and pages.
+Site Creation has been streamlined by removing some intermediate steps. Pick the kind of site you want, enter a domain name, and you’re done.
 
-When you create a new page, we’ll show you a few templates — pick one, and we’ll add all the necessary blocks to your page to get you started quickly.
+The Block editor got more improvements: The Cover block is now available; there are alignment options in the Heading block; and a dropdown toolbar makes alignment easier for Heading, Paragraph, Image, MediaText blocks. And we removed the dimming effect on unselected blocks.
 
-We fixed up a few block editor issues; no more crashes when pasting in HTML content or missing Quote block borders in Dark Mode.
+The layout of the Notifications screen caused text to get lost under the casing of some models of mobile phone. That’s fixed!
 
-If you scheduled a post to publish in the past, it would display as “scheduled” instead of “published.” That’s fixed, along with an issue where dates displayed incorrectly if your site’s timezone wasn’t the same as your device’s timezone.
+Sometimes you’d try to @-mention someone in a comment, and the app would suggest names but then not let you select one — that’s also fixed. We also took care of a few other issues that caused the app to crash when you tried to access the Site Pages screen or use the Quick Action buttons on iPads to get to your blog posts. And speaking of pages and posts, previews are now bigger for iPads running iOS 13.
 
-We fixed some UI inconsistencies in Dark Mode and with the Reader toolbar.
+We like our Dark Mode like we like our coffee: really dark, and without any bugs floating around in it. There were some glitches in Light and Dark Modes, and things sometimes behaved oddly when you switched from one to the other. There are far fewer of those glitches now.
 
-You can use @-mentions when writing comments in fullscreen mode.
-
-Sometimes Signup and Login Magic Link emails would go to your spam folder, so we added a note to the confirmation screen suggesting that folks check their spam/junk folders if they don’t see the email promptly.
-
-Stay safe, everyone.
+Stay safe, y’all.
