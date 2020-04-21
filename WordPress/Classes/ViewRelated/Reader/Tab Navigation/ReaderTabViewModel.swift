@@ -176,7 +176,7 @@ extension ReaderTabViewModel {
             return nil
         }
         let controller = makeReaderContentViewController(tabItems[index].topic)
-        
+
         topicSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
         }

@@ -91,7 +91,7 @@ extension ReaderTabView {
             self.addContentToContainerView()
         }
     }
-    
+
     private func configureTabBarElements() {
         guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
             return

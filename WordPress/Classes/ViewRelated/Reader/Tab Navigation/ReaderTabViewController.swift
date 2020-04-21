@@ -49,7 +49,7 @@ class ReaderTabViewController: UIViewController {
 
 // MARK: - Search
 extension ReaderTabViewController {
-    
+
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
     }
