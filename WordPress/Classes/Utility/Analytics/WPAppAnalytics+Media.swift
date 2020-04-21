@@ -59,8 +59,14 @@ public struct MediaAnalyticsInfo {
         self.selectionMethod = selectionMethod
     }
 
-    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
         return origin.eventForMediaType(mediaType)
+    }
+
+    // Old tracking events via WPShared
+    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
+    func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        return origin.wpsharedEventForMediaType(mediaType)
     }
 
     var retryEvent: WPAnalyticsStat? {
@@ -107,8 +113,28 @@ enum MediaUploadOrigin {
     case mediaLibrary(MediaSource)
     case editor(MediaSource)
 
-    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+    // All new media tracking events will be added into WPAnalyticsEvent
+    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
         switch (self, mediaType) {
+        // Media Library
+        case (.mediaLibrary(let source), .image) where source == .tenor:
+            return .mediaLibraryAddedPhotoViaTenor
+
+        // Editor
+        case (.editor(let source), .image) where source == .tenor:
+            return .editorAddedPhotoViaTenor
+
+        default:
+            return nil
+        }
+    }
+
+    // This is for the previous events created within WordPressShared
+    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
+    func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        switch (self, mediaType) {
+        // Media Library
         case (.mediaLibrary(let source), .image) where source == .deviceLibrary:
             return .mediaLibraryAddedPhotoViaDeviceLibrary
         case (.mediaLibrary(let source), .image) where source == .giphy:
@@ -125,6 +151,7 @@ enum MediaUploadOrigin {
             return .mediaLibraryAddedVideoViaOtherApps
         case (.mediaLibrary(let source), .video) where source == .camera:
             return .mediaLibraryAddedVideoViaCamera
+        // Editor
         case (.editor(let source), .image) where source == .giphy :
             return .editorAddedPhotoViaGiphy
         case (.editor(let source), .image) where source == .deviceLibrary:

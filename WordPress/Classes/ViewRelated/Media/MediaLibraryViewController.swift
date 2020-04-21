@@ -693,6 +693,7 @@ extension MediaLibraryViewController: TenorPickerDelegate {
         assets.forEach { tenorMedia in
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
             mediaCoordinator.addMedia(from: tenorMedia, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.tenorUploaded)
         }
     }
 }

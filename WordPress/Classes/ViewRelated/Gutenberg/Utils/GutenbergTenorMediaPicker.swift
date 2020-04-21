@@ -59,7 +59,7 @@ extension GutenbergTenorMediaPicker: TenorPickerDelegate {
         }
 
         let mediaInfo = assets.compactMap { (asset) -> MediaInfo? in
-            guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .giphy) else {
+            guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .tenor) else {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
@@ -73,7 +73,7 @@ extension GutenbergTenorMediaPicker: TenorPickerDelegate {
     /// - Parameter assets: Tenor Media objects to append.
     func appendOnNewBlocks(assets: ArraySlice<TenorMedia>) {
         assets.forEach {
-            if let media = self.mediaInserter.insert(exportableAsset: $0, source: .giphy) {
+            if let media = self.mediaInserter.insert(exportableAsset: $0, source: .tenor) {
                 self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
             }
         }
