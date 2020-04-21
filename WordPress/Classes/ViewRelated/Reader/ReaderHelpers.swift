@@ -245,6 +245,9 @@ extension ReaderHelpers {
         }
         return topic.title
     }
+
+    static let defaultSavedItemPosition = 3
+
     /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
         var mutableItems = items
@@ -274,7 +277,10 @@ extension ReaderHelpers {
             return true
         }
         // fourth item: Saved. It's manually inserted after the sorting
-        mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: 3)
+        if !mutableItems.isEmpty {
+            let savedPosition = mutableItems.count >= defaultSavedItemPosition ? defaultSavedItemPosition : mutableItems.count
+            mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: savedPosition)
+        }
         return mutableItems
     }
 }
