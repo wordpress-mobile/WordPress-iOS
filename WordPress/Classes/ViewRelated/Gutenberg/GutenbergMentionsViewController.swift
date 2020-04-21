@@ -41,11 +41,6 @@ public class GutenbergMentionsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.siteID = 0
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -90,13 +85,6 @@ public class GutenbergMentionsViewController: UIViewController {
 
 extension GutenbergMentionsViewController: UITextFieldDelegate {
 
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else {
-            return
-        }
-        suggestionsView.showSuggestions(forWord: text)
-    }
-
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
         onCompletion?(.failure(buildErrorForCancelation()))
         return true
@@ -126,7 +114,6 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
 extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
 
     public func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
-        suggestionsTableView.showSuggestions(forWord: String())
         if let suggestion = suggestion {
             onCompletion?(.success(suggestion))
         }
