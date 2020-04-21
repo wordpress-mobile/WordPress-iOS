@@ -1,15 +1,11 @@
-¡Nuevos bloques! Bienvenido al bloque de últimas entradas, para resaltar tus nuevas cosas en las entradas y páginas.
+La creación del sitio se ha simplificado al eliminar algunos pasos intermedios. Elige el tipo de sitio que quieres, introduce un nombre de dominio y listo.
 
-Cuando crees una nueva página, te mostraremos unas cuantas plantillas — elige una y añadiremos todos los bloques necesarios a tu página para que puedas empezar rápidamente.
+El editor de bloques tiene más mejoras: Ahora está disponible el bloque portada; hay opciones de alineación en el bloque del encabezado; y una barra de herramientas desplegable hace más fácil la alineación de los bloques de encabezado, párrafo, imagen y medios y texto. Y hemos eliminado el efecto de atenuación en los bloques no seleccionados.
 
-Hemos corregido algunos problemas del editor de bloques; ya no se producen más conflictos al pegar contenido HTML o la falta de los bordes del bloque de citas en el modo oscuro.
+El diseño de la pantalla de avisos hacía que el texto se perdiera bajo la carcasa de algunos modelos de teléfono móvil. ¡Eso está corregido!
 
-Si habías programado la publicación de una entrada en el pasado, se mostraba como «programada» en lugar de «publicada». Eso está corregido, junto con un problema por el que las fechas se mostraban incorrectamente si la zona horaria de tu sitio no era la misma que la de tu dispositivo.
+A veces, intentabas @mencionar a alguien en un comentario y la aplicación sugería nombres, pero no te dejaba seleccionar uno — eso también está corregido. También nos hemos ocupado de otros problemas que hacían que la aplicación se bloqueara cuando intentabas acceder a la pantalla de las páginas del sitio o usar los botones de acción rápida en los iPad para acceder a tus entradas del blog. Y, hablando de páginas y entradas, ahora las vistas previas son más grandes para los iPad que ejecutan iOS 13.
 
-Hemos corregido algunas inconsistencias de la interfaz de usuario en el modo oscuro y con la barra de herramientas del lector.
+Nos gusta nuestro modo oscuro, como nos gusta nuestro café: muy oscuro y sin bichos flotando en él. Había algunos fallos en los modos claro y oscuro y, algunas veces, las cosas se comportaban de forma extraña cuando te cambiabas de uno a otro. Ahora hay muchos menos de esos fallos.
 
-Puedes usar @-menciones cuando escribas comentarios en modo de pantalla completa.
-
-A veces, los correos electrónicos de registro y de acceso de Magic Link iban a tu carpeta de spam, por lo que hemos añadido una nota en la pantalla de confirmación sugiriendo que la gente compruebe sus carpetas de spam/basura si no ven el correo electrónico rápidamente.
-
-Ten cuidado, todos.
+Manteneos todos a salvo.
