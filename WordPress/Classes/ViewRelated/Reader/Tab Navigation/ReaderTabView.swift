@@ -29,12 +29,17 @@ class ReaderTabView: UIView {
 
         super.init(frame: .zero)
         setupViewElements()
-        viewModel.indexSelectionCallback = { [weak self] index in
-            guard let readerTabView = self else {
-                return
-            }
-            readerTabView.tabBar.setSelectedIndex(index)
-            readerTabView.toggleButtonsView()
+
+        viewModel.didSelectIndex = { [weak self] index in
+            self?.tabBar.setSelectedIndex(index)
+            self?.toggleButtonsView()
+        }
+
+        viewModel.refreshTabBar { [weak self] tabItems, index in
+            self?.tabBar.items = tabItems
+            self?.tabBar.setSelectedIndex(index)
+            self?.configureTabBarElements()
+            self?.addContentToContainerView()
         }
     }
 
@@ -78,18 +83,7 @@ extension ReaderTabView {
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-
-        viewModel.fetchReaderMenu() { [weak self] items in
-            guard let items = items, items.count > 0, let self = self else {
-                return
-            }
-
-            self.tabBar.items = items
-
-            self.tabBar.setSelectedIndex(self.viewModel.selectedIndex)
-            self.configureTabBarElements()
-            self.addContentToContainerView()
-        }
+        viewModel.fetchReaderMenu()
     }
 
     private func configureTabBarElements() {
@@ -159,7 +153,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildViewController(at: tabBar.selectedIndex) else {
+            let childController = viewModel.makeChildContentViewController(at: tabBar.selectedIndex) else {
                 return
         }
 

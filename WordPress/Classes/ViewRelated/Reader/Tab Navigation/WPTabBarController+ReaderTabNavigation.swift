@@ -17,11 +17,12 @@ extension WPTabBarController {
 
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(readerContentFactory: makeReaderContentViewController(with:),
-                                           searchNavigationFactory: navigateToReaderSearch)
+                                           searchNavigationFactory: navigateToReaderSearch,
+                                           tabItemsStore: ReaderTabItemsStore())
         return viewModel
     }
 
-    func makeReaderContentViewController(with topic: ReaderAbstractTopic?) -> ReaderContentViewController {
+    private func makeReaderContentViewController(with topic: ReaderAbstractTopic?) -> ReaderContentViewController {
         var controller: ReaderStreamViewController
         if let topic = topic {
             controller = ReaderStreamViewController.controllerWithTopic(topic)
