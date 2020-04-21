@@ -202,27 +202,16 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        guard let comment = comment, let attributedString = attributedString else {
+        textView.mediaHost = mediaHost()
+        
+        guard let attributedString = attributedString else {
             return
-        }
-
-        if let blog = comment.blog {
-            textView.mediaHost = MediaHost(with: blog, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
-        }  else if let post = comment.post as? ReaderPost, post.isPrivate() {
-            textView.mediaHost = MediaHost(with: post, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
         }
 
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
         textView.attributedText = attributedString
     }
-
 
     @objc func configureActionBar() {
         guard let comment = comment else {
@@ -254,6 +243,22 @@ class ReaderCommentCell: UITableViewCell {
         textView.updateLayoutForAttachments()
     }
 
+    /// Returns the media host for the current comment
+    private func mediaHost() -> MediaHost {
+        if let blog = comment?.blog {
+            textView.mediaHost = MediaHost(with: blog, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
+        } else if let post = comment?.post as? ReaderPost, post.isPrivate() {
+            textView.mediaHost = MediaHost(with: post, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
+        }
+
+        return .publicSite
+    }
 
     // MARK: - Actions
 
