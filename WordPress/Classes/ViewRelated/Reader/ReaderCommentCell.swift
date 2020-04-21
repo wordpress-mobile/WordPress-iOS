@@ -211,6 +211,11 @@ class ReaderCommentCell: UITableViewCell {
                 // We'll log the error, so we know it's there, but we won't halt execution.
                 CrashLogging.logError(error)
             })
+        }  else if let post = comment.post as? ReaderPost, post.isPrivate() {
+            textView.mediaHost = MediaHost(with: post, failure: { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            })
         }
 
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
