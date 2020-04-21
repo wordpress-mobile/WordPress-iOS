@@ -35,6 +35,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -70,6 +71,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
+    [controller setupBlogWithSiteID:post.siteID];
     return controller;
 }
 
@@ -77,6 +79,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     [controller setupWithPostID:postID siteID:siteID];
+    [controller setupBlogWithSiteID:siteID];
     return controller;
 }
 
@@ -868,6 +871,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }];
 }
 
+#pragma mark - Blog Helper
+
+- (void)setupBlogWithSiteID:(NSNumber *)siteID
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    self.blog = [blogService blogByBlogId:siteID];
+}
 
 #pragma mark - UITableView Delegate Methods
 
@@ -922,7 +933,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 
     NSAttributedString *attrStr = [self cacheContentForComment:comment];
-    [cell configureCellWithComment:comment attributedString:attrStr];
+    [cell configureCellWithComment:comment blog:self.blog attributedString:attrStr];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
