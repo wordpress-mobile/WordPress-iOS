@@ -4,6 +4,7 @@ class ReaderTabViewModel {
     var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
     var selectedFilter: ReaderAbstractTopic?
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
+    var settingsTapped: ((UIView) -> Void)?
 
     init() {
         addNotificationsObservers()
@@ -37,6 +38,11 @@ class ReaderTabViewModel {
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
     }
 
+    func presentManage(from: UIViewController) {
+        let presenter = ReaderManageScenePresenter()
+        presenter.present(on: from, animated: true, completion: nil)
+    }
+
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
@@ -54,7 +60,9 @@ class ReaderTabViewModel {
         }
     }
 
-    func presentSettings() { }
+    func presentSettings(from: UIView) {
+        settingsTapped?(from)
+    }
 }
 
 // MARK: - Bottom Sheet

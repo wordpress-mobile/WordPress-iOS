@@ -7,12 +7,20 @@ class ReaderTabViewController: UIViewController {
     init(viewModel: ReaderTabViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.filterTapped = { [weak self] (fromView, completion) in
-            guard let self = self else { return }
+        viewModel.filterTapped = { [weak self] (fromView, completion) in
+            guard let self = self else {
+                return
+            }
             self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] title in
                 self?.dismiss(animated: true, completion: nil)
                 completion(title)
             })
+        }
+        viewModel.settingsTapped = { [weak self] fromView in
+            guard let self = self else {
+                return
+            }
+            viewModel.presentManage(from: self)
         }
         title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
