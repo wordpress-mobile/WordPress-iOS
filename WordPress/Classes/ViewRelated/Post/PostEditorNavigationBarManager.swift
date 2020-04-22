@@ -206,6 +206,7 @@ class PostEditorNavigationBarManager {
 
     func reloadPublishButton() {
         publishButton.setTitle(delegate?.publishButtonText ?? "", for: .normal)
+        publishButton.sizeToFit()
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
 
