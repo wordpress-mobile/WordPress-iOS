@@ -22,4 +22,4 @@ window.onload = () => {
         const config = { attributes: true, childList: true, subtree: true };
         observer.observe(content, config);
     }
-}
+};

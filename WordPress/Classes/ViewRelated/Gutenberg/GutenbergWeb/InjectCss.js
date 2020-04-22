@@ -11,4 +11,5 @@ const script = document.createElement('script');
 script.innerText = injectCss;
 script.type = 'text/javascript';
 document.head.appendChild(script);
-"CSS injection function ready"
+// We need to return a string or null, otherwise executing this script will error.
+"CSS injection function ready";

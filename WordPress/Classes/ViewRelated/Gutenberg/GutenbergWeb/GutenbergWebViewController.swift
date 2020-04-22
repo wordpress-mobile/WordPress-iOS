@@ -47,7 +47,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.navigationDelegate = self;
+        webView.navigationDelegate = self
         addNavigationBarElements()
         loadWebView()
     }
