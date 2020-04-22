@@ -315,7 +315,7 @@
 		1ED046D0244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */; };
 		1ED046D2244F55C6008F6365 /* GutenbergWebStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */; };
 		1ED046D4244F5B9D008F6365 /* InjectCss.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D3244F5B9D008F6365 /* InjectCss.js */; };
-		1ED046D8244F5EE7008F6365 /* IncertBlock.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D7244F5EE7008F6365 /* IncertBlock.js */; };
+		1ED046D8244F5EE7008F6365 /* InsertBlock.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D7244F5EE7008F6365 /* InsertBlock.js */; };
 		1ED046DA244F5FCB008F6365 /* RetrieveHTMLContent.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		26D66DEC36ACF7442186B07D /* Pods_WordPressThisWeekWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */; };
@@ -2645,7 +2645,7 @@
 		1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebJavascriptInjection.swift; sourceTree = "<group>"; };
 		1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = GutenbergWebStyle.css; sourceTree = "<group>"; };
 		1ED046D3244F5B9D008F6365 /* InjectCss.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = InjectCss.js; sourceTree = "<group>"; };
-		1ED046D7244F5EE7008F6365 /* IncertBlock.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = IncertBlock.js; sourceTree = "<group>"; };
+		1ED046D7244F5EE7008F6365 /* InsertBlock.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = InsertBlock.js; sourceTree = "<group>"; };
 		1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RetrieveHTMLContent.js; sourceTree = "<group>"; };
 		2262D835FA89938EBF63EADF /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		27AE66536E0C5378203F9312 /* Pods-WordPressUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5472,7 +5472,7 @@
 				1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */,
 				1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */,
 				1ED046D3244F5B9D008F6365 /* InjectCss.js */,
-				1ED046D7244F5EE7008F6365 /* IncertBlock.js */,
+				1ED046D7244F5EE7008F6365 /* InsertBlock.js */,
 				1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */,
 			);
 			path = GutenbergWeb;
@@ -10932,7 +10932,7 @@
 				98906504237CC1DF00218CD2 /* WidgetUnconfiguredCell.xib in Resources */,
 				17DC4C5322C5E6D60059CA11 /* open_source_icon_60pt@3x.png in Resources */,
 				9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */,
-				1ED046D8244F5EE7008F6365 /* IncertBlock.js in Resources */,
+				1ED046D8244F5EE7008F6365 /* InsertBlock.js in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				17E363A022C41DBA000E0C79 /* hot_pink_icon_60pt@2x.png in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,

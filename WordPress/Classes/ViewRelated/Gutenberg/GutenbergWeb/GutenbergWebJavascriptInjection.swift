@@ -24,7 +24,7 @@ extension File {
     static let style = File(name: "GutenbergWebStyle", type: .css)
     static let injectCss = File(name: "InjectCss", type: .js)
     static let retrieveHtml = File(name: "RetrieveHTMLContent", type: .js)
-    static let incertBlock = File(name: "IncertBlock", type: .js)
+    static let insertBlock = File(name: "InsertBlock", type: .js)
 }
 
 struct GutenbergWebJavascriptInjection {
@@ -51,7 +51,7 @@ struct GutenbergWebJavascriptInjection {
 
         userContentScripts = [
             try script(with: .retrieveHtml),
-            try script(with: .incertBlock, argument: blockHTML),
+            try script(with: .insertBlock, argument: blockHTML),
         ]
 
         let css = try File.style.getContent()
