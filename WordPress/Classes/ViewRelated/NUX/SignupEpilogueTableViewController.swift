@@ -90,15 +90,13 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var sectionTitle = ""
-        if section == TableSections.userInfo {
-            sectionTitle = NSLocalizedString("New Account", comment: "Header for user info, shown after account created.").localizedUppercase
+        // Don't show section header for User Info
+        guard section != TableSections.userInfo,
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
+            return nil
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
-            fatalError("Failed to get a section header cell")
-        }
-        cell.titleLabel?.text = sectionTitle
+        cell.titleLabel?.text = ""
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
         return cell
     }
@@ -150,12 +148,13 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    // TODO: nix this when table background updated.
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard cell is EpilogueUserInfoCell else {
             return
         }
 
-        cell.contentView.backgroundColor = .listForeground
+        cell.contentView.backgroundColor = .basicBackground
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -163,7 +162,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        return section == TableSections.userInfo ? 0 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
