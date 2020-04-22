@@ -65,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="egq-OL-lqe" userLabel="Table Container View">
-                                <rect key="frame" x="16" y="0.0" width="343" height="583"/>
+                                <rect key="frame" x="16" y="0.0" width="359" height="583"/>
                                 <connections>
                                     <segue destination="wAQ-AF-rOn" kind="embed" identifier="showEpilogueTable" id="PlO-Bm-BvC"/>
                                 </connections>
@@ -85,7 +85,7 @@
                             <constraint firstItem="egq-OL-lqe" firstAttribute="leading" secondItem="Zhy-FD-gA0" secondAttribute="leading" constant="16" id="Ke8-3y-IW1"/>
                             <constraint firstItem="Zhy-FD-gA0" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="top" id="VpG-I9-eZL"/>
                             <constraint firstItem="240-cE-xSD" firstAttribute="trailing" secondItem="Zhy-FD-gA0" secondAttribute="trailing" id="Yrw-fx-rz4"/>
-                            <constraint firstItem="Zhy-FD-gA0" firstAttribute="trailing" secondItem="egq-OL-lqe" secondAttribute="trailing" constant="16" id="drs-fr-MgU"/>
+                            <constraint firstItem="Zhy-FD-gA0" firstAttribute="trailing" secondItem="egq-OL-lqe" secondAttribute="trailing" id="drs-fr-MgU"/>
                             <constraint firstItem="240-cE-xSD" firstAttribute="bottom" secondItem="YP6-Jc-5Xa" secondAttribute="bottom" id="nht-aN-2J4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
@@ -104,7 +104,7 @@
             <objects>
                 <tableViewController id="wAQ-AF-rOn" customClass="SignupEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ACZ-Xu-JZ4">
-                        <rect key="frame" x="0.0" y="0.0" width="343" height="583"/>
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="583"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <connections>
