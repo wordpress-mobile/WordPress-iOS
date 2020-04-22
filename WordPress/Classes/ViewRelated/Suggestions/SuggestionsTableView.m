@@ -64,6 +64,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     _headerView = [[UIView alloc] init];
     [_headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_headerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapHeader)] ];
     [self addSubview:_headerView];
     
     _separatorView = [[UIView alloc] init];
@@ -249,6 +250,11 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0]];
 }
 
+- (void)didTapHeader {
+    if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewDidTapHeader:)]) {
+        [self.suggestionsDelegate suggestionsTableViewDidTapHeader:self];
+    }
+}
 
 #pragma mark - UITableViewDataSource methods
 

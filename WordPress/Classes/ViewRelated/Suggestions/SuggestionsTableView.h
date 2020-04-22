@@ -59,4 +59,9 @@
  */
 - (NSInteger)suggestionsTableViewMaxDisplayedRows:(nonnull SuggestionsTableView *)suggestionsTableView;
 
+/// This method is called every the header view above the suggestion is tapped.
+/// @param suggestionsTableView the suggestion view.
+- (void)suggestionsTableViewDidTapHeader:(nonnull SuggestionsTableView *)suggestionsTableView;
+
+
 @end

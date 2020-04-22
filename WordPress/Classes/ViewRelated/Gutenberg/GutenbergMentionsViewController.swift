@@ -128,6 +128,9 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
         return 3
     }
 
+    public func suggestionsTableViewDidTapHeader(_ suggestionsTableView: SuggestionsTableView) {
+        onCompletion?(.failure(buildErrorForCancelation()))
+    }
 }
 
 extension GutenbergMentionsViewController {
