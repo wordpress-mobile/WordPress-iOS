@@ -318,6 +318,7 @@
 		1ED046D8244F5EE7008F6365 /* InsertBlock.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D7244F5EE7008F6365 /* InsertBlock.js */; };
 		1ED046DA244F5FCB008F6365 /* RetrieveHTMLContent.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */; };
 		1ED2A37524506C8E0000C91C /* WPBarsStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1ED2A37424506C8E0000C91C /* WPBarsStyle.css */; };
+		1ED2A3772450C4570000C91C /* GutenbergLocalStorage.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		26D66DEC36ACF7442186B07D /* Pods_WordPressThisWeekWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
@@ -2649,6 +2650,7 @@
 		1ED046D7244F5EE7008F6365 /* InsertBlock.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = InsertBlock.js; sourceTree = "<group>"; };
 		1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RetrieveHTMLContent.js; sourceTree = "<group>"; };
 		1ED2A37424506C8E0000C91C /* WPBarsStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = WPBarsStyle.css; sourceTree = "<group>"; };
+		1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GutenbergLocalStorage.json; sourceTree = "<group>"; };
 		2262D835FA89938EBF63EADF /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		27AE66536E0C5378203F9312 /* Pods-WordPressUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
@@ -5477,6 +5479,7 @@
 				1ED046D3244F5B9D008F6365 /* InjectCss.js */,
 				1ED046D7244F5EE7008F6365 /* InsertBlock.js */,
 				1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */,
+				1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */,
 			);
 			path = GutenbergWeb;
 			sourceTree = "<group>";
@@ -10983,6 +10986,7 @@
 				988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */,
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
+				1ED2A3772450C4570000C91C /* GutenbergLocalStorage.json in Resources */,
 				981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */,
 				986C908622319F2600FC31E1 /* PostStatsTableViewController.storyboard in Resources */,
 				98D52C3322B1CFEC00831529 /* StatsTwoColumnRow.xib in Resources */,

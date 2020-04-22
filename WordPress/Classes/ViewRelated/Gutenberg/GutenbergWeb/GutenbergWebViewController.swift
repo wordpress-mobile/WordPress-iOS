@@ -12,6 +12,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     private let url: URL
     private let blockHTML: String
     private let jsInjection: GutenbergWebJavascriptInjection
+    private let isOnSelfHosted: Bool
 
     private lazy var webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
@@ -21,9 +22,10 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
     init(with post: AbstractPost, blockHTML: String) throws {
         authenticator = RequestAuthenticator(blog: post.blog)
+        isOnSelfHosted = !post.blog.isAccessibleThroughWPCom()
         self.blockHTML = blockHTML
 
-        jsInjection = try GutenbergWebJavascriptInjection(blockHTML: blockHTML)
+        jsInjection = try GutenbergWebJavascriptInjection(blockHTML: blockHTML, userId: "\(post.blog.userID ?? 1)")
         guard
             let siteURL = post.blog.homeURL,
             // Use wp-admin URL since Calypso URL won't work retriving the block content.
@@ -110,11 +112,17 @@ extension GutenbergWebViewController: WKNavigationDelegate {
         // script that inject css manually before actually injecting the css.
         evaluateJavascript(jsInjection.injectCssScript.source)
         evaluateJavascript(jsInjection.injectWPBarsCssScript.source)
+        evaluateJavascript(jsInjection.injectLocalStorageScript.source)
+        if isOnSelfHosted {
+            evaluateJavascript(jsInjection.injectEditorCssScript.source)
+        }
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // Injectic Editor specific CSS when everything is loaded to avoid overwritting parameters if gutenberg CSS load later.
-        evaluateJavascript(jsInjection.injectEditorCssScript.source)
+        if !isOnSelfHosted {
+            evaluateJavascript(jsInjection.injectEditorCssScript.source)
+        }
     }
 }
 

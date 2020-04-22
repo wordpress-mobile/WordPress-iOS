@@ -8,6 +8,7 @@ private struct File {
     enum Extension: String {
         case css
         case js
+        case json
     }
     private let name: String
     private let type: Extension
@@ -26,6 +27,7 @@ extension File {
     static let injectCss = File(name: "InjectCss", type: .js)
     static let retrieveHtml = File(name: "RetrieveHTMLContent", type: .js)
     static let insertBlock = File(name: "InsertBlock", type: .js)
+    static let localStorage  = File(name: "GutenbergLocalStorage", type: .json)
 }
 
 struct GutenbergWebJavascriptInjection {
@@ -35,26 +37,26 @@ struct GutenbergWebJavascriptInjection {
     }
 
     private let userContentScripts: [WKUserScript]
+    private let injectLocalStorageScriptTemplate = "localStorage.setItem('WP_DATA_USER_%@','%@')"
+    private let injectCssScriptTemplate = "window.injectCss(`%@`)"
 
     let injectWPBarsCssScript: WKUserScript
     let injectEditorCssScript: WKUserScript
     let injectCssScript: WKUserScript
-    let getHtmlContentScript = WKUserScript(source: "window.getHTMLPostContent()", injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-
+    let injectLocalStorageScript: WKUserScript
+    let getHtmlContentScript = "window.getHTMLPostContent()".toJsScript()
 
     /// Init an instance of GutenbergWebJavascriptInjection or throws if any of the required sources doesn't exist.
     /// This helps to cach early any possible error due to missing source files.
     /// - Parameter blockHTML: The block HTML code to be injected.
     /// - Throws: Throws an error if any required source doesn't exist.
-    init(blockHTML: String) throws {
+    init(blockHTML: String, userId: String) throws {
         func script(with source: File, argument: String? = nil) throws -> WKUserScript {
-            let finalSource = String(format: try source.getContent(), argument ?? [])
-            return WKUserScript(source: finalSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            String(format: try source.getContent(), argument ?? []).toJsScript()
         }
 
         func getInjectCssScript(with source: File) throws -> WKUserScript {
-            let css = try source.getContent()
-            return WKUserScript(source: "window.injectCss(`\(css)`)", injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            "window.injectCss(`\(try source.getContent())`)".toJsScript()
         }
 
         userContentScripts = [
@@ -65,6 +67,11 @@ struct GutenbergWebJavascriptInjection {
         injectCssScript = try script(with: .injectCss)
         injectWPBarsCssScript = try getInjectCssScript(with: .wpBarsStyle)
         injectEditorCssScript = try getInjectCssScript(with: .editorStyle)
+
+        let localStorageJsonString = try File.localStorage.getContent()
+            .removingSpacesAndNewLines()
+        let scriptString = String(format: injectLocalStorageScriptTemplate, userId, localStorageJsonString)
+        injectLocalStorageScript = scriptString.toJsScript()
     }
 
     func userContent(messageHandler handler: WKScriptMessageHandler, blockHTML: String) -> WKUserContentController {
@@ -74,6 +81,16 @@ struct GutenbergWebJavascriptInjection {
             userContent.add(handler, name: $0.rawValue)
         }
         return userContent
+    }
+}
+
+private extension String {
+    func toJsScript() -> WKUserScript {
+        WKUserScript(source: self, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+    }
+
+    func removingSpacesAndNewLines() -> String {
+        return replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: "")
     }
 }
 
