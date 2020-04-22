@@ -32,6 +32,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         _enabled = YES;
         _searchResults = [[NSMutableArray alloc] init];
         _useTransparentHeader = NO;
+        _animateWithKeyboard = YES;
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
@@ -185,6 +186,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
+    if ( !self.animateWithKeyboard ) {
+        return;
+    }
+    
     NSDictionary *info = [notification userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     

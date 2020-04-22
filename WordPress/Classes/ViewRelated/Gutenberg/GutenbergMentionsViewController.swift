@@ -24,6 +24,7 @@ public class GutenbergMentionsViewController: UIViewController {
 
     public lazy var suggestionsView: SuggestionsTableView = {
         let suggestionsView = SuggestionsTableView()
+        suggestionsView.animateWithKeyboard = false
         suggestionsView.enabled = true
         suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
         suggestionsView.suggestionsDelegate = self

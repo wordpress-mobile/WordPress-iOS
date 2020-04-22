@@ -7,6 +7,7 @@
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic) BOOL useTransparentHeader;
+@property (nonatomic) BOOL animateWithKeyboard;
 
 - (nonnull instancetype)init;
 
