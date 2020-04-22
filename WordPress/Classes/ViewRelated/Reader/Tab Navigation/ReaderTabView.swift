@@ -225,7 +225,7 @@ extension ReaderTabView {
     }
 
     @objc private func didTapSettingsButton() {
-        viewModel.presentSettings()
+        viewModel.presentSettings(from: settingsButton)
     }
 }
 

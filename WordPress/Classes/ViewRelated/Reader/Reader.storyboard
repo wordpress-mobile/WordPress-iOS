@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -483,7 +483,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="POi-4x-5Dc" firstAttribute="top" secondItem="49S-3J-OMN" secondAttribute="bottom" id="0rH-fk-AGg"/>
+                            <constraint firstAttribute="bottom" secondItem="49S-3J-OMN" secondAttribute="bottom" id="0rH-fk-AGg"/>
                             <constraint firstAttribute="trailing" secondItem="B6J-Lg-PdX" secondAttribute="trailing" id="8Ig-Pa-nrt"/>
                             <constraint firstItem="49S-3J-OMN" firstAttribute="top" secondItem="B6J-Lg-PdX" secondAttribute="bottom" id="FPy-1r-Z0H"/>
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leading" id="KUL-kZ-3vg"/>
