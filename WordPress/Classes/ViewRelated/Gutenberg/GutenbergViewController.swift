@@ -2,6 +2,7 @@ import UIKit
 import WPMediaPicker
 import Gutenberg
 import Aztec
+import WordPressFlux
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -224,6 +225,9 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergSettings().shouldPresentInformativeDialog(for: post.blog)
     }()
 
+    private var themeSupportQuery: Receipt? = nil
+    private var themeSupportReceipt: Receipt? = nil
+
     // MARK: - Initializers
     required init(
         post: AbstractPost,
@@ -268,6 +272,16 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
+
+        let themeSupportStore = StoreContainer.shared.themeSupport
+        themeSupportQuery = themeSupportStore.query(ThemeSupportQuery(blog: post.blog))
+        themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
+            DispatchQueue.main.async {
+                if let colors = self?.themeColorFromState(state) {
+                    self?.gutenberg.updateTheme(colors)
+                }
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -639,6 +653,19 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
             .filesApp,
         ].compactMap { $0 }
+    }
+
+    func gutenbergThemeColors() -> [[String: AnyHashable]]? {
+        return themeColorFromState(StoreContainer.shared.themeSupport.state)
+    }
+
+    func themeColorFromState(_ state: ThemeSupportStoreState) -> [[String: AnyHashable]]? {
+        switch state {
+        case .loaded(let colors):
+            return colors
+        default:
+            return nil
+        }
     }
 }
 
