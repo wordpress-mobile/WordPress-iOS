@@ -1,8 +1,12 @@
+14.8
+-----
+ 
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
 * [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
 * [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
+* Classic and Block editor: Prefill caption for image blocks when available on the Media library.
 * [internal] the "login by email" flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
 * Block editor: Disable ripple effect in all BottomSheet's controls.
 * Block editor: New block: Columns
