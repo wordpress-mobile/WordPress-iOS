@@ -1,16 +1,21 @@
 
 @objc class ReaderTabViewModel: NSObject {
     // MARK: - Properties
-    /// tab selection
+
+    /// completion handler for an external call that changes the tab index
     var indexSelectionCallback: ((Int) -> Void)?
+    /// completion handler for a tap on a tab on the toolbar
     var topicSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
     var selectedIndex = 0
     private var tabItems: [ReaderTabItem] = []
-    /// Reader content
+
+    /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
     var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
-    /// filter sheet
+
+    /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
     var selectedFilter: ReaderAbstractTopic?
+
     /// search
     var navigateToSearch: () -> Void
 
