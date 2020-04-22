@@ -18,6 +18,11 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.imageDownloadHash = 0;
+}
+
 - (void)setupUsernameLabel
 {
     _usernameLabel = [[UILabel alloc] init];

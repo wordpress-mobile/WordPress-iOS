@@ -274,20 +274,19 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];    
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
-
+    cell.imageDownloadHash = suggestion.imageURL.hash;
     [self loadAvatarForSuggestion:suggestion success:^(UIImage *image) {
         if (indexPath.row >= self.searchResults.count) {
             return;
         }
 
         Suggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
-        if ([reloaded.imageURL isEqual:suggestion.imageURL] == false) {
+        if (cell.imageDownloadHash != reloaded.imageURL.hash) {
             return;
         }
 
