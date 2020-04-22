@@ -35,6 +35,7 @@
             <connections>
                 <outlet property="titleLabel" destination="h2s-FQ-khG" id="xfc-xS-vwy"/>
                 <outlet property="topConstraint" destination="siM-Nd-UFb" id="u2G-qu-xyE"/>
+                <outlet property="trailingConstraint" destination="mUk-yi-bRz" id="Z49-C9-Que"/>
             </connections>
             <point key="canvasLocation" x="37" y="85"/>
         </view>
