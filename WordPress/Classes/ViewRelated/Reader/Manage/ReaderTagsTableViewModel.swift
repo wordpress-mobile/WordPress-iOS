@@ -146,7 +146,7 @@ extension ReaderTagsTableViewModel {
 
     /// Scrolls the tableView so the specified tag is in view and flashes that row
     ///
-    /// - Paramters:
+    /// - Parameters:
     ///     - tag: The tag to scroll into view.
     private func scrollToTag(_ tag: ReaderTagTopic) {
         guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: tag) else {
