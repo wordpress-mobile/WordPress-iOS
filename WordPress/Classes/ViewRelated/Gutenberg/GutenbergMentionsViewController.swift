@@ -70,8 +70,8 @@ public class GutenbergMentionsViewController: UIViewController {
 
         view.addSubview(suggestionsView)
         NSLayoutConstraint.activate([
-            suggestionsView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: margin),
-            suggestionsView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -margin),
+            suggestionsView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
+            suggestionsView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
             suggestionsView.bottomAnchor.constraint(equalTo: searchView.topAnchor),
             suggestionsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
         ])
