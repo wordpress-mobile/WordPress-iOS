@@ -427,19 +427,19 @@ PODS:
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (4.0.0):
     - ZendeskSDKConfigurationsSDK (~> 1.1.2)
-  - ZendeskCoreSDK (2.2.2)
+  - ZendeskCoreSDK (2.2.3)
   - ZendeskMessagingAPISDK (3.0.0):
     - ZendeskSDKConfigurationsSDK (~> 1.1.2)
   - ZendeskMessagingSDK (3.0.0):
     - ZendeskCommonUISDK (~> 4.0.0)
     - ZendeskMessagingAPISDK (~> 3.0.0)
-  - ZendeskSDKConfigurationsSDK (1.1.3)
-  - ZendeskSupportProvidersSDK (5.0.1):
+  - ZendeskSDKConfigurationsSDK (1.1.4)
+  - ZendeskSupportProvidersSDK (5.0.2):
     - ZendeskCoreSDK (~> 2.2.1)
   - ZendeskSupportSDK (5.0.0):
     - ZendeskMessagingSDK (~> 3.0.0)
     - ZendeskSupportProvidersSDK (~> 5.0.0)
-  - ZIPFoundation (0.9.10)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
@@ -724,14 +724,14 @@ SPEC CHECKSUMS:
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
   Yoga: 27ff7d4bc3a33088c0b60904f33b4ee59355b8ba
   ZendeskCommonUISDK: 3c432801e31abff97d6e30441ea102eaef6b99e2
-  ZendeskCoreSDK: 86513e62c1ab68913416c9044463d9b687ca944f
+  ZendeskCoreSDK: 5fa27aeb70392e8770e17c26bfe6c4c78b21975a
   ZendeskMessagingAPISDK: 7c0cbd1d2c941f05b36f73e7db5faee5863fe8b0
   ZendeskMessagingSDK: 6f168161d834dd66668344f645f7a6b6b121b58a
-  ZendeskSDKConfigurationsSDK: 918241bc7ec30e0af9e1b16333d54a584ee8ab9e
-  ZendeskSupportProvidersSDK: e183d32abac888c448469e2005c4a5a8c3ed73f0
+  ZendeskSDKConfigurationsSDK: 0fe60a278b9b98e3fca2ee6c0785ff2e84ecc9c7
+  ZendeskSupportProvidersSDK: 98bf9f86dade3c544d0ceb619e3869a2c4cf6276
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
-  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 6565e90630e220577458547c72558b5ed02542f0
+PODFILE CHECKSUM: fefad275e2e59f64d76381dcaac647b043594888
 
 COCOAPODS: 1.8.4
