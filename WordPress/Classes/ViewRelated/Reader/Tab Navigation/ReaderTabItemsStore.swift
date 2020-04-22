@@ -10,18 +10,21 @@ class ReaderTabItemsStore: Observable {
         case ready([ReaderTabItem])
         case error(Error)
 
-        var isReady: Bool {
+        var isLoading: Bool {
             switch self {
-            case .ready:
+            case .loading:
                 return true
-            case .error, .loading:
+            case .error, .ready:
                 return false
             }
         }
     }
 
-    var state: State = .loading {
+    var state: State = .ready([]) {
         didSet {
+            guard !state.isLoading else {
+                return
+            }
             emitChange()
         }
     }
@@ -64,11 +67,17 @@ extension ReaderTabItemsStore {
 
     /// Updates the items from the underlying service
     func getItems() {
+        guard !state.isLoading else {
+            return
+        }
+        state = .loading
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenu(success: { [weak self] in
             self?.fetchTabBarItems()
             }, failure: { error in
-                DDLogError(ReaderTopicsConstants.remoteFetchError + String(describing: error))
+                let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+                DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+                self.state = .error(actualError)
         })
     }
 
