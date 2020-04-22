@@ -21,6 +21,10 @@ class SignupEpilogueCell: UITableViewCell {
     @IBOutlet weak var cellLabel: UILabel!
     @IBOutlet weak var cellField: LoginTextField!
 
+    // Used to layout cellField when cellLabel is shown or hidden.
+    @IBOutlet var cellFieldLeadingConstraintWithLabel: NSLayoutConstraint!
+    @IBOutlet var cellFieldLeadingConstraintWithoutLabel: NSLayoutConstraint!
+
     private var cellType: EpilogueCellType?
     open var delegate: SignupEpilogueCellDelegate?
 
@@ -64,23 +68,38 @@ class SignupEpilogueCell: UITableViewCell {
     // MARK: - Public Methods
 
     func configureCell(forType newCellType: EpilogueCellType,
-                       labelText: String,
+                       labelText: String? = nil,
                        fieldValue: String? = nil,
                        fieldPlaceholder: String? = nil) {
+
         cellType = newCellType
+
         cellLabel.text = labelText
         cellLabel.textColor = .text
 
         cellField.text = fieldValue
-        cellField.textColor = .text
         cellField.placeholder = fieldPlaceholder
         cellField.delegate = self
-        cellField.isSecureTextEntry = (cellType == .password)
+
+        configureForPassword()
+
         selectionStyle = .none
 
         configureAccessoryType(for: newCellType)
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
+    }
+
+    func configureForPassword() {
+        let isPassword = (cellType == .password)
+        cellLabel.isHidden = isPassword
+
+        cellField.isSecureTextEntry = isPassword
+        cellField.textAlignment = isPassword ? .left : .right
+        cellField.textColor = isPassword ? .text : .textSubtle
+
+        cellFieldLeadingConstraintWithLabel.isActive = !isPassword
+        cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
     }
 
     // MARK: - Private behavior

@@ -247,9 +247,8 @@ private extension SignupEpilogueTableViewController {
                                fieldValue: dataSource?.username ?? epilogueUserInfo?.username)
         case .password:
             cell.configureCell(forType: .password,
-                               labelText: NSLocalizedString("Password", comment: "Password label text."),
                                fieldValue: dataSource?.password,
-                               fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"))
+                               fieldPlaceholder: NSLocalizedString("Password (optional)", comment: "Password field placeholder text"))
         }
 
         cell.delegate = self
