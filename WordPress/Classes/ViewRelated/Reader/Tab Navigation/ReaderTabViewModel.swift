@@ -23,7 +23,8 @@ import WordPressFlux
     var selectedFilter: ReaderAbstractTopic?
     /// search
     var navigateToSearch: () -> Void
-
+    /// Settings
+    var settingsTapped: ((UIView) -> Void)?
 
     init(readerContentFactory: @escaping (ReaderAbstractTopic?) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
@@ -113,6 +114,11 @@ extension ReaderTabViewModel {
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
     }
 
+    func presentManage(from: UIViewController) {
+        let presenter = ReaderManageScenePresenter()
+        presenter.present(on: from, animated: true, completion: nil)
+    }
+
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
@@ -134,8 +140,10 @@ extension ReaderTabViewModel {
 
 // MARK: - Settings
 extension ReaderTabViewModel {
-    // TODO: - READERNAV - Methods to be implemented. Signature will likely change
-    func presentSettings() { }
+
+    func presentSettings(from: UIView) {
+        settingsTapped?(from)
+    }
 }
 
 
