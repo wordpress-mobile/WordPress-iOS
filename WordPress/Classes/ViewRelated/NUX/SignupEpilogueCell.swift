@@ -8,7 +8,7 @@ protocol SignupEpilogueCellDelegate {
     func usernameSelected()
 }
 
-enum EpilogueCellType {
+enum EpilogueCellType: Int {
     case displayName
     case username
     case password
