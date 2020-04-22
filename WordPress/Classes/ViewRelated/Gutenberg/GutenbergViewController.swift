@@ -607,9 +607,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestUnsupportedBlockFallback(with content: String, blockId: String) {
-        guard let controller = GutenbergWebViewController(with: post, blockHTML: content) else {
+        do {
+            let controller = try GutenbergWebViewController(with: post, blockHTML: content)
+            showGutenbergWeb(controller, blockId: blockId)
+        } catch {
+            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
+    }
+
+    func showGutenbergWeb(_ controller: GutenbergWebViewController, blockId: String) {
         controller.onSave = { [weak self] content in
             self?.gutenberg.replaceBlock(with: content, blockId: blockId)
         }

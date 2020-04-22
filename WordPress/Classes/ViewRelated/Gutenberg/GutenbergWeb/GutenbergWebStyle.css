@@ -1,0 +1,32 @@
+#wp-toolbar {
+    display: none;
+}
+
+#wpadminbar {
+    display: none;
+}
+
+#post-title-0 {
+    display: none;
+}
+
+.block-list-appender {
+    display: none;
+}
+
+.edit-post-header {
+    height: 0px;
+    overflow: hidden;
+}
+
+.edit-post-header-toolbar__block-toolbar {
+    top: 0px;
+}
+
+.block-editor-editor-skeleton {
+    top: 0px;
+}
+
+.edit-post-layout__metaboxes {
+    display: none;
+}

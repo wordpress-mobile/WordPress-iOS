@@ -2,12 +2,16 @@ import UIKit
 import WebKit
 
 class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
+    enum GutenbergWebError: Error {
+        case wrongEditorUrl(String?)
+    }
+
     let authenticator: RequestAuthenticator?
     var onSave: ((String) -> Void)?
 
     private let url: URL
     private let blockHTML: String
-    private let jsInjection = GutenbergWebJavascriptInjection()
+    private let jsInjection: GutenbergWebJavascriptInjection
 
     private lazy var webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
@@ -15,16 +19,17 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         return WKWebView(frame: .zero, configuration: configuration)
     }()
 
-    init?(with post: AbstractPost, blockHTML: String) {
+    init(with post: AbstractPost, blockHTML: String) throws {
         authenticator = RequestAuthenticator(blog: post.blog)
         self.blockHTML = blockHTML
 
+        jsInjection = try GutenbergWebJavascriptInjection(blockHTML: blockHTML)
         guard
             let siteURL = post.blog.homeURL,
             // Use wp-admin URL since Calypso URL won't work retriving the block content.
             let editorURL = URL(string: "\(siteURL)/wp-admin/post-new.php")
         else {
-            return nil
+            throw GutenbergWebError.wrongEditorUrl(post.blog.homeURL as String?)
         }
 
         url = editorURL
@@ -54,7 +59,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc func onSaveButtonPressed() {
-        evaluateJavascript(jsInjection.getHTMLPostContentScript)
+        evaluateJavascript(jsInjection.getHtmlContentScript.source)
     }
 
     @objc func onCloseButtonPressed() {
@@ -101,7 +106,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
 extension GutenbergWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        evaluateJavascript(jsInjection.insertCSSScript)
+        evaluateJavascript(jsInjection.insertCssScript.source)
     }
 }
 

@@ -1,11 +1,30 @@
 import WebKit
 
-private extension WKUserContentController {
-    func addUserScripts(_ scripts: [WKUserScript]) {
-        scripts.forEach {
-            addUserScript($0)
-        }
+private struct File {
+    enum FileError: Error {
+        case sourceFileNotFound(String)
     }
+
+    enum Extension: String {
+        case css
+        case js
+    }
+    private let name: String
+    private let type: Extension
+
+    func getContent() throws -> String {
+        guard let path = Bundle.main.path(forResource: name, ofType: type.rawValue) else {
+            throw FileError.sourceFileNotFound("\(name).\(type)")
+        }
+        return try String(contentsOfFile: path, encoding: .utf8)
+    }
+}
+
+extension File {
+    static let style = File(name: "GutenbergWebStyle", type: .css)
+    static let injectCss = File(name: "InjectCss", type: .js)
+    static let retrieveHtml = File(name: "RetrieveHTMLContent", type: .js)
+    static let incertBlock = File(name: "IncertBlock", type: .js)
 }
 
 struct GutenbergWebJavascriptInjection {
@@ -14,104 +33,45 @@ struct GutenbergWebJavascriptInjection {
         case log
     }
 
+    private let userContentScripts: [WKUserScript]
+
+    let insertCssScript: WKUserScript
+    let getHtmlContentScript = WKUserScript(source: "window.getHTMLPostContent()", injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+
+
+    /// Init an instance of GutenbergWebJavascriptInjection or throws if any of the required sources doesn't exist.
+    /// This helps to cach early any possible error due to missing source files.
+    /// - Parameter blockHTML: The block HTML code to be injected.
+    /// - Throws: Throws an error if any required source doesn't exist.
+    init(blockHTML: String) throws {
+        func script(with source: File, argument: String? = nil) throws -> WKUserScript {
+            let finalSource = String(format: try source.getContent(), argument ?? [])
+            return WKUserScript(source: finalSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        }
+
+        userContentScripts = [
+            try script(with: .retrieveHtml),
+            try script(with: .incertBlock, argument: blockHTML),
+        ]
+
+        let css = try File.style.getContent()
+        insertCssScript = try script(with: .injectCss, argument: css)
+    }
+
     func userContent(messageHandler handler: WKScriptMessageHandler, blockHTML: String) -> WKUserContentController {
         let userContent = WKUserContentController()
-        userContent.addUserScripts([
-            WKUserScript(source: incertBlockScript(blockHTML: blockHTML), injectionTime: .atDocumentEnd, forMainFrameOnly: false),
-            WKUserScript(source: mutationObserverScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
-            WKUserScript(source: retriveContentHTMLScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
-        ])
+        userContent.addUserScripts(userContentScripts)
         JSMessage.allCases.forEach {
             userContent.add(handler, name: $0.rawValue)
         }
         return userContent
     }
-
-    private let retriveContentHTMLScript = """
-window.getHTMLPostContent = () => {
-    const blocks = window.wp.data.select('core/block-editor').getBlocks();
-    const HTML = window.wp.blocks.serialize( blocks );
-    window.webkit.messageHandlers.htmlPostContent.postMessage(HTML);
 }
-"""
 
-    private func incertBlockScript(blockHTML: String) -> String { return """
-window.insertBlock = () => {
-    window.setTimeout(() => {
-        window.webkit.messageHandlers.log.postMessage("HEADER READY!!");
-        const blockHTML = `\(blockHTML)`;
-        let blocks = window.wp.blocks.parse(blockHTML);
-        window.wp.data.dispatch('core/block-editor').resetBlocks(blocks);
-    }, 0);
-};
-"""
+private extension WKUserContentController {
+    func addUserScripts(_ scripts: [WKUserScript]) {
+        scripts.forEach {
+            addUserScript($0)
+        }
     }
-
-    /// Script that observe DOM mutations and calls `insertBlock` when it's appropiate.
-    private let mutationObserverScript = """
-window.onload = () => {
-    const content = document.getElementById('wpbody-content');
-    if (content) {
-        window.insertBlock();
-        const callback = function(mutationsList, observer) {
-            window.webkit.messageHandlers.log.postMessage("UPDATED!");
-            const header = document.getElementsByClassName("edit-post-header")[0];
-            if (header) {
-                window.insertBlock();
-                observer.disconnect();
-            }
-        };
-        const observer = new MutationObserver(callback);
-        const config = { attributes: true, childList: true, subtree: true };
-        observer.observe(content, config);
-    }
-}
-"""
-
-    let getHTMLPostContentScript = "window.getHTMLPostContent()"
-
-    let insertCSSScript: String = {
-            let css = """
-    #wp-toolbar {
-        display: none;
-    }
-
-    #wpadminbar {
-        display: none;
-    }
-
-    #post-title-0 {
-        display: none;
-    }
-
-    .block-list-appender {
-        display: none;
-    }
-
-    .edit-post-header {
-        height: 0px;
-        overflow: hidden;
-    }
-
-    .edit-post-header-toolbar__block-toolbar {
-        top: 0px;
-    }
-
-    .block-editor-editor-skeleton {
-        top: 0px;
-    }
-
-    .edit-post-layout__metaboxes {
-        display: none;
-    }
-    """
-
-            return """
-    const style = document.createElement('style');
-    style.innerHTML = `\(css)`;
-    style.type = 'text/css';
-    document.head.appendChild(style);
-    "CSS Injected"
-    """
-        }()
 }
