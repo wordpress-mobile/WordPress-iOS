@@ -21,7 +21,8 @@ private struct File {
 }
 
 extension File {
-    static let style = File(name: "GutenbergWebStyle", type: .css)
+    static let editorStyle = File(name: "GutenbergWebStyle", type: .css)
+    static let wpBarsStyle = File(name: "WPBarsStyle", type: .css)
     static let injectCss = File(name: "InjectCss", type: .js)
     static let retrieveHtml = File(name: "RetrieveHTMLContent", type: .js)
     static let insertBlock = File(name: "InsertBlock", type: .js)
@@ -35,7 +36,9 @@ struct GutenbergWebJavascriptInjection {
 
     private let userContentScripts: [WKUserScript]
 
-    let insertCssScript: WKUserScript
+    let injectWPBarsCssScript: WKUserScript
+    let injectEditorCssScript: WKUserScript
+    let injectCssScript: WKUserScript
     let getHtmlContentScript = WKUserScript(source: "window.getHTMLPostContent()", injectionTime: .atDocumentEnd, forMainFrameOnly: false)
 
 
@@ -49,13 +52,19 @@ struct GutenbergWebJavascriptInjection {
             return WKUserScript(source: finalSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
         }
 
+        func getInjectCssScript(with source: File) throws -> WKUserScript {
+            let css = try source.getContent()
+            return WKUserScript(source: "window.injectCss(`\(css)`)", injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        }
+
         userContentScripts = [
             try script(with: .retrieveHtml),
             try script(with: .insertBlock, argument: blockHTML),
         ]
 
-        let css = try File.style.getContent()
-        insertCssScript = try script(with: .injectCss, argument: css)
+        injectCssScript = try script(with: .injectCss)
+        injectWPBarsCssScript = try getInjectCssScript(with: .wpBarsStyle)
+        injectEditorCssScript = try getInjectCssScript(with: .editorStyle)
     }
 
     func userContent(messageHandler handler: WKScriptMessageHandler, blockHTML: String) -> WKUserContentController {

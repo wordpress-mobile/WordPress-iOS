@@ -78,10 +78,10 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     private func evaluateJavascript(_ script: String) {
         webView.evaluateJavaScript(script) { (response, error) in
             if let response = response {
-                print(response)
+                DDLogVerbose("\(response)")
             }
             if let error = error {
-                print(error)
+                DDLogError("\(error)")
             }
         }
     }
@@ -106,7 +106,15 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
 extension GutenbergWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        evaluateJavascript(jsInjection.insertCssScript.source)
+        // At this point, user scripts are not loaded yet, so we need to inject the
+        // script that inject css manually before actually injecting the css.
+        evaluateJavascript(jsInjection.injectCssScript.source)
+        evaluateJavascript(jsInjection.injectWPBarsCssScript.source)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // Injectic Editor specific CSS when everything is loaded to avoid overwritting parameters if gutenberg CSS load later.
+        evaluateJavascript(jsInjection.injectEditorCssScript.source)
     }
 }
 
