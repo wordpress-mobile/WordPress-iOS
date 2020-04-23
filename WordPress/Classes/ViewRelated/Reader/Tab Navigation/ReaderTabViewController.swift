@@ -4,9 +4,20 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    init(viewModel: ReaderTabViewModel) {
+    private let makeReaderTabView: (ReaderTabViewModel) -> UIView
+
+    private lazy var readerTabView: UIView = {
+        return makeReaderTabView(viewModel)
+    }()
+
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
         self.viewModel = viewModel
+        self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
+
+        title = ReaderTabConstants.title
+        ReaderTabViewController.configureRestoration(on: self)
+
         viewModel.filterTapped = { [weak self] (fromView, completion) in
             guard let self = self else {
                 return
@@ -16,18 +27,17 @@ class ReaderTabViewController: UIViewController {
                 completion(title)
             })
         }
+
         viewModel.settingsTapped = { [weak self] fromView in
             guard let self = self else {
                 return
             }
             viewModel.presentManage(from: self)
         }
-        title = NSLocalizedString("Reader", comment: "The default title of the Reader")
-        setupSearchButton()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(ReaderTabConstants.storyBoardInitError)
     }
 
     func setupSearchButton() {
@@ -37,26 +47,64 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func loadView() {
-        view = ReaderTabView(viewModel: viewModel)
+        view = readerTabView
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSearchButton()
     }
 }
+
 
 // MARK: - Search
 extension ReaderTabViewController {
 
     @objc private func didTapSearchButton() {
-        let searchController = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(searchController, animated: true)
+        viewModel.navigateToSearch()
     }
 }
 
 
-// MARK: - Tab Switching
-extension ReaderTabViewController {
-    @objc func navigateToSavedPosts() {
-        guard let readerTabView = view as? ReaderTabView else {
-            return
+// MARK: - State Restoration
+extension ReaderTabViewController: UIViewControllerRestoration {
+
+    static func configureRestoration(on instance: ReaderTabViewController) {
+        instance.restorationIdentifier = ReaderTabConstants.restorationIdentifier
+        instance.restorationClass = ReaderTabViewController.self
+    }
+
+    static let encodedIndexKey = ReaderTabConstants.encodedIndexKey
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
+
+        let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
+
+        guard let controller = WPTabBarController.sharedInstance()?.readerTabViewController else {
+            return nil
         }
-        readerTabView.switchToSavedPosts()
+        controller.setStartIndex(index)
+
+        return controller
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(viewModel.selectedIndex, forKey: ReaderTabViewController.encodedIndexKey)
+    }
+
+    func setStartIndex(_ index: Int) {
+        viewModel.selectedIndex = index
+    }
+}
+
+
+// MARK: - Constants
+extension ReaderTabViewController {
+    private enum ReaderTabConstants {
+        static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let storyBoardInitError = "Storyboard instantiation not supported"
+        static let restorationIdentifier = "WPReaderTabControllerRestorationID"
+        static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
     }
 }

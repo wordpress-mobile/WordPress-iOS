@@ -55,6 +55,10 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
+                                guard !FeatureFlag.newReaderNavigation.enabled else {
+                                    WPTabBarController.sharedInstance().switchToSavedPosts()
+                                    return
+                                }
                                 self.showAll()
         })
 
