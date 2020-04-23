@@ -25,6 +25,10 @@ class SignupEpilogueCell: UITableViewCell {
     @IBOutlet var cellFieldLeadingConstraintWithLabel: NSLayoutConstraint!
     @IBOutlet var cellFieldLeadingConstraintWithoutLabel: NSLayoutConstraint!
 
+    // Used to apply a top margin to the Password field.
+    @IBOutlet var cellFieldTopConstraint: NSLayoutConstraint!
+    private let passwordTopMargin: CGFloat = 16
+
     private var cellType: EpilogueCellType?
     open var delegate: SignupEpilogueCellDelegate?
 
@@ -111,6 +115,7 @@ class SignupEpilogueCell: UITableViewCell {
 
         cellFieldLeadingConstraintWithLabel.isActive = !isPassword
         cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
+        cellFieldTopConstraint.constant = isPassword ? passwordTopMargin : 0
     }
 
     private func configureAccessibility(for cellType: EpilogueCellType) {
