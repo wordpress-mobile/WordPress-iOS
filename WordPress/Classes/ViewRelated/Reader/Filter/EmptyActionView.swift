@@ -2,10 +2,10 @@
 class EmptyActionView: UIView {
 
     enum Constants {
-        static let labelOffset: CGFloat = -55
+        static let labelOffset: CGFloat = -87
         static let buttonLabelSpacing: CGFloat = 20
         static let labelWidth: CGFloat = 320
-        static let font = WPStyleGuide.fontForTextStyle(.title2)
+        static let labelTextStyle: UIFont.TextStyle = .title3
     }
 
     var title: String? {
@@ -39,7 +39,7 @@ class EmptyActionView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
-        WPStyleGuide.configureLabel(label, textStyle: .title3, fontWeight: .semibold)
+        WPStyleGuide.configureLabel(label, textStyle: Constants.labelTextStyle)
         return label
     }()
 
@@ -57,7 +57,7 @@ class EmptyActionView: UIView {
         /// A constraint to center the label + button between the center of the full sized sheet view and its' top
         let dimensionBefore = safeAreaLayoutGuide.topAnchor.anchorWithOffset(to: label.bottomAnchor)
         let dimensionAfter = label.bottomAnchor.anchorWithOffset(to: safeAreaLayoutGuide.centerYAnchor)
-        offsetCenteredLabelContraint = dimensionBefore.constraint(equalTo: dimensionAfter, constant: Constants.labelOffset)
+        offsetCenteredLabelContraint = dimensionBefore.constraint(equalTo: dimensionAfter, constant: traitCollection.userInterfaceIdiom == .pad ? 0 : Constants.labelOffset)
         centeredLabelConstraint = label.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
 
         NSLayoutConstraint.activate([
