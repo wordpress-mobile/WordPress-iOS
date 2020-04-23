@@ -618,7 +618,7 @@ private extension NotificationDetailsViewController {
 
         cell.attributedHeaderTitle = nil
         cell.attributedHeaderDetails = nil
-        
+
         guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfKind(.image),
             let snippetBlock: NotificationTextContent = blockGroup.blockOfKind(.text) else {
                 return
