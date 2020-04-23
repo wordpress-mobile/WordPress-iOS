@@ -9,6 +9,15 @@ public class GutenbergMentionsViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .basicBackground
         view.translatesAutoresizingMaskIntoConstraints = false
+
+        return view
+    }()
+
+    public lazy var separatorView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor.divider
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(light: UIColor.colorFromHex("e9eff3"), dark: UIColor.colorFromHex("2e2e2e"))
         return view
     }()
 
@@ -50,12 +59,14 @@ public class GutenbergMentionsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
 
+        let toolbarSize = CGFloat(44)
+
         view.addSubview(backgroundView)
         NSLayoutConstraint.activate([
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
-            backgroundView.heightAnchor.constraint(equalToConstant: 50.0)
+            backgroundView.heightAnchor.constraint(equalToConstant: toolbarSize)
         ])
 
         let margin = CGFloat(10)
@@ -65,7 +76,7 @@ public class GutenbergMentionsViewController: UIViewController {
             searchView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: margin),
             searchView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -margin),
             searchView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
-            searchView.heightAnchor.constraint(equalToConstant: 50.0)
+            searchView.heightAnchor.constraint(equalToConstant: toolbarSize)
         ])
 
         view.addSubview(suggestionsView)
@@ -74,6 +85,14 @@ public class GutenbergMentionsViewController: UIViewController {
             suggestionsView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
             suggestionsView.bottomAnchor.constraint(equalTo: searchView.topAnchor),
             suggestionsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        ])
+
+        view.addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: backgroundView.topAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ])
 
         view.setNeedsUpdateConstraints()
