@@ -21,11 +21,11 @@ class FilterSheetView: UIView {
         return tableView
     }()
 
-    lazy var emptyView: EmptyActionView = {
+    private lazy var emptyView: EmptyActionView = {
         return EmptyActionView(tappedButton: tappedEmptyAddButton)
     }()
 
-    lazy var ghostableTableView: UITableView = {
+    private lazy var ghostableTableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = false
         tableView.isScrollEnabled = false
@@ -33,7 +33,7 @@ class FilterSheetView: UIView {
         return tableView
     }()
 
-    lazy var filterTabBar: FilterTabBar = {
+    private lazy var filterTabBar: FilterTabBar = {
         let tabBar = FilterTabBar()
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.tabSizingStyle = .equalWidths
@@ -41,7 +41,7 @@ class FilterSheetView: UIView {
         return tabBar
     }()
 
-    lazy var headerLabelView: UIView = {
+    private lazy var headerLabelView: UIView = {
         let labelView = UIView()
         let label = UILabel()
         label.font = Constants.Header.font
@@ -52,7 +52,7 @@ class FilterSheetView: UIView {
         return labelView
     }()
 
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             headerLabelView,
             filterTabBar,
@@ -115,11 +115,6 @@ class FilterSheetView: UIView {
         }
     }
 
-    func refreshEmpty(filter: FilterProvider) {
-        emptyView.title = filter.emptyTitle
-        emptyView.labelText = filter.emptyActionTitle
-    }
-
     // MARK: Methods
 
     init(filters: [FilterProvider], presentationController: UIViewController, changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
@@ -163,6 +158,11 @@ class FilterSheetView: UIView {
 
     @objc func changedTab(_ sender: FilterTabBar) {
         selectedFilter = filterTabBar.items[sender.selectedIndex] as? FilterProvider
+    }
+
+    private func refreshEmpty(filter: FilterProvider) {
+        emptyView.title = filter.emptyTitle
+        emptyView.labelText = filter.emptyActionTitle
     }
 }
 
