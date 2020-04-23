@@ -156,7 +156,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     [super layoutSubviews];
     NSUInteger suggestionCount = self.searchResults.count;
-    BOOL showTable = (self.showLoading && self.suggestions == nil) || (suggestionCount > 1);
+    BOOL showTable = (self.showLoading && self.suggestions == nil) || (suggestionCount > 0);
     [self setHidden:!showTable];
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didChangeTableBounds:)]) {
         [self.suggestionsDelegate suggestionsTableView:self didChangeTableBounds:self.tableView.bounds];
