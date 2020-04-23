@@ -625,7 +625,7 @@ private extension NotificationDetailsViewController {
         }
 
         cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: SnippetsContentStyles())
+        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL

@@ -67,6 +67,13 @@ extension WPStyleGuide {
                     .foregroundColor: snippetColor ]
         }
 
+        public static var headerDetailsRegularStyle: [NSAttributedString.Key: Any] {
+            return  [.paragraphStyle: snippetHeaderParagraph,
+                     .font: headerDetailsRegularFont,
+                     .foregroundColor: headerDetailsColor
+            ]
+        }
+
         // MARK: - Styles used by NotificationDetailsViewController
         //
 
@@ -306,6 +313,9 @@ extension WPStyleGuide {
         )
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
+        )
+        fileprivate static let snippetHeaderParagraph         = NSMutableParagraphStyle(
+            minLineHeight: snippetLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
