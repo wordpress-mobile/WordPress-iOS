@@ -8,6 +8,7 @@
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
+@property (nonatomic) BOOL showLoading;
 
 - (nonnull instancetype)init;
 

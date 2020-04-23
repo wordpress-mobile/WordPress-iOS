@@ -35,6 +35,7 @@ public class GutenbergMentionsViewController: UIViewController {
         let suggestionsView = SuggestionsTableView()
         suggestionsView.animateWithKeyboard = false
         suggestionsView.enabled = true
+        suggestionsView.showLoading = true
         suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
         suggestionsView.suggestionsDelegate = self
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
