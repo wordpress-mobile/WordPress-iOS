@@ -219,10 +219,11 @@ CGFloat const STVSeparatorHeight = 1.f;
     }
     
     if ([word hasPrefix:@"@"]) {
-        self.searchText = [word substringFromIndex:1];
-        if (self.searchText.length > 0) {
+        self.searchText = word;
+        if (self.searchText.length > 1) {
+            NSString *searchQuery = [word substringFromIndex:1];
             NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
-                                            self.searchText, self.searchText];
+                                            searchQuery, searchQuery];
             self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
             self.searchResults = [self.suggestions mutableCopy];
@@ -318,7 +319,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     [self.suggestionsDelegate suggestionsTableView:self
                                didSelectSuggestion:suggestion.userLogin
-                                     forSearchText:self.searchText];    
+                                     forSearchText:[self.searchText substringFromIndex:1]];
 }
 
 #pragma mark - Suggestion list management
@@ -328,8 +329,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     // only reload if the suggestion list is updated for the current site
     if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
-        NSString * text = [NSString stringWithFormat:@"@%@", self.searchText];        
-        [self showSuggestionsForWord:text];
+        [self showSuggestionsForWord:self.searchText];
     }
 }
 
