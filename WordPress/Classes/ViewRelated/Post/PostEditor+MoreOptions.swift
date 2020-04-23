@@ -65,7 +65,6 @@ extension PostEditor where Self: UIViewController {
     }
 
     func displayPreview() {
-        print("is uploading media: \(isUploadingMedia)")
         if isUploadingMedia {
             displayMediaIsUploadingAlert()
             return
