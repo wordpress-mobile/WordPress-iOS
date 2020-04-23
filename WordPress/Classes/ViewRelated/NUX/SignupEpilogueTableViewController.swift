@@ -38,7 +38,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         static let allAccountRows = 3
         static let headerFooterHeight: CGFloat = 50
         static let footerTrailingMargin: CGFloat = 16
-        static let footerTopMargin: CGFloat = 5
+        static let footerTopMargin: CGFloat = 8
     }
 
     private struct TableSections {
