@@ -90,19 +90,20 @@ class SignupEpilogueCell: UITableViewCell {
         configureAccessibility(for: newCellType)
     }
 
-    func configureForPassword() {
+    // MARK: - Private behavior
+
+    private func configureForPassword() {
         let isPassword = (cellType == .password)
         cellLabel.isHidden = isPassword
 
         cellField.isSecureTextEntry = isPassword
+        cellField.showSecureTextEntryToggle = isPassword
         cellField.textAlignment = isPassword ? .left : .right
         cellField.textColor = isPassword ? .text : .textSubtle
 
         cellFieldLeadingConstraintWithLabel.isActive = !isPassword
         cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
     }
-
-    // MARK: - Private behavior
 
     private func configureAccessibility(for cellType: EpilogueCellType) {
         if cellType == .username {
@@ -142,6 +143,7 @@ class SignupEpilogueCell: UITableViewCell {
             cellField.textContentType = .newPassword
         }
     }
+
 }
 
 
