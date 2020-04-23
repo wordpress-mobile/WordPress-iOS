@@ -314,7 +314,7 @@ extension WPStyleGuide {
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let snippetHeaderParagraph         = NSMutableParagraphStyle(
+        fileprivate static let snippetHeaderParagraph   = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
