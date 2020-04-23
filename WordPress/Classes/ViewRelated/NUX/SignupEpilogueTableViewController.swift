@@ -60,8 +60,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .basicBackground
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,8 +96,11 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
             return nil
         }
 
-        cell.titleLabel?.text = ""
+        cell.titleLabel?.text = NSLocalizedString("Account Details", comment: "Header for account details, shown after signing up.").localizedUppercase
+        cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
+        cell.textLabel?.textColor = .neutral(.shade50)
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
+
         return cell
     }
 
@@ -142,15 +144,6 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     }
 
-    // TODO: nix this when table background updated.
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard cell is EpilogueUserInfoCell else {
-            return
-        }
-
-        cell.contentView.backgroundColor = .basicBackground
-    }
-
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return Constants.headerFooterHeight
     }
@@ -188,6 +181,7 @@ private extension SignupEpilogueTableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        tableView.backgroundColor = .basicBackground
 
         // remove empty cells
         tableView.tableFooterView = UIView()
