@@ -76,6 +76,7 @@ class GutenbergMediaPickerHelper: NSObject {
         mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
+        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
     }
