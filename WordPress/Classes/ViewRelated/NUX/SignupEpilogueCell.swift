@@ -88,6 +88,8 @@ class SignupEpilogueCell: UITableViewCell {
         configureAccessoryType(for: newCellType)
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
+
+        addBottomBorder(withColor: .divider)
     }
 
     // MARK: - Private behavior
