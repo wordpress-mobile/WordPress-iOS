@@ -36,9 +36,9 @@ extension BlogListViewController {
 private extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
-        static let radius: CGFloat = 32
+        static let radius: CGFloat = 28
         // used for the gravatar image with no extra border added
-        static let extendedRadius: CGFloat = 36
+        static let extendedRadius: CGFloat = 32
         static let tappableWidth: CGFloat = 44
         static let fallBackImage = UIImage.gridicon(.userCircle)
     }
@@ -59,10 +59,14 @@ private extension UIBarButtonItem {
             // if there's a gravatar, add the border, if not, remove it and resize the userCircle image
             if $0.image == GravatarConfiguration.fallBackImage {
                 $0.setBorder(width: 0)
-                self?.setSize(of: $0, size: GravatarConfiguration.extendedRadius)
+                self?.setSize(of: $0,
+                              verticalSize: GravatarConfiguration.extendedRadius,
+                              horizontalSize: GravatarConfiguration.extendedRadius)
             } else {
                 $0.setBorder()
-                self?.setSize(of: $0, size: GravatarConfiguration.radius)
+                self?.setSize(of: $0,
+                              verticalSize: GravatarConfiguration.radius,
+                              horizontalSize: GravatarConfiguration.radius)
             }
         }
 
@@ -84,7 +88,10 @@ private extension UIBarButtonItem {
     /// embeds a view in a transparent view, vertically centered and aligned to the right
     func embedInView(_ imageView: UIImageView) -> UIView {
         let view = UIView()
-        setSize(of: view, size: GravatarConfiguration.tappableWidth)
+        setSize(of: view,
+                verticalSize: GravatarConfiguration.extendedRadius,
+                horizontalSize: GravatarConfiguration.tappableWidth)
+
         view.addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -95,7 +102,7 @@ private extension UIBarButtonItem {
     }
 
     /// constrains a squared UIImageView to a set size
-    func setSize(of view: UIView, size: CGFloat) {
+    func setSize(of view: UIView, verticalSize: CGFloat, horizontalSize: CGFloat) {
         view.removeConstraints(view.constraints.filter {
             $0.firstAttribute == .width || $0.firstAttribute == .height
         })
@@ -103,8 +110,8 @@ private extension UIBarButtonItem {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: size),
-            view.heightAnchor.constraint(equalToConstant: size)
+            view.heightAnchor.constraint(equalToConstant: verticalSize),
+            view.widthAnchor.constraint(equalToConstant: horizontalSize)
         ])
     }
 }
