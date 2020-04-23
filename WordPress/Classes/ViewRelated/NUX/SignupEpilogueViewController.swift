@@ -51,7 +51,7 @@ class SignupEpilogueViewController: NUXViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .neutral(.shade0)
+        view.backgroundColor = .basicBackground
     }
 
     // MARK: - Navigation
