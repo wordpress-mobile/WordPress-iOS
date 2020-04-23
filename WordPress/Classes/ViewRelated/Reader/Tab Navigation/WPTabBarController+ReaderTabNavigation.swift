@@ -4,7 +4,7 @@ protocol ReaderContentViewController: UIViewController {
 }
 
 
-/// Reader Factory
+// MARK: - Reader Factory
 extension WPTabBarController {
 
     var readerTabViewController: ReaderTabViewController? {
@@ -23,13 +23,12 @@ extension WPTabBarController {
     }
 
     private func makeReaderContentViewController(with topic: ReaderAbstractTopic?) -> ReaderContentViewController {
-        var controller: ReaderStreamViewController
+
         if let topic = topic {
-            controller = ReaderStreamViewController.controllerWithTopic(topic)
+            return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
-            controller = ReaderStreamViewController.controllerForSavedPosts()
+            return ReaderStreamViewController.controllerForSavedPosts()
         }
-        return controller
     }
 
     private func makeReaderTabView(_ viewModel: ReaderTabViewModel) -> ReaderTabView {
@@ -38,7 +37,7 @@ extension WPTabBarController {
 }
 
 
-/// Reader Navigation
+// MARK: - Reader Navigation
 extension WPTabBarController {
 
     /// reader navigation methods
@@ -86,19 +85,19 @@ extension WPTabBarController {
         })
     }
 
-    func swithcToMyLikes() {
+    func switchToMyLikes() {
         navigateToReader()
         readerTabViewModel.switchToTab(where: {
             ReaderHelpers.topicIsLiked($0)
         })
     }
 
-    /// switches to a manu item topic that satisfies the given predicate with a topic value
+    /// switches to a menu item topic that satisfies the given predicate with a topic value
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         navigateToReader()
         readerTabViewModel.switchToTab(where: predicate)
     }
-    /// switches to a manu item topic whose title matched the passed value
+    /// switches to a menu item topic whose title matched the passed value
     func switchToTitle(_ title: String) {
         navigateToReader()
         readerTabViewModel.switchToTab(where: {

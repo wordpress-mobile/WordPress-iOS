@@ -278,7 +278,7 @@ extension ReaderHelpers {
         }
         // fourth item: Saved. It's manually inserted after the sorting
         if !mutableItems.isEmpty {
-            let savedPosition = mutableItems.count >= defaultSavedItemPosition ? defaultSavedItemPosition : mutableItems.count
+            let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
             mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: savedPosition)
         }
         return mutableItems

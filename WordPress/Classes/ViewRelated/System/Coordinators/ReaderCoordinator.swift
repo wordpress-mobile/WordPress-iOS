@@ -78,7 +78,7 @@ class ReaderCoordinator: NSObject {
 
     func showMyLikes() {
         guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().swithcToMyLikes()
+            WPTabBarController.sharedInstance().switchToMyLikes()
             return
         }
         prepareToNavigate()

@@ -4,7 +4,7 @@ import WordPressFlux
 @objc class ReaderTabViewModel: NSObject {
 
     // MARK: - Properties
-    /// tab bar configuration
+    /// tab bar items
     private let tabItemsStore: ReaderTabItemsStore
     private var subscription: Receipt?
     var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
@@ -12,17 +12,23 @@ import WordPressFlux
     private var tabItems: [ReaderTabItem] {
         tabItemsStore.tabItems
     }
-    /// tab selection
+    /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
-    /// Reader content
+
+    /// completion handler for a tap on a tab on the toolbar
     var setContentTopic: ((ReaderAbstractTopic?) -> Void)?
+
+    /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
     var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
-    /// filter sheet
+
+    /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
     var selectedFilter: ReaderAbstractTopic?
+
     /// search
     var navigateToSearch: () -> Void
+
     /// Settings
     var settingsTapped: ((UIView) -> Void)?
 
