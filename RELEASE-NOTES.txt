@@ -2,11 +2,14 @@
 -----
 * Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
 
+ 
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
 * [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
 * [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
+* Classic and Block editor: Prefill caption for image blocks when available on the Media library.
+* [internal] the "login by email" flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
 * Block editor: Disable ripple effect in all BottomSheet's controls.
 * Block editor: New block: Columns
 * Block editor: New starter page template: Blog
@@ -14,6 +17,12 @@
 * Block editor: Fix a bug which caused to show URL settings modal randomly when changing the device orientation multiple times during the time Starter Page Template Preview is open
 * [internal] the login by email flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
 * Updated the appearance of the login and signup buttons to make signup more prominent.
+* [internal] the navigation to the "login by site address" flow has code changes that can cause regressions. See https://git.io/JfvP9 for testing details.
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
+* You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
+
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
  
 14.6
 -----
@@ -39,7 +48,7 @@
 * Reader post detail: fix colors when switching between light and dark modes.
 * Fixed an issue where Continue with Apple button wouldn't respond after Jetpack Setup > Sign up flow completed.
 
- 
+
 14.5
 -----
 * Block editor: New block: Latest Posts
@@ -47,7 +56,7 @@
 * Block editor: Added Starter Page Templates: when you create a new page, we now show you a few templates to get started more quickly.
 * Block editor: Fix crash when pasting HTML content with embeded images on paragraphs
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
-* Stats: Fix background color in Dark Mode on wider screen sizes. 
+* Stats: Fix background color in Dark Mode on wider screen sizes.
 * Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.
@@ -64,11 +73,11 @@
 14.4.1
 -----
 * Block Editor: Fix crash when inserting a Button Block.
- 
+
 14.4
 -----
 * Post Settings: Fixes the displayed publish date of posts which are to be immediately published.
- 
+
 14.3
 -----
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
@@ -85,8 +94,8 @@
 * Block editor: Add support for upload options in Gallery block
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
 * Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
-* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings. 
- 
+* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings.
+
 
 14.2
 -----

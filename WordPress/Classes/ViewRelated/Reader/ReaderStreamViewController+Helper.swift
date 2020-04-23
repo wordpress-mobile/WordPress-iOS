@@ -131,5 +131,62 @@ extension ReaderStreamViewController {
             message: NSLocalizedString("No posts have been made recently", comment: "A default message shown whe the reader can find no post to display")
         )
     }
+}
 
+
+// MARK: - No Results for saved posts
+extension ReaderStreamViewController {
+
+    func configureNoResultsViewForSavedPosts() {
+
+        let noResultsResponse = NoResultsResponse(title: NSLocalizedString("No Saved Posts",
+                                                                           comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."),
+                                                  message: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.",
+                                                                             comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
+
+        var messageText = NSMutableAttributedString(string: noResultsResponse.message)
+
+        // Get attributed string styled for No Results so it gets the correct font attributes added to it.
+        // The font is used by the attributed string `replace(_:with:)` method below to correctly position the icon.
+        let styledText = resultsStatusView.applyMessageStyleTo(attributedString: messageText)
+        messageText = NSMutableAttributedString(attributedString: styledText)
+
+        let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
+        messageText.replace("[bookmark-outline]", with: icon)
+
+        resultsStatusView.configure(title: noResultsResponse.title, attributedSubtitle: messageText)
+    }
+}
+
+
+// MARK: - Undo cell for saved posts
+extension ReaderStreamViewController {
+
+    private enum UndoCell {
+        static let nibName = "ReaderSavedPostUndoCell"
+        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+        static let height: CGFloat = 44
+    }
+
+    func setupUndoCell(_ tableView: UITableView) {
+        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
+    }
+
+    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
+        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
+    }
+
+    func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
+        cell.title.text = post.titleForDisplay()
+        cell.delegate = self
+    }
+}
+
+
+// MARK: - Tracks
+extension ReaderStreamViewController {
+    func trackSavedListAccessed() {
+        WPAppAnalytics.track(.readerSavedListViewed, withProperties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
+    }
 }

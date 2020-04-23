@@ -61,6 +61,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
+@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -192,9 +193,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
+    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
     _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
-    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
+    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -214,7 +215,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerTabViewController];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
@@ -233,7 +234,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (ReaderMenuViewController *)readerMenuViewController
 {
-    if (!_readerMenuViewController) {
+    if (!_readerMenuViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerMenuViewController = [ReaderMenuViewController controller];
     }
 
@@ -363,7 +364,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (UISplitViewController *)readerSplitViewController
 {
-    if (!_readerSplitViewController) {
+    if (!_readerSplitViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;
@@ -386,10 +387,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return _readerSplitViewController;
 }
 
-- (ReaderTabViewController *)readerTabViewController
+- (ReaderTabViewModel *)readerTabViewModel
 {
-    ReaderTabViewController *readerTabViewController = [self makeReaderTabViewController];
-    return readerTabViewController;
+    if (!_readerTabViewModel) {
+        _readerTabViewModel = [self makeReaderTabViewModel];
+    }
+    return _readerTabViewModel;
 }
 
 - (UISplitViewController *)meSplitViewController
@@ -621,19 +624,28 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
     [self showReaderTab];
+    UIViewController *topDetailVC;
 
-    UIViewController *topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        topDetailVC = (ReaderDetailViewController *)self.readerNavigationController.topViewController;
+    } else {
+        topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
+    }
+
     if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
         ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
         ReaderPost *readerPost = readerDetailVC.post;
         if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-             // The desired reader detail VC is already the top VC for the tab. Move along.
+         // The desired reader detail VC is already the top VC for the tab. Move along.
             return;
         }
     }
+    ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
 
-    if (topDetailVC && topDetailVC.navigationController) {
-        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+    if (topDetailVC && [Feature enabled:FeatureFlagNewReaderNavigation]) {
+        [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
+
+    } else if (topDetailVC && topDetailVC.navigationController) {
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
 }
@@ -760,17 +772,20 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchReaderTabToSavedPosts
 {
-    [self showReaderTab];
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        [self switchToSavedPosts];
+    } else {
+        [self showReaderTab];
+        // Unfortunately animations aren't disabled properly for this
+        // transition unless we dispatch_async.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.readerNavigationController popToRootViewControllerAnimated:NO];
 
-    // Unfortunately animations aren't disabled properly for this
-    // transition unless we dispatch_async.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.readerNavigationController popToRootViewControllerAnimated:NO];
-
-        [UIView performWithoutAnimation:^{
-            [self.readerMenuViewController showSavedForLater];
-        }];
-    });
+            [UIView performWithoutAnimation:^{
+                [self.readerMenuViewController showSavedForLater];
+            }];
+        });
+    };
 }
 
 - (NSString *)currentlySelectedScreen
@@ -915,6 +930,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        self.readerNavigationController = nil;
+    }
 }
 
 - (void)signinDidFinish:(NSNotification *)notification
@@ -1007,7 +1025,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     return @[
              [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTab) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
-             [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.")],
+             [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.")],
              [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(showReaderTab) discoverabilityTitle:NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.")],
              // will be removed when the new IA implementation completes
              [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierCommand action:@selector(showMeTab) discoverabilityTitle:NSLocalizedString(@"Me", @"The accessibility value of the me tab.")],

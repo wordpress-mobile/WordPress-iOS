@@ -1859,6 +1859,7 @@ extension AztecPostViewController {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
+        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
@@ -2438,14 +2439,16 @@ extension AztecPostViewController {
         }
     }
 
-    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) -> ImageAttachment {
+    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink, caption: String? = nil) -> ImageAttachment {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
 
         if url.isGif {
             attachment.badgeTitle = Constants.mediaGIFBadgeTitle
         }
-
+        if let caption = caption {
+            richTextView.replaceCaption(for: attachment, with: NSAttributedString(string: caption))
+        }
         return attachment
     }
 
@@ -2519,7 +2522,7 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let attachment = insertImageAttachment(with: remoteURL)
+            let attachment = insertImageAttachment(with: remoteURL, caption: media.caption)
             attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         case .video:
@@ -2549,7 +2552,7 @@ extension AztecPostViewController {
         }
         var attachment: MediaAttachment?
         if media.mediaType == .image {
-            attachment = insertImageAttachment(with: tempMediaURL)
+            attachment = insertImageAttachment(with: tempMediaURL, caption: media.caption)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
