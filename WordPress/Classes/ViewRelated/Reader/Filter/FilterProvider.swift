@@ -36,14 +36,17 @@ class FilterProvider: Observable, FilterTabBarItem {
         }
     }
 
+    typealias Provider = (@escaping (Result<[TableDataItem], Error>) -> Void) -> Void
+
     let accessibilityIdentifier: String
     let cellClass: UITableViewCell.Type
     let reuseIdentifier: String
     let emptyTitle: String
     let emptyActionTitle: String
-    let emptyAction: (UIViewController) -> Void
+    let emptyAction: (UIViewController, ScenePresenterDelegate?) -> Void
 
     private let titleFunc: (State?) -> String
+    private let provider: Provider
 
     let changeDispatcher = Dispatcher<Void>()
 
@@ -53,8 +56,8 @@ class FilterProvider: Observable, FilterTabBarItem {
          reuseIdentifier: String,
          emptyTitle: String,
          emptyActionTitle: String,
-         emptyAction: (@escaping (UIViewController) -> Void),
-         provider: (@escaping (Result<[TableDataItem], Error>) -> Void) -> Void) {
+         emptyAction: @escaping ((UIViewController, ScenePresenterDelegate?) -> Void),
+         provider: @escaping Provider) {
 
         titleFunc = title
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -63,7 +66,10 @@ class FilterProvider: Observable, FilterTabBarItem {
         self.emptyTitle = emptyTitle
         self.emptyActionTitle = emptyActionTitle
         self.emptyAction = emptyAction
-
+        self.provider = provider
+    }
+    func refresh() {
+        state = .loading
         provider() { [weak self] result in
             switch result {
             case .success(let items):
@@ -100,8 +106,8 @@ extension ReaderSiteTopic {
                               provider: tableProvider)
     }
 
-    private static func showAdd(on presenterViewController: UIViewController) {
-        let presenter = ReaderManageScenePresenter(selected: .sites)
+    private static func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
+        let presenter = ReaderManageScenePresenter(selected: .sites, sceneDelegate: sceneDelegate)
         presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 
@@ -157,8 +163,8 @@ extension ReaderTagTopic {
                               provider: tableProvider)
     }
 
-    private static func showAdd(on presenterViewController: UIViewController) {
-        let presenter = ReaderManageScenePresenter(selected: .tags)
+    private static func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
+        let presenter = ReaderManageScenePresenter(selected: .tags, sceneDelegate: sceneDelegate)
         presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 

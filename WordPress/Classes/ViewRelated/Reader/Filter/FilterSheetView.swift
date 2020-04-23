@@ -81,7 +81,7 @@ class FilterSheetView: UIView {
 
     private func tappedEmptyAddButton() {
         if let controller = presentationController {
-            selectedFilter?.emptyAction(controller)
+            selectedFilter?.emptyAction(controller, self)
         }
     }
 
@@ -115,11 +115,14 @@ class FilterSheetView: UIView {
         }
     }
 
+    private let filters: [FilterProvider]
+
     // MARK: Methods
 
     init(filters: [FilterProvider], presentationController: UIViewController, changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
         self.presentationController = presentationController
         self.changedFilter = changedFilter
+        self.filters = filters
         super.init(frame: .zero)
 
         filterTabBar.items = filters
@@ -139,6 +142,14 @@ class FilterSheetView: UIView {
                 self?.filterTabBar.items = filters
             }
         }
+
+        refresh(filters: filters)
+    }
+
+    private func refresh(filters: [FilterProvider]) {
+        filters.forEach({ provider in
+            provider.refresh()
+        })
     }
 
     required init?(coder: NSCoder) {
@@ -171,5 +182,11 @@ extension FilterSheetView: UITableViewDelegate {
         if let topic = dataSource?.data[indexPath.row].topic {
             changedFilter(topic)
         }
+    }
+}
+
+extension FilterSheetView: ScenePresenterDelegate {
+    func didDismiss(presenter: ScenePresenter) {
+        refresh(filters: filters)
     }
 }

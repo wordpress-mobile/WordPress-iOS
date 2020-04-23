@@ -27,16 +27,18 @@ class ReaderManageScenePresenter: ScenePresenter {
         }
     }
 
+    weak var presentedViewController: UIViewController?
+
     private let sections: [TabbedSection]
     private let selectedSection: TabbedSection?
+    private weak var delegate: ScenePresenterDelegate?
 
     init(sections tabbedSections: [TabbedSection] = [TabbedSection.tags, TabbedSection.sites],
-         selected: TabbedSection? = nil) {
+         selected: TabbedSection? = nil, sceneDelegate: ScenePresenterDelegate? = nil) {
         sections = tabbedSections
         selectedSection = selected
+        delegate = sceneDelegate
     }
-
-    var presentedViewController: UIViewController?
 
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
         guard presentedViewController == nil else {
@@ -55,7 +57,9 @@ private extension ReaderManageScenePresenter {
             return item.tabbedItem
         })
 
-        let tabbedViewController = TabbedViewController(items: tabbedItems)
+        let tabbedViewController = TabbedViewController(items: tabbedItems, onDismiss: {
+            self.delegate?.didDismiss(presenter: self)
+        })
         tabbedViewController.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
         if let section = selectedSection, let firstSelection = sections.firstIndex(of: section) {
             tabbedViewController.selection = firstSelection

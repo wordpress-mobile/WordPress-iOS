@@ -18,6 +18,7 @@ class TabbedViewController: UIViewController {
     }
 
     private let items: [TabbedItem]
+    private let onDismiss: (() -> Void)?
 
     private lazy var tabBar: FilterTabBar = {
         let bar = FilterTabBar()
@@ -47,8 +48,9 @@ class TabbedViewController: UIViewController {
         }
     }
 
-    init(items: [TabbedItem]) {
+    init(items: [TabbedItem], onDismiss: (() -> Void)? = nil) {
         self.items = items
+        self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
         tabBar.items = items
 
@@ -62,6 +64,7 @@ class TabbedViewController: UIViewController {
     }
 
     @objc func donePressed() {
+        onDismiss?()
         dismiss(animated: true, completion: nil)
     }
 
