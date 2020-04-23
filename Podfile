@@ -39,8 +39,8 @@ def wordpress_ui
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fancybutton-public-isprimary'
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '71f32a3300b4c630b41ba7ae8101896f9d297606'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fancybutton-public-isprimary'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '05d82b280a4b65e084f34e282ec392cb80afdec1'
 end
 
 def wordpress_kit
