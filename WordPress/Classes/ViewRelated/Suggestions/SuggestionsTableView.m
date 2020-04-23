@@ -155,7 +155,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     [super layoutSubviews];
     NSUInteger suggestionCount = self.searchResults.count;
-    [self setHidden:(0 == suggestionCount)];
+    [self setHidden:(self.suggestions!= nil) && (0 == suggestionCount)];
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didChangeTableBounds:)]) {
         [self.suggestionsDelegate suggestionsTableView:self didChangeTableBounds:self.tableView.bounds];
     }
@@ -176,8 +176,10 @@ CGFloat const STVSeparatorHeight = 1.f;
         maxRows = 1;
     }    
     
-    if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight/2);        
+    if (!self.suggestions) {
+        self.heightConstraint.constant = STVRowHeight;
+    } else if (self.searchResults.count > maxRows) {
+        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight/2);
     } else {
         self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
