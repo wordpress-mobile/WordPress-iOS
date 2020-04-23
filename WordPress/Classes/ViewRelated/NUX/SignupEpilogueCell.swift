@@ -90,6 +90,12 @@ class SignupEpilogueCell: UITableViewCell {
         configureAccessibility(for: newCellType)
 
         addBottomBorder(withColor: .divider)
+
+        // TODO: remove this when `WordPressAuthenticatorStyle:textFieldBackgroundColor` is updated.
+        // This background color should be inherited from LoginTextField.
+        // However, since the Auth views haven't been updated, the color is incorrect.
+        // So for now we'll override it here.
+        cellField.backgroundColor = .basicBackground
     }
 
     // MARK: - Private behavior
