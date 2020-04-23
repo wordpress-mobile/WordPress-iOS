@@ -107,7 +107,7 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    fileprivate func displayMediaIsUploadingAlert() {
+    func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
         present(alertController, animated: true, completion: nil)
