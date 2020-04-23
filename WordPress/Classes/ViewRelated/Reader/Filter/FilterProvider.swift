@@ -43,7 +43,7 @@ class FilterProvider: Observable, FilterTabBarItem {
     let reuseIdentifier: String
     let emptyTitle: String
     let emptyActionTitle: String
-    let emptyAction: (UIViewController, ScenePresenterDelegate?) -> Void
+    let section: ReaderManageScenePresenter.TabbedSection
 
     private let titleFunc: (State?) -> String
     private let provider: Provider
@@ -56,7 +56,7 @@ class FilterProvider: Observable, FilterTabBarItem {
          reuseIdentifier: String,
          emptyTitle: String,
          emptyActionTitle: String,
-         emptyAction: @escaping ((UIViewController, ScenePresenterDelegate?) -> Void),
+         section: ReaderManageScenePresenter.TabbedSection,
          provider: @escaping Provider) {
 
         titleFunc = title
@@ -65,7 +65,7 @@ class FilterProvider: Observable, FilterTabBarItem {
         self.reuseIdentifier = reuseIdentifier
         self.emptyTitle = emptyTitle
         self.emptyActionTitle = emptyActionTitle
-        self.emptyAction = emptyAction
+        self.section = section
         self.provider = provider
     }
     func refresh() {
@@ -78,6 +78,13 @@ class FilterProvider: Observable, FilterTabBarItem {
                 self?.state = .error(error)
             }
         }
+    }
+}
+
+extension FilterProvider {
+    func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
+        let presenter = ReaderManageScenePresenter(selected: section, sceneDelegate: sceneDelegate)
+        presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 }
 
@@ -94,7 +101,7 @@ extension ReaderSiteTopic {
         }
 
         let emptyTitle = NSLocalizedString("Add a site", comment: "No Tags View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific site by following it", comment: "No Sites View Label")
+        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific site by following it.", comment: "No Sites View Label")
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
@@ -102,13 +109,8 @@ extension ReaderSiteTopic {
                               reuseIdentifier: "Sites",
                               emptyTitle: emptyTitle,
                               emptyActionTitle: emptyActionTitle,
-                              emptyAction: showAdd,
+                              section: .sites,
                               provider: tableProvider)
-    }
-
-    private static func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
-        let presenter = ReaderManageScenePresenter(selected: .sites, sceneDelegate: sceneDelegate)
-        presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
@@ -151,7 +153,7 @@ extension ReaderTagTopic {
         }
 
         let emptyTitle = NSLocalizedString("Add a tag", comment: "No Tags View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a tag", comment: "No Tags View Label")
+        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a tag.", comment: "No Tags View Label")
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",
@@ -159,13 +161,8 @@ extension ReaderTagTopic {
                               reuseIdentifier: "Tags",
                               emptyTitle: emptyTitle,
                               emptyActionTitle: emptyActionTitle,
-                              emptyAction: showAdd,
+                              section: .tags,
                               provider: tableProvider)
-    }
-
-    private static func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
-        let presenter = ReaderManageScenePresenter(selected: .tags, sceneDelegate: sceneDelegate)
-        presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {

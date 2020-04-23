@@ -81,7 +81,7 @@ class FilterSheetView: UIView {
 
     private func tappedEmptyAddButton() {
         if let controller = presentationController {
-            selectedFilter?.emptyAction(controller, self)
+            selectedFilter?.showAdd(on: controller, sceneDelegate: self)
         }
     }
 
@@ -99,14 +99,9 @@ class FilterSheetView: UIView {
                     ghostableTableView.stopGhostAnimation()
                     ghostableTableView.isHidden = true
 
-                    if filter.items.isEmpty {
-                        refreshEmpty(filter: filter)
-                        emptyView.isHidden = false
-                        tableView.isHidden = true
-                    } else {
-                        emptyView.isHidden = true
-                        tableView.isHidden = false
-                    }
+                    let isEmpty = filter.items.isEmpty
+                    emptyView.isHidden = !isEmpty
+                    tableView.isHidden = isEmpty
                 }
             }
         }
