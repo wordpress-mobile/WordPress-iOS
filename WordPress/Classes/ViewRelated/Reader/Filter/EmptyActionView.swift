@@ -63,7 +63,7 @@ class EmptyActionView: UIView {
         NSLayoutConstraint.activate([
             button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Constants.buttonLabelSpacing),
             label.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelWidth),
-            label.trailingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: trailingAnchor, multiplier: 1),
+            label.trailingAnchor.constraint(lessThanOrEqualToSystemSpacingAfter: trailingAnchor, multiplier: 1),
             label.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             label.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             button.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
