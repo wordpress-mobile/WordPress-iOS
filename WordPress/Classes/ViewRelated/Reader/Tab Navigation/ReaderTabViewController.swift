@@ -16,6 +16,8 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
+        setupSearchButton()
+
         ReaderTabViewController.configureRestoration(on: self)
 
         viewModel.filterTapped = { [weak self] (fromView, completion) in
@@ -48,11 +50,6 @@ class ReaderTabViewController: UIViewController {
 
     override func loadView() {
         view = readerTabView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupSearchButton()
     }
 }
 
