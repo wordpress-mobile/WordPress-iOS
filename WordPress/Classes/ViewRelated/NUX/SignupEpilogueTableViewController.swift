@@ -38,6 +38,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         static let allAccountRows = 3
         static let headerFooterHeight: CGFloat = 50
         static let footerTrailingMargin: CGFloat = 16
+        static let footerTopMargin: CGFloat = 5
     }
 
     private struct TableSections {
@@ -114,6 +115,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
         cell.titleLabel?.numberOfLines = 0
         cell.trailingConstraint.constant = Constants.footerTrailingMargin
+        cell.topConstraint.constant = Constants.footerTopMargin
         cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
 
         return cell

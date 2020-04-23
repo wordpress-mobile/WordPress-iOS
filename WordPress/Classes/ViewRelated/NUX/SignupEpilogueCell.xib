@@ -40,7 +40,7 @@
                     <constraint firstAttribute="bottom" secondItem="IPK-b3-7Fi" secondAttribute="bottom" id="OHt-cu-IFp"/>
                     <constraint firstItem="IPK-b3-7Fi" firstAttribute="top" secondItem="j3X-VY-JUT" secondAttribute="top" id="TVg-hg-tb6"/>
                     <constraint firstAttribute="bottom" secondItem="BeK-ke-PFi" secondAttribute="bottom" id="al2-lo-1kk"/>
-                    <constraint firstItem="BeK-ke-PFi" firstAttribute="leading" secondItem="j3X-VY-JUT" secondAttribute="leading" constant="-8" id="hbw-Vo-dIm"/>
+                    <constraint firstItem="BeK-ke-PFi" firstAttribute="leading" secondItem="j3X-VY-JUT" secondAttribute="leading" id="hbw-Vo-dIm"/>
                     <constraint firstItem="IPK-b3-7Fi" firstAttribute="leading" secondItem="j3X-VY-JUT" secondAttribute="leading" id="hj5-JA-DrQ"/>
                     <constraint firstAttribute="trailing" secondItem="BeK-ke-PFi" secondAttribute="trailing" constant="16" id="nx1-DQ-7CM"/>
                     <constraint firstItem="BeK-ke-PFi" firstAttribute="top" secondItem="j3X-VY-JUT" secondAttribute="top" id="qjh-pQ-X5J"/>
