@@ -177,7 +177,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     }    
     
     if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = maxRows * STVRowHeight;        
+        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight/2);        
     } else {
         self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
