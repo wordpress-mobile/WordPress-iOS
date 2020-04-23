@@ -61,9 +61,10 @@ class EmptyActionView: UIView {
         centeredLabelConstraint = label.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
 
         NSLayoutConstraint.activate([
-//            offsetCenteredLabelContraint,
             button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Constants.buttonLabelSpacing),
-            label.widthAnchor.constraint(equalToConstant: Constants.labelWidth),
+            label.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelWidth),
+            label.trailingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: trailingAnchor, multiplier: 1),
+            label.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             label.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             button.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
         ])
