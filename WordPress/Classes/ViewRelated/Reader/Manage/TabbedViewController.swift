@@ -7,6 +7,16 @@ class TabbedViewController: UIViewController {
         let accessibilityIdentifier: String
     }
 
+    /// The selected view controller
+    var selection: Int {
+        set {
+            tabBar.setSelectedIndex(newValue)
+        }
+        get {
+            return tabBar.selectedIndex
+        }
+    }
+
     private let items: [TabbedItem]
 
     private lazy var tabBar: FilterTabBar = {
@@ -29,7 +39,7 @@ class TabbedViewController: UIViewController {
         didSet {
             oldValue?.remove()
 
-            if let child = child {
+            if let child = child, child.parent != self {
                 addChild(child)
                 stackView.addArrangedSubview(child.view)
                 child.didMove(toParent: self)
@@ -45,9 +55,6 @@ class TabbedViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePressed))
 
         stackView.addArrangedSubview(tabBar)
-
-        view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
     }
 
     required init?(coder: NSCoder) {
@@ -60,7 +67,16 @@ class TabbedViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        child = items.first?.viewController
+
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+
+        setInitialChild()
+    }
+
+    private func setInitialChild() {
+        let initialItem: TabbedItem = items[selection]
+        child = initialItem.viewController
     }
 
     @objc func changedItem(sender: FilterTabBar) {

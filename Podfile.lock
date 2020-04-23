@@ -483,7 +483,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.8.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
-  - WordPressUI (~> 1.5.3)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `fancybutton-public-isprimary`)
   - WPMediaPicker (~> 1.6.1)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/6906be56ace31186ded1df0b65b9ea34fe2aaf34/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.0.0)
@@ -531,7 +531,6 @@ SPEC REPOS:
     - WordPressKit
     - WordPressMocks
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -613,6 +612,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 6906be56ace31186ded1df0b65b9ea34fe2aaf34
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressUI:
+    :branch: fancybutton-public-isprimary
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/6906be56ace31186ded1df0b65b9ea34fe2aaf34/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -626,6 +628,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 6906be56ace31186ded1df0b65b9ea34fe2aaf34
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressUI:
+    :commit: 1a3a43737db8314efe74527e3c1942851779c5ae
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -714,6 +719,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 23af111b67a543ef1f7249f0e4db20e9be3c4865
+PODFILE CHECKSUM: 5e5e3658cc251f318fb6c7bbf10ac5f99107daaf
 
 COCOAPODS: 1.8.4

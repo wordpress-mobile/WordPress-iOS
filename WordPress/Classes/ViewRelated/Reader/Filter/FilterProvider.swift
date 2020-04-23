@@ -37,9 +37,11 @@ class FilterProvider: Observable, FilterTabBarItem {
     }
 
     let accessibilityIdentifier: String
-
     let cellClass: UITableViewCell.Type
     let reuseIdentifier: String
+    let emptyTitle: String
+    let emptyActionTitle: String
+    let emptyAction: (UIViewController) -> Void
 
     private let titleFunc: (State?) -> String
 
@@ -49,12 +51,18 @@ class FilterProvider: Observable, FilterTabBarItem {
          accessibilityIdentifier: String,
          cellClass: UITableViewCell.Type,
          reuseIdentifier: String,
+         emptyTitle: String,
+         emptyActionTitle: String,
+         emptyAction: (@escaping (UIViewController) -> Void),
          provider: (@escaping (Result<[TableDataItem], Error>) -> Void) -> Void) {
 
         titleFunc = title
         self.accessibilityIdentifier = accessibilityIdentifier
         self.cellClass = cellClass
         self.reuseIdentifier = reuseIdentifier
+        self.emptyTitle = emptyTitle
+        self.emptyActionTitle = emptyActionTitle
+        self.emptyAction = emptyAction
 
         provider() { [weak self] result in
             switch result {
@@ -78,11 +86,23 @@ extension ReaderSiteTopic {
                 return String(format: NSLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), items.count)
             }
         }
+
+        let emptyTitle = NSLocalizedString("Add a site", comment: "No Tags View Button Label")
+        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific site by following it", comment: "No Sites View Label")
+
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
                               cellClass: SiteTableViewCell.self,
                               reuseIdentifier: "Sites",
+                              emptyTitle: emptyTitle,
+                              emptyActionTitle: emptyActionTitle,
+                              emptyAction: showAdd,
                               provider: tableProvider)
+    }
+
+    private static func showAdd(on presenterViewController: UIViewController) {
+        let presenter = ReaderManageScenePresenter(selected: .sites)
+        presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
@@ -123,11 +143,23 @@ extension ReaderTagTopic {
                 return String(format: NSLocalizedString("Tags (%lu)", comment: "Tags Filter Tab Title with Count"), items.count)
             }
         }
+
+        let emptyTitle = NSLocalizedString("Add a tag", comment: "No Tags View Button Label")
+        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a tag", comment: "No Tags View Label")
+
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",
                               cellClass: UITableViewCell.self,
                               reuseIdentifier: "Tags",
+                              emptyTitle: emptyTitle,
+                              emptyActionTitle: emptyActionTitle,
+                              emptyAction: showAdd,
                               provider: tableProvider)
+    }
+
+    private static func showAdd(on presenterViewController: UIViewController) {
+        let presenter = ReaderManageScenePresenter(selected: .tags)
+        presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {

@@ -21,6 +21,10 @@ class FilterSheetView: UIView {
         return tableView
     }()
 
+    lazy var emptyView: EmptyActionView = {
+        return EmptyActionView(tappedButton: tappedEmptyAddButton)
+    }()
+
     lazy var ghostableTableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = false
@@ -53,7 +57,8 @@ class FilterSheetView: UIView {
             headerLabelView,
             filterTabBar,
             tableView,
-            ghostableTableView
+            ghostableTableView,
+            emptyView
         ])
 
         stack.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)
@@ -64,6 +69,7 @@ class FilterSheetView: UIView {
 
     // MARK: Properties
 
+    private weak var presentationController: UIViewController?
     private var subscriptions: [Receipt]?
     private var changedFilter: (ReaderAbstractTopic) -> Void
     private var dataSource: FilterTableViewDataSource? {
@@ -73,17 +79,34 @@ class FilterSheetView: UIView {
         }
     }
 
+    private func tappedEmptyAddButton() {
+        if let controller = presentationController {
+            selectedFilter?.emptyAction(controller)
+        }
+    }
+
     private var selectedFilter: FilterProvider? {
         set {
             if let filter = newValue {
                 dataSource = FilterTableViewDataSource(data: filter.items, reuseIdentifier: filter.reuseIdentifier)
                 if filter.state.isReady == false {
+                    /// Loading state
+                    emptyView.isHidden = true
                     tableView.isHidden = true
                     updateGhostableTableViewOptions(cellClass: filter.cellClass, identifier: filter.reuseIdentifier)
                 } else {
+                    /// Finished loading
                     ghostableTableView.stopGhostAnimation()
                     ghostableTableView.isHidden = true
-                    tableView.isHidden = false
+
+                    if filter.items.isEmpty {
+                        refreshEmpty(filter: filter)
+                        emptyView.isHidden = false
+                        tableView.isHidden = true
+                    } else {
+                        emptyView.isHidden = true
+                        tableView.isHidden = false
+                    }
                 }
             }
         }
@@ -92,9 +115,15 @@ class FilterSheetView: UIView {
         }
     }
 
+    func refreshEmpty(filter: FilterProvider) {
+        emptyView.title = filter.emptyTitle
+        emptyView.labelText = filter.emptyActionTitle
+    }
+
     // MARK: Methods
 
-    init(filters: [FilterProvider], changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+    init(filters: [FilterProvider], presentationController: UIViewController, changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+        self.presentationController = presentationController
         self.changedFilter = changedFilter
         super.init(frame: .zero)
 
