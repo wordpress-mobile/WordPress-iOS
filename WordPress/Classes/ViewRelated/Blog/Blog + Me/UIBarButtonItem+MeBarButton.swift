@@ -37,8 +37,10 @@ private extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
         static let radius: CGFloat = 32
+        // used for the gravatar image with no extra border added
+        static let extendedRadius: CGFloat = 36
         static let tappableWidth: CGFloat = 44
-        static let fallBackImage = UIImage.gridicon(.user)
+        static let fallBackImage = UIImage.gridicon(.userCircle)
     }
 
     /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
@@ -53,10 +55,19 @@ private extension UIBarButtonItem {
     func makeGravatarTappableView(with email: String?, target: Any?, action: Selector?) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
+        gravatarImageView.adjustView = { [weak self] in
+            // if there's a gravatar, add the border, if not, remove it and resize the userCircle image
+            if $0.image == GravatarConfiguration.fallBackImage {
+                $0.setBorder(width: 0)
+                self?.setSize(of: $0, size: GravatarConfiguration.extendedRadius)
+            } else {
+                $0.setBorder()
+                self?.setSize(of: $0, size: GravatarConfiguration.radius)
+            }
+        }
+
         gravatarImageView.isUserInteractionEnabled = true
-        setSize(of: gravatarImageView, size: GravatarConfiguration.radius)
-        gravatarImageView.contentMode = .scaleAspectFit
-        gravatarImageView.setBorder()
+        gravatarImageView.contentMode = .scaleAspectFill
 
         if let email = email {
             gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: GravatarConfiguration.fallBackImage)
@@ -75,47 +86,26 @@ private extension UIBarButtonItem {
         let view = UIView()
         setSize(of: view, size: GravatarConfiguration.tappableWidth)
         view.addSubview(imageView)
-        NSLayoutConstraint(item: imageView,
-                           attribute: .centerY,
-                           relatedBy: .equal,
-                           toItem: view,
-                           attribute: .centerY,
-                           multiplier: 1,
-                           constant: 0)
-            .isActive = true
-
-        NSLayoutConstraint(item: imageView,
-                           attribute: .trailingMargin,
-                       relatedBy: .equal,
-                       toItem: view,
-                       attribute: .trailingMargin,
-                       multiplier: 1,
-                       constant: 0)
-        .isActive = true
+        NSLayoutConstraint.activate([
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
 
         return view
     }
 
     /// constrains a squared UIImageView to a set size
     func setSize(of view: UIView, size: CGFloat) {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: view,
-                           attribute: .width,
-                           relatedBy: .equal,
-                           toItem: nil,
-                           attribute: .notAnAttribute,
-                           multiplier: 1,
-                           constant: size)
-            .isActive = true
+        view.removeConstraints(view.constraints.filter {
+            $0.firstAttribute == .width || $0.firstAttribute == .height
+        })
 
-        NSLayoutConstraint(item: view,
-                           attribute: .height,
-                           relatedBy: .equal,
-                           toItem: nil,
-                           attribute: .notAnAttribute,
-                           multiplier: 1,
-                           constant: size)
-            .isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: size),
+            view.heightAnchor.constraint(equalToConstant: size)
+        ])
     }
 }
 
