@@ -27,7 +27,7 @@ struct PublishSettingsViewModel {
     let title: String?
 
     var detailString: String {
-        if let date = date {
+        if let date = date, post.hasFuturePublishDate() {
             return dateTimeFormatter.string(from: date)
         } else {
             return NSLocalizedString("Immediately", comment: "Undated post time label")
