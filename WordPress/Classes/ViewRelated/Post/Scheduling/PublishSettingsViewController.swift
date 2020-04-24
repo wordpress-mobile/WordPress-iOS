@@ -83,7 +83,11 @@ struct PublishSettingsViewModel {
             } else {
                 post.status = .publish
             }
-        } else {
+        } else if post.originalIsDraft() {
+            // If the original is a draft, keep the post as a draft
+            post.status = .draft
+            post.dateCreated = Date()
+        } else if post.hasFuturePublishDate() {
             post.publishImmediately()
         }
 
