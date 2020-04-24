@@ -100,6 +100,9 @@ class FilterSheetView: UIView {
                     ghostableTableView.isHidden = true
 
                     let isEmpty = filter.items.isEmpty
+                    if isEmpty {
+                        refreshEmpty(filter: filter)
+                    }
                     emptyView.isHidden = !isEmpty
                     tableView.isHidden = isEmpty
                 }
