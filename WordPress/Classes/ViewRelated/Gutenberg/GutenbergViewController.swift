@@ -731,6 +731,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .filesApp,
         ].compactMap { $0 }
     }
+
+    func gutenbergCapabilities() -> [String: Bool]? {
+        return [
+            "mentions": post.blog.isAccessibleThroughWPCom()
+        ]
+    }
 }
 
 // MARK: - PostEditorStateContextDelegate
