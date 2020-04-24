@@ -1,35 +1,85 @@
 
-class ReaderTabViewModel {
+@objc class ReaderTabViewModel: NSObject {
+    // MARK: - Properties
 
-    var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
-    var selectedFilter: ReaderAbstractTopic?
+    /// completion handler for an external call that changes the tab index
+    var indexSelectionCallback: ((Int) -> Void)?
+    /// completion handler for a tap on a tab on the toolbar
+    var topicSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
+    var selectedIndex = 0
+    private var tabItems: [ReaderTabItem] = []
+
+    /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
+    var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
+
+    /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
+    var selectedFilter: ReaderAbstractTopic?
+
+    /// search
+    var navigateToSearch: () -> Void
+
     var settingsTapped: ((UIView) -> Void)?
 
-    init() {
+
+    init(readerContentFactory: @escaping (ReaderAbstractTopic?) -> ReaderContentViewController,
+         searchNavigationFactory: @escaping () -> Void) {
+        self.makeReaderContentViewController = readerContentFactory
+        self.navigateToSearch = searchNavigationFactory
+        super.init()
         addNotificationsObservers()
     }
+}
 
-    func showTab(for item: FilterTabBarItem) {
 
-        guard let readerItem = item as? ReaderTabItem else {
+// MARK: - Tab selection
+extension ReaderTabViewModel {
+
+    func showTab(at index: Int) {
+        guard index < tabItems.count else {
             return
         }
-
-        let topic = readerItem.topic
+        selectedIndex = index
+        let topic = tabItems[index].topic
 
         let selectedTopic: ReaderAbstractTopic?
-        if readerItem.shouldHideButtonsView == false {
+        if !tabItems[index].shouldHideButtonsView {
             selectedTopic = selectedFilter ?? topic
         } else {
             selectedTopic = topic
         }
-
-        tabSelectionCallback?(selectedTopic)
+        topicSelectionCallback?(selectedTopic)
     }
 
-    // TODO: - READERNAV - Methods to be implemented. Signature will likely change
-    func performSearch() { }
+    /// switch to the tab whose topic matches the given predicate
+    func switchToTab(where predicate: (ReaderAbstractTopic) -> Bool) {
+        guard let index = tabItems.firstIndex(where: { item in
+            guard let topic = item.topic else {
+                return false
+            }
+            return predicate(topic)
+        }) else {
+            return
+        }
+        showTab(at: index)
+        indexSelectionCallback?(index)
+    }
+
+    /// switch to the tab  whose title matches the given predicate
+    func switchToTab(where predicate: (String) -> Bool) {
+        guard let index = tabItems.firstIndex(where: {
+            predicate($0.title)
+        }) else {
+            return
+        }
+        showTab(at: index)
+        indexSelectionCallback?(index)
+    }
+}
+
+
+// MARK: - Filter
+extension ReaderTabViewModel {
 
     func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
         let viewController = makeFilterSheetViewController(completion: completion)
@@ -47,7 +97,7 @@ class ReaderTabViewModel {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
             if let topic = topic {
-                self?.tabSelectionCallback?(topic)
+                self?.topicSelectionCallback?(topic)
             }
             completion(topic?.title)
         })
@@ -56,17 +106,21 @@ class ReaderTabViewModel {
     func resetFilter(selectedItem: FilterTabBarItem) {
         selectedFilter = nil
         if let topic = (selectedItem as? ReaderTabItem)?.topic {
-            tabSelectionCallback?(topic)
+            topicSelectionCallback?(topic)
         }
     }
+}
 
+
+// MARK: - Settings
+extension ReaderTabViewModel {
     func presentSettings(from: UIView) {
         settingsTapped?(from)
     }
 }
 
-// MARK: - Bottom Sheet
 
+// MARK: - Bottom Sheet
 extension ReaderTabViewModel {
     private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
         return FilterSheetViewController(filters:
@@ -77,16 +131,14 @@ extension ReaderTabViewModel {
 }
 
 
-// MARK: - Tab Bar
+// MARK: - Tab menu items
 extension ReaderTabViewModel {
 
     /// Fetch request to extract reader menu topics from Core Data
     private var topicsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopics.entityName)
-
-        fetchRequest.predicate = NSPredicate(format: ReaderTopics.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
-
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopics.sortByKey, ascending: true)]
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopicsConstants.entityName)
+        fetchRequest.predicate = NSPredicate(format: ReaderTopicsConstants.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopicsConstants.sortByKey, ascending: true)]
         return fetchRequest
     }
 
@@ -97,11 +149,12 @@ extension ReaderTabViewModel {
             guard let topics = try ContextManager.sharedInstance().mainContext.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
                 return
             }
-
-            completion(ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) }))
+            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
+            tabItems = items
+            completion(items)
 
         } catch {
-            DDLogError(ReaderTopics.fetchRequestError + error.localizedDescription)
+            DDLogError(ReaderTopicsConstants.fetchRequestError + error.localizedDescription)
             completion(nil)
         }
     }
@@ -110,46 +163,42 @@ extension ReaderTabViewModel {
     /// - Parameter completion: completion closure: will be passed an array of ReaderTabItem or nil, if the request fails
     func fetchReaderMenu(completion: @escaping ([ReaderTabItem]?) -> Void) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
         service.fetchReaderMenu(success: { [weak self] in
             self?.fetchTabBarItems(completion: completion)
             }, failure: { error in
-                DDLogError(ReaderTopics.remoteFetchError + String(describing: error))
+                DDLogError(ReaderTopicsConstants.remoteFetchError + String(describing: error))
                 completion(nil)
         })
     }
 
-    private enum ReaderTopics {
+    private enum ReaderTopicsConstants {
         static let predicateFormat = "following == %@ AND showInMenu == YES AND type == 'default' OR type == 'list' OR type == 'team'"
-
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
-
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
         static let remoteFetchError = "Error syncing menu: "
     }
 }
 
 
-// MARK: Reader Content
+// MARK: - Reader Content
 extension ReaderTabViewModel {
 
-    func makeChildViewController(with item: ReaderTabItem) -> UIViewController? {
-        guard let topic = item.topic else {
+    func makeChildViewController(at index: Int) -> ReaderContentViewController? {
+        guard index < tabItems.count else {
             return nil
         }
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
+        let controller = makeReaderContentViewController(tabItems[index].topic)
 
-        self.tabSelectionCallback = { [weak controller] topic in
+        topicSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
-            controller?.isSavedPostsController = (topic == nil)
         }
         return controller
     }
 }
 
 
-// MARK: - Logout and Termination Cleanup
+// MARK: - Cleanup tasks
 extension ReaderTabViewModel {
 
     private func addNotificationsObservers() {
@@ -167,6 +216,7 @@ extension ReaderTabViewModel {
                                                 self.clearSavedPosts()
                                                 self.cleanupStaleContent(removeAllTopics: true)
                                                 self.clearSearchSuggestions()
+                                                self.selectedIndex = 0
         }
     }
 
