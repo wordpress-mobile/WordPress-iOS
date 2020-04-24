@@ -77,6 +77,7 @@ struct PublishSettingsViewModel {
 
     mutating func setDate(_ date: Date?) {
         if let date = date {
+            // If a date to schedule the post was given
             post.dateCreated = date
             if post.hasFuturePublishDate() {
                 post.status = .scheduled
@@ -88,6 +89,8 @@ struct PublishSettingsViewModel {
             post.status = .draft
             post.dateCreated = Date()
         } else if post.hasFuturePublishDate() {
+            // If the original is a already scheduled post, change it to publish immediately
+            // In this case the user had scheduled, but now wants to publish right away
             post.publishImmediately()
         }
 
