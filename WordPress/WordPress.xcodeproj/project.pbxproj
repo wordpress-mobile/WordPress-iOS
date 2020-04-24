@@ -316,6 +316,7 @@
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */; };
+		2F09D134245223D300956257 /* HeaderDetailsContentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09D133245223D300956257 /* HeaderDetailsContentStyles.swift */; };
 		2F161B0622CC2DC70066A5C5 /* LoadingStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */; };
 		2FA37B1A215724E900C80377 /* LongPressGestureLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */; };
 		2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511621F26A24009AA935 /* ChangePasswordViewController.swift */; };
@@ -2644,6 +2645,7 @@
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+UnattachedMedia.swift"; sourceTree = "<group>"; };
+		2F09D133245223D300956257 /* HeaderDetailsContentStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderDetailsContentStyles.swift; sourceTree = "<group>"; };
 		2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusView.swift; sourceTree = "<group>"; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGestureLabel.swift; sourceTree = "<group>"; };
@@ -7061,6 +7063,7 @@
 				7E3E7A5C20E44DB00075D159 /* BadgeContentStyles.swift */,
 				7E3E7A5820E44D2F0075D159 /* FooterContentStyles.swift */,
 				7E3E7A5620E44D130075D159 /* HeaderContentStyles.swift */,
+				2F09D133245223D300956257 /* HeaderDetailsContentStyles.swift */,
 				7E3E7A5A20E44D950075D159 /* RichTextContentStyles.swift */,
 				7E3E7A5420E44B4B0075D159 /* SnippetsContentStyles.swift */,
 				7E3E7A5220E44B260075D159 /* SubjectContentStyles.swift */,
@@ -12652,6 +12655,7 @@
 				D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */,
 				E60C2ED71DE5075100488630 /* ReaderCommentCell.swift in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
+				2F09D134245223D300956257 /* HeaderDetailsContentStyles.swift in Sources */,
 				403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */,
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
