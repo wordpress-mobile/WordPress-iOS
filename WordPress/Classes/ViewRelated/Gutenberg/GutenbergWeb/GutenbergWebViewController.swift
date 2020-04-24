@@ -12,7 +12,6 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     private let url: URL
     private let blockHTML: String
     private let jsInjection: GutenbergWebJavascriptInjection
-    private let isOnSelfHosted: Bool
 
     private lazy var webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
@@ -22,7 +21,6 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
     init(with post: AbstractPost, blockHTML: String) throws {
         authenticator = RequestAuthenticator(blog: post.blog)
-        isOnSelfHosted = !post.blog.isAccessibleThroughWPCom()
         self.blockHTML = blockHTML
 
         jsInjection = try GutenbergWebJavascriptInjection(blockHTML: blockHTML, userId: "\(post.blog.userID ?? 1)")
@@ -61,7 +59,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc func onSaveButtonPressed() {
-        evaluateJavascript(jsInjection.getHtmlContentScript.source)
+        evaluateJavascript(jsInjection.getHtmlContentScript)
     }
 
     @objc func onCloseButtonPressed() {
@@ -77,8 +75,8 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         title = NSLocalizedString("Edit on Web", comment: "Title of Gutenberg WEB editor running on a Web View")
     }
 
-    private func evaluateJavascript(_ script: String) {
-        webView.evaluateJavaScript(script) { (response, error) in
+    private func evaluateJavascript(_ script: WKUserScript) {
+        webView.evaluateJavaScript(script.source) { (response, error) in
             if let response = response {
                 DDLogVerbose("\(response)")
             }
@@ -107,22 +105,27 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 }
 
 extension GutenbergWebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        if navigationResponse.response.url?.absoluteString.contains("/wp-admin/post-new.php") ?? false {
+            evaluateJavascript(jsInjection.insertBlockScript)
+        }
+        decisionHandler(.allow)
+    }
+
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         // At this point, user scripts are not loaded yet, so we need to inject the
         // script that inject css manually before actually injecting the css.
-        evaluateJavascript(jsInjection.injectCssScript.source)
-        evaluateJavascript(jsInjection.injectWPBarsCssScript.source)
-        evaluateJavascript(jsInjection.injectLocalStorageScript.source)
-        if isOnSelfHosted {
-            evaluateJavascript(jsInjection.injectEditorCssScript.source)
-        }
+        evaluateJavascript(jsInjection.injectCssScript)
+        evaluateJavascript(jsInjection.injectEditorCssScript)
+        evaluateJavascript(jsInjection.injectWPBarsCssScript)
+        evaluateJavascript(jsInjection.injectLocalStorageScript)
+
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // Sometimes the editor takes longer loading and its CSS can override what
         // Injectic Editor specific CSS when everything is loaded to avoid overwritting parameters if gutenberg CSS load later.
-        if !isOnSelfHosted {
-            evaluateJavascript(jsInjection.injectEditorCssScript.source)
-        }
+        evaluateJavascript(jsInjection.injectEditorCssScript)
     }
 }
 

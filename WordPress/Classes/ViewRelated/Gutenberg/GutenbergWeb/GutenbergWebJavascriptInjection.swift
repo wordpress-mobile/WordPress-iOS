@@ -40,6 +40,7 @@ struct GutenbergWebJavascriptInjection {
     private let injectLocalStorageScriptTemplate = "localStorage.setItem('WP_DATA_USER_%@','%@')"
     private let injectCssScriptTemplate = "window.injectCss(`%@`)"
 
+    let insertBlockScript: WKUserScript
     let injectWPBarsCssScript: WKUserScript
     let injectEditorCssScript: WKUserScript
     let injectCssScript: WKUserScript
@@ -61,9 +62,9 @@ struct GutenbergWebJavascriptInjection {
 
         userContentScripts = [
             try script(with: .retrieveHtml),
-            try script(with: .insertBlock, argument: blockHTML),
         ]
 
+        insertBlockScript = try script(with: .insertBlock, argument: blockHTML)
         injectCssScript = try script(with: .injectCss)
         injectWPBarsCssScript = try getInjectCssScript(with: .wpBarsStyle)
         injectEditorCssScript = try getInjectCssScript(with: .editorStyle)
