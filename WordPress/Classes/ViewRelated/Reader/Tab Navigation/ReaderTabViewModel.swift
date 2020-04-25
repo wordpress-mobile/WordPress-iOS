@@ -137,7 +137,7 @@ extension ReaderTabViewModel {
     /// Fetch request to extract reader menu topics from Core Data
     private var topicsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopicsConstants.entityName)
-        fetchRequest.predicate = NSPredicate(format: ReaderTopicsConstants.predicateFormat)
+        fetchRequest.predicate = NSPredicate(format: ReaderTopicsConstants.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopicsConstants.sortByKey, ascending: true)]
         return fetchRequest
     }
@@ -172,7 +172,7 @@ extension ReaderTabViewModel {
     }
 
     private enum ReaderTopicsConstants {
-        static let predicateFormat = "following == YES AND showInMenu == YES AND type == 'default' OR type == 'list' OR type == 'team'"
+        static let predicateFormat = "type == 'default' OR type == 'team' OR (type == 'list' AND following == %@ AND showInMenu == YES)"
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
