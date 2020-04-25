@@ -14,6 +14,7 @@ class ReaderTabView: UIView {
 
     private let viewModel: ReaderTabViewModel
 
+
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
@@ -87,7 +88,7 @@ extension ReaderTabView {
     }
 
     private func configureTabBarElements() {
-        guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
+        guard let tabItem = tabBar.currentlyCelectedItem as? ReaderTabItem else {
             return
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
@@ -218,7 +219,10 @@ extension ReaderTabView {
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
-        viewModel.resetFilter(selectedItem: tabBar.items[tabBar.selectedIndex])
+        guard let tabItem = tabBar.currentlyCelectedItem as? ReaderTabItem else {
+            return
+        }
+        viewModel.resetFilter(selectedItem: tabItem)
     }
 
     @objc private func didTapSettingsButton() {

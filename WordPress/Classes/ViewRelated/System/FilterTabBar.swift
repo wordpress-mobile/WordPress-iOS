@@ -356,7 +356,19 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var currentlyCelectedItem: FilterTabBarItem? {
+        guard !items.isEmpty, selectedIndex < items.count else {
+            return nil
+        }
+        return items[selectedIndex]
+    }
+
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
+        guard index >= 0, index < items.count else {
+            DDLogError("FilterTabBar - Tried to set an invalid index")
+            return
+        }
+
         selectedIndex = index
 
         guard let tab = selectedTab else {
