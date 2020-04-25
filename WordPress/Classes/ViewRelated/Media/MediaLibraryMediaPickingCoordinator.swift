@@ -140,12 +140,7 @@ final class MediaLibraryMediaPickingCoordinator {
 
 extension MediaLibraryMediaPickingCoordinator: TenorPickerDelegate {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
-        guard let delegate = self.delegate else {
-            tenor = nil
-            return
-        }
-
-        delegate.tenorPicker(picker, didFinishPicking: assets)
+        delegate?.tenorPicker(picker, didFinishPicking: assets)
         tenor = nil
     }
 }
