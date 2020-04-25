@@ -4,7 +4,7 @@ struct NoResultsTenorConfiguration {
     static func configureAsIntro(_ viewController: NoResultsViewController) {
         viewController.configure(title: .tenorPlaceholderTitle,
                                  image: Constants.imageName,
-                                 subtitleImage: "tenor-attribution")
+                                 subtitleImage: Constants.subtitleImageName)
 
         viewController.view.layoutIfNeeded()
     }
@@ -23,5 +23,6 @@ struct NoResultsTenorConfiguration {
 
     private enum Constants {
         static let imageName = "media-no-results"
+        static let subtitleImageName = "tenor-attribution"
     }
 }
