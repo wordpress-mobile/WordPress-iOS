@@ -64,7 +64,6 @@ public struct MediaAnalyticsInfo {
     }
 
     // Old tracking events via WPShared
-    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
     func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
         return origin.wpsharedEventForMediaType(mediaType)
     }
@@ -114,7 +113,6 @@ enum MediaUploadOrigin {
     case editor(MediaSource)
 
     // All new media tracking events will be added into WPAnalyticsEvent
-    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
     func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
         switch (self, mediaType) {
         // Media Library
@@ -131,7 +129,6 @@ enum MediaUploadOrigin {
     }
 
     // This is for the previous events created within WordPressShared
-    // Ref: https://iosp2.wordpress.com/2020/03/16/adding-tracks-forget-wordpress-shared/
     func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
         switch (self, mediaType) {
         // Media Library
