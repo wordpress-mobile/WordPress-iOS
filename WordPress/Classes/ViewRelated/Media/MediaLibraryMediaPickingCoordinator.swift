@@ -3,18 +3,22 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
+    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate
+                                & GiphyPickerDelegate & TenorPickerDelegate
+    private weak var delegate: PickersDelegate?
+    private var tenor: TenorPicker?
+
     private let stockPhotos = StockPhotosPicker()
     private var giphy = GiphyPicker()
-    private var tenor = TenorPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate
-                 & GiphyPickerDelegate & TenorPickerDelegate) {
+    init(delegate: PickersDelegate) {
+        self.delegate = delegate
+
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
         giphy.delegate = delegate
-        tenor.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -113,13 +117,11 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
-        let delegate = tenor.delegate
-
-        // Create a new TenorPicker each time so we don't save state
-        tenor = TenorPicker()
-        tenor.delegate = delegate
-
-        tenor.presentPicker(origin: origin, blog: blog)
+        let picker = TenorPicker()
+        // Delegate to the PickerCoordinator so we can release the Tenor instance
+        picker.delegate = self
+        picker.presentPicker(origin: origin, blog: blog)
+        tenor = picker
     }
 
 
@@ -133,5 +135,17 @@ final class MediaLibraryMediaPickingCoordinator {
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
         mediaLibrary.presentPicker(origin: origin, blog: blog)
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: TenorPickerDelegate {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+        guard let delegate = self.delegate else {
+            tenor = nil
+            return
+        }
+
+        delegate.tenorPicker(picker, didFinishPicking: assets)
+        tenor = nil
     }
 }
