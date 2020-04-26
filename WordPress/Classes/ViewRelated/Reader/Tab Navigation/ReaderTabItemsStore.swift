@@ -1,9 +1,22 @@
 import WordPressFlux
 
+protocol ItemsStore: Observable {
+    var items: [ReaderTabItem] { get }
+    func getItems()
+}
 
-class ReaderTabItemsStore: Observable {
+class ReaderTabItemsStore: ItemsStore {
 
     let changeDispatcher = Dispatcher<Void>()
+
+    let context: NSManagedObjectContext
+    let service: ReaderTopicService
+
+    init(context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext,
+         service: ReaderTopicService? = nil) {
+        self.context = context
+        self.service = service ?? ReaderTopicService(managedObjectContext: context)
+    }
 
     enum State {
         case loading
@@ -29,7 +42,7 @@ class ReaderTabItemsStore: Observable {
         }
     }
 
-    var tabItems: [ReaderTabItem] {
+    var items: [ReaderTabItem] {
         switch state {
         case .loading, .error:
             return []
@@ -53,7 +66,9 @@ extension ReaderTabItemsStore {
     /// Fetches items from the Core Data cache, if they exist, and updates the state accordingly
     private func fetchTabBarItems() {
         do {
-            guard let topics = try ContextManager.sharedInstance().mainContext.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
+            guard let topics = try context.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
+                self.state = .error(ReaderTopicsConstants.objectTypeError)
+                DDLogError(ReaderTopicsConstants.fetchRequestError + ReaderTopicsConstants.objectTypeError.localizedDescription)
                 return
             }
             let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
@@ -71,11 +86,10 @@ extension ReaderTabItemsStore {
             return
         }
         state = .loading
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenu(success: { [weak self] in
             self?.fetchTabBarItems()
             }, failure: { error in
-                let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+                let actualError = error ?? ReaderTopicsConstants.remoteServiceError
                 DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
                 self.state = .error(actualError)
         })
@@ -87,5 +101,7 @@ extension ReaderTabItemsStore {
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
         static let remoteFetchError = "Error syncing menu: "
+        static let objectTypeError = NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil)
+        static let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
     }
 }
