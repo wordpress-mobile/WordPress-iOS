@@ -119,7 +119,10 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
         if searchWord.hasPrefix(Self.mentionTriggerText) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
-            onCompletion?(.failure(buildErrorForCancelation()))
+            // We are dispatching this async to allow this delegate to finish and process the keypress before executing the cancelation.
+            DispatchQueue.main.async {
+                self.onCompletion?(.failure(self.buildErrorForCancelation()))
+            }
         }
         return true
     }
