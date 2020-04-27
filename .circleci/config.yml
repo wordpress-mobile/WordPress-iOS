@@ -124,7 +124,11 @@ jobs:
       - run:
           name: Build
           working_directory: Scripts
-          command: "bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM"
+          command: |
+            APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
+            echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
+            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV
+            bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM
       - run:
           name: Prepare Artifacts
           command: |
@@ -133,6 +137,12 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
+      - slack/status:
+          include_job_number_field: false
+          include_project_field: false
+          include_visit_job_action: false
+          failure_message: '${SLACK_FAILURE_MESSAGE}'
+          success_message: '${SLACK_SUCCESS_MESSAGE}'
   Release Build:
     executor: 
       name: ios/default
