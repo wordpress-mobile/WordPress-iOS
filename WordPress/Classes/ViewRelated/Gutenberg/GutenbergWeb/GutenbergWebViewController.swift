@@ -73,7 +73,8 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
         navigationItem.rightBarButtonItem = saveButton
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
-        title = NSLocalizedString("Edit on Web", comment: "Title of Gutenberg WEB editor running on a Web View")
+        let localizedTitle = NSLocalizedString("Edit %@", comment: "Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name.")
+        title = String(format: localizedTitle, block.name)
     }
 
     private func evaluateJavascript(_ script: WKUserScript) {
