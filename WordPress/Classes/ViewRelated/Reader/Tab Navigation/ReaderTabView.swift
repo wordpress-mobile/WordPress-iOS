@@ -29,6 +29,13 @@ class ReaderTabView: UIView {
 
         super.init(frame: .zero)
         setupViewElements()
+        viewModel.indexSelectionCallback = { [weak self] index in
+            guard let readerTabView = self else {
+                return
+            }
+            readerTabView.tabBar.setSelectedIndex(index)
+            readerTabView.toggleButtonsView()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -73,16 +80,19 @@ extension ReaderTabView {
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
 
         viewModel.fetchReaderMenu() { [weak self] items in
-            guard let items = items, let self = self else {
+            guard let items = items, items.count > 0, let self = self else {
                 return
             }
-            self.populateTabBar(with: items)
+
+            self.tabBar.items = items
+
+            self.tabBar.setSelectedIndex(self.viewModel.selectedIndex)
+            self.configureTabBarElements()
             self.addContentToContainerView()
         }
     }
 
-    private func populateTabBar(with items: [ReaderTabItem]) {
-        tabBar.items = items
+    private func configureTabBarElements() {
         guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
             return
         }
@@ -149,8 +159,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let readerTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
-            let childController = viewModel.makeChildViewController(with: readerTabItem) else {
+            let childController = viewModel.makeChildViewController(at: tabBar.selectedIndex) else {
                 return
         }
 
@@ -181,29 +190,23 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+        viewModel.showTab(at: tabBar.selectedIndex)
+        toggleButtonsView()
+    }
+
+    private func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
                 return
         }
-        self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
         // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
         guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
             return
         }
         UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            let shouldHideButtons = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+            let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
             self.buttonsStackView.isHidden = shouldHideButtons
             self.horizontalDivider.isHidden = shouldHideButtons
         }
-    }
-
-    func switchToSavedPosts() {
-        guard let index = tabBar.items.firstIndex(where: {
-            $0.title == "Saved"
-        }) else {
-            return
-        }
-        tabBar.setSelectedIndex(index)
-        selectedTabDidChange(tabBar)
     }
 
     /// Filter button
@@ -225,7 +228,7 @@ extension ReaderTabView {
     }
 
     @objc private func didTapSettingsButton() {
-        viewModel.presentSettings()
+        viewModel.presentSettings(from: settingsButton)
     }
 }
 
@@ -249,7 +252,7 @@ extension ReaderTabView {
         static let settingsButtonWidth: CGFloat = 56
 
         static let dividerWidth: CGFloat = .hairlineBorderWidth
-        static let dividerColor: UIColor = .lightGray
+        static let dividerColor: UIColor = UIColor(light: .lightGray, dark: .darkGray)
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }

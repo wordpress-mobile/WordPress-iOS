@@ -1859,6 +1859,7 @@ extension AztecPostViewController {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
+        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
