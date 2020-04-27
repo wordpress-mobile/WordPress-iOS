@@ -606,19 +606,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.present(controller, animated: true)
     }
 
-    func gutenbergDidRequestUnsupportedBlockFallback(with content: String, blockId: String) {
+    func gutenbergDidRequestUnsupportedBlockFallback(for block: Block) {
         do {
-            let controller = try GutenbergWebViewController(with: post, blockHTML: content)
-            showGutenbergWeb(controller, blockId: blockId)
+            let controller = try GutenbergWebViewController(with: post, block: block)
+            showGutenbergWeb(controller)
         } catch {
             DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
             return showUnsupportedBlockUnexpectedErrorAlert()
         }
     }
 
-    func showGutenbergWeb(_ controller: GutenbergWebViewController, blockId: String) {
-        controller.onSave = { [weak self] content in
-            self?.gutenberg.replaceBlock(with: content, blockId: blockId)
+    func showGutenbergWeb(_ controller: GutenbergWebViewController) {
+        controller.onSave = { [weak self] newBlock in
+            self?.gutenberg.replace(block: newBlock)
         }
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .fullScreen

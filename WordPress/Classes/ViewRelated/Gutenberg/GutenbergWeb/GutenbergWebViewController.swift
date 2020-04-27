@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import Gutenberg
 
 class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     enum GutenbergWebError: Error {
@@ -7,23 +8,23 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     let authenticator: RequestAuthenticator?
-    var onSave: ((String) -> Void)?
+    var onSave: ((Block) -> Void)?
 
     private let url: URL
-    private let blockHTML: String
+    private let block: Block
     private let jsInjection: GutenbergWebJavascriptInjection
 
     private lazy var webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController = jsInjection.userContent(messageHandler: self, blockHTML: blockHTML)
+        configuration.userContentController = jsInjection.userContent(messageHandler: self, blockHTML: block.content)
         return WKWebView(frame: .zero, configuration: configuration)
     }()
 
-    init(with post: AbstractPost, blockHTML: String) throws {
+    init(with post: AbstractPost, block: Block) throws {
         authenticator = RequestAuthenticator(blog: post.blog)
-        self.blockHTML = blockHTML
+        self.block = block
 
-        jsInjection = try GutenbergWebJavascriptInjection(blockHTML: blockHTML, userId: "\(post.blog.userID ?? 1)")
+        jsInjection = try GutenbergWebJavascriptInjection(blockHTML: block.content, userId: "\(post.blog.userID ?? 1)")
         guard
             let siteURL = post.blog.homeURL,
             // Use wp-admin URL since Calypso URL won't work retriving the block content.
@@ -87,7 +88,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func save(_ newContent: String) {
-        onSave?(newContent)
+        onSave?(block.replacingContent(with: newContent))
         dismiss()
     }
 
