@@ -29,7 +29,6 @@ class ReaderTabView: UIView {
         self.viewModel = viewModel
 
         super.init(frame: .zero)
-        setupViewElements()
 
         viewModel.didSelectIndex = { [weak self] index in
             self?.tabBar.setSelectedIndex(index)
@@ -42,6 +41,7 @@ class ReaderTabView: UIView {
             self?.configureTabBarElements()
             self?.addContentToContainerView()
         }
+        setupViewElements()
     }
 
     required init?(coder: NSCoder) {
@@ -104,6 +104,7 @@ extension ReaderTabView {
         buttonsStackView.addArrangedSubview(resetFilterButton)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
+        buttonsStackView.isHidden = true
     }
 
     private func setupFilterButton() {

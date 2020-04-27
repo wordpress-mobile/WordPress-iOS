@@ -74,10 +74,10 @@ extension ReaderTabItemsStore {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenu(success: { [weak self] in
             self?.fetchTabBarItems()
-            }, failure: { error in
+            }, failure: { [weak self] error in
                 let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
                 DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
-                self.state = .error(actualError)
+                self?.fetchTabBarItems()
         })
     }
 
@@ -86,6 +86,6 @@ extension ReaderTabItemsStore {
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
-        static let remoteFetchError = "Error syncing menu: "
+        static let remoteFetchError = "Error fetching remote menu - using locally cached menu - "
     }
 }
