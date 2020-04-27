@@ -10,3 +10,8 @@ protocol ScenePresenter {
     /// Presents the scene on the given UIViewController
     @objc func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?)
 }
+
+@objc
+protocol ScenePresenterDelegate {
+    @objc func didDismiss(presenter: ScenePresenter)
+}
