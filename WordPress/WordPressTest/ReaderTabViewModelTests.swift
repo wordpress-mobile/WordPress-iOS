@@ -8,10 +8,12 @@ class MockItemsStore: ItemsStore {
 
     var items: [ReaderTabItem] = [ReaderTabItem(title: "I am an item")]
 
+    var newItems = [ReaderTabItem(title: "I am another item"), ReaderTabItem(title: "I am yet another one")]
+
     var getItemsExpectation: XCTestExpectation?
 
     func getItems() {
-        items = [ReaderTabItem(title: "I am another item"), ReaderTabItem(title: "I am yet another one")]
+        items = newItems
         getItemsExpectation?.fulfill()
         emitChange()
     }
