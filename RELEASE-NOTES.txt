@@ -1,5 +1,6 @@
 14.8
 -----
+* [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
  
 14.7
 -----
