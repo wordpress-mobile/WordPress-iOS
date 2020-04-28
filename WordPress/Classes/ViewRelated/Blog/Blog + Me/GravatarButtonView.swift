@@ -3,6 +3,14 @@ class GravatarButtonView: CircularImageView {
 
     private let tappableWidth: CGFloat
 
+    var adjustView: ((GravatarButtonView) -> Void)?
+
+    override var image: UIImage? {
+        didSet {
+            adjustView?(self)
+        }
+    }
+
     init(tappableWidth: CGFloat) {
         self.tappableWidth = tappableWidth
         super.init(frame: CGRect.zero)

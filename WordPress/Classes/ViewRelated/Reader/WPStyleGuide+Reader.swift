@@ -223,18 +223,17 @@ extension WPStyleGuide {
     // MARK: - Button Styles and Text
 
     class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon) {
+        button.tintColor = imageColor
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
         let disabledColor: UIColor = .neutral(.shade10)
 
-        let normalImage = button.image(for: .normal)
         let highlightedImage = button.image(for: .highlighted)
         let selectedImage = button.image(for: .selected)
         let bothImage = button.image(for: [.highlighted, .selected])
         let disabledImage = button.image(for: .disabled)
 
-        button.setImage(normalImage?.imageWithTintColor(imageColor), for: .normal)
         button.setImage(highlightedImage?.imageWithTintColor(highlightedColor), for: .highlighted)
         button.setImage(selectedImage?.imageWithTintColor(selectedColor), for: .selected)
         button.setImage(bothImage?.imageWithTintColor(bothColor), for: [.selected, .highlighted])
