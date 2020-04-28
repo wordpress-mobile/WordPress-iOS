@@ -20,11 +20,14 @@ class LoginEpilogueViewController: UIViewController {
     ///
     @IBOutlet var doneButton: UIButton!
 
-    /// Constraints on the table view container.
-    /// Used to adjust the table width on iPad.
+    /// Constraints on the table view container and Done button.
+    /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
     private var defaultTableViewMargin: CGFloat = 0
+    @IBOutlet var buttonLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var buttonTrailingConstraint: NSLayoutConstraint!
+    private var defaultButtonMargin: CGFloat = 0
 
     /// Links to the Epilogue TableViewController
     ///
@@ -59,6 +62,7 @@ class LoginEpilogueViewController: UIViewController {
         view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
         defaultTableViewMargin = tableViewLeadingConstraint.constant
+        defaultButtonMargin = buttonLeadingConstraint.constant
         setTableViewMargins()
         refreshInterface(with: credentials)
     }
@@ -156,6 +160,8 @@ private extension LoginEpilogueViewController {
             traitCollection.verticalSizeClass == .regular else {
                 tableViewLeadingConstraint.constant = defaultTableViewMargin
                 tableViewTrailingConstraint.constant = defaultTableViewMargin
+                buttonLeadingConstraint.constant = defaultButtonMargin
+                buttonTrailingConstraint.constant = defaultButtonMargin
                 return
         }
 
@@ -171,6 +177,9 @@ private extension LoginEpilogueViewController {
 
         tableViewLeadingConstraint.constant = margin
         tableViewTrailingConstraint.constant = margin
+
+        buttonLeadingConstraint.constant = 0
+        buttonTrailingConstraint.constant = 0
     }
 
     enum TableViewMarginMultipliers {

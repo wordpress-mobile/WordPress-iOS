@@ -41,7 +41,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
-                                <rect key="frame" x="-0.5" y="603" width="376" height="44"/>
+                                <rect key="frame" x="20" y="603" width="335" height="44"/>
                                 <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8TV-5o-H50"/>
@@ -63,16 +63,16 @@
                             </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="0rB-nq-HUv"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="3xo-Xc-gY6"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="width" secondItem="qDW-L0-z8a" secondAttribute="width" constant="1" id="I7i-NQ-93d"/>
                             <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="20" id="M0r-84-tJ6"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" id="au1-yD-v4h"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
+                            <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="centerX" secondItem="qDW-L0-z8a" secondAttribute="centerX" id="wOQ-fM-hVH"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
@@ -80,7 +80,9 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="buttonLeadingConstraint" destination="0rB-nq-HUv" id="nIt-rI-J1m"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
+                        <outlet property="buttonTrailingConstraint" destination="gKl-WT-Qzi" id="Qo8-3z-ogl"/>
                         <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>
