@@ -30,8 +30,11 @@
 
 - (void)hideSuggestions;
 
+/// Tells the number of suggestions available for the current search
 - (NSInteger)numberOfSuggestions;
 
+/// Select the suggestion at a certain position and triggers the selection delegate
+/// @param position the index to select
 - (void)selectSuggestionAtPosition:(NSInteger)position;
 
 @end
