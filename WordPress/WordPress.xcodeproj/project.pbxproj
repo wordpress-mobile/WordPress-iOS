@@ -311,6 +311,7 @@
 		1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
+		1E4F2E712458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */; };
 		1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */; };
 		1ED046D0244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */; };
 		1ED046D2244F55C6008F6365 /* GutenbergWebStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */; };
@@ -2643,6 +2644,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebViewController.swift; sourceTree = "<group>"; };
+		1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebNavigationViewController.swift; sourceTree = "<group>"; };
 		1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRollout.swift; sourceTree = "<group>"; };
 		1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebJavascriptInjection.swift; sourceTree = "<group>"; };
 		1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = GutenbergWebStyle.css; sourceTree = "<group>"; };
@@ -5473,6 +5475,7 @@
 			isa = PBXGroup;
 			children = (
 				1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */,
+				1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */,
 				1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */,
 				1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */,
 				1ED2A37424506C8E0000C91C /* WPBarsStyle.css */,
@@ -12055,6 +12058,7 @@
 				E6805D311DCD399600168E4F /* WPRichTextImage.swift in Sources */,
 				7E4123C120F4097B00DF8486 /* FormattableContentRange.swift in Sources */,
 				08D978581CD2AF7D0054F19A /* MenuItemSourceHeaderView.m in Sources */,
+				1E4F2E712458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift in Sources */,
 				3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */,
 				BE1071FC1BC75E7400906AFF /* WPStyleGuide+Blog.swift in Sources */,
 				B56695B01D411EEB007E342F /* KeyboardDismissHelper.swift in Sources */,

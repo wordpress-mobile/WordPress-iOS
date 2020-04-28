@@ -608,7 +608,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestUnsupportedBlockFallback(for block: Block) {
         do {
-            let controller = try GutenbergWebViewController(with: post, block: block)
+            let controller = try GutenbergWebNavigationController(with: post, block: block)
             showGutenbergWeb(controller)
         } catch {
             DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
@@ -616,12 +616,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func showGutenbergWeb(_ controller: GutenbergWebViewController) {
+    func showGutenbergWeb(_ controller: GutenbergWebNavigationController) {
         controller.onSave = { [weak self] newBlock in
             self?.gutenberg.replace(block: newBlock)
         }
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true)
+        present(controller, animated: true)
     }
 
     func showUnsupportedBlockUnexpectedErrorAlert() {
