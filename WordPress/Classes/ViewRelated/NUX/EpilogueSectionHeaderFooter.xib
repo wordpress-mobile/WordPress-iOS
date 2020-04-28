@@ -15,7 +15,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOGGED IN AS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2s-FQ-khG">
-                    <rect key="frame" x="0.0" y="20" width="394" height="17"/>
+                    <rect key="frame" x="20" y="20" width="354" height="17"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="bF1-fB-08e"/>
                     </constraints>
@@ -25,9 +25,9 @@
                 </label>
             </subviews>
             <constraints>
-                <constraint firstItem="h2s-FQ-khG" firstAttribute="leading" secondItem="21a-RX-ZhF" secondAttribute="leading" id="3Uz-6C-ppc"/>
+                <constraint firstItem="h2s-FQ-khG" firstAttribute="leading" secondItem="21a-RX-ZhF" secondAttribute="leading" constant="20" id="3Uz-6C-ppc"/>
                 <constraint firstItem="21a-RX-ZhF" firstAttribute="bottom" secondItem="h2s-FQ-khG" secondAttribute="bottom" constant="7" id="3bI-dr-T8V"/>
-                <constraint firstItem="21a-RX-ZhF" firstAttribute="trailing" secondItem="h2s-FQ-khG" secondAttribute="trailing" id="mUk-yi-bRz"/>
+                <constraint firstItem="21a-RX-ZhF" firstAttribute="trailing" secondItem="h2s-FQ-khG" secondAttribute="trailing" constant="20" id="mUk-yi-bRz"/>
                 <constraint firstItem="h2s-FQ-khG" firstAttribute="top" secondItem="21a-RX-ZhF" secondAttribute="top" constant="20" id="siM-Nd-UFb"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -35,7 +35,6 @@
             <connections>
                 <outlet property="titleLabel" destination="h2s-FQ-khG" id="xfc-xS-vwy"/>
                 <outlet property="topConstraint" destination="siM-Nd-UFb" id="u2G-qu-xyE"/>
-                <outlet property="trailingConstraint" destination="mUk-yi-bRz" id="Z49-C9-Que"/>
             </connections>
             <point key="canvasLocation" x="37" y="85"/>
         </view>
