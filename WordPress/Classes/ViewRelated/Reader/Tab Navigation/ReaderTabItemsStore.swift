@@ -93,7 +93,7 @@ extension ReaderTabItemsStore {
                                     let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
                                     DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
                                     self?.fetchTabBarItems()
-                                    
+
         })
     }
 
