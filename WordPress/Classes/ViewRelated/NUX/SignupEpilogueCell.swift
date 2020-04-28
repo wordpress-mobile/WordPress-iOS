@@ -25,6 +25,11 @@ class SignupEpilogueCell: UITableViewCell {
     @IBOutlet var cellFieldLeadingConstraintWithLabel: NSLayoutConstraint!
     @IBOutlet var cellFieldLeadingConstraintWithoutLabel: NSLayoutConstraint!
 
+    // Used to layout cellField when disclosure icon is shown or hidden.
+    @IBOutlet var cellFieldTrailingConstraint: NSLayoutConstraint!
+    private var cellFieldTrailingMarginDefault: CGFloat = 0
+    private let cellFieldTrailingMarginDisclosure: CGFloat = 10
+
     // Used to apply a top margin to the Password field.
     @IBOutlet var cellFieldTopConstraint: NSLayoutConstraint!
     private let passwordTopMargin: CGFloat = 16
@@ -33,6 +38,11 @@ class SignupEpilogueCell: UITableViewCell {
     open var delegate: SignupEpilogueCellDelegate?
 
     // MARK: - UITableViewCell
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        cellFieldTrailingMarginDefault = cellFieldTrailingConstraint.constant
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -137,8 +147,10 @@ class SignupEpilogueCell: UITableViewCell {
     private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
             accessoryType = .disclosureIndicator
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDisclosure
         } else {
             accessoryType = .none
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDefault
         }
     }
 
