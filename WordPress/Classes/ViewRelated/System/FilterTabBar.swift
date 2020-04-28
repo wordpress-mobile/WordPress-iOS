@@ -357,10 +357,7 @@ class FilterTabBar: UIControl {
     }
 
     var currentlySelectedItem: FilterTabBarItem? {
-        guard items.indices.contains(selectedIndex) else {
-            return nil
-        }
-        return items[selectedIndex]
+        return items[safe: selectedIndex]
     }
 
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
