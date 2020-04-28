@@ -76,7 +76,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
         navigationItem.rightBarButtonItem = saveButton
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
-        let localizedTitle = NSLocalizedString("Edit %@", comment: "Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name.")
+        let localizedTitle = NSLocalizedString("Edit %@ block", comment: "Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name.")
         title = String(format: localizedTitle, block.name)
     }
 
