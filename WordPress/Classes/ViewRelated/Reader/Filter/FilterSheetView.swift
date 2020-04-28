@@ -21,7 +21,11 @@ class FilterSheetView: UIView {
         return tableView
     }()
 
-    lazy var ghostableTableView: UITableView = {
+    private lazy var emptyView: EmptyActionView = {
+        return EmptyActionView(tappedButton: tappedEmptyAddButton)
+    }()
+
+    private lazy var ghostableTableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = false
         tableView.isScrollEnabled = false
@@ -29,7 +33,7 @@ class FilterSheetView: UIView {
         return tableView
     }()
 
-    lazy var filterTabBar: FilterTabBar = {
+    private lazy var filterTabBar: FilterTabBar = {
         let tabBar = FilterTabBar()
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.tabSizingStyle = .equalWidths
@@ -37,7 +41,7 @@ class FilterSheetView: UIView {
         return tabBar
     }()
 
-    lazy var headerLabelView: UIView = {
+    private lazy var headerLabelView: UIView = {
         let labelView = UIView()
         let label = UILabel()
         label.font = Constants.Header.font
@@ -48,12 +52,13 @@ class FilterSheetView: UIView {
         return labelView
     }()
 
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             headerLabelView,
             filterTabBar,
             tableView,
-            ghostableTableView
+            ghostableTableView,
+            emptyView
         ])
 
         stack.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)
@@ -64,6 +69,7 @@ class FilterSheetView: UIView {
 
     // MARK: Properties
 
+    private weak var presentationController: UIViewController?
     private var subscriptions: [Receipt]?
     private var changedFilter: (ReaderAbstractTopic) -> Void
     private var dataSource: FilterTableViewDataSource? {
@@ -73,17 +79,32 @@ class FilterSheetView: UIView {
         }
     }
 
+    private func tappedEmptyAddButton() {
+        if let controller = presentationController {
+            selectedFilter?.showAdd(on: controller, sceneDelegate: self)
+        }
+    }
+
     private var selectedFilter: FilterProvider? {
         set {
             if let filter = newValue {
                 dataSource = FilterTableViewDataSource(data: filter.items, reuseIdentifier: filter.reuseIdentifier)
                 if filter.state.isReady == false {
+                    /// Loading state
+                    emptyView.isHidden = true
                     tableView.isHidden = true
                     updateGhostableTableViewOptions(cellClass: filter.cellClass, identifier: filter.reuseIdentifier)
                 } else {
+                    /// Finished loading
                     ghostableTableView.stopGhostAnimation()
                     ghostableTableView.isHidden = true
-                    tableView.isHidden = false
+
+                    let isEmpty = filter.items.isEmpty
+                    if isEmpty {
+                        refreshEmpty(filter: filter)
+                    }
+                    emptyView.isHidden = !isEmpty
+                    tableView.isHidden = isEmpty
                 }
             }
         }
@@ -92,10 +113,14 @@ class FilterSheetView: UIView {
         }
     }
 
+    private let filters: [FilterProvider]
+
     // MARK: Methods
 
-    init(filters: [FilterProvider], changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+    init(filters: [FilterProvider], presentationController: UIViewController, changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+        self.presentationController = presentationController
         self.changedFilter = changedFilter
+        self.filters = filters
         super.init(frame: .zero)
 
         filterTabBar.items = filters
@@ -115,6 +140,14 @@ class FilterSheetView: UIView {
                 self?.filterTabBar.items = filters
             }
         }
+
+        refresh(filters: filters)
+    }
+
+    private func refresh(filters: [FilterProvider]) {
+        filters.forEach({ provider in
+            provider.refresh()
+        })
     }
 
     required init?(coder: NSCoder) {
@@ -135,6 +168,11 @@ class FilterSheetView: UIView {
     @objc func changedTab(_ sender: FilterTabBar) {
         selectedFilter = filterTabBar.items[sender.selectedIndex] as? FilterProvider
     }
+
+    private func refreshEmpty(filter: FilterProvider) {
+        emptyView.title = filter.emptyTitle
+        emptyView.labelText = filter.emptyActionTitle
+    }
 }
 
 extension FilterSheetView: UITableViewDelegate {
@@ -142,5 +180,11 @@ extension FilterSheetView: UITableViewDelegate {
         if let topic = dataSource?.data[indexPath.row].topic {
             changedFilter(topic)
         }
+    }
+}
+
+extension FilterSheetView: ScenePresenterDelegate {
+    func didDismiss(presenter: ScenePresenter) {
+        refresh(filters: filters)
     }
 }

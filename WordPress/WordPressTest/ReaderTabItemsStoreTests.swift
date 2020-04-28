@@ -77,6 +77,37 @@ class ReaderTabItemsStoreTests: XCTestCase {
         }
     }
 
+    /// remote service fetch fails - fetch local items
+    func testGetLocalItemsOnRemoteServiceFailure() {
+        // Given
+        let mockTopic = ReaderAbstractTopic(context: context)
+        mockTopic.title = "imamock"
+        let mockTopics = [mockTopic]
+
+        context.returnedObjects = mockTopics
+        context.fetchExpectation = expectation(description: "fetch request executed")
+        context.successExpectation = expectation(description: "fetch request succeeded")
+
+        service.success = false
+        service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
+        service.fetchMenuFailureExpectation = expectation(description: "fetch from remote service failed")
+
+        let stateChangeExpectation = expectation(description: "state change emitted")
+
+        subscription = store.onChange {
+            stateChangeExpectation.fulfill()
+            XCTAssertEqual(["imamock", "Saved"], self.store.items.map { $0.title })
+        }
+        // When
+        store.getItems()
+        // Then
+        waitForExpectations(timeout: 4) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+
     /// fetch request fails
     func testGetItemsFetchRequestFailure() {
         // Given
@@ -132,35 +163,6 @@ class ReaderTabItemsStoreTests: XCTestCase {
                 XCTFail("failure not detected")
             case .error(let error):
                 XCTAssertEqual(error as NSError, NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil))
-            }
-        }
-        // When
-        store.getItems()
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
-    /// remote service fetch fails
-    func testGetItemsServiceFailure() {
-        // Given
-        service.success = false
-        service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
-        service.fetchMenuFailureExpectation = expectation(description: "fetch from remote service failed")
-        service.failureError = mockError
-
-        let stateChangeExpectation = expectation(description: "state change emitted")
-
-        subscription = store.onChange {
-            stateChangeExpectation.fulfill()
-            switch self.store.state {
-            case .ready, .loading:
-                XCTFail("failure not detected")
-            case .error(let error):
-                XCTAssertEqual(error as NSError, self.mockError)
             }
         }
         // When

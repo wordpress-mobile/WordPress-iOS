@@ -29,7 +29,6 @@ class ReaderTabView: UIView {
         self.viewModel = viewModel
 
         super.init(frame: .zero)
-        setupViewElements()
 
         viewModel.didSelectIndex = { [weak self] index in
             self?.tabBar.setSelectedIndex(index)
@@ -42,6 +41,7 @@ class ReaderTabView: UIView {
             self?.configureTabBarElements()
             self?.addContentToContainerView()
         }
+        setupViewElements()
     }
 
     required init?(coder: NSCoder) {
@@ -88,7 +88,7 @@ extension ReaderTabView {
     }
 
     private func configureTabBarElements() {
-        guard let tabItem = tabBar.currentlyCelectedItem as? ReaderTabItem else {
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
             return
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
@@ -104,6 +104,7 @@ extension ReaderTabView {
         buttonsStackView.addArrangedSubview(resetFilterButton)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
+        buttonsStackView.isHidden = true
     }
 
     private func setupFilterButton() {
@@ -219,7 +220,7 @@ extension ReaderTabView {
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
-        guard let tabItem = tabBar.currentlyCelectedItem as? ReaderTabItem else {
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
             return
         }
         viewModel.resetFilter(selectedItem: tabItem)
@@ -250,7 +251,7 @@ extension ReaderTabView {
         static let settingsButtonWidth: CGFloat = 56
 
         static let dividerWidth: CGFloat = .hairlineBorderWidth
-        static let dividerColor: UIColor = .neutral(.shade10)
+        static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }

@@ -87,11 +87,13 @@ extension ReaderTabItemsStore {
         }
         state = .loading
         service.fetchReaderMenu(success: { [weak self] in
-            self?.fetchTabBarItems()
-            }, failure: { error in
-                let actualError = error ?? ReaderTopicsConstants.remoteServiceError
-                DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
-                self.state = .error(actualError)
+                                    self?.fetchTabBarItems()
+            },
+                                failure: { [weak self] error in
+                                    let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+                                    DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+                                    self?.fetchTabBarItems()
+                                    
         })
     }
 

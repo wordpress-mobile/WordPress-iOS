@@ -55,15 +55,15 @@ private extension UIBarButtonItem {
     func makeGravatarTappableView(with email: String?, target: Any?, action: Selector?) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
-        gravatarImageView.adjustView = { [weak self] in
+        gravatarImageView.adjustView = { [weak self] view in
             // if there's a gravatar, add the border, if not, remove it and resize the userCircle image
-            if $0.image == GravatarConfiguration.fallBackImage {
-                $0.setBorder(width: 0)
-                self?.setSize(of: $0, size: CGSize(width: GravatarConfiguration.extendedRadius,
+            if view.image == GravatarConfiguration.fallBackImage {
+                view.setBorder(width: 0)
+                self?.setSize(of: view, size: CGSize(width: GravatarConfiguration.extendedRadius,
                                                    height: GravatarConfiguration.extendedRadius))
             } else {
-                $0.setBorder()
-                self?.setSize(of: $0, size: CGSize(width: GravatarConfiguration.radius,
+                view.setBorder()
+                self?.setSize(of: view, size: CGSize(width: GravatarConfiguration.radius,
                                                    height: GravatarConfiguration.radius))
             }
         }
