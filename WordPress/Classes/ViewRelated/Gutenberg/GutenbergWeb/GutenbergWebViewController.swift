@@ -13,6 +13,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     private let url: URL
     private let block: Block
     private let jsInjection: GutenbergWebJavascriptInjection
+    private let isSelfHosted: Bool
 
     private lazy var webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
@@ -34,6 +35,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         }
 
         url = editorURL
+        isSelfHosted = !post.blog.isHostedAtWPcom
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -111,7 +113,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
 extension GutenbergWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-        if navigationResponse.response.url?.absoluteString.contains("/wp-admin/post-new.php") ?? false {
+        if !isSelfHosted && navigationResponse.response.url?.absoluteString.contains("/wp-admin/post-new.php") ?? false {
             evaluateJavascript(jsInjection.insertBlockScript)
         }
         decisionHandler(.allow)
@@ -131,6 +133,9 @@ extension GutenbergWebViewController: WKNavigationDelegate {
         // Sometimes the editor takes longer loading and its CSS can override what
         // Injectic Editor specific CSS when everything is loaded to avoid overwritting parameters if gutenberg CSS load later.
         evaluateJavascript(jsInjection.injectEditorCssScript)
+        if isSelfHosted {
+            evaluateJavascript(jsInjection.insertBlockScript)
+        }
     }
 }
 
