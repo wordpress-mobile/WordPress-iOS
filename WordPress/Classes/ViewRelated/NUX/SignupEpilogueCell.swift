@@ -30,6 +30,9 @@ class SignupEpilogueCell: UITableViewCell {
     private var cellFieldTrailingMarginDefault: CGFloat = 0
     private let cellFieldTrailingMarginDisclosure: CGFloat = 10
 
+    // Used to inset the separator lines.
+    @IBOutlet var cellLabelLeadingConstraint: NSLayoutConstraint!
+
     // Used to apply a top margin to the Password field.
     @IBOutlet var cellFieldTopConstraint: NSLayoutConstraint!
     private let passwordTopMargin: CGFloat = 16
@@ -103,7 +106,7 @@ class SignupEpilogueCell: UITableViewCell {
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
 
-        addBottomBorder(withColor: .divider)
+        addBottomBorder(withColor: .divider, leadingMargin: cellLabelLeadingConstraint.constant)
 
         // TODO: remove this when `WordPressAuthenticatorStyle:textFieldBackgroundColor` is updated.
         // This background color should be inherited from LoginTextField.

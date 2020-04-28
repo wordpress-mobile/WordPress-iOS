@@ -58,6 +58,7 @@
                 <outlet property="cellFieldTopConstraint" destination="qjh-pQ-X5J" id="Fnd-0I-Qj1"/>
                 <outlet property="cellFieldTrailingConstraint" destination="nx1-DQ-7CM" id="07I-Dc-Ij6"/>
                 <outlet property="cellLabel" destination="IPK-b3-7Fi" id="zEA-to-D3Z"/>
+                <outlet property="cellLabelLeadingConstraint" destination="hj5-JA-DrQ" id="Owe-3a-Gi4"/>
             </connections>
             <point key="canvasLocation" x="-298.5" y="-176"/>
         </tableViewCell>
