@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="16" y="0.0" width="343" height="583"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
@@ -41,7 +41,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
-                                <rect key="frame" x="15.5" y="603" width="344" height="44"/>
+                                <rect key="frame" x="20" y="603" width="335" height="44"/>
                                 <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8TV-5o-H50"/>
@@ -63,16 +63,16 @@
                             </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="0rB-nq-HUv"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="3xo-Xc-gY6"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="width" secondItem="qDW-L0-z8a" secondAttribute="width" constant="1" id="I7i-NQ-93d"/>
                             <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="20" id="M0r-84-tJ6"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" constant="16" id="au1-yD-v4h"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" id="au1-yD-v4h"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
+                            <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
-                            <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" constant="16" id="pOP-pd-DMR"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="centerX" secondItem="qDW-L0-z8a" secondAttribute="centerX" id="wOQ-fM-hVH"/>
+                            <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
@@ -80,7 +80,9 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="buttonLeadingConstraint" destination="0rB-nq-HUv" id="nIt-rI-J1m"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
+                        <outlet property="buttonTrailingConstraint" destination="gKl-WT-Qzi" id="Qo8-3z-ogl"/>
                         <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>
@@ -97,33 +99,33 @@
             <objects>
                 <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
-                        <rect key="frame" x="0.0" y="0.0" width="343" height="583"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="58" id="jbC-9p-MD0" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="343" height="58"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jbC-9p-MD0" id="WSD-zl-Z4K">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="58"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="diS-LA-oFB">
-                                            <rect key="frame" x="0.0" y="10" width="40" height="38"/>
+                                            <rect key="frame" x="20" y="10" width="40" height="38"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="diS-LA-oFB" secondAttribute="height" multiplier="1:1" id="EDm-IG-hab"/>
                                                 <constraint firstAttribute="width" constant="40" id="jXu-be-bSL"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHR-j2-pY2">
-                                            <rect key="frame" x="50" y="10" width="293" height="18"/>
+                                            <rect key="frame" x="70" y="10" width="285" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="siteurl.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w2L-7L-x21">
-                                            <rect key="frame" x="50" y="32" width="293" height="16"/>
+                                            <rect key="frame" x="70" y="32" width="285" height="16"/>
                                             <accessibility key="accessibilityConfiguration" identifier="siteUrl"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <nil key="textColor"/>
@@ -133,15 +135,15 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="diS-LA-oFB" firstAttribute="centerY" secondItem="WSD-zl-Z4K" secondAttribute="centerY" id="0PF-9R-ocT"/>
-                                        <constraint firstItem="diS-LA-oFB" firstAttribute="leading" secondItem="WSD-zl-Z4K" secondAttribute="leading" id="2hH-m8-OhI"/>
+                                        <constraint firstItem="diS-LA-oFB" firstAttribute="leading" secondItem="WSD-zl-Z4K" secondAttribute="leading" constant="20" id="2hH-m8-OhI"/>
                                         <constraint firstItem="sHR-j2-pY2" firstAttribute="centerY" secondItem="diS-LA-oFB" secondAttribute="centerY" id="CgY-JP-zlk"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="diS-LA-oFB" secondAttribute="bottom" constant="10" id="EI4-C6-JZL"/>
                                         <constraint firstItem="diS-LA-oFB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WSD-zl-Z4K" secondAttribute="top" constant="10" id="FIZ-Oq-Edg"/>
-                                        <constraint firstAttribute="trailing" secondItem="w2L-7L-x21" secondAttribute="trailing" id="Jga-aE-6wc"/>
+                                        <constraint firstAttribute="trailing" secondItem="w2L-7L-x21" secondAttribute="trailing" constant="20" id="Jga-aE-6wc"/>
                                         <constraint firstItem="sHR-j2-pY2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WSD-zl-Z4K" secondAttribute="top" constant="10" id="NRK-5z-MD7"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="w2L-7L-x21" secondAttribute="bottom" constant="10" id="NxC-la-3Ir"/>
                                         <constraint firstItem="sHR-j2-pY2" firstAttribute="leading" secondItem="diS-LA-oFB" secondAttribute="trailing" constant="10" id="On8-Kk-6Od"/>
-                                        <constraint firstAttribute="trailing" secondItem="sHR-j2-pY2" secondAttribute="trailing" id="QcF-DX-Fd5"/>
+                                        <constraint firstAttribute="trailing" secondItem="sHR-j2-pY2" secondAttribute="trailing" constant="20" id="QcF-DX-Fd5"/>
                                         <constraint firstItem="w2L-7L-x21" firstAttribute="leading" secondItem="diS-LA-oFB" secondAttribute="trailing" constant="10" id="hC5-KQ-cuE"/>
                                         <constraint firstItem="w2L-7L-x21" firstAttribute="top" secondItem="sHR-j2-pY2" secondAttribute="bottom" constant="4" id="kxP-qc-0Hr"/>
                                     </constraints>
