@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -105,7 +105,11 @@
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
                     </view>
                     <connections>
+                        <outlet property="buttonLeadingConstraint" destination="n1E-2N-8ez" id="88m-I4-RXS"/>
+                        <outlet property="buttonTrailingConstraint" destination="eR1-Ec-XkA" id="Xr2-hw-cSK"/>
                         <outlet property="doneButton" destination="atb-5g-t4d" id="JdZ-x9-aXK"/>
+                        <outlet property="tableViewLeadingConstraint" destination="Ke8-3y-IW1" id="gra-zm-3j4"/>
+                        <outlet property="tableViewTrailingConstraint" destination="drs-fr-MgU" id="1WO-CG-vgL"/>
                         <segue destination="CFB-8a-SBe" kind="show" identifier="showUsernames" id="39l-r4-qyx"/>
                     </connections>
                 </viewController>
