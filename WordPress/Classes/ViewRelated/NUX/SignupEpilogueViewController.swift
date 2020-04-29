@@ -38,7 +38,7 @@ class SignupEpilogueViewController: NUXViewController {
         super.viewDidLoad()
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
-        setTableViewMargins()
+        setTableViewMargins(forWidth: view.frame.width)
         WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
     }
 
@@ -50,12 +50,12 @@ class SignupEpilogueViewController: NUXViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setTableViewMargins()
+        setTableViewMargins(forWidth: size.width)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setTableViewMargins()
+        setTableViewMargins(forWidth: view.frame.width)
     }
 
     // MARK: - Navigation
@@ -150,7 +150,8 @@ private extension SignupEpilogueViewController {
         doneButton.accessibilityIdentifier = ButtonTitle.accessibilityId
     }
 
-    func setTableViewMargins() {
+    func setTableViewMargins(forWidth viewWidth: CGFloat) {
+
         guard traitCollection.horizontalSizeClass == .regular &&
             traitCollection.verticalSizeClass == .regular else {
                 tableViewLeadingConstraint.constant = defaultTableViewMargin
@@ -158,14 +159,10 @@ private extension SignupEpilogueViewController {
                 return
         }
 
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        let marginMultiplier = isLandscape ?
+        let marginMultiplier = UIDevice.current.orientation.isLandscape ?
             TableViewMarginMultipliers.ipadLandscape :
             TableViewMarginMultipliers.ipadPortrait
 
-        let screenSizeMax = max(view.frame.width, view.frame.height)
-        let screenSizeMin = min(view.frame.width, view.frame.height)
-        let viewWidth = isLandscape ? screenSizeMax : screenSizeMin
         let margin = viewWidth * marginMultiplier
 
         tableViewLeadingConstraint.constant = margin
