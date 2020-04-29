@@ -144,6 +144,7 @@ class SignupEpilogueCell: UITableViewCell {
             cellField.accessibilityIdentifier = "Username Field"
         case .password:
             cellField.accessibilityIdentifier = "Password Field"
+            cellLabel.isAccessibilityElement = false
         }
     }
 
