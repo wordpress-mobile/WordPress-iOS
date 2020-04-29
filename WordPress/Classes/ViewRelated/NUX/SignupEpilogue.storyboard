@@ -105,8 +105,6 @@
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
                     </view>
                     <connections>
-                        <outlet property="buttonLeadingConstraint" destination="n1E-2N-8ez" id="88m-I4-RXS"/>
-                        <outlet property="buttonTrailingConstraint" destination="eR1-Ec-XkA" id="Xr2-hw-cSK"/>
                         <outlet property="doneButton" destination="atb-5g-t4d" id="JdZ-x9-aXK"/>
                         <outlet property="tableViewLeadingConstraint" destination="Ke8-3y-IW1" id="gra-zm-3j4"/>
                         <outlet property="tableViewTrailingConstraint" destination="drs-fr-MgU" id="1WO-CG-vgL"/>
