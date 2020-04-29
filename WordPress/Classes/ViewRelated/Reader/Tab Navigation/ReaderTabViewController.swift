@@ -16,6 +16,8 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
+        setupSearchButton()
+
         ReaderTabViewController.configureRestoration(on: self)
 
         viewModel.filterTapped = { [weak self] (fromView, completion) in
@@ -49,11 +51,6 @@ class ReaderTabViewController: UIViewController {
     override func loadView() {
         view = readerTabView
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupSearchButton()
-    }
 }
 
 
@@ -81,10 +78,8 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
         let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
 
-        guard let controller = WPTabBarController.sharedInstance()?.readerTabViewController else {
-            return nil
-        }
-        controller.setStartIndex(index)
+        let controller = WPTabBarController.sharedInstance().readerTabViewController
+        controller?.setStartIndex(index)
 
         return controller
     }
