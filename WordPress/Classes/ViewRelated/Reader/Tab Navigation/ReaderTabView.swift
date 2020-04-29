@@ -93,6 +93,8 @@ extension ReaderTabView {
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         horizontalDivider.isHidden = tabItem.shouldHideButtonsView
+        settingsButton.isHidden = tabItem.shouldHideSettingsButton
+        verticalDivider.isHidden = tabItem.shouldHideSettingsButton
     }
 
     private func setupButtonsView() {
@@ -161,6 +163,12 @@ extension ReaderTabView {
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
         childController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        controller.children.forEach {
+            $0.willMove(toParent: nil)
+            $0.view.removeFromSuperview()
+            $0.removeFromParent()
+        }
 
         controller.addChild(childController)
 

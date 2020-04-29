@@ -43,6 +43,8 @@ extension ReaderTabItem {
             return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
         case .saved:
             return NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+        default:
+            return ""
         }
     }
 }
@@ -50,8 +52,9 @@ extension ReaderTabItem {
 
 // MARK: - Reader Content
 enum ReaderContentType {
-    case saved
     case emptyFollowing
+    case contentError
+    case saved
     case topic
 }
 

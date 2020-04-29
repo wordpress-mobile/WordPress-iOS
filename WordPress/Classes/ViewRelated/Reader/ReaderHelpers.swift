@@ -267,10 +267,16 @@ extension ReaderHelpers {
             }
             return true
         }
+
+        guard !mutableItems.isEmpty else {
+            return mutableItems
+        }
         // fourth item: Saved. It's manually inserted after the sorting
-        if !mutableItems.isEmpty {
-            let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
-            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
+        let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
+        mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
+        // in case of log in with a self hosted site, prepend a 'dummy' Following tab
+        if !isLoggedIn() {
+            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .emptyFollowing)), at: 0)
         }
         return mutableItems
     }

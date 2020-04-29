@@ -20,7 +20,7 @@ import WordPressFlux
     var setContent: ((ReaderContent) -> Void)?
 
     /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
-    var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
+    var makeReaderContentViewController: (ReaderContent) -> ReaderContentViewController
 
     /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
@@ -32,7 +32,7 @@ import WordPressFlux
     /// Settings
     var settingsTapped: ((UIView) -> Void)?
 
-    init(readerContentFactory: @escaping (ReaderAbstractTopic?) -> ReaderContentViewController,
+    init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ReaderTabItemsStore) {
         self.makeReaderContentViewController = readerContentFactory
@@ -137,8 +137,8 @@ extension ReaderTabViewModel {
 
     func resetFilter(selectedItem: FilterTabBarItem) {
         selectedFilter = nil
-        if let configuration = (selectedItem as? ReaderTabItem)?.content, configuration.topic != nil {
-            setContent?(configuration)
+        if let content = (selectedItem as? ReaderTabItem)?.content {
+            setContent?(content)
         }
     }
 }
@@ -168,10 +168,10 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
 
     func makeChildContentViewController(at index: Int) -> ReaderContentViewController? {
-        guard index < tabItems.count else {
-            return nil
+        guard tabItems.indices.contains(index) else {
+            return tabItems.isEmpty ? makeReaderContentViewController(ReaderContent(topic: nil, contentType: .contentError)) : nil
         }
-        let controller = makeReaderContentViewController(tabItems[index].content.topic)
+        let controller = makeReaderContentViewController(tabItems[index].content)
 
         setContent = { [weak controller] configuration in
             controller?.setContent(configuration)

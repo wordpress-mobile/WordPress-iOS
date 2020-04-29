@@ -55,6 +55,12 @@ import WordPressFlux
         return refreshControl
     }()
 
+    private var noResultsOverlay: NoResultsViewController?
+
+    private let reloadReader = {
+        WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
+    }
+
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
@@ -129,7 +135,7 @@ import WordPressFlux
 
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
-                    configureControllerForTopic()
+                    updateContent()
                     if let syncHelper = syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
                         displayLoadingViewIfNeeded()
                     }
@@ -141,18 +147,18 @@ import WordPressFlux
         }
     }
 
-    var isSavedPostsController: Bool = false {
+    var contentType: ReaderContentType = .topic {
         willSet {
-            if isSavedPostsController && !newValue {
+            if contentType == .saved && newValue != .saved {
                 postCellActions?.clearRemovedPosts()
             }
         }
         didSet {
-            if isSavedPostsController {
-                configureControllerForTopic(synchronize: false)
+            if contentType == .saved {
+                updateContent(synchronize: false)
                 trackSavedListAccessed()
             }
-            postCellActions?.visibleConfirmation = !isSavedPostsController
+            postCellActions?.visibleConfirmation = contentType != .saved
         }
     }
 
@@ -216,9 +222,9 @@ import WordPressFlux
     }
 
     /// Convenience method to create an instance for saved posts
-    class func controllerForSavedPosts() -> ReaderStreamViewController {
+    class func controllerForContentType(_ contentType: ReaderContentType) -> ReaderStreamViewController {
         let controller = ReaderStreamViewController()
-        controller.isSavedPostsController = true
+        controller.contentType = contentType
         return controller
     }
 
@@ -291,10 +297,14 @@ import WordPressFlux
 
         didSetupView = true
 
-        if readerTopic != nil || isSavedPostsController {
+        guard !shouldDisplayOverlay else {
+            return
+        }
+
+        if readerTopic != nil || contentType == .saved {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
-            configureControllerForTopic(synchronize: false)
+            updateContent(synchronize: false)
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
@@ -508,9 +518,8 @@ import WordPressFlux
     }
 
 
-    /// Configures the controller for the `readerTopic`.  This should only be called
-    /// once when the topic is set.
-    private func configureControllerForTopic(synchronize: Bool = true) {
+    /// Updates the content based on the values of `readerTopic` and `contentType`
+    private func updateContent(synchronize: Bool = true) {
         // if the view has not been loaded yet, this will be called in viewDidLoad
         guard isViewLoaded else {
             return
@@ -554,7 +563,7 @@ import WordPressFlux
         // Make sure we're showing the no results view if appropriate
         if let syncHelper = syncHelper, !syncHelper.isSyncing, content.isEmpty {
             displayNoResultsView()
-        } else if isSavedPostsController, content.isEmpty {
+        } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
         }
 
@@ -1110,7 +1119,7 @@ import WordPressFlux
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
-        let predicateForNilTopic = isSavedPostsController ?
+        let predicateForNilTopic = contentType == .saved ?
             NSPredicate(format: "isSavedForLater == YES") :
             NSPredicate(format: "topic = NULL AND SELF in %@", [])
 
@@ -1437,7 +1446,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if isSavedPostsController, postCellActions?.postIsRemoved(post) == true {
+        if contentType == .saved, postCellActions?.postIsRemoved(post) == true {
             let cell = undoCell(tableView)
             configureUndoCell(cell, with: post)
             return cell
@@ -1526,7 +1535,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         }
 
-        if post.isSavedForLater || isSavedPostsController {
+        if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         }
 
@@ -1594,7 +1603,7 @@ private extension ReaderStreamViewController {
         // Its possible the topic was deleted before a sync could be completed,
         // so make certain its not nil.
         guard let topic = readerTopic else {
-            if isSavedPostsController {
+            if contentType == .saved {
                 displayNoResultsForSavedPosts()
             }
             return
@@ -1671,6 +1680,11 @@ private extension ReaderStreamViewController {
         static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects", comment: "Title for the no followed sites result screen")
+        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
+        static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
+        static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
+        static let contentErrorImage = "cloud"
     }
 
     var readerEmptyImageName: String {
@@ -1735,12 +1749,16 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
-        guard let currentTopic = content.topic else {
-            readerTopic = nil
-            isSavedPostsController = content.type == .saved
+        readerTopic = content.topic
+        contentType = content.type
+
+        guard !shouldDisplayOverlay else {
             return
         }
-        isSavedPostsController = false
+
+        guard let currentTopic = readerTopic else {
+            return
+        }
 
         guard ReaderHelpers.topicIsDiscover(currentTopic) else {
             hideHeader = ReaderHelpers.isTopicSite(currentTopic)
@@ -1771,6 +1789,67 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
             let post: ReaderPost = content.object(at: cellIndex) {
                 postCellActions?.restoreUnsavedPost(post)
                 tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
+}
+
+
+// MARK: - No Results View for .emptyFollowing and .contentError content types
+// TODO: - READERNAV - Once the new reader is released, these methods
+// should be refactored and merged with those related to resultsStatusView
+extension ReaderStreamViewController {
+
+    private var shouldDisplayOverlay: Bool {
+        if contentType == .emptyFollowing, FeatureFlag.newReaderNavigation.enabled {
+            displayNoFollowedSitesOverlay()
+            return true
+        } else if contentType == .contentError, FeatureFlag.newReaderNavigation.enabled {
+            displayLoadingErrorOverlay()
+            return true
+        }
+        removeOverlay()
+        return false
+    }
+
+    private func displayNoFollowedSitesOverlay() {
+        addNoResultsOverlay(title: ResultsStatusText.noFollowedSitesTitle)
+    }
+
+    private func displayLoadingErrorOverlay() {
+        addNoResultsOverlay(title: ResultsStatusText.contentErrorTitle,
+                            buttonTitle: ResultsStatusText.retryButtonTitle,
+                            subtitle: ResultsStatusText.contentErrorSubtitle,
+                            image: ResultsStatusText.contentErrorImage)
+        noResultsOverlay?.actionButtonHandler = reloadReader
+        view.isUserInteractionEnabled = true
+    }
+
+    private func addNoResultsOverlay(title: String,
+                            noConnectionTitle: String? = nil,
+                            buttonTitle: String? = nil,
+                            subtitle: String? = nil,
+                            noConnectionSubtitle: String? = nil,
+                            image: String? = nil) {
+
+        let controller = NoResultsViewController.controller()
+        controller.configure(title: title,
+                                    noConnectionTitle: noConnectionTitle,
+                                    buttonTitle: buttonTitle,
+                                    noConnectionSubtitle: noConnectionTitle,
+                                    image: image)
+
+        self.addChild(controller)
+        self.view.addSubview(controller.view)
+        controller.view.frame = self.view.frame
+        controller.didMove(toParent: self)
+        controller.updateView()
+        noResultsOverlay = controller
+    }
+
+    private func removeOverlay() {
+        if let controller = noResultsOverlay {
+            controller.removeFromView()
+            noResultsOverlay = nil
         }
     }
 }

@@ -22,12 +22,12 @@ extension WPTabBarController {
         return viewModel
     }
 
-    private func makeReaderContentViewController(with topic: ReaderAbstractTopic?) -> ReaderContentViewController {
+    private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
 
-        if let topic = topic {
+        if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
-            return ReaderStreamViewController.controllerForSavedPosts()
+            return ReaderStreamViewController.controllerForContentType(content.type)
         }
     }
 
