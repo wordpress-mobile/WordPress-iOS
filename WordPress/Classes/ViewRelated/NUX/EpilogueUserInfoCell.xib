@@ -17,14 +17,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SqA-Tm-XVX" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="32" width="72" height="72"/>
+                        <rect key="frame" x="20" y="32" width="72" height="72"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="72" id="9bQ-aU-GQb"/>
                             <constraint firstAttribute="height" constant="72" id="UTE-fR-kMZ"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbK-Ns-TbF">
-                        <rect key="frame" x="0.0" y="119" width="383" height="22"/>
+                        <rect key="frame" x="20" y="119" width="343" height="22"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="LJN-z2-A6L"/>
                         </constraints>
@@ -33,7 +33,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@username" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89f-vg-HlI">
-                        <rect key="frame" x="0.0" y="141" width="383" height="18"/>
+                        <rect key="frame" x="20" y="141" width="343" height="18"/>
                         <accessibility key="accessibilityConfiguration" identifier="username"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="OMo-Z3-lLF"/>
@@ -46,20 +46,20 @@
                         <rect key="frame" x="181.5" y="139" width="20" height="20"/>
                     </activityIndicatorView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
-                        <rect key="frame" x="18" y="50" width="36" height="36"/>
+                        <rect key="frame" x="38" y="50" width="36" height="36"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="2Ri-os-5ZW" secondAttribute="height" multiplier="1:1" id="Dlu-jo-OXt"/>
                         </constraints>
                     </activityIndicatorView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-add-button" translatesAutoresizingMaskIntoConstraints="NO" id="GYR-3W-aku" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="48" y="32" width="24" height="24"/>
+                        <rect key="frame" x="68" y="32" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="49J-ox-VuO"/>
                             <constraint firstAttribute="width" secondItem="GYR-3W-aku" secondAttribute="height" multiplier="1:1" id="CCT-Ge-nHv"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11G-E4-8Jh">
-                        <rect key="frame" x="0.0" y="32" width="72" height="72"/>
+                        <rect key="frame" x="20" y="32" width="72" height="72"/>
                         <connections>
                             <action selector="gravatarTapped" destination="uln-Hd-OJc" eventType="touchUpInside" id="kQu-u7-vJd"/>
                         </connections>
@@ -68,23 +68,23 @@
                 <constraints>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="centerY" secondItem="SqA-Tm-XVX" secondAttribute="centerY" id="IxS-CJ-S1j"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="centerX" secondItem="SqA-Tm-XVX" secondAttribute="centerX" id="M29-uj-sGk"/>
-                    <constraint firstItem="89f-vg-HlI" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" id="M44-Jk-uWN"/>
+                    <constraint firstItem="89f-vg-HlI" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" constant="20" id="M44-Jk-uWN"/>
                     <constraint firstItem="2Ri-os-5ZW" firstAttribute="width" secondItem="SqA-Tm-XVX" secondAttribute="width" multiplier="0.5" id="MZT-fb-8wR"/>
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="Mwp-7z-bUJ"/>
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="bottom" secondItem="89f-vg-HlI" secondAttribute="bottom" id="OBY-RQ-kRg"/>
                     <constraint firstItem="GYR-3W-aku" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="top" id="QV1-8T-K0y"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="width" secondItem="SqA-Tm-XVX" secondAttribute="width" id="dBO-2f-cNz"/>
-                    <constraint firstAttribute="trailing" secondItem="89f-vg-HlI" secondAttribute="trailing" id="fIW-sh-8b3"/>
-                    <constraint firstAttribute="trailing" secondItem="MbK-Ns-TbF" secondAttribute="trailing" id="hBZ-XF-2Ok"/>
+                    <constraint firstAttribute="trailing" secondItem="89f-vg-HlI" secondAttribute="trailing" constant="20" id="fIW-sh-8b3"/>
+                    <constraint firstAttribute="trailing" secondItem="MbK-Ns-TbF" secondAttribute="trailing" constant="20" id="hBZ-XF-2Ok"/>
                     <constraint firstItem="89f-vg-HlI" firstAttribute="top" secondItem="MbK-Ns-TbF" secondAttribute="bottom" id="hGl-uc-uSH"/>
                     <constraint firstItem="2Ri-os-5ZW" firstAttribute="centerY" secondItem="SqA-Tm-XVX" secondAttribute="centerY" id="jFZ-xH-4vw"/>
                     <constraint firstItem="SqA-Tm-XVX" firstAttribute="top" secondItem="HfW-Dl-Z89" secondAttribute="top" constant="32" id="jnf-Zw-TmW"/>
-                    <constraint firstItem="SqA-Tm-XVX" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" id="l1U-Lm-Q7b"/>
+                    <constraint firstItem="SqA-Tm-XVX" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" constant="20" id="l1U-Lm-Q7b"/>
                     <constraint firstAttribute="bottom" secondItem="89f-vg-HlI" secondAttribute="bottom" constant="15" id="o6T-dK-g7J"/>
                     <constraint firstItem="2Ri-os-5ZW" firstAttribute="centerX" secondItem="SqA-Tm-XVX" secondAttribute="centerX" id="tF0-R9-e3X"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="bottom" constant="15" id="tp1-hu-yDU"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="height" secondItem="SqA-Tm-XVX" secondAttribute="height" id="vjj-dA-RLw"/>
-                    <constraint firstItem="MbK-Ns-TbF" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" id="vv4-33-weD"/>
+                    <constraint firstItem="MbK-Ns-TbF" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" constant="20" id="vv4-33-weD"/>
                     <constraint firstItem="GYR-3W-aku" firstAttribute="trailing" secondItem="SqA-Tm-XVX" secondAttribute="trailing" id="wL3-WH-8HH"/>
                 </constraints>
             </tableViewCellContentView>
