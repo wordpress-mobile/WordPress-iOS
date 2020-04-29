@@ -70,28 +70,42 @@
                                     <segue destination="wAQ-AF-rOn" kind="embed" identifier="showEpilogueTable" id="PlO-Bm-BvC"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="240-cE-xSD" userLabel="Button Container View">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="atb-5g-t4d" customClass="FancyButton" customModule="WordPressUI">
+                                <rect key="frame" x="20" y="603" width="335" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="4ne-6n-cLh"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="dqd-0X-vaL"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="4AO-og-Qy8"/>
                                 </constraints>
-                            </containerView>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="doneButtonPressed" destination="e6u-CC-aMV" eventType="touchUpInside" id="hmp-NW-iMZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="bottom" id="6xk-4S-cWw"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="leading" secondItem="Zhy-FD-gA0" secondAttribute="leading" id="Jll-EX-f1p"/>
+                            <constraint firstItem="atb-5g-t4d" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="bottom" constant="20" id="A2e-QJ-VPZ"/>
+                            <constraint firstItem="Zhy-FD-gA0" firstAttribute="bottom" secondItem="atb-5g-t4d" secondAttribute="bottom" constant="20" id="DX5-KQ-d7O"/>
                             <constraint firstItem="egq-OL-lqe" firstAttribute="leading" secondItem="Zhy-FD-gA0" secondAttribute="leading" id="Ke8-3y-IW1"/>
                             <constraint firstItem="Zhy-FD-gA0" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="top" id="VpG-I9-eZL"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="trailing" secondItem="Zhy-FD-gA0" secondAttribute="trailing" id="Yrw-fx-rz4"/>
                             <constraint firstItem="Zhy-FD-gA0" firstAttribute="trailing" secondItem="egq-OL-lqe" secondAttribute="trailing" id="drs-fr-MgU"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="bottom" secondItem="YP6-Jc-5Xa" secondAttribute="bottom" id="nht-aN-2J4"/>
+                            <constraint firstItem="egq-OL-lqe" firstAttribute="trailing" secondItem="atb-5g-t4d" secondAttribute="trailing" constant="20" id="eR1-Ec-XkA"/>
+                            <constraint firstItem="atb-5g-t4d" firstAttribute="leading" secondItem="egq-OL-lqe" secondAttribute="leading" constant="20" id="n1E-2N-8ez"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
                     </view>
                     <connections>
-                        <outlet property="buttonViewContainer" destination="240-cE-xSD" id="JhA-hU-tpt"/>
+                        <outlet property="doneButton" destination="atb-5g-t4d" id="JdZ-x9-aXK"/>
                         <segue destination="CFB-8a-SBe" kind="show" identifier="showUsernames" id="39l-r4-qyx"/>
                     </connections>
                 </viewController>
@@ -118,4 +132,7 @@
             <point key="canvasLocation" x="1009" y="351"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="beveled-blue-button-down" width="18.5" height="19.5"/>
+    </resources>
 </document>
