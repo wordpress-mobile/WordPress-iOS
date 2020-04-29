@@ -321,7 +321,6 @@ private extension SignupEpilogueViewController {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
     }
-
 }
 
 extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
