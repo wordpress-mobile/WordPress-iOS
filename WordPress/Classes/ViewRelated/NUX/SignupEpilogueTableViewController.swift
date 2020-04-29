@@ -98,9 +98,8 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         }
 
         cell.titleLabel?.text = NSLocalizedString("Account Details", comment: "Header for account details, shown after signing up.").localizedUppercase
-        cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        cell.textLabel?.textColor = .neutral(.shade50)
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
+        cell.accessibilityLabel = cell.titleLabel?.text
 
         return cell
     }
@@ -116,6 +115,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         cell.titleLabel?.numberOfLines = 0
         cell.topConstraint.constant = Constants.footerTopMargin
         cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+        cell.accessibilityLabel = cell.titleLabel?.text
 
         return cell
     }
