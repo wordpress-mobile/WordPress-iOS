@@ -7,9 +7,8 @@ public class GutenbergMentionsViewController: UIViewController {
 
     public lazy var backgroundView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .listForeground
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -28,6 +27,7 @@ public class GutenbergMentionsViewController: UIViewController {
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        textField.textColor = .text
         return textField
     }()
 

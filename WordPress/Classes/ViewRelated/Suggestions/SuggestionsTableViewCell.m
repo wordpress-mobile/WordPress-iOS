@@ -14,6 +14,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
         [self setupDisplayNameLabel];
         [self setupAvatarImageView];
         [self setupConstraints];
+        self.backgroundColor = [UIColor murielListForeground];
     }
     return self;
 }
