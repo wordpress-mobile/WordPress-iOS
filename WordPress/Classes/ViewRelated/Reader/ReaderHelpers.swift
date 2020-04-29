@@ -236,15 +236,6 @@ import WordPressShared
 
 /// Reader tab items
 extension ReaderHelpers {
-    /// Display title for topics that do not use the default title
-    class func displayTitle(for topic: ReaderAbstractTopic) -> String {
-        if topicIsFollowing(topic) {
-            return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
-        } else if topicIsLiked(topic) {
-            return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
-        }
-        return topic.title
-    }
 
     static let defaultSavedItemPosition = 3
 
@@ -252,7 +243,7 @@ extension ReaderHelpers {
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
         var mutableItems = items
         mutableItems.sort {
-            guard let leftTopic = $0.topic, let rightTopic = $1.topic else {
+            guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
                 return true
             }
             // first item: Following
@@ -279,7 +270,7 @@ extension ReaderHelpers {
         // fourth item: Saved. It's manually inserted after the sorting
         if !mutableItems.isEmpty {
             let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
-            mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: savedPosition)
+            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
         }
         return mutableItems
     }

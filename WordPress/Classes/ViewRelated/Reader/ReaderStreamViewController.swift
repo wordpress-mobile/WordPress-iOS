@@ -1734,10 +1734,10 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
-    func setTopic(_ topic: ReaderAbstractTopic?) {
-        guard let currentTopic = topic else {
+    func setContent(_ content: ReaderContent) {
+        guard let currentTopic = content.topic else {
             readerTopic = nil
-            isSavedPostsController = true
+            isSavedPostsController = content.type == .saved
             return
         }
         isSavedPostsController = false

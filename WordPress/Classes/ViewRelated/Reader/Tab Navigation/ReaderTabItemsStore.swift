@@ -56,7 +56,7 @@ extension ReaderTabItemsStore {
             guard let topics = try ContextManager.sharedInstance().mainContext.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
                 return
             }
-            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
+            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(ReaderContent(topic: $0)) })
             self.state = .ready(items)
 
         } catch {
@@ -73,11 +73,12 @@ extension ReaderTabItemsStore {
         state = .loading
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.fetchReaderMenu(success: { [weak self] in
-            self?.fetchTabBarItems()
-            }, failure: { [weak self] error in
-                let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
-                DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
-                self?.fetchTabBarItems()
+                                    self?.fetchTabBarItems()
+            },
+                                failure: { [weak self] error in
+                                    let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+                                    DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+                                    self?.fetchTabBarItems()
         })
     }
 

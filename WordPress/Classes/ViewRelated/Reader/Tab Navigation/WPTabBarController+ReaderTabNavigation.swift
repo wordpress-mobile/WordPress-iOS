@@ -1,6 +1,6 @@
 /// Generic type for the UIViewController in the Reader Content View
 protocol ReaderContentViewController: UIViewController {
-    func setTopic(_ topic: ReaderAbstractTopic?)
+    func setContent(_ content: ReaderContent)
 }
 
 
