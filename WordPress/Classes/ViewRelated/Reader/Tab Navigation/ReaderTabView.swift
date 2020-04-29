@@ -14,6 +14,7 @@ class ReaderTabView: UIView {
 
     private let viewModel: ReaderTabViewModel
 
+
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
@@ -28,14 +29,19 @@ class ReaderTabView: UIView {
         self.viewModel = viewModel
 
         super.init(frame: .zero)
-        setupViewElements()
-        viewModel.indexSelectionCallback = { [weak self] index in
-            guard let readerTabView = self else {
-                return
-            }
-            readerTabView.tabBar.setSelectedIndex(index)
-            readerTabView.toggleButtonsView()
+
+        viewModel.didSelectIndex = { [weak self] index in
+            self?.tabBar.setSelectedIndex(index)
+            self?.toggleButtonsView()
         }
+
+        viewModel.refreshTabBar { [weak self] tabItems, index in
+            self?.tabBar.items = tabItems
+            self?.tabBar.setSelectedIndex(index)
+            self?.configureTabBarElements()
+            self?.addContentToContainerView()
+        }
+        setupViewElements()
     }
 
     required init?(coder: NSCoder) {
@@ -78,22 +84,11 @@ extension ReaderTabView {
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-
-        viewModel.fetchReaderMenu() { [weak self] items in
-            guard let items = items, items.count > 0, let self = self else {
-                return
-            }
-
-            self.tabBar.items = items
-
-            self.tabBar.setSelectedIndex(self.viewModel.selectedIndex)
-            self.configureTabBarElements()
-            self.addContentToContainerView()
-        }
+        viewModel.fetchReaderMenu()
     }
 
     private func configureTabBarElements() {
-        guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
             return
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
@@ -109,6 +104,7 @@ extension ReaderTabView {
         buttonsStackView.addArrangedSubview(resetFilterButton)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
+        buttonsStackView.isHidden = true
     }
 
     private func setupFilterButton() {
@@ -159,7 +155,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildViewController(at: tabBar.selectedIndex) else {
+            let childController = viewModel.makeChildContentViewController(at: tabBar.selectedIndex) else {
                 return
         }
 
@@ -224,7 +220,10 @@ extension ReaderTabView {
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
-        viewModel.resetFilter(selectedItem: tabBar.items[tabBar.selectedIndex])
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
+            return
+        }
+        viewModel.resetFilter(selectedItem: tabItem)
     }
 
     @objc private func didTapSettingsButton() {
@@ -252,7 +251,7 @@ extension ReaderTabView {
         static let settingsButtonWidth: CGFloat = 56
 
         static let dividerWidth: CGFloat = .hairlineBorderWidth
-        static let dividerColor: UIColor = UIColor(light: .lightGray, dark: .darkGray)
+        static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }
