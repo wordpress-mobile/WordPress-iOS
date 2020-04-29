@@ -1,8 +1,6 @@
-import WordPressShared
-
-class SnippetsContentStyles: FormattableContentStyles {
+class HeaderDetailsContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {
-        return WPStyleGuide.Notifications.snippetRegularStyle
+        return WPStyleGuide.Notifications.headerDetailsRegularStyle
     }
 
     var quoteStyles: [NSAttributedString.Key: Any]?
@@ -11,5 +9,5 @@ class SnippetsContentStyles: FormattableContentStyles {
 
     var linksColor: UIColor?
 
-    var key: String = "SnippetsContentStyles"
+    var key: String = "HeaderDetailsContentStyles"
 }
