@@ -61,13 +61,9 @@ class NoticePresenter: NSObject {
     private init(store: NoticeStore) {
         self.store = store
 
-        let windowFrame: CGRect
-        if let mainWindow = UIApplication.shared.keyWindow {
-            windowFrame = mainWindow.offsetToAvoidStatusBar()
-        } else {
-            windowFrame = .zero
-        }
-        window = UntouchableWindow(frame: windowFrame)
+        // The frame should match the key window or the main screen so that we get auto-resizing behavior. If the frame isn't one of these, the window will NOT autoresize.
+        let frame = UIApplication.shared.keyWindow?.frame ?? UIScreen.main.bounds
+        window = UntouchableWindow(frame: frame)
 
         // this window level may affect some UI elements like share sheets.
         // however, since the alerts aren't permanently on screen, this isn't
@@ -475,7 +471,7 @@ class NoticeContainerView: UIView {
         noticeWidthConstraint.isActive = false
         bottomConstraint?.constant = -(superview.frame.maxY - (sourceView.frame.minY))
 
-        let newFrame = window!.convert(sourceView.frame, from: sourceView.superview)
+        let newFrame = superview.convert(sourceView.frame, from: sourceView.superview)
 
         trailingConstraint?.constant = -(superview.frame.maxX - newFrame.maxX - (noticeView.layoutMargins.right + noticeView.layoutMargins.left))
     }
