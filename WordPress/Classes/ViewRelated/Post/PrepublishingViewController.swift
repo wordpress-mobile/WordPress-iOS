@@ -31,8 +31,8 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
-        PrepublishingOption(id: .schedule, title: Constants.publishLabel),
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
+        PrepublishingOption(id: .schedule, title: Constants.publishLabel),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
