@@ -106,6 +106,7 @@ import WordPressFlux
         }
     }
 
+    private var hideHeader = false
 
     private var isShowingResultStatusView: Bool {
         return resultsStatusView.view?.superview != nil
@@ -472,6 +473,12 @@ import WordPressFlux
 
         guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
+            return
+        }
+
+        guard !hideHeader else {
+            tableView.tableHeaderView = nil
+            hideHeader = false
             return
         }
 
@@ -1736,6 +1743,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
         isSavedPostsController = false
 
         guard ReaderHelpers.topicIsDiscover(currentTopic) else {
+            hideHeader = ReaderHelpers.isTopicSite(currentTopic)
             readerTopic = currentTopic
             return
         }
