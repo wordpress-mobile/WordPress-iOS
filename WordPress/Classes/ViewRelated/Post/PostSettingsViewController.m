@@ -1075,6 +1075,7 @@ FeaturedImageViewControllerDelegate>
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFormatChanged properties:@{@"via": @"settings"}];
             post.postFormatText = status;
             [weakVc dismiss];
             [self.tableView reloadData];
