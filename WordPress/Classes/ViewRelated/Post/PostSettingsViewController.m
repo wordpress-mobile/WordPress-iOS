@@ -648,7 +648,7 @@ FeaturedImageViewControllerDelegate>
             
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
-            cell.textLabel.text = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
+            cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;
