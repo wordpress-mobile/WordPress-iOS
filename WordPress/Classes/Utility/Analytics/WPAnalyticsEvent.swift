@@ -18,6 +18,7 @@ import Foundation
     case editorPostFormatChanged
     case editorPostFeaturedImageChanged
     case editorPostStickyChanged
+    case editorPostLocationChanged
 
     /// A String that represents the event
     var value: String {
@@ -50,6 +51,8 @@ import Foundation
             return "editor_post_featured_image_changed"
         case .editorPostStickyChanged:
             return "editor_post_sticky_changed"
+        case .editorPostLocationChanged:
+            return "editor_post_location_changed"
         }
     }
 
