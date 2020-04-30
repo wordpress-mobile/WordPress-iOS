@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -80,9 +80,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="buttonLeadingConstraint" destination="0rB-nq-HUv" id="nIt-rI-J1m"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
-                        <outlet property="buttonTrailingConstraint" destination="gKl-WT-Qzi" id="Qo8-3z-ogl"/>
                         <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>

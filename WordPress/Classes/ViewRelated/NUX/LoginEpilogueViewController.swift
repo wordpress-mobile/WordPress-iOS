@@ -20,14 +20,11 @@ class LoginEpilogueViewController: UIViewController {
     ///
     @IBOutlet var doneButton: UIButton!
 
-    /// Constraints on the table view container and Done button.
+    /// Constraints on the table view container.
     /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
     private var defaultTableViewMargin: CGFloat = 0
-    @IBOutlet var buttonLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet var buttonTrailingConstraint: NSLayoutConstraint!
-    private var defaultButtonMargin: CGFloat = 0
 
     /// Links to the Epilogue TableViewController
     ///
@@ -62,8 +59,7 @@ class LoginEpilogueViewController: UIViewController {
         view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
         defaultTableViewMargin = tableViewLeadingConstraint.constant
-        defaultButtonMargin = buttonLeadingConstraint.constant
-        setTableViewMargins()
+        setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
     }
 
@@ -106,12 +102,12 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setTableViewMargins()
+        setTableViewMargins(forWidth: size.width)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setTableViewMargins()
+        setTableViewMargins(forWidth: view.frame.width)
     }
 
 }
@@ -155,31 +151,22 @@ private extension LoginEpilogueViewController {
         }
     }
 
-    func setTableViewMargins() {
+    func setTableViewMargins(forWidth viewWidth: CGFloat) {
         guard traitCollection.horizontalSizeClass == .regular &&
             traitCollection.verticalSizeClass == .regular else {
                 tableViewLeadingConstraint.constant = defaultTableViewMargin
                 tableViewTrailingConstraint.constant = defaultTableViewMargin
-                buttonLeadingConstraint.constant = defaultButtonMargin
-                buttonTrailingConstraint.constant = defaultButtonMargin
                 return
         }
 
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        let marginMultiplier = isLandscape ?
+        let marginMultiplier = UIDevice.current.orientation.isLandscape ?
             TableViewMarginMultipliers.ipadLandscape :
             TableViewMarginMultipliers.ipadPortrait
 
-        let screenSizeMax = max(view.frame.width, view.frame.height)
-        let screenSizeMin = min(view.frame.width, view.frame.height)
-        let viewWidth = isLandscape ? screenSizeMax : screenSizeMin
         let margin = viewWidth * marginMultiplier
 
         tableViewLeadingConstraint.constant = margin
         tableViewTrailingConstraint.constant = margin
-
-        buttonLeadingConstraint.constant = 0
-        buttonTrailingConstraint.constant = 0
     }
 
     enum TableViewMarginMultipliers {
