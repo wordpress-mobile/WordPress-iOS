@@ -25,6 +25,8 @@ class WordPressAuthenticationManager: NSObject {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
+        let statusBarStyle: UIStatusBarStyle = FeatureFlag.unifiedAuth.enabled ? .default : .lightContent
+
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
                                                                 wpcomSecret: ApiCredentials.secret(),
                                                                 wpcomScheme: WPComScheme,
@@ -64,7 +66,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarBadgeColor: .accent(.shade20),
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted,
-                                                statusBarStyle: .lightContent)
+                                                statusBarStyle: statusBarStyle)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style)
