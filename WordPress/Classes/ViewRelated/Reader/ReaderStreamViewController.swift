@@ -57,10 +57,6 @@ import WordPressFlux
 
     private var noTopicController: UIViewController?
 
-    private let reloadReader = {
-        WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
-    }
-
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
@@ -1819,7 +1815,9 @@ extension ReaderStreamViewController {
                              buttonTitle: ResultsStatusText.retryButtonTitle,
                              subtitle: ResultsStatusText.contentErrorSubtitle,
                              image: ResultsStatusText.contentErrorImage,
-                             actionHandler: reloadReader)
+                             actionHandler: {
+                                 WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
+                             })
         view.isUserInteractionEnabled = true
     }
 
