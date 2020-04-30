@@ -1376,6 +1376,8 @@ FeaturedImageViewControllerDelegate>
     [self unregisterChangeObserver];
     [self.mediaDataSource searchCancelled];
 
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"added"}];
+
     if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
         PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
@@ -1450,6 +1452,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)FeaturedImageViewControllerOnRemoveImageButtonPressed:(FeaturedImageViewController *)controller
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"removed"}];
     self.featuredImage = nil;
     self.animatedFeaturedImageData = nil;
     [self.apost setFeaturedImage:nil];
