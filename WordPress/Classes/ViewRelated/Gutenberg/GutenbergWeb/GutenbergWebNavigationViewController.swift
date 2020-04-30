@@ -20,15 +20,21 @@ class GutenbergWebNavigationController: UINavigationController {
     /// More info: https://stackoverflow.com/questions/58164583/wkwebview-with-the-new-ios13-modal-crash-when-a-file-picker-is-invoked
     ///
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        if #available(iOS 13, *),
+        defer {
+            super.present(viewControllerToPresent, animated: flag, completion: completion)
+        }
+
+        guard
+            #available(iOS 13, *),
             let menuViewControllerClass = NSClassFromString("UIDocumentMenuViewController"), // Silence deprecation warning.
             viewControllerToPresent.isKind(of: menuViewControllerClass),
             UIDevice.current.userInterfaceIdiom == .phone
-        {
-            viewControllerToPresent.popoverPresentationController?.sourceView = gutenbergWebController.view
-            viewControllerToPresent.popoverPresentationController?.sourceRect = gutenbergWebController.view.frame
+        else {
+            return
         }
-        super.present(viewControllerToPresent, animated: flag, completion: completion)
+
+        viewControllerToPresent.popoverPresentationController?.sourceView = gutenbergWebController.view
+        viewControllerToPresent.popoverPresentationController?.sourceRect = gutenbergWebController.view.frame
     }
 }
 
