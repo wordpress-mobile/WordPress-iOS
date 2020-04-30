@@ -1199,6 +1199,7 @@ FeaturedImageViewControllerDelegate>
     vc.title = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
     vc.autocapitalizationType = UITextAutocapitalizationTypeNone;
     vc.onValueChanged = ^(NSString *value) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostSlugChanged properties:@{@"via": @"settings"}];
         self.apost.wp_slug = value;
         [self.tableView reloadData];
     };
