@@ -767,6 +767,7 @@ FeaturedImageViewControllerDelegate>
     cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
     cell.on = self.post.isStickyPost;
     cell.onChange = ^(BOOL newValue) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStickyChanged properties:@{@"via": @"settings"}];
         weakSelf.post.isStickyPost = newValue;
     };
     return cell;
@@ -1025,6 +1026,7 @@ FeaturedImageViewControllerDelegate>
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStatusChanged properties:@{@"via": @"settings"}];
         self.apost.status = status;
         [weakVc dismiss];
         [self.tableView reloadData];
@@ -1074,6 +1076,7 @@ FeaturedImageViewControllerDelegate>
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFormatChanged properties:@{@"via": @"settings"}];
             post.postFormatText = status;
             [weakVc dismiss];
             [self.tableView reloadData];
@@ -1196,6 +1199,7 @@ FeaturedImageViewControllerDelegate>
     vc.title = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
     vc.autocapitalizationType = UITextAutocapitalizationTypeNone;
     vc.onValueChanged = ^(NSString *value) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostSlugChanged properties:@{@"via": @"settings"}];
         self.apost.wp_slug = value;
         [self.tableView reloadData];
     };
@@ -1210,6 +1214,10 @@ FeaturedImageViewControllerDelegate>
                                                                                      isPassword:NO];
     vc.title = NSLocalizedString(@"Excerpt", @"Label for the excerpt field. Should be the same as WP core.");
     vc.onValueChanged = ^(NSString *value) {
+        if (self.apost.mt_excerpt != value) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostExcerptChanged properties:@{@"via": @"settings"}];
+        }
+
         self.apost.mt_excerpt = value;
         [self.tableView reloadData];
     };
@@ -1374,6 +1382,8 @@ FeaturedImageViewControllerDelegate>
     [self unregisterChangeObserver];
     [self.mediaDataSource searchCancelled];
 
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"added"}];
+
     if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
         PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
@@ -1401,6 +1411,8 @@ FeaturedImageViewControllerDelegate>
 
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostCategoryChanged properties:@{@"via": @"settings"}];
+
     // Save changes.
     self.post.categories = [categories mutableCopy];
     [self.post save];
@@ -1446,6 +1458,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)FeaturedImageViewControllerOnRemoveImageButtonPressed:(FeaturedImageViewController *)controller
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"removed"}];
     self.featuredImage = nil;
     self.animatedFeaturedImageData = nil;
     [self.apost setFeaturedImage:nil];
