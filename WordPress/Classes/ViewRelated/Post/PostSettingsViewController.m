@@ -1025,6 +1025,7 @@ FeaturedImageViewControllerDelegate>
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStatusChanged properties:@{@"via": @"settings"}];
         self.apost.status = status;
         [weakVc dismiss];
         [self.tableView reloadData];
@@ -1401,6 +1402,8 @@ FeaturedImageViewControllerDelegate>
 
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostCategoryChanged properties:@{@"via": @"settings"}];
+
     // Save changes.
     self.post.categories = [categories mutableCopy];
     [self.post save];
