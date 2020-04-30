@@ -2,6 +2,10 @@
 import XCTest
 
 class MockContentProvider: NSObject, ReaderPostContentProvider {
+    func siteID() -> NSNumber {
+        return NSNumber(value: 15546)
+    }
+
     func titleForDisplay() -> String! {
         return "A title"
     }
@@ -89,6 +93,10 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
 
     func isLikesEnabled() -> Bool {
         return true
+    }
+
+    func isAtomic() -> Bool {
+        return false
     }
 
     func isPrivate() -> Bool {
@@ -189,16 +197,10 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testReblogActionButtonMatchesExpectation() {
-        guard FeatureFlag.postReblogging.enabled else {
-            return
-        }
         XCTAssertEqual(cell?.getReblogButtonForTesting().accessibilityLabel, TestConstants.reblogLabel, "Incorrect accessibility label: Reblog button")
     }
 
     func testReblogButtonIsVisible() {
-        guard FeatureFlag.postReblogging.enabled else {
-            return
-        }
         guard let button = cell?.getReblogButtonForTesting() else {
             XCTFail("Reblog button not found.")
             return
@@ -207,9 +209,6 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testReblogButtonVisibleWithNoLoggedInUser() {
-        guard FeatureFlag.postReblogging.enabled else {
-            return
-        }
         cell?.loggedInActionVisibility = .visible(enabled: false)
         cell?.configureCell(mock!)
 

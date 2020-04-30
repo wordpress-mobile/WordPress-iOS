@@ -132,7 +132,7 @@ extension URL {
         return components.url
     }
 
-    var hasWordPressDotComHostname: Bool {
+    var isHostedAtWPCom: Bool {
         guard let host = host else {
             return false
         }
@@ -143,7 +143,7 @@ extension URL {
     var isWordPressDotComPost: Bool {
         // year, month, day, slug
         let components = pathComponents.filter({ $0 != "/" })
-        return components.count == 4 && hasWordPressDotComHostname
+        return components.count == 4 && isHostedAtWPCom
     }
 }
 

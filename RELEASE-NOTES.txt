@@ -1,5 +1,39 @@
+14.8
+-----
+* Block editor: Prefill caption for image blocks when available on the Media library
+* Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
+* Block editor: Fix bug where whitespaces at start of text blocks were being removed
+* Block editor: Add support for upload options in Cover block
+* Block editor: Floating toolbar, previously located above nested blocks, is now placed at the bottom of the screen
+* Block editor: Fix the icons in FloatingToolbar on RTL mode
+* Block editor: Fix Quote block so it visually reflects selected alignment
+* Block editor: Fix bug where buttons in page templates were not rendering correctly on web
+* [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
+ 
+14.7
+-----
+* Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
+* [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
+* [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
+* Classic and Block editor: Prefill caption for image blocks when available on the Media library.
+* [internal] the "login by email" flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
+* Block editor: Disable ripple effect in all BottomSheet's controls.
+* Block editor: New block: Columns
+* Block editor: New starter page template: Blog
+* Block editor: Make Starter Page Template picker buttons visible only when the screen height is enough
+* Block editor: Fix a bug which caused to show URL settings modal randomly when changing the device orientation multiple times during the time Starter Page Template Preview is open
+* [internal] the login by email flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
+* Updated the appearance of the login and signup buttons to make signup more prominent.
+* [internal] the navigation to the "login by site address" flow has code changes that can cause regressions. See https://git.io/JfvP9 for testing details.
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
+* You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
+
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
+ 
 14.6
 -----
+* [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
 * [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/JvSD6 and https://git.io/Jvy4P for testing details.
 * [internal] the login and signup Magic Link flows have code changes that can cause regressions. See https://git.io/Jvy4P for testing details.
 * [internal] the login and signup Continue with Google flows have code changes that can cause regressions. See https://git.io/JvypB for testing details.
@@ -7,9 +41,21 @@
 * Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
 * Fixed an issue that could have caused the app to crash when accessing Site Pages.
 * Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
+* Post Preview: Increase Post and Page Preview size on iPads running iOS 13.
+* Block editor: Added the Cover block
+* Block editor: Removed the dimming effect on unselected blocks
+* Block editor: Add alignment options for Heading block
+* Block editor: Implemented dropdown toolbar for alignment toolbar in Heading, Paragraph, Image, MediaText blocks
+* Block Editor: When editing link settings, tapping the keyboard return button now closes the settings panel as well as closing the keyboard.
 * Fixed a crash when a blog's URL became `nil` from a Core Data operation.
+* Added Share action to the more menu in the Posts list
+* Period Stats: fix colors when switching between light and dark modes.
+* Media uploads from "Other Apps": Fixed an issue where the Cancel button on the document picker/browser was not showing up in Light Mode.
+* Fix a crash when accessing Blog Posts from the Quick Actions button on iPads running iOS 12 and below.
+* Reader post detail: fix colors when switching between light and dark modes.
+* Fixed an issue where Continue with Apple button wouldn't respond after Jetpack Setup > Sign up flow completed.
 
- 
+
 14.5
 -----
 * Block editor: New block: Latest Posts
@@ -17,7 +63,7 @@
 * Block editor: Added Starter Page Templates: when you create a new page, we now show you a few templates to get started more quickly.
 * Block editor: Fix crash when pasting HTML content with embeded images on paragraphs
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
-* Stats: Fix background color in Dark Mode on wider screen sizes. 
+* Stats: Fix background color in Dark Mode on wider screen sizes.
 * Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.
@@ -30,11 +76,15 @@
 * Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
 * Updated appearance of Google login/signup button.
 * Updated appearance of Apple login/signup button.
- 
+
+14.4.1
+-----
+* Block Editor: Fix crash when inserting a Button Block.
+
 14.4
 -----
 * Post Settings: Fixes the displayed publish date of posts which are to be immediately published.
- 
+
 14.3
 -----
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
@@ -51,8 +101,8 @@
 * Block editor: Add support for upload options in Gallery block
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
 * Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
-* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings. 
- 
+* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings.
+
 
 14.2
 -----

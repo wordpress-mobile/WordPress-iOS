@@ -9,6 +9,12 @@ class StatsGhostBaseCell: UITableViewCell {
         setupBorders()
     }
 
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        // Restart animation when toggling light/dark mode so colors are updated.
+        restartGhostAnimation(style: GhostCellStyle.muriel)
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         stopGhostAnimation()

@@ -360,7 +360,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Downloads
     ///
-    fileprivate var activeMediaRequests = [ImageDownloader.Task]()
+    fileprivate var activeMediaRequests = [ImageDownloaderTask]()
 
     /// Media Library Data Source
     ///
@@ -536,7 +536,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        resetNavigationColors()
         configureDismissButton()
         startListeningToNotifications()
         verificationPromptHelper?.updateVerificationStatus()
@@ -715,14 +714,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-    }
-
-    /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-    /// either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did
-    /// nothing or the resetting wasn't permanent.
-    ///
-    fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
@@ -1868,6 +1859,7 @@ extension AztecPostViewController {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
+        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
@@ -2419,12 +2411,12 @@ extension AztecPostViewController {
         insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
-    fileprivate func insertImage(image: UIImage) {
-        insert(exportableAsset: image, source: .deviceLibrary)
+    fileprivate func insertImage(image: UIImage, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: image, source: source)
     }
 
-    fileprivate func insertDeviceMedia(phAsset: PHAsset) {
-        insert(exportableAsset: phAsset, source: .deviceLibrary)
+    fileprivate func insertDeviceMedia(phAsset: PHAsset, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: phAsset, source: source)
     }
 
     private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
@@ -2447,14 +2439,16 @@ extension AztecPostViewController {
         }
     }
 
-    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) -> ImageAttachment {
+    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink, caption: String? = nil) -> ImageAttachment {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
 
         if url.isGif {
             attachment.badgeTitle = Constants.mediaGIFBadgeTitle
         }
-
+        if let caption = caption {
+            richTextView.replaceCaption(for: attachment, with: NSAttributedString(string: caption))
+        }
         return attachment
     }
 
@@ -2528,7 +2522,7 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let attachment = insertImageAttachment(with: remoteURL)
+            let attachment = insertImageAttachment(with: remoteURL, caption: media.caption)
             attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         case .video:
@@ -2558,7 +2552,7 @@ extension AztecPostViewController {
         }
         var attachment: MediaAttachment?
         if media.mediaType == .image {
-            attachment = insertImageAttachment(with: tempMediaURL)
+            attachment = insertImageAttachment(with: tempMediaURL, caption: media.caption)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
@@ -3528,9 +3522,9 @@ extension AztecPostViewController {
                               onFinishEditing: { [weak self] images, actions in
                                 images.forEach { mediaEditorImage in
                                     if let image = mediaEditorImage.editedImage {
-                                        self?.insertImage(image: image)
+                                        self?.insertImage(image: image, source: .mediaEditor)
                                     } else if let phAsset = mediaEditorImage as? PHAsset {
-                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                        self?.insertDeviceMedia(phAsset: phAsset, source: .mediaEditor)
                                     }
                                 }
 

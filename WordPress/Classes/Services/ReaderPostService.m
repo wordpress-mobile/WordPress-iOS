@@ -1159,6 +1159,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.feedID = remotePost.feedID;
     post.feedItemID = remotePost.feedItemID;
     post.globalID = remotePost.globalID;
+    post.isBlogAtomic = remotePost.isBlogAtomic;
     post.isBlogPrivate = remotePost.isBlogPrivate;
     post.isFollowing = remotePost.isFollowing;
     post.isLiked = remotePost.isLiked;

@@ -1,1 +1,11 @@
-Den här veckan har vi bara några små snabbkorrigeringar eftersom världen just nu är upptagen med viktigare saker: Vi har rättat ett problem i inläggsinställningarna så att datumet visas på rätt sätt för inlägg som kommer att publiceras omedelbart. Dessutom har vi gjort några ändringar i den underliggande koden för att rent allmänt förbättra hastigheten och stabiliteten.
+Det har nu blivit mycket smidigare att skapa en ny webbplats genom att några mellanliggande steg har tagits bort. Välj vilken typ av webbplats du vill ha och skriv in ett domännamn, så är det klar.
+
+Blockredigeraren har förbättrats på flera sätt: Nu har du tillgång till blocket ”Överlägg”, I rubrikblocket kan du välja textjustering, och en verktygslist med rullgardinsmeny underlättar textjustering för block av typerna rubrik, stycke, bild och mediatext. Dessutom har vi tagit bort nedtoningseffekten på omarkerade block.
+
+På vissa mobiler gjorde layouten av aviseringsskärmen att text kunde bli oåtkomlig – nu är det rättat!
+
+Ibland kanske du försökte att @-nämna någon i en kommentar, appen föreslog olika namn men det gick inte att välja något av dem. Det är också fixat nu. Vidare har vi tagit hand om några problem som kunde få appen att krascha när du försökte öppna skärmen med webbplatsens sidor eller använda snabbåtgärder på iPad för att komma till dina blogginlägg. På tal om sidor och inlägg – nu är förhandsvisningen i ett större format för iPad som kör iOS 13.
+
+Vi vill att vårt Dark Mode (mörkt läge) ska vara som kaffet vi dricker: svart som natten och utan diverse programfel. Det fanns olika missar i funktionen för ljust och mörkt läge. Ibland hände konstiga saker vid växling mellan lägena. Nu är missarna inte lika många längre.
+
+Var försiktiga och ta hand om er.

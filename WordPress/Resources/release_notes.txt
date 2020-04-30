@@ -1,15 +1,8 @@
-New blocks! Welcome the Latest Posts block, for highlighting your new stuff in posts and pages.
+The scheduling, tag, and visibility settings now pop up right in the post editor when you tap “Publish” or “Schedule” — fine-tune them, and tap “Publish Now” to complete publication. No more leaving the editor to look for the Post Settings Screen!
 
-When you create a new page, we’ll show you a few templates — pick one, and we’ll add all the necessary blocks to your page to get you started quickly.
+The mobile Block editor continues to grow:-
+– You’ll find a Columns block and a new Starter Template for blogs.
+– The Starter Page Template options no longer obscure your page content.
+– We fixed a bug that caused a URL settings box to pop up if you physically moved your device around while previewing Starter Page Templates.
 
-We fixed up a few block editor issues; no more crashes when pasting in HTML content or missing Quote block borders in Dark Mode.
-
-If you scheduled a post to publish in the past, it would display as “scheduled” instead of “published.” That’s fixed, along with an issue where dates displayed incorrectly if your site’s timezone wasn’t the same as your device’s timezone.
-
-We fixed some UI inconsistencies in Dark Mode and with the Reader toolbar.
-
-You can use @-mentions when writing comments in fullscreen mode.
-
-Sometimes Signup and Login Magic Link emails would go to your spam folder, so we added a note to the confirmation screen suggesting that folks check their spam/junk folders if they don’t see the email promptly.
-
-Stay safe, everyone.
+Since an app can never be too fast, too usable, or too clean, we streamlined a few UI things here and there. Will you notice? Probably not, which is the point. And finally, there was a login issue causing account info for self-hosted sites to load incorrectly that’s been taken care of.

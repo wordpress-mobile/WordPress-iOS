@@ -16,6 +16,11 @@ class WPMediaEditor: MediaEditor {
         }
     }
 
+    /// The number of images in the Media Editor
+    private var numberOfImages: Int {
+        return max(asyncImages.count, images.count)
+    }
+
     override var styles: MediaEditorStyles {
         get {
             return [
@@ -41,7 +46,7 @@ class WPMediaEditor: MediaEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        WPAnalytics.track(.mediaEditorShown)
+        WPAnalytics.track(.mediaEditorShown, properties: ["number_of_images": numberOfImages])
     }
 
     override func viewDidDisappear(_ animated: Bool) {

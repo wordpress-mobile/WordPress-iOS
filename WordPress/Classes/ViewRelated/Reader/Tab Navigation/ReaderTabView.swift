@@ -2,33 +2,45 @@ import UIKit
 
 class ReaderTabView: UIView {
 
-    private var mainStackView: UIStackView
-    private var tabBar: FilterTabBar
-    private var filterButton: PostMetaButton
-    private var resetFilterButton: UIButton
-    private var verticalDivider: UIView
-    private var settingsButton: UIButton
-    private var buttonsStackView: UIStackView
-    private var containerView: UIView
+    private let mainStackView: UIStackView
+    private let buttonsStackView: UIStackView
+    private let tabBar: FilterTabBar
+    private let filterButton: PostMetaButton
+    private let resetFilterButton: UIButton
+    private let settingsButton: UIButton
+    private let verticalDivider: UIView
+    private let horizontalDivider: UIView
+    private let containerView: UIView
 
-    init() {
-        func makeTabBar() -> FilterTabBar {
-            let tabBar = FilterTabBar()
-            let sections: [ReaderSection] = [.following, .discover, .likes, .saved]
-            tabBar.items = sections
-            return tabBar
-        }
-        tabBar = makeTabBar()
+    private let viewModel: ReaderTabViewModel
 
+
+    init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
+        tabBar = FilterTabBar()
         filterButton = PostMetaButton(type: .custom)
         resetFilterButton = UIButton(type: .custom)
-        verticalDivider = UIView()
         settingsButton = UIButton(type: .custom)
+        verticalDivider = UIView()
+        horizontalDivider = UIView()
         containerView = UIView()
 
+        self.viewModel = viewModel
+
         super.init(frame: .zero)
+
+        viewModel.didSelectIndex = { [weak self] index in
+            self?.tabBar.setSelectedIndex(index)
+            self?.toggleButtonsView()
+        }
+
+        viewModel.refreshTabBar { [weak self] tabItems, index in
+            self?.tabBar.items = tabItems
+            self?.tabBar.setSelectedIndex(index)
+            self?.configureTabBarElements()
+            self?.addContentToContainerView()
+        }
         setupViewElements()
     }
 
@@ -52,9 +64,9 @@ extension ReaderTabView {
         setupButtonsView()
         setupFilterButton()
         setupResetFilterButton()
-        setupVerticalDivider()
+        setupVerticalDivider(verticalDivider)
+        setupHorizontalDivider(horizontalDivider)
         setupSettingsButton()
-        setupContainerView()
         activateConstraints()
     }
 
@@ -64,26 +76,35 @@ extension ReaderTabView {
         addSubview(mainStackView)
         mainStackView.addArrangedSubview(tabBar)
         mainStackView.addArrangedSubview(buttonsStackView)
+        mainStackView.addArrangedSubview(horizontalDivider)
         mainStackView.addArrangedSubview(containerView)
     }
 
     private func setupTabBar() {
-        tabBar.translatesAutoresizingMaskIntoConstraints = false
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
+        viewModel.fetchReaderMenu()
+    }
+
+    private func configureTabBarElements() {
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
+            return
+        }
+        buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+        horizontalDivider.isHidden = tabItem.shouldHideButtonsView
     }
 
     private func setupButtonsView() {
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
         buttonsStackView.axis = .horizontal
-        buttonsStackView.alignment = .center
+        buttonsStackView.alignment = .fill
         buttonsStackView.addArrangedSubview(filterButton)
         buttonsStackView.addArrangedSubview(resetFilterButton)
-        let spacer = UIView()
-        buttonsStackView.addArrangedSubview(spacer)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
+        buttonsStackView.isHidden = true
     }
 
     private func setupFilterButton() {
@@ -91,6 +112,7 @@ extension ReaderTabView {
         filterButton.contentEdgeInsets = Appearance.filterButtonInsets
         filterButton.imageEdgeInsets = Appearance.filterButtonimageInsets
         filterButton.titleEdgeInsets = Appearance.filterButtonTitleInsets
+        filterButton.contentHorizontalAlignment = .leading
 
         filterButton.titleLabel?.font = Appearance.filterButtonFont
         WPStyleGuide.applyReaderFilterButtonStyle(filterButton)
@@ -106,29 +128,55 @@ extension ReaderTabView {
         resetFilterButton.isHidden = true
     }
 
-    private func setupVerticalDivider() {
-        verticalDivider.translatesAutoresizingMaskIntoConstraints = false
-        verticalDivider.backgroundColor = .divider
+    private func setupVerticalDivider(_ divider: UIView) {
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        let dividerView = UIView()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.backgroundColor = Appearance.dividerColor
+        divider.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.centerYAnchor.constraint(equalTo: divider.centerYAnchor),
+            dividerView.heightAnchor.constraint(equalTo: divider.heightAnchor, multiplier: Appearance.verticalDividerHeightMultiplier),
+            dividerView.leadingAnchor.constraint(equalTo: divider.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: divider.trailingAnchor)
+        ])
+    }
+
+    private func setupHorizontalDivider(_ divider: UIView) {
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = Appearance.dividerColor
     }
 
     private func setupSettingsButton() {
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
     }
 
-    private func setupContainerView() {
+    private func addContentToContainerView() {
+        guard let controller = self.next as? UIViewController,
+            let childController = viewModel.makeChildContentViewController(at: tabBar.selectedIndex) else {
+                return
+        }
+
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = .lightGray
+        childController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        controller.addChild(childController)
+
+        containerView.addSubview(childController.view)
+        containerView.pinSubviewToAllEdges(childController.view)
+        childController.didMove(toParent: controller)
     }
 
     private func activateConstraints() {
-        pinSubviewToSafeArea(mainStackView)
+        pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
-            verticalDivider.widthAnchor.constraint(equalToConstant: Appearance.verticalDividerWidth),
-            verticalDivider.heightAnchor.constraint(equalTo: buttonsStackView.heightAnchor,
-                                                    multiplier: Appearance.verticalDividerHeightMultiplier),
+            verticalDivider.widthAnchor.constraint(equalToConstant: Appearance.dividerWidth),
+            horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
+            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
             settingsButton.widthAnchor.constraint(equalToConstant: Appearance.settingsButtonWidth)
         ])
     }
@@ -138,32 +186,50 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        // hide/show buttons view depending on the selected TabBarItem
-        guard let tabItems = tabBar.items as? [ReaderSection],
-            buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
+        viewModel.showTab(at: tabBar.selectedIndex)
+        toggleButtonsView()
+    }
+
+    private func toggleButtonsView() {
+        guard let tabItems = tabBar.items as? [ReaderTabItem] else {
+                return
+        }
+        // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
+        guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
             return
         }
-        UIView.animate(withDuration: Appearance.animationDuration) {
-            self.buttonsStackView.isHidden = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
+            let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
+            self.buttonsStackView.isHidden = shouldHideButtons
+            self.horizontalDivider.isHidden = shouldHideButtons
         }
     }
 
     /// Filter button
     @objc private func didTapFilterButton() {
-        //TODO: - READERNAV - Remove. This test code is for UI prototyping only
-        guard filterButton.titleLabel?.text == "Filter" else {
-            return
+        /// Present from the image view to align to the left hand side
+        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] title in
+            if let title = title {
+                self?.resetFilterButton.isHidden = false
+                self?.setFilterButtonTitle(title)
+            }
         }
-        setFilterButtonTitle("Phoebe's Photos")
-        resetFilterButton.isHidden = false
     }
+
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
+        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
+            return
+        }
+        viewModel.resetFilter(selectedItem: tabItem)
+    }
+
+    @objc private func didTapSettingsButton() {
+        viewModel.presentSettings(from: settingsButton)
     }
 }
-
 
 // MARK: - Appearance
 extension ReaderTabView {
@@ -171,21 +237,21 @@ extension ReaderTabView {
     private enum Appearance {
         static let barHeight: CGFloat = 48
 
-        static let animationDuration = 0.2
+        static let tabBarAnimationsDuration = 0.2
 
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
-        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
 
         static let resetButtonWidth: CGFloat = 32
         static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
         static let settingsButtonWidth: CGFloat = 56
 
-        static let verticalDividerWidth: CGFloat = 1
+        static let dividerWidth: CGFloat = .hairlineBorderWidth
+        static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }

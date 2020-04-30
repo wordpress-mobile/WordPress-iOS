@@ -1,1 +1,11 @@
-Nur ein paar schnelle Dinge in dieser Woche, denn es sind größere Dinge in der Welt im Gange: Wir haben ein Problem in den Beitragseinstellungen behoben, sodass die Daten von Beiträgen, die sofort veröffentlicht werden, korrekt angezeigt werden. Und wir haben einige Änderungen unter der Haube vorgenommen, um die Geschwindigkeit und Zuverlässigkeit allgemein zu verbessern.
+Die Website-Erstellung wurde durch Entfernen einiger Zwischenschritte optimiert. Suche einfach deine gewünschte Art von Website aus, gib einen Domainnamen ein und schon bist du fertig.
+
+Weitere Verbesserungen am Block-Editor: Der Cover-Block ist jetzt verfügbar. Im Überschriftsblock findest du Optionen zur Ausrichtung und eine Dropdown-Toolbar vereinfacht die Ausrichtung für Überschrifts-, Absatz-, Bild- und MediaText-Blöcke. Darüber hinaus haben wir den Dimmeffekt für nicht ausgewählte Blöcke entfernt.
+
+Bedingt durch das Layout des Bildschirms „Benachrichtigungen“ wurde der Text auf einigen Smartphone-Modellen durch das Gehäuse verdeckt. Dies wurde nun behoben!
+
+Bei dem Versuch einer @-Erwähnung einer Person in einem Kommentar hat die App manchmal zwar Namen vorgeschlagen, ließ diese aber nicht auswählen – auch das wurde behoben. Wir haben uns auch um einige weitere Probleme gekümmert, die zum Absturz der App führten, wenn du versuchtest, auf den Bildschirm „Website-Seiten“ zuzugreifen, oder mithilfe der „Quick Action“-Buttons auf iPads zu deinen Blogbeiträgen gelangen wolltest. Und apropos Seiten und Beiträge: Die Vorschau ist auf iPads mit iOS 13 jetzt größer.
+
+Wir mögen unseren dunklen Modus so wie unseren Kaffee: echt dunkel und ohne ungewollte Zusätze. Es gab einige Störungen im hellen und dunklen Modus und das Verhalten war beim Umschalten von einem Modus zum anderen nicht immer optimal. Es gibt jetzt wesentlich weniger von diesen Störungen.
+
+Bleibt alle gesund.

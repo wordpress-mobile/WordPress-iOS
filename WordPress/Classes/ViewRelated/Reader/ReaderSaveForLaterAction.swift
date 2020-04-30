@@ -11,7 +11,7 @@ final class ReaderSaveForLaterAction {
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
-    private let visibleConfirmation: Bool
+    var visibleConfirmation: Bool
 
     init(visibleConfirmation: Bool = false) {
         self.visibleConfirmation = visibleConfirmation
@@ -55,6 +55,10 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
+                                guard !FeatureFlag.newReaderNavigation.enabled else {
+                                    WPTabBarController.sharedInstance().switchToSavedPosts()
+                                    return
+                                }
                                 self.showAll()
         })
 

@@ -43,6 +43,15 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         }
     }
 
+    @objc var attributedHeaderDetails: NSAttributedString? {
+        set {
+            headerDetailsLabel.attributedText  = newValue
+        }
+        get {
+            return headerDetailsLabel.attributedText
+        }
+    }
+
 
     // MARK: - Public Methods
 

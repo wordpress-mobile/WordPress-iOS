@@ -10,7 +10,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
 
     fileprivate lazy var imageLoader: ImageLoader = {
-        let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
+        let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .largeGIFs)
         imageLoader.photonQuality = Constants.readerPhotonQuality
         return imageLoader
     }()
@@ -71,30 +71,28 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     /// Load an image with the already-set contentURL property. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
-    ///   - contentInformation: The corresponding ImageSourceInformation for the contentURL
+    ///   - host: The host for the media.
     ///   - preferedSize: The prefered size of the image to load.
-    ///   - indexPath: The IndexPath where this view is located — returned as a param in success and error blocks.
     ///   - onSuccess: A closure to be called if the image was loaded successfully.
     ///   - onError: A closure to be called if there was an error loading the image.
-    func loadImage(from contentInformation: ImageSourceInformation,
+    func loadImage(from host: MediaHost,
                    preferedSize size: CGSize = .zero,
-                   indexPath: IndexPath,
-                   onSuccess: ((IndexPath) -> Void)?,
-                   onError: ((IndexPath, Error?) -> Void)?) {
+                   onSuccess: (() -> Void)?,
+                   onError: ((Error?) -> Void)?) {
         guard let contentURL = self.contentURL else {
-            onError?(indexPath, nil)
+            onError?(nil)
             return
         }
 
         let successHandler: (() -> Void)? = {
-            onSuccess?(indexPath)
+            onSuccess?()
         }
 
         let errorHandler: ((Error?) -> Void)? = { error in
-            onError?(indexPath, error)
+            onError?(error)
         }
 
-        imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        imageLoader.loadImage(with: contentURL, from: host, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
     }
 
     func contentSize() -> CGSize {

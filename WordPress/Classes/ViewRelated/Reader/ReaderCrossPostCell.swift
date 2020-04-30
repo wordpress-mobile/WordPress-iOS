@@ -1,4 +1,6 @@
+import AlamofireImage
 import Foundation
+import AutomatticTracks
 import WordPressShared.WPStyleGuide
 
 open class ReaderCrossPostCell: UITableViewCell {
@@ -90,11 +92,23 @@ open class ReaderCrossPostCell: UITableViewCell {
         let placeholder = UIImage(named: blavatarPlaceholder)
 
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
-        let url = contentProvider?.siteIconForDisplay(ofSize: Int(size))
-        if url != nil {
-            blavatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        } else {
-            blavatarImageView.image = placeholder
+
+        guard let contentProvider = contentProvider,
+            let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
+                blavatarImageView.image = placeholder
+                return
+        }
+
+        let host = MediaHost(with: contentProvider) { error in
+            CrashLogging.logError(error)
+        }
+
+        let mediaAuthenticator = MediaRequestAuthenticator()
+        mediaAuthenticator.authenticatedRequest(for: url, from: host, onComplete: { [weak self] request in
+            self?.blavatarImageView.af_setImage(withURLRequest: request, placeholderImage: placeholder)
+        }) { [weak self] error in
+            CrashLogging.logError(error)
+            self?.blavatarImageView.image = placeholder
         }
     }
 

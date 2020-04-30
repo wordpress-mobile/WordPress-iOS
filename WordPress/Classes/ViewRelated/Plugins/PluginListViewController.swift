@@ -95,6 +95,12 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         case .replace:
             tableView.reloadData()
         case .selective(let changedRows):
+            let tableViewSectionsCount = tableViewModel.sections.count
+            guard tableViewSectionsCount > 0 else {
+                tableView.reloadData()
+                return
+            }
+
             if tableView.numberOfRows(inSection: 0) == changedRows.count {
                 let indexPaths = changedRows.map { IndexPath(row: $0, section: 0) }
                 tableView.reloadRows(at: indexPaths, with: .none)

@@ -104,7 +104,6 @@ final class MediaLibraryMediaPickingCoordinator {
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
         docPicker.allowsMultipleSelection = true
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true)
     }
 
