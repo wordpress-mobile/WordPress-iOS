@@ -7,7 +7,7 @@ import Foundation
     case editorCreatedPage
     case createSheetShown
 
-    // Prepublishing Nudges
+    // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostScheduled
     case editorPostVisibilityChanged
