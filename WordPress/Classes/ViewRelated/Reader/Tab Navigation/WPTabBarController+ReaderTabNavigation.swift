@@ -18,7 +18,8 @@ extension WPTabBarController {
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(readerContentFactory: makeReaderContentViewController(with:),
                                            searchNavigationFactory: navigateToReaderSearch,
-                                           tabItemsStore: ReaderTabItemsStore())
+                                           tabItemsStore: ReaderTabItemsStore(),
+                                           settingsPresenter: ReaderManageScenePresenter())
         return viewModel
     }
 

@@ -33,7 +33,7 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var scrollableView: UIScrollView? {
-        let scroll = visibleViewController?.view as? UIScrollView
+        let scroll = topViewController?.view as? UIScrollView
 
         return scroll
     }

@@ -5,12 +5,12 @@ import WordPressFlux
 
     // MARK: - Properties
     /// tab bar items
-    private let tabItemsStore: ReaderTabItemsStore
+    private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
-    var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
+    private var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
 
     private var tabItems: [ReaderTabItem] {
-        tabItemsStore.tabItems
+        tabItemsStore.items
     }
     /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
@@ -30,14 +30,17 @@ import WordPressFlux
     var navigateToSearch: () -> Void
 
     /// Settings
+    private let settingsPresenter: ScenePresenter
     var settingsTapped: ((UIView) -> Void)?
 
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
-         tabItemsStore: ReaderTabItemsStore) {
+         tabItemsStore: ItemsStore,
+         settingsPresenter: ScenePresenter) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
         self.tabItemsStore = tabItemsStore
+        self.settingsPresenter = settingsPresenter
         super.init()
 
         subscription = tabItemsStore.onChange { [weak self] in
@@ -121,8 +124,7 @@ extension ReaderTabViewModel {
     }
 
     func presentManage(from: UIViewController) {
-        let presenter = ReaderManageScenePresenter()
-        presenter.present(on: from, animated: true, completion: nil)
+        settingsPresenter.present(on: from, animated: true, completion: nil)
     }
 
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {

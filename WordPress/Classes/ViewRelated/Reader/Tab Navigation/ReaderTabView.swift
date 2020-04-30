@@ -53,7 +53,7 @@ class ReaderTabView: UIView {
 extension ReaderTabView {
 
     /// Call this method to set the title of the filter button
-    func setFilterButtonTitle(_ title: String) {
+    private func setFilterButtonTitle(_ title: String) {
         WPStyleGuide.applyReaderFilterButtonTitle(filterButton, title: title)
     }
 
