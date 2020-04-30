@@ -1,4 +1,5 @@
 import Gridicons
+import WordPressFlux
 
 @objc class CreateButtonCoordinator: NSObject {
 
@@ -20,6 +21,25 @@ import Gridicons
 
     let newPost: () -> Void
     let newPage: () -> Void
+
+    private lazy var notice: Notice = {
+        let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
+                            message: "",
+                            style: ToolTipNoticeStyle(),
+                            sourceView: button) { _ in
+        }
+        return notice
+    }()
+
+    private var shouldShowNotice: Bool {
+        set {
+            //TODO: Set on persistent store
+        }
+        get {
+            //TODO: Fetch from persistent store
+            return true
+        }
+    }
 
     @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
         self.viewController = viewController
@@ -60,6 +80,10 @@ import Gridicons
     }
 
     @objc private func showCreateSheet() {
+
+        shouldShowNotice = false
+        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
@@ -99,6 +123,9 @@ import Gridicons
     }
 
     @objc func hideCreateButton() {
+
+        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
         } else {
@@ -107,6 +134,7 @@ import Gridicons
     }
 
     @objc func showCreateButton() {
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {

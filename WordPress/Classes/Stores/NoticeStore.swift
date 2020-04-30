@@ -46,6 +46,8 @@ struct Notice {
     /// is tapped, if you've provided an action title
     let actionHandler: ActionHandlerFunction?
 
+    weak var sourceView: UIView?
+
     init(title: String,
          message: String? = nil,
          feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil,
@@ -54,6 +56,7 @@ struct Notice {
          actionTitle: String? = nil,
          cancelTitle: String? = nil,
          tag: String? = nil,
+         sourceView: UIView? = nil,
          actionHandler: ActionHandlerFunction? = nil) {
         self.title = title
         self.message = message
@@ -64,6 +67,7 @@ struct Notice {
         self.tag = tag
         self.actionHandler = actionHandler
         self.style = style
+        self.sourceView = sourceView
     }
 
 }
