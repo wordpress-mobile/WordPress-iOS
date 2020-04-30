@@ -3,18 +3,12 @@ import Gutenberg
 class GutenbergWebNavigationController: UINavigationController {
     private let gutenbergWebController: GutenbergWebViewController
 
-    var onSave: ((Block) -> Void)? {
-        get {
-            gutenbergWebController.onSave
-        }
-        set {
-            gutenbergWebController.onSave = newValue
-        }
-    }
+    var onSave: ((Block) -> Void)?
 
     init(with post: AbstractPost, block: Block) throws {
         gutenbergWebController = try GutenbergWebViewController(with: post, block: block)
         super.init(rootViewController: gutenbergWebController)
+        gutenbergWebController.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,5 +29,25 @@ class GutenbergWebNavigationController: UINavigationController {
             viewControllerToPresent.popoverPresentationController?.sourceRect = gutenbergWebController.view.frame
         }
         super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+}
+
+extension GutenbergWebNavigationController: GutenbergWebDelegate {
+    func webController(controller: GutenbergWebSingleBlockViewController, didPressSave block: Block) {
+        onSave?(block)
+        dismiss(webController: controller)
+    }
+
+    func webControllerDidPressClose(controller: GutenbergWebSingleBlockViewController) {
+        dismiss(webController: controller)
+    }
+
+    func webController(controller: GutenbergWebSingleBlockViewController, didLog log: String) {
+        DDLogVerbose(log)
+    }
+
+    private func dismiss(webController: GutenbergWebSingleBlockViewController) {
+        webController.cleanUp()
+        presentingViewController?.dismiss(animated: true)
     }
 }

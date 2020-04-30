@@ -313,13 +313,6 @@
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
 		1E4F2E712458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */; };
 		1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */; };
-		1ED046D0244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */; };
-		1ED046D2244F55C6008F6365 /* GutenbergWebStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */; };
-		1ED046D4244F5B9D008F6365 /* InjectCss.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D3244F5B9D008F6365 /* InjectCss.js */; };
-		1ED046D8244F5EE7008F6365 /* InsertBlock.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D7244F5EE7008F6365 /* InsertBlock.js */; };
-		1ED046DA244F5FCB008F6365 /* RetrieveHTMLContent.js in Resources */ = {isa = PBXBuildFile; fileRef = 1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */; };
-		1ED2A37524506C8E0000C91C /* WPBarsStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1ED2A37424506C8E0000C91C /* WPBarsStyle.css */; };
-		1ED2A3772450C4570000C91C /* GutenbergLocalStorage.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		26D66DEC36ACF7442186B07D /* Pods_WordPressThisWeekWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
@@ -2646,13 +2639,6 @@
 		1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebViewController.swift; sourceTree = "<group>"; };
 		1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebNavigationViewController.swift; sourceTree = "<group>"; };
 		1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRollout.swift; sourceTree = "<group>"; };
-		1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebJavascriptInjection.swift; sourceTree = "<group>"; };
-		1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = GutenbergWebStyle.css; sourceTree = "<group>"; };
-		1ED046D3244F5B9D008F6365 /* InjectCss.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = InjectCss.js; sourceTree = "<group>"; };
-		1ED046D7244F5EE7008F6365 /* InsertBlock.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = InsertBlock.js; sourceTree = "<group>"; };
-		1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RetrieveHTMLContent.js; sourceTree = "<group>"; };
-		1ED2A37424506C8E0000C91C /* WPBarsStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = WPBarsStyle.css; sourceTree = "<group>"; };
-		1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GutenbergLocalStorage.json; sourceTree = "<group>"; };
 		2262D835FA89938EBF63EADF /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		27AE66536E0C5378203F9312 /* Pods-WordPressUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
@@ -5476,18 +5462,11 @@
 			children = (
 				1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */,
 				1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */,
-				1ED046CF244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift */,
-				1ED046D1244F55C6008F6365 /* GutenbergWebStyle.css */,
-				1ED2A37424506C8E0000C91C /* WPBarsStyle.css */,
-				1ED046D3244F5B9D008F6365 /* InjectCss.js */,
-				1ED046D7244F5EE7008F6365 /* InsertBlock.js */,
-				1ED046D9244F5FCB008F6365 /* RetrieveHTMLContent.js */,
-				1ED2A3762450C4570000C91C /* GutenbergLocalStorage.json */,
 			);
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -10724,7 +10703,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -10831,7 +10810,6 @@
 				983DBBAA22125DD500753988 /* StatsTableFooter.xib in Resources */,
 				B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */,
 				17E3630622C41725000E0C79 /* wordpress_dark_icon_60pt@2x.png in Resources */,
-				1ED046D2244F55C6008F6365 /* GutenbergWebStyle.css in Resources */,
 				820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */,
 				17E3633E22C417F0000E0C79 /* jetpack_green_icon_40pt@2x.png in Resources */,
 				746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */,
@@ -10854,7 +10832,6 @@
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
 				17E363E222C4280A000E0C79 /* pride_icon_76pt.png in Resources */,
 				17E3633C22C417F0000E0C79 /* jetpack_green_icon_40pt.png in Resources */,
-				1ED046D4244F5B9D008F6365 /* InjectCss.js in Resources */,
 				17E3639C22C41DBA000E0C79 /* hot_pink_icon_40pt.png in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
@@ -10924,7 +10901,6 @@
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
 				17DC4C3122C5E6910059CA11 /* open_source_dark_icon_40pt@2x.png in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
-				1ED2A37524506C8E0000C91C /* WPBarsStyle.css in Resources */,
 				43134379217954F100DA2176 /* QuickStartSkipAllCell.xib in Resources */,
 				747D09862034837C0085EABF /* WordPressShare.js in Resources */,
 				9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */,
@@ -10942,7 +10918,6 @@
 				98906504237CC1DF00218CD2 /* WidgetUnconfiguredCell.xib in Resources */,
 				17DC4C5322C5E6D60059CA11 /* open_source_icon_60pt@3x.png in Resources */,
 				9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */,
-				1ED046D8244F5EE7008F6365 /* InsertBlock.js in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				17E363A022C41DBA000E0C79 /* hot_pink_icon_60pt@2x.png in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
@@ -10976,7 +10951,6 @@
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
 				9A09F91C230C49FD00F42AB7 /* StatsStackViewCell.xib in Resources */,
-				1ED046DA244F5FCB008F6365 /* RetrieveHTMLContent.js in Resources */,
 				17E362EF22C41275000E0C79 /* wordpress_icon_40pt@2x.png in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
@@ -10989,7 +10963,6 @@
 				988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */,
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
-				1ED2A3772450C4570000C91C /* GutenbergLocalStorage.json in Resources */,
 				981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */,
 				986C908622319F2600FC31E1 /* PostStatsTableViewController.storyboard in Resources */,
 				98D52C3322B1CFEC00831529 /* StatsTwoColumnRow.xib in Resources */,
@@ -11499,6 +11472,12 @@
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/inject-css.js",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/insert-block.js",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/local-storage-overrides.json",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/retrieve-html-content.js",
+				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/wp-bar-override.css",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
@@ -11520,6 +11499,12 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gridicons.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor-style-overrides.css",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/inject-css.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/insert-block.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/local-storage-overrides.json",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/retrieve-html-content.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wp-bar-override.css",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
@@ -12265,7 +12250,6 @@
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
 				17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
-				1ED046D0244F26C8008F6365 /* GutenbergWebJavascriptInjection.swift in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
 				F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */,
 				173F6DFE212352D000A4C8E2 /* GiphyService.swift in Sources */,
