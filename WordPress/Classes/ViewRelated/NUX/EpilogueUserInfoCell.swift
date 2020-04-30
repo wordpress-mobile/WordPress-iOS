@@ -112,24 +112,27 @@ private extension EpilogueUserInfoCell {
 
     func configureAccessibility() {
         usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
-        gravatarAddIcon.isHidden ? configureLoginAccessibility() : configureSignupAccessibility()
-    }
+        accessibilityTraits = .none
 
-    func configureSignupAccessibility() {
-        let accessibilityDescription = NSLocalizedString("Add account image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
-        gravatarButton.accessibilityLabel = accessibilityDescription
-
-        let accessibilityHint = NSLocalizedString("Adds image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
-        gravatarButton.accessibilityHint = accessibilityHint
-    }
-
-    func configureLoginAccessibility() {
         let accessibilityFormat = NSLocalizedString("Account Information. %@. %@.", comment: "Accessibility description for account information after logging in.")
         accessibilityLabel = String(format: accessibilityFormat, fullNameLabel.text ?? "", usernameLabel.text ?? "")
-        accessibilityTraits = .none
+
         fullNameLabel.isAccessibilityElement = false
         usernameLabel.isAccessibilityElement = false
         gravatarButton.isAccessibilityElement = false
+
+        if !gravatarAddIcon.isHidden {
+            configureSignupAccessibility()
+        }
+    }
+
+    func configureSignupAccessibility() {
+        gravatarButton.isAccessibilityElement = true
+        let accessibilityDescription = NSLocalizedString("Add account image.", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        gravatarButton.accessibilityLabel = accessibilityDescription
+
+        let accessibilityHint = NSLocalizedString("Add image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
+        gravatarButton.accessibilityHint = accessibilityHint
     }
 
 }
