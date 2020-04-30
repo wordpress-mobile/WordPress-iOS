@@ -40,7 +40,7 @@ class WPSplitViewController: UISplitViewController {
         case portrait = 230
         case landscape = 320
 
-        static func widthForSize(_ size: CGSize) -> CGFloat {
+        static func width(for size: CGSize) -> CGFloat {
             // If the app is in multitasking (so isn't fullscreen), just use the narrow width
             if size.width < UIScreen.main.bounds.width {
                 return self.portrait.rawValue
@@ -61,7 +61,7 @@ class WPSplitViewController: UISplitViewController {
             maximumPrimaryColumnWidth = UISplitViewController.automaticDimension
             preferredPrimaryColumnWidthFraction = UISplitViewController.automaticDimension
         case .narrow:
-            let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.widthForSize(size)
+            let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.width(for: size)
 
             minimumPrimaryColumnWidth = columnWidth
             maximumPrimaryColumnWidth = columnWidth
@@ -156,7 +156,7 @@ class WPSplitViewController: UISplitViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        self.updateSplitViewForPrimaryColumnWidth(size: size)
+        updateSplitViewForPrimaryColumnWidth(size: size)
         coordinator.animate(alongsideTransition: { context in
             self.updateDimmingViewFrame()
         })
