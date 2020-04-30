@@ -12,13 +12,9 @@ struct ReaderTabItem: FilterTabBarItem {
     /// initialize with topic
     init(_ content: ReaderContent) {
         self.content = content
-        if let topic = content.topic {
-            self.shouldHideButtonsView = !ReaderHelpers.topicIsFollowing(topic)
-            self.shouldHideSettingsButton = false
-        } else {
-            self.shouldHideButtonsView = content.type != .selfHostedFollowing
-            self.shouldHideSettingsButton = content.type == .selfHostedFollowing
-        }
+
+        self.shouldHideButtonsView = content.topicType != .following && content.type != .selfHostedFollowing
+        self.shouldHideSettingsButton = content.type == .selfHostedFollowing
     }
 }
 
@@ -68,11 +64,11 @@ struct ReaderContent {
 
         if let topic = topic {
             self.topic = topic
-            // contentType != .topic if there is a topic is invalid -> contentType will be reset to .topic
+            // if topic is not nil, contentType must be .topic.
             self.type = .topic
             return
         }
-        // contentType == .topic without a topic is invalid -> content will be treated as invalid
+        // if topic is nil, passing contentType: .topic is invalid -> content will be treated as invalid
         self.type = (topic == nil && contentType == .topic) ? .contentError : contentType
     }
 }
