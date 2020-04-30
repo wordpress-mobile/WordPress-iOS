@@ -29,15 +29,13 @@ extension ReaderTabItem {
     var title: String {
         switch content.type {
         case .topic:
-            guard let topic = content.topic else {
-                return ""
-            }
-            if ReaderHelpers.topicIsLiked(topic) {
-                return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
-            } else if ReaderHelpers.topicIsFollowing(topic) {
+            switch content.topicType {
+            case .following:
                 return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
-            } else {
-                return topic.title
+            case .likes:
+                return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+            default:
+                return content.topic?.title ?? ""
             }
         case .selfHostedFollowing:
             return NSLocalizedString("Following", comment: "Title of the Following Reader tab")

@@ -493,12 +493,14 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-        if !FeatureFlag.newReaderNavigation.enabled {
             // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-            header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-            header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
-            header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
+        if FeatureFlag.newReaderNavigation.enabled {
+            headerWidthConstraint.priority = UILayoutPriority(999)
         }
+        headerWidthConstraint.isActive = true
+        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -1676,11 +1678,6 @@ private extension ReaderStreamViewController {
         static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects", comment: "Title for the no followed sites result screen")
-        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
-        static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
-        static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
-        static let contentErrorImage = "cloud"
     }
 
     var readerEmptyImageName: String {
@@ -1779,9 +1776,9 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 
 
 // MARK: - View content types without a topic
-extension ReaderStreamViewController {
+private extension ReaderStreamViewController {
 
-    private var shouldDisplayNoTopicController: Bool {
+    var shouldDisplayNoTopicController: Bool {
         guard FeatureFlag.newReaderNavigation.enabled else {
             return false
         }
@@ -1798,22 +1795,22 @@ extension ReaderStreamViewController {
         }
     }
 
-    private func displaySelfHostedFollowingController() {
-        addNoTopicController(title: ResultsStatusText.noFollowedSitesTitle)
+    func displaySelfHostedFollowingController() {
+        addNoTopicController(title: NoTopicConstants.noFollowedSitesTitle)
     }
 
-    private func displayContentErrorController() {
-        addNoTopicController(title: ResultsStatusText.contentErrorTitle,
-                             buttonTitle: ResultsStatusText.retryButtonTitle,
-                             subtitle: ResultsStatusText.contentErrorSubtitle,
-                             image: ResultsStatusText.contentErrorImage,
+    func displayContentErrorController() {
+        addNoTopicController(title: NoTopicConstants.contentErrorTitle,
+                             buttonTitle: NoTopicConstants.retryButtonTitle,
+                             subtitle: NoTopicConstants.contentErrorSubtitle,
+                             image: NoTopicConstants.contentErrorImage,
                              actionHandler: {
                                  WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
                              })
         view.isUserInteractionEnabled = true
     }
 
-    private func addNoTopicController(title: String,
+    func addNoTopicController(title: String,
                                       buttonTitle: String? = nil,
                                       subtitle: String? = nil,
                                       image: String? = nil,
@@ -1832,10 +1829,18 @@ extension ReaderStreamViewController {
         noTopicController = controller
     }
 
-    private func removeNoTopicController() {
+    func removeNoTopicController() {
         if let controller = noTopicController as? NoResultsViewController {
             controller.removeFromView()
             noTopicController = nil
         }
+    }
+
+    enum NoTopicConstants {
+        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects", comment: "Title for the no followed sites result screen")
+        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
+        static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
+        static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
+        static let contentErrorImage = "cloud"
     }
 }
