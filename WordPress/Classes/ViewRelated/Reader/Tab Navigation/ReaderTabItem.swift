@@ -63,14 +63,18 @@ struct ReaderContent {
 
     private(set) var topic: ReaderAbstractTopic?
     let type: ReaderContentType
+    let topicType: ReaderTopicType
 
     init(topic: ReaderAbstractTopic?, contentType: ReaderContentType = .topic) {
+        self.topicType = ReaderHelpers.topicType(topic)
 
         if let topic = topic {
             self.topic = topic
+            // contentType != .topic if there is a topic is invalid -> contentType will be reset to .topic
             self.type = .topic
             return
         }
-        self.type = contentType
+        // contentType == .topic without a topic is invalid -> content will be treated as invalid
+        self.type = (topic == nil && contentType == .topic) ? .contentError : contentType
     }
 }

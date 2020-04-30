@@ -226,6 +226,31 @@ import WordPressShared
         return false
     }
 
+    // convenience method that returns the topic type
+    class func topicType(_ topic: ReaderAbstractTopic?) -> ReaderTopicType {
+        guard let topic = topic else {
+            return .noTopic
+        }
+        if topicIsDiscover(topic) {
+            return .discover
+        } else if topicIsFollowing(topic) {
+            return .following
+        } else if topicIsLiked(topic) {
+            return .likes
+        } else if isTopicList(topic) {
+            return .list
+        } else if isTopicSearchTopic(topic) {
+            return .search
+        } else if isTopicSite(topic) {
+            return .site
+        } else if isTopicTag(topic) {
+            return .tag
+        } else if topic is ReaderTeamTopic {
+            return .team
+        } else {
+            return .noTopic
+        }
+    }
 
     // MARK: Logged in helper
 
@@ -280,4 +305,18 @@ extension ReaderHelpers {
         }
         return mutableItems
     }
+}
+
+
+/// Typed topic type
+enum ReaderTopicType {
+    case discover
+    case following
+    case likes
+    case list
+    case search
+    case site
+    case tag
+    case team
+    case noTopic
 }

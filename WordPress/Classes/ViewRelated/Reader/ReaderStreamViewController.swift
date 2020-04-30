@@ -1745,21 +1745,13 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
-        guard let currentTopic = content.topic else {
-            readerTopic = nil
-            contentType = content.type
-            return
-        }
+        hideHeader = content.topicType == .site
+        readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
-
-        guard ReaderHelpers.topicIsDiscover(currentTopic) else {
-            hideHeader = ReaderHelpers.isTopicSite(currentTopic)
-            readerTopic = currentTopic
+        guard !shouldDisplayNoTopicController else {
             return
         }
-        readerTopic = nil
-        isFeed = false
-        siteID = ReaderHelpers.discoverSiteID
+        siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
     }
 }
 
