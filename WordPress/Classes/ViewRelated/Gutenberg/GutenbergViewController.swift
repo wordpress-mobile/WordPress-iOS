@@ -460,7 +460,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                     return
                                 }
 
-                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback)
+                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
         })
     }
 
