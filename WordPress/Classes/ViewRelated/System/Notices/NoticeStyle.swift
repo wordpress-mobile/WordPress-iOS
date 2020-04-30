@@ -82,7 +82,7 @@ public struct ToolTipNoticeStyle: NoticeStyle {
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
-    public let isDismissable = true
+    public let isDismissable = false
 
     public let animationStyle = NoticeAnimationStyle.fade
 }

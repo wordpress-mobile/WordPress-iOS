@@ -79,10 +79,7 @@ class NoticePresenter: NSObject {
         // Keep the window visible but hide it on the next run loop. If we hide it immediately,
         // the window is not automatically resized when the device is rotated. This issue
         // only happens on iPad simulators.
-        window.isHidden = false
-        DispatchQueue.main.async { [weak self] in
-            self?.window.isHidden = true
-        }
+        window.isHidden = true
 
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
@@ -90,6 +87,7 @@ class NoticePresenter: NSObject {
         }
 
         listenToKeyboardEvents()
+        listenToOrientationChangeEvents()
     }
 
     override convenience init() {
@@ -132,6 +130,19 @@ class NoticePresenter: NSObject {
                 currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
                 self.view.layoutIfNeeded()
             })
+        }
+    }
+
+    /// Adjust the current Notice so it will always be in the correct y-position after the
+    /// device is rotated.
+    private func listenToOrientationChangeEvents() {
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.currentNoticePresentation?.containerView?.setNeedsUpdateConstraints()
         }
     }
 
@@ -232,23 +243,16 @@ class NoticePresenter: NSObject {
         // Mask must be initialized after the window is shown or the view.frame will be zero
         view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
 
-        if notice.sourceView != nil {
-            //TODO: Extract to method
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
-                noticeContainerView.noticeView.alpha = WPAlphaFull
+        let fromState = offscreenState(for: noticeContainerView)
+        let toState = onscreenState(for: noticeContainerView)
+        animatePresentation(fromState: fromState, toState: toState, completion: {
+            // Quick Start notices don't get automatically dismissed
+            guard notice.style.isDismissable else {
+                return
             }
-        } else {
-            let fromState = offscreenState(for: noticeContainerView)
-            let toState = onscreenState(for: noticeContainerView)
-            animatePresentation(fromState: fromState, toState: toState, completion: {
-                // Quick Start notices don't get automatically dismissed
-                guard notice.style.isDismissable else {
-                    return
-                }
 
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
-            })
-        }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
+        })
 
         UIAccessibility.post(notification: .layoutChanged, argument: noticeContainerView)
 
