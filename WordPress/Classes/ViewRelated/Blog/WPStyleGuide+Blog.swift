@@ -26,9 +26,6 @@ extension WPStyleGuide {
         cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
         cell.detailTextLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
 
-        cell.imageView?.tintColor = .neutral(.shade30)
-        cell.imageView?.layer.borderWidth = 1
-
         cell.selectionStyle = .none
         cell.backgroundColor = .basicBackground
     }
