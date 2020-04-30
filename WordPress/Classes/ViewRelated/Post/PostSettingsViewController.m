@@ -1214,6 +1214,10 @@ FeaturedImageViewControllerDelegate>
                                                                                      isPassword:NO];
     vc.title = NSLocalizedString(@"Excerpt", @"Label for the excerpt field. Should be the same as WP core.");
     vc.onValueChanged = ^(NSString *value) {
+        if (self.apost.mt_excerpt != value) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostExcerptChanged properties:@{@"via": @"settings"}];
+        }
+
         self.apost.mt_excerpt = value;
         [self.tableView reloadData];
     };
