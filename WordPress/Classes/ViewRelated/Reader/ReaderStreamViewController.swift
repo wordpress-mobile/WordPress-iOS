@@ -55,7 +55,7 @@ import WordPressFlux
         return refreshControl
     }()
 
-    private var noResultsOverlay: NoResultsViewController?
+    private var noTopicController: UIViewController?
 
     private let reloadReader = {
         WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
@@ -297,7 +297,7 @@ import WordPressFlux
 
         didSetupView = true
 
-        guard !shouldDisplayOverlay else {
+        guard !shouldDisplayNoTopicController else {
             return
         }
 
@@ -1749,16 +1749,12 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
-        readerTopic = content.topic
+        guard let currentTopic = content.topic else {
+            readerTopic = nil
+            contentType = content.type
+            return
+        }
         contentType = content.type
-
-        guard !shouldDisplayOverlay else {
-            return
-        }
-
-        guard let currentTopic = readerTopic else {
-            return
-        }
 
         guard ReaderHelpers.topicIsDiscover(currentTopic) else {
             hideHeader = ReaderHelpers.isTopicSite(currentTopic)
@@ -1794,62 +1790,62 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 }
 
 
-// MARK: - No Results View for .emptyFollowing and .contentError content types
-// TODO: - READERNAV - Once the new reader is released, these methods
-// should be refactored and merged with those related to resultsStatusView
+// MARK: - View content types without a topic
 extension ReaderStreamViewController {
 
-    private var shouldDisplayOverlay: Bool {
-        if contentType == .emptyFollowing, FeatureFlag.newReaderNavigation.enabled {
-            displayNoFollowedSitesOverlay()
-            return true
-        } else if contentType == .contentError, FeatureFlag.newReaderNavigation.enabled {
-            displayLoadingErrorOverlay()
-            return true
+    private var shouldDisplayNoTopicController: Bool {
+        guard FeatureFlag.newReaderNavigation.enabled else {
+            return false
         }
-        removeOverlay()
-        return false
+        switch contentType {
+        case .selfHostedFollowing:
+            displaySelfHostedFollowingController()
+            return true
+        case .contentError:
+            displayContentErrorController()
+            return true
+        default:
+            removeNoTopicController()
+            return false
+        }
     }
 
-    private func displayNoFollowedSitesOverlay() {
-        addNoResultsOverlay(title: ResultsStatusText.noFollowedSitesTitle)
+    private func displaySelfHostedFollowingController() {
+        addNoTopicController(title: ResultsStatusText.noFollowedSitesTitle)
     }
 
-    private func displayLoadingErrorOverlay() {
-        addNoResultsOverlay(title: ResultsStatusText.contentErrorTitle,
-                            buttonTitle: ResultsStatusText.retryButtonTitle,
-                            subtitle: ResultsStatusText.contentErrorSubtitle,
-                            image: ResultsStatusText.contentErrorImage)
-        noResultsOverlay?.actionButtonHandler = reloadReader
+    private func displayContentErrorController() {
+        addNoTopicController(title: ResultsStatusText.contentErrorTitle,
+                             buttonTitle: ResultsStatusText.retryButtonTitle,
+                             subtitle: ResultsStatusText.contentErrorSubtitle,
+                             image: ResultsStatusText.contentErrorImage,
+                             actionHandler: reloadReader)
         view.isUserInteractionEnabled = true
     }
 
-    private func addNoResultsOverlay(title: String,
-                            noConnectionTitle: String? = nil,
-                            buttonTitle: String? = nil,
-                            subtitle: String? = nil,
-                            noConnectionSubtitle: String? = nil,
-                            image: String? = nil) {
+    private func addNoTopicController(title: String,
+                                      buttonTitle: String? = nil,
+                                      subtitle: String? = nil,
+                                      image: String? = nil,
+                                      actionHandler: (() -> Void)? = nil) {
 
         let controller = NoResultsViewController.controller()
         controller.configure(title: title,
-                                    noConnectionTitle: noConnectionTitle,
-                                    buttonTitle: buttonTitle,
-                                    noConnectionSubtitle: noConnectionTitle,
-                                    image: image)
+                             buttonTitle: buttonTitle,
+                             image: image)
 
-        self.addChild(controller)
-        self.view.addSubview(controller.view)
-        controller.view.frame = self.view.frame
+        controller.actionButtonHandler = actionHandler
+        addChild(controller)
+        view.addSubview(controller.view)
+        controller.view.frame = view.frame
         controller.didMove(toParent: self)
-        controller.updateView()
-        noResultsOverlay = controller
+        noTopicController = controller
     }
 
-    private func removeOverlay() {
-        if let controller = noResultsOverlay {
+    private func removeNoTopicController() {
+        if let controller = noTopicController as? NoResultsViewController {
             controller.removeFromView()
-            noResultsOverlay = nil
+            noTopicController = nil
         }
     }
 }

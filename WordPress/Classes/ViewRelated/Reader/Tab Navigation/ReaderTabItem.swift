@@ -16,8 +16,8 @@ struct ReaderTabItem: FilterTabBarItem {
             self.shouldHideButtonsView = !ReaderHelpers.topicIsFollowing(topic)
             self.shouldHideSettingsButton = false
         } else {
-            self.shouldHideButtonsView = content.type != .emptyFollowing
-            self.shouldHideSettingsButton = content.type == .emptyFollowing
+            self.shouldHideButtonsView = content.type != .selfHostedFollowing
+            self.shouldHideSettingsButton = content.type == .selfHostedFollowing
         }
     }
 }
@@ -39,7 +39,7 @@ extension ReaderTabItem {
             } else {
                 return topic.title
             }
-        case .emptyFollowing:
+        case .selfHostedFollowing:
             return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
         case .saved:
             return NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
@@ -52,7 +52,7 @@ extension ReaderTabItem {
 
 // MARK: - Reader Content
 enum ReaderContentType {
-    case emptyFollowing
+    case selfHostedFollowing
     case contentError
     case saved
     case topic

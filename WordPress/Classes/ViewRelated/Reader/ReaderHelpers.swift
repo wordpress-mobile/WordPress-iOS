@@ -276,7 +276,7 @@ extension ReaderHelpers {
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
         // in case of log in with a self hosted site, prepend a 'dummy' Following tab
         if !isLoggedIn() {
-            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .emptyFollowing)), at: 0)
+            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: 0)
         }
         return mutableItems
     }
