@@ -27,7 +27,7 @@ struct PublishSettingsViewModel {
     let title: String?
 
     var detailString: String {
-        if let date = date {
+        if let date = date, post.hasFuturePublishDate() {
             return dateTimeFormatter.string(from: date)
         } else {
             return NSLocalizedString("Immediately", comment: "Undated post time label")
@@ -77,13 +77,20 @@ struct PublishSettingsViewModel {
 
     mutating func setDate(_ date: Date?) {
         if let date = date {
+            // If a date to schedule the post was given
             post.dateCreated = date
             if post.hasFuturePublishDate() {
                 post.status = .scheduled
             } else {
                 post.status = .publish
             }
-        } else {
+        } else if post.originalIsDraft() {
+            // If the original is a draft, keep the post as a draft
+            post.status = .draft
+            post.dateCreated = Date()
+        } else if post.hasFuturePublishDate() {
+            // If the original is a already scheduled post, change it to publish immediately
+            // In this case the user had scheduled, but now wants to publish right away
             post.publishImmediately()
         }
 
