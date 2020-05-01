@@ -218,6 +218,7 @@ class NoticePresenter: NSObject {
                                                    multiplier: 1, constant: 0)
 
         let trailingConstraint = noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        trailingConstraint.priority = .defaultHigh // During rotation this may need to break
         noticeContainerView.trailingConstraint = trailingConstraint
 
         NSLayoutConstraint.activate([
