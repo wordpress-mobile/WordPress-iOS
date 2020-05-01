@@ -31,7 +31,7 @@ import WordPressFlux
 ///
 /// - SeeAlso: `NoticeStore`
 /// - SeeAlso: `NoticeAction`
-class NoticePresenter: NSObject {
+class NoticePresenter {
     /// Used for tracking the currently displayed Notice and its corresponding view.
     private struct NoticePresentation {
         let notice: Notice
@@ -58,7 +58,7 @@ class NoticePresenter: NSObject {
     private var currentNoticePresentation: NoticePresentation?
     private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
-    private init(store: NoticeStore) {
+    init(store: NoticeStore = StoreContainer.shared.notice) {
         self.store = store
 
         // The frame should match the key window or the main screen so that we get auto-resizing behavior. If the frame isn't one of these, the window will NOT autoresize.
@@ -69,8 +69,6 @@ class NoticePresenter: NSObject {
         // however, since the alerts aren't permanently on screen, this isn't
         // often a problem.
         window.windowLevel = .alert
-
-        super.init()
 
         // Keep the window visible but hide it on the next run loop. If we hide it immediately,
         // the window is not automatically resized when the device is rotated. This issue
@@ -84,10 +82,6 @@ class NoticePresenter: NSObject {
 
         listenToKeyboardEvents()
         listenToOrientationChangeEvents()
-    }
-
-    override convenience init() {
-        self.init(store: StoreContainer.shared.notice)
     }
 
     // MARK: - Events
@@ -293,13 +287,13 @@ class NoticePresenter: NSObject {
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
         return { [weak self] in
-            guard let self = self else {
+            guard let self = self, let presentation = self.currentNoticePresentation else {
                 return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaZero
 
-            switch self.currentNoticePresentation?.notice.style.animationStyle {
+            switch presentation.notice.style.animationStyle {
             case .moveIn:
                 noticeContainer.bottomConstraint?.constant = {
                     switch self.currentKeyboardPresentation {
@@ -310,9 +304,8 @@ class NoticePresenter: NSObject {
                     }
                 }()
             case .fade:
-                ()
-            case .none:
-                ()
+                // Fade just changes the alpha value which both animations need
+                break
             }
 
             self.view.layoutIfNeeded()
@@ -321,19 +314,18 @@ class NoticePresenter: NSObject {
 
     private func onscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
         return { [weak self] in
-            guard let self = self else {
+            guard let self = self, let presentation = self.currentNoticePresentation else {
                 return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
 
-            switch self.currentNoticePresentation?.notice.style.animationStyle {
+            switch presentation.notice.style.animationStyle {
             case .moveIn:
                 noticeContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
             case .fade:
-                ()
-            case .none:
-                ()
+                // Fade just changes the alpha value which both animations need
+                break
             }
 
             self.view.layoutIfNeeded()
