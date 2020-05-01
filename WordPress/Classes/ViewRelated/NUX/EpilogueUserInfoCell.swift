@@ -28,6 +28,16 @@ class EpilogueUserInfoCell: UITableViewCell {
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
 
+    private var fullNameFont: UIFont {
+        // Use New York font for full name.
+        guard #available(iOS 13, *),
+            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
+                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
+        }
+
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureImages()
@@ -94,20 +104,10 @@ private extension EpilogueUserInfoCell {
         gravatarAddIcon.backgroundColor = .basicBackground
 
         fullNameLabel.textColor = .text
-        fullNameLabel.font = fullNameFont()
+        fullNameLabel.font = fullNameFont
 
         usernameLabel.textColor = .textSubtle
         usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
-    }
-
-    func fullNameFont() -> UIFont {
-        // Use New York font for full name.
-        guard #available(iOS 13, *),
-            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
-                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
-        }
-
-        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
     }
 
     func configureAccessibility() {
