@@ -15,12 +15,12 @@ extension FancyAlertViewController {
     ///
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
-    @objc static func makeCreateButtonAnnouncementAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
+    @objc static func makeCreateButtonAnnouncementAlertController(readMoreAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let okayButton = ButtonConfig(Strings.okayButtonText) { controller, _ in
-            approveAction(controller)
             //TODO: Change this event
 //            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+            controller.dismiss(animated: true)
         }
 
         let readMoreButton = ButtonConfig(Strings.readMoreButtonText) { controller, _ in
@@ -28,7 +28,7 @@ extension FancyAlertViewController {
                 //TODO: Change this event
 //                WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
             }
-            controller.dismiss(animated: true)
+            readMoreAction(controller)
         }
 
         let image = UIImage(named: "wp-illustration-ia-announcement")
@@ -40,7 +40,7 @@ extension FancyAlertViewController {
                                                      defaultButton: readMoreButton,
                                                      cancelButton: okayButton,
                                                      appearAction: {
-                                                        //TODO: Change event
+                                                        //TODO: Change Event
 //                                                        WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
                                                      },
                                                      dismissAction: {})

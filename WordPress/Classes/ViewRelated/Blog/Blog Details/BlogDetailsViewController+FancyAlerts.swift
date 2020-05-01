@@ -166,8 +166,13 @@ extension BlogDetailsViewController {
 
         UserDefaults.standard.createButtonAlertWasDisplayed = true
 
-        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { (controller) in
+        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { [weak self] (controller) in
             controller.dismiss(animated: true)
+            if let url = URL(string: "https://wordpress.com/blog/") {
+                let webViewController = WebViewControllerFactory.controller(url: url)
+                let navController = LightNavigationController(rootViewController: webViewController)
+                self?.tabBarController?.present(navController, animated: true)
+            }
         }
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
