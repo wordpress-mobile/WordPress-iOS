@@ -138,7 +138,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
         // Account Details Rows
         guard let cellType = EpilogueCellType(rawValue: indexPath.row) else {
-            return super.tableView(tableView, cellForRowAt: indexPath)
+            return UITableViewCell()
         }
 
         return getEpilogueCellFor(cellType: cellType)
