@@ -1,11 +1,8 @@
-Die Website-Erstellung wurde durch Entfernen einiger Zwischenschritte optimiert. Suche einfach deine gewünschte Art von Website aus, gib einen Domainnamen ein und schon bist du fertig.
+Die Einstellungen für Planen, Schlagwörter und Sichtbarkeit erscheinen jetzt direkt im Beitragseditor, wenn du auf „Veröffentlichen“ oder „Planen“ tippst. Verleihe deinem Inhalt den letzten Schliff und tippe für die endgültige Veröffentlichung dann auf „Jetzt veröffentlichen“. Ab sofort musst du den Beitragseditor nicht mehr verlassen, um die Einstellungen an deinem Beitrag vorzunehmen!
 
-Weitere Verbesserungen am Block-Editor: Der Cover-Block ist jetzt verfügbar. Im Überschriftsblock findest du Optionen zur Ausrichtung und eine Dropdown-Toolbar vereinfacht die Ausrichtung für Überschrifts-, Absatz-, Bild- und MediaText-Blöcke. Darüber hinaus haben wir den Dimmeffekt für nicht ausgewählte Blöcke entfernt.
+Der mobile Block-Editor entwickelt sich stetig weiter:
+– Es gibt jetzt einen Spaltenblock und eine neue Neueinsteiger-Vorlage für Blogs.
+– Die Seitenvorlage für Neueinsteiger verstecken jetzt nicht mehr deinen Seiteninhalt.
+– Manchmal erschien ein Kästchen mit URL-Einstellungen, sobald du während der Vorschau der Seitenvorlage für Neueinsteiger dein Gerät bewegt hast. Dieser Fehler wurde behoben.
 
-Bedingt durch das Layout des Bildschirms „Benachrichtigungen“ wurde der Text auf einigen Smartphone-Modellen durch das Gehäuse verdeckt. Dies wurde nun behoben!
-
-Bei dem Versuch einer @-Erwähnung einer Person in einem Kommentar hat die App manchmal zwar Namen vorgeschlagen, ließ diese aber nicht auswählen – auch das wurde behoben. Wir haben uns auch um einige weitere Probleme gekümmert, die zum Absturz der App führten, wenn du versuchtest, auf den Bildschirm „Website-Seiten“ zuzugreifen, oder mithilfe der „Quick Action“-Buttons auf iPads zu deinen Blogbeiträgen gelangen wolltest. Und apropos Seiten und Beiträge: Die Vorschau ist auf iPads mit iOS 13 jetzt größer.
-
-Wir mögen unseren dunklen Modus so wie unseren Kaffee: echt dunkel und ohne ungewollte Zusätze. Es gab einige Störungen im hellen und dunklen Modus und das Verhalten war beim Umschalten von einem Modus zum anderen nicht immer optimal. Es gibt jetzt wesentlich weniger von diesen Störungen.
-
-Bleibt alle gesund.
+Da eine App nie zu schnell, zu nutzerfreundlich oder zu übersichtlich sein kann, haben wir die Benutzeroberfläche hier und da etwas verbessert. Das wird dir wahrscheinlich gar nicht auffallen. Und genau so soll es sein. Zu guter Letzt haben wir noch einen Fehler bei der Anmeldung behoben, da die Kontoinformationen von selbst gehosteten Websites inkorrekt angezeigt wurden.

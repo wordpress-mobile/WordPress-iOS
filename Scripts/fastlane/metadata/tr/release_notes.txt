@@ -1,11 +1,8 @@
-Site Oluşturma, bazı ara adımlar kaldırılarak kolaylaştırıldı. İstediğiniz site türünü seçin, bir alan adı girin ve işiniz bitti.
+Zamanlama, etiket ve görünürlük ayarları artık "Yayınla" ya da "Zamanla"ya dokunduğunuzda yayın düzenleyicide açılır. Bunlarda ince ayar yapabilir ve "Şimdi Yayınla"ya dokunarak yayını tamamlayabilirsiniz. Artık Gönderi Ayarları Ekranını aramak için editörden ayrılmanıza gerek yok.
 
-Blok düzenleyicide daha fazla iyileştirme yapıldı: Kapak bloğu artık kullanılabilir; Başlık bloğunda hizalama seçenekleri vardır; ve bir açılır araç çubuğu Başlık, Paragraf, Resim, MediaText blokları için hizalamayı kolaylaştırır. Ve seçilmemiş bloklar üzerindeki karartma efektini kaldırdık.
+Mobil Blok editörü büyümeye devam ediyor: -
+- Bloglar için bir Sütunlar bloğu ve yeni bir Başlangıç Şablonu bulacaksınız.
+- Başlangıç Sayfası Şablonu seçenekleri artık sayfa içeriğinizi gizlemiyor.
+- Başlangıç Sayfası Şablonlarını önizlerken cihazınızı fiziksel olarak hareket ettirdiğinizde URL ayarları kutusunun açılmasına neden olan bir hata düzeltildi.
 
-Bildirimler ekranının düzeni, bazı cep telefonu modellerinin gövdesi altında metnin kaybolmasına neden oldu. Bu düzeltildi!
-
-Bazen bir yorumda bir kişiyi @ belirtmeye çalışırsınız ve uygulama adları önerir, ancak bir tane seçmenize izin vermez - bu da düzeltildi. Ayrıca, Site Sayfaları ekranına erişmeye çalıştığınızda veya blog yayınlarınıza ulaşmak için iPad'lerde Hızlı İşlem düğmelerini kullandığınızda uygulamanın kilitlenmesine neden olan diğer birkaç sorunu da hallettik. Sayfalardan ve yayınlardan bahsetmişken, iOS 13 çalıştıran iPad'ler için önizlemeler artık daha büyük.
-
-Karanlık modumuzu kahvemizi sevdiğimiz gibi seviyoruz: gerçekten karanlık ve içinde yüzen herhangi bir hata olmadan. Aydınlık ve karanlık modlarında bazı aksaklıklar vardı ve bazen birinden diğerine geçtiğinizde işler garip bir şekilde davrandı. Şu anda bu hatalardan çok daha azı var.
-
-Hepiniz güvende olun.
+Bir uygulama hiçbir zaman çok hızlı, çok kullanışlı veya çok açık olamayacağından, bazı yerlerde birkaç kullanıcı arayüzü öğesini modernleştirdik. Acaba fark edecek misiniz? Muhtemelen hayır, işte bunun için önemli. Son olarak, kullanıcı tarafından barındırılan sitelerin hesap bilgilerinin yanlış yüklenmesine neden olan bir oturum açma sorunu düzeltildi.
