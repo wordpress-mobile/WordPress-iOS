@@ -56,7 +56,7 @@ class InvitePersonViewController: UITableViewController {
         let blogRoles = blog?.sortedRoles ?? []
         var roles = [RemoteRole]()
         let inviteRole: RemoteRole
-        if blog.isPrivate() {
+        if blog.isPrivateAtWPCom() {
             inviteRole = RemoteRole.viewer
         } else {
             inviteRole = RemoteRole.follower

@@ -1,6 +1,6 @@
 #import <WordPressShared/WPTableViewCell.h>
 
-@protocol ImageSourceInformation;
+@class AbstractPost;
 @class PostFeaturedImageCell;
 
 @protocol PostFeaturedImageCellDelegate <NSObject>
@@ -16,6 +16,6 @@ extern CGFloat const PostFeaturedImageCellMargin;
 @property (weak, nonatomic, nullable) id<PostFeaturedImageCellDelegate> delegate;
 @property (strong, nonatomic, readonly, nullable) UIImage *image;
 
-- (void)setImageWithURL:(nonnull NSURL *)url inPost:(nonnull id<ImageSourceInformation>)postInformation withSize:(CGSize)size;
+- (void)setImageWithURL:(nonnull NSURL *)url inPost:(nonnull AbstractPost *)post withSize:(CGSize)size;
 
 @end

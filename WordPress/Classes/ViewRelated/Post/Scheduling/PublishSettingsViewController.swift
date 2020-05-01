@@ -26,6 +26,14 @@ struct PublishSettingsViewModel {
     let timeZone: TimeZone
     let title: String?
 
+    var detailString: String {
+        if let date = date, post.hasFuturePublishDate() {
+            return dateTimeFormatter.string(from: date)
+        } else {
+            return NSLocalizedString("Immediately", comment: "Undated post time label")
+        }
+    }
+
     private let post: AbstractPost
 
     let dateFormatter: DateFormatter
@@ -69,13 +77,20 @@ struct PublishSettingsViewModel {
 
     mutating func setDate(_ date: Date?) {
         if let date = date {
+            // If a date to schedule the post was given
             post.dateCreated = date
             if post.hasFuturePublishDate() {
                 post.status = .scheduled
             } else {
                 post.status = .publish
             }
-        } else {
+        } else if post.originalIsDraft() {
+            // If the original is a draft, keep the post as a draft
+            post.status = .draft
+            post.dateCreated = Date()
+        } else if post.hasFuturePublishDate() {
+            // If the original is a already scheduled post, change it to publish immediately
+            // In this case the user had scheduled, but now wants to publish right away
             post.publishImmediately()
         }
 
@@ -150,15 +165,9 @@ private struct DateAndTimeRow: ImmuTableRow {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
-                let detailString: String
-                if let date = viewModel.date {
-                    detailString = viewModel.dateTimeFormatter.string(from: date)
-                } else {
-                    detailString = NSLocalizedString("Immediately", comment: "Undated post time label")
-                }
                 return DateAndTimeRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
-                    detail: detailString,
+                    detail: viewModel.detailString,
                     accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendarViewController(with: viewModel))
                 )
@@ -194,10 +203,17 @@ private struct DateAndTimeRow: ImmuTableRow {
         return { [weak self] row in
 
             let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { [weak self] date in
-                self?.viewModel.setDate(date)
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-            }
+            schedulingCalendarViewController.coordinator = DateCoordinator(
+                date: model.date,
+                timeZone: model.timeZone,
+                dateFormatter: model.dateFormatter,
+                dateTimeFormatter: model.dateTimeFormatter,
+                updated: { [weak self] date in
+                    WPAnalytics.track(.editorPostScheduled, properties: ["via": "settings"])
+                    self?.viewModel.setDate(date)
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+                }
+            )
 
             return self?.calendarNavigationController(rootViewController: schedulingCalendarViewController) ?? UINavigationController()
         }

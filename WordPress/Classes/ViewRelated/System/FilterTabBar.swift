@@ -231,7 +231,7 @@ class FilterTabBar: UIControl {
         ])
 
         scrollView.addSubview(stackView)
-
+        stackView.isLayoutMarginsRelativeArrangement = true
         // We will manually constrain the stack view to the content layout guide
         scrollView.contentInsetAdjustmentBehavior = .never
 
@@ -314,7 +314,6 @@ class FilterTabBar: UIControl {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
         stackViewEdgeConstraints = [
-            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
@@ -457,7 +456,7 @@ class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 46.0
-        static let bottomDividerHeight: CGFloat = 0.5
+        static let bottomDividerHeight: CGFloat = .hairlineBorderWidth
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)

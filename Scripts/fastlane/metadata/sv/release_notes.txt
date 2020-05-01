@@ -1,11 +1,8 @@
-Det har nu blivit mycket smidigare att skapa en ny webbplats genom att några mellanliggande steg har tagits bort. Välj vilken typ av webbplats du vill ha och skriv in ett domännamn, så är det klar.
+Inställningarna för schemaläggning, etiketter och synlighet visas nu direkt i inläggsredigeraren när du trycker på ”Publicera” eller ”Schemalägg” – finjustera dem och tryck på ”Publicera nu” för att fullfölja publiceringen. Nu behöver du inte längre gå ut ur redigeraren för att komma till skärmen för inläggsinställningar!
 
-Blockredigeraren har förbättrats på flera sätt: Nu har du tillgång till blocket ”Överlägg”, I rubrikblocket kan du välja textjustering, och en verktygslist med rullgardinsmeny underlättar textjustering för block av typerna rubrik, stycke, bild och mediatext. Dessutom har vi tagit bort nedtoningseffekten på omarkerade block.
+Den mobila blockredigeraren fortsätter att växa:
+– Nu finns det ett kolumnblock och startmall för bloggar.
+– Inställningarna för startsidesmallarna skymmer inte längre sidans innehåll.
+– Vi har rättat ett fel som gjorde att rutan för URL-inställningar dök upp om flyttade runt din enhet i rummet samtidigt som du förhandsvisade startsidesmallar.
 
-På vissa mobiler gjorde layouten av aviseringsskärmen att text kunde bli oåtkomlig – nu är det rättat!
-
-Ibland kanske du försökte att @-nämna någon i en kommentar, appen föreslog olika namn men det gick inte att välja något av dem. Det är också fixat nu. Vidare har vi tagit hand om några problem som kunde få appen att krascha när du försökte öppna skärmen med webbplatsens sidor eller använda snabbåtgärder på iPad för att komma till dina blogginlägg. På tal om sidor och inlägg – nu är förhandsvisningen i ett större format för iPad som kör iOS 13.
-
-Vi vill att vårt Dark Mode (mörkt läge) ska vara som kaffet vi dricker: svart som natten och utan diverse programfel. Det fanns olika missar i funktionen för ljust och mörkt läge. Ibland hände konstiga saker vid växling mellan lägena. Nu är missarna inte lika många längre.
-
-Var försiktiga och ta hand om er.
+Eftersom en app aldrig kan bli för snabb, för användbar eller ha för rent utseende har vi förbättrat användargränssnittet här och där. Du kommer antagligen inte ens att märka skillnaden, och det är just det som är poängen. Slutligen har vi löst ett inloggningsproblem där det kunde hända att kontouppgifterna för webbhotellsbaserade webbplatser laddades in på fel sätt.

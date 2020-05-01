@@ -55,8 +55,6 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let isPage = post is Page
-
         let publishBlock = { [unowned self] in
             if action == .saveAsDraft {
                 self.post.status = .draft
@@ -97,22 +95,11 @@ extension PostEditor where Self: UIViewController {
             }
         }
 
-        let promoBlock = { [unowned self] in
-            UserDefaults.standard.asyncPromoWasDisplayed = true
-
-            let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            self.present(controller, animated: true, completion: nil)
-        }
-
-
-        if action.isAsync &&
-            !UserDefaults.standard.asyncPromoWasDisplayed {
-            promoBlock()
-        } else if action.isAsync,
+        if action.isAsync,
             let postStatus = self.post.original?.status ?? self.post.status,
             ![.publish, .publishPrivate].contains(postStatus) {
+            WPAnalytics.track(.editorPostPublishTap)
+
             // Only display confirmation alert for unpublished posts
             displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
         } else {
@@ -137,13 +124,43 @@ extension PostEditor where Self: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    /// If the user is publishing a post, displays the Prepublishing Nudges
+    /// Otherwise, shows a confirmation Action Sheet.
+    ///
+    /// - Parameters:
+    ///     - action: Publishing action being performed
+    ///
+    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        if let post = post as? Post {
+            displayPrepublishingNudges(post: post, onPublish: publishAction)
+        } else {
+            displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction)
+        }
+    }
+
+    /// Displays the Prepublishing Nudges Bottom Sheet
+    ///
+    /// - Parameters:
+    ///     - action: Publishing action being performed
+    ///
+    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> ()) {
+        // End editing to avoid issues with accessibility
+        view.endEditing(true)
+
+        let prepublishing = PrepublishingViewController(post: post) { _ in
+            publishAction()
+        }
+        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
+        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
+    }
+
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
     ///
     /// - Parameters:
     ///     - action: Publishing action being performed
-    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
-    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
         let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel

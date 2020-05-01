@@ -1,3 +1,4 @@
+import AutomatticTracks
 import Foundation
 import CocoaLumberjack
 import WordPressShared
@@ -556,13 +557,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
-        if !FeatureFlag.postReblogging.enabled {
-            // this becomes redundant, as saveForLaterButton does not have a label anymore
-            // and applyReaderActionButtonStyle() is called by applyReaderSaveForLaterButtonStyle
-            // which in turn is called by configureSaveForLaterButton. Same considerations for
-            // reblog button
-            WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
-        }
 
         view.backgroundColor = .listBackground
 
@@ -680,10 +674,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 return
         }
 
-        let postInfo = ReaderCardContent(provider: post)
+        let host = MediaHost(with: post, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
+
         let maxImageWidth = min(view.frame.width, view.frame.height)
         let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
-        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
+        featuredImageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
             guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
                 return
             }
@@ -806,7 +804,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        textView.isPrivate = post.isPrivate()
+        textView.mediaHost = MediaHost(with: post, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
         textView.content = post.contentForDisplay()
 
         updateRichText()
@@ -944,9 +945,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
         // as by design spec, only display like counts
         let likeCount = post?.likeCount()?.intValue ?? 0
-        let shortTitle = likeCount > 0 ? "\(likeCount)" : ""
-
-        let title = FeatureFlag.postReblogging.enabled ? shortTitle : post?.likeCountForDisplay()
+        let title = likeCount > 0 ? "\(likeCount)" : ""
 
         let selected = post?.isLiked ?? false
         let likeImage = UIImage(named: "icon-reader-like")
@@ -961,9 +960,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     /// Uses the configuration in WPStyleGuide for the reblog button
     fileprivate func configureReblogButton() {
-        guard FeatureFlag.postReblogging.enabled else {
-            return
-        }
         reblogButton.isHidden = false
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
     }
@@ -1044,12 +1040,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-        if FeatureFlag.postReblogging.enabled {
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-        } else {
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-        }
-
+        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
         saveForLaterButton.isHidden = false
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
@@ -1555,9 +1546,7 @@ extension ReaderDetailViewController: Accessible {
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
         prepareActionButtonsForVoiceOver()
-        if FeatureFlag.postReblogging.enabled {
-            prepareReblogForVoiceOver()
-        }
+        prepareReblogForVoiceOver()
 
         NotificationCenter.default.addObserver(self,
             selector: #selector(setBarsAsVisibleIfVoiceOverIsEnabled),
