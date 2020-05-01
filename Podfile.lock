@@ -483,7 +483,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.8.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `fix/fancybutton-appearance`)
+  - WordPressUI (~> 1.6.0-beta.2)
   - WPMediaPicker (~> 1.6.1)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.27.0/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.0.0)
@@ -531,6 +531,7 @@ SPEC REPOS:
     - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -612,9 +613,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.27.0
-  WordPressUI:
-    :branch: fix/fancybutton-appearance
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.27.0/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -628,9 +626,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.27.0
-  WordPressUI:
-    :commit: 10f11e33af976cd6b66f02aa3b1067087f5ccc43
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -719,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 44d1873ac2ca39a047dd2baf5ec33c4706a1ec6f
+PODFILE CHECKSUM: b1f6da23efc05336ac3facf7a0d3a7e6985ba4d9
 
 COCOAPODS: 1.8.4
