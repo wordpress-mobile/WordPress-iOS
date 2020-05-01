@@ -501,32 +501,32 @@ namespace :install do
   #repository and ping Platform with their GPG public key
   namespace :mobile_secrets do
     task :setup => %w[mobile_secrets:ssh_secret mobile_secrets:gpg_public_key]
-    task :ssh_secret do
-      if DEVELOPER
-        ##prompt developer to enter their ssh https://code.a8c.com/settings/user/[your user name]/page/ssh/
-        puts ""
-        puts ""
-        puts ""
-        puts "====================================================================================="
-        puts "====================================================================================="
-        puts "Access to Mobile Secrets Repository:"
-        puts "To get started, you will need to enter your SSH public key at:"
-        puts "https://code.a8c.com/settings/user/[your user name]/page/ssh/"
-        puts "-------------------------------------------------------------------------------------"
-        ##prompt developer to amend their secrets
-        puts "Once there enter something like this:"
-        puts "Host code.a8c.com"
-        puts "  Hostname code.a8c.com"
-        puts "  ProxyCommand ssh -W %h:%p -N -l your-matticspace-username proxy.automattic.com"
-        puts "  User git"
-        puts " "
 
-        puts "====================================================================================="
-        puts "====================================================================================="
-        STDOUT.puts "Once complete please press enter to continue"
-        complete = STDIN.gets.strip
-      end
+    task :ssh_secret do
+      ##prompt developer to enter their ssh https://code.a8c.com/settings/user/[your user name]/page/ssh/
+      puts ""
+      puts ""
+      puts ""
+      puts "====================================================================================="
+      puts "====================================================================================="
+      puts "Access to Mobile Secrets Repository:"
+      puts "To get started, you will need to enter your SSH public key at:"
+      puts "https://code.a8c.com/settings/user/[your user name]/page/ssh/"
+      puts "-------------------------------------------------------------------------------------"
+      ##prompt developer to amend their secrets
+      puts "Once there enter something like this:"
+      puts "Host code.a8c.com"
+      puts "  Hostname code.a8c.com"
+      puts "  ProxyCommand ssh -W %h:%p -N -l your-matticspace-username proxy.automattic.com"
+      puts "  User git"
+      puts " "
+
+      puts "====================================================================================="
+      puts "====================================================================================="
+      STDOUT.puts "Once complete please press enter to continue"
+      complete = STDIN.gets.strip
     end
+
     task :gpg_public_key do
       #Prompt developer to ping platform with key
       puts "====================================================================================="
