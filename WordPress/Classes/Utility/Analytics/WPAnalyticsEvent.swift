@@ -6,6 +6,7 @@ import Foundation
     case mediaEditorUsed
     case editorCreatedPage
     case createSheetShown
+    case announcementModalShown
 
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
@@ -33,6 +34,8 @@ import Foundation
             return "editor_page_created"
         case .createSheetShown:
             return "create_sheet_shown"
+        case .announcementModalShown:
+            return "announcement_modal_shown"
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
         case .editorPostScheduled:

@@ -18,16 +18,11 @@ extension FancyAlertViewController {
     @objc static func makeCreateButtonAnnouncementAlertController(readMoreAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let okayButton = ButtonConfig(Strings.okayButtonText) { controller, _ in
-            //TODO: Change this event
-//            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+            WPAnalytics.track(WPAnalyticsEvent.announcementModalShown, properties: [Analytics.locationKey: Analytics.alertKey])
             controller.dismiss(animated: true)
         }
 
         let readMoreButton = ButtonConfig(Strings.readMoreButtonText) { controller, _ in
-            defer {
-                //TODO: Change this event
-//                WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
-            }
             readMoreAction(controller)
         }
 
@@ -41,7 +36,7 @@ extension FancyAlertViewController {
                                                      cancelButton: okayButton,
                                                      appearAction: {
                                                         //TODO: Change Event
-//                                                        WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
+                                                        WPAnalytics.track(WPAnalyticsEvent.announcementModalShown, properties: [Analytics.locationKey: Analytics.alertKey])
                                                      },
                                                      dismissAction: {})
 
