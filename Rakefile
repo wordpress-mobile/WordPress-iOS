@@ -263,14 +263,13 @@ task :xcode => [:dependencies] do
   sh "open #{XCODE_WORKSPACE}"
 end
 
-desc "Install and configure WordPress iOS and it's dependencies"
-namespace :install_wordpress do
-  #CS-NOTE: add dependincies install and swiftlint hook install
-  task :oss => %w[xcode:check tools:check_oss credentials:setup]
-  task :developer => %w[xcode:check tools:check_developer credentials:setup mobile_secrets:setup]
-end
+desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
+task :install_oss => %w[xcode:check]
 
-desc "Check if XCode and XCode select is installed with correct version."
+desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
+task :install_developer => %w[xcode:check]
+
+
 namespace :xcode do
   task :check => %w[xcode_app:check xcode_select:check]
 
