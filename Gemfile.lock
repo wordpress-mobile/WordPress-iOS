@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: e426345db3afc839ee463ec1ce8432f584880957
-  tag: 0.9.2
+  revision: 53662ac3a403754b322c71dcd29064edd6bd3162
+  ref: 53662ac3a403754b322c71dcd29064edd6bd3162
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.9.2)
+    fastlane-plugin-wpmreleasetoolkit (0.9.3)
       activesupport (~> 4)
       chroma (= 0.2.0)
       diffy (~> 3.3)
@@ -154,7 +154,7 @@ GEM
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
-    git (1.6.0)
+    git (1.7.0)
       rchardet (~> 1.8)
     google-api-client (0.36.4)
       addressable (~> 2.5, >= 2.5.1)
@@ -214,7 +214,7 @@ GEM
     octokit (4.14.0)
       sawyer (~> 0.8.0, >= 0.5.3)
     oj (3.10.6)
-    optimist (3.0.0)
+    optimist (3.0.1)
     options (2.3.2)
     os (1.0.1)
     parallel (1.19.1)
