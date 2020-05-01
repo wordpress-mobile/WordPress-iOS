@@ -65,7 +65,8 @@ class ReaderTabItemsStoreTests: XCTestCase {
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()
-            XCTAssertEqual(["imamock", "Saved"], self.store.items.map { $0.title })
+            // it will behave as isLoggedIn() == false
+            XCTAssertEqual(["Following", "imamock", "Saved"], self.store.items.map { $0.title })
         }
         // When
         store.getItems()
@@ -96,7 +97,8 @@ class ReaderTabItemsStoreTests: XCTestCase {
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()
-            XCTAssertEqual(["imamock", "Saved"], self.store.items.map { $0.title })
+            // it will behave as isLoggedIn() == false
+            XCTAssertEqual(["Following", "imamock", "Saved"], self.store.items.map { $0.title })
         }
         // When
         store.getItems()
