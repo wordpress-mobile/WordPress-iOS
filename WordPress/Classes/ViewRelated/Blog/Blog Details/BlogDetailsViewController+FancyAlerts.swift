@@ -51,6 +51,8 @@ extension BlogDetailsViewController {
             return
         }
 
+        showCreateButtonAnnouncementAlert()
+
         if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
@@ -151,6 +153,25 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private func showCreateButtonAnnouncementAlert() {
+        guard noPresentedViewControllers else {
+            return
+        }
+
+        guard !UserDefaults.standard.createButtonAlertWasDisplayed else {
+            return
+        }
+
+        UserDefaults.standard.createButtonAlertWasDisplayed = true
+
+        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { (controller) in
+            controller.dismiss(animated: true)
+        }
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        tabBarController?.present(alert, animated: true)
     }
 
     private func showUpgradeToV2Alert(for blog: Blog) {
