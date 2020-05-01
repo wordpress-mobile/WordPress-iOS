@@ -264,10 +264,10 @@ task :xcode => [:dependencies] do
 end
 
 desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
-task :install_oss => %w[install:xcode:check]
+task :install_oss => %w[install:xcode:check dependencies]
 
 desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
-task :install_developer => %w[install:xcode:check]
+task :install_developer => %w[install:xcode:check dependencies]
 
 namespace :install do
   namespace :xcode do
@@ -298,8 +298,8 @@ namespace :install do
         end
 
         #CS-NOTE: clobber is not working.  Figure out what is going on and fix auto file cleanup
-        CLOBBER << "json.txt"
-        clean()
+        #CLOBBER << "json.txt"
+        #clean()
       end
 
       #export developer tools system report to json file
@@ -359,6 +359,8 @@ namespace :install do
     end
   #End namespace xcode
   end
+
+
 #End namespace install
 end
 
