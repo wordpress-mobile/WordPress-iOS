@@ -264,98 +264,102 @@ task :xcode => [:dependencies] do
 end
 
 desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
-task :install_oss => %w[xcode:check]
+task :install_oss => %w[install:xcode:check]
 
 desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
-task :install_developer => %w[xcode:check]
+task :install_developer => %w[install:xcode:check]
 
+namespace :install do
+  namespace :xcode do
+    task :check => %w[xcode_app:check xcode_select:check]
 
-namespace :xcode do
-  task :check => %w[xcode_app:check xcode_select:check]
+    #xcode_app name space checks for the existance of xcode on developer's machine,
+    #checks to make sure that developer is using the correct version per the CI specs
+    #and confirms developer has xcode-select command line tools, if not installs them
+    namespace :xcode_app do
+      #check the existance of xcode, and compare version to CI specs
+      task :check do
+        puts "Checking for system for XCode"
+        if !xcode_installed?
+          #if xcode is not installed, prompt user to install and terminate rake
+          puts "Developing for WordPressiOS requires XCode."
+          puts "Please install XCode before setting up WordPressiOS"
+          puts "https://apps.apple.com/app/xcode/id497799835?mt=12"
+          next
+        else
+          puts "Xcode installed"
+        end
 
-  #xcode_app name space checks for the existance of xcode on developer's machine,
-  #checks to make sure that developer is using the correct version per the CI specs
-  #and confirms developer has xcode-select command line tools, if not installs them
-  namespace :xcode_app do
-    #check the existance of xcode, and compare version to CI specs
-    task :check do
-      puts "Checking for system for XCode"
-      if !xcode_installed?
-        #if xcode is not installed, prompt user to install and terminate rake
-        puts "Developing for WordPressiOS requires XCode."
-        puts "Please install XCode before setting up WordPressiOS"
-        puts "https://apps.apple.com/app/xcode/id497799835?mt=12"
-        next
-      else
-        puts "Xcode installed"
+        if !xcode_version_is_correct?
+          #if xcode is the wrong version, prompt user to install the correct version and terminate rake
+          puts "Incorrect Version of XCode"
+          puts "Please install correct version: (instert ci version)"
+          next
+        end
+
+        #CS-NOTE: clobber is not working.  Figure out what is going on and fix auto file cleanup
+        CLOBBER << "json.txt"
+        clean()
       end
 
-      if !xcode_version_is_correct?
-        #if xcode is the wrong version, prompt user to install the correct version and terminate rake
-        puts "Incorrect Version of XCode"
-        puts "Please install correct version: (instert ci version)"
-        next
+      #export developer tools system report to json file
+      def xcode_installed?
+        sh "system_profiler SPDeveloperToolsDataType -json > json.txt", verbose: false
       end
 
-      #CS-NOTE: clobber is not working.  Figure out what is going on and fix auto file cleanup
-      CLOBBER << "json.txt"
-      clean()
-    end
+      #compare xcode version to expected CI spec version
+      def xcode_version_is_correct?
+        #CS-NOTE: look into obtaining the ci version to compare to
+        #function currently will always succeed
+        if get_xcode_version == get_ci_xcode_version
+           puts "Correct version of XCode installed"
+          return true
+        end
+      end
 
-    #export developer tools system report to json file
-    def xcode_installed?
-      sh "system_profiler SPDeveloperToolsDataType -json > json.txt", verbose: false
-    end
+      #get xcode version from json system profiler developer tools report
+      #returns version in format example: '11.4.1 (16137)'
+      def get_xcode_version
+        puts "Checking installed XCode version"
+        file = File.read('json.txt')
+        profile = JSON.parse(file)
 
-    #compare xcode version to expected CI spec version
-    def xcode_version_is_correct?
+        xcode_version = profile['SPDeveloperToolsDataType'][0]['spdevtools_apps']['spxcode_app']
+      end
+
       #CS-NOTE: look into obtaining the ci version to compare to
-      #function currently will always succeed
-      if get_xcode_version == get_ci_xcode_version
-         puts "Correct version of XCode installed"
-        return true
+      def get_ci_xcode_version
+        puts "Checking CI recommendded installed XCode version"
+        #get CI information
+        #parse CI xcode required version
+
+        #CS-NOTE: Returning my current XCODE version till fixed
+        return "11.4.1 (16137)"
       end
+    #End namespace xcode-app
     end
 
-    #get xcode version from json system profiler developer tools report
-    #returns version in format example: '11.4.1 (16137)'
-    def get_xcode_version
-      puts "Checking installed XCode version"
-      file = File.read('json.txt')
-      profile = JSON.parse(file)
-
-      xcode_version = profile['SPDeveloperToolsDataType'][0]['spdevtools_apps']['spxcode_app']
-    end
-
-    #CS-NOTE: look into obtaining the ci version to compare to
-    def get_ci_xcode_version
-      puts "Checking CI recommendded installed XCode version"
-      #get CI information
-      #parse CI xcode required version
-
-      #CS-NOTE: Returning my current XCODE version till fixed
-      return "11.4.1 (16137)"
-    end
-  end
-
-  #XCode-select command line tools must be installed to update dependencies
-  #xcode_select checks the existence of xcode-select on developer's machine, installs if not found
-  namespace :xcode_select do
-    task :check do
-      puts "Checking system for XCode-select"
-      unless command?("xcode-select")
-        Rake::Task["xcode:xcode_select:install"].invoke
-      else
-        puts "XCode-select installed"
+    #XCode-select command line tools must be installed to update dependencies
+    #xcode_select checks the existence of xcode-select on developer's machine, installs if not found
+    namespace :xcode_select do
+      task :check do
+        puts "Checking system for XCode-select"
+        unless command?("xcode-select")
+          Rake::Task["xcode:xcode_select:install"].invoke
+        else
+          puts "XCode-select installed"
+        end
       end
-    end
 
-    task :install do
-      puts "Installing xcode select"
-      sh "xcode-select --install"
+      task :install do
+        puts "Installing xcode select"
+        sh "xcode-select --install"
+      end
+    #End namesapce :xcode-select
     end
+  #End namespace xcode
   end
-
+#End namespace install
 end
 
 def fold(label, &block)
