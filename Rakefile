@@ -264,10 +264,20 @@ task :xcode => [:dependencies] do
 end
 
 desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
-task :install_oss => %w[install:xcode:check dependencies]
+task :install_oss => %w[
+  install:xcode:check
+  dependencies
+  install:tools:check_oss
+  install:credentials:setup
+]
 
 desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
-task :install_developer => %w[install:xcode:check dependencies]
+task :install_developer => %w[
+  install:xcode:check
+  dependencies
+  install:tools:check_developer
+  install:credentials:setup
+]
 
 namespace :install do
   namespace :xcode do
@@ -360,6 +370,131 @@ namespace :install do
   #End namespace xcode
   end
 
+  #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
+  namespace :tools do
+    task :check_oss => %w[homebrew:check addons:check_oss]
+    task :check_developer => %w[homebrew:check addons:check_developer]
+
+    #Check for Homebrew and install if missing
+    namespace :homebrew do
+      task :check do
+        puts "Checking system for Homebrew"
+        unless command?("brew")
+          Rake::Task["tools:homebrew:install"].invoke
+        else
+          puts "Homebrew installed"
+        end
+      end
+
+      task :install do
+        sh "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
+      end
+    #End namespace homebrew
+    end
+
+    #Install required tools to work with WPiOS
+    namespace :addons do
+      #NOTE: hash key = default installed directory on device
+      # hash value = brew install location
+      oss_tools = {"convert" => "imagemagick",
+                  "gs" => "ghostscript",
+      }
+      developer_tools = {"convert" => "imagemagick",
+                        "gs" => "ghostscript",
+                        "sentry-cli" => "getsentry/tools/sentry-cli",
+                        "gpg" => "gpg",
+                        "git-crypt" => "git-crypt",
+      }
+
+      #Check for tool, install if not installed
+      #C-NOTE: the tool_check method does two things, check and install
+      #would it be better to make one method check and one method install, for clarity?
+      task :check_oss do
+        tool_check(oss_tools)
+      end
+
+      task :check_developer do
+        tool_check(developer_tools)
+      end
+
+      #check machine for if the developer tool is present, if not install
+      def tool_check(hash)
+        hash.each do |key, value|
+          puts "Checking system for #{key}"
+          unless command?(key)
+            tool_install(value)
+          else
+            puts "#{key} found"
+          end
+        end
+      end
+
+      ##install selected developer tool
+      def tool_install(tool)
+        puts "#{tool} not found.  Installing #{tool}"
+        puts "brew install #{tool}"
+      end
+
+    #End namespace addons
+    end
+
+  #End namespace Tools
+  end
+
+  #Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
+  namespace :credentials do
+    task :setup => %w[credentials:get_app_secrets credentials:set_app_secrets]
+    app_id = ""
+    app_secret = ""
+
+    #prompt user for their app ID and app secret
+      task :get_app_secrets do
+        app_id = get_app_id()
+        app_secret = get_app_secret()
+      end
+
+      #user given app id and secret and create a new wpcom_app_credentials file
+      task :set_app_secrets do
+        create_secrets_file()
+        set_app_secrets(app_id, app_secret)
+        ##Figure out removal of temp file
+      end
+
+      def get_app_id
+        STDOUT.puts "Please enter your App id"
+        app_id = STDIN.gets.strip
+      end
+
+      def get_app_secret
+        STDOUT.puts "Please enter your App Secret"
+        app_secret = STDIN.gets.strip
+      end
+
+      #create temporary secrets file from example file
+      def create_secrets_file
+        sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
+      end
+
+      #create a new wpcom_app_credentials file combining the app secret and app id
+      def set_app_secrets(id, secret)
+        puts "Creating credentials file"
+        new_file = File.new(".configure-files/wpcom_app_credentials", "w")
+        File.open(".configure-files/temp_wpcom_app_credentials") do |file|
+          file.each_line do |line|
+            string = line.to_s()
+            if string.include? "WPCOM_APP_ID="
+              new_file.puts("WPCOM_APP_ID=#{id}")
+            elsif string.include? "WPCOM_APP_SECRET="
+              new_file.puts("WPCOM_APP_SECRET=#{secret}")
+            else
+              new_file.write(line)
+            end
+          end
+        end
+      end
+
+  #End namesapce Credentials
+  end
 
 #End namespace install
 end
