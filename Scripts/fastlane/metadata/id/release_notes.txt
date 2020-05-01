@@ -1,11 +1,8 @@
-Pembuatan Situs telah disederhanakan dengan menghapus beberapa langkah yang tidak efisien. Pilih jenis situs yang Anda inginkan, masukkan nama domain, dan selesai.
+Pengaturan penjadwalan, tag, dan visibilitas kini muncul langsung di penyunting pos saat Anda mengetuk “Publikasikan” atau “Jadwalkan” — lakukan sedikit penyesuaian, dan ketuk “Publikasikan Sekarang” untuk menyelesaikan publikasi. Tak perlu lagi keluar dari penyunting untuk mencari Layar Pengaturan Pos!
 
-Penyunting Blok mendapatkan penyempurnaan: Blok Sampul kini tersedia; ada opsi perataan di blok Heading; dan bilah peralatan tarik turun memudahkan perataan untuk blok Heading, Paragraf, Gambar, dan MediaText. Kami meniadakan efek peredupan pada blok yang tidak dipilih.
+Penyunting Blok seluler terus berkembang:-
+– Anda akan menemukan blok Kolom dan Template Starter baru untuk blog.
+– Opsi Template Halaman Starter kini tak lagi menutupi konten halaman Anda.
+– Kami telah memperbaiki bug yang menyebabkan munculnya kotak pengaturan URL jika Anda secara fisik memindahkan perangkat saat melakukan pratinjau Template Halaman Starter.
 
-Tata letak layar Pemberitahuan menyebabkan teks hilang ke bawah casing sebagian model ponsel. Sudah kami perbaiki!
-
-Terkadang Anda ingin @-menyebut seseorang pada sebuah komentar, dan aplikasi akan menyarankan beberapa nama tetapi tidak dapat dipilih — kami juga telah memperbaikinya. Kami juga memperbaiki beberapa masalah lain yang menyebabkan aplikasi tertutup paksa saat Anda mencoba mengakses layar Halaman Situs atau menggunakan tombol Tindakan Cepat di iPad untuk membuka pos blog. Untuk halaman dan pos, pratinjau kini lebih besar untuk iPad yang menjalankan iOS 13.
-
-Seperti halnya kopi kesukaan kita, Mode Gelap itu seharusnya: hitam pekat dan bisa dinikmati tanpa gangguan. Ada beberapa gangguan pada Mode Gelap dan Terang, dan terkadang aplikasi menjadi aneh saat Anda beralih dari satu mode ke mode lain. Gangguan tersebut kini jauh berkurang.
-
-Tetaplah aman, kawan.
+Karena aplikasi tidak bisa terlalu cepat, praktis, atau jelas, kami menyederhanakan beberapa hal di UI. Akankah Anda memperhatikannya? Mungkin tidak, memang itu poinnya. Dan akhirnya, masalah login penyebab info akun untuk situs hosting mandiri dimuat secara tidak tepat kini telah ditangani.
