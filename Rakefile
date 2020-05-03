@@ -264,7 +264,8 @@ task :xcode => [:dependencies] do
 end
 
 desc "Install and configure WordPress iOS and it's dependencies - External Contributors"
-task :install_oss => %w[
+namespace :init do
+task :oss => %w[
   install:xcode:check
   dependencies
   install:tools:check_oss
@@ -272,19 +273,20 @@ task :install_oss => %w[
 ]
 
 desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
-task :install_developer => %w[
+task :developer => %w[
   install:xcode:check
   dependencies
   install:tools:check_developer
   install:credentials:setup
   install:mobile_secrets:setup
 ]
+end
 
 namespace :install do
   namespace :xcode do
     task :check => %w[xcode_app:check xcode_select:check]
 
-    #xcode_app name space checks for the existance of xcode on developer's machine,
+    #xcode_app namespace checks for the existance of xcode on developer's machine,
     #checks to make sure that developer is using the correct version per the CI specs
     #and confirms developer has xcode-select command line tools, if not installs them
     namespace :xcode_app do
@@ -322,30 +324,32 @@ namespace :install do
       def xcode_version_is_correct?
         #CS-NOTE: look into obtaining the ci version to compare to
         #function currently will always succeed
-        if get_xcode_version == get_ci_xcode_version
+        if get_xcode_version > get_ci_xcode_version
            puts "Correct version of XCode installed"
           return true
         end
       end
 
       #get xcode version from json system profiler developer tools report
-      #returns version in format example: '11.4.1 (16137)'
       def get_xcode_version
         puts "Checking installed XCode version"
         file = File.read('json.txt')
         profile = JSON.parse(file)
 
-        xcode_version = profile['SPDeveloperToolsDataType'][0]['spdevtools_apps']['spxcode_app']
+        #returns version in format example: '11.4.1 (16137)'
+        full_xcode_version = profile['SPDeveloperToolsDataType'][0]['spdevtools_apps']['spxcode_app']
+
+        #remove the trailing version info
+        return full_xcode_version.split(" ")[0]
       end
 
       #CS-NOTE: look into obtaining the ci version to compare to
       def get_ci_xcode_version
         puts "Checking CI recommendded installed XCode version"
-        #get CI information
-        #parse CI xcode required version
+        ci_config = File.read(".circleci/config.yml")
+        specs = YAML.load(ci_config)
 
-        #CS-NOTE: Returning my current XCODE version till fixed
-        return "11.4.1 (16137)"
+        ci_version = specs["jobs"]["Build Tests"]["executor"]["xcode-version"]
       end
     #End namespace xcode-app
     end
