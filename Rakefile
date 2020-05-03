@@ -270,7 +270,7 @@ task :oss => %w[
   dependencies
   install:tools:check_oss
   git:install_hooks
-  install:credentials:setup
+  credentials:setup
 ]
 
 desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
@@ -279,8 +279,8 @@ task :developer => %w[
   dependencies
   install:tools:check_developer
   git:install_hooks
-  install:credentials:setup
-  install:mobile_secrets:setup
+  credentials:setup
+  mobile_secrets:setup
 ]
 end
 
