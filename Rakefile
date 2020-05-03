@@ -399,7 +399,8 @@ namespace :install do
       end
 
       task :install do
-        sh "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
+        command = "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)\""
+        sh command
       end
     #End namespace homebrew
     end
