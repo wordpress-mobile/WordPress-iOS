@@ -269,7 +269,7 @@ task :oss => %w[
   install:xcode:check
   dependencies
   install:tools:check_oss
-  git:install_hooks
+  install:lint:check
   credentials:setup
 ]
 
@@ -278,7 +278,7 @@ task :developer => %w[
   install:xcode:check
   dependencies
   install:tools:check_developer
-  git:install_hooks
+  install:lint:check
   credentials:setup
   mobile_secrets:setup
 ]
@@ -452,6 +452,21 @@ namespace :install do
     end
 
   #End namespace Tools
+  end
+
+  namespace :lint do
+    task :check do
+      if !git_initialized?
+        puts "Initializing git repository"
+        sh "git init", verbose: false
+      end
+
+      Rake::Task["git:install_hooks"].invoke
+    end
+
+    def git_initialized?
+      sh "git rev-parse --is-inside-work-tree > /dev/null 2>&1", verbose: false
+    end
   end
 
 end #End namespace install
