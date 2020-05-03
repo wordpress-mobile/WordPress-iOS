@@ -444,7 +444,7 @@ namespace :install do
       ##install selected developer tool
       def tool_install(tool)
         puts "#{tool} not found.  Installing #{tool}"
-        puts "brew install #{tool}"
+        sh "brew install #{tool}"
       end
 
     #End namespace addons
