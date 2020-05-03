@@ -379,6 +379,7 @@ namespace :install do
 
   #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
   namespace :tools do
+    #CS_NOTE: look for a cleanr way to choos which tools to install, there is a bit of repeating that could be cleaner
     task :check_oss => %w[homebrew:check addons:check_oss]
     task :check_developer => %w[homebrew:check addons:check_developer]
 
