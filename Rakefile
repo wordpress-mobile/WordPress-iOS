@@ -269,6 +269,7 @@ task :oss => %w[
   install:xcode:check
   dependencies
   install:tools:check_oss
+  git:install_hooks
   install:credentials:setup
 ]
 
@@ -277,6 +278,7 @@ task :developer => %w[
   install:xcode:check
   dependencies
   install:tools:check_developer
+  git:install_hooks
   install:credentials:setup
   install:mobile_secrets:setup
 ]
