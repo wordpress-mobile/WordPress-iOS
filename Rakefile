@@ -297,6 +297,9 @@ namespace :install do
         puts "Checking for system for XCode"
         if !xcode_installed?
           #if xcode is not installed, prompt user to install and terminate rake
+          puts "XCode not Found!"
+          puts ""
+          puts "====================================================================================="
           puts "Developing for WordPressiOS requires XCode."
           puts "Please install XCode before setting up WordPressiOS"
           puts "https://apps.apple.com/app/xcode/id497799835?mt=12"
