@@ -300,7 +300,7 @@ namespace :install do
           puts "Developing for WordPressiOS requires XCode."
           puts "Please install XCode before setting up WordPressiOS"
           puts "https://apps.apple.com/app/xcode/id497799835?mt=12"
-          next
+          abort("")
         else
           puts "Xcode installed"
         end
@@ -320,14 +320,16 @@ namespace :install do
       #export developer tools system report to json file
       def xcode_installed?
         sh "system_profiler SPDeveloperToolsDataType -json > json.txt", verbose: false
+        file = File.read('json.txt')
+        profile = JSON.parse(file)
+
+        profile['SPDeveloperToolsDataType'].count > 0
       end
 
       #compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        #CS-NOTE: look into obtaining the ci version to compare to
-        #function currently will always succeed
         if get_xcode_version > get_ci_xcode_version
-           puts "Correct version of XCode installed"
+          puts "Correct version of XCode installed"
           return true
         end
       end
@@ -345,7 +347,6 @@ namespace :install do
         return full_xcode_version.split(" ")[0]
       end
 
-      #CS-NOTE: look into obtaining the ci version to compare to
       def get_ci_xcode_version
         puts "Checking CI recommendded installed XCode version"
         ci_config = File.read(".circleci/config.yml")
@@ -379,7 +380,7 @@ namespace :install do
 
   #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
   namespace :tools do
-    #CS_NOTE: look for a cleanr way to choos which tools to install, there is a bit of repeating that could be cleaner
+    #CS_NOTE: look for a cleaner way to choos which tools to install, there is a bit of repeating that could be cleaner
     task :check_oss => %w[homebrew:check addons:check_oss]
     task :check_developer => %w[homebrew:check addons:check_developer]
 
