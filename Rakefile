@@ -448,105 +448,96 @@ namespace :install do
   #End namespace Tools
   end
 
-  #Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
-  namespace :credentials do
-    task :setup => %w[credentials:get_app_secrets credentials:set_app_secrets]
-    app_id = ""
-    app_secret = ""
+end #End namespace install
 
-    #prompt user for their app ID and app secret
-      task :get_app_secrets do
-        app_id = get_app_id()
-        app_secret = get_app_secret()
-      end
+#Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
+namespace :credentials do
+  task :setup => %w[credentials:set_app_secrets]
 
-      #user given app id and secret and create a new wpcom_app_credentials file
-      task :set_app_secrets do
-        create_secrets_file()
-        set_app_secrets(app_id, app_secret)
-        ##Figure out removal of temp file
-      end
+    #user given app id and secret and create a new wpcom_app_credentials file
+    task :set_app_secrets do
+      create_secrets_file()
+      set_app_secrets(get_app_id, get_app_secret)
+      #CS-NOTE:Figure out removal of temp file
+    end
 
-      def get_app_id
-        STDOUT.puts "Please enter your App id"
-        app_id = STDIN.gets.strip
-      end
+    def get_app_id
+      STDOUT.puts "Please enter your App id"
+      app_id = STDIN.gets.strip
+    end
 
-      def get_app_secret
-        STDOUT.puts "Please enter your App Secret"
-        app_secret = STDIN.gets.strip
-      end
+    def get_app_secret
+      STDOUT.puts "Please enter your App Secret"
+      app_secret = STDIN.gets.strip
+    end
 
-      #create temporary secrets file from example file
-      def create_secrets_file
-        sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
-      end
+    #create temporary secrets file from example file
+    def create_secrets_file
+      sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
+    end
 
-      #create a new wpcom_app_credentials file combining the app secret and app id
-      def set_app_secrets(id, secret)
-        puts "Creating credentials file"
-        new_file = File.new(".configure-files/wpcom_app_credentials", "w")
-        File.open(".configure-files/temp_wpcom_app_credentials") do |file|
-          file.each_line do |line|
-            string = line.to_s()
-            if string.include? "WPCOM_APP_ID="
-              new_file.puts("WPCOM_APP_ID=#{id}")
-            elsif string.include? "WPCOM_APP_SECRET="
-              new_file.puts("WPCOM_APP_SECRET=#{secret}")
-            else
-              new_file.write(line)
-            end
+    #create a new wpcom_app_credentials file combining the app secret and app id
+    def set_app_secrets(id, secret)
+      puts "Creating credentials file"
+      new_file = File.new(".configure-files/wpcom_app_credentials", "w")
+      File.open(".configure-files/temp_wpcom_app_credentials") do |file|
+        file.each_line do |line|
+          string = line.to_s()
+          if string.include? "WPCOM_APP_ID="
+            new_file.puts("WPCOM_APP_ID=#{id}")
+          elsif string.include? "WPCOM_APP_SECRET="
+            new_file.puts("WPCOM_APP_SECRET=#{secret}")
+          else
+            new_file.write(line)
           end
         end
       end
-
-  #End namesapce Credentials
-  end
-
-  #Mobile secrets prompts the developer to add their SSH keys to the mobile secrets
-  #repository and ping Platform with their GPG public key
-  namespace :mobile_secrets do
-    task :setup => %w[mobile_secrets:ssh_secret mobile_secrets:gpg_public_key]
-
-    task :ssh_secret do
-      ##prompt developer to enter their ssh https://code.a8c.com/settings/user/[your user name]/page/ssh/
-      puts ""
-      puts ""
-      puts ""
-      puts "====================================================================================="
-      puts "====================================================================================="
-      puts "Access to Mobile Secrets Repository:"
-      puts "To get started, you will need to enter your SSH public key at:"
-      puts "https://code.a8c.com/settings/user/[your user name]/page/ssh/"
-      puts "-------------------------------------------------------------------------------------"
-      ##prompt developer to amend their secrets
-      puts "Once there enter something like this:"
-      puts "Host code.a8c.com"
-      puts "  Hostname code.a8c.com"
-      puts "  ProxyCommand ssh -W %h:%p -N -l your-matticspace-username proxy.automattic.com"
-      puts "  User git"
-      puts " "
-
-      puts "====================================================================================="
-      puts "====================================================================================="
-      STDOUT.puts "Once complete please press enter to continue"
-      complete = STDIN.gets.strip
     end
 
-    task :gpg_public_key do
-      #Prompt developer to ping platform with key
-      puts "====================================================================================="
-      puts "====================================================================================="
-      puts "Please send your GPG public key to Platform 9-3/4"
-      puts "You can contact them in the Slack channel #platform9"
-      puts "If you do not have a GPG public key, please go to https://gpgtools.org/ to create one"
-      puts "====================================================================================="
-      puts "====================================================================================="
-    end
-  #End namespace mobile_secrets
+#End namesapce Credentials
+end
+
+#Mobile secrets prompts the developer to add their SSH keys to the mobile secrets
+#repository and ping Platform with their GPG public key
+namespace :mobile_secrets do
+  task :setup => %w[mobile_secrets:ssh_secret mobile_secrets:gpg_public_key]
+
+  task :ssh_secret do
+    ##prompt developer to enter their ssh https://code.a8c.com/settings/user/[your user name]/page/ssh/
+    puts ""
+    puts ""
+    puts ""
+    puts "====================================================================================="
+    puts "====================================================================================="
+    puts "Access to Mobile Secrets Repository:"
+    puts "To get started, you will need to enter your SSH public key at:"
+    puts "https://code.a8c.com/settings/user/[your user name]/page/ssh/"
+    puts "-------------------------------------------------------------------------------------"
+    ##prompt developer to amend their secrets
+    puts "Once there enter something like this:"
+    puts "Host code.a8c.com"
+    puts "  Hostname code.a8c.com"
+    puts "  ProxyCommand ssh -W %h:%p -N -l your-matticspace-username proxy.automattic.com"
+    puts "  User git"
+    puts " "
+
+    puts "====================================================================================="
+    puts "====================================================================================="
+    STDOUT.puts "Once complete please press enter to continue"
+    complete = STDIN.gets.strip
   end
 
-#End namespace install
+  task :gpg_public_key do
+    #Prompt developer to ping platform with key
+    puts "====================================================================================="
+    puts "====================================================================================="
+    puts "Please send your GPG public key to Platform 9-3/4"
+    puts "You can contact them in the Slack channel #platform9"
+    puts "If you do not have a GPG public key, please go to https://gpgtools.org/ to create one"
+    puts "====================================================================================="
+    puts "====================================================================================="
+  end
+#End namespace mobile_secrets
 end
 
 #Secrets unlocks access to the mobile secrets repository and decrypts them
