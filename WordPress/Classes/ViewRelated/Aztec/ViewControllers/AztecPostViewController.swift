@@ -3530,9 +3530,9 @@ extension AztecPostViewController {
                               onFinishEditing: { [weak self] images, actions in
                                 images.forEach { mediaEditorImage in
                                     if let image = mediaEditorImage.editedImage {
-                                        self?.insertImage(image: image, source: .mediaEditor)
+                                        self?.insertImage(image: image)
                                     } else if let phAsset = mediaEditorImage as? PHAsset {
-                                        self?.insertDeviceMedia(phAsset: phAsset, source: .mediaEditor)
+                                        self?.insertDeviceMedia(phAsset: phAsset)
                                     }
                                 }
 

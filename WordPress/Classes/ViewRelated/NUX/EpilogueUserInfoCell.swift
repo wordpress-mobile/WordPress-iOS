@@ -24,31 +24,24 @@ class EpilogueUserInfoCell: UITableViewCell {
     @IBOutlet var gravatarView: UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var topBorder: UIView!
-    @IBOutlet var bottomBorder: UIView!
     open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    private var fullNameFont: UIFont {
+        // Use New York font for full name.
+        guard #available(iOS 13, *),
+            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
+                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
+        }
 
-        gravatarView.image = .gravatarPlaceholderImage
-
-        let accessibilityDescription = NSLocalizedString("Add account image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
-        gravatarButton.accessibilityLabel = accessibilityDescription
-
-        let accessibilityHint = NSLocalizedString("Adds image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
-        gravatarButton.accessibilityHint = accessibilityHint
-
-        configureColors()
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
     }
 
-    func configureColors() {
-        fullNameLabel.textColor = .text
-        usernameLabel.textColor = .textSubtle
-        topBorder.backgroundColor = .divider
-        bottomBorder.backgroundColor = .divider
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureImages()
+        configureColors()
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
@@ -61,9 +54,9 @@ class EpilogueUserInfoCell: UITableViewCell {
 
         usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
-        usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
 
         gravatarAddIcon.isHidden = !allowGravatarUploads
+        configureAccessibility()
 
         switch gravatarStatus {
         case .uploading(image: _):
@@ -71,10 +64,10 @@ class EpilogueUserInfoCell: UITableViewCell {
         case .finished:
             gravatarActivityIndicator.stopAnimating()
         case .idle:
-            let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
             if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
                 gravatarView.downloadImage(from: url)
             } else {
+                let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
                 gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x, placeholderImage: placeholder)
             }
         }
@@ -88,7 +81,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.startAnimating()
     }
 
-    /// Stops the Activity Indicator Animation, and hides the Username + Fullname labels.
+    /// Stops the Activity Indicator Animation, and shows the Username + Fullname labels.
     ///
     func stopSpinner() {
         fullNameLabel.isHidden = false
@@ -96,6 +89,54 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.stopAnimating()
     }
 }
+
+// MARK: - Private Methods
+//
+private extension EpilogueUserInfoCell {
+
+    func configureImages() {
+        gravatarAddIcon.image = .gridicon(.add)
+        gravatarView.image = .gravatarPlaceholderImage
+    }
+
+    func configureColors() {
+        gravatarAddIcon.tintColor = .primary
+        gravatarAddIcon.backgroundColor = .basicBackground
+
+        fullNameLabel.textColor = .text
+        fullNameLabel.font = fullNameFont
+
+        usernameLabel.textColor = .textSubtle
+        usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
+    }
+
+    func configureAccessibility() {
+        usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
+        accessibilityTraits = .none
+
+        let accessibilityFormat = NSLocalizedString("Account Information. %@. %@.", comment: "Accessibility description for account information after logging in.")
+        accessibilityLabel = String(format: accessibilityFormat, fullNameLabel.text ?? "", usernameLabel.text ?? "")
+
+        fullNameLabel.isAccessibilityElement = false
+        usernameLabel.isAccessibilityElement = false
+        gravatarButton.isAccessibilityElement = false
+
+        if !gravatarAddIcon.isHidden {
+            configureSignupAccessibility()
+        }
+    }
+
+    func configureSignupAccessibility() {
+        gravatarButton.isAccessibilityElement = true
+        let accessibilityDescription = NSLocalizedString("Add account image.", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        gravatarButton.accessibilityLabel = accessibilityDescription
+
+        let accessibilityHint = NSLocalizedString("Add image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
+        gravatarButton.accessibilityHint = accessibilityHint
+    }
+
+}
+
 
 // MARK: - Gravatar uploading
 //
@@ -125,6 +166,6 @@ extension UIImage {
     /// Returns a Gravatar Placeholder Image when uploading is allowed
     ///
     fileprivate static var gravatarUploadablePlaceholderImage: UIImage {
-        return UIImage(named: "gravatar-hollow", in: nil, compatibleWith: nil)!
+        return UIImage(named: "gravatar-hollow") ?? UIImage()
     }
 }

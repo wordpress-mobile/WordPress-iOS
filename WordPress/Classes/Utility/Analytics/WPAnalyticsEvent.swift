@@ -14,12 +14,20 @@ import Foundation
     case mediaLibraryAddedPhotoViaTenor
     case editorAddedPhotoViaTenor
 
-    // Prepublishing Nudges
+    // Settings and Prepublishing Nudges
     case editorPostPublishTap
     case editorPostScheduled
     case editorPostVisibilityChanged
     case editorPostTagsAdded
     case editorPostPublishNowTapped
+    case editorPostCategoryChanged
+    case editorPostStatusChanged
+    case editorPostFormatChanged
+    case editorPostFeaturedImageChanged
+    case editorPostStickyChanged
+    case editorPostLocationChanged
+    case editorPostSlugChanged
+    case editorPostExcerptChanged
 
     /// A String that represents the event
     var value: String {
@@ -55,6 +63,22 @@ import Foundation
             return "editor_post_tags_added"
         case .editorPostPublishNowTapped:
             return "editor_post_publish_now_tapped"
+        case .editorPostCategoryChanged:
+            return "editor_post_category_changed"
+        case .editorPostStatusChanged:
+            return "editor_post_status_changed"
+        case .editorPostFormatChanged:
+            return "editor_post_format_changed"
+        case .editorPostFeaturedImageChanged:
+            return "editor_post_featured_image_changed"
+        case .editorPostStickyChanged:
+            return "editor_post_sticky_changed"
+        case .editorPostLocationChanged:
+            return "editor_post_location_changed"
+        case .editorPostSlugChanged:
+            return "editor_post_slug_changed"
+        case .editorPostExcerptChanged:
+            return "editor_post_excerpt_changed"
         }
     }
 

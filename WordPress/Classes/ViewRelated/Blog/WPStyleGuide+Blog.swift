@@ -19,20 +19,25 @@ extension WPStyleGuide {
     }
 
     @objc public class func configureCellForLogin(_ cell: WPBlogTableViewCell) {
-        // TODO: make this dynamic size once @elibud's dynamic type code is merged
-        cell.textLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
-        cell.textLabel?.sizeToFit()
         cell.textLabel?.textColor = .text
+        cell.detailTextLabel?.textColor = .textSubtle
 
-        cell.detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = .text
+        let fontSize = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
+        cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
 
-        cell.imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
-        cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = .neutral(.shade30)
-
-        cell.backgroundColor = .listBackground
+        cell.selectionStyle = .none
+        cell.backgroundColor = .basicBackground
     }
 
- }
+}
+
+extension LoginEpilogueBlogCell {
+    // Per Apple's documentation (https://developer.apple.com/documentation/xcode/supporting_dark_mode_in_your_interface),
+    // `cgColor` objects do not adapt to appearance changes (i.e. toggling light/dark mode).
+    // `tintColorDidChange` is called when the appearance changes, so re-set the border color when this occurs.
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
+    }
+}
