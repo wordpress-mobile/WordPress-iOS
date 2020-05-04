@@ -136,7 +136,7 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
         epilogueUserInfo = userInfo
-        performSegue(withIdentifier: .showUsernames, sender: self)
+        performSegue(withIdentifier: SignupUsernameViewController.classNameWithoutNamespaces(), sender: self)
         WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
     }
 }

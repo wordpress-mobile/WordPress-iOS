@@ -108,7 +108,7 @@
                         <outlet property="doneButton" destination="atb-5g-t4d" id="JdZ-x9-aXK"/>
                         <outlet property="tableViewLeadingConstraint" destination="Ke8-3y-IW1" id="gra-zm-3j4"/>
                         <outlet property="tableViewTrailingConstraint" destination="drs-fr-MgU" id="1WO-CG-vgL"/>
-                        <segue destination="CFB-8a-SBe" kind="show" identifier="showUsernames" id="39l-r4-qyx"/>
+                        <segue destination="CFB-8a-SBe" kind="show" identifier="SignupUsernameViewController" id="39l-r4-qyx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgc-gi-57Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
