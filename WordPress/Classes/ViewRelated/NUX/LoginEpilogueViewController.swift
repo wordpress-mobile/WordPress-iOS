@@ -56,20 +56,12 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
+        navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 

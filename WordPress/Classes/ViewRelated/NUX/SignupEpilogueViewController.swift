@@ -36,16 +36,12 @@ class SignupEpilogueViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = .basicBackground
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
         setTableViewMargins(forWidth: view.frame.width)
         WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .basicBackground
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
