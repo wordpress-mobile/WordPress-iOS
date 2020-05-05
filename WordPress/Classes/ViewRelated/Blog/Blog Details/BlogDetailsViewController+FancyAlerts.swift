@@ -51,9 +51,9 @@ extension BlogDetailsViewController {
             return
         }
 
-        showCreateButtonAnnouncementAlert()
-
-        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+        if shouldShowCreateButtonAnnouncement() {
+            showCreateButtonAnnouncementAlert()
+        } else if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
             tourGuide.didShowUpgradeToV2Notice(for: blog)
@@ -155,12 +155,12 @@ extension BlogDetailsViewController {
         }
     }
 
+    private func shouldShowCreateButtonAnnouncement() -> Bool {
+        return !UserDefaults.standard.createButtonAlertWasDisplayed
+    }
+
     private func showCreateButtonAnnouncementAlert() {
         guard noPresentedViewControllers else {
-            return
-        }
-
-        guard !UserDefaults.standard.createButtonAlertWasDisplayed else {
             return
         }
 

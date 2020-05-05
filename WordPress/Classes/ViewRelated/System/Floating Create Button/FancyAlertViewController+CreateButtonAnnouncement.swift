@@ -35,7 +35,6 @@ extension FancyAlertViewController {
                                                      defaultButton: readMoreButton,
                                                      cancelButton: okayButton,
                                                      appearAction: {
-                                                        //TODO: Change Event
                                                         WPAnalytics.track(WPAnalyticsEvent.announcementModalShown, properties: [Analytics.locationKey: Analytics.alertKey])
                                                      },
                                                      dismissAction: {})
