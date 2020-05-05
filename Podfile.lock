@@ -479,7 +479,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.18.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/secure_image_color`)
+  - WordPressAuthenticator (~> 1.16.0-beta.3)
   - WordPressKit (~> 4.8.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
@@ -527,6 +527,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -612,9 +613,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.27.0
-  WordPressAuthenticator:
-    :branch: issue/secure_image_color
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.27.0/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -628,9 +626,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.27.0
-  WordPressAuthenticator:
-    :commit: 4eb9fe54202f3b58d4c69109ee0602c6f4cb62e6
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -719,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: db040312f9ecc6b3b3f1aa86e09666f198624939
+PODFILE CHECKSUM: aa52d5b64c7bec88254c2f38ffc047192deaaae7
 
 COCOAPODS: 1.8.4
