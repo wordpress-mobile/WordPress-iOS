@@ -20,5 +20,5 @@ class StoreContainer {
     let statsInsights = StatsInsightsStore()
     let statsPeriod = StatsPeriodStore()
     let jetpackInstall = JetpackInstallStore()
-    let themeSupport = ThemeSupportStore()
+    let editorTheme = EditorThemeStore()
 }

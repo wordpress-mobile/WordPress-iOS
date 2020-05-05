@@ -273,12 +273,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
 
-        let themeSupportStore = StoreContainer.shared.themeSupport
-        themeSupportQuery = themeSupportStore.query(ThemeSupportQuery(blog: post.blog))
+        let themeSupportStore = StoreContainer.shared.editorTheme
+        themeSupportQuery = themeSupportStore.query(EditorThemeQuery(blog: post.blog))
         themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
             DispatchQueue.main.async {
-                if let colors = self?.themeColorFromState(state) {
-                    self?.gutenberg.updateTheme(colors)
+                if let strongSelf = self, let colors = state.themeColors(forBlog: strongSelf.post.blog) {
+                    strongSelf.gutenberg.updateTheme(colors)
                 }
             }
         }
@@ -656,16 +656,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergThemeColors() -> [[String: AnyHashable]]? {
-        return themeColorFromState(StoreContainer.shared.themeSupport.state)
-    }
-
-    func themeColorFromState(_ state: ThemeSupportStoreState) -> [[String: AnyHashable]]? {
-        switch state {
-        case .loaded(let colors):
-            return colors
-        default:
-            return nil
-        }
+        return StoreContainer.shared.editorTheme.state.themeColors(forBlog: post.blog)
     }
 }
 
