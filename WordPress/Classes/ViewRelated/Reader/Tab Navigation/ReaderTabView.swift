@@ -118,6 +118,7 @@ extension ReaderTabView {
         WPStyleGuide.applyReaderFilterButtonStyle(filterButton)
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         filterButton.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
+        filterButton.accessibilityIdentifier = Accessibility.filterButtonIdentifier
     }
 
     private func setupResetFilterButton() {
@@ -126,6 +127,8 @@ extension ReaderTabView {
         WPStyleGuide.applyReaderResetFilterButtonStyle(resetFilterButton)
         resetFilterButton.addTarget(self, action: #selector(didTapResetFilterButton), for: .touchUpInside)
         resetFilterButton.isHidden = true
+        resetFilterButton.accessibilityIdentifier = Accessibility.resetButtonIdentifier
+        resetFilterButton.accessibilityLabel = Accessibility.resetFilterButtonLabel
     }
 
     private func setupVerticalDivider(_ divider: UIView) {
@@ -151,6 +154,8 @@ extension ReaderTabView {
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
+        settingsButton.accessibilityIdentifier = Accessibility.settingsButtonIdentifier
+        settingsButton.accessibilityLabel = Accessibility.settingsButtonLabel
     }
 
     private func addContentToContainerView() {
@@ -253,5 +258,17 @@ extension ReaderTabView {
         static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
+    }
+}
+
+
+// MARK: - Accessibility
+extension ReaderTabView {
+    private enum Accessibility {
+        static let filterButtonIdentifier = "ReaderFilterButton"
+        static let resetButtonIdentifier = "ReaderResetButton"
+        static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
+        static let settingsButtonIdentifier = "ReaderSettingsButton"
+        static let settingsButtonLabel = NSLocalizedString("Settings", comment: "Accessibility label for the settings button in the reader.")
     }
 }
