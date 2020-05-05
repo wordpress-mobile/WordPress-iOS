@@ -42,7 +42,12 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     private func addNavigationBarElements() {
-        let cancelButton = WPStyleGuide.buttonForBar(with: UIImage.gridicon(.cross), target: self, selector: #selector(onCloseButtonPressed))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        let buttonTitle = NSLocalizedString("Continue", comment: "Apply changes localy to single block edition in the web block editor")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: buttonTitle,
+            style: .done,
+            target: self,
+            action: #selector(onSaveButtonPressed)
+        )
     }
 }
