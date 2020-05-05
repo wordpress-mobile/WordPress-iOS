@@ -22,6 +22,8 @@ import WordPressFlux
     let newPost: () -> Void
     let newPage: () -> Void
 
+    private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
+
     private lazy var notice: Notice = {
         let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
                             message: "",
@@ -40,6 +42,8 @@ import WordPressFlux
             return true
         }
     }
+
+    private weak var noticeContainerView: NoticeContainerView?
 
     @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
         self.viewController = viewController
@@ -82,7 +86,7 @@ import WordPressFlux
     @objc private func showCreateSheet() {
 
         shouldShowNotice = false
-        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+//        ActionDispatcher.dispatch(NoticeAction.clear(notice))
 
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
@@ -123,8 +127,9 @@ import WordPressFlux
     }
 
     @objc func hideCreateButton() {
-
-        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+        if let container = noticeContainerView {
+            NoticePresenter.dismiss(container: container)
+        }
 
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
@@ -134,7 +139,7 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view)
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {

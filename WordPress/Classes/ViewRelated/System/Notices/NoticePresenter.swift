@@ -44,6 +44,7 @@ class NoticePresenter {
     }
 
     private let store: NoticeStore
+    private let animator: NoticeAnimator
     private let window: UntouchableWindow
     private var view: UIView {
         guard let view = window.rootViewController?.view else {
@@ -58,8 +59,10 @@ class NoticePresenter {
     private var currentNoticePresentation: NoticePresentation?
     private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
-    init(store: NoticeStore = StoreContainer.shared.notice) {
+    init(store: NoticeStore = StoreContainer.shared.notice,
+         animator: NoticeAnimator = NoticeAnimator(duration: Animations.appearanceDuration, springDampening: Animations.appearanceSpringDamping, springVelocity: NoticePresenter.Animations.appearanceSpringVelocity)) {
         self.store = store
+        self.animator = animator
 
         // The frame should match the key window or the main screen so that we get auto-resizing behavior. If the frame isn't one of these, the window will NOT autoresize.
         let frame = UIApplication.shared.keyWindow?.frame ?? UIScreen.main.bounds
@@ -202,8 +205,8 @@ class NoticePresenter {
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
-        addNoticeContainerToPresentingViewController(noticeContainerView)
-        addBottomConstraintToNoticeContainer(noticeContainerView)
+        view.addSubview(noticeContainerView)
+        addBottomConstraint(to: noticeContainerView, in: view)
 
         let relation: NSLayoutConstraint.Relation = notice.sourceView != nil ? .greaterThanOrEqual : .equal
         let leadingConstraint = NSLayoutConstraint(item: noticeContainerView, attribute: .leading,
@@ -234,9 +237,17 @@ class NoticePresenter {
         // Mask must be initialized after the window is shown or the view.frame will be zero
         view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
 
-        let fromState = offscreenState(for: noticeContainerView)
-        let toState = onscreenState(for: noticeContainerView)
-        animatePresentation(fromState: fromState, toState: toState, completion: {
+        let offScreenOffset: CGFloat
+        switch self.currentKeyboardPresentation {
+        case .present(let keyboardHeight):
+            offScreenOffset = -keyboardHeight + noticeContainerView.bounds.height
+        case .notPresent:
+            offScreenOffset = window.untouchableViewController.offsetOffscreen
+        }
+
+        let fromState = animator.offscreenState(for: noticeContainerView, in: view, bottomOffset: offScreenOffset)
+        let toState = animator.onscreenState(for: noticeContainerView, in: view, bottomOffset: onscreenNoticeContainerBottomConstraintConstant)
+        animator.animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
                 return
@@ -250,11 +261,8 @@ class NoticePresenter {
         return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
-    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        view.addSubview(noticeContainer)
-    }
 
-    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
+    private func addBottomConstraint(to container: NoticeContainerView, in view: UIView) {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
@@ -262,13 +270,29 @@ class NoticePresenter {
 
     // MARK: - Dismissal
 
+    public class func dismiss(container: NoticeContainerView) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
+            UIView.animate(withDuration: Animations.appearanceDuration,
+                           delay: 0,
+                           usingSpringWithDamping: Animations.appearanceSpringDamping,
+                           initialSpringVelocity: Animations.appearanceSpringVelocity,
+                           options: [],
+                           animations: {
+                    container.noticeView.alpha = WPAlphaZero
+            },
+                           completion: { _ in
+                    container.removeFromSuperview()
+            })
+        }
+    }
+
     private func dismissForegroundNotice() {
         guard let container = currentNoticePresentation?.containerView,
             container.superview != nil else {
                 return
         }
 
-        animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
+        animator.animatePresentation(fromState: {}, toState: animator.offscreenState(for: container), completion: { [weak self] in
             container.removeFromSuperview()
 
             // It is possible that when the dismiss animation finished, another Notice was already
@@ -283,80 +307,12 @@ class NoticePresenter {
 
     // MARK: - Animations
 
-    typealias AnimationBlock = () -> Void
-
-    private func offscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
-        return { [weak self] in
-            guard let self = self, let presentation = self.currentNoticePresentation else {
-                return
-            }
-
-            noticeContainer.noticeView.alpha = WPAlphaZero
-
-            switch presentation.notice.style.animationStyle {
-            case .moveIn:
-                noticeContainer.bottomConstraint?.constant = {
-                    switch self.currentKeyboardPresentation {
-                    case .present(let keyboardHeight):
-                        return -keyboardHeight + noticeContainer.bounds.height
-                    case .notPresent:
-                        return self.window.untouchableViewController.offsetOffscreen
-                    }
-                }()
-            case .fade:
-                // Fade just changes the alpha value which both animations need
-                break
-            }
-
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    private func onscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
-        return { [weak self] in
-            guard let self = self, let presentation = self.currentNoticePresentation else {
-                return
-            }
-
-            noticeContainer.noticeView.alpha = WPAlphaFull
-
-            switch presentation.notice.style.animationStyle {
-            case .moveIn:
-                noticeContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
-            case .fade:
-                // Fade just changes the alpha value which both animations need
-                break
-            }
-
-            self.view.layoutIfNeeded()
-        }
-    }
-
     private var onscreenNoticeContainerBottomConstraintConstant: CGFloat {
         switch self.currentKeyboardPresentation {
         case .present(let keyboardHeight):
             return -keyboardHeight
         case .notPresent:
             return -window.untouchableViewController.offsetOnscreen
-        }
-    }
-
-    private func animatePresentation(fromState: AnimationBlock,
-                                     toState: @escaping AnimationBlock,
-                                     completion: @escaping AnimationBlock) {
-        fromState()
-
-        // this delay avoids affecting other transitions like navigation pushes
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
-            UIView.animate(withDuration: Animations.appearanceDuration,
-                           delay: 0,
-                           usingSpringWithDamping: Animations.appearanceSpringDamping,
-                           initialSpringVelocity: Animations.appearanceSpringVelocity,
-                           options: [],
-                           animations: toState,
-                           completion: { _ in
-                            completion()
-            })
         }
     }
 
@@ -444,6 +400,11 @@ class NoticeContainerView: UIView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        setNeedsUpdateConstraints()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
         setNeedsUpdateConstraints()
     }
 

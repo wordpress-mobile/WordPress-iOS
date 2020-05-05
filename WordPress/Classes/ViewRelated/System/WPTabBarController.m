@@ -69,8 +69,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
-@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
-
 @end
 
 @implementation WPTabBarController
@@ -204,10 +202,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListViewController.selectedBlog = blogToOpen;
     }
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:_blogListNavigationController.view trailingAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.bottomAnchor];
-    }
-
     return _blogListNavigationController;
 }
 
@@ -464,23 +458,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
                                                readerSplitViewController:self.readerSplitViewController
                                                 readerMenuViewController:self.readerMenuViewController];
-}
-
-- (CreateButtonCoordinator *)createButtonCoordinator
-{
-    if (!_createButtonCoordinator) {
-        __weak __typeof(self) weakSelf = self;
-        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [weakSelf showPostTab];
-        } newPage:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            Blog *blog = [weakSelf currentOrLastBlog];
-            [weakSelf showPageEditorForBlog:blog];
-        }];
-    }
-    
-    return _createButtonCoordinator;
 }
 
 #pragma mark - Navigation Helpers
@@ -1059,12 +1036,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self updateWriteButtonAppearance];
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
