@@ -6,18 +6,11 @@ protocol SignupUsernameViewControllerDelegate {
     func usernameSelected(_ username: String)
 }
 
-class SignupUsernameViewController: NUXViewController {
+class SignupUsernameViewController: UIViewController {
     // MARK: - Properties
     open var currentUsername: String?
     open var displayName: String?
     open var delegate: SignupUsernameViewControllerDelegate?
-
-    override var sourceTag: WordPressSupportSourceTag {
-        get {
-            return .wpComCreateSiteUsername
-        }
-    }
-
     private var usernamesTableViewController: SignupUsernameTableViewController?
 
     // MARK: - View
@@ -29,9 +22,20 @@ class SignupUsernameViewController: NUXViewController {
     }
 
     private func configureView() {
-        _ = addHelpButtonToNavController()
         navigationItem.title = NSLocalizedString("Change Username", comment: "Change Username title.")
         WPStyleGuide.configureColors(view: view, tableView: nil)
+
+        let supportButton = UIBarButtonItem(title: NSLocalizedString("Help", comment: "Help button"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(handleSupportButtonTapped))
+        navigationItem.rightBarButtonItem = supportButton
+    }
+
+    @objc private func handleSupportButtonTapped(sender: UIBarButtonItem) {
+        let supportVC = SupportTableViewController()
+        supportVC.sourceTag = .wpComCreateSiteUsername
+        supportVC.showFromTabBar()
     }
 
     // MARK: - Segue
