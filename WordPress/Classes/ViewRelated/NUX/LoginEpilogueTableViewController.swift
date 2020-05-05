@@ -56,6 +56,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
 
         view.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -205,25 +206,6 @@ extension LoginEpilogueTableViewController {
         onConnectSite?()
     }
 }
-
-// MARK: - UITableViewDelegate methods
-//
-extension LoginEpilogueTableViewController {
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let headerView = view as? UITableViewHeaderFooterView else {
-            return
-        }
-
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .basicBackground
-        headerView.backgroundView = backgroundView
-
-        headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        headerView.textLabel?.textColor = .neutral(.shade50)
-    }
-}
-
 
 // MARK: - Private Methods
 //
