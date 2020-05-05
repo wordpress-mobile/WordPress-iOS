@@ -1,11 +1,8 @@
-Certaines étapes de la création de site ont été supprimées afin de rendre le processus plus fluide. Choisissez simplement le type de site qui vous convient et saisissez un nom de domaine. C’est tout !
+Les réglages de la planification, des étiquettes et de la visibilité apparaissent désormais correctement dans l'éditeur d'articles lorsque vous appuyez sur « Publier » ou « Planifier ». Adaptez ces réglages, puis sélectionnez « Publier maintenant » pour valider la publication. Vous n'avez plus besoin de quitter l'éditeur pour consulter l'écran Réglages de l'article !
 
-L’éditeur de blocs a été encore amélioré : Le bloc de couverture est désormais disponible, des options d’alignement sont proposées dans le bloc de titre et une barre d’outils déroulante facilite l’alignement des blocs de titre, de paragraphe, d’image ainsi que de multimédia et texte. Nous avons également supprimé l’effet d’assombrissement sur les blocs désélectionnés.
+L'éditeur de blocs pour applications mobiles continue d'évoluer :-
+– Vous découvrirez un bloc de colonnes et un nouveau modèle de démarrage pour les blogs.
+– Les options du modèle de page de démarrage ne masquent plus le contenu de votre page.
+– Nous avons résolu un bug entraînant l'affichage des réglages de l'URL lors du déplacement physique de votre appareil pendant la prévisualisation des modèles de page de démarrage.
 
-Sur certains modèles de téléphones portables, en raison de la disposition de l’écran Notifications, le texte se retrouvait masqué par la coque du téléphone. Le problème a été résolu.
-
-Parfois, lorsque vous tentiez d’ajouter une @-mention pour identifier quelqu’un dans un commentaire, l’application suggérait des noms, mais il n’était pas possible de les sélectionner. Ce problème a également été résolu. Nous avons également résolu d’autres petits problèmes qui provoquaient le plantage de l’application lors des tentatives d’accès aux articles de votre blog via l’écran Pages du site ou l’utilisation des boutons d’action rapide sur les iPads. Et puisque nous parlons de pages et d’articles, les aperçus sont désormais plus grands sur les iPads exécutant iOS 13.
-
-Pour nous, le mode sombre, c’est comme le bon café, il doit être bien noir et uniforme. Les modes sombre et clair se comportaient parfois bizarrement lorsque vous passiez de l’un à l’autre, c’est désormais beaucoup plus rare.
-
-Prenez tous soin de vous.
+Une application n'étant jamais trop rapide, accessible ou épurée, nous avons quelque peu simplifié l'interface utilisateur çà et là. Le remarquerez-vous ? Probablement pas et c'est très bien ainsi. Enfin, un problème de connexion entraînant un chargement incorrect des informations relatives aux comptes des sites auto-hébergés a été résolu.

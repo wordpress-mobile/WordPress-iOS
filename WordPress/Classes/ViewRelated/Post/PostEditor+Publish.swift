@@ -107,7 +107,7 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    fileprivate func displayMediaIsUploadingAlert() {
+    func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
         present(alertController, animated: true, completion: nil)
@@ -124,22 +124,54 @@ extension PostEditor where Self: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
+    /// If the user is publishing a post, displays the Prepublishing Nudges
+    /// Otherwise, shows a confirmation Action Sheet.
     ///
     /// - Parameters:
     ///     - action: Publishing action being performed
-    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        if let post = post as? Post {
+            displayPrepublishingNudges(post: post, onPublish: publishAction)
+        } else {
+            displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction)
+        }
+    }
+
+    /// Displays the Prepublishing Nudges Bottom Sheet
+    ///
+    /// - Parameters:
+    ///     - action: Publishing action being performed
+    ///
+    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> ()) {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post as! Post) { _ in
+        let prepublishing = PrepublishingViewController(post: post) { _ in
             publishAction()
         }
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
         let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
         bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
+    }
+
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
+    ///
+    /// - Parameters:
+    ///     - action: Publishing action being performed
+    ///
+    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        let title = action.publishingActionQuestionLabel
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = action.publishActionLabel
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+            publishAction()
+        }
+        present(alertController, animated: true, completion: nil)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {

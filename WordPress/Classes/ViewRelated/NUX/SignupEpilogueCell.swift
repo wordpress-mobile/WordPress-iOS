@@ -8,7 +8,7 @@ protocol SignupEpilogueCellDelegate {
     func usernameSelected()
 }
 
-enum EpilogueCellType {
+enum EpilogueCellType: Int {
     case displayName
     case username
     case password
@@ -21,10 +21,31 @@ class SignupEpilogueCell: UITableViewCell {
     @IBOutlet weak var cellLabel: UILabel!
     @IBOutlet weak var cellField: LoginTextField!
 
+    // Used to layout cellField when cellLabel is shown or hidden.
+    @IBOutlet var cellFieldLeadingConstraintWithLabel: NSLayoutConstraint!
+    @IBOutlet var cellFieldLeadingConstraintWithoutLabel: NSLayoutConstraint!
+
+    // Used to layout cellField when disclosure icon is shown or hidden.
+    @IBOutlet var cellFieldTrailingConstraint: NSLayoutConstraint!
+    private var cellFieldTrailingMarginDefault: CGFloat = 0
+    private let cellFieldTrailingMarginDisclosure: CGFloat = 10
+
+    // Used to inset the separator lines.
+    @IBOutlet var cellLabelLeadingConstraint: NSLayoutConstraint!
+
+    // Used to apply a top margin to the Password field.
+    @IBOutlet var cellFieldTopConstraint: NSLayoutConstraint!
+    private let passwordTopMargin: CGFloat = 16
+
     private var cellType: EpilogueCellType?
     open var delegate: SignupEpilogueCellDelegate?
 
     // MARK: - UITableViewCell
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        cellFieldTrailingMarginDefault = cellFieldTrailingConstraint.constant
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -64,26 +85,51 @@ class SignupEpilogueCell: UITableViewCell {
     // MARK: - Public Methods
 
     func configureCell(forType newCellType: EpilogueCellType,
-                       labelText: String,
+                       labelText: String? = nil,
                        fieldValue: String? = nil,
                        fieldPlaceholder: String? = nil) {
+
         cellType = newCellType
+
         cellLabel.text = labelText
         cellLabel.textColor = .text
 
         cellField.text = fieldValue
-        cellField.textColor = .text
         cellField.placeholder = fieldPlaceholder
         cellField.delegate = self
-        cellField.isSecureTextEntry = (cellType == .password)
+
+        configureForPassword()
+
         selectionStyle = .none
 
         configureAccessoryType(for: newCellType)
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
+
+        addBottomBorder(withColor: .divider, leadingMargin: cellLabelLeadingConstraint.constant)
+
+        // TODO: remove this when `WordPressAuthenticatorStyle:textFieldBackgroundColor` is updated.
+        // This background color should be inherited from LoginTextField.
+        // However, since the Auth views haven't been updated, the color is incorrect.
+        // So for now we'll override it here.
+        cellField.backgroundColor = .basicBackground
     }
 
     // MARK: - Private behavior
+
+    private func configureForPassword() {
+        let isPassword = (cellType == .password)
+        cellLabel.isHidden = isPassword
+
+        cellField.isSecureTextEntry = isPassword
+        cellField.showSecureTextEntryToggle = isPassword
+        cellField.textAlignment = isPassword ? .left : .right
+        cellField.textColor = isPassword ? .text : .textSubtle
+
+        cellFieldLeadingConstraintWithLabel.isActive = !isPassword
+        cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
+        cellFieldTopConstraint.constant = isPassword ? passwordTopMargin : 0
+    }
 
     private func configureAccessibility(for cellType: EpilogueCellType) {
         if cellType == .username {
@@ -98,14 +144,17 @@ class SignupEpilogueCell: UITableViewCell {
             cellField.accessibilityIdentifier = "Username Field"
         case .password:
             cellField.accessibilityIdentifier = "Password Field"
+            cellLabel.isAccessibilityElement = false
         }
     }
 
     private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
             accessoryType = .disclosureIndicator
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDisclosure
         } else {
             accessoryType = .none
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDefault
         }
     }
 
@@ -123,6 +172,7 @@ class SignupEpilogueCell: UITableViewCell {
             cellField.textContentType = .newPassword
         }
     }
+
 }
 
 
