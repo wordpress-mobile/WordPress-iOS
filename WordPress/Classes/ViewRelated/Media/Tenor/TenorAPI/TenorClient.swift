@@ -14,6 +14,14 @@ private struct SearchParams {
     static let searchString = "q"
     static let limit = "limit"
     static let position = "pos"
+    static let contentFilter = "contentfilter"
+}
+
+enum TenorContentFilter: String {
+    case off
+    case low
+    case medium
+    case high
 }
 
 // MARK: - TenorClient
@@ -43,8 +51,12 @@ struct TenorClient {
     ///   - query: a search string
     ///   - limit: return up to a specified number of results (max "limit" is 50 enforced by Tenor, default is 20 if unspecified)
     ///   - position: return results starting from "position" (use it's the last "position" of the previous search, for paging purpose)
+    ///   - contentFilter: specify the content safety filter level
     ///   - completion: the handler which will be called on completion
-    public func search(for query: String, limit: Int = 20, from position: String?, completion: @escaping TenorSearchResult) {
+    public func search(for query: String, limit: Int = 20,
+                       from position: String?,
+                       contentFilter: TenorContentFilter = .high,
+                       completion: @escaping TenorSearchResult) {
         assert(limit <= 50, "Tenor allows a maximum 50 images per search")
 
         guard let url = URL(string: EndPoints.search.rawValue) else {
@@ -56,6 +68,7 @@ struct TenorClient {
             SearchParams.searchString: query,
             SearchParams.limit: limit,
             SearchParams.position: position ?? "",
+            SearchParams.contentFilter: contentFilter.rawValue,
         ]
 
         Alamofire.request(url, method: .get, parameters: params).responseData { response in
