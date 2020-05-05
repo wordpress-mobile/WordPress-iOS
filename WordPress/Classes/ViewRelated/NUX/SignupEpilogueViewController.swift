@@ -57,7 +57,7 @@ class SignupEpilogueViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
-    
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -79,23 +79,6 @@ class SignupEpilogueViewController: UIViewController {
         }
     }
 
-    // MARK: - analytics
-
-    private func tracksProperties() -> [AnyHashable: Any] {
-        let source: String = {
-            guard let service = socialService else {
-                return "email"
-            }
-            switch service {
-            case .google:
-                return "google"
-            case .apple:
-                return "apple"
-            }
-        }()
-
-        return ["source": source]
-    }
 }
 
 // MARK: - SignupEpilogueTableViewControllerDataSource
@@ -300,29 +283,32 @@ private extension SignupEpilogueViewController {
         })
     }
 
-    private func showPasswordError(_ error: Error? = nil) {
+    func showPasswordError(_ error: Error? = nil) {
         let errorMessage = error?.localizedDescription ?? HUDMessages.changePasswordGenericError
         SVProgressHUD.showError(withStatus: errorMessage)
+    }
+
+    func tracksProperties() -> [AnyHashable: Any] {
+        let source: String = {
+            guard let service = socialService else {
+                return "email"
+            }
+            switch service {
+            case .google:
+                return "google"
+            case .apple:
+                return "apple"
+            }
+        }()
+
+        return ["source": source]
     }
 
     enum TableViewMarginMultipliers {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
     }
-}
 
-extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
-    func usernameSelected(_ username: String) {
-        if username.isEmpty || username == epilogueUserInfo?.username {
-            updatedUsername = nil
-        } else {
-            updatedUsername = username
-        }
-    }
-}
-
-
-private extension SignupEpilogueViewController {
     enum ButtonTitle {
         static let title = NSLocalizedString("Done", comment: "Button text on site creation epilogue page to proceed to My Sites.")
         // TODO: change UI Test when change this
@@ -334,6 +320,17 @@ private extension SignupEpilogueViewController {
         static let changingUsername = NSLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return.")
         static let changingPassword = NSLocalizedString("Changing password", comment: "Shown while the app waits for the password changing web service to return.")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure changing the password.")
+    }
+
+}
+
+extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
+    func usernameSelected(_ username: String) {
+        if username.isEmpty || username == epilogueUserInfo?.username {
+            updatedUsername = nil
+        } else {
+            updatedUsername = username
+        }
     }
 }
 

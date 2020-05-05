@@ -104,7 +104,7 @@ class LoginEpilogueViewController: UIViewController {
 
 }
 
-// MARK: - Configuration
+// MARK: - Private Extension
 //
 private extension LoginEpilogueViewController {
 
@@ -166,12 +166,7 @@ private extension LoginEpilogueViewController {
         static let ipadLandscape: CGFloat = 0.25
     }
 
-}
-
-
-// MARK: - Actions
-//
-extension LoginEpilogueViewController {
+    // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
