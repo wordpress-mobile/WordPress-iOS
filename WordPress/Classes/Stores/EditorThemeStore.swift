@@ -39,12 +39,6 @@ enum EditorThemeStoreState {
             return [:]
         }
     }
-
-    // This might not be needed
-    func shouldFetch(forBlog blog: Blog) -> Bool {
-        guard let storageKey = EditorThemeStoreState.key(forBlog: blog) else { return false }
-        return storedthemeColors()[storageKey] == nil
-    }
 }
 
 class EditorThemeStore: QueryStore<EditorThemeStoreState, EditorThemeQuery> {
@@ -73,10 +67,6 @@ class EditorThemeStore: QueryStore<EditorThemeStoreState, EditorThemeQuery> {
 
     override func logError(_ error: String) {
         DDLogError("Error loading active theme: \(error)")
-    }
-
-    func reset() {
-        state = .empty
     }
 }
 
