@@ -2,7 +2,7 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-class SignupEpilogueViewController: NUXViewController {
+class SignupEpilogueViewController: UIViewController {
 
     // MARK: - Public Properties
 
