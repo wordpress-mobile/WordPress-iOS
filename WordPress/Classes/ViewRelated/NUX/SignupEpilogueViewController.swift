@@ -54,6 +54,10 @@ class SignupEpilogueViewController: UIViewController {
         setTableViewMargins(forWidth: view.frame.width)
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
