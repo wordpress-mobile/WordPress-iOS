@@ -298,7 +298,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
-//    self.clearsSelectionOnViewWillAppear = NO;
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     __weak __typeof(self) weakSelf = self;
@@ -1244,7 +1243,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return [self quickStartHeaderWithTitle:section.title];
     } else {
         return nil;
-//        return [super tableView:tableView viewForHeaderInSection:sectionNum];
     }
 }
 

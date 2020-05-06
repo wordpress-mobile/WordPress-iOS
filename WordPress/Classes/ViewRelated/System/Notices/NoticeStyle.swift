@@ -76,8 +76,8 @@ public struct ToolTipNoticeStyle: NoticeStyle {
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
-    public let titleColor: UIColor = .white
-    public let messageColor: UIColor = .neutral(.shade10)
+    public let titleColor: UIColor = .textInverted
+    public let messageColor: UIColor = .textInverted
     public let backgroundColor: UIColor = UIColor.neutral(.shade70).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
