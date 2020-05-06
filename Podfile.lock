@@ -490,12 +490,14 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  trunk:
     - 1PasswordExtension
+    - Alamofire
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
     - AppCenter
     - Automattic-Tracks-iOS
+    - boost-for-react-native
     - Charts
     - CocoaLumberjack
     - DoubleConversion
@@ -504,14 +506,18 @@ SPEC REPOS:
     - Gifu
     - GoogleSignIn
     - GoogleToolboxForMac
+    - Gridicons
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
     - MediaEditor
     - MRProgress
     - Nimble
+    - NSObject-SafeExpectations
+    - "NSURL+IDN"
     - OCMock
     - OHHTTPStubs
+    - Reachability
     - Sentry
     - SimulatorStatusMagic
     - Sodium
@@ -519,6 +525,7 @@ SPEC REPOS:
     - SVProgressHUD
     - TOCropViewController
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
@@ -535,16 +542,6 @@ SPEC REPOS:
     - ZendeskSupportProvidersSDK
     - ZendeskSupportSDK
     - ZIPFoundation
-  https://github.com/CocoaPods/Specs.git:
-    - Alamofire
-    - boost-for-react-native
-    - CocoaLumberjack
-    - GoogleToolboxForMac
-    - Gridicons
-    - NSObject-SafeExpectations
-    - "NSURL+IDN"
-    - Reachability
-    - WordPress-Aztec-iOS
 
 EXTERNAL SOURCES:
   FBLazyVector:
@@ -717,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: e86847c081f449709d83c99ad5791c70774197c3
+PODFILE CHECKSUM: 886cb7b0f71d3ac74c5cb674a8df7684868a7cd9
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
