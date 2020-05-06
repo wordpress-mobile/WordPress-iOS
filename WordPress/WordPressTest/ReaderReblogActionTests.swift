@@ -40,23 +40,6 @@ class MockPostService: PostService {
     }
 }
 
-class MockCoreData {
-    /// creates an in-memory store
-    class func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext? {
-
-        do {
-            let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])
-            let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-            let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-            return managedObjectContext
-        } catch {
-            print("Adding in-memory persistent store failed")
-            return nil
-        }
-    }
-}
 
 class ReblogTestCase: XCTestCase {
     var context: NSManagedObjectContext?
@@ -65,7 +48,7 @@ class ReblogTestCase: XCTestCase {
     var postService: MockPostService?
 
     override func setUp() {
-        context = MockCoreData.setUpInMemoryManagedObjectContext()
+        context = MockContext.getContext()
         readerPost = ReaderPost(context: self.context!)
         blogService = MockBlogService(managedObjectContext: self.context!)
         postService = MockPostService(managedObjectContext: self.context!)

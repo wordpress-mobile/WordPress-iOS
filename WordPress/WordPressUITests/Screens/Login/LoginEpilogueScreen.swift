@@ -5,7 +5,7 @@ private struct ElementStringIDs {
     static let usernameField = "login-epilogue-username-label"
     static let siteUrlField = "siteUrl"
     static let connectSiteButton = "connectSite"
-    static let continueButton = "Continue"
+    static let continueButton = "Done"
 }
 
 class LoginEpilogueScreen: BaseScreen {
@@ -18,7 +18,7 @@ class LoginEpilogueScreen: BaseScreen {
         let app = XCUIApplication()
         usernameField = app.staticTexts[ElementStringIDs.usernameField]
         siteUrlField = app.staticTexts[ElementStringIDs.siteUrlField]
-        connectSiteButton = app.buttons[ElementStringIDs.connectSiteButton]
+        connectSiteButton = app.cells[ElementStringIDs.connectSiteButton]
         continueButton = app.buttons[ElementStringIDs.continueButton]
 
         super.init(element: siteUrlField)

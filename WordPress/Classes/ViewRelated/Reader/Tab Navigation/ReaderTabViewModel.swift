@@ -1,13 +1,23 @@
+import WordPressFlux
+
 
 @objc class ReaderTabViewModel: NSObject {
-    // MARK: - Properties
 
+    // MARK: - Properties
+    /// tab bar items
+    private let tabItemsStore: ItemsStore
+    private var subscription: Receipt?
+    private var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
+
+    private var tabItems: [ReaderTabItem] {
+        tabItemsStore.items
+    }
     /// completion handler for an external call that changes the tab index
-    var indexSelectionCallback: ((Int) -> Void)?
-    /// completion handler for a tap on a tab on the toolbar
-    var topicSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
+    var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
-    private var tabItems: [ReaderTabItem] = []
+
+    /// completion handler for a tap on a tab on the toolbar
+    var setContentTopic: ((ReaderAbstractTopic?) -> Void)?
 
     /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
     var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
@@ -19,15 +29,40 @@
     /// search
     var navigateToSearch: () -> Void
 
+    /// Settings
+    private let settingsPresenter: ScenePresenter
     var settingsTapped: ((UIView) -> Void)?
 
-
     init(readerContentFactory: @escaping (ReaderAbstractTopic?) -> ReaderContentViewController,
-         searchNavigationFactory: @escaping () -> Void) {
+         searchNavigationFactory: @escaping () -> Void,
+         tabItemsStore: ItemsStore,
+         settingsPresenter: ScenePresenter) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
+        self.tabItemsStore = tabItemsStore
+        self.settingsPresenter = settingsPresenter
         super.init()
+
+        subscription = tabItemsStore.onChange { [weak self] in
+            guard let viewModel = self else {
+                return
+            }
+            viewModel.setTabBarItems?(viewModel.tabItems, viewModel.selectedIndex)
+        }
         addNotificationsObservers()
+    }
+}
+
+
+// MARK: - Tab bar items
+extension ReaderTabViewModel {
+
+    func refreshTabBar(completion: @escaping ([ReaderTabItem], Int) -> Void) {
+        setTabBarItems = completion
+    }
+
+    func fetchReaderMenu() {
+        tabItemsStore.getItems()
     }
 }
 
@@ -48,7 +83,7 @@ extension ReaderTabViewModel {
         } else {
             selectedTopic = topic
         }
-        topicSelectionCallback?(selectedTopic)
+        setContentTopic?(selectedTopic)
     }
 
     /// switch to the tab whose topic matches the given predicate
@@ -62,7 +97,7 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        indexSelectionCallback?(index)
+        didSelectIndex?(index)
     }
 
     /// switch to the tab  whose title matches the given predicate
@@ -73,7 +108,7 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        indexSelectionCallback?(index)
+        didSelectIndex?(index)
     }
 }
 
@@ -89,15 +124,14 @@ extension ReaderTabViewModel {
     }
 
     func presentManage(from: UIViewController) {
-        let presenter = ReaderManageScenePresenter()
-        presenter.present(on: from, animated: true, completion: nil)
+        settingsPresenter.present(on: from, animated: true, completion: nil)
     }
 
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
             if let topic = topic {
-                self?.topicSelectionCallback?(topic)
+                self?.setContentTopic?(topic)
             }
             completion(topic?.title)
         })
@@ -106,7 +140,7 @@ extension ReaderTabViewModel {
     func resetFilter(selectedItem: FilterTabBarItem) {
         selectedFilter = nil
         if let topic = (selectedItem as? ReaderTabItem)?.topic {
-            topicSelectionCallback?(topic)
+            setContentTopic?(topic)
         }
     }
 }
@@ -114,6 +148,7 @@ extension ReaderTabViewModel {
 
 // MARK: - Settings
 extension ReaderTabViewModel {
+
     func presentSettings(from: UIView) {
         settingsTapped?(from)
     }
@@ -131,66 +166,16 @@ extension ReaderTabViewModel {
 }
 
 
-// MARK: - Tab menu items
-extension ReaderTabViewModel {
-
-    /// Fetch request to extract reader menu topics from Core Data
-    private var topicsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopicsConstants.entityName)
-        fetchRequest.predicate = NSPredicate(format: ReaderTopicsConstants.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopicsConstants.sortByKey, ascending: true)]
-        return fetchRequest
-    }
-
-    /// Fetches topics from Core Data populates tab bar items accordingly and passes them to the completion closure
-    /// - Parameter completion: completion closure: will be passed an array of ReaderTabItem or nil, if the request fails
-    private func fetchTabBarItems(completion: @escaping ([ReaderTabItem]?) -> Void) {
-        do {
-            guard let topics = try ContextManager.sharedInstance().mainContext.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
-                return
-            }
-            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
-            tabItems = items
-            completion(items)
-
-        } catch {
-            DDLogError(ReaderTopicsConstants.fetchRequestError + error.localizedDescription)
-            completion(nil)
-        }
-    }
-
-    /// Fetches the menu from the designated service and passes it to the completion closure
-    /// - Parameter completion: completion closure: will be passed an array of ReaderTabItem or nil, if the request fails
-    func fetchReaderMenu(completion: @escaping ([ReaderTabItem]?) -> Void) {
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.fetchReaderMenu(success: { [weak self] in
-            self?.fetchTabBarItems(completion: completion)
-            }, failure: { error in
-                DDLogError(ReaderTopicsConstants.remoteFetchError + String(describing: error))
-                completion(nil)
-        })
-    }
-
-    private enum ReaderTopicsConstants {
-        static let predicateFormat = "following == %@ AND showInMenu == YES AND type == 'default' OR type == 'list' OR type == 'team'"
-        static let entityName = "ReaderAbstractTopic"
-        static let sortByKey = "type"
-        static let fetchRequestError = "There was a problem fetching topics for the menu. "
-        static let remoteFetchError = "Error syncing menu: "
-    }
-}
-
-
 // MARK: - Reader Content
 extension ReaderTabViewModel {
 
-    func makeChildViewController(at index: Int) -> ReaderContentViewController? {
+    func makeChildContentViewController(at index: Int) -> ReaderContentViewController? {
         guard index < tabItems.count else {
             return nil
         }
         let controller = makeReaderContentViewController(tabItems[index].topic)
 
-        topicSelectionCallback = { [weak controller] topic in
+        setContentTopic = { [weak controller] topic in
             controller?.setTopic(topic)
         }
         return controller
@@ -205,31 +190,28 @@ extension ReaderTabViewModel {
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification,
                                                object: nil,
                                                queue: nil) { notification in
-                                                self.cleanupStaleContent(removeAllTopics: false)
-                                                self.unflagInUseContent()
+                                                self.clearTopics(removeAllTopics: false)
+                                                self.clearFlags()
         }
 
         NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
                                                object: nil,
                                                queue: nil) { notification in
-                                                self.unflagInUseContent()
+                                                self.clearFlags()
                                                 self.clearSavedPosts()
-                                                self.cleanupStaleContent(removeAllTopics: true)
+                                                self.clearTopics(removeAllTopics: true)
                                                 self.clearSearchSuggestions()
                                                 self.selectedIndex = 0
         }
     }
 
-    /// Clears the inUse flag from any topics or posts so marked.
-    private func unflagInUseContent() {
+    private func clearFlags() {
         let context = ContextManager.sharedInstance().mainContext
         ReaderPostService(managedObjectContext: context).clearInUseFlags()
         ReaderTopicService(managedObjectContext: context).clearInUseFlags()
     }
 
-    /// Clean up topics that do not belong in the menu and posts that have no topic
-    /// This is merely a convenient place to perform this task.
-    private func cleanupStaleContent(removeAllTopics removeAll: Bool) {
+    private func clearTopics(removeAllTopics removeAll: Bool) {
         let context = ContextManager.sharedInstance().mainContext
         ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
 
@@ -240,7 +222,6 @@ extension ReaderTabViewModel {
         }
     }
 
-    /// Clears all saved posts, so they can be deleted by cleanup methods.
     private func clearSavedPosts() {
         let context = ContextManager.sharedInstance().mainContext
         ReaderPostService(managedObjectContext: context).clearSavedPostFlags()

@@ -1,11 +1,8 @@
-La creación del sitio se ha simplificado al eliminar algunos pasos intermedios. Elige el tipo de sitio que quieres, introduce un nombre de dominio y listo.
+Ahora, los ajustes de programación, etiquetas y visibilidad aparecen en el editor de entradas cuando tocas «Publicar» o «Programar», ponlos a punto y toca «Publicar ahora» para finalizar la publicación. ¡Ya no es necesario salir del editor para buscar la pantalla de ajustes de entradas!
 
-El editor de bloques tiene más mejoras: Ahora está disponible el bloque portada; hay opciones de alineación en el bloque del encabezado; y una barra de herramientas desplegable hace más fácil la alineación de los bloques de encabezado, párrafo, imagen y medios y texto. Y hemos eliminado el efecto de atenuación en los bloques no seleccionados.
+El editor de bloques para móviles sigue creciendo:
+- Encontrarás un bloque de columnas y una nueva plantilla de inicio para blogs.
+- Las opciones de la plantilla de página de inicio ya no oscurecen el contenido de tu página.
+- Hemos corregido un fallo que hacía que apareciera un cuadro de ajustes de URL si movías físicamente tu dispositivo mientras previsualizabas las plantillas de página de inicio.
 
-El diseño de la pantalla de avisos hacía que el texto se perdiera bajo la carcasa de algunos modelos de teléfono móvil. ¡Eso está corregido!
-
-A veces, intentabas @mencionar a alguien en un comentario y la aplicación sugería nombres, pero no te dejaba seleccionar uno — eso también está corregido. También nos hemos ocupado de otros problemas que hacían que la aplicación se bloqueara cuando intentabas acceder a la pantalla de las páginas del sitio o usar los botones de acción rápida en los iPad para acceder a tus entradas del blog. Y, hablando de páginas y entradas, ahora las vistas previas son más grandes para los iPad que ejecutan iOS 13.
-
-Nos gusta nuestro modo oscuro, como nos gusta nuestro café: muy oscuro y sin bichos flotando en él. Había algunos fallos en los modos claro y oscuro y, algunas veces, las cosas se comportaban de forma extraña cuando te cambiabas de uno a otro. Ahora hay muchos menos de esos fallos.
-
-Manteneos todos a salvo.
+Dado que una aplicación nunca puede ser demasiado rápida, demasiado utilizable o demasiado limpia, hemos racionalizado algunas cosas de la interfaz de usuario aquí y allá. ¿Te darás cuenta? Probablemente no, ese es el punto. Y finalmente, hubo un problema de acceso que causaba que la información de la cuenta de los sitios autoalojados no se cargara correctamente.
