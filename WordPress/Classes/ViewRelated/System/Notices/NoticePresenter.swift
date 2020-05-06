@@ -64,9 +64,13 @@ class NoticePresenter {
         self.store = store
         self.animator = animator
 
-        // The frame should match the key window or the main screen so that we get auto-resizing behavior. If the frame isn't one of these, the window will NOT autoresize.
-        let frame = UIApplication.shared.keyWindow?.frame ?? UIScreen.main.bounds
-        window = UntouchableWindow(frame: frame)
+        let windowFrame: CGRect
+        if let mainWindow = UIApplication.shared.keyWindow {
+            windowFrame = mainWindow.offsetToAvoidStatusBar()
+        } else {
+            windowFrame = .zero
+        }
+        window = UntouchableWindow(frame: windowFrame)
 
         // this window level may affect some UI elements like share sheets.
         // however, since the alerts aren't permanently on screen, this isn't
@@ -76,7 +80,10 @@ class NoticePresenter {
         // Keep the window visible but hide it on the next run loop. If we hide it immediately,
         // the window is not automatically resized when the device is rotated. This issue
         // only happens on iPad simulators.
-        window.isHidden = true
+        window.isHidden = false
+        DispatchQueue.main.async { [weak self] in
+            self?.window.isHidden = true
+        }
 
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
@@ -131,11 +138,12 @@ class NoticePresenter {
     private func listenToOrientationChangeEvents() {
         let nc = NotificationCenter.default
         nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
-            guard let self = self else {
-                return
+            guard let self = self,
+                let containerView = self.currentNoticePresentation?.containerView else {
+                    return
             }
 
-            self.currentNoticePresentation?.containerView?.setNeedsUpdateConstraints()
+            containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
         }
     }
 
@@ -205,22 +213,15 @@ class NoticePresenter {
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
-        view.addSubview(noticeContainerView)
-        addBottomConstraint(to: noticeContainerView, in: view)
+        addNoticeContainerToPresentingViewController(noticeContainerView)
+        addBottomConstraintToNoticeContainer(noticeContainerView)
 
-        let relation: NSLayoutConstraint.Relation = notice.sourceView != nil ? .greaterThanOrEqual : .equal
-        let leadingConstraint = NSLayoutConstraint(item: noticeContainerView, attribute: .leading,
-                                                   relatedBy: relation,
-                                                   toItem: view, attribute: .leading,
-                                                   multiplier: 1, constant: 0)
-
-        let trailingConstraint = noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        trailingConstraint.priority = .defaultHigh // During rotation this may need to break
-        noticeContainerView.trailingConstraint = trailingConstraint
+        // At regular width, the notice shouldn't be any wider than 1/2 the app's width
+        noticeContainerView.noticeWidthConstraint =             noticeView.widthAnchor.constraint(equalTo: noticeContainerView.widthAnchor, multiplier: 0.5)
 
         NSLayoutConstraint.activate([
-            leadingConstraint,
-            trailingConstraint
+            noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
         let dismiss = {
@@ -261,8 +262,11 @@ class NoticePresenter {
         return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
+    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
+        view.addSubview(noticeContainer)
+    }
 
-    private func addBottomConstraint(to container: NoticeContainerView, in view: UIView) {
+    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
@@ -346,9 +350,7 @@ class NoticeContainerView: UIView {
     /// The space between the Notice and its parent View
     private let containerMargin = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 15.0, right: 8.0)
     var bottomConstraint: NSLayoutConstraint?
-    var trailingConstraint: NSLayoutConstraint?
-
-    private var paddingView: UIView?
+    var noticeWidthConstraint: NSLayoutConstraint?
 
     let noticeView: NoticeView
 
@@ -375,8 +377,6 @@ class NoticeContainerView: UIView {
         let paddingWidthConstraint = leftPaddingView.widthAnchor.constraint(equalToConstant: 0)
         paddingWidthConstraint.priority = .lowButABigHigher
 
-        paddingView = leftPaddingView
-
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
@@ -386,48 +386,20 @@ class NoticeContainerView: UIView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        ])
+            ])
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    lazy var noticeWidthConstraint: NSLayoutConstraint = {
-        // At regular width, the notice shouldn't be any wider than 1/2 the app's width
-        return noticeView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5)
-    }()
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setNeedsUpdateConstraints()
-    }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setNeedsUpdateConstraints()
-    }
+        let isRegularWidth = traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .regular))
+        noticeWidthConstraint?.isActive = isRegularWidth
 
-    override func updateConstraints() {
-        super.updateConstraints()
-
-        let isRegularWidth = traitCollection.horizontalSizeClass == .regular
-
-        guard let superview = superview, let sourceView = noticeView.notice.sourceView else {
-            // No source view, so position along the bottom
-            noticeWidthConstraint.isActive = isRegularWidth
-            bottomConstraint?.constant = -((self.window as? UntouchableWindow)?.untouchableViewController.offsetOnscreen ?? 0)
-            return
-        }
-
-        // Adjust for source view positioning
-
-        noticeWidthConstraint.isActive = false
-        bottomConstraint?.constant = -(superview.frame.maxY - (sourceView.frame.minY))
-
-        let newFrame = superview.convert(sourceView.frame, from: sourceView.superview)
-
-        trailingConstraint?.constant = -(superview.frame.maxX - newFrame.maxX - (noticeView.layoutMargins.right + noticeView.layoutMargins.left))
+        layoutIfNeeded()
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {

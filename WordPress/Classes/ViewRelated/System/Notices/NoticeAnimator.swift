@@ -11,19 +11,16 @@ public struct NoticeAnimator {
     ///   - notice: The `Notice` to present.
     ///   - view: The `UIView` to add the `Notice` to.
     /// - Returns: <#description#>
-    func present(notice: Notice, in view: UIView) -> NoticeContainerView {
+    func present(notice: Notice, in view: UIView, sourceView: UIView) -> NoticeContainerView {
         let noticeView = NoticeView(notice: notice)
+        noticeView.configureArrow()
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
         view.addSubview(noticeContainerView)
 
-        let bottomConstraint = noticeContainerView.bottomAnchor.constraint(equalTo: notice.sourceView?.topAnchor ?? view.bottomAnchor)
-        let relation: NSLayoutConstraint.Relation = notice.sourceView != nil ? .greaterThanOrEqual : .equal
-        let leadingConstraint = NSLayoutConstraint(item: noticeContainerView, attribute: .leading,
-                                                   relatedBy: relation,
-                                                   toItem: view, attribute: .leading,
-                                                   multiplier: 1, constant: 0)
+        let bottomConstraint = noticeContainerView.bottomAnchor.constraint(equalTo: sourceView.topAnchor)
+        let leadingConstraint = noticeContainerView.constrain(attribute: .leading, toView: view, relatedBy: .greaterThanOrEqual, constant: 0)
         let trailingConstraint = noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         trailingConstraint.priority = .defaultHigh // During rotation this may need to break
 

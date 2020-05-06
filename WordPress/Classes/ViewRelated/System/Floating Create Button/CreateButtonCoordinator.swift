@@ -27,8 +27,7 @@ import WordPressFlux
     private lazy var notice: Notice = {
         let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
                             message: "",
-                            style: ToolTipNoticeStyle(),
-                            sourceView: button) { _ in
+                            style: ToolTipNoticeStyle()) { _ in
         }
         return notice
     }()
@@ -139,7 +138,7 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
-        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view)
+        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {

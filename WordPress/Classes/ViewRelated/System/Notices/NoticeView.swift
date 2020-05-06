@@ -42,9 +42,9 @@ class NoticeView: UIView {
         configureLabels()
         configureForNotice()
 
-        if notice.sourceView != nil {
-            configureArrow()
-        }
+//        if notice.sourceView != nil {
+//            configureArrow()
+//        }
 
         if notice.actionTitle != nil && notice.cancelTitle != nil {
             configureDualButtons()
@@ -81,7 +81,7 @@ class NoticeView: UIView {
         backgroundContainerView.layer.masksToBounds = true
     }
 
-    private func configureArrow() {
+    func configureArrow() {
         let arrowView = addArrow(color: notice.style.backgroundColor, size: Metrics.arrowSize)
         arrowView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Metrics.arrowPosition).isActive = true
     }
