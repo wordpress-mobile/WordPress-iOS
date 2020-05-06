@@ -17,10 +17,15 @@ private struct SearchParams {
     static let contentFilter = "contentfilter"
 }
 
+// Reference: https://tenor.com/gifapi/documentation#contentfilter
 enum TenorContentFilter: String {
+    /// G, PG, PG-13, R rated
     case off
+    /// G, PG, PG-13 rated
     case low
+    /// G and PG rated
     case medium
+    /// G rated
     case high
 }
 
