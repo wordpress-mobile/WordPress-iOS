@@ -21,7 +21,7 @@ static ContextManager *_override;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
-
+@property (nonatomic, strong) NSManagedObjectContext *derivedContext;
 @end
 
 
@@ -60,7 +60,10 @@ static ContextManager *_override;
 
 - (NSManagedObjectContext *const)newDerivedContext
 {
-    return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    if (!self.derivedContext) {
+        self.derivedContext = [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    }
+    return self.derivedContext;
 }
 
 - (NSManagedObjectContext *const)newMainContextChildContext
@@ -99,6 +102,7 @@ static ContextManager *_override;
                                             initWithConcurrencyType:concurrencyType];
     childContext.parentContext = self.mainContext;
     childContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    childContext.automaticallyMergesChangesFromParent = true;
 
     return childContext;
 }
