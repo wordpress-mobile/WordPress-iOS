@@ -42,10 +42,6 @@ class NoticeView: UIView {
         configureLabels()
         configureForNotice()
 
-//        if notice.sourceView != nil {
-//            configureArrow()
-//        }
-
         if notice.actionTitle != nil && notice.cancelTitle != nil {
             configureDualButtons()
         } else if notice.actionTitle != nil {

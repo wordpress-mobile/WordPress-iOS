@@ -360,7 +360,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
-//        [self.tableView animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
     }
     

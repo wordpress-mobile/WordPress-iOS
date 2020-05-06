@@ -2,6 +2,11 @@ import Foundation
 
 public struct NoticeAnimator {
 
+    enum Transition {
+        case onscreen
+        case offscreen
+    }
+
     let duration: TimeInterval
     let springDampening: CGFloat
     let springVelocity: CGFloat
@@ -10,7 +15,7 @@ public struct NoticeAnimator {
     /// - Parameters:
     ///   - notice: The `Notice` to present.
     ///   - view: The `UIView` to add the `Notice` to.
-    /// - Returns: <#description#>
+    /// - Returns: A `NoticeContainerView` instance containing the `NoticeView` which was added to `view`
     func present(notice: Notice, in view: UIView, sourceView: UIView) -> NoticeContainerView {
         let noticeView = NoticeView(notice: notice)
         noticeView.configureArrow()
@@ -38,50 +43,38 @@ public struct NoticeAnimator {
     func animate(noticeContainer: NoticeContainerView, completion: (() -> Void)? = nil) {
         noticeContainer.noticeView.alpha = WPAlphaZero
 
-        let fromState = offscreenState(for: noticeContainer)
-        let toState = onscreenState(for: noticeContainer)
+        let fromState = state(for: noticeContainer, withTransition: .offscreen)
+        let toState = state(for: noticeContainer, withTransition: .onscreen)
         animatePresentation(fromState: fromState, toState: toState, completion: completion)
     }
 
-    func offscreenState(for noticeContainer: NoticeContainerView, in view: UIView? = nil, bottomOffset: CGFloat = 0) -> AnimationBlock {
-        return {
-
-            let presentation = noticeContainer.noticeView
-
-            noticeContainer.noticeView.alpha = WPAlphaZero
-
-            switch presentation.notice.style.animationStyle {
-            case .moveIn:
-                noticeContainer.bottomConstraint?.constant = bottomOffset
-            case .fade:
-                // Fade just changes the alpha value which both animations need
-                break
-            }
-
-            view?.layoutIfNeeded()
-        }
-    }
-
-    func onscreenState(for noticeContainer: NoticeContainerView, in view: UIView? = nil, bottomOffset: CGFloat = 0) -> AnimationBlock {
-        return {
-
-            let presentation = noticeContainer.noticeView
-
-            noticeContainer.noticeView.alpha = WPAlphaFull
-
-            switch presentation.notice.style.animationStyle {
-            case .moveIn:
-                noticeContainer.bottomConstraint?.constant = bottomOffset
-            case .fade:
-                // Fade just changes the alpha value which both animations need
-                break
-            }
-
-            view?.layoutIfNeeded()
-        }
-    }
-
     typealias AnimationBlock = () -> Void
+
+    func state(for noticeContainer: NoticeContainerView, in view: UIView? = nil, withTransition transition: Transition, bottomOffset: CGFloat = 0) -> AnimationBlock {
+        return {
+            let presentation = noticeContainer.noticeView
+
+            let alpha: CGFloat
+            switch transition {
+            case .onscreen:
+                alpha = WPAlphaFull
+            case .offscreen:
+                alpha = WPAlphaZero
+            }
+
+            noticeContainer.noticeView.alpha = alpha
+
+            switch presentation.notice.style.animationStyle {
+            case .moveIn:
+                noticeContainer.bottomConstraint?.constant = bottomOffset
+            case .fade:
+                // Fade just changes the alpha value which both animations need
+                break
+            }
+
+            view?.layoutIfNeeded()
+        }
+    }
 
     func animatePresentation(fromState: AnimationBlock,
                                      toState: @escaping AnimationBlock,

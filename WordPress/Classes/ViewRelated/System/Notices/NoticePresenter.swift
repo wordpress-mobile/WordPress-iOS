@@ -217,7 +217,7 @@ class NoticePresenter {
         addBottomConstraintToNoticeContainer(noticeContainerView)
 
         // At regular width, the notice shouldn't be any wider than 1/2 the app's width
-        noticeContainerView.noticeWidthConstraint =             noticeView.widthAnchor.constraint(equalTo: noticeContainerView.widthAnchor, multiplier: 0.5)
+        noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(equalTo: noticeContainerView.widthAnchor, multiplier: 0.5)
 
         NSLayoutConstraint.activate([
             noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -246,8 +246,8 @@ class NoticePresenter {
             offScreenOffset = window.untouchableViewController.offsetOffscreen
         }
 
-        let fromState = animator.offscreenState(for: noticeContainerView, in: view, bottomOffset: offScreenOffset)
-        let toState = animator.onscreenState(for: noticeContainerView, in: view, bottomOffset: onscreenNoticeContainerBottomConstraintConstant)
+        let fromState = animator.state(for: noticeContainerView, in: view, withTransition: .offscreen, bottomOffset: offScreenOffset)
+        let toState = animator.state(for: noticeContainerView, in: view, withTransition: .onscreen, bottomOffset: onscreenNoticeContainerBottomConstraintConstant)
         animator.animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
@@ -296,7 +296,7 @@ class NoticePresenter {
                 return
         }
 
-        animator.animatePresentation(fromState: {}, toState: animator.offscreenState(for: container), completion: { [weak self] in
+        animator.animatePresentation(fromState: {}, toState: animator.state(for: container, withTransition: .offscreen), completion: { [weak self] in
             container.removeFromSuperview()
 
             // It is possible that when the dismiss animation finished, another Notice was already
