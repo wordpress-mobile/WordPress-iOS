@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.27.0'
+    gutenberg :tag => 'v1.27.1'
 
     ## Third party libraries
     ## =====================
