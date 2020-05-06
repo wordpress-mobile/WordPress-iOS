@@ -83,9 +83,8 @@ import WordPressFlux
     }
 
     @objc private func showCreateSheet() {
-
         shouldShowNotice = false
-//        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+        hideNotice()
 
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
@@ -125,10 +124,14 @@ import WordPressFlux
         viewController.transitioningDelegate = self
     }
 
-    @objc func hideCreateButton() {
+    private func hideNotice() {
         if let container = noticeContainerView {
             NoticePresenter.dismiss(container: container)
         }
+    }
+
+    @objc func hideCreateButton() {
+        hideNotice()
 
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
