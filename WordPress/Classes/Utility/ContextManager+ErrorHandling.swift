@@ -89,10 +89,23 @@ private extension ContextManager {
     }
 
     func reasonForIndividualError(_ error: NSError) -> String {
-        let entity = entityName(for: error) ?? "null"
-        let property = propertyName(for: error) ?? "null"
         let message = coreDataKnownErrorCodes[error.code] ?? "Unknown error (domain: \(error.domain) code: \(error.code), \(error.localizedDescription)"
-        return "\(message) on \(entity).\(property)"
+        var messageDetail = ""
+
+        if error.userInfo.keys.contains(NSValidationObjectErrorKey) {
+            let entity = entityName(for: error) ?? "null"
+            let property = propertyName(for: error) ?? "null"
+            messageDetail = "on \(entity).\(property)"
+
+        } else if error.code == NSManagedObjectMergeError,
+            let conflicts = error.userInfo["conflictList"] as? [NSMergeConflict],
+            let conflict = conflicts.first,
+            let name = conflict.sourceObject.entity.name {
+
+            messageDetail = "source entity: \(name)"
+        }
+
+        return "\(message) \(messageDetail)"
     }
 
     func entityName(for error: NSError) -> String? {
