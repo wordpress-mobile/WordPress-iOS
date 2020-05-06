@@ -209,7 +209,9 @@ target 'WordPress' do
     post_install do
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
         %x(patch Pods/React-Core/React/Views/RCTShadowView.m < patches/react-native+0.61.5.patch)
-
+        puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
+        it could be removed once PR with that functionality will be merged into RN'
+        %x(patch Pods/React-RCTActionSheet/RCTActionSheetManager.m < patches/react-native+0.61.5.patch)
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
