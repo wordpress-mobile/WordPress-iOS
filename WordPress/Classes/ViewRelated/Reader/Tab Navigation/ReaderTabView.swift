@@ -165,16 +165,10 @@ extension ReaderTabView {
         childController.view.translatesAutoresizingMaskIntoConstraints = false
 
         controller.children.forEach {
-            $0.willMove(toParent: nil)
-            $0.view.removeFromSuperview()
-            $0.removeFromParent()
+            $0.remove()
         }
-
-        controller.addChild(childController)
-
-        containerView.addSubview(childController.view)
+        controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
-        childController.didMove(toParent: controller)
     }
 
     private func activateConstraints() {

@@ -233,23 +233,29 @@ import WordPressShared
         }
         if topicIsDiscover(topic) {
             return .discover
-        } else if topicIsFollowing(topic) {
-            return .following
-        } else if topicIsLiked(topic) {
-            return .likes
-        } else if isTopicList(topic) {
-            return .list
-        } else if isTopicSearchTopic(topic) {
-            return .search
-        } else if isTopicSite(topic) {
-            return .site
-        } else if isTopicTag(topic) {
-            return .tag
-        } else if topic is ReaderTeamTopic {
-            return .team
-        } else {
-            return .noTopic
         }
+        if topicIsFollowing(topic) {
+            return .following
+        }
+        if topicIsLiked(topic) {
+            return .likes
+        }
+        if isTopicList(topic) {
+            return .list
+        }
+        if isTopicSearchTopic(topic) {
+            return .search
+        }
+        if isTopicSite(topic) {
+            return .site
+        }
+        if isTopicTag(topic) {
+            return .tag
+        }
+        if topic is ReaderTeamTopic {
+            return .team
+        }
+        return .noTopic
     }
 
     // MARK: Logged in helper
@@ -266,6 +272,11 @@ extension ReaderHelpers {
 
     /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
+
+        guard !items.isEmpty else {
+                   return items
+               }
+
         var mutableItems = items
         mutableItems.sort {
             guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
@@ -274,28 +285,31 @@ extension ReaderHelpers {
             // first item: Following
             if topicIsFollowing(leftTopic) {
                 return true
-            } else if topicIsFollowing(rightTopic) {
+            }
+            if topicIsFollowing(rightTopic) {
                 return false
+            }
             // second item: Discover
-            } else if topicIsDiscover(leftTopic) {
+            if topicIsDiscover(leftTopic) {
                 return true
-            } else if topicIsDiscover(rightTopic) {
+            }
+            if topicIsDiscover(rightTopic) {
                 return false
+            }
             // third item: Likes
-            } else if topicIsLiked(leftTopic) {
+            if topicIsLiked(leftTopic) {
                 return true
-            } else if topicIsLiked(rightTopic) {
+            }
+            if topicIsLiked(rightTopic) {
                 return false
             // any other items: sort them alphabetically, grouped by topic type
-            } else if leftTopic.type == rightTopic.type {
+            }
+            if leftTopic.type == rightTopic.type {
                 return leftTopic.title < rightTopic.title
             }
             return true
         }
 
-        guard !mutableItems.isEmpty else {
-            return mutableItems
-        }
         // fourth item: Saved. It's manually inserted after the sorting
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)

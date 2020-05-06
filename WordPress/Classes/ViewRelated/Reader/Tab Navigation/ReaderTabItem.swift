@@ -27,19 +27,26 @@ extension ReaderTabItem {
         case .topic:
             switch content.topicType {
             case .following:
-                return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
+                return Titles.followingTitle
             case .likes:
-                return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+                return Titles.likesTitle
             default:
-                return content.topic?.title ?? ""
+                return content.topic?.title ?? Titles.emptyTitle
             }
         case .selfHostedFollowing:
-            return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
+            return Titles.followingTitle
         case .saved:
-            return NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+            return Titles.savedTitle
         default:
-            return ""
+            return Titles.emptyTitle
         }
+    }
+
+    private enum Titles {
+        static let followingTitle = NSLocalizedString("Following", comment: "Title of the Following Reader tab")
+        static let likesTitle = NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+        static let savedTitle = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+        static let emptyTitle = ""
     }
 }
 

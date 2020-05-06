@@ -494,13 +494,18 @@ import WordPressFlux
 
         tableView.tableHeaderView = header
             // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
+        let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         if FeatureFlag.newReaderNavigation.enabled {
             headerWidthConstraint.priority = UILayoutPriority(999)
         }
-        headerWidthConstraint.isActive = true
-        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+
+        NSLayoutConstraint.activate([
+            centerConstraint,
+            headerWidthConstraint,
+            topConstraint
+        ])
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -1837,7 +1842,7 @@ private extension ReaderStreamViewController {
     }
 
     enum NoTopicConstants {
-        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects", comment: "Title for the no followed sites result screen")
+        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects.", comment: "Title for the no followed sites result screen")
         static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")

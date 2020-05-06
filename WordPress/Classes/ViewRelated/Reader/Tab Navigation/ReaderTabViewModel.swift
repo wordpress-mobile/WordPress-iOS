@@ -170,10 +170,10 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
 
     func makeChildContentViewController(at index: Int) -> ReaderContentViewController? {
-        guard tabItems.indices.contains(index) else {
+        guard let tabItem = tabItems[safe: index] else {
             return tabItems.isEmpty ? makeReaderContentViewController(ReaderContent(topic: nil, contentType: .contentError)) : nil
         }
-        let controller = makeReaderContentViewController(tabItems[index].content)
+        let controller = makeReaderContentViewController(tabItem.content)
 
         setContent = { [weak controller] configuration in
             controller?.setContent(configuration)
