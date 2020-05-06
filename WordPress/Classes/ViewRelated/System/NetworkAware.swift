@@ -70,6 +70,25 @@ extension NetworkStatusDelegate where Self: UIViewController {
     }
 }
 
+// TODO: - READERNAV - This is being used for the new Reader, currently under development. Once it's released, there should only be one extension
+protocol NetworkStatusReceiver {}
+
+extension NetworkStatusDelegate where Self: NetworkStatusReceiver {
+    func observeNetworkStatus() {
+        receiver = ReachabilityNotificationObserver(delegate: self)
+    }
+
+    fileprivate var receiver: ReachabilityNotificationObserver? {
+        get {
+            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
+        }
+
+        set {
+            objc_setAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+}
+
 fileprivate struct NetworkStatusAssociatedKeys {
     static var associatedObjectKey = "org.wordpress.networkstatus.notificationreceiver"
 }

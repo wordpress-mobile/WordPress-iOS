@@ -50,6 +50,7 @@ import WordPressFlux
             viewModel.setTabBarItems?(viewModel.tabItems, viewModel.selectedIndex)
         }
         addNotificationsObservers()
+        observeNetworkStatus()
     }
 }
 
@@ -182,6 +183,15 @@ extension ReaderTabViewModel {
     }
 }
 
+
+extension ReaderTabViewModel: NetworkStatusReceiver, NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        guard active, tabItems.isEmpty else {
+            return
+        }
+        fetchReaderMenu()
+    }
+}
 
 // MARK: - Cleanup tasks
 extension ReaderTabViewModel {

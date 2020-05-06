@@ -704,6 +704,10 @@ import WordPressFlux
     }
 
     private func showFollowing() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().switchToFollowedSites()
+            return
+        }
         guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
             return
         }
@@ -784,6 +788,10 @@ import WordPressFlux
 
             return
         }
+        if readerTopic == nil, contentType == .topic, siteID == ReaderHelpers.discoverSiteID {
+            fetchSiteTopic()
+            return
+        }
         syncHelper?.syncContentWithUserInteraction(true)
     }
 
@@ -829,7 +837,7 @@ import WordPressFlux
 
 
     private func canSync() -> Bool {
-        return (readerTopic != nil) && connectionAvailable()
+        return (readerTopic != nil || (contentType == .topic && siteID == ReaderHelpers.discoverSiteID)) && connectionAvailable()
     }
 
     @objc func connectionAvailable() -> Bool {
@@ -1608,6 +1616,8 @@ private extension ReaderStreamViewController {
         guard let topic = readerTopic else {
             if contentType == .saved {
                 displayNoResultsForSavedPosts()
+            } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
+                displayNoResultsViewForDiscover()
             }
             return
         }
@@ -1622,9 +1632,8 @@ private extension ReaderStreamViewController {
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
 
         let buttonTitle = buttonTitleForTopic(topic)
-        let imageName = ReaderHelpers.topicIsFollowing(topic) ? readerEmptyImageName : nil
 
-        configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
+        configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: readerEmptyImageName)
         displayResultsStatus()
     }
 
@@ -1644,6 +1653,13 @@ private extension ReaderStreamViewController {
 
     private func displayNoResultsForSavedPosts() {
         configureNoResultsViewForSavedPosts()
+        displayResultsStatus()
+    }
+
+    private func displayNoResultsViewForDiscover() {
+        configureResultsStatus(title: ReaderStreamViewController.defaultResponse.title,
+                               subtitle: ReaderStreamViewController.defaultResponse.message,
+                               imageName: readerEmptyImageName)
         displayResultsStatus()
     }
 
@@ -1806,12 +1822,8 @@ private extension ReaderStreamViewController {
 
     func displayContentErrorController() {
         addNoTopicController(title: NoTopicConstants.contentErrorTitle,
-                             buttonTitle: NoTopicConstants.retryButtonTitle,
                              subtitle: NoTopicConstants.contentErrorSubtitle,
-                             image: NoTopicConstants.contentErrorImage,
-                             actionHandler: {
-                                 WPTabBarController.sharedInstance().readerTabViewModel.fetchReaderMenu()
-                             })
+                             image: NoTopicConstants.contentErrorImage)
         view.isUserInteractionEnabled = true
     }
 
