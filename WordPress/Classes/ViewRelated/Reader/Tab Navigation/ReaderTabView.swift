@@ -151,6 +151,7 @@ extension ReaderTabView {
     }
 
     private func setupSettingsButton() {
+        settingsButton.accessibilityLabel = Appearance.settingsButtonAccessibilitylabel
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
@@ -244,6 +245,7 @@ extension ReaderTabView {
 
         static let tabBarAnimationsDuration = 0.2
 
+        static let settingsButtonAccessibilitylabel = NSLocalizedString("Manage", comment: "Label for managing sites and filters in the Reader tab")
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
         static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
