@@ -115,7 +115,10 @@ import WordPressFlux
     }
 
     private var isLoadingDiscover: Bool {
-        return readerTopic == nil && contentType == .topic && siteID == ReaderHelpers.discoverSiteID
+        return FeatureFlag.newReaderNavigation.enabled &&
+            readerTopic == nil &&
+            contentType == .topic &&
+            siteID == ReaderHelpers.discoverSiteID
     }
 
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
@@ -380,7 +383,7 @@ import WordPressFlux
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
-                    if FeatureFlag.newReaderNavigation.enabled, (self?.isLoadingDiscover ?? false) {
+                    if self?.isLoadingDiscover ?? false {
                         self?.updateContent(synchronize: false)
                     }
                     self?.displayLoadingStreamFailed()
@@ -391,7 +394,7 @@ import WordPressFlux
 
             },
             failure: { [weak self] (error: Error?) in
-                if FeatureFlag.newReaderNavigation.enabled, (self?.isLoadingDiscover ?? false) {
+                if self?.isLoadingDiscover ?? false {
                     self?.updateContent(synchronize: false)
                 }
                 self?.displayLoadingStreamFailed()
@@ -801,7 +804,7 @@ import WordPressFlux
 
             return
         }
-        if FeatureFlag.newReaderNavigation.enabled, isLoadingDiscover {
+        if isLoadingDiscover {
             fetchSiteTopic()
             return
         }
@@ -850,7 +853,7 @@ import WordPressFlux
 
 
     private func canSync() -> Bool {
-        return (readerTopic != nil || (contentType == .topic && siteID == ReaderHelpers.discoverSiteID)) && connectionAvailable()
+        return (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
     }
 
     @objc func connectionAvailable() -> Bool {
@@ -1756,7 +1759,7 @@ extension ReaderStreamViewController: NetworkAwareUI {
 
 extension ReaderStreamViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
-        if FeatureFlag.newReaderNavigation.enabled, isLoadingDiscover {
+        if isLoadingDiscover {
             fetchSiteTopic()
         } else {
             syncIfAppropriate()
