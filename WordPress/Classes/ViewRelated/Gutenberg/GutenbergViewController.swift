@@ -278,7 +278,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
             DispatchQueue.main.async {
                 if let strongSelf = self, let themeSupport = state.editorTheme(forBlog: strongSelf.post.blog)?.themeSupport {
-                    strongSelf.gutenberg.updateTheme(themeSupport.colors, gradients: themeSupport.gradients )
+                    strongSelf.gutenberg.updateTheme(themeSupport)
                 }
             }
         }
@@ -318,6 +318,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         reloadBlogPickerButton()
         reloadEditorContents()
         reloadPublishButton()
+    }
+
+    private func refreshEditorTheme() {
+        if let themeSupport = StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport {
+            gutenberg.updateTheme(themeSupport)
+        }
     }
 
     func contentByStrippingMediaAttachments() -> String {
@@ -569,6 +575,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
+            refreshEditorTheme()
         }
     }
 
