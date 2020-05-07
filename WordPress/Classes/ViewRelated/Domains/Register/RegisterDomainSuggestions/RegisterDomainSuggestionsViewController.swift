@@ -1,7 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 
-class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggestionsButtonViewPresenter {
+class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestionsButtonViewPresenter {
 
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
@@ -69,9 +69,17 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         title = NSLocalizedString("Register domain",
                                   comment: "Register domain - Title for the Suggested domains screen")
         WPStyleGuide.configureColors(view: view, tableView: nil)
-        let backButton = UIBarButtonItem()
-        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
-        navigationItem.backBarButtonItem = backButton
+
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                           target: self,
+                                           action: #selector(handleCancelButtonTapped))
+        navigationItem.leftBarButtonItem = cancelButton
+
+        let supportButton = UIBarButtonItem(title: NSLocalizedString("Help", comment: "Help button"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(handleSupportButtonTapped))
+        navigationItem.rightBarButtonItem = supportButton
     }
 
     // MARK: - Navigation
@@ -90,6 +98,18 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
             domainsTableViewController = vc
         }
     }
+
+    // MARK: - Nav Bar Button Handling
+
+    @objc private func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+
+    @objc private func handleSupportButtonTapped(sender: UIBarButtonItem) {
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
+    }
+
 }
 
 // MARK: - DomainSuggestionsTableViewControllerDelegate

@@ -115,72 +115,15 @@ class SignupEpilogueCell: UITableViewCell {
         cellField.backgroundColor = .basicBackground
     }
 
-    // MARK: - Private behavior
-
-    private func configureForPassword() {
-        let isPassword = (cellType == .password)
-        cellLabel.isHidden = isPassword
-
-        cellField.isSecureTextEntry = isPassword
-        cellField.showSecureTextEntryToggle = isPassword
-        cellField.textAlignment = isPassword ? .left : .right
-        cellField.textColor = isPassword ? .text : .textSubtle
-
-        cellFieldLeadingConstraintWithLabel.isActive = !isPassword
-        cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
-        cellFieldTopConstraint.constant = isPassword ? passwordTopMargin : 0
-    }
-
-    private func configureAccessibility(for cellType: EpilogueCellType) {
-        if cellType == .username {
-            accessibilityTraits.insert(.button) // selection transitions to SignupUsernameViewController
-            isAccessibilityElement = true       // this assures double-tap properly captures cell selection
-        }
-
-        switch cellType {
-        case .displayName:
-            cellField.accessibilityIdentifier = "Display Name Field"
-        case .username:
-            cellField.accessibilityIdentifier = "Username Field"
-        case .password:
-            cellField.accessibilityIdentifier = "Password Field"
-            cellLabel.isAccessibilityElement = false
-        }
-    }
-
-    private func configureAccessoryType(for cellType: EpilogueCellType) {
-        if cellType == .username {
-            accessoryType = .disclosureIndicator
-            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDisclosure
-        } else {
-            accessoryType = .none
-            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDefault
-        }
-    }
-
-    private func configureTextContentTypeIfNeeded(for cellType: EpilogueCellType) {
-        guard #available(iOS 12, *) else {
-            return
-        }
-
-        switch cellType {
-        case .displayName:
-            cellField.textContentType = .name
-        case .username:
-            cellField.textContentType = .username
-        case .password:
-            cellField.textContentType = .newPassword
-        }
-    }
-
 }
-
 
 extension SignupEpilogueCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let cellType = cellType, cellType == .displayName || cellType == .password {
-            let updatedText = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
+        if let cellType = cellType,
+            let originalText = textField.text,
+            cellType == .displayName || cellType == .password {
+            let updatedText = NSString(string: originalText).replacingCharacters(in: range, with: string)
             delegate?.changed(value: updatedText, forType: cellType)
         }
 
@@ -207,4 +150,64 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         cellField.endEditing(true)
         return true
     }
+}
+
+private extension SignupEpilogueCell {
+
+    func configureForPassword() {
+        let isPassword = (cellType == .password)
+        cellLabel.isHidden = isPassword
+
+        cellField.isSecureTextEntry = isPassword
+        cellField.showSecureTextEntryToggle = isPassword
+        cellField.textAlignment = isPassword ? .left : .right
+        cellField.textColor = isPassword ? .text : .textSubtle
+
+        cellFieldLeadingConstraintWithLabel.isActive = !isPassword
+        cellFieldLeadingConstraintWithoutLabel.isActive = isPassword
+        cellFieldTopConstraint.constant = isPassword ? passwordTopMargin : 0
+    }
+
+    func configureAccessibility(for cellType: EpilogueCellType) {
+        if cellType == .username {
+            accessibilityTraits.insert(.button) // selection transitions to SignupUsernameViewController
+            isAccessibilityElement = true       // this assures double-tap properly captures cell selection
+        }
+
+        switch cellType {
+        case .displayName:
+            cellField.accessibilityIdentifier = "Display Name Field"
+        case .username:
+            cellField.accessibilityIdentifier = "Username Field"
+        case .password:
+            cellField.accessibilityIdentifier = "Password Field"
+            cellLabel.isAccessibilityElement = false
+        }
+    }
+
+    func configureAccessoryType(for cellType: EpilogueCellType) {
+        if cellType == .username {
+            accessoryType = .disclosureIndicator
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDisclosure
+        } else {
+            accessoryType = .none
+            cellFieldTrailingConstraint.constant = cellFieldTrailingMarginDefault
+        }
+    }
+
+    func configureTextContentTypeIfNeeded(for cellType: EpilogueCellType) {
+        guard #available(iOS 12, *) else {
+            return
+        }
+
+        switch cellType {
+        case .displayName:
+            cellField.textContentType = .name
+        case .username:
+            cellField.textContentType = .username
+        case .password:
+            cellField.textContentType = .newPassword
+        }
+    }
+
 }
