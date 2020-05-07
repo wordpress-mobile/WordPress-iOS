@@ -1743,7 +1743,11 @@ extension ReaderStreamViewController: NetworkAwareUI {
 
 extension ReaderStreamViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
-        syncIfAppropriate()
+        if readerTopic == nil, contentType == .topic, siteID == ReaderHelpers.discoverSiteID {
+            fetchSiteTopic()
+        } else {
+            syncIfAppropriate()
+        }
     }
 }
 
