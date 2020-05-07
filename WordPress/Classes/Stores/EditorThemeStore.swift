@@ -5,19 +5,15 @@ struct EditorThemeQuery {
 }
 
 enum EditorThemeStoreState {
-    typealias StoredThemeColors = [String: [[String: AnyHashable]]]
+    typealias StoredThemeColors = [String: EditorTheme]
     case empty
     case loaded(StoredThemeColors)
 
     static func key(forBlog blog: Blog) -> String? {
-        guard let blogID = blog.dotComID else {
-            return nil
-        }
-
-        return "\(blogID)"
+        return blog.hostname as String?
     }
 
-    func themeColors(forBlog blog: Blog) -> [[String: AnyHashable]]? {
+    func editorTheme(forBlog blog: Blog) -> EditorTheme? {
 
         guard let themeKey = EditorThemeStoreState.key(forBlog: blog) else {
             return nil
@@ -43,11 +39,6 @@ enum EditorThemeStoreState {
 
 class EditorThemeStore: QueryStore<EditorThemeStoreState, EditorThemeQuery> {
 
-    private struct JSONKeys {
-        static let themeSupport = "theme_supports"
-        static let colorPalette = "editor-color-palette"
-    }
-
     private enum ErrorCode: Int {
         case processingError
     }
@@ -59,9 +50,7 @@ class EditorThemeStore: QueryStore<EditorThemeStoreState, EditorThemeQuery> {
     override func queriesChanged() {
 
         activeQueries.forEach { (query) in
-            if state.themeColors(forBlog: query.blog) == nil {
-                fetchTheme(for: query.blog)
-            }
+            fetchTheme(for: query.blog)
         }
     }
 
@@ -85,13 +74,17 @@ private extension EditorThemeStore {
     }
 
     func processResponse(_ response: Any, for blog: Blog) {
-        let themeSupport = (response as? [[String: Any]])?.first?[JSONKeys.themeSupport]
-        let colorPalette = (themeSupport as? [String: Any])?[JSONKeys.colorPalette] as? [[String: AnyHashable]]
+        guard let responseData = try? JSONSerialization.data(withJSONObject: response, options: []) else { return }
+        let themeSupports = try? JSONDecoder().decode([EditorTheme].self, from: responseData)
 
-        if let themeKey = EditorThemeStoreState.key(forBlog: blog) {
+        if let themeKey = EditorThemeStoreState.key(forBlog: blog),
+            let newTheme = themeSupports?.first {
             var existingThemes = state.storedthemeColors()
-            existingThemes[themeKey] = colorPalette ?? [] // Check for if things have changed or not
-            state = .loaded(existingThemes)
+
+            if newTheme != existingThemes[themeKey] {
+                existingThemes[themeKey] = newTheme
+                state = .loaded(existingThemes)
+            }
         }
     }
 }
