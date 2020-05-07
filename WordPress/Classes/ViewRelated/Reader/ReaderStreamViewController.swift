@@ -114,6 +114,9 @@ import WordPressFlux
         return resultsStatusView.view?.superview != nil
     }
 
+    private var isLoadingDiscover: Bool {
+        return readerTopic == nil && contentType == .topic && siteID == ReaderHelpers.discoverSiteID
+    }
 
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     @objc var readerTopic: ReaderAbstractTopic? {
@@ -377,6 +380,9 @@ import WordPressFlux
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
+                    if FeatureFlag.newReaderNavigation.enabled, (self?.isLoadingDiscover ?? false) {
+                        self?.updateContent(synchronize: false)
+                    }
                     self?.displayLoadingStreamFailed()
                     self?.reportStreamLoadFailure()
                     return
@@ -385,6 +391,9 @@ import WordPressFlux
 
             },
             failure: { [weak self] (error: Error?) in
+                if FeatureFlag.newReaderNavigation.enabled, (self?.isLoadingDiscover ?? false) {
+                    self?.updateContent(synchronize: false)
+                }
                 self?.displayLoadingStreamFailed()
                 self?.reportStreamLoadFailure()
             })
@@ -534,6 +543,10 @@ import WordPressFlux
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
+            tableViewController.refreshControl = nil
+        }
+        // saved posts are local so do not need a pull to refresh
+        if FeatureFlag.newReaderNavigation.enabled, contentType == .saved {
             tableViewController.refreshControl = nil
         }
 
@@ -788,7 +801,7 @@ import WordPressFlux
 
             return
         }
-        if readerTopic == nil, contentType == .topic, siteID == ReaderHelpers.discoverSiteID {
+        if FeatureFlag.newReaderNavigation.enabled, isLoadingDiscover {
             fetchSiteTopic()
             return
         }
@@ -1743,7 +1756,7 @@ extension ReaderStreamViewController: NetworkAwareUI {
 
 extension ReaderStreamViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
-        if readerTopic == nil, contentType == .topic, siteID == ReaderHelpers.discoverSiteID {
+        if FeatureFlag.newReaderNavigation.enabled, isLoadingDiscover {
             fetchSiteTopic()
         } else {
             syncIfAppropriate()
@@ -1834,18 +1847,17 @@ private extension ReaderStreamViewController {
     func addNoTopicController(title: String,
                                       buttonTitle: String? = nil,
                                       subtitle: String? = nil,
-                                      image: String? = nil,
-                                      actionHandler: (() -> Void)? = nil) {
+                                      image: String? = nil) {
 
         let controller = NoResultsViewController.controller()
         controller.configure(title: title,
                              buttonTitle: buttonTitle,
                              image: image)
 
-        controller.actionButtonHandler = actionHandler
         addChild(controller)
         view.addSubview(controller.view)
-        controller.view.frame = view.frame
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(controller.view)
         controller.didMove(toParent: self)
         noTopicController = controller
     }
