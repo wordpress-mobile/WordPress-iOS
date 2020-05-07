@@ -40,7 +40,7 @@ public class GutenbergMentionsViewController: UIViewController {
         suggestionsView.suggestionsDelegate = self
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
         suggestionsView.siteID = siteID
-        suggestionsView.useTransparentHeader = true
+        suggestionsView.useTransparentHeader = false
         return suggestionsView
     }()
 
