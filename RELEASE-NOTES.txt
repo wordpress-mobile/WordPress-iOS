@@ -1,3 +1,7 @@
+14.9
+-----
+* [internal] the "Change Username" on the Signup Epilogue screen has navigation changes that can cause regressions. See https://git.io/JfGnv for testing details.
+ 
 14.8
 -----
 * Block editor: Prefill caption for image blocks when available on the Media library
