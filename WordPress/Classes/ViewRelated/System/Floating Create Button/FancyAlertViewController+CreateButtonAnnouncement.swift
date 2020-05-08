@@ -1,9 +1,9 @@
 extension FancyAlertViewController {
     private struct Strings {
-        static let titleText = NSLocalizedString("Simplified Navigation", comment: "Title of alert announcing new Create Button feature.")
-        static let bodyText = NSLocalizedString("We've made our navigation less complex, so it's easier to find the things you need the most.", comment: "Body text of alert announcing new Create Button feature.")
-        static let okayButtonText = NSLocalizedString("Okay", comment: "Okay button title shown in alert announcing new Create Button feature.")
-        static let readMoreButtonText = NSLocalizedString("Read more on the blog", comment: "Read more button title shown in alert announcing new Create Button feature.")
+        static let titleText = NSLocalizedString("Streamlined navigation", comment: "Title of alert announcing new Create Button feature.")
+        static let bodyText = NSLocalizedString("Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast.", comment: "Body text of alert announcing new Create Button feature.")
+        static let okayButtonText = NSLocalizedString("Got it!", comment: "Okay button title shown in alert announcing new Create Button feature.")
+        static let readMoreButtonText = NSLocalizedString("Learn more", comment: "Read more button title shown in alert announcing new Create Button feature.")
     }
 
     private struct Analytics {
