@@ -18,7 +18,6 @@ extension FancyAlertViewController {
     @objc static func makeCreateButtonAnnouncementAlertController(readMoreAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let okayButton = ButtonConfig(Strings.okayButtonText) { controller, _ in
-            WPAnalytics.track(WPAnalyticsEvent.announcementModalShown, properties: [Analytics.locationKey: Analytics.alertKey])
             controller.dismiss(animated: true)
         }
 
