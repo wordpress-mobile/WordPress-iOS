@@ -34,7 +34,7 @@ static ContextManager *_override;
 {
     self = [super init];
     if (self) {
-        _derivedContextMap = [NSMapTable strongToStrongObjectsMapTable];
+        self.derivedContextMap = [NSMapTable strongToStrongObjectsMapTable];
         [self startListeningToMainContextNotifications];
     }
 
