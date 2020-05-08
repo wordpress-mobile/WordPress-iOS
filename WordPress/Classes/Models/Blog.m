@@ -126,24 +126,6 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return [value boolValue];
 }
 
-- (NSString *)icon
-{
-    [self willAccessValueForKey:@"icon"];
-    NSString *icon = [self primitiveValueForKey:@"icon"];
-    [self didAccessValueForKey:@"icon"];
-
-    if (icon) {
-        return icon;
-    }
-
-    // if the icon is not set we can use the host url to construct it
-    NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
-    if (hostUrl == nil) {
-        hostUrl = self.xmlrpc;
-    }
-    return hostUrl;
-}
-
 // Used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL
 {
