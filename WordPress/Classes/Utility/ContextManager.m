@@ -70,7 +70,7 @@ static ContextManager *_override;
     return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
 }
 
-- (NSManagedObjectContext *const)sharedDerivedContextForKind:(Class)kind
+- (NSManagedObjectContext *const)derivedContextForKind:(Class)kind
 {
     NSAssert([NSThread isMainThread], @"This API is not threadsafe. Should only run on the main thread");
 

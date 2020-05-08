@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return a MOC with NSPrivateQueueConcurrencyType,
  with the parent context as the main context, and the flag `automaticallyMergesChangesFromParent` enabled.
  */
-- (NSManagedObjectContext *const)sharedDerivedContextForKind:(Class)kind;
+- (NSManagedObjectContext *const)derivedContextForKind:(Class)kind;
 
 /**
  For usage as a snapshot of the main context. This is useful when operations 
