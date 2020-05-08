@@ -2,7 +2,7 @@ import UIKit
 import WordPressAuthenticator
 import WordPressEditor
 
-class RegisterDomainDetailsViewController: NUXTableViewController {
+class RegisterDomainDetailsViewController: UITableViewController {
 
     typealias Localized = RegisterDomainDetails.Localized
     typealias SectionIndex = RegisterDomainDetailsViewModel.SectionIndex
