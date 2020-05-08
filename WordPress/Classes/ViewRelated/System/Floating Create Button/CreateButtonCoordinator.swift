@@ -4,9 +4,10 @@ import WordPressFlux
 @objc class CreateButtonCoordinator: NSObject {
 
     private enum Constants {
-        static let padding: CGFloat = -16
-        static let heightWidth: CGFloat = 56
-        static let popoverOffset: CGFloat = -10
+        static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
+        static let heightWidth: CGFloat = 56 // Height and width of the button
+        static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
+        static let maximumTooltipView = 5 // Caps the number of times the user can see the announcement tooltip
     }
 
     var button: FloatingActionButton = {
@@ -31,6 +32,15 @@ import WordPressFlux
         }
         return notice
     }()
+
+    // Once this reaches `maximumTooltipView` we won't show the tooltip again
+    private var shownTooltipCount = 0 {
+        didSet {
+            if shownTooltipCount >= Constants.maximumTooltipView {
+                didShowCreateTooltip = true
+            }
+        }
+    }
 
     private var didShowCreateTooltip: Bool {
         set {
@@ -140,6 +150,7 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
+        shownTooltipCount += 1
         if !didShowCreateTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
         }
