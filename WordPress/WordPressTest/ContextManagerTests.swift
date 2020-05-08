@@ -23,8 +23,8 @@ class ContextManagerTests: XCTestCase {
     }
 
     func testSharedDerivedContextAlwaysReturnsSameContextForSomeEntityKind() {
-        let firstContext = contextManager.sharedDerivedContext(forKind: PostService.self)
-        let secondContext = contextManager.sharedDerivedContext(forKind: PostService.self)
+        let firstContext = contextManager.derivedContext(forKind: PostService.self)
+        let secondContext = contextManager.derivedContext(forKind: PostService.self)
 
         XCTAssertEqual(firstContext, secondContext)
     }
