@@ -17,7 +17,7 @@ protocol SignupEpilogueTableViewControllerDataSource {
     var username: String? { get }
 }
 
-class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInfoCellViewControllerProvider {
+class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfoCellViewControllerProvider {
 
     // MARK: - Properties
 
@@ -31,37 +31,11 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     private var showPassword: Bool = true
     private var reloaded: Bool = false
 
-    private struct Constants {
-        static let numberOfSections = 3
-        static let namesSectionRows = 2
-        static let sectionRows = 1
-        static let headerFooterHeight: CGFloat = 50
-    }
-
-    private struct TableSections {
-        static let userInfo = 0
-        static let names = 1
-        static let password = 2
-    }
-
-    private struct CellIdentifiers {
-        static let sectionHeaderFooter = "SectionHeaderFooter"
-        static let signupEpilogueCell = "SignupEpilogueCell"
-        static let epilogueUserInfoCell = "userInfo"
-    }
-
-    private struct CellNibNames {
-        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
-        static let signupEpilogueCell = "SignupEpilogueCell"
-        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .basicBackground
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -78,51 +52,54 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return showPassword == true ? Constants.numberOfSections : Constants.numberOfSections - 1
+        return Constants.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == TableSections.names {
-            return Constants.namesSectionRows
+
+        guard section != TableSections.userInfo else {
+            return Constants.userInfoRows
         }
 
-        return Constants.sectionRows
+        return showPassword ? Constants.allAccountRows : Constants.noPasswordRows
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var sectionTitle = ""
-        if section == TableSections.userInfo {
-            sectionTitle = NSLocalizedString("New Account", comment: "Header for user info, shown after account created.").localizedUppercase
+        // Don't show section header for User Info
+        guard section != TableSections.userInfo,
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
+            return nil
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
-            fatalError("Failed to get a section header cell")
-        }
-        cell.titleLabel?.text = sectionTitle
+        cell.titleLabel?.text = NSLocalizedString("Account Details", comment: "Header for account details, shown after signing up.").localizedUppercase
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
+        cell.accessibilityLabel = cell.titleLabel?.text
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 
-        if section == TableSections.password {
-            guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
-                fatalError("Failed to get a section footer cell")
-            }
-            cell.titleLabel?.numberOfLines = 0
-            cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
-
-            return cell
+        guard section != TableSections.userInfo,
+            showPassword,
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
+                return nil
         }
 
-        return nil
+        cell.titleLabel?.numberOfLines = 0
+        cell.topConstraint.constant = Constants.footerTopMargin
+        cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+        cell.accessibilityLabel = cell.titleLabel?.text
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        // User Info Row
         if indexPath.section == TableSections.userInfo {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.epilogueUserInfoCell) as? EpilogueUserInfoCell else {
-                fatalError("Failed to get a user info cell")
+                return UITableViewCell()
             }
 
             if let epilogueUserInfo = epilogueUserInfo {
@@ -133,29 +110,13 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
             return cell
         }
 
-        if indexPath.section == TableSections.names {
-            if indexPath.row == 0 {
-                return getEpilogueCellFor(cellType: .displayName)
-            }
-
-            if indexPath.row == 1 {
-                return getEpilogueCellFor(cellType: .username)
-            }
+        // Account Details Rows
+        guard let cellType = EpilogueCellType(rawValue: indexPath.row) else {
+            return UITableViewCell()
         }
 
-        if indexPath.section == TableSections.password {
-            return getEpilogueCellFor(cellType: .password)
-        }
+        return getEpilogueCellFor(cellType: cellType)
 
-        return super.tableView(tableView, cellForRowAt: indexPath)
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard cell is EpilogueUserInfoCell else {
-            return
-        }
-
-        cell.contentView.backgroundColor = .listForeground
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -163,7 +124,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        return section == TableSections.userInfo ? 0 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
@@ -171,10 +132,11 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == TableSections.password {
-            return UITableView.automaticDimension
+        guard section != TableSections.userInfo, showPassword else {
+            return 0
         }
-        return CGFloat.leastNormalMagnitude
+
+        return UITableView.automaticDimension
     }
 
 }
@@ -194,6 +156,7 @@ private extension SignupEpilogueTableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        tableView.backgroundColor = .basicBackground
 
         // remove empty cells
         tableView.tableFooterView = UIView()
@@ -222,7 +185,7 @@ private extension SignupEpilogueTableViewController {
         epilogueUserInfo = userInfo
     }
 
-    private func generateDisplayName(from rawEmail: String) -> String {
+    func generateDisplayName(from rawEmail: String) -> String {
         // step 1: lower case
         let email = rawEmail.lowercased()
         // step 2: remove the @ and everything after
@@ -239,7 +202,7 @@ private extension SignupEpilogueTableViewController {
 
     func getEpilogueCellFor(cellType: EpilogueCellType) -> SignupEpilogueCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.signupEpilogueCell) as? SignupEpilogueCell else {
-            fatalError("Failed to get epilogue cell")
+            return SignupEpilogueCell()
         }
 
         switch cellType {
@@ -253,15 +216,39 @@ private extension SignupEpilogueTableViewController {
                                fieldValue: dataSource?.username ?? epilogueUserInfo?.username)
         case .password:
             cell.configureCell(forType: .password,
-                               labelText: NSLocalizedString("Password", comment: "Password label text."),
                                fieldValue: dataSource?.password,
-                               fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"))
+                               fieldPlaceholder: NSLocalizedString("Password (optional)", comment: "Password field placeholder text"))
         }
 
         cell.delegate = self
         return cell
     }
 
+    struct Constants {
+        static let numberOfSections = 2
+        static let userInfoRows = 1
+        static let noPasswordRows = 2
+        static let allAccountRows = 3
+        static let headerFooterHeight: CGFloat = 50
+        static let footerTrailingMargin: CGFloat = 16
+        static let footerTopMargin: CGFloat = 8
+    }
+
+    struct TableSections {
+        static let userInfo = 0
+    }
+
+    struct CellIdentifiers {
+        static let sectionHeaderFooter = "SectionHeaderFooter"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "userInfo"
+    }
+
+    struct CellNibNames {
+        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
+    }
 }
 
 // MARK: - SignupEpilogueCellDelegate

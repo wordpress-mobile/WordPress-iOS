@@ -6,8 +6,10 @@ private struct ElementStringIDs {
     static let displayNameField = "Display Name Field"
     static let usernameField = "Username Field"
     static let passwordField = "Password Field"
+    // This is the Done button on the Login Epilogue
     static let doneButton = "Done"
-    static let continueButton = "Continue Button"
+    // This is the Done button on the Signup Epilogue
+    static let continueButton = "Done Button"
 }
 
 class SignupEpilogueScreen: BaseScreen {

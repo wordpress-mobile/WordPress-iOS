@@ -7,21 +7,24 @@ import WordPressAuthenticator
 //
 class LoginEpilogueViewController: UIViewController {
 
-    /// Button's Container View.
+    /// Button Container View.
     ///
     @IBOutlet var buttonPanel: UIView!
 
-    /// Separator: to be displayed above the actual buttons.
+    /// Line displayed atop the buttonPanel when the table is scrollable.
     ///
-    @IBOutlet var shadowView: UIView!
+    @IBOutlet var topLine: UIView!
+    @IBOutlet var topLineHeightConstraint: NSLayoutConstraint!
 
-    /// Connect Button!
+    /// Done Button.
     ///
-    @IBOutlet var connectButton: UIButton!
+    @IBOutlet var doneButton: UIButton!
 
-    /// Continue Button.
-    ///
-    @IBOutlet var continueButton: UIButton!
+    /// Constraints on the table view container.
+    /// Used to adjust the width on iPad.
+    @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    private var defaultTableViewMargin: CGFloat = 0
 
     /// Links to the Epilogue TableViewController
     ///
@@ -53,19 +56,17 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
+        view.backgroundColor = .basicBackground
+        topLine.backgroundColor = .divider
+        defaultTableViewMargin = tableViewLeadingConstraint.constant
+        setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
-
-        view.backgroundColor = .neutral(.shade0)
+        WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -79,7 +80,10 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
-        epilogueTableViewController.setup(with: credentials)
+        epilogueTableViewController.setup(with: credentials, onConnectSite: { [weak self] in
+            self?.handleConnectAnotherButton()
+        })
+
         tableViewController = epilogueTableViewController
     }
 
@@ -91,47 +95,34 @@ class LoginEpilogueViewController: UIViewController {
         super.viewDidLayoutSubviews()
         configurePanelBasedOnTableViewContents()
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setTableViewMargins(forWidth: size.width)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setTableViewMargins(forWidth: view.frame.width)
+    }
+
 }
 
-
-// MARK: - Configuration
+// MARK: - Private Extension
 //
 private extension LoginEpilogueViewController {
 
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
-        if credentials.wporg != nil {
-            configureButtons()
-        } else if let wpcom = credentials.wpcom {
-            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: wpcom.isJetpackLogin)
-        }
-    }
-
-    /// Returns the number of WordPress.com sites.
-    ///
-    var numberOfWordPressComBlogs: Int {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+        configureDoneButton()
     }
 
     /// Setup: Buttons
     ///
-    func configureButtons(numberOfBlogs: Int = 1, hidesConnectButton: Bool = false) {
-        let connectTitle: String
-        if numberOfBlogs == 0 {
-            connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
-        } else {
-            connectTitle = NSLocalizedString("Connect another site", comment: "Button title")
-        }
-
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"), for: .normal)
-        continueButton.accessibilityIdentifier = "Continue"
-        connectButton.setTitle(connectTitle, for: .normal)
-        connectButton.isHidden = hidesConnectButton
-        connectButton.accessibilityIdentifier = "Connect"
+    func configureDoneButton() {
+        doneButton.setTitle(NSLocalizedString("Done", comment: "A button title"), for: .normal)
+        doneButton.accessibilityIdentifier = "Done"
     }
 
     /// Setup: Button Panel
@@ -141,31 +132,52 @@ private extension LoginEpilogueViewController {
             return
         }
 
+        topLineHeightConstraint.constant = .hairlineBorderWidth
+
         let contentSize = tableView.contentSize
         let screenHeight = UIScreen.main.bounds.height
         let panelHeight = buttonPanel.frame.height
 
-        if contentSize.height > (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
-            shadowView.isHidden = false
-        } else {
+        if contentSize.height >= (screenHeight - panelHeight) {
             buttonPanel.backgroundColor = .listBackground
-            shadowView.isHidden = true
+            topLine.isHidden = false
+        } else {
+            buttonPanel.backgroundColor = .basicBackground
+            topLine.isHidden = true
         }
     }
-}
 
+    func setTableViewMargins(forWidth viewWidth: CGFloat) {
+        guard traitCollection.horizontalSizeClass == .regular &&
+            traitCollection.verticalSizeClass == .regular else {
+                tableViewLeadingConstraint.constant = defaultTableViewMargin
+                tableViewTrailingConstraint.constant = defaultTableViewMargin
+                return
+        }
 
-// MARK: - Actions
-//
-extension LoginEpilogueViewController {
+        let marginMultiplier = UIDevice.current.orientation.isLandscape ?
+            TableViewMarginMultipliers.ipadLandscape :
+            TableViewMarginMultipliers.ipadPortrait
+
+        let margin = viewWidth * marginMultiplier
+
+        tableViewLeadingConstraint.constant = margin
+        tableViewTrailingConstraint.constant = margin
+    }
+
+    enum TableViewMarginMultipliers {
+        static let ipadPortrait: CGFloat = 0.1667
+        static let ipadLandscape: CGFloat = 0.25
+    }
+
+    // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
         navigationController?.dismiss(animated: true)
     }
 
-    @IBAction func handleConnectAnotherButton() {
+    func handleConnectAnotherButton() {
         onDismiss?()
         let controller = WordPressAuthenticator.signinForWPOrg()
         navigationController?.setViewControllers([controller], animated: true)

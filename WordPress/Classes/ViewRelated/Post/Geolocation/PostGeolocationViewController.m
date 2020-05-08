@@ -161,12 +161,14 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
 - (void)removeGeolocation
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostLocationChanged properties:@{@"via": @"settings", @"action": @"removed"}];
     self.post.geolocation = nil;
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)confirmGeolocation
 {
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostLocationChanged properties:@{@"via": @"settings", @"action": @"added"}];
     self.post.geolocation = self.geoView.coordinate;
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
