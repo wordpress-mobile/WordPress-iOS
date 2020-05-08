@@ -1,4 +1,5 @@
 import Gridicons
+import WordPressFlux
 
 @objc class CreateButtonCoordinator: NSObject {
 
@@ -20,6 +21,28 @@ import Gridicons
 
     let newPost: () -> Void
     let newPage: () -> Void
+
+    private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
+
+    private lazy var notice: Notice = {
+        let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
+                            message: "",
+                            style: ToolTipNoticeStyle()) { _ in
+        }
+        return notice
+    }()
+
+    private var shouldShowNotice: Bool {
+        set {
+            //TODO: Set on persistent store
+        }
+        get {
+            //TODO: Fetch from persistent store
+            return true
+        }
+    }
+
+    private weak var noticeContainerView: NoticeContainerView?
 
     @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
         self.viewController = viewController
@@ -60,6 +83,9 @@ import Gridicons
     }
 
     @objc private func showCreateSheet() {
+        shouldShowNotice = false
+        hideNotice()
+
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
@@ -98,7 +124,15 @@ import Gridicons
         viewController.transitioningDelegate = self
     }
 
+    private func hideNotice() {
+        if let container = noticeContainerView {
+            NoticePresenter.dismiss(container: container)
+        }
+    }
+
     @objc func hideCreateButton() {
+        hideNotice()
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
         } else {
@@ -107,6 +141,7 @@ import Gridicons
     }
 
     @objc func showCreateButton() {
+        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {
