@@ -17,7 +17,7 @@ import WordPressShared
 ///  - `animateMessage(_)` when you want to change the message displayed. Pass
 /// nil if you want to hide the error view.
 ///
-class NoticeAnimator: Animator {
+class MessageAnimator: Animator {
 
     // MARK: - Private Constants
     fileprivate struct Defaults {

@@ -11,5 +11,5 @@ class SnippetsContentStyles: FormattableContentStyles {
 
     var linksColor: UIColor?
 
-    var key: String = "SnipetsContentStyles"
+    var key: String = "SnippetsContentStyles"
 }

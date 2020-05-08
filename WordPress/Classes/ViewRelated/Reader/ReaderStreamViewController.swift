@@ -106,6 +106,7 @@ import WordPressFlux
         }
     }
 
+    private var hideHeader = false
 
     private var isShowingResultStatusView: Bool {
         return resultsStatusView.view?.superview != nil
@@ -214,6 +215,13 @@ import WordPressFlux
         return controller
     }
 
+    /// Convenience method to create an instance for saved posts
+    class func controllerForSavedPosts() -> ReaderStreamViewController {
+        let controller = ReaderStreamViewController()
+        controller.isSavedPostsController = true
+        return controller
+    }
+
 
     // MARK: - State Restoration
 
@@ -283,7 +291,7 @@ import WordPressFlux
 
         didSetupView = true
 
-        if readerTopic != nil {
+        if readerTopic != nil || isSavedPostsController {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             configureControllerForTopic(synchronize: false)
@@ -349,6 +357,7 @@ import WordPressFlux
 
     /// Fetches a site topic for the value of the `siteID` property.
     ///
+    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchSiteTopic() {
         if isViewLoaded {
             displayLoadingStream()
@@ -378,6 +387,7 @@ import WordPressFlux
 
     /// Fetches a tag topic for the value of the `tagSlug` property
     ///
+    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchTagTopic() {
         if isViewLoaded {
             displayLoadingStream()
@@ -466,6 +476,12 @@ import WordPressFlux
             return
         }
 
+        guard !hideHeader else {
+            tableView.tableHeaderView = nil
+            hideHeader = false
+            return
+        }
+
         if let tableHeaderView = tableView.tableHeaderView {
             header.isHidden = tableHeaderView.isHidden
         }
@@ -495,8 +511,10 @@ import WordPressFlux
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
     private func configureControllerForTopic(synchronize: Bool = true) {
-        assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
-
+        // if the view has not been loaded yet, this will be called in viewDidLoad
+        guard isViewLoaded else {
+            return
+        }
         // Enable the view now that we have a topic.
         view.isUserInteractionEnabled = true
 
@@ -1714,11 +1732,19 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 }
 
 
-// MARK: - Topic Injection
-extension ReaderStreamViewController {
+// MARK: - ReaderContentViewController
+extension ReaderStreamViewController: ReaderContentViewController {
     func setTopic(_ topic: ReaderAbstractTopic?) {
-        guard let actualTopic = topic, ReaderHelpers.topicIsDiscover(actualTopic) else {
-            readerTopic = topic
+        guard let currentTopic = topic else {
+            readerTopic = nil
+            isSavedPostsController = true
+            return
+        }
+        isSavedPostsController = false
+
+        guard ReaderHelpers.topicIsDiscover(currentTopic) else {
+            hideHeader = ReaderHelpers.isTopicSite(currentTopic)
+            readerTopic = currentTopic
             return
         }
         readerTopic = nil
@@ -1736,6 +1762,7 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
         }
     }
 }
+
 
 // MARK: - Undo
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {

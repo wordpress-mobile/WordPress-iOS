@@ -1,11 +1,8 @@
-Het aanmaken van een site is gestroomlijnd door een aantal tussenliggende stappen te verwijderen. Kies het soort site waar je naar op zoek bent, voer een domeinnaam in en je bent klaar.
+De planning-, tag- en zichtbaarheidsinstellingen worden nu in de berichteditor weergegeven wanneer je op 'Publiceren' of 'Plannen' tikt. Je kunt ze aanpassen en op 'Nu publiceren' tikken om de publicatie af te ronden. Je hoeft de editor nooit meer te verlaten om het scherm Berichtinstellingen te openen!
 
-De blokeditor bevat nu nog meer verbeteringen: Het Omslagblok is nu beschikbaar, er zijn uitlijningsopties voor het Titelblok en een vervolgkeuzebalk maakt het eenvoudiger om de blokken Titel, Paragraaf, Afbeelding en MediaTekst uit te lijnen. We hebben ook het dim-effect op niet-geselecteerde blokken verwijderd.
+De mobiele blokeditor blijft zich uitbreiden:-
+– Je zult een kolommenblok en een nieuwe startsjabloon voor blogs ontdekken.
+– De opties voor de startpaginasjabloon bedekken niet meer de content op je site.
+– We hebben een bug opgelost die zorgde dat URL-instellingen werden weergegeven als je je apparaat fysiek bewoog terwijl je de startpaginasjablonen bekeek.
 
-De opmaak van het scherm Meldingen leidde ertoe dat tekst verloren kon raken onder de behuizing van sommige modellen mobiele telefoons. Dat is nu opgelost!
-
-Soms probeerde je iemand aan te spreken via een @-melding in de reactie en gaf de app je een aantal suggesties, maar kon je geen naam kiezen. Dat probleem is nu ook verholpen. We hebben ook een paar andere problemen aangepakt die zorgden dat de app crashte wanneer je toegang probeerde te krijgen tot het scherm Sitepagina's of wanneer je probeerde de knoppen voor snelle acties te gebruiken op een iPad om je blogberichten te openen. En over pagina's en berichten gesproken: voorbeeldweergaven zijn nu groter voor iPads waarop iOS 13 wordt uitgevoerd.
-
-We willen de nachtmodus echt zoals we onze koffie willen: heel donker en zonder dat er bugs in ronddrijven. Er zijn nog wat glitches aanwezig in de dag- en nachtmodus, wat soms tot vreemde problemen leidde wanneer je overschakelde van de ene op de andere. Er zijn nu een hoop minder glitches.
-
-Blijf veilig allemaal.
+Aangezien een app nooit te snel, nuttig of geordend kan zijn, hebben we een aantal UI-dingen verbeterd. Zul jij ze opmerken? Waarschijnlijk niet, maar dat is ook de bedoeling. Tot slot was er een inlogprobleem dat zorgde dat gegevens van zelf-gehoste sites onjuist werden geladen, en ook dat probleem is opgelost.

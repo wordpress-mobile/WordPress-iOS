@@ -1,11 +1,7 @@
-Site Creation has been streamlined by removing some intermediate steps. Pick the kind of site you want, enter a domain name, and you’re done.
+There’s never been a better time to use the WordPress app to manage your website — use it while hovering in the doorway of your house waiting for a curb-side delivery, in your living room while sitting six feet away from your roommate, or in the bathroom where you go to get a five minute break from your kids. The possibilities are endless, especially since v14.8 packs more features into the Block editor:
 
-The Block editor got more improvements: The Cover block is now available; there are alignment options in the Heading block; and a dropdown toolbar makes alignment easier for Heading, Paragraph, Image, MediaText blocks. And we removed the dimming effect on unselected blocks.
+With the new Buttons block, you can add multiple buttons in the same row.
+The Cover block includes more uploading options for getting pictures from your device to your site.
+If your image files have captions, the Image block will automatically pre-fill them for you.
 
-The layout of the Notifications screen caused text to get lost under the casing of some models of mobile phone. That’s fixed!
-
-Sometimes you’d try to @-mention someone in a comment, and the app would suggest names but then not let you select one — that’s also fixed. We also took care of a few other issues that caused the app to crash when you tried to access the Site Pages screen or use the Quick Action buttons on iPads to get to your blog posts. And speaking of pages and posts, previews are now bigger for iPads running iOS 13.
-
-We like our Dark Mode like we like our coffee: really dark, and without any bugs floating around in it. There were some glitches in Light and Dark Modes, and things sometimes behaved oddly when you switched from one to the other. There are far fewer of those glitches now.
-
-Stay safe, y’all.
+While we were poking around, we fixed a few bugs — whitespace around Text blocks getting removed, Quote blocks that didn’t align properly, and buttons in page templates not displaying correctly on the web. And we gave the screens you see post-login and signup some polish so they look cleaner and feel more consistent within the app.
