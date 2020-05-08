@@ -7,6 +7,25 @@ public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
 
 class GutenbergMediaPickerHelper: NSObject {
 
+    static func insertOnBlock(with urls: [URL],
+                              mediaInserter: GutenbergMediaInserterHelper,
+                              source: MediaSource,
+                              mediaPickerCallback: MediaPickerDidPickMediaCallback?) {
+        guard let callback = mediaPickerCallback else {
+            return assertionFailure("Image picked without callback")
+        }
+
+        let mediaInfo = urls.compactMap({ (url) -> MediaInfo? in
+            guard let media = mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps) else {
+                return nil
+            }
+            let mediaUploadID = media.gutenbergUploadID
+            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)
+        })
+
+        callback(mediaInfo)
+    }
+
     fileprivate struct Constants {
         static let mediaPickerInsertText = NSLocalizedString(
             "Insert %@",

@@ -56,19 +56,11 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
     /// Adds the given images  to the requesting block
     /// - Parameter assets: Stock Media objects to add.
     func insertOnBlock(with assets: [StockPhotosMedia]) {
-        guard let callback = mediaPickerCallback else {
-            return assertionFailure("Image picked without callback")
-        }
-
-        let mediaInfo = assets.compactMap({ (asset) -> MediaInfo? in
-            guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .stockPhotos) else {
-                return nil
-            }
-            let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)
-        })
-
-        callback(mediaInfo)
+        let urls = assets.compactMap({ $0.URL })
+        GutenbergMediaPickerHelper.insertOnBlock(with: urls,
+                                                 mediaInserter: mediaInserter,
+                                                 source: .stockPhotos,
+                                                 mediaPickerCallback: mediaPickerCallback)
     }
 
     /// Create a new image block for each of the image objects in the slice.
