@@ -714,6 +714,10 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: f40bf7ba3f8b8ba6936898f6f6932a947f7e5980
+=======
+PODFILE CHECKSUM: 886cb7b0f71d3ac74c5cb674a8df7684868a7cd9
+>>>>>>> patch_rn_for_action_sheet
 
 COCOAPODS: 1.8.4
