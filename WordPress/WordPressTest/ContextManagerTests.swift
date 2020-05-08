@@ -22,6 +22,20 @@ class ContextManagerTests: XCTestCase {
         ContextManager.overrideSharedInstance(nil)
     }
 
+    func testSharedDerivedContextAlwaysReturnsSameContextForSomeEntityKind() {
+        let firstContext = contextManager.sharedDerivedContext(forKind: PostService.self)
+        let secondContext = contextManager.sharedDerivedContext(forKind: PostService.self)
+
+        XCTAssertEqual(firstContext, secondContext)
+    }
+
+    func testSharedDerivedContextReturnsDifferentContextsForDifferentEntityKinds() {
+        let firstContext = contextManager.sharedDerivedContext(forKind: PostService.self)
+        let secondContext = contextManager.sharedDerivedContext(forKind: BlogService.self)
+
+        XCTAssertNotEqual(firstContext, secondContext)
+    }
+
     func testIterativeMigration() {
         let model19Name = "WordPress 19"
 
