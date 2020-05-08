@@ -20,6 +20,7 @@ static ContextManager *_override;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSManagedObjectContext *writerContext;
+@property (nonatomic, strong) NSMapTable *derivedContextMap;
 @property (nonatomic, assign) BOOL migrationFailed;
 
 @end
@@ -33,6 +34,7 @@ static ContextManager *_override;
 {
     self = [super init];
     if (self) {
+        _derivedContextMap = [NSMapTable strongToStrongObjectsMapTable];
         [self startListeningToMainContextNotifications];
     }
 
@@ -66,6 +68,28 @@ static ContextManager *_override;
 - (NSManagedObjectContext *const)newMainContextChildContext
 {
     return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
+}
+
+- (NSManagedObjectContext *const)sharedDerivedContextForKind:(Class)kind
+{
+    NSAssert([NSThread isMainThread], @"This API is not threadsafe. Should only run on the main thread");
+
+    NSString *key = [self derivedContextKeyForKind:kind];
+    NSManagedObjectContext *derivedContext = [self.derivedContextMap objectForKey:key];
+    if (derivedContext) {
+        return derivedContext;
+    }
+
+    derivedContext = [self newDerivedContext];
+    derivedContext.automaticallyMergesChangesFromParent = YES;
+    [self.derivedContextMap setObject:derivedContext forKey:key];
+
+    return derivedContext;
+}
+
+- (NSString *)derivedContextKeyForKind:(Class)kind
+{
+    return NSStringFromClass(kind);
 }
 
 - (NSManagedObjectContext *const)writerContext

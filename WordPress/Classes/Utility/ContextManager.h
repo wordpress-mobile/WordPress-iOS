@@ -48,6 +48,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSManagedObjectContext *const)newDerivedContext;
 
 /**
+ Returns a shared derived context, for background work, associated with a given kind.
+ The resulting instance is expected to always be the same for a given kind.
+
+ This is meant to allow the app to share the same DerivedContext across multiple LocalCoreDataService instances.
+
+ @return a MOC with NSPrivateQueueConcurrencyType,
+ with the parent context as the main context, and the flag `automaticallyMergesChangesFromParent` enabled.
+ */
+- (NSManagedObjectContext *const)sharedDerivedContextForKind:(Class)kind;
+
+/**
  For usage as a snapshot of the main context. This is useful when operations 
  should happen on the main queue (fetches) but not immedately reflect changes to
  the main context.
