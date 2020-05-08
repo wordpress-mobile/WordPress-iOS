@@ -32,13 +32,12 @@ import WordPressFlux
         return notice
     }()
 
-    private var shouldShowNotice: Bool {
+    private var didShowCreateTooltip: Bool {
         set {
-            //TODO: Set on persistent store
+            UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
         }
         get {
-            //TODO: Fetch from persistent store
-            return true
+            return UserDefaults.standard.createButtonTooltipWasDisplayed
         }
     }
 
@@ -83,7 +82,7 @@ import WordPressFlux
     }
 
     @objc private func showCreateSheet() {
-        shouldShowNotice = false
+        didShowCreateTooltip = true
         hideNotice()
 
         guard let viewController = viewController else { return }
@@ -141,7 +140,9 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
-        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+        if !didShowCreateTooltip {
+            noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+        }
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {
@@ -176,5 +177,21 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return (viewController?.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+    }
+}
+
+@objc
+extension UserDefaults {
+    private enum Keys: String {
+        case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
+    }
+
+    var createButtonTooltipWasDisplayed: Bool {
+        get {
+            return bool(forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
     }
 }
