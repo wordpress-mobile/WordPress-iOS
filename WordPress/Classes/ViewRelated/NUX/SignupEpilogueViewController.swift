@@ -116,9 +116,7 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
     }
 
     func passwordUpdated(newPassword: String) {
-        if !newPassword.isEmpty {
-            updatedPassword = newPassword
-        }
+        updatedPassword = newPassword.isEmpty ? nil : newPassword
     }
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
@@ -177,7 +175,7 @@ private extension SignupEpilogueViewController {
                 self.updatedDisplayName = nil
                 self.saveChanges()
             }
-        } else if let newPassword = updatedPassword {
+        } else if let newPassword = updatedPassword, !newPassword.isEmpty {
             SVProgressHUD.show(withStatus: HUDMessages.changingPassword)
             changePassword(to: newPassword) { success, error in
                 if success {
