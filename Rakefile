@@ -308,10 +308,14 @@ namespace :install do
           puts "Xcode installed"
         end
 
+        puts "Checking CI recommendded installed XCode version"
+
         if !xcode_version_is_correct?
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake
-          puts "Incorrect Version of XCode"
-          puts "Please install correct version: (instert ci version)"
+          puts "Not recommended version of XCode installed"
+          puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
+          STDOUT.puts "Please press enter to continue"
+          complete = STDIN.gets.strip
           next
         end
 
@@ -320,18 +324,14 @@ namespace :install do
         #clean()
       end
 
-      #export developer tools system report to json file
+      #Check if XCode is installed
       def xcode_installed?
-        sh "system_profiler SPDeveloperToolsDataType -json > json.txt", verbose: false
-        file = File.read('json.txt')
-        profile = JSON.parse(file)
-
-        profile['SPDeveloperToolsDataType'].count > 0
+        system "xcodebuild -version", [:out, :err] => File::NULL
       end
 
       #compare xcode version to expected CI spec version
       def xcode_version_is_correct?
-        if get_xcode_version > get_ci_xcode_version
+        if get_xcode_version == get_ci_xcode_version
           puts "Correct version of XCode installed"
           return true
         end
@@ -339,19 +339,13 @@ namespace :install do
 
       #get xcode version from json system profiler developer tools report
       def get_xcode_version
-        puts "Checking installed XCode version"
-        file = File.read('json.txt')
-        profile = JSON.parse(file)
+        puts 'Checking installed version of XCode'
+        version = %x[xcodebuild -version]
 
-        #returns version in format example: '11.4.1 (16137)'
-        full_xcode_version = profile['SPDeveloperToolsDataType'][0]['spdevtools_apps']['spxcode_app']
-
-        #remove the trailing version info
-        return full_xcode_version.split(" ")[0]
+        version.split(" ")[1]
       end
 
       def get_ci_xcode_version
-        puts "Checking CI recommendded installed XCode version"
         ci_config = File.read(".circleci/config.yml")
         specs = YAML.load(ci_config)
 
