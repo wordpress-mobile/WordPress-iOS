@@ -542,7 +542,7 @@ namespace :credentials do
 #End namesapce Credentials
 end
 
-namespace gpg_key do
+namespace :gpg_key do
   task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:generate]
 
   task :check do
