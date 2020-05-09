@@ -463,51 +463,81 @@ end #End namespace install
 
 #Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
 namespace :credentials do
-  task :setup => %w[credentials:set_app_secrets]
+  task :setup => %w[credentials:prompt credentials:set_app_secrets]
 
-    #user given app id and secret and create a new wpcom_app_credentials file
-    task :set_app_secrets do
-      create_secrets_file
-      set_app_secrets(get_app_id, get_app_secret)
-      remove_temp_file
-    end
+  task :prompt do
+    puts ""
+    puts "====================================================================================="
+    puts "To be able to log into the WordPress app while developing you will need to setup API credentials"
+    puts "To do this follow these steps"
+    puts ""
+    puts ""
+    puts ""
+    puts "====================================================================================="
 
-    def get_app_id
-      STDOUT.puts "Please enter your App id"
-      app_id = STDIN.gets.strip
-    end
+    puts "1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one)."
+    STDOUT.puts "Please press enter to continue"
+    STDIN.gets.strip
 
-    def get_app_secret
-      STDOUT.puts "Please enter your App Secret"
-      app_secret = STDIN.gets.strip
-    end
+    puts "====================================================================================="
+    puts "2. Create an application at https://developer.wordpress.com/apps/."
+    STDOUT.puts "Please press enter to continue"
+    STDIN.gets.strip
 
-    #create temporary secrets file from example file
-    def create_secrets_file
-      sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
-    end
+    puts "====================================================================================="
+    puts '3. Set "Redirect URLs"= https://localhost and "Type" = Native and click "Create" then "Update".'
+    STDOUT.puts "Please press enter to continue"
+    STDIN.gets.strip
 
-    #create a new wpcom_app_credentials file combining the app secret and app id
-    def set_app_secrets(id, secret)
-      puts "Creating credentials file"
-      new_file = File.new(".configure-files/wpcom_app_credentials", "w")
-      File.open(".configure-files/temp_wpcom_app_credentials") do |file|
-        file.each_line do |line|
-          string = line.to_s()
-          if string.include? "WPCOM_APP_ID="
-            new_file.puts("WPCOM_APP_ID=#{id}")
-          elsif string.include? "WPCOM_APP_SECRET="
-            new_file.puts("WPCOM_APP_SECRET=#{secret}")
-          else
-            new_file.write(line)
-          end
+    puts "====================================================================================="
+    puts "4. Copy the Client ID and Client Secret from the OAuth Information."
+    STDOUT.puts "Please press enter to continue"
+    STDIN.gets.strip
+  end
+
+  #user given app id and secret and create a new wpcom_app_credentials file
+  task :set_app_secrets do
+    create_secrets_file
+    set_app_secrets(get_client_id, get_client_secret)
+    remove_temp_file
+  end
+
+  def get_client_id
+    STDOUT.puts "Please enter your Cliet id"
+    client_id = STDIN.gets.strip
+  end
+
+  def get_client_secret
+    STDOUT.puts "Please enter your Client Secret"
+    client_secret = STDIN.gets.strip
+  end
+
+  #create temporary secrets file from example file
+  def create_secrets_file
+    sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
+  end
+
+  #create a new wpcom_app_credentials file combining the app secret and app id
+  def set_app_secrets(id, secret)
+    puts "Creating credentials file"
+    new_file = File.new(".configure-files/wpcom_app_credentials", "w")
+    File.open(".configure-files/temp_wpcom_app_credentials") do |file|
+      file.each_line do |line|
+        string = line.to_s()
+        if string.include? "WPCOM_APP_ID="
+          new_file.puts("WPCOM_APP_ID=#{id}")
+        elsif string.include? "WPCOM_APP_SECRET="
+          new_file.puts("WPCOM_APP_SECRET=#{secret}")
+        else
+          new_file.write(line)
         end
       end
     end
+  end
 
-    def remove_temp_file
-      sh "rm .configure-files/temp_wpcom_app_credentials", verbose: false
-    end
+  def remove_temp_file
+    sh "rm .configure-files/temp_wpcom_app_credentials", verbose: false
+  end
 
 #End namesapce Credentials
 end
