@@ -467,9 +467,9 @@ namespace :credentials do
 
     #user given app id and secret and create a new wpcom_app_credentials file
     task :set_app_secrets do
-      create_secrets_file()
+      create_secrets_file
       set_app_secrets(get_app_id, get_app_secret)
-      #CS-NOTE:Figure out removal of temp file
+      remove_temp_file
     end
 
     def get_app_id
@@ -503,6 +503,10 @@ namespace :credentials do
           end
         end
       end
+    end
+
+    def remove_temp_file
+      sh "rm .configure-files/temp_wpcom_app_credentials", verbose: false
     end
 
 #End namesapce Credentials
