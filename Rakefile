@@ -543,7 +543,7 @@ namespace :credentials do
 end
 
 namespace :gpg_key do
-  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:generate]
+  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:generate gpg_key:finish]
 
   task :check do
     puts "Checking system for GPG Tools"
@@ -564,7 +564,15 @@ namespace :gpg_key do
   end
 
   task :generate do
+    puts "Begin Generating GPG Keys"
+    sh "gpg --full-generate-key", verbose: false
+  end
 
+  task :finish do
+    puts "====================================================================================="
+    puts "Please send your GPG public key to Platform 9-3/4"
+    puts "You can contact them in the Slack channel #platform9"
+    puts "====================================================================================="
   end
 #end namespace GPG_key_setup
 end
