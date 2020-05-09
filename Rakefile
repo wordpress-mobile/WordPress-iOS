@@ -318,10 +318,6 @@ namespace :install do
           complete = STDIN.gets.strip
           next
         end
-
-        #CS-NOTE: clobber is not working.  Figure out what is going on and fix auto file cleanup
-        #CLOBBER << "json.txt"
-        #clean()
       end
 
       #Check if XCode is installed
