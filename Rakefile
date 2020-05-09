@@ -280,7 +280,7 @@ task :developer => %w[
   install:tools:check_developer
   install:lint:check
   credentials:setup
-  mobile_secrets:setup
+  gpg_key:setup
 ]
 end
 
@@ -540,6 +540,33 @@ namespace :credentials do
   end
 
 #End namesapce Credentials
+end
+
+namespace gpg_key do
+  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:generate]
+
+  task :check do
+    puts "Checking system for GPG Tools"
+    unless command?("gpg")
+      Rake::Task["gpg_key:install"].invoke
+    else
+      puts "GPG Tools found"
+    end
+  end
+
+  task :install do
+    puts "GPG Tools not found.  Installing GPG Tools"
+    sh "brew install gpg"
+  end
+
+  task :prompt do
+
+  end
+
+  task :generate do
+
+  end
+#end namespace GPG_key_setup
 end
 
 
