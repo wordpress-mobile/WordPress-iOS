@@ -409,8 +409,6 @@ namespace :install do
       }
 
       #Check for tool, install if not installed
-      #C-NOTE: the tool_check method does two things, check and install
-      #would it be better to make one method check and one method install, for clarity?
       task :check_oss do
         tool_check(oss_tools)
       end
