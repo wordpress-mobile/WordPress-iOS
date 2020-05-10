@@ -10,8 +10,8 @@ Please refer to the sections below for more detailed information. The instructio
 ### Getting Started
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 11.2.1 or newer.
-1. From a command line, `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
-1. `cd WordPress-iOS` to enter the working directory.
+1. From a command line, run `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
+1. Now, run `cd WordPress-iOS` to enter the working directory.
 
 ### Create WordPress.com API Credentials
 
@@ -19,24 +19,24 @@ Please refer to the sections below for more detailed information. The instructio
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
-1. If you are setting up your instance of the WordPress app for the first time, return to the command line and run `rake init:oss` as described above.  If you're WordPress app is already configured, run `rake credentials:setup`
+1. If you are setting up your instance of the WordPress app for the first time, return to the command line and run `rake init:oss`
 
 ### Configure Your WordPress App Development Environment
 
-1. `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
-1. `rake xcode` to open the project in Xcode.
+1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
+1. Once completed, run `rake xcode` to open the project in Xcode.
 
-If all went well you can now compile and log into the WordPress app.
+If all went well you can now compile to your iOS device or simulator, and log into the WordPress app.
 
 Note: You can only log in with the WordPress.com account that you used to create the WordPress application.
 
-##Configuration Details
+## Configuration Details
 
 The steps above will help you configure the WordPress app to run and compile.  But you may sometimes need to update or re run specific parts of the initial setup (like updating the dependencies)  To see how to do that, please check out the steps below
 
 ### Third party tools
 
-We use a few tools to help with development. Running `rake dependencies` will configure them for you.
+We use a few tools to help with development. Running `rake dependencies` will configure or update them for you.
 
 #### CocoaPods
 
