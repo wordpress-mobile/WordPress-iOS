@@ -373,7 +373,6 @@ namespace :install do
 
   #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
   namespace :tools do
-    #CS_NOTE: look for a cleaner way to choos which tools to install, there is a bit of repeating that could be cleaner
     task :check_oss => %w[homebrew:check addons:check_oss]
     task :check_developer => %w[homebrew:check addons:check_developer]
 
@@ -543,8 +542,10 @@ namespace :credentials do
 end
 
 namespace :gpg_key do
+  #automate the process of creatong a GPG key
   task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:finish]
 
+  #confirm that GPG tools is installed
   task :check do
     puts "Checking system for GPG Tools"
     unless command?("gpg")
@@ -554,15 +555,17 @@ namespace :gpg_key do
     end
   end
 
+  #install GPG Tools
   task :install do
     puts "GPG Tools not found.  Installing GPG Tools"
     sh "brew install gpg"
   end
 
+  #Ask developer if they need to create a new key.
+  #If yes, begin process of creating key, if no move on
   task :prompt do
     create_new_key = prompt_to_create_gpg_key
 
-    puts create_new_key
     if create_new_key == "Y"
       Rake::Task["gpg_key:generate"].invoke
     elsif create_new_key == "N"
@@ -571,6 +574,7 @@ namespace :gpg_key do
 
   end
 
+  #Generate new GPG key
   task :generate do
     puts ""
     puts "Begin Generating GPG Keys"
@@ -587,6 +591,7 @@ namespace :gpg_key do
     sh "gpg --full-generate-key", verbose: false
   end
 
+  #prompt developer to send GPG key to Platform
   task :finish do
     puts "====================================================================================="
     puts "Please send your GPG public key to Platform 9-3/4"
@@ -594,6 +599,7 @@ namespace :gpg_key do
     puts "====================================================================================="
   end
 
+  #ask user if they want to create a key,  loop till given a valid answer
   def prompt_to_create_gpg_key
     puts "====================================================================================="
     puts "To access production credentials for the WordPress app you will need to a GPG Key"
@@ -601,7 +607,6 @@ namespace :gpg_key do
     puts "Press 'Y' to create a new key.  Press 'N' to skip"
 
     response = STDIN.gets.strip.upcase
-    puts response
     until response == "Y" || response == "N"
         puts "Invalid entry, please enter Y or N"
         response = STDIN.gets.strip.upcase
