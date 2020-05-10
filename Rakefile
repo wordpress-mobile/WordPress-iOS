@@ -543,7 +543,7 @@ namespace :credentials do
 end
 
 namespace :gpg_key do
-  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:generate gpg_key:finish]
+  task :setup => %w[gpg_key:check gpg_key:prompt gpg_key:finish]
 
   task :check do
     puts "Checking system for GPG Tools"
@@ -560,11 +560,30 @@ namespace :gpg_key do
   end
 
   task :prompt do
+    create_new_key = prompt_to_create_gpg_key
+
+    puts create_new_key
+    if create_new_key == "Y"
+      Rake::Task["gpg_key:generate"].invoke
+    elsif create_new_key == "N"
+      next
+    end
 
   end
 
   task :generate do
+    puts ""
     puts "Begin Generating GPG Keys"
+    puts "====================================================================================="
+    puts "When creating the GPG keys please use the following values"
+    puts "Type: RSA and RSA"
+    puts "RSA Bit Length: 1024"
+    puts "Key Valid Length: 1 Year"
+    puts "====================================================================================="
+    puts "For your account, create your own secret password and account username/info"
+    puts "====================================================================================="
+    puts ""
+
     sh "gpg --full-generate-key", verbose: false
   end
 
@@ -574,6 +593,23 @@ namespace :gpg_key do
     puts "You can contact them in the Slack channel #platform9"
     puts "====================================================================================="
   end
+
+  def prompt_to_create_gpg_key
+    puts "====================================================================================="
+    puts "To access production credentials for the WordPress app you will need to a GPG Key"
+    puts "Do you need to generate a new GPG Key?"
+    puts "Press 'Y' to create a new key.  Press 'N' to skip"
+
+    response = STDIN.gets.strip.upcase
+    puts response
+    until response == "Y" || response == "N"
+        puts "Invalid entry, please enter Y or N"
+        response = STDIN.gets.strip.upcase
+    end
+
+    return response
+  end
+
 #end namespace GPG_key_setup
 end
 
