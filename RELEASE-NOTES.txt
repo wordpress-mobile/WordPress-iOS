@@ -14,6 +14,7 @@
 * Block editor: Fix the icons in FloatingToolbar on RTL mode
 * Block editor: Fix Quote block so it visually reflects selected alignment
 * Block editor: Fix bug where buttons in page templates were not rendering correctly on web
+* Block editor: Remove Subscription Button from the Blog template since it didn't have an initial functionality and it is hard to configure for users.
 * [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
 * Updated UI for Login and Signup epilogues.
 * Fixes delayed split view resizing while rotating your device.
