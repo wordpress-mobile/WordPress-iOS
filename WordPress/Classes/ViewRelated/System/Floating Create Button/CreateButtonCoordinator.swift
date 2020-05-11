@@ -28,7 +28,9 @@ import WordPressFlux
     private lazy var notice: Notice = {
         let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
                             message: "",
-                            style: ToolTipNoticeStyle()) { _ in
+                            style: ToolTipNoticeStyle()) { [weak self] _ in
+                self?.didDismissTooltip = true
+                self?.hideNotice()
         }
         return notice
     }()
@@ -37,12 +39,12 @@ import WordPressFlux
     private var shownTooltipCount = 0 {
         didSet {
             if shownTooltipCount >= Constants.maximumTooltipView {
-                didShowCreateTooltip = true
+                didDismissTooltip = true
             }
         }
     }
 
-    private var didShowCreateTooltip: Bool {
+    private var didDismissTooltip: Bool {
         set {
             UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
         }
@@ -92,7 +94,7 @@ import WordPressFlux
     }
 
     @objc private func showCreateSheet() {
-        didShowCreateTooltip = true
+        didDismissTooltip = true
         hideNotice()
 
         guard let viewController = viewController else { return }
@@ -151,7 +153,7 @@ import WordPressFlux
 
     @objc func showCreateButton() {
         shownTooltipCount += 1
-        if !didShowCreateTooltip {
+        if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
         }
         if UIAccessibility.isReduceMotionEnabled {
