@@ -103,7 +103,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Unsaved Changes
 
 /**
- *  @brief      Wether the post can be saved or not.
+ *  @brief      Whether the post can be saved or not.
  *
  *  @returns    YES if the post can be saved, NO otherwise.
  */
@@ -184,6 +184,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  *  @returns    YES if the post has local changes, NO otherwise.
  */
 - (BOOL)hasLocalChanges;
+
+/// Returns YES if there is a conflict between local and remote versions, based on `dateModified`
+- (BOOL)hasVersionConflict;
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;

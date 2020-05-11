@@ -581,6 +581,12 @@
             || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
+- (BOOL)hasVersionConflict
+{
+    AbstractPost *original = (AbstractPost *)self.original;
+    return [self.dateModified isEqualToDate:original.dateModified];
+}
+
 - (BOOL)shouldAttemptAutoUpload {
     if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
         return NO;

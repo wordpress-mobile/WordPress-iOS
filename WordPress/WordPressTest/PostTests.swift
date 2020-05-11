@@ -376,6 +376,13 @@ class PostTests: XCTestCase {
         XCTAssertFalse(revision.hasLocalChanges())
     }
 
+    func testThatVersionConflictWorks() {
+        #warning("create tests")
+        let post = newTestPost()
+        post.hasVersionConflict() = true
+
+    }
+
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
         let post = newTestPost()
 

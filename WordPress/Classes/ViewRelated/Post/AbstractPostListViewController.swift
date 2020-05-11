@@ -579,7 +579,7 @@ class AbstractPostListViewController: UIViewController,
         createPost()
     }
 
-    // MARK: - Synching
+    // MARK: - Syncing
 
     @objc func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen

@@ -65,6 +65,8 @@ class PostCardStatusViewModel: NSObject {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if !post.hasLocalChanges() && post.hasAutosaveRevision {
             return StatusMessages.hasUnsavedChanges
+        } else if post.hasVersionConflict() {
+            return StatusMessages.hasVersionConflict
         } else {
             return post.statusForDisplay()
         }
@@ -96,6 +98,10 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed && isInternetReachable {
+            return .error
+        }
+
+        if post.hasVersionConflict() {
             return .error
         }
 
@@ -264,5 +270,6 @@ class PostCardStatusViewModel: NSObject {
                                                             comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
         static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
                                                             comment: "Message displayed on a post's card when the post has unsaved changes")
+        static let hasVersionConflict = NSLocalizedString("Version Conflict", comment: "A status label for a post that has a conflict between the local and web versions.")
     }
 }
