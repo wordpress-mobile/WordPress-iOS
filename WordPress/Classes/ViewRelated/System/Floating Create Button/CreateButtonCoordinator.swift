@@ -7,7 +7,7 @@ import WordPressFlux
         static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
         static let heightWidth: CGFloat = 56 // Height and width of the button
         static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
-        static let maximumTooltipView = 5 // Caps the number of times the user can see the announcement tooltip
+        static let maximumTooltipViews = 5 // Caps the number of times the user can see the announcement tooltip
     }
 
     var button: FloatingActionButton = {
@@ -35,10 +35,10 @@ import WordPressFlux
         return notice
     }()
 
-    // Once this reaches `maximumTooltipView` we won't show the tooltip again
+    // Once this reaches `maximumTooltipViews` we won't show the tooltip again
     private var shownTooltipCount: Int {
         set {
-            if shownTooltipCount >= Constants.maximumTooltipView {
+            if shownTooltipCount >= Constants.maximumTooltipViews {
                 didDismissTooltip = true
             } else {
                 UserDefaults.standard.createButtonTooltipDisplayCount = newValue
@@ -102,7 +102,9 @@ import WordPressFlux
         didDismissTooltip = true
         hideNotice()
 
-        guard let viewController = viewController else { return }
+        guard let viewController = viewController else {
+            return
+        }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
@@ -157,10 +159,11 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
-        shownTooltipCount += 1
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+            shownTooltipCount += 1
         }
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {
