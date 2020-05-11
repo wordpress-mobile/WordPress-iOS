@@ -38,7 +38,7 @@ import WordPressFlux
     // Once this reaches `maximumTooltipViews` we won't show the tooltip again
     private var shownTooltipCount: Int {
         set {
-            if shownTooltipCount >= Constants.maximumTooltipViews {
+            if newValue >= Constants.maximumTooltipViews {
                 didDismissTooltip = true
             } else {
                 UserDefaults.standard.createButtonTooltipDisplayCount = newValue
