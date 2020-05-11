@@ -36,11 +36,16 @@ import WordPressFlux
     }()
 
     // Once this reaches `maximumTooltipView` we won't show the tooltip again
-    private var shownTooltipCount = 0 {
-        didSet {
+    private var shownTooltipCount: Int {
+        set {
             if shownTooltipCount >= Constants.maximumTooltipView {
                 didDismissTooltip = true
+            } else {
+                UserDefaults.standard.createButtonTooltipDisplayCount = newValue
             }
+        }
+        get {
+            return UserDefaults.standard.createButtonTooltipDisplayCount
         }
     }
 
@@ -197,6 +202,16 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
 extension UserDefaults {
     private enum Keys: String {
         case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
+        case createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
+    }
+
+    var createButtonTooltipDisplayCount: Int {
+        get {
+            return integer(forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
     }
 
     var createButtonTooltipWasDisplayed: Bool {
