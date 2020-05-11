@@ -74,7 +74,7 @@ PODS:
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
   - lottie-ios (3.1.6)
-  - MediaEditor (1.0.1):
+  - MediaEditor (1.1.0-beta.1):
     - TOCropViewController (~> 2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -439,7 +439,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.0.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1186db17990c7ffbd325f77ff7fe96401639e1d1`)
   - JTAppleCalendar (~> 8.0.2)
-  - MediaEditor (~> 1.0.1)
+  - MediaEditor (~> 1.1.0-beta.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (~> 0.0.4)
@@ -653,7 +653,7 @@ SPEC CHECKSUMS:
   Gutenberg: aa041019bf81d30c7b9c7de0f313a2d55561cc4a
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
-  MediaEditor: 7296cd01d7a0548fb2bc909aa72153b376a56a61
+  MediaEditor: 5f881dac2f74bf447e77ed0f86d7a2bc2f27f399
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
@@ -714,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: b26343300a0042f307cc89ed647712e2fe546029
+PODFILE CHECKSUM: 0da02e9eec4e9c54783dc3f99897cb401b715db8
 
 COCOAPODS: 1.8.4
