@@ -37,3 +37,5 @@ Impact is determined by how many users are affected or how many reports we recei
 * **Low:** Non-reproducible or single user report, or estimated 0-5% of users affected.
 * **Medium:** 2-4 user reports, or estimated 6-25% of users affected.
 * **High:** 5+ user reports, or estimated 26-100% of users affected.
+
+If you aren't sure how to estimate the number of users affected, use the number of user reports you can find as a starting point. The issue can be escalated later if we find a good estimate of users affected or if more user reports are noted on the issue.
