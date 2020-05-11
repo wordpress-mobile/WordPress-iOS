@@ -53,7 +53,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    fileprivate var noticeAnimator: NoticeAnimator!
+    fileprivate var messageAnimator: MessageAnimator!
 
     let controller: ImmuTableController
 
@@ -75,7 +75,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noticeAnimator = NoticeAnimator(target: view)
+        messageAnimator = MessageAnimator(target: view)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
@@ -83,7 +83,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        noticeAnimator.layout()
+        messageAnimator.layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -119,7 +119,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     @objc var noticeMessage: String? = nil {
         didSet {
             guard noticeMessage != oldValue else { return }
-            noticeAnimator.animateMessage(noticeMessage)
+            messageAnimator.animateMessage(noticeMessage)
         }
     }
 
