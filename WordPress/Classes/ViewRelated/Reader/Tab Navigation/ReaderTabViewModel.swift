@@ -5,22 +5,22 @@ import WordPressFlux
 
     // MARK: - Properties
     /// tab bar items
-    private let tabItemsStore: ReaderTabItemsStore
+    private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
-    var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
+    private var setTabBarItems: (([ReaderTabItem], Int) -> Void)?
 
     private var tabItems: [ReaderTabItem] {
-        tabItemsStore.tabItems
+        tabItemsStore.items
     }
     /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
 
     /// completion handler for a tap on a tab on the toolbar
-    var setContentTopic: ((ReaderAbstractTopic?) -> Void)?
+    var setContent: ((ReaderContent) -> Void)?
 
     /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
-    var makeReaderContentViewController: (ReaderAbstractTopic?) -> ReaderContentViewController
+    var makeReaderContentViewController: (ReaderContent) -> ReaderContentViewController
 
     /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
@@ -30,14 +30,17 @@ import WordPressFlux
     var navigateToSearch: () -> Void
 
     /// Settings
+    private let settingsPresenter: ScenePresenter
     var settingsTapped: ((UIView) -> Void)?
 
-    init(readerContentFactory: @escaping (ReaderAbstractTopic?) -> ReaderContentViewController,
+    init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
-         tabItemsStore: ReaderTabItemsStore) {
+         tabItemsStore: ItemsStore,
+         settingsPresenter: ScenePresenter) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
         self.tabItemsStore = tabItemsStore
+        self.settingsPresenter = settingsPresenter
         super.init()
 
         subscription = tabItemsStore.onChange { [weak self] in
@@ -47,6 +50,7 @@ import WordPressFlux
             viewModel.setTabBarItems?(viewModel.tabItems, viewModel.selectedIndex)
         }
         addNotificationsObservers()
+        observeNetworkStatus()
     }
 }
 
@@ -72,21 +76,21 @@ extension ReaderTabViewModel {
             return
         }
         selectedIndex = index
-        let topic = tabItems[index].topic
+        let content = tabItems[index].content
 
-        let selectedTopic: ReaderAbstractTopic?
-        if !tabItems[index].shouldHideButtonsView {
-            selectedTopic = selectedFilter ?? topic
+        let selectedContent: ReaderContent
+        if let filter = selectedFilter {
+            selectedContent = tabItems[index].shouldHideButtonsView ? content : ReaderContent(topic: filter)
         } else {
-            selectedTopic = topic
+            selectedContent = content
         }
-        setContentTopic?(selectedTopic)
+        setContent?(selectedContent)
     }
 
     /// switch to the tab whose topic matches the given predicate
     func switchToTab(where predicate: (ReaderAbstractTopic) -> Bool) {
         guard let index = tabItems.firstIndex(where: { item in
-            guard let topic = item.topic else {
+            guard let topic = item.content.topic else {
                 return false
             }
             return predicate(topic)
@@ -121,15 +125,14 @@ extension ReaderTabViewModel {
     }
 
     func presentManage(from: UIViewController) {
-        let presenter = ReaderManageScenePresenter()
-        presenter.present(on: from, animated: true, completion: nil)
+        settingsPresenter.present(on: from, animated: true, completion: nil)
     }
 
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
             if let topic = topic {
-                self?.setContentTopic?(topic)
+                self?.setContent?(ReaderContent(topic: topic))
             }
             completion(topic?.title)
         })
@@ -137,8 +140,8 @@ extension ReaderTabViewModel {
 
     func resetFilter(selectedItem: FilterTabBarItem) {
         selectedFilter = nil
-        if let topic = (selectedItem as? ReaderTabItem)?.topic {
-            setContentTopic?(topic)
+        if let content = (selectedItem as? ReaderTabItem)?.content {
+            setContent?(content)
         }
     }
 }
@@ -168,18 +171,27 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
 
     func makeChildContentViewController(at index: Int) -> ReaderContentViewController? {
-        guard index < tabItems.count else {
-            return nil
+        guard let tabItem = tabItems[safe: index] else {
+            return tabItems.isEmpty ? makeReaderContentViewController(ReaderContent(topic: nil, contentType: .contentError)) : nil
         }
-        let controller = makeReaderContentViewController(tabItems[index].topic)
+        let controller = makeReaderContentViewController(tabItem.content)
 
-        setContentTopic = { [weak controller] topic in
-            controller?.setTopic(topic)
+        setContent = { [weak controller] configuration in
+            controller?.setContent(configuration)
         }
         return controller
     }
 }
 
+
+extension ReaderTabViewModel: NetworkStatusReceiver, NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        guard active, tabItems.isEmpty else {
+            return
+        }
+        fetchReaderMenu()
+    }
+}
 
 // MARK: - Cleanup tasks
 extension ReaderTabViewModel {

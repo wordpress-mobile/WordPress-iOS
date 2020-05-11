@@ -114,7 +114,7 @@ public enum PostEditorAction {
         case .publish:
             return .saveAsDraft
         case .update:
-            return .publishNow
+            return .publish
         default:
             return nil
         }

@@ -4,7 +4,7 @@ class NoticeView: UIView {
     internal let contentStackView = UIStackView()
 
     internal let backgroundContainerView = UIView()
-    internal let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    internal let backgroundView = UIVisualEffectView(effect: Constants.visualEffect)
     internal let actionBackgroundView = UIView()
     private let shadowLayer = CAShapeLayer()
     private let shadowMaskLayer = CAShapeLayer()
@@ -75,6 +75,11 @@ class NoticeView: UIView {
 
         backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius
         backgroundContainerView.layer.masksToBounds = true
+    }
+
+    func configureArrow() {
+        let arrowView = addArrow(color: notice.style.backgroundColor, size: Metrics.arrowSize)
+        arrowView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Metrics.arrowPosition).isActive = true
     }
 
     internal func configureShadow() {
@@ -302,9 +307,11 @@ class NoticeView: UIView {
         static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 3.0
+        static let arrowSize = CGSize(width: 20, height: 10)
+        static let arrowPosition: CGFloat = -24 /// Arrow is positioned along the right hand side by default.
     }
 
-    private enum Appearance {
+    fileprivate enum Appearance {
         static let shadowColor: UIColor = .black
         static let shadowOpacity: Float = 0.25
         static let shadowRadius: CGFloat = 2.0
@@ -347,6 +354,72 @@ fileprivate extension UIView {
 
     struct Constants {
         static let borderColor = UIColor.white.withAlphaComponent(0.25)
+        static let visualEffect = UIBlurEffect(style: .extraLight)
+    }
+}
+
+// MARK: - Arrow
+
+fileprivate extension UIView {
+
+    func addArrow(color: UIColor, size: CGSize) -> UIView {
+        let arrowView = makeArrowView(color: color)
+
+        NSLayoutConstraint.activate([
+            arrowView.heightAnchor.constraint(equalToConstant: size.height),
+            arrowView.widthAnchor.constraint(equalToConstant: size.width),
+            arrowView.topAnchor.constraint(equalTo: bottomAnchor)
+        ])
+
+        return arrowView
+    }
+
+    func makeArrowView(color: UIColor) -> UIView {
+        let arrowView = ArrowView()
+        arrowView.backgroundColor = color
+        arrowView.translatesAutoresizingMaskIntoConstraints = false
+
+        let visualEffectView = ArrowEffectView(effect: Constants.visualEffect)
+        visualEffectView.backgroundColor = .clear
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        visualEffectView.contentView.addSubview(arrowView)
+        visualEffectView.pinSubviewToAllEdges(arrowView)
+
+        addSubview(visualEffectView)
+        return visualEffectView
+    }
+}
+
+/// A Downward pointing triangle shaped view
+private class ArrowView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let trianglePath = UIBezierPath()
+        trianglePath.move(to: .zero)
+        trianglePath.addLine(to: CGPoint(x: bounds.size.width / 2, y: bounds.size.height))
+        trianglePath.addLine(to: CGPoint(x: bounds.size.width, y: 0))
+        trianglePath.close()
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = trianglePath.cgPath
+        layer.mask = shapeLayer
+    }
+}
+
+private class ArrowEffectView: UIVisualEffectView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let trianglePath = UIBezierPath()
+        trianglePath.move(to: .zero)
+        trianglePath.addLine(to: CGPoint(x: bounds.size.width / 2, y: bounds.size.height))
+        trianglePath.addLine(to: CGPoint(x: bounds.size.width, y: 0))
+        trianglePath.close()
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = trianglePath.cgPath
+        layer.mask = shapeLayer
     }
 }
 

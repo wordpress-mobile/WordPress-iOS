@@ -97,8 +97,8 @@ class GutenbergMediaInserterHelper: NSObject {
         callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
     }
 
-    func insertFromImage(image: UIImage, callback: @escaping MediaPickerDidPickMediaCallback) {
-        guard let media = insert(exportableAsset: image, source: .mediaEditor) else {
+    func insertFromImage(image: UIImage, callback: @escaping MediaPickerDidPickMediaCallback, source: MediaSource = .deviceLibrary) {
+        guard let media = insert(exportableAsset: image, source: source) else {
             callback([])
             return
         }

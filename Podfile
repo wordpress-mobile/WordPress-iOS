@@ -29,12 +29,12 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.18.0'
+    pod 'WordPress-Editor-iOS', '~> 1.19.0'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.6.0-beta.1'
+    pod 'WordPressUI', '~> 1.6.0'
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'f145c1b7bc0c321e422a17f1e8d78cfc884d2b23'
+    gutenberg :commit => '76e43cb3801ac0c963ba8741280db12db7cab869'
 
     ## Third party libraries
     ## =====================
@@ -185,9 +185,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.15.0-beta.5'
+    pod 'WordPressAuthenticator', '~> 1.16.0-beta.4'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/use-wpui-1-6-0'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 

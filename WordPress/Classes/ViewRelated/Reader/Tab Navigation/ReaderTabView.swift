@@ -53,7 +53,7 @@ class ReaderTabView: UIView {
 extension ReaderTabView {
 
     /// Call this method to set the title of the filter button
-    func setFilterButtonTitle(_ title: String) {
+    private func setFilterButtonTitle(_ title: String) {
         WPStyleGuide.applyReaderFilterButtonTitle(filterButton, title: title)
     }
 
@@ -93,6 +93,8 @@ extension ReaderTabView {
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         horizontalDivider.isHidden = tabItem.shouldHideButtonsView
+        settingsButton.isHidden = tabItem.shouldHideSettingsButton
+        verticalDivider.isHidden = tabItem.shouldHideSettingsButton
     }
 
     private func setupButtonsView() {
@@ -162,11 +164,11 @@ extension ReaderTabView {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         childController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        controller.addChild(childController)
-
-        containerView.addSubview(childController.view)
+        controller.children.forEach {
+            $0.remove()
+        }
+        controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
-        childController.didMove(toParent: controller)
     }
 
     private func activateConstraints() {
