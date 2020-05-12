@@ -39,10 +39,19 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
     }
 
     func insertOnBlock(with urls: [URL]) {
-        GutenbergMediaPickerHelper.insertOnBlock(with: urls,
-                                                 mediaInserter: mediaInserter,
-                                                 source: .otherApps,
-                                                 mediaPickerCallback: mediaPickerCallback)
+        guard let callback = mediaPickerCallback else {
+            return assertionFailure("Image picked without callback")
+        }
+
+        let mediaInfo = urls.compactMap({ (url) -> MediaInfo? in
+            guard let media = mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps) else {
+                return nil
+            }
+            let mediaUploadID = media.gutenbergUploadID
+            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)
+        })
+
+        callback(mediaInfo)
     }
 }
 
