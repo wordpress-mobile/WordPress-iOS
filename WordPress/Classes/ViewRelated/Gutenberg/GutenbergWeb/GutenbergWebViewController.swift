@@ -9,6 +9,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
 
     let authenticator: RequestAuthenticator?
     private let url: URL
+    private let progressView = WebProgressView()
 
     init(with post: AbstractPost, block: Block) throws {
         authenticator = RequestAuthenticator(blog: post.blog)
@@ -33,6 +34,30 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     override func viewDidLoad() {
         super.viewDidLoad()
         addNavigationBarElements()
+        addProgressView()
+        startObservingWebView()
+    }
+
+    deinit {
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            let object = object as? WKWebView,
+            object == webView,
+            let keyPath = keyPath
+        else {
+            return
+        }
+
+        switch keyPath {
+        case #keyPath(WKWebView.estimatedProgress):
+            progressView.progress = Float(webView.estimatedProgress)
+            progressView.isHidden = webView.estimatedProgress == 1
+        default:
+            assertionFailure("Observed change to web view that we are not handling")
+        }
     }
 
     override func getRequest(for webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
@@ -49,5 +74,19 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             target: self,
             action: #selector(onSaveButtonPressed)
         )
+    }
+
+    private func startObservingWebView() {
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
+    }
+
+    private func addProgressView() {
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(progressView)
+        NSLayoutConstraint.activate([
+            progressView.topAnchor.constraint(equalTo: view.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
 }
