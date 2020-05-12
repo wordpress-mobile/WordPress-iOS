@@ -455,7 +455,7 @@ namespace :install do
       sh "git rev-parse --is-inside-work-tree > /dev/null 2>&1", verbose: false
     end
   end
-  
+
 #End namespace install
 end
 
@@ -474,21 +474,22 @@ namespace :credentials do
     puts "====================================================================================="
 
     puts "1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one)."
-    STDOUT.puts "Please press enter to continue"
-    STDIN.gets.strip
+    prompt_for_continue
 
     puts "====================================================================================="
     puts "2. Create an application at https://developer.wordpress.com/apps/."
-    STDOUT.puts "Please press enter to continue"
-    STDIN.gets.strip
+    prompt_for_continue
 
     puts "====================================================================================="
     puts '3. Set "Redirect URLs"= https://localhost and "Type" = Native and click "Create" then "Update".'
-    STDOUT.puts "Please press enter to continue"
-    STDIN.gets.strip
+    prompt_for_continue
 
     puts "====================================================================================="
     puts "4. Copy the Client ID and Client Secret from the OAuth Information."
+    prompt_for_continue
+  end
+
+  def prompt_for_continue
     STDOUT.puts "Please press enter to continue"
     STDIN.gets.strip
   end
@@ -502,12 +503,12 @@ namespace :credentials do
 
   def get_client_id
     STDOUT.puts "Please enter your Cliet id"
-    client_id = STDIN.gets.strip
+    STDIN.gets.strip
   end
 
   def get_client_secret
     STDOUT.puts "Please enter your Client Secret"
-    client_secret = STDIN.gets.strip
+    STDIN.gets.strip
   end
 
   #create temporary secrets file from example file
@@ -563,7 +564,6 @@ namespace :gpg_key do
   #Ask developer if they need to create a new key.
   #If yes, begin process of creating key, if no move on
   task :prompt do
-
     if create_gpg_key?
       if create_default_key?
         display_default_config_helpers
