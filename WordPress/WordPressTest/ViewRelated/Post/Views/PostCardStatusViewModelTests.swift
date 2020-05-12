@@ -111,6 +111,27 @@ class PostCardStatusViewModelTests: XCTestCase {
         expect(viewModel.status).to(equal(i18n("We'll publish the post when your device is back online.")))
         expect(viewModel.statusColor).to(equal(.warning))
     }
+
+    func testVersionConflictStatusMessage() {
+        let original = PostBuilder(context).revision().with(remoteStatus: .sync)
+        let originalPost = original.build()
+        var viewModel = PostCardStatusViewModel(post: originalPost, isInternetReachable: true)
+        expect(viewModel.status).to(equal(i18n("Local changes")))
+        expect(viewModel.statusColor).to(equal(.warning))
+
+        // Local created previous to remote
+        let localPostPrevious = original.with(dateModified: (Date() - 5)).build()
+        viewModel = PostCardStatusViewModel(post: localPostPrevious, isInternetReachable: true)
+        expect(viewModel.status).to(equal(i18n("Version Conflict")))
+        expect(viewModel.statusColor).to(equal(.error))
+
+        // Local created after remote
+        let localPostAfter = original.with(dateModified: (Date() + 5)).build()
+        viewModel = PostCardStatusViewModel(post: localPostAfter, isInternetReachable: true)
+        expect(viewModel.status).to(equal(i18n("Version Conflict")))
+        expect(viewModel.statusColor).to(equal(.error))
+    }
+    
 }
 
 private extension ButtonGroups {

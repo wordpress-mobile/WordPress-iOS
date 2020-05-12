@@ -377,10 +377,17 @@ class PostTests: XCTestCase {
     }
 
     func testThatVersionConflictWorks() {
-        #warning("create tests")
-        let post = newTestPost()
-        post.hasVersionConflict() = true
+        let original = PostBuilder(context).revision()
+        let originalPost = original.build()
+        XCTAssertFalse(originalPost.hasVersionConflict())
 
+        let localPostPrevious = original.with(dateModified: (Date() - 5)).build()
+        XCTAssertTrue(originalPost.hasVersionConflict())
+        XCTAssertTrue(localPostPrevious.hasVersionConflict())
+
+        let localPostAfter = original.with(dateModified: (Date() + 5)).build()
+        XCTAssertTrue(originalPost.hasVersionConflict())
+        XCTAssertTrue(localPostAfter.hasVersionConflict())
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
