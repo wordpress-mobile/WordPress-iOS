@@ -157,7 +157,7 @@ class GutenbergSettings {
     func willShowDialog(for blog: Blog) {
         database.set(true, forKey: Key.enabledOnce(for: blog))
     }
-    
+
     /// True if it should show the tooltip for the starter page templates picker
     func getStarterPageTemplatesTooltipShown() -> Bool {
         return database.bool(forKey: Key.starterPageTemplatesTooltipShown)
