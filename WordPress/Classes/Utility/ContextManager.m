@@ -235,7 +235,7 @@ static ContextManager *_override;
     storeDescription.shouldMigrateStoreAutomatically = true;
 
     // Initialize the container
-    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress"];
+    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
     persistentContainer.persistentStoreDescriptions = @[storeDescription];
     [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
         if (error != nil) {
