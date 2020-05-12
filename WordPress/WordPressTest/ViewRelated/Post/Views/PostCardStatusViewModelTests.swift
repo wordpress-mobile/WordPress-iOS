@@ -131,7 +131,6 @@ class PostCardStatusViewModelTests: XCTestCase {
         expect(viewModel.status).to(equal(i18n("Version Conflict")))
         expect(viewModel.statusColor).to(equal(.error))
     }
-    
 }
 
 private extension ButtonGroups {
