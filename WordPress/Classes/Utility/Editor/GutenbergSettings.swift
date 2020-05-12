@@ -12,6 +12,7 @@ class GutenbergSettings {
             let url = urlStringFrom(blog)
             return "kShowGutenbergPhase2Dialog-" + url
         }
+        static let starterPageTemplatesTooltipShown = "kGutenbergStarterPageTampletesTooltipShown"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -155,6 +156,15 @@ class GutenbergSettings {
 
     func willShowDialog(for blog: Blog) {
         database.set(true, forKey: Key.enabledOnce(for: blog))
+    }
+    
+    /// True if it should show the tooltip for the starter page templates picker
+    func getStarterPageTemplatesTooltipShown() -> Bool {
+        return database.bool(forKey: Key.starterPageTemplatesTooltipShown)
+    }
+
+    func setStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
+        database.set(tooltipShown, forKey: Key.starterPageTemplatesTooltipShown)
     }
 
     // MARK: - Gutenberg Choice Logic

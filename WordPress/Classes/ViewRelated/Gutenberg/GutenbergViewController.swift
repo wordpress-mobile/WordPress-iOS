@@ -605,6 +605,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
     }
+    
+    func gutenbergDidRequestGetStarterPageTemplatesTooltipShown() -> Bool {
+       return GutenbergSettings().getStarterPageTemplatesTooltipShown()
+    }
+    
+    func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
+       GutenbergSettings().setStarterPageTemplatesTooltipShown(tooltipShown)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
