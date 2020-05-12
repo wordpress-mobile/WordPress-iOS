@@ -8,7 +8,7 @@ require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
-require 'json'
+
 PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
 
 task default: %w[test]
@@ -333,7 +333,7 @@ namespace :install do
         end
       end
 
-      #get xcode version from json system profiler developer tools report
+      #get xcode version
       def get_xcode_version
         puts 'Checking installed version of XCode'
         version = %x[xcodebuild -version]
