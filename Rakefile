@@ -455,8 +455,9 @@ namespace :install do
       sh "git rev-parse --is-inside-work-tree > /dev/null 2>&1", verbose: false
     end
   end
-
-end #End namespace install
+  
+#End namespace install
+end
 
 #Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
 namespace :credentials do
@@ -562,55 +563,93 @@ namespace :gpg_key do
   #Ask developer if they need to create a new key.
   #If yes, begin process of creating key, if no move on
   task :prompt do
-    create_new_key = prompt_to_create_gpg_key
 
-    if create_new_key == "Y"
-      Rake::Task["gpg_key:generate"].invoke
-    elsif create_new_key == "N"
+    if create_gpg_key?
+      if create_default_key?
+        display_default_config_helpers
+        Rake::Task["gpg_key:generate_default"].invoke
+      else
+        Rake::Task["gpg_key:generate_custom"].invoke
+      end
+    else
       next
     end
 
   end
 
   #Generate new GPG key
-  task :generate do
+  task :generate_custom do
     puts ""
-    puts "Begin Generating GPG Keys"
+    puts "Begin Generating Custom GPG Keys"
     puts "====================================================================================="
-    puts "When creating the GPG keys please use the following values"
-    puts "Type: RSA and RSA"
-    puts "RSA Bit Length: 1024"
-    puts "Key Valid Length: 1 Year"
-    puts "====================================================================================="
-    puts "For your account, create your own secret password and account username/info"
-    puts "====================================================================================="
-    puts ""
 
     sh "gpg --full-generate-key", verbose: false
+  end
+
+  #Generate new default GPG key
+  task :generate_default do
+    puts ""
+    puts "Begin Generating Default GPG Keys"
+    puts "====================================================================================="
+
+    sh "gpg --generate-key", verbose: false
   end
 
   #prompt developer to send GPG key to Platform
   task :finish do
     puts "====================================================================================="
+    puts "Key Generation Complete!"
     puts "Please send your GPG public key to Platform 9-3/4"
     puts "You can contact them in the Slack channel #platform9"
     puts "====================================================================================="
   end
 
-  #ask user if they want to create a key,  loop till given a valid answer
-  def prompt_to_create_gpg_key
+  #ask user if they want to create a key, loop till given a valid answer
+  def create_gpg_key?
     puts "====================================================================================="
     puts "To access production credentials for the WordPress app you will need to a GPG Key"
     puts "Do you need to generate a new GPG Key?"
     puts "Press 'Y' to create a new key.  Press 'N' to skip"
 
+    display_prompt_response
+  end
+
+  #ask user if they want to create a key,  loop till given a valid answer
+  def create_default_key?
+    puts "====================================================================================="
+    puts "You can choose to setup with a default or custom key pair setup"
+    puts "Default setup - Type: RSA to RSA, RSA length: 2048, Valid for: does not expire"
+    puts "Would you like to continue with the default setup?"
+    puts "====================================================================================="
+    puts "Press 'Y' for Yes.  Press 'N' for custom configuration"
+
+    display_prompt_response
+  end
+
+  #prompt for a Y or N response, continue asking if other character
+  #return true for Y and false for N
+  def display_prompt_response
     response = STDIN.gets.strip.upcase
     until response == "Y" || response == "N"
         puts "Invalid entry, please enter Y or N"
         response = STDIN.gets.strip.upcase
     end
 
-    return response
+    if response == "Y"
+      return true
+    elsif response == "N"
+      return false
+    end
+  end
+
+  #display prompt for developer to aid in setting up default key
+  def display_default_config_helpers
+    puts ""
+    puts ""
+    puts "====================================================================================="
+    puts "You will need to enter the following info to create your key"
+    puts "Please enter your real name, email address, and a password for your key when prompted"
+    puts "====================================================================================="
   end
 
 #end namespace GPG_key_setup
