@@ -19,7 +19,6 @@ Please refer to the sections below for more detailed information. The instructio
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
-1. If you are setting up your instance of the WordPress app for the first time, return to the command line and run `rake init:oss`
 
 ### Configure Your WordPress App Development Environment
 
