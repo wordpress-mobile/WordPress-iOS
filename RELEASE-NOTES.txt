@@ -3,9 +3,10 @@
 * [internal] the "Change Username" on the Signup Epilogue screen has navigation changes that can cause regressions. See https://git.io/JfGnv for testing details.
 * [internal] the "3 button view" (WP.com email, Google, SIWA, Site Address) presented after pressing the "Log In" button has navigation changes that can cause regressions. See https://git.io/JfZUV for testing details.
 * [**] Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
-* [**] Block editor: Support for the pullquote block.
-* [**] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
+* [***] Block editor: Support for the pullquote block.
+* [*] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
 * [**] Block editor: Update page templates to use new blocks.
+* [**] Block Editor: Add support for changing background and text color in Buttons block
  
 14.8
 -----
