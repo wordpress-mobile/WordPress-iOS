@@ -3,10 +3,15 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
+    typealias PickersDelegate = StockPhotosPickerDelegate & GiphyPickerDelegate & TenorPickerDelegate
+    private weak var delegate: PickersDelegate?
+    private var tenor: TenorPicker?
+
     private let giphy = GiphyPicker()
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: GiphyPickerDelegate & StockPhotosPickerDelegate) {
+    init(delegate: PickersDelegate) {
+        self.delegate = delegate
         giphy.delegate = delegate
         stockPhotos.delegate = delegate
     }
@@ -22,6 +27,10 @@ final class AztecMediaPickingCoordinator {
 
         if blog.supports(.stockPhotos) {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
+
+        if FeatureFlag.tenor.enabled {
+            alertController.addAction(tenorAction(origin: origin, blog: blog))
         }
 
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
@@ -46,6 +55,12 @@ final class AztecMediaPickingCoordinator {
         })
     }
 
+    private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
+            self?.showTenor(origin: origin, blog: blog)
+        })
+    }
+
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
@@ -64,11 +79,25 @@ final class AztecMediaPickingCoordinator {
         giphy.presentPicker(origin: origin, blog: blog)
     }
 
+    private func showTenor(origin: UIViewController, blog: Blog) {
+        let picker = TenorPicker()
+        picker.delegate = self
+        picker.presentPicker(origin: origin, blog: blog)
+        tenor = picker
+    }
+
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
         let docTypes = blog.allowedTypeIdentifiers
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
         docPicker.allowsMultipleSelection = true
         origin.present(docPicker, animated: true)
+    }
+}
+
+extension AztecMediaPickingCoordinator: TenorPickerDelegate {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+        delegate?.tenorPicker(picker, didFinishPicking: assets)
+        tenor = nil
     }
 }
