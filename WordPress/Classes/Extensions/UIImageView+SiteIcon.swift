@@ -88,7 +88,11 @@ extension UIImageView {
 
                 self.removePlaceholderBorder()
             case .failure(let error):
-                CrashLogging.logError(error)
+                if case .requestCancelled = (error as? AFIError) {
+                    // Do not log intentionally cancelled requests as errors.
+                } else {
+                    CrashLogging.logError(error)
+                }
             }
         }
     }
