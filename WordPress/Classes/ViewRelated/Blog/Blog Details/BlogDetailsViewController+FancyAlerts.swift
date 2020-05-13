@@ -156,7 +156,7 @@ extension BlogDetailsViewController {
     }
 
     private func shouldShowCreateButtonAnnouncement() -> Bool {
-        return !UserDefaults.standard.createButtonAlertWasDisplayed
+        return AppRatingUtility.shared.didUpgradeVersion == true && !UserDefaults.standard.createButtonAlertWasDisplayed
     }
 
     private func showCreateButtonAnnouncementAlert() {
