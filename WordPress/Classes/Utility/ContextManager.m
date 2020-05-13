@@ -16,6 +16,7 @@ static ContextManager *_override;
 //
 @interface ContextManager ()
 
+@property (nonatomic, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
@@ -206,25 +207,14 @@ static ContextManager *_override;
 
 #pragma mark - Setup
 
-- (NSManagedObjectModel *)managedObjectModel
+- (NSPersistentContainer *)persistentContainer
 {
-    if (_managedObjectModel) {
-        return _managedObjectModel;
+    if (_persistentContainer) {
+        return _persistentContainer;
     }
-    NSString *modelPath = [self modelPath];
-    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return _managedObjectModel;
-}
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (_persistentStoreCoordinator) {
-        return _persistentStoreCoordinator;
-    }
-    
     [self migrateDataModelsIfNecessary];
-    
+
     NSURL *storeURL = self.storeURL;
 
     SentryStartupEvent *startupEvent = [SentryStartupEvent new];
@@ -273,10 +263,23 @@ static ContextManager *_override;
 
         }
     }];
+    return persistentContainer;
+}
 
-    _persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator;
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (_managedObjectModel) {
+        return _managedObjectModel;
+    }
+    NSString *modelPath = [self modelPath];
+    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return _managedObjectModel;
+}
 
-    return _persistentStoreCoordinator;
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    return self.persistentContainer.persistentStoreCoordinator;
 }
 
 
