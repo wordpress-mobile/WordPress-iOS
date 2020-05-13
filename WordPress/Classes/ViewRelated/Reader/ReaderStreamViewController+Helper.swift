@@ -69,6 +69,10 @@ extension ReaderStreamViewController {
         return nil
     }
 
+    static let defaultResponse = NoResultsResponse(
+        title: NSLocalizedString("No recent posts", comment: "A message title"),
+        message: NSLocalizedString("No posts have been made recently", comment: "A default message shown whe the reader can find no post to display"))
+
     /// Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
     ///
     /// - Parameter topic: A ReaderTopic.
@@ -126,10 +130,7 @@ extension ReaderStreamViewController {
         }
 
         // Default message
-        return NoResultsResponse(
-            title: NSLocalizedString("No recent posts", comment: "A message title"),
-            message: NSLocalizedString("No posts have been made recently", comment: "A default message shown whe the reader can find no post to display")
-        )
+        return defaultResponse
     }
 }
 
@@ -154,7 +155,7 @@ extension ReaderStreamViewController {
         let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
         messageText.replace("[bookmark-outline]", with: icon)
 
-        resultsStatusView.configure(title: noResultsResponse.title, attributedSubtitle: messageText)
+        resultsStatusView.configureForLocalData(title: noResultsResponse.title, attributedSubtitle: messageText, image: "wp-illustration-reader-empty")
     }
 }
 

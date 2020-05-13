@@ -71,7 +71,7 @@ extension ReaderTabItemsStore {
                 DDLogError(ReaderTopicsConstants.fetchRequestError + ReaderTopicsConstants.objectTypeError.localizedDescription)
                 return
             }
-            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
+            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(ReaderContent(topic: $0)) })
             self.state = .ready(items)
 
         } catch {
@@ -93,7 +93,6 @@ extension ReaderTabItemsStore {
                                     let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
                                     DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
                                     self?.fetchTabBarItems()
-
         })
     }
 

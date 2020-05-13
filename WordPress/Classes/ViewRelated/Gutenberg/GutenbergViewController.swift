@@ -22,6 +22,9 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var filesAppMediaPicker: GutenbergFilesAppMediaSource = {
         return GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
+    private lazy var tenorMediaPicker: GutenbergTenorMediaPicker = {
+        return GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    }()
 
     // MARK: - Aztec
 
@@ -378,8 +381,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
+
         case .stockPhotos:
             stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+        case .tenor:
+            tenorMediaPicker.presentPicker(origin: self,
+                                           post: post,
+                                           multipleSelection: allowMultipleSelection,
+                                           callback: callback)
         case .filesApp:
             filesAppMediaPicker.presentPicker(origin: self, filters: filter, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
@@ -637,6 +646,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
+            FeatureFlag.tenor.enabled ? .tenor : nil,
             .filesApp,
         ].compactMap { $0 }
     }
@@ -738,6 +748,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
     static let filesApp = Gutenberg.MediaSource(id: "wpios-files-app", label: .files, types: [.image, .video, .audio, .other])
+    static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 
 private extension GutenbergViewController {
