@@ -6,7 +6,8 @@
 * [**] Block editor: Support for the pullquote block.
 * [**] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
 * [**] Block editor: Update page templates to use new blocks.
- 
+* [**] Block editor: Fix a crash when uploading new videos on a video block.
+
 14.8
 -----
 * Block editor: Prefill caption for image blocks when available on the Media library
