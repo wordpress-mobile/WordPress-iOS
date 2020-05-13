@@ -112,22 +112,37 @@ class PostCardStatusViewModelTests: XCTestCase {
         expect(viewModel.statusColor).to(equal(.warning))
     }
 
-    func testVersionConflictStatusMessage() {
-        let original = PostBuilder(context).revision().with(remoteStatus: .sync)
-        let originalPost = original.build()
-        var viewModel = PostCardStatusViewModel(post: originalPost, isInternetReachable: true)
+    /// An original post created without a conflicting local post should not show 'Version Conflict' in the cell.
+    func testVersionConflictStatusMessageShouldNotShow() {
+        let original = PostBuilder(context).revision().with(remoteStatus: .sync).with(dateModified: Date()).build()
+        let viewModel = PostCardStatusViewModel(post: original, isInternetReachable: true)
+
         expect(viewModel.status).to(equal(i18n("Local changes")))
         expect(viewModel.statusColor).to(equal(.warning))
+    }
 
-        // Local created previous to remote
-        let localPostPrevious = original.with(dateModified: (Date() - 5)).build()
-        viewModel = PostCardStatusViewModel(post: localPostPrevious, isInternetReachable: true)
+    /// A local post created based on an remote post, but differing by -5ms should show 'Version Conflict
+    func testVersionConflictStatusWithPreviousDateMessageShouldShow() {
+        let original = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: Date()).build()
+        let local = original.createRevision() as! Post
+        local.setPrimitiveValue((Date() - 5), forKey: "dateModified")
+        local.tags = "test"
+
+        let viewModel = PostCardStatusViewModel(post: local, isInternetReachable: true)
+
         expect(viewModel.status).to(equal(i18n("Version Conflict")))
         expect(viewModel.statusColor).to(equal(.error))
+    }
 
-        // Local created after remote
-        let localPostAfter = original.with(dateModified: (Date() + 5)).build()
-        viewModel = PostCardStatusViewModel(post: localPostAfter, isInternetReachable: true)
+    /// A local post created based on an remote post, but differing by +5ms should show 'Version Conflict
+    func testVersionConflictStatusWithMoreRecentDateMessageShouldShow() {
+        let original = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: Date()).build()
+        let local = original.createRevision() as! Post
+        local.setPrimitiveValue((Date() + 5), forKey: "dateModified")
+        local.tags = "test"
+
+        let viewModel = PostCardStatusViewModel(post: local, isInternetReachable: true)
+
         expect(viewModel.status).to(equal(i18n("Version Conflict")))
         expect(viewModel.statusColor).to(equal(.error))
     }

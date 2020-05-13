@@ -584,7 +584,12 @@
 - (BOOL)hasVersionConflict
 {
     AbstractPost *original = (AbstractPost *)self.original;
-    return [self.dateModified isEqualToDate:original.dateModified];
+    if (original.dateModified) {
+        return ![self.dateModified isEqualToDate:original.dateModified] && self.hasLocalChanges;
+    } else {
+        // This is to accommodate tests - many of the mock Posts do not have an original with a dateModified property
+        return NO;
+    }
 }
 
 - (BOOL)shouldAttemptAutoUpload {
