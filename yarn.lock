@@ -321,10 +321,10 @@ cross-spawn@^6.0.0:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-danger@^9.2.10:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/danger/-/danger-9.4.0.tgz#99c3a355d96d7d2da0c4541e238f9fa2d2784a84"
-  integrity sha512-VTuq6ZN2eZYXSTAlze8AZnEvnzghBM6fzQh+2JM04ZivN315wAQbHGoyhOOzMizpUI4FaRKlZFVMZnGQlrGaLA==
+danger@^10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/danger/-/danger-10.2.0.tgz#e3500c2003aa85dca029ba695cd04a85afcc34ff"
+  integrity sha512-3fVMm3l5Nu5hVh8ddHYmB5iMQcDgECGXXeU2cql1y9yuLq7SYHGt6hbXkEQyEg6z1UGhmRKoCR+iHc2Emnvusg==
   dependencies:
     "@babel/polyfill" "^7.2.5"
     "@octokit/rest" "^16.43.1"
@@ -332,6 +332,7 @@ danger@^9.2.10:
     chalk "^2.3.0"
     commander "^2.18.0"
     debug "^4.1.1"
+    fast-json-patch "^3.0.0-1"
     get-stdin "^6.0.0"
     gitlab "^10.0.1"
     http-proxy-agent "^2.1.0"
@@ -360,7 +361,6 @@ danger@^9.2.10:
     prettyjson "^1.2.1"
     readline-sync "^1.4.9"
     require-from-string "^2.0.2"
-    rfc6902 "^3.0.1"
     supports-hyperlinks "^1.0.1"
 
 debug@3.1.0:
@@ -525,6 +525,11 @@ extglob@^2.0.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+fast-json-patch@^3.0.0-1:
+  version "3.0.0-1"
+  resolved "https://registry.yarnpkg.com/fast-json-patch/-/fast-json-patch-3.0.0-1.tgz#4c68f2e7acfbab6d29d1719c44be51899c93dabb"
+  integrity sha512-6pdFb07cknxvPzCeLsFHStEy+MysPJPgZQ9LbQ/2O67unQF93SNqfdSqnPPl71YMHX+AD8gbl7iuoGFzHEdDuw==
 
 fill-range@^4.0.0:
   version "4.0.0"
@@ -1283,11 +1288,6 @@ retry@0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
   integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
-
-rfc6902@^3.0.1:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/rfc6902/-/rfc6902-3.0.4.tgz#82965f13536fd20cb7799ce0376e9ce7cd3ebfe6"
-  integrity sha512-OnzreaZXrwT5w2ikKXWr5QcuI7NZpL+J3hIkAwozjOnKVUL7fPsB8Vcmu8YBiiou1/r3V0Jc0T1uQDyfAPvLzA==
 
 safe-buffer@^5.0.1:
   version "5.2.1"
