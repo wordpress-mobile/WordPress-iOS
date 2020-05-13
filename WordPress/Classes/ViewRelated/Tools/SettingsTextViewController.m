@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
-@property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
+@property (nonatomic, strong) MessageAnimator    *messageAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
@@ -116,7 +116,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupNoticeAnimatorIfNeeded];
+    [self setupMessageAnimatorIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -138,7 +138,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self.noticeAnimator layout];
+    [self.messageAnimator layout];
 }
 
 
@@ -155,14 +155,14 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [self dismissViewController];
 }
 
-- (void)setupNoticeAnimatorIfNeeded
+- (void)setupMessageAnimatorIfNeeded
 {
     if (self.notice == nil) {
         return;
     }
     
-    self.noticeAnimator = [[NoticeAnimator alloc] initWithTarget:self.view];
-    [self.noticeAnimator animateMessage:self.notice];
+    self.messageAnimator = [[MessageAnimator alloc] initWithTarget:self.view];
+    [self.messageAnimator animateMessage:self.notice];
 }
 
 

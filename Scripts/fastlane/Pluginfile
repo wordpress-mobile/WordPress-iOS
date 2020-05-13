@@ -8,5 +8,5 @@ end
 
 gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '53662ac3a403754b322c71dcd29064edd6bd3162'
 gem 'fastlane-plugin-sentry'
-gem 'fastlane-plugin-appcenter', '1.7.1'
+gem 'fastlane-plugin-appcenter', '1.8.0'
 gem 'fastlane-plugin-test_center'

@@ -11,7 +11,7 @@ protocol DomainSuggestionsTableViewControllerDelegate {
 /// This is intended to be an abstract base class that provides domain
 /// suggestions for the keyword that user searches.
 /// Subclasses should override the open variables to make customizations.
-class DomainSuggestionsTableViewController: NUXTableViewController {
+class DomainSuggestionsTableViewController: UITableViewController {
 
     // MARK: - Properties
 

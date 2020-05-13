@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e6u-CC-aMV">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e6u-CC-aMV">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +13,11 @@
             <objects>
                 <viewController storyboardIdentifier="usernames" id="CFB-8a-SBe" customClass="SignupUsernameViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mFL-Rq-P6f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tCm-cu-ulI">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="-20" width="375" height="667"/>
                                 <connections>
                                     <segue destination="QJL-0i-O1l" kind="embed" id="9tJ-oY-a4R"/>
                                 </connections>
@@ -68,34 +65,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="egq-OL-lqe" userLabel="Table Container View">
-                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                                 <connections>
                                     <segue destination="wAQ-AF-rOn" kind="embed" identifier="showEpilogueTable" id="PlO-Bm-BvC"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="240-cE-xSD" userLabel="Button Container View">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="atb-5g-t4d" customClass="FancyButton" customModule="WordPressUI">
+                                <rect key="frame" x="20" y="603" width="335" height="44"/>
+                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="4ne-6n-cLh"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="dqd-0X-vaL"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="4AO-og-Qy8"/>
                                 </constraints>
-                            </containerView>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="doneButtonPressed" destination="e6u-CC-aMV" eventType="touchUpInside" id="hmp-NW-iMZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="bottom" id="6xk-4S-cWw"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="leading" secondItem="Zhy-FD-gA0" secondAttribute="leading" id="Jll-EX-f1p"/>
+                            <constraint firstItem="atb-5g-t4d" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="bottom" constant="20" id="A2e-QJ-VPZ"/>
+                            <constraint firstItem="Zhy-FD-gA0" firstAttribute="bottom" secondItem="atb-5g-t4d" secondAttribute="bottom" constant="20" id="DX5-KQ-d7O"/>
                             <constraint firstItem="egq-OL-lqe" firstAttribute="leading" secondItem="Zhy-FD-gA0" secondAttribute="leading" id="Ke8-3y-IW1"/>
                             <constraint firstItem="Zhy-FD-gA0" firstAttribute="top" secondItem="egq-OL-lqe" secondAttribute="top" id="VpG-I9-eZL"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="trailing" secondItem="Zhy-FD-gA0" secondAttribute="trailing" id="Yrw-fx-rz4"/>
                             <constraint firstItem="Zhy-FD-gA0" firstAttribute="trailing" secondItem="egq-OL-lqe" secondAttribute="trailing" id="drs-fr-MgU"/>
-                            <constraint firstItem="240-cE-xSD" firstAttribute="bottom" secondItem="YP6-Jc-5Xa" secondAttribute="bottom" id="nht-aN-2J4"/>
+                            <constraint firstItem="egq-OL-lqe" firstAttribute="trailing" secondItem="atb-5g-t4d" secondAttribute="trailing" constant="20" id="eR1-Ec-XkA"/>
+                            <constraint firstItem="atb-5g-t4d" firstAttribute="leading" secondItem="egq-OL-lqe" secondAttribute="leading" constant="20" id="n1E-2N-8ez"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
                     </view>
                     <connections>
-                        <outlet property="buttonViewContainer" destination="240-cE-xSD" id="JhA-hU-tpt"/>
-                        <segue destination="CFB-8a-SBe" kind="show" identifier="showUsernames" id="39l-r4-qyx"/>
+                        <outlet property="doneButton" destination="atb-5g-t4d" id="JdZ-x9-aXK"/>
+                        <outlet property="tableViewLeadingConstraint" destination="Ke8-3y-IW1" id="gra-zm-3j4"/>
+                        <outlet property="tableViewTrailingConstraint" destination="drs-fr-MgU" id="1WO-CG-vgL"/>
+                        <segue destination="CFB-8a-SBe" kind="show" identifier="SignupUsernameViewController" id="39l-r4-qyx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgc-gi-57Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -106,10 +119,9 @@
         <scene sceneID="GXq-Sg-B5O">
             <objects>
                 <tableViewController id="wAQ-AF-rOn" customClass="SignupEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="ACZ-Xu-JZ4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ACZ-Xu-JZ4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <connections>
                             <outlet property="dataSource" destination="wAQ-AF-rOn" id="Pe8-CE-a7F"/>
@@ -122,4 +134,7 @@
             <point key="canvasLocation" x="1009" y="351"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="beveled-blue-button-down" width="18.5" height="19.5"/>
+    </resources>
 </document>
