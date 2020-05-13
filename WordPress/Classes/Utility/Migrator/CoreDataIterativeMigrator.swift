@@ -2,7 +2,6 @@ import Foundation
 import CoreData
 
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
-/// This was derived from ALIterativeMigrator originally used in the WordPress app.
 ///
 class CoreDataIterativeMigrator: NSObject {
 

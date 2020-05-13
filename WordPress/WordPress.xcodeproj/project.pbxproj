@@ -1095,7 +1095,6 @@
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
-		931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */; };
 		931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */; };
 		931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		932225B11C7CE50300443B02 /* WordPressShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -3516,8 +3515,6 @@
 		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WordPress-Internal-Info.plist"; sourceTree = "<group>"; };
 		930F09161C7D110E00995926 /* ShareExtensionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionService.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
-		931D26FC19EDA10D00114F17 /* ALIterativeMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALIterativeMigrator.h; sourceTree = "<group>"; };
-		931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALIterativeMigrator.m; sourceTree = "<group>"; };
 		931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataMigrationTests.m; sourceTree = "<group>"; };
 		931DF4D718D09A2F00540BDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4D918D09A9B00540BDD /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -7668,15 +7665,6 @@
 			name = "Prepublishing Nudges";
 			sourceTree = "<group>";
 		};
-		931D26FB19EDA0D000114F17 /* ALIterativeMigrator */ = {
-			isa = PBXGroup;
-			children = (
-				931D26FC19EDA10D00114F17 /* ALIterativeMigrator.h */,
-				931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */,
-			);
-			name = ALIterativeMigrator;
-			sourceTree = "<group>";
-		};
 		932225A81C7CE50300443B02 /* WordPressShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -9643,7 +9631,6 @@
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				931D26FB19EDA0D000114F17 /* ALIterativeMigrator */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -12796,7 +12783,6 @@
 				E6374DC11C444D8B00F24720 /* PublicizeService.swift in Sources */,
 				7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */,
 				98797DBC222F434500128C21 /* OverviewCell.swift in Sources */,
-				931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */,
 				1749965F2271BF08007021BD /* WordPressAppDelegate.swift in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				7E4123C520F4097B00DF8486 /* FormattableContentAction.swift in Sources */,
