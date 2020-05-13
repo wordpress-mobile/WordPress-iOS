@@ -16,6 +16,7 @@ static ContextManager *_override;
 //
 @interface ContextManager ()
 
+@property (nonatomic, strong) NSPersistentStoreDescription *storeDescription;
 @property (nonatomic, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
@@ -218,15 +219,10 @@ static ContextManager *_override;
     NSURL *storeURL = self.storeURL;
 
     SentryStartupEvent *startupEvent = [SentryStartupEvent new];
-
-    // Initialize the store
-    NSPersistentStoreDescription *storeDescription = [[NSPersistentStoreDescription alloc] initWithURL:storeURL];
-    storeDescription.shouldInferMappingModelAutomatically = true;
-    storeDescription.shouldMigrateStoreAutomatically = true;
-
+    
     // Initialize the container
     NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
-    persistentContainer.persistentStoreDescriptions = @[storeDescription];
+    persistentContainer.persistentStoreDescriptions = @[self.storeDescription];
     [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
         if (error != nil) {
             DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
@@ -264,6 +260,18 @@ static ContextManager *_override;
         }
     }];
     return persistentContainer;
+}
+
+- (NSPersistentStoreDescription *)storeDescription
+{
+    if(_storeDescription) {
+        return _storeDescription;
+    }
+
+    NSPersistentStoreDescription *storeDescription = [[NSPersistentStoreDescription alloc] initWithURL:self.storeURL];
+    storeDescription.shouldInferMappingModelAutomatically = true;
+    storeDescription.shouldMigrateStoreAutomatically = true;
+    return storeDescription;
 }
 
 - (NSManagedObjectModel *)managedObjectModel
