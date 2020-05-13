@@ -342,12 +342,14 @@ static ContextManager *_override;
         DDLogWarn(@"Migration required for persistent store.");
         NSError *error = nil;
         NSArray *sortedModelNames = [self sortedModelNames];
-        BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:[self storeURL]
-                                                               ofType:NSSQLiteStoreType
-                                                              toModel:self.managedObjectModel
-                                                    orderedModelNames:sortedModelNames
-                                                                error:&error];
-        if (!migrateResult || error != nil) {
+
+        [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:[self storeURL]
+        storeType:NSSQLiteStoreType
+               to:self.managedObjectModel
+            using:sortedModelNames
+            error:&error];
+
+        if (error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
         }
     }

@@ -370,6 +370,7 @@
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */; };
 		3FD0316F24201E08005C0993 /* GravatarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0316E24201E08005C0993 /* GravatarButtonView.swift */; };
+		3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */; };
 		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
@@ -2727,6 +2728,7 @@
 		3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStore.swift; sourceTree = "<group>"; };
 		3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MeBarButton.swift"; sourceTree = "<group>"; };
 		3FD0316E24201E08005C0993 /* GravatarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarButtonView.swift; sourceTree = "<group>"; };
+		3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataIterativeMigrator.swift; sourceTree = "<group>"; };
 		3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ReaderTabNavigation.swift"; sourceTree = "<group>"; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -6024,6 +6026,14 @@
 			name = "Tabbed Reader";
 			sourceTree = "<group>";
 		};
+		3FD83CBD246C74B800381999 /* Migrator */ = {
+			isa = PBXGroup;
+			children = (
+				3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */,
+			);
+			path = Migrator;
+			sourceTree = "<group>";
+		};
 		400A2C8D2217AAA1000A8A59 /* Time-based data */ = {
 			isa = PBXGroup;
 			children = (
@@ -9039,6 +9049,7 @@
 		B5ECA6CB1DBAA0110062D7E0 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				3FD83CBD246C74B800381999 /* Migrator */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				93EF094B19ED4F1100C89770 /* ContextManager-Internals.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
@@ -12705,6 +12716,7 @@
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
+				3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */,
 				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
