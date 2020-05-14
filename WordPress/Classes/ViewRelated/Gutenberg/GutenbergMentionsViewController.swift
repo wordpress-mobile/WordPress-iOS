@@ -148,7 +148,7 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
     }
 
     public func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int {
-        return 3
+        return 7
     }
 
     public func suggestionsTableViewDidTapHeader(_ suggestionsTableView: SuggestionsTableView) {
