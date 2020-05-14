@@ -51,7 +51,9 @@ extension BlogDetailsViewController {
             return
         }
 
-        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+        if shouldShowCreateButtonAnnouncement() {
+            showCreateButtonAnnouncementAlert()
+        } else if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
             tourGuide.didShowUpgradeToV2Notice(for: blog)
@@ -151,6 +153,30 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private func shouldShowCreateButtonAnnouncement() -> Bool {
+        return AppRatingUtility.shared.didUpgradeVersion && !UserDefaults.standard.createButtonAlertWasDisplayed
+    }
+
+    private func showCreateButtonAnnouncementAlert() {
+        guard noPresentedViewControllers else {
+            return
+        }
+
+        UserDefaults.standard.createButtonAlertWasDisplayed = true
+
+        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { [weak self] (controller) in
+            controller.dismiss(animated: true)
+            if let url = URL(string: "https://wordpress.com/blog/") {
+                let webViewController = WebViewControllerFactory.controller(url: url)
+                let navController = LightNavigationController(rootViewController: webViewController)
+                self?.tabBarController?.present(navController, animated: true)
+            }
+        }
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        tabBarController?.present(alert, animated: true)
     }
 
     private func showUpgradeToV2Alert(for blog: Blog) {

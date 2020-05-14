@@ -34,11 +34,22 @@ class NoticeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    internal func configureGestureRecognizer() {
+        switch notice.style.dismissGesture {
+        case .tap:
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTapped))
+            addGestureRecognizer(tapRecognizer)
+        case .none:
+            ()
+        }
+    }
+
     /// configure the NoticeView for display
     internal func configure() {
         configureBackgroundViews()
         configureShadow()
         configureContentStackView()
+        configureGestureRecognizer()
         configureLabels()
         configureForNotice()
 
@@ -298,7 +309,7 @@ class NoticeView: UIView {
         dismissHandler?()
     }
 
-    private func cancelButtonTapped() {
+    @objc private func cancelButtonTapped() {
         notice.actionHandler?(false)
         dismissHandler?()
     }

@@ -4,9 +4,10 @@ import WordPressFlux
 @objc class CreateButtonCoordinator: NSObject {
 
     private enum Constants {
-        static let padding: CGFloat = -16
-        static let heightWidth: CGFloat = 56
-        static let popoverOffset: CGFloat = -10
+        static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
+        static let heightWidth: CGFloat = 56 // Height and width of the button
+        static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
+        static let maximumTooltipViews = 5 // Caps the number of times the user can see the announcement tooltip
     }
 
     var button: FloatingActionButton = {
@@ -27,18 +28,33 @@ import WordPressFlux
     private lazy var notice: Notice = {
         let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
                             message: "",
-                            style: ToolTipNoticeStyle()) { _ in
+                            style: ToolTipNoticeStyle()) { [weak self] _ in
+                self?.didDismissTooltip = true
+                self?.hideNotice()
         }
         return notice
     }()
 
-    private var shouldShowNotice: Bool {
+    // Once this reaches `maximumTooltipViews` we won't show the tooltip again
+    private var shownTooltipCount: Int {
         set {
-            //TODO: Set on persistent store
+            if newValue >= Constants.maximumTooltipViews {
+                didDismissTooltip = true
+            } else {
+                UserDefaults.standard.createButtonTooltipDisplayCount = newValue
+            }
         }
         get {
-            //TODO: Fetch from persistent store
-            return true
+            return UserDefaults.standard.createButtonTooltipDisplayCount
+        }
+    }
+
+    private var didDismissTooltip: Bool {
+        set {
+            UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
+        }
+        get {
+            return UserDefaults.standard.createButtonTooltipWasDisplayed
         }
     }
 
@@ -83,10 +99,12 @@ import WordPressFlux
     }
 
     @objc private func showCreateSheet() {
-        shouldShowNotice = false
+        didDismissTooltip = true
         hideNotice()
 
-        guard let viewController = viewController else { return }
+        guard let viewController = viewController else {
+            return
+        }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
@@ -141,7 +159,11 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
-        noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+        if !didDismissTooltip {
+            noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+            shownTooltipCount += 1
+        }
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {
@@ -176,5 +198,31 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return (viewController?.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+    }
+}
+
+@objc
+extension UserDefaults {
+    private enum Keys: String {
+        case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
+        case createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
+    }
+
+    var createButtonTooltipDisplayCount: Int {
+        get {
+            return integer(forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
+    }
+
+    var createButtonTooltipWasDisplayed: Bool {
+        get {
+            return bool(forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
     }
 }
