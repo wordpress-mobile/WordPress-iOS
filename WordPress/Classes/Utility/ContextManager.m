@@ -352,7 +352,6 @@ static ContextManager *_override;
             DDLogError(@"Unable to migrate store: %@", error);
 
             SentryStartupEventAddError(sentryEvent, error);
-            [sentryEvent sendWithTitle:@"Core Data model migration failed"];
         }
     }
 }
