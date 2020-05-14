@@ -181,7 +181,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     if (!self.suggestions) {
         self.heightConstraint.constant = STVRowHeight;
     } else if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight/2);
+        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight*0.4);
     } else {
         self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
