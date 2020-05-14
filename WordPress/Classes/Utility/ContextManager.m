@@ -350,6 +350,9 @@ static ContextManager *_override;
 
         if (error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
+
+            SentryStartupEvent *startupEvent = [SentryStartupEvent new];
+            SentryStartupEventAddError(startupEvent, error);
         }
     }
 }
