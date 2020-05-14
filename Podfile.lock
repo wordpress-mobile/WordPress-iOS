@@ -629,7 +629,7 @@ CHECKOUT OPTIONS:
     :commit: 1186db17990c7ffbd325f77ff7fe96401639e1d1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
-    :commit: 66b12c1eece99ad31674dca4762528573c202c3d
+    :commit: b1786bedcfa69d99083e548f53976367c5e9539f
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
