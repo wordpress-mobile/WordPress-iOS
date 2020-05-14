@@ -5477,7 +5477,6 @@
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
-				E12F55F714A1F2640060A510 /* Vendor */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
@@ -9626,13 +9625,6 @@
 				E125F1E31E8E595E00320B67 /* SharePost.swift */,
 			);
 			path = Shared;
-			sourceTree = "<group>";
-		};
-		E12F55F714A1F2640060A510 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Vendor;
 			sourceTree = "<group>";
 		};
 		E131CB5B16CAD638004B0314 /* Helpers */ = {

@@ -39,10 +39,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
-        // This is intentionally a `lazy var` to prevent `PostCoordinator.shared` (below) from
-        // triggering an initialization of `ContextManager.shared.mainContext` during the
-        // initialization of this class. This is so any track events in `mainContext`
-        // (e.g. by `NullBlogPropertySanitizer`) will be recorded properly.
 
         // It's not great that we're using singletons here.  This change is a good opportunity to
         // revisit if we can make the coordinators children to another owning object.
@@ -282,9 +278,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        let context = ContextManager.shared.mainContext
-        context.perform {
-            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        mainContext.perform { [weak self] in
+            guard let self = self else {
+                return
+            }
+            AccountService(managedObjectContext: self.mainContext).mergeDuplicatesIfNecessary()
         }
     }
 
@@ -368,8 +366,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func configureAnalytics() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         analytics = WPAppAnalytics(accountService: accountService,
                                    lastVisibleScreenBlock: { [weak self] in
@@ -604,8 +601,6 @@ extension WordPressAppDelegate {
 
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
-        let context = ContextManager.sharedInstance().mainContext
-
         let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
 
         DDLogInfo("===========================================================================")
@@ -633,7 +628,7 @@ extension WordPressAppDelegate {
         DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
         DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
 
-        AccountHelper.logBlogsAndAccounts(context: context)
+        AccountHelper.logBlogsAndAccounts(context: mainContext)
         DDLogInfo("===========================================================================")
     }
 
@@ -742,8 +737,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
@@ -761,8 +755,7 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
             ShareExtensionService.configureShareExtensionToken(authToken)
@@ -782,8 +775,7 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
             NotificationSupportService.insertContentExtensionToken(authToken)
