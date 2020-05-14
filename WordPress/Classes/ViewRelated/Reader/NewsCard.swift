@@ -46,7 +46,6 @@ final class NewsCard: UIViewController {
     private func setupUI() {
         setUpDismissButton()
         setUpReadMoreButton()
-        populateIllustration()
     }
 
     private func setUpDismissButton() {
@@ -57,8 +56,8 @@ final class NewsCard: UIViewController {
         readMore.addTarget(self, action: #selector(readMoreAction), for: .touchUpInside)
     }
 
-    private func populateIllustration() {
-        illustration.image = UIImage(named: "wp-illustration-notifications")?.imageFlippedForRightToLeftLayoutDirection()
+    private func populateIllustration(name: String) {
+        illustration.image = UIImage(named: name)?.imageFlippedForRightToLeftLayoutDirection()
     }
 
     @objc private func dismissAction() {
@@ -119,6 +118,8 @@ final class NewsCard: UIViewController {
 
         newsTitle.text = title
         newsSubtitle.text = content
+
+        populateIllustration(name: item.imageName)
 
         prepareTitleForVoiceOver(label: title)
         prepareSubtitleForVoiceOver(label: content)
