@@ -2,11 +2,15 @@ import Foundation
 
 // WPiOS-only events
 @objc enum WPAnalyticsEvent: Int {
+
+    case createSheetShown
+    case createAnnouncementModalShown
+
     // Media Editor
     case mediaEditorShown
     case mediaEditorUsed
     case editorCreatedPage
-    case createSheetShown
+
     // Tenor
     case tenorAccessed
     case tenorSearched
@@ -32,6 +36,10 @@ import Foundation
     /// A String that represents the event
     var value: String {
         switch self {
+        case .createSheetShown:
+            return "create_sheet_shown"
+        case .createAnnouncementModalShown:
+            return "create_announcement_modal_shown"
         // Media Editor
         case .mediaEditorShown:
             return "media_editor_shown"
@@ -39,8 +47,6 @@ import Foundation
             return "media_editor_used"
         case .editorCreatedPage:
             return "editor_page_created"
-        case .createSheetShown:
-            return "create_sheet_shown"
         // Tenor
         case .tenorAccessed:
             return "tenor_accessed"

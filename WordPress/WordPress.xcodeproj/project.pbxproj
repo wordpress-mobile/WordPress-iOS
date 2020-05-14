@@ -2113,6 +2113,7 @@
 		F5B8A60F23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */; };
 		F5B9151F244653C100179876 /* TabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9151E244653C100179876 /* TabbedViewController.swift */; };
 		F5B9152124465FB400179876 /* ReaderTagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */; };
+		F5B9D7F0245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9D7EF245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift */; };
 		F5C00EAE242179780047846F /* WeekdaysHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C00EAD242179780047846F /* WeekdaysHeaderViewTests.swift */; };
 		F5CFB8F524216DFC00E58B69 /* CalendarHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CFB8F424216DFC00E58B69 /* CalendarHeaderViewTests.swift */; };
 		F5D03DFF2370E28D0043F287 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
@@ -4759,6 +4760,7 @@
 		F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDeviceSelectionViewController.swift; sourceTree = "<group>"; };
 		F5B9151E244653C100179876 /* TabbedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedViewController.swift; sourceTree = "<group>"; };
 		F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsTableViewController.swift; sourceTree = "<group>"; };
+		F5B9D7EF245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+CreateButtonAnnouncement.swift"; sourceTree = "<group>"; };
 		F5C00EAD242179780047846F /* WeekdaysHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdaysHeaderViewTests.swift; sourceTree = "<group>"; };
 		F5CFB8F424216DFC00E58B69 /* CalendarHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderViewTests.swift; sourceTree = "<group>"; };
 		F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBehavior.swift; sourceTree = "<group>"; };
@@ -10270,6 +10272,7 @@
 				F551E7F423F6EA3100751212 /* FloatingActionButton.swift */,
 				F5E032DA24088F44003AF350 /* UIView+SpringAnimations.swift */,
 				F5E032D5240889EB003AF350 /* CreateButtonCoordinator.swift */,
+				F5B9D7EF245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift */,
 			);
 			path = "Floating Create Button";
 			sourceTree = "<group>";
@@ -12167,6 +12170,7 @@
 				3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */,
 				BE1071FC1BC75E7400906AFF /* WPStyleGuide+Blog.swift in Sources */,
 				B56695B01D411EEB007E342F /* KeyboardDismissHelper.swift in Sources */,
+				F5B9D7F0245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift in Sources */,
 				FF54D4641D6F3FA900A0DC4D /* GutenbergSettings.swift in Sources */,
 				D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
