@@ -213,12 +213,12 @@ static ContextManager *_override;
         return _persistentContainer;
     }
 
-    [self migrateDataModelsIfNecessary];
+    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
+
+    [self migrateDataModelsIfNecessary:startupEvent];
 
     NSURL *storeURL = self.storeURL;
 
-    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
-    
     // Initialize the container
     NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
     persistentContainer.persistentStoreDescriptions = @[self.storeDescription];
@@ -324,7 +324,7 @@ static ContextManager *_override;
     }
 }
 
-- (void)migrateDataModelsIfNecessary
+- (void)migrateDataModelsIfNecessary:(SentryStartupEvent *)sentryEvent
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:[[self storeURL] path]]) {
         DDLogInfo(@"No store exists at URL %@.  Skipping migration.", [self storeURL]);
@@ -351,8 +351,8 @@ static ContextManager *_override;
         if (error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
 
-            SentryStartupEvent *startupEvent = [SentryStartupEvent new];
-            SentryStartupEventAddError(startupEvent, error);
+            SentryStartupEventAddError(sentryEvent, error);
+            [sentryEvent sendWithTitle:@"Core Data model migration failed"];
         }
     }
 }
