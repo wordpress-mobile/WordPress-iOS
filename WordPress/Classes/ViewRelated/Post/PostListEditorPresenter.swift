@@ -8,8 +8,22 @@ struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: PostListViewController) {
 
-        // Autosaves are ignored for posts with local changes.
-        if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
+        if post.hasVersionConflict() {
+            let conflictResolutionAlert = presentConflictResolutionAlert(for: post) { keepLocal in
+                switch keepLocal {
+                case true:
+                    // discard web revision
+                    post.deleteRevision()
+                    openEditor(with: post, loadAutosaveRevision: false, in: postListViewController)
+                default:
+                    // discard local changes
+                    PostCoordinator.shared.autoSave(post)
+                    openEditor(with: post, loadAutosaveRevision: true, in: postListViewController)
+                }
+            }
+            postListViewController.present(conflictResolutionAlert, animated: true)
+        } else if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
+            // Autosaves are ignored for posts with local changes.
             let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
                 openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController)
             })
@@ -42,6 +56,50 @@ struct PostListEditorPresenter {
 
     private static func dateAndTime(for date: Date) -> String {
         return dateFormatter.string(from: date) + " @ " + timeFormatter.string(from: date)
+    }
+
+    /// An alert that is presented when a post has a version conflict, and the user needs to select discarding either the local or web version
+    private static func presentConflictResolutionAlert(for post: Post,
+                                                       didTapOption: @escaping (_ keepLocal: Bool) -> Void) -> UIAlertController {
+        let title = NSLocalizedString("Resolve sync conflict", comment: "Title for an alert giving the user to the option to discard the web or local version of a post.")
+
+        var localDateString = ""
+        var webDateString = ""
+
+        if let localDate = post.dateModified {
+            localDateString = dateAndTime(for: localDate)
+        }
+        if let webDate = post.latest().dateModified {
+            webDateString = dateAndTime(for: webDate)
+        }
+
+        let str = """
+        This post has two versions that are in conflict. Select the version you would like to discard.
+
+        Local:
+        Saved on \(localDateString)
+
+        Web:
+        Saved on \(webDateString)
+        """
+
+        let message = NSLocalizedString(str, comment: "Message asking a user to select between a local and web version of the post, with date/time strings for Web and Local.")
+
+
+        let discardLocalButtonTitle = NSLocalizedString("Discard Local", comment: "Button title displayed in alert indicating that user wants to discard the local version.")
+        let discardWebButtonTitle = NSLocalizedString("Discard Web", comment: "Button title displayed in alert indicating that user wants to discard the web version.")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: discardLocalButtonTitle, style: .default) { _ in
+            didTapOption(false)
+        })
+        alertController.addAction(UIAlertAction(title: discardWebButtonTitle, style: .default) { _ in
+            didTapOption(true)
+        })
+
+        alertController.view.accessibilityIdentifier = "version-conflict-resolution-alert"
+
+        return alertController
     }
 
     /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
