@@ -587,7 +587,6 @@
     if (original.dateModified) {
         return ![self.dateModified isEqualToDate:original.dateModified] && self.hasLocalChanges;
     } else {
-        // This is to accommodate tests - many of the mock Posts do not have an original with a dateModified property
         return NO;
     }
 }

@@ -125,7 +125,7 @@ class PostCardStatusViewModelTests: XCTestCase {
     func testVersionConflictStatusWithPreviousDateMessageShouldShow() {
         let original = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: Date()).build()
         let local = original.createRevision() as! Post
-        local.setPrimitiveValue((Date() - 5), forKey: "dateModified")
+        local.dateModified = Date() - 5
         local.tags = "test"
 
         let viewModel = PostCardStatusViewModel(post: local, isInternetReachable: true)
@@ -138,7 +138,7 @@ class PostCardStatusViewModelTests: XCTestCase {
     func testVersionConflictStatusWithMoreRecentDateMessageShouldShow() {
         let original = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: Date()).build()
         let local = original.createRevision() as! Post
-        local.setPrimitiveValue((Date() + 5), forKey: "dateModified")
+        local.dateModified = Date() + 5
         local.tags = "test"
 
         let viewModel = PostCardStatusViewModel(post: local, isInternetReachable: true)

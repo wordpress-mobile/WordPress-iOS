@@ -378,50 +378,57 @@ class PostTests: XCTestCase {
 
     func testThatVersionConflictWorksShouldNotConflict() {
         let original = newTestPost()
-        XCTAssertFalse(original.hasVersionConflict(), "Post should return false for `hasVersionConflict`")
+
+        let versionConflict = original.hasVersionConflict()
+
+        XCTAssertFalse(versionConflict, "Post should return false for `hasVersionConflict`")
     }
 
     // Local changes alone should not trigger `hasVersionConflict`
     func testThatVersionConflictWorksShouldNotConflictWithOnlyTagChange() {
         let original = newTestPost()
-        let local = original
+        original.tags = "test"
 
-        local.tags = "test"
+        let versionConflict = original.hasVersionConflict()
 
-        XCTAssertFalse(local.hasVersionConflict(), "Post should return false for `hasVersionConflict`")
+        XCTAssertFalse(versionConflict, "Post should return false for `hasVersionConflict`")
     }
 
     // dateModified changes alone should not trigger `hasVersionConflict`
     func testThatVersionConflictWorksShouldNotConflictWithOnlyDateChanges() {
         let original = newTestPost()
-        let local = original
+        original.dateModified = Date() - 5
 
-        local.setPrimitiveValue((Date() - 5), forKey: "dateModified")
+        let versionConflict = original.hasVersionConflict()
 
-        XCTAssertFalse(local.hasVersionConflict(), "Post should return false for `hasVersionConflict`")
+        XCTAssertFalse(versionConflict, "Post should return false for `hasVersionConflict`")
     }
 
 
     func testThatVersionConflictWorksWithPreviousPost() {
         let original = newTestPost()
-        original.setPrimitiveValue(Date(), forKey: "dateModified")
-        let local = original.createRevision() as! Post
+        original.dateModified = Date()
 
-        local.setPrimitiveValue((Date() - 5), forKey: "dateModified")
+        let local = original.createRevision() as! Post
+        local.dateModified = Date() - 5
         local.tags = "test"
 
-        XCTAssertTrue(local.hasVersionConflict(), "Local post with a previous date should return true for `hasVersionConflict`")
+        let versionConflict = local.hasVersionConflict()
+
+        XCTAssertTrue(versionConflict, "Local post with a previous date should return true for `hasVersionConflict`")
     }
 
     func testThatVersionConflictWorksWithLaterPost() {
         let original = newTestPost()
-        original.setPrimitiveValue(Date(), forKey: "dateModified")
-        let local = original.createRevision() as! Post
+        original.dateModified = Date()
 
-        local.setPrimitiveValue((Date() + 5), forKey: "dateModified")
+        let local = original.createRevision() as! Post
+        local.dateModified = Date() + 5
         local.tags = "test"
 
-        XCTAssertTrue(local.hasVersionConflict(), "Local post with a more recent date should return true for `hasVersionConflict`")
+        let versionConflict = local.hasVersionConflict()
+
+        XCTAssertTrue(versionConflict, "Local post with a more recent date should return true for `hasVersionConflict`")
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
