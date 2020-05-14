@@ -35,6 +35,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
+    private let mainContext = ContextManager.shared.mainContext
+
     private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
         // This is intentionally a `lazy var` to prevent `PostCoordinator.shared` (below) from
@@ -78,7 +80,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
+        AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
 
