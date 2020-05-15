@@ -1,6 +1,5 @@
 #import "ContextManager.h"
 #import "ContextManager-Internals.h"
-#import "ALIterativeMigrator.h"
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 
@@ -16,6 +15,8 @@ static ContextManager *_override;
 //
 @interface ContextManager ()
 
+@property (nonatomic, strong) NSPersistentStoreDescription *storeDescription;
+@property (nonatomic, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
@@ -203,13 +204,63 @@ static ContextManager *_override;
     }];
 }
 
-- (BOOL)didMigrationFail
-{
-    return _migrationFailed;
-}
-
 
 #pragma mark - Setup
+
+- (NSPersistentContainer *)persistentContainer
+{
+    if (_persistentContainer) {
+        return _persistentContainer;
+    }
+
+    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
+
+    [self migrateDataModelsIfNecessary:startupEvent];
+
+    NSURL *storeURL = self.storeURL;
+
+    // Initialize the container
+    NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
+    persistentContainer.persistentStoreDescriptions = @[self.storeDescription];
+    [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
+        if (error != nil) {
+            DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
+
+            SentryStartupEventAddError(startupEvent, error);
+            error = nil;
+
+            // make a backup of the old database
+            [CoreDataIterativeMigrator backupDatabaseAt:storeURL error:&error];
+            if (error != nil) {
+                SentryStartupEventAddError(startupEvent, error);
+                error = nil;
+            }
+
+            [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
+                SentryStartupEventAddError(startupEvent, error);
+                [startupEvent sendWithTitle:@"Can't initialize Core Data stack"];
+
+                @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
+                                               reason:[error localizedDescription]
+                                             userInfo:[error userInfo]];
+            }];
+
+        }
+    }];
+    return persistentContainer;
+}
+
+- (NSPersistentStoreDescription *)storeDescription
+{
+    if(_storeDescription) {
+        return _storeDescription;
+    }
+
+    NSPersistentStoreDescription *storeDescription = [[NSPersistentStoreDescription alloc] initWithURL:self.storeURL];
+    storeDescription.shouldInferMappingModelAutomatically = true;
+    storeDescription.shouldMigrateStoreAutomatically = true;
+    return storeDescription;
+}
 
 - (NSManagedObjectModel *)managedObjectModel
 {
@@ -224,74 +275,7 @@ static ContextManager *_override;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
-    if (_persistentStoreCoordinator) {
-        return _persistentStoreCoordinator;
-    }
-    
-    [self migrateDataModelsIfNecessary];
-
-    // Attempt to open the store
-    _migrationFailed = NO;
-    
-    NSURL *storeURL = self.storeURL;
-
-    // This is important for automatic version migration. Leave it here!
-    NSDictionary *options = @{
-        NSInferMappingModelAutomaticallyOption            : @(YES),
-        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
-    };
-
-    NSError *error = nil;
-    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                   initWithManagedObjectModel:[self managedObjectModel]];
-
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                   configuration:nil
-                                                             URL:storeURL
-                                                         options:options
-                                                           error:&error]) {
-        DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
-
-        SentryStartupEventAddError(startupEvent, error);
-        error = nil;
-
-        _migrationFailed = YES;
-        
-        // make a backup of the old database
-        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
-                                                toPath:[storeURL.path stringByAppendingString:@"~"]
-                                                 error:&error];
-
-        if (error != nil) {
-            SentryStartupEventAddError(startupEvent, error);
-            error = nil;
-        }
-
-        // delete the sqlite file and try again
-        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
-
-        if (error != nil) {
-            SentryStartupEventAddError(startupEvent, error);
-            error = nil;
-        }
-
-        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                       configuration:nil
-                                                                 URL:storeURL
-                                                             options:nil
-                                                               error:&error]) {
-
-            SentryStartupEventAddError(startupEvent, error);
-            [startupEvent sendWithTitle:@"Can't initialize Core Data stack"];
-
-            @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
-                                           reason:[error localizedDescription]
-                                         userInfo:[error userInfo]];
-        }
-    }
-
-    return _persistentStoreCoordinator;
+    return self.persistentContainer.persistentStoreCoordinator;
 }
 
 
@@ -329,7 +313,7 @@ static ContextManager *_override;
     }
 }
 
-- (void)migrateDataModelsIfNecessary
+- (void)migrateDataModelsIfNecessary:(SentryStartupEvent *)sentryEvent
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:[[self storeURL] path]]) {
         DDLogInfo(@"No store exists at URL %@.  Skipping migration.", [self storeURL]);
@@ -346,13 +330,17 @@ static ContextManager *_override;
         DDLogWarn(@"Migration required for persistent store.");
         NSError *error = nil;
         NSArray *sortedModelNames = [self sortedModelNames];
-        BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:[self storeURL]
-                                                               ofType:NSSQLiteStoreType
-                                                              toModel:self.managedObjectModel
-                                                    orderedModelNames:sortedModelNames
-                                                                error:&error];
-        if (!migrateResult || error != nil) {
+
+        [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:[self storeURL]
+        storeType:NSSQLiteStoreType
+               to:self.managedObjectModel
+            using:sortedModelNames
+            error:&error];
+
+        if (error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
+
+            SentryStartupEventAddError(sentryEvent, error);
         }
     }
 }

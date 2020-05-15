@@ -186,7 +186,7 @@ class PrepublishingViewController: UITableViewController {
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
-        cell.textLabel?.text = post.hasFuturePublishDate() ? Constants.scheduledLabel : Constants.publishDateLabel
+        cell.textLabel?.text = post.shouldPublishImmediately() ? Constants.publishDateLabel : Constants.scheduledLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
     }
 

@@ -16,6 +16,8 @@ extension MediaEditorOperation {
             return "rotate"
         case .filter:
             return "filter"
+        case .draw:
+            return "draw"
         case .other:
             return "other"
         }
