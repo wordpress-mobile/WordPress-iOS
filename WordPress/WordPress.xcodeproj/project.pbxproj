@@ -913,6 +913,7 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
+		763BC002246EF32700A05174 /* PostListEditorPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */; };
 		7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */; };
 		7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E21C760202BBC8D00837CF5 /* iAd.framework */; };
 		7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E21C764202BBF4400837CF5 /* SearchAdsAttribution.swift */; };
@@ -3288,6 +3289,7 @@
 		74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensionsService.swift; sourceTree = "<group>"; };
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
+		763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListEditorPresenterTests.swift; sourceTree = "<group>"; };
 		7DFD69454E24EC0A1A0BACCD /* Pods-WordPressThisWeekWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressThisWeekWidget.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget.release.xcconfig"; sourceTree = "<group>"; };
 		7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Loader.swift"; sourceTree = "<group>"; };
 		7E21C760202BBC8D00837CF5 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6337,6 +6339,7 @@
 			isa = PBXGroup;
 			children = (
 				8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */,
+				763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */,
 				F543AF5623A84E4D0022F595 /* PublishSettingsControllerTests.swift */,
 				F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */,
 				F582060323A88379005159A9 /* TimePickerViewControllerTests.swift */,
@@ -13439,6 +13442,7 @@
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */,
 				57569CF2230485680052EE14 /* PostAutoUploadInteractorTests.swift in Sources */,
+				763BC002246EF32700A05174 /* PostListEditorPresenterTests.swift in Sources */,
 				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,

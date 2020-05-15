@@ -6,28 +6,11 @@ import Foundation
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: PostListViewController) {
-
-        if post.hasVersionConflict() {
-            let conflictResolutionAlert = presentConflictResolutionAlert(for: post) { keepLocal in
-                switch keepLocal {
-                case true:
-                    // discard web revision
-                    post.deleteRevision()
-                    openEditor(with: post, loadAutosaveRevision: false, in: postListViewController)
-                default:
-                    // discard local changes
-                    PostCoordinator.shared.autoSave(post)
-                    openEditor(with: post, loadAutosaveRevision: true, in: postListViewController)
-                }
-            }
-            postListViewController.present(conflictResolutionAlert, animated: true)
+    static func handle(post: Post, in postListViewController: PostListViewController, hasVersionConflict: Bool? = false) {
+        if hasVersionConflict! {
+            handleVersionConflict(post: post, in: postListViewController)
         } else if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
-            // Autosaves are ignored for posts with local changes.
-            let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
-                openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController)
-            })
-            postListViewController.present(autosaveViewController, animated: true)
+            handleAutosaves(post: post, in: postListViewController, saveDate: saveDate, autosaveDate: autosaveDate)
         } else {
             openEditor(with: post, loadAutosaveRevision: false, in: postListViewController)
         }
@@ -57,6 +40,28 @@ struct PostListEditorPresenter {
     private static func dateAndTime(for date: Date) -> String {
         return dateFormatter.string(from: date) + " @ " + timeFormatter.string(from: date)
     }
+}
+
+
+// MARK: - Version Conflict Alert
+
+extension PostListEditorPresenter {
+
+    private static func handleVersionConflict(post: Post, in postListViewController: PostListViewController) {
+        let conflictResolutionAlert = presentConflictResolutionAlert(for: post) { keepLocal in
+            switch keepLocal {
+            case true:
+                // discard web revision
+                post.deleteRevision()
+                openEditor(with: post, loadAutosaveRevision: false, in: postListViewController)
+            default:
+                // discard local changes
+                PostCoordinator.shared.autoSave(post)
+                openEditor(with: post, loadAutosaveRevision: true, in: postListViewController)
+            }
+        }
+        postListViewController.present(conflictResolutionAlert, animated: true)
+    }
 
     /// An alert that is presented when a post has a version conflict, and the user needs to select discarding either the local or web version
     private static func presentConflictResolutionAlert(for post: Post,
@@ -85,7 +90,6 @@ struct PostListEditorPresenter {
 
         let message = NSLocalizedString(str, comment: "Message asking a user to select between a local and web version of the post, with date/time strings for Web and Local.")
 
-
         let discardLocalButtonTitle = NSLocalizedString("Discard Local", comment: "Button title displayed in alert indicating that user wants to discard the local version.")
         let discardWebButtonTitle = NSLocalizedString("Discard Web", comment: "Button title displayed in alert indicating that user wants to discard the web version.")
 
@@ -100,6 +104,20 @@ struct PostListEditorPresenter {
         alertController.view.accessibilityIdentifier = "version-conflict-resolution-alert"
 
         return alertController
+    }
+}
+
+// MARK: - Autosave Options Alert
+
+extension PostListEditorPresenter {
+
+    /// Autosaves are ignored for posts with local changes.
+    private static func handleAutosaves(post: Post, in postListViewController: PostListViewController,
+                                        saveDate: Date, autosaveDate: Date) {
+        let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
+            openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController)
+        })
+        postListViewController.present(autosaveViewController, animated: true)
     }
 
     /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
