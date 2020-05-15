@@ -11,10 +11,11 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.16'
+    #pod 'WordPressShared', '~> 1.8.16'
 
     ## for development:
-    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    #This should result in a build error from danger
+    pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
