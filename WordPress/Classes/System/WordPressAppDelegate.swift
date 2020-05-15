@@ -35,7 +35,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
-    private let mainContext = ContextManager.shared.mainContext
+    private var mainContext: NSManagedObjectContext {
+        return ContextManager.shared.mainContext
+    }
 
     private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
