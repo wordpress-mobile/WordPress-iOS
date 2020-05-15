@@ -236,14 +236,6 @@ static ContextManager *_override;
                 error = nil;
             }
 
-            // delete the sqlite file and try again
-            [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
-
-            if (error != nil) {
-                SentryStartupEventAddError(startupEvent, error);
-                error = nil;
-            }
-
             [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
                 SentryStartupEventAddError(startupEvent, error);
                 [startupEvent sendWithTitle:@"Can't initialize Core Data stack"];
