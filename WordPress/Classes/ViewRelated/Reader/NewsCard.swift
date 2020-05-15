@@ -98,7 +98,7 @@ final class NewsCard: UIViewController {
 
     private func styleReadMoreButton() {
         readMore.naturalContentHorizontalAlignment = .leading
-        let title = NSLocalizedString("Read More", comment: "Button providing More information in the News Card")
+        let title = NSLocalizedString("Learn More", comment: "Button providing More information in the News Card")
         readMore.setTitle(title, for: .normal)
     }
 
