@@ -40,7 +40,7 @@ static ContextManager *_override;
     return self;
 }
 
-+ (instancetype)sharedInstance
++ (instancetype)internalSharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -52,7 +52,7 @@ static ContextManager *_override;
 
 + (void)overrideSharedInstance:(ContextManager *)contextManager
 {
-    [ContextManager sharedInstance];
+    [ContextManager internalSharedInstance];
     _override = contextManager;
 }
 

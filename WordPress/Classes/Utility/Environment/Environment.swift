@@ -12,7 +12,7 @@ struct Environment {
     let appRatingUtility: AppRatingUtilityType
 
     /// A type to create derived context, save context, etc...
-    let contextManager: ContextManagerType
+    let contextManager: CoreDataStack
 
     /// The base url to use for WP.com api requests
     let wordPressComApiBase: String
@@ -33,7 +33,7 @@ struct Environment {
 
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
-        contextManager: ContextManagerType = ContextManager.shared,
+        contextManager: CoreDataStack = ContextManager.shared,
         wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
 
         self.appRatingUtility = appRatingUtility
@@ -48,7 +48,7 @@ extension Environment {
     @discardableResult
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        contextManager: ContextManagerType = Environment.current.contextManager,
+        contextManager: CoreDataStack = Environment.current.contextManager,
         wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
 
         current = Environment(

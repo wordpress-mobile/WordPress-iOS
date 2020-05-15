@@ -3,7 +3,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ContextManager : NSObject
+@protocol CoreDataStack
+@required
+@property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
+//@optional
+@property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
+- (NSManagedObjectContext *const)newDerivedContext;
+- (NSManagedObjectContext *const)newMainContextChildContext;
+- (void)saveContextAndWait:(NSManagedObjectContext *)context;
+- (void)saveContext:(NSManagedObjectContext *)context;
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
+- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject;
+- (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification;
+@end
+
+@interface ContextManager : NSObject <CoreDataStack>
 
 ///----------------------------------------------
 ///@name Persistent Contexts
@@ -30,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return instance of ContextManager
 */
-+ (instancetype)sharedInstance;
++ (instancetype)internalSharedInstance;
 
 
 ///--------------------------

@@ -988,7 +988,6 @@
 		7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */; };
 		7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */; };
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
-		7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */; };
 		7EA30DB521ADA20F0092F894 /* EditorMediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */; };
 		7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */; };
 		7EAA66EF22CB36FD00869038 /* TestAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */; };
@@ -3367,7 +3366,6 @@
 		7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouter.swift; sourceTree = "<group>"; };
 		7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouterTests.swift; sourceTree = "<group>"; };
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
-		7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerType.swift; sourceTree = "<group>"; };
 		7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorMediaUtility.swift; sourceTree = "<group>"; };
 		7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AztecAttachmentDelegate.swift; sourceTree = "<group>"; };
 		7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAnalyticsTracker.swift; sourceTree = "<group>"; };
@@ -7226,7 +7224,6 @@
 			isa = PBXGroup;
 			children = (
 				7E58879F20FE956100DB6F80 /* AppRatingUtilityType.swift */,
-				7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -12819,7 +12816,6 @@
 				40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */,
 				177B4C2D2123192200CF8084 /* GiphyMedia.swift in Sources */,
 				57D6C840229498C5003DDC7E /* InteractivePostView.swift in Sources */,
-				7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */,
 				D865721221869C590023A99C /* WizardStep.swift in Sources */,
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,
 				43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */,
