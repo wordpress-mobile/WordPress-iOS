@@ -3,6 +3,12 @@ public enum NoticeAnimationStyle {
     case fade
 }
 
+/// A gesture which can be used to dismiss the notice.
+/// See `NoticeView.configurGestureRecognizer()` for more details.
+public enum NoticeDismissGesture {
+    case tap
+}
+
 public protocol NoticeStyle {
 
     // Text
@@ -25,6 +31,7 @@ public protocol NoticeStyle {
     // Misc
     var isDismissable: Bool { get }
     var animationStyle: NoticeAnimationStyle { get }
+    var dismissGesture: NoticeDismissGesture? { get }
 }
 
 public struct NormalNoticeStyle: NoticeStyle {
@@ -45,6 +52,8 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let isDismissable = true
 
     public let animationStyle = NoticeAnimationStyle.moveIn
+
+    public let dismissGesture: NoticeDismissGesture? = nil
 }
 
 public struct QuickStartNoticeStyle: NoticeStyle {
@@ -65,6 +74,8 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let isDismissable = false
 
     public let animationStyle = NoticeAnimationStyle.moveIn
+
+    public let dismissGesture: NoticeDismissGesture? = nil
 }
 
 public struct ToolTipNoticeStyle: NoticeStyle {
@@ -85,4 +96,6 @@ public struct ToolTipNoticeStyle: NoticeStyle {
     public let isDismissable = false
 
     public let animationStyle = NoticeAnimationStyle.fade
+
+    public let dismissGesture: NoticeDismissGesture? = NoticeDismissGesture.tap
 }

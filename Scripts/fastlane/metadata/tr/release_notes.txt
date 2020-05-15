@@ -1,8 +1,7 @@
-Zamanlama, etiket ve görünürlük ayarları artık "Yayınla" ya da "Zamanla"ya dokunduğunuzda yayın düzenleyicide açılır. Bunlarda ince ayar yapabilir ve "Şimdi Yayınla"ya dokunarak yayını tamamlayabilirsiniz. Artık Gönderi Ayarları Ekranını aramak için editörden ayrılmanıza gerek yok.
+Web sitenizi yönetmek için WordPress uygulamasını kullanmanın daha iyi bir zamanı olamazdı - evinizin kapısında, boş bir taraf teslimatı beklerken, oturma odanızda, oda arkadaşınızdan altı metre uzakta otururken veya çocuklarınıza beş dakikalık bir mola vermek için gideceğiniz banyo. Olasılıklar sonsuzdur, özellikle v14.8, blok düzenleyiciye daha fazla özellik eklediğinden:
 
-Mobil Blok editörü büyümeye devam ediyor: -
-- Bloglar için bir Sütunlar bloğu ve yeni bir Başlangıç Şablonu bulacaksınız.
-- Başlangıç Sayfası Şablonu seçenekleri artık sayfa içeriğinizi gizlemiyor.
-- Başlangıç Sayfası Şablonlarını önizlerken cihazınızı fiziksel olarak hareket ettirdiğinizde URL ayarları kutusunun açılmasına neden olan bir hata düzeltildi.
+Yeni düğmeler bloğu ile aynı satıra birden fazla düğme ekleyebilirsiniz.
+Kapak bloğu, cihazınızdan sitenize resim çekmek için daha fazla yükleme seçeneği içerir.
+Resim dosyalarınızda altyazı varsa, görüntü bloğu sizin için otomatik olarak önceden doldurur.
 
-Bir uygulama hiçbir zaman çok hızlı, çok kullanışlı veya çok açık olamayacağından, bazı yerlerde birkaç kullanıcı arayüzü öğesini modernleştirdik. Acaba fark edecek misiniz? Muhtemelen hayır, işte bunun için önemli. Son olarak, kullanıcı tarafından barındırılan sitelerin hesap bilgilerinin yanlış yüklenmesine neden olan bir oturum açma sorunu düzeltildi.
+Etrafta dolaşırken birkaç hatayı düzelttik - Metin bloklarının kaldırıldığı boşluk, düzgün hizalanmayan alıntı blokları ve sayfa şablonlarındaki düğmeler web'de düzgün görüntülenmiyor. Ve giriş sonrası gördüğünüz ekranları verdik ve bazı lehçe kaydettik, böylece daha temiz görünüyorlar ve uygulama içinde daha tutarlı hissediyorlar.
