@@ -15,8 +15,7 @@ class GutenbergStockPhotos {
     func presentPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         let picker = StockPhotosPicker()
         stockPhotos = picker
-        // Forcing multiple selection while multipleSelection == false in JS side.
-        picker.allowMultipleSelection = true //multipleSelection
+        picker.allowMultipleSelection = multipleSelection
         picker.delegate = self
         mediaPickerCallback = callback
         picker.presentPicker(origin: origin, blog: post.blog)

@@ -74,7 +74,7 @@ PODS:
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
   - lottie-ios (3.1.6)
-  - MediaEditor (1.0.1):
+  - MediaEditor (1.1.0-beta.2):
     - TOCropViewController (~> 2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -373,9 +373,9 @@ PODS:
   - SVProgressHUD (2.2.5)
   - TOCropViewController (2.5.2)
   - UIDeviceIdentifier (1.4.0)
-  - WordPress-Aztec-iOS (1.19.0)
-  - WordPress-Editor-iOS (1.19.0):
-    - WordPress-Aztec-iOS (= 1.19.0)
+  - WordPress-Aztec-iOS (1.19.1)
+  - WordPress-Editor-iOS (1.19.1):
+    - WordPress-Aztec-iOS (= 1.19.1)
   - WordPressAuthenticator (1.16.0-beta.5):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
@@ -439,7 +439,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.0.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1186db17990c7ffbd325f77ff7fe96401639e1d1`)
   - JTAppleCalendar (~> 8.0.2)
-  - MediaEditor (~> 1.0.1)
+  - MediaEditor (~> 1.1.0-beta.2)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (~> 0.0.4)
@@ -658,7 +658,7 @@ SPEC CHECKSUMS:
   Gutenberg: aa041019bf81d30c7b9c7de0f313a2d55561cc4a
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
-  MediaEditor: 7296cd01d7a0548fb2bc909aa72153b376a56a61
+  MediaEditor: 82e5904fd7cb36cb73d30e43237161bd7595b7d5
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
@@ -700,8 +700,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
-  WordPress-Aztec-iOS: fb6ea6409a5228292568f665eb22ea0a0aa7ad7e
-  WordPress-Editor-iOS: d8010b24893bb471fa1c9ab1431e95fb3e10a902
+  WordPress-Aztec-iOS: 25a9cbe204a22dd6d540d66d90b8a889421e0b42
+  WordPress-Editor-iOS: 9f3d720086b90fd8b73f8eccd744c15abbdb7607
   WordPressAuthenticator: 464f19a6afd4342daeb70ac40b583c02fdd62072
   WordPressKit: 84045e236949248632a2c644149e5657733011bb
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
