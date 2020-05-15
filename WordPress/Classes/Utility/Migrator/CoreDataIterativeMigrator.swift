@@ -96,6 +96,10 @@ class CoreDataIterativeMigrator: NSObject {
             }
         }
     }
+
+    @objc static func backupDatabase(at storeURL: URL) throws {
+        _ = try CoreDataIterativeMigrator.makeBackup(at: storeURL)
+    }
 }
 
 

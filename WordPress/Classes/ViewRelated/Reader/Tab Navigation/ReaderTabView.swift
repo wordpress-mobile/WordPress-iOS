@@ -120,6 +120,7 @@ extension ReaderTabView {
         WPStyleGuide.applyReaderFilterButtonStyle(filterButton)
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         filterButton.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
+        filterButton.accessibilityIdentifier = Accessibility.filterButtonIdentifier
     }
 
     private func setupResetFilterButton() {
@@ -128,6 +129,8 @@ extension ReaderTabView {
         WPStyleGuide.applyReaderResetFilterButtonStyle(resetFilterButton)
         resetFilterButton.addTarget(self, action: #selector(didTapResetFilterButton), for: .touchUpInside)
         resetFilterButton.isHidden = true
+        resetFilterButton.accessibilityIdentifier = Accessibility.resetButtonIdentifier
+        resetFilterButton.accessibilityLabel = Accessibility.resetFilterButtonLabel
     }
 
     private func setupVerticalDivider(_ divider: UIView) {
@@ -150,9 +153,13 @@ extension ReaderTabView {
     }
 
     private func setupSettingsButton() {
+        settingsButton.accessibilityLabel = Appearance.settingsButtonAccessibilitylabel
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
         WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
+        settingsButton.accessibilityIdentifier = Accessibility.settingsButtonIdentifier
+        settingsButton.accessibilityLabel = Accessibility.settingsButtonLabel
+        settingsButton.accessibilityHint = Accessibility.settingsButtonHint
     }
 
     private func addContentToContainerView() {
@@ -241,6 +248,7 @@ extension ReaderTabView {
 
         static let tabBarAnimationsDuration = 0.2
 
+        static let settingsButtonAccessibilitylabel = NSLocalizedString("Manage", comment: "Label for managing sites and filters in the Reader tab")
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
         static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
@@ -255,5 +263,18 @@ extension ReaderTabView {
         static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
+    }
+}
+
+
+// MARK: - Accessibility
+extension ReaderTabView {
+    private enum Accessibility {
+        static let filterButtonIdentifier = "ReaderFilterButton"
+        static let resetButtonIdentifier = "ReaderResetButton"
+        static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
+        static let settingsButtonIdentifier = "ReaderSettingsButton"
+        static let settingsButtonLabel = NSLocalizedString("Manage", comment: "Accessibility label for the settings button in the reader.")
+        static let settingsButtonHint = NSLocalizedString("Manage followed sites and tags", comment: "Accessibility hint for the settings button in the reader.")
     }
 }

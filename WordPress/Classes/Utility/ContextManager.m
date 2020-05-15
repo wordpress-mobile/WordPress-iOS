@@ -230,18 +230,7 @@ static ContextManager *_override;
             error = nil;
 
             // make a backup of the old database
-            [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
-                                                    toPath:[storeURL.path stringByAppendingString:@"~"]
-                                                     error:&error];
-
-            if (error != nil) {
-                SentryStartupEventAddError(startupEvent, error);
-                error = nil;
-            }
-
-            // delete the sqlite file and try again
-            [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
-
+            [CoreDataIterativeMigrator backupDatabaseAt:storeURL error:&error];
             if (error != nil) {
                 SentryStartupEventAddError(startupEvent, error);
                 error = nil;

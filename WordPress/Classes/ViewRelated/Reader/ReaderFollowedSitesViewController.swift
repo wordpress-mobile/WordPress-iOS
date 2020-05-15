@@ -138,6 +138,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.returnKeyType = .done
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+            searchBar.searchTextField.accessibilityValue = nil
+            searchBar.searchTextField.accessibilityHint = placeholderText
+        }
     }
 
     func setupBackgroundTapGestureRecognizer() {
@@ -424,7 +429,10 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
             button.imageView?.tintColor = UIColor.success
             button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
+            let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
+            button.accessibilityLabel = String(format: unfollowSiteString, site.title)
             cell.accessoryView = button
+            cell.accessibilityElements = [button]
         } else {
             cell.accessoryType = .disclosureIndicator
         }

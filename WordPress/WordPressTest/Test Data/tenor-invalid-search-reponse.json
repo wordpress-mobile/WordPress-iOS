@@ -1,0 +1,40 @@
+{
+  "weburl": "https://tenor.com/search/cat-gifs",
+  "results": [
+    {
+      "hascaption": true,
+      "tags": [],
+      "url": "https://tenor.com/x5jK.gif",
+      "media": [
+        {
+          "tinygif": {
+            "url": "https://media.tenor.com/images/65e9b4eaf8ba48d8f1ad3322b13533af/tenor.gif",
+            "dims": [
+              "220",
+              "123"
+            ],
+            "preview": "https://media.tenor.com/images/812b2143cb8db39033c5d8ef5e04e6f1/raw",
+            "size": 25743
+          },
+          "gif": {
+            "url": "https://media.tenor.com/images/51a86b2115cd75b972f9bc933fec39cc/tenor.gif",
+            "dims": [
+              498,
+              278
+            ],
+            "preview": "https://media.tenor.com/images/7811876479a3082f9fb56738db117c50/raw",
+            "size": 1928890
+          }
+        }
+      ],
+      "created": 1468938984.001052,
+      "shares": 1,
+      "itemurl": "https://tenor.com/view/cat-waiting-gif-5701246",
+      "composite": null,
+      "hasaudio": false,
+      "title": "",
+      "id": 5701246
+    }
+  ],
+  "next": "1"
+}

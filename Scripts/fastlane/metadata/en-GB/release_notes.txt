@@ -1,8 +1,7 @@
-The scheduling, tag, and visibility settings now pop up right in the post editor when you tap “Publish” or “Schedule” — fine-tune them, and tap “Publish Now” to complete publication. No more leaving the editor to look for the Post Settings Screen!
+There’s never been a better time to use the WordPress app to manage your website - use it while hovering in the doorway of your house waiting for a kerbside delivery, in your living room while sitting six feet away from your roommate, or in the bathroom where you go to get a five minute break from your kids. The possibilities are endless, especially since v14.8 packs more features into the block editor:
 
-The mobile block editor continues to grow:-
-– You’ll find a Columns block and a new Starter Template for blogs.
-– The Starter Page Template options no longer obscure your page content.
-– We fixed a bug that caused a URL settings box to pop up if you physically moved your device around while previewing Starter Page Templates.
+With the new Buttons block, you can add multiple buttons in the same row.
+The Cover block includes more uploading options for getting pictures from your device to your site.
+If your image files have captions, the Image block will automatically prefill them for you.
 
-Since an app can never be too fast, too usable, or too clean, we streamlined a few UI things here and there. Will you notice? Probably not, which is the point. And finally, there was a login issue causing account info for self-hosted sites to load incorrectly that’s been taken care of.
+While we were poking around, we fixed a few bugs - whitespace around Text blocks getting removed, Quote blocks that didn’t align properly, and buttons in page templates not displaying correctly on the web. And we gave the screens you see post-login and signup some polish so they look cleaner and feel more consistent within the app.
