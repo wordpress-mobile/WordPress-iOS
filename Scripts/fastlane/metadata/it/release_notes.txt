@@ -1,8 +1,7 @@
-Le impostazioni di pianificazione, tag e visibilità ora vengono visualizzate direttamente nell'editor degli articoli quando tocchi "Pubblica" o "Pianifica" per perfezionarle e quando tocchi "Pubblica ora" per completare la pubblicazione. Non devi più lasciare l'editor per cercare la schermata delle impostazioni dell'articolo!
+Non c'è mai stato un momento migliore per utilizzare l'app di WordPress per la gestione del tuo sito web. Usala mentre gironzoli nell'atrio di casa in attesa di una consegna al piano strada, nel tuo salotto mentre sei seduto a meno di due metri dal tuo coinquilino oppure al bagno dove ti rifugi per avere cinque minuti di pausa dai bambini. Le possibilità sono infinite, soprattutto dal momento che la versione 14.8 aggiunge più funzionalità all'editor a blocchi:
 
-L'editor a blocchi per dispositivi mobili continua a migliorare:-
-- Troverai un blocco Colonne e un nuovo modello iniziale per i blog.
-- Le opzioni del modello di pagina iniziale non oscurano più il contenuto della pagina.
-- Abbiamo risolto un bug che causava la comparsa di una finestra delle impostazioni dell'URL se si spostava fisicamente il dispositivo durante la visualizzazione dell'anteprima dei modelli di pagina iniziale.
+Con il nuovo blocco Pulsanti, puoi aggiungere più pulsanti sulla stessa riga.
+Il blocco Copertina comprende più opzioni di caricamento per spostare le immagini dal dispositivo al sito.
+Se i tuoi file di immagine hanno didascalie, il blocco Immagine le precompilerà automaticamente per te.
 
-Poiché un'app non può mai essere troppo veloce, troppo utilizzabile o troppo pulita, abbiamo semplificato alcuni elementi dell'interfaccia utente qua e là. Le noti? Probabilmente no, questo è il punto. Infine, ci siamo occupati di un problema di accesso che causava il caricamento errato delle informazioni dell'account per i siti ospitati personalmente.
+Mentre stavamo curiosando, abbiamo corretto alcuni bug: spazio bianco intorno ai blocchi Testo che veniva rimosso, blocchi Citazione che non venivano allineati correttamente e pulsanti nei modelli di pagina che non venivano visualizzati correttamente sul sito. Inoltre, abbiamo ritoccato le schermate che vedi dopo aver effettuato l'accesso e la registrazione, in modo che siano più pulite e coerenti con l'app.
