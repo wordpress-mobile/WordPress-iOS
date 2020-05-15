@@ -150,7 +150,7 @@ extension NewsCard: Accessible {
     }
 
     private func prepareReadMoreButtonForVoiceOver() {
-        readMore.accessibilityLabel = NSLocalizedString("Read More", comment: "Accessibility label for the Read More button on Reader's News Card")
+        readMore.accessibilityLabel = NSLocalizedString("Learn More", comment: "Accessibility label for the Learn More button on Reader's News Card")
         dismiss.accessibilityTraits = UIAccessibilityTraits.button
         dismiss.accessibilityHint = NSLocalizedString("Provides more information.", comment: "Accessibility hint for the Read More button on Reader's News Card")
     }
