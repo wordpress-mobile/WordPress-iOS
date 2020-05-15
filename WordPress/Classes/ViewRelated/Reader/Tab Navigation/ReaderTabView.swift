@@ -159,6 +159,7 @@ extension ReaderTabView {
         WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
         settingsButton.accessibilityIdentifier = Accessibility.settingsButtonIdentifier
         settingsButton.accessibilityLabel = Accessibility.settingsButtonLabel
+        settingsButton.accessibilityHint = Accessibility.settingsButtonHint
     }
 
     private func addContentToContainerView() {
@@ -273,6 +274,7 @@ extension ReaderTabView {
         static let resetButtonIdentifier = "ReaderResetButton"
         static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
         static let settingsButtonIdentifier = "ReaderSettingsButton"
-        static let settingsButtonLabel = NSLocalizedString("Settings", comment: "Accessibility label for the settings button in the reader.")
+        static let settingsButtonLabel = NSLocalizedString("Manage", comment: "Accessibility label for the settings button in the reader.")
+        static let settingsButtonHint = NSLocalizedString("Manage followed sites and tags", comment: "Accessibility hint for the settings button in the reader.")
     }
 }
