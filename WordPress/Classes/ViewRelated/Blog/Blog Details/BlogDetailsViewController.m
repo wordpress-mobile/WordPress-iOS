@@ -161,7 +161,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIView<BlogDetailHeader> *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -176,6 +176,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+
+@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
 
 @end
 
@@ -260,9 +262,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.restorationIdentifier = WPBlogDetailsRestorationID;
         self.restorationClass = [self class];
@@ -273,8 +275,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = false;
+    [self.view addSubview:self.tableView];
+    [self.view pinSubviewToAllEdges:self.tableView];
 
-    self.view.accessibilityIdentifier = @"Blog Details Table";
+    self.tableView.accessibilityIdentifier = @"Blog Details Table";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
@@ -289,7 +298,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
-    self.clearsSelectionOnViewWillAppear = NO;
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     __weak __typeof(self) weakSelf = self;
@@ -305,7 +313,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
@@ -317,11 +325,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if([Feature enabled:FeatureFlagMeMove]) {
         [self addMeButtonToNavigationBar];
     }
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    }
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    
+    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
     
     if ([Feature enabled:FeatureFlagQuickActions]) {
         UIView *headerView = self.tableView.tableHeaderView;
@@ -346,7 +360,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
-        [self animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
     }
     
@@ -365,10 +378,35 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [((WPTabBarController *)self.tabBarController).createButtonCoordinator showCreateButton];
+        [self.createButtonCoordinator showCreateButton];
     }
     [self createUserActivity];
     [self startAlertTimer];
+}
+
+- (CreateButtonCoordinator *)createButtonCoordinator
+{
+    if (!_createButtonCoordinator) {
+        __weak __typeof(self) weakSelf = self;
+        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            [((WPTabBarController *)self.tabBarController) showPostTab];
+        } newPage:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            
+            WPTabBarController *controller = (WPTabBarController *)self.tabBarController;
+            Blog *blog = [controller currentOrLastBlog];
+            [controller showPageEditorForBlog:blog];
+        }];
+    }
+    
+    return _createButtonCoordinator;
+}
+
+- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
+    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -376,7 +414,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [((WPTabBarController *)self.tabBarController).createButtonCoordinator hideCreateButton];
+        [self.createButtonCoordinator hideCreateButton];
     }
 }
 
@@ -1203,7 +1241,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (section.showQuickStartMenu) {
         return [self quickStartHeaderWithTitle:section.title];
     } else {
-        return [super tableView:tableView viewForHeaderInSection:sectionNum];
+        return nil;
     }
 }
 

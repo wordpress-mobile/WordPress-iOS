@@ -680,3 +680,20 @@ extension MediaLibraryViewController: GiphyPickerDelegate {
         }
     }
 }
+
+// MARK: Tenor Picker Delegate
+
+extension MediaLibraryViewController: TenorPickerDelegate {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+        guard assets.count > 0 else {
+            return
+        }
+
+        let mediaCoordinator = MediaCoordinator.shared
+        assets.forEach { tenorMedia in
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
+            mediaCoordinator.addMedia(from: tenorMedia, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.tenorUploaded)
+        }
+    }
+}

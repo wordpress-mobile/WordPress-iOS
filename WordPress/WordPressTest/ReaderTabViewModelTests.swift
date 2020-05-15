@@ -6,9 +6,9 @@ import WordPressFlux
 class MockItemsStore: ItemsStore {
     let changeDispatcher = Dispatcher<Void>()
 
-    var items: [ReaderTabItem] = [ReaderTabItem(title: "I am an item")]
+    var items: [ReaderTabItem] = [ReaderTabItem(ReaderContent(topic: nil, contentType: .saved))]
 
-    var newItems = [ReaderTabItem(title: "I am another item"), ReaderTabItem(title: "I am yet another one")]
+    var newItems = [ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing))]
 
     var getItemsExpectation: XCTestExpectation?
 
@@ -21,10 +21,10 @@ class MockItemsStore: ItemsStore {
 
 class MockContentController: UIViewController, ReaderContentViewController {
 
-    var setTopicExpectation: XCTestExpectation?
+    var setContentExpectation: XCTestExpectation?
 
-    func setTopic(_ topic: ReaderAbstractTopic?) {
-        setTopicExpectation?.fulfill()
+    func setContent(_ content: ReaderContent) {
+        setContentExpectation?.fulfill()
     }
 }
 
@@ -71,7 +71,7 @@ class ReaderTabViewModelTests: XCTestCase {
         viewModel.refreshTabBar { items, index in
             setTabBarItemsExpectation.fulfill()
             XCTAssertEqual(index, 0)
-            XCTAssertEqual(items.map { $0.title }, ["I am another item", "I am yet another one"])
+            XCTAssertEqual(items.map { $0.title }, ["Following", "Following"])
         }
         // Then
         viewModel.fetchReaderMenu()
@@ -86,9 +86,9 @@ class ReaderTabViewModelTests: XCTestCase {
         // Given
         let showTabExpectation = expectation(description: "tab was shown")
 
-        viewModel.setContentTopic = { topic in
+        viewModel.setContent = { content in
             showTabExpectation.fulfill()
-            XCTAssertNil(topic)
+            XCTAssertNil(content.topic)
         }
         // When
         viewModel.showTab(at: 0)
@@ -110,16 +110,16 @@ class ReaderTabViewModelTests: XCTestCase {
         mainTopic.path = "myPath/read/following"
         mainTopic.title = "main topic"
 
-        store .items = [ReaderTabItem(topic: mainTopic)]
+        store .items = [ReaderTabItem(ReaderContent(topic: mainTopic))]
 
         let filterTopic = ReaderAbstractTopic(context: context)
         filterTopic.title = "I am a test filter topic"
 
         viewModel.selectedFilter = filterTopic
-        viewModel.setContentTopic = { topic in
+        viewModel.setContent = { content in
             showTabExpectation.fulfill()
-            XCTAssertNotNil(topic)
-            XCTAssertEqual("I am a test filter topic", topic!.title)
+            XCTAssertNotNil(content.topic)
+            XCTAssertEqual("I am a test filter topic", content.topic!.title)
         }
         // When
         viewModel.showTab(at: 0)
@@ -222,12 +222,12 @@ class ReaderTabViewModelTests: XCTestCase {
 
         let selectedTopic = ReaderAbstractTopic(context: context)
         selectedTopic.title = "selected topic"
-        let item = ReaderTabItem(topic: selectedTopic)
+        let item = ReaderTabItem(ReaderContent(topic: selectedTopic))
 
         let setContenttopicExpectation = expectation(description: "content topic was set")
-        viewModel.setContentTopic = {
+        viewModel.setContent = {
             setContenttopicExpectation.fulfill()
-            XCTAssertEqual($0!.title, "selected topic")
+            XCTAssertEqual($0.topic!.title, "selected topic")
         }
         // When
         viewModel.resetFilter(selectedItem: item)
@@ -246,10 +246,11 @@ class ReaderTabViewModelTests: XCTestCase {
         let context = MockContext.getContext()!
         let topic = ReaderAbstractTopic(context: context)
         topic.title = "content topic"
-        store.items = [ReaderTabItem(topic: topic)]
+        let content = ReaderContent(topic: topic)
+        store.items = [ReaderTabItem(content)]
         // When
         let controller = viewModel.makeChildContentViewController(at: 0)
-        viewModel.setContentTopic?(topic)
+        viewModel.setContent?(content)
         // Then
         XCTAssert(controller is MockContentController)
         waitForExpectations(timeout: 4) { error in
@@ -264,10 +265,10 @@ class ReaderTabViewModelTests: XCTestCase {
 // MARK: - Helpers
 extension ReaderTabViewModelTests {
 
-    private func readerContentControllerFactory(_ topic: ReaderAbstractTopic?) -> ReaderContentViewController {
+    private func readerContentControllerFactory(_ content: ReaderContent) -> ReaderContentViewController {
         makeContentControllerExpectation?.fulfill()
         let controller = MockContentController()
-        controller.setTopicExpectation = expectation(description: "Topic was set")
+        controller.setContentExpectation = expectation(description: "Topic was set")
         return controller
     }
 
@@ -282,12 +283,12 @@ extension ReaderTabViewModelTests {
         let topicTwo = ReaderAbstractTopic(context: context)
         topicTwo.title = "second topic"
 
-        store.items = [ReaderTabItem(topic: topicOne), ReaderTabItem(topic: topicTwo)]
+        store.items = [ReaderTabItem(ReaderContent(topic: topicOne)), ReaderTabItem(ReaderContent(topic: topicTwo))]
 
-        viewModel.setContentTopic = { topic in
+        viewModel.setContent = { content in
             showTabExpectation.fulfill()
-            XCTAssertNotNil(topic)
-            XCTAssertEqual("first topic", topic!.title)
+            XCTAssertNotNil(content.topic)
+            XCTAssertEqual("first topic", content.topic!.title)
         }
         viewModel.didSelectIndex = { index in
             selectIndexExpectation.fulfill()
