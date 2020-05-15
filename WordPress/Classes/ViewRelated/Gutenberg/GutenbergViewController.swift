@@ -705,9 +705,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     var isPublishButtonEnabled: Bool {
-        // TODO: return postEditorStateContext.isPublishButtonEnabled when
-        // we have the required bridge communication that informs us every change
-        return true
+         return postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
