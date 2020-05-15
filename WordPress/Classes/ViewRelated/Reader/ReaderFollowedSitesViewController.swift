@@ -432,6 +432,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
             button.accessibilityLabel = String(format: unfollowSiteString, site.title)
             cell.accessoryView = button
+            cell.accessibilityElements = [button]
         } else {
             cell.accessoryType = .disclosureIndicator
         }
