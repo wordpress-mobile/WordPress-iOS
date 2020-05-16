@@ -1,8 +1,7 @@
-Inställningarna för schemaläggning, etiketter och synlighet visas nu direkt i inläggsredigeraren när du trycker på ”Publicera” eller ”Schemalägg” – finjustera dem och tryck på ”Publicera nu” för att fullfölja publiceringen. Nu behöver du inte längre gå ut ur redigeraren för att komma till skärmen för inläggsinställningar!
+Du har aldrig tidigare varit ett bättre läge att hantera din webbplats med hjälp av WordPress-appen – använd  medan du väntar i farstun på att en leverans ska komma, i vardagsrummet medan du sitter på föreskrivna två meters avstånd från din respektive, eller på toan när du lyckats ta en paus från barnen i några minuter. Möjligheterna är obegränsade, i synnerhet med tanke på alla nya funktioner som finns i blockredigeraren sedan version 14.8:
 
-Den mobila blockredigeraren fortsätter att växa:
-– Nu finns det ett kolumnblock och startmall för bloggar.
-– Inställningarna för startsidesmallarna skymmer inte längre sidans innehåll.
-– Vi har rättat ett fel som gjorde att rutan för URL-inställningar dök upp om flyttade runt din enhet i rummet samtidigt som du förhandsvisade startsidesmallar.
+Det nya knappblocket låter dig lägga till flera knappar i samma rad.
+Cover-blocket innehåller fler uppladdningsfunktioner för att kopiera bilder från din enhet till webbplatsen.
+Om dina bildfiler innehåller bildtexter kommer bildbeskrivningen att automatiskt förifyllas med dessa.
 
-Eftersom en app aldrig kan bli för snabb, för användbar eller ha för rent utseende har vi förbättrat användargränssnittet här och där. Du kommer antagligen inte ens att märka skillnaden, och det är just det som är poängen. Slutligen har vi löst ett inloggningsproblem där det kunde hända att kontouppgifterna för webbhotellsbaserade webbplatser laddades in på fel sätt.
+Medan vi ändå höll på och arbetade med appen fixade vi några fel också – tomrum runt textblock som kunde försvinna, citatblock där textjusteringen inte fungerade helt, och knappar i sidmallar som inte visades på rätt sätt på webben. Dessutom har vi sett över layouten för inloggningsbekräftelse och registrering så att de fått ett renare utseende som passar bättre överens med resten av appen.

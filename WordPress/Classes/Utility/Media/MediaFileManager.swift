@@ -249,14 +249,6 @@ class MediaFileManager: NSObject {
                         onCompletion()
                     }
                 }
-
-                // Update media objects local urls that were deleted to be updated to nil
-                let editedObjectsRequest = NSBatchUpdateRequest(entityName: Media.classNameWithoutNamespaces())
-                editedObjectsRequest.predicate = NSCompoundPredicate(notPredicateWithSubpredicate: predicate)
-                editedObjectsRequest.propertiesToUpdate = [localURLProperty: NSNull(), localThumbnailURLProperty: NSNull()]
-                editedObjectsRequest.resultType = .updatedObjectsCountResultType
-                try context.execute(editedObjectsRequest)
-                try context.save()
             } catch {
                 DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
                 if let onError = onError {
@@ -265,7 +257,6 @@ class MediaFileManager: NSObject {
                     }
                 }
             }
-
         }
     }
 
