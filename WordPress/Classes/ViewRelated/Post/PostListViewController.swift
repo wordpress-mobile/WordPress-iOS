@@ -528,7 +528,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        PostListEditorPresenter.handle(post: post, in: self, hasVersionConflict: post.hasVersionConflict())
+        post.hasVersionConflict() ? PostListConflictResolver.handle(post: post, in: self) : PostListEditorPresenter.handle(post: post, in: self)
     }
 
     func presentAlertForPostBeingUploaded() {

@@ -913,7 +913,10 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
-		763BC002246EF32700A05174 /* PostListEditorPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */; };
+		763BC002246EF32700A05174 /* PostListConflictResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BC001246EF32700A05174 /* PostListConflictResolverTests.swift */; };
+		76DF2C93247072400010C208 /* PostListConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF2C92247072400010C208 /* PostListConflictResolver.swift */; };
+		76DF2C95247072E60010C208 /* PostListHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF2C94247072E50010C208 /* PostListHelper.swift */; };
+		76DF2C972470A5470010C208 /* PostListHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF2C962470A5470010C208 /* PostListHelperTests.swift */; };
 		7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */; };
 		7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E21C760202BBC8D00837CF5 /* iAd.framework */; };
 		7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E21C764202BBF4400837CF5 /* SearchAdsAttribution.swift */; };
@@ -3289,7 +3292,10 @@
 		74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensionsService.swift; sourceTree = "<group>"; };
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
-		763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListEditorPresenterTests.swift; sourceTree = "<group>"; };
+		763BC001246EF32700A05174 /* PostListConflictResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListConflictResolverTests.swift; sourceTree = "<group>"; };
+		76DF2C92247072400010C208 /* PostListConflictResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListConflictResolver.swift; sourceTree = "<group>"; };
+		76DF2C94247072E50010C208 /* PostListHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListHelper.swift; sourceTree = "<group>"; };
+		76DF2C962470A5470010C208 /* PostListHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListHelperTests.swift; sourceTree = "<group>"; };
 		7DFD69454E24EC0A1A0BACCD /* Pods-WordPressThisWeekWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressThisWeekWidget.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget.release.xcconfig"; sourceTree = "<group>"; };
 		7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Loader.swift"; sourceTree = "<group>"; };
 		7E21C760202BBC8D00837CF5 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6339,7 +6345,8 @@
 			isa = PBXGroup;
 			children = (
 				8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */,
-				763BC001246EF32700A05174 /* PostListEditorPresenterTests.swift */,
+				763BC001246EF32700A05174 /* PostListConflictResolverTests.swift */,
+				76DF2C962470A5470010C208 /* PostListHelperTests.swift */,
 				F543AF5623A84E4D0022F595 /* PublishSettingsControllerTests.swift */,
 				F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */,
 				F582060323A88379005159A9 /* TimePickerViewControllerTests.swift */,
@@ -8440,6 +8447,8 @@
 				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
 				93414DE41E2D25AE003143A3 /* PostEditorState.swift */,
 				32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */,
+				76DF2C92247072400010C208 /* PostListConflictResolver.swift */,
+				76DF2C94247072E50010C208 /* PostListHelper.swift */,
 				430693731DD25F31009398A2 /* PostPost.storyboard */,
 				43D54D121DCAA070007F575F /* PostPostViewController.swift */,
 				5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */,
@@ -12380,6 +12389,7 @@
 				9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */,
 				7E7947AB210BAC5E005BB851 /* NotificationCommentRange.swift in Sources */,
 				D816C1E920E0880400C4D82F /* NotificationAction.swift in Sources */,
+				76DF2C93247072400010C208 /* PostListConflictResolver.swift in Sources */,
 				E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */,
 				FF355D981FB492DD00244E6D /* ExportableAsset.swift in Sources */,
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
@@ -12630,6 +12640,7 @@
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
 				7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */,
 				F574416E242569CA00E150A8 /* Route+Page.swift in Sources */,
+				76DF2C95247072E60010C208 /* PostListHelper.swift in Sources */,
 				177076211EA206C000705A4A /* PlayIconView.swift in Sources */,
 				57BAD50C225CCE1A006139EC /* WPTabBarController+Swift.swift in Sources */,
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
@@ -13373,6 +13384,7 @@
 				FF1B11E7238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift in Sources */,
 				8BC12F72231FEBA1004DDA72 /* PostCoordinatorTests.swift in Sources */,
 				D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */,
+				76DF2C972470A5470010C208 /* PostListHelperTests.swift in Sources */,
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
 				40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */,
@@ -13442,7 +13454,7 @@
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */,
 				57569CF2230485680052EE14 /* PostAutoUploadInteractorTests.swift in Sources */,
-				763BC002246EF32700A05174 /* PostListEditorPresenterTests.swift in Sources */,
+				763BC002246EF32700A05174 /* PostListConflictResolverTests.swift in Sources */,
 				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,
