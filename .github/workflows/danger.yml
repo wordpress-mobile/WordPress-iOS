@@ -42,12 +42,12 @@ jobs:
 
       - name: Validate Labels
         run: |
-          yarn run danger ci \
+          DEBUG="*" yarn run danger ci \
             --dangerfile Automattic/peril-settings/org/pr/label.ts \
             --id pr_labels
 
       - name: Consistency Checks
         run: |
-          yarn run danger ci \
+          DEBUG="*" yarn run danger ci \
             --dangerfile Automattic/peril-settings/org/pr/ios-macos.ts \
             --id consistency_checks
