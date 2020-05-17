@@ -26,18 +26,17 @@ struct PostListConflictResolver {
     }
 
     /// An alert that is presented when a post has a version conflict, and the user needs to select discarding either the local or web version
-    private static func presentConflictResolutionAlert(for post: Post,
+    static func presentConflictResolutionAlert(for post: Post,
                                                        didTapOption: @escaping (_ keepLocal: Bool) -> Void) -> UIAlertController {
         let title = NSLocalizedString("Resolve sync conflict", comment: "Title for an alert giving the user to the option to discard the web or local version of a post.")
 
         var localDateString = ""
         var webDateString = ""
 
-        #warning("check these dates are correct")
         if let localDate = post.dateModified {
             localDateString = PostListHelper.dateAndTime(for: localDate)
         }
-        if let webDate = post.revision?.dateModified {
+        if let webDate = post.original?.dateModified {
             webDateString = PostListHelper.dateAndTime(for: webDate)
         }
 
