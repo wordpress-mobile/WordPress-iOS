@@ -64,7 +64,9 @@ import AutomatticTracks
     ///   - size: The preferred size of the image to load.
     ///
     func loadImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
-        if url.isGif {
+        if url.isFileURL {
+            downloadImage(from: url)
+        } else if url.isGif {
             loadGif(with: url, from: host, preferredSize: size)
         } else {
             imageView.clean()
