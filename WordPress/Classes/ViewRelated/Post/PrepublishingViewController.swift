@@ -147,9 +147,7 @@ class PrepublishingViewController: UITableViewController {
         let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
-            if !tags.isEmpty {
-                WPAnalytics.track(.editorPostTagsAdded, properties: Constants.analyticsDefaultProperty)
-            }
+            WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
             self?.post.tags = tags
             self?.reloadData()
@@ -197,7 +195,7 @@ class PrepublishingViewController: UITableViewController {
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
-                WPAnalytics.track(.editorPostScheduled, properties: Constants.analyticsDefaultProperty)
+                WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
                 self?.publishSettingsViewModel.setDate(date)
                 self?.reloadData()
                 self?.updatePublishButtonLabel()
