@@ -358,6 +358,7 @@
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
 		3F43603323F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */; };
+		3F4C6E1F246F4DDE00F8022C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4C6E1E246F4DDE00F8022C /* CoreDataManager.swift */; };
 		3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */; };
 		3F50945D2455280300C4470B /* MockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945C2455280300C4470B /* MockContext.swift */; };
 		3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */; };
@@ -1592,10 +1593,10 @@
 		C81CCD83243BF7A600A83E27 /* TenorDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */; };
 		C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */; };
 		C81CCD86243C00E000A83E27 /* TenorPageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */; };
+		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		C8567492243F3751001A995E /* tenor-search-response.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567491243F3751001A995E /* tenor-search-response.json */; };
 		C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */; };
 		C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567495243F3D37001A995E /* TenorResultsPageTests.swift */; };
-		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		C8567498243F41CA001A995E /* MockTenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567497243F41CA001A995E /* MockTenorService.swift */; };
 		C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567499243F4292001A995E /* TenorMockDataHelper.swift */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
@@ -2741,6 +2742,7 @@
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603023F31E09001DEE70 /* MeScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+BlogDetailsFactory.swift"; sourceTree = "<group>"; };
+		3F4C6E1E246F4DDE00F8022C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStoreTests.swift; sourceTree = "<group>"; };
 		3F50945C2455280300C4470B /* MockContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContext.swift; sourceTree = "<group>"; };
 		3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModelTests.swift; sourceTree = "<group>"; };
@@ -4088,10 +4090,10 @@
 		C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorDataLoader.swift; sourceTree = "<group>"; };
 		C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsTenorConfiguration.swift; sourceTree = "<group>"; };
 		C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorPageableTests.swift; sourceTree = "<group>"; };
+		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
 		C8567491243F3751001A995E /* tenor-search-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-search-response.json"; sourceTree = "<group>"; };
 		C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-invalid-search-reponse.json"; sourceTree = "<group>"; };
 		C8567495243F3D37001A995E /* TenorResultsPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorResultsPageTests.swift; sourceTree = "<group>"; };
-		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
 		C8567497243F41CA001A995E /* MockTenorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTenorService.swift; sourceTree = "<group>"; };
 		C8567499243F4292001A995E /* TenorMockDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorMockDataHelper.swift; sourceTree = "<group>"; };
 		C856749B243F462F001A995E /* TenorDataSouceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorDataSouceTests.swift; sourceTree = "<group>"; };
@@ -5521,7 +5523,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -9095,6 +9097,7 @@
 				C545E0A11811B9880020844C /* ContextManager.m */,
 				E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */,
 				B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */,
+				3F4C6E1E246F4DDE00F8022C /* CoreDataManager.swift */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -10821,7 +10824,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11947,6 +11950,7 @@
 				82FC61251FA8ADAD00A1757E /* ActivityListViewController.swift in Sources */,
 				F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */,
 				E66E2A651FE4311300788F22 /* SettingsTitleSubtitleController.swift in Sources */,
+				3F4C6E1F246F4DDE00F8022C /* CoreDataManager.swift in Sources */,
 				E1222B671F878E4700D23173 /* WebViewControllerFactory.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
 				9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */,
