@@ -15,8 +15,7 @@ class GutenbergStockPhotos {
     func presentPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
         let picker = StockPhotosPicker()
         stockPhotos = picker
-        // Forcing multiple selection while multipleSelection == false in JS side.
-        picker.allowMultipleSelection = true //multipleSelection
+        picker.allowMultipleSelection = multipleSelection
         picker.delegate = self
         mediaPickerCallback = callback
         picker.presentPicker(origin: origin, blog: post.blog)
@@ -61,7 +60,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
         }
 
         let mediaInfo = assets.compactMap({ (asset) -> MediaInfo? in
-            guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .giphy) else {
+            guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .stockPhotos) else {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
@@ -75,7 +74,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
     /// - Parameter assets: Stock Media objects to append.
     func appendOnNewBlocks(assets: ArraySlice<StockPhotosMedia>) {
         assets.forEach {
-            if let media = self.mediaInserter.insert(exportableAsset: $0, source: .giphy) {
+            if let media = self.mediaInserter.insert(exportableAsset: $0, source: .stockPhotos) {
                 self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
             }
         }

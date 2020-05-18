@@ -15,7 +15,7 @@ class FilterSheetViewController: UIViewController {
     }
 
     override func loadView() {
-        view = FilterSheetView(filters: filters, changedFilter: changedFilter)
+        view = FilterSheetView(filters: filters, presentationController: self, changedFilter: changedFilter)
     }
 }
 

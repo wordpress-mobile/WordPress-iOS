@@ -460,7 +460,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                     return
                                 }
 
-                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback)
+                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
         })
     }
 
@@ -695,9 +695,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     var isPublishButtonEnabled: Bool {
-        // TODO: return postEditorStateContext.isPublishButtonEnabled when
-        // we have the required bridge communication that informs us every change
-        return true
+         return postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
