@@ -4,7 +4,9 @@ class CoreDataManager: CoreDataStack {
 
     static let shared = CoreDataManager()
 
-    private init() {}
+    private init() {
+        observe()
+    }
 
     private lazy var writerContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -219,6 +221,24 @@ extension CoreDataManager {
                                                            using: sortedKeys)
         } catch {
             DDLogError("☠️ [CoreDataManager] Unable to migrate store with error: \(error)")
+        }
+    }
+}
+
+
+// MARK: - Notifications
+extension CoreDataManager {
+
+    private func observe() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.NSManagedObjectContextDidSave,
+                                               object: self.mainContext,
+                                               queue: nil) { [weak self] notification in
+            guard let self = self else {
+                return
+            }
+            self.writerContext.perform {
+                self.performSave(context: self.writerContext)
+            }
         }
     }
 }
