@@ -1,6 +1,10 @@
 14.9
 -----
  
+14.8.1
+-----
+* Fix adding and removing of featured images to posts.
+
 14.8
 -----
 * Block editor: Prefill caption for image blocks when available on the Media library
