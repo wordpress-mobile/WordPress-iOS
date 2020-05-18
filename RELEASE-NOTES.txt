@@ -19,6 +19,10 @@
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
 * [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
  
+14.8.1
+-----
+* Fix adding and removing of featured images to posts.
+
 14.8
 -----
 * Block editor: Prefill caption for image blocks when available on the Media library
