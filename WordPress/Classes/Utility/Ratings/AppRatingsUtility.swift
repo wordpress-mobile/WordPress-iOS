@@ -23,6 +23,9 @@ class AppRatingUtility: NSObject {
     /// up to 2 times a year (183 = round(365/2)).
     @objc var numberOfDaysToWaitBetweenPrompts: Int = 183
 
+    /// A value to indicate whether this launch was an upgrade from a previous version
+    var didUpgradeVersion: Bool = false
+
     private let defaults: UserDefaults
     private var sections = [String: Section]()
     private var promptingDisabledRemote = false
@@ -59,6 +62,7 @@ class AppRatingUtility: NSObject {
         if trackingVersion == version {
             incrementUseCount()
         } else {
+            didUpgradeVersion = true
             let shouldSkipRating = shouldSkipRatingForCurrentVersion()
             resetValuesForNewVersion()
             resetReviewPromptDisabledStatus()

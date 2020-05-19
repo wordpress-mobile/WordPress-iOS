@@ -1,8 +1,7 @@
-De planning-, tag- en zichtbaarheidsinstellingen worden nu in de berichteditor weergegeven wanneer je op 'Publiceren' of 'Plannen' tikt. Je kunt ze aanpassen en op 'Nu publiceren' tikken om de publicatie af te ronden. Je hoeft de editor nooit meer te verlaten om het scherm Berichtinstellingen te openen!
+Er is nooit een beter moment geweest om de WordPress-app te gebruiken om je website te beheren. Gebruik deze terwijl je bij de voordeur wacht tot je bestelling aan de stoep wordt geleverd, in je huiskamer terwijl je op anderhalve meter afstand van je huisgenoot blijft of in de badkamer waar je vijf minuten pauze van je kinderen neemt. De mogelijkheden zijn eindeloos, vooral omdat v14.8 nu nog meer functies bevat voor de blokeditor:
 
-De mobiele blokeditor blijft zich uitbreiden:-
-– Je zult een kolommenblok en een nieuwe startsjabloon voor blogs ontdekken.
-– De opties voor de startpaginasjabloon bedekken niet meer de content op je site.
-– We hebben een bug opgelost die zorgde dat URL-instellingen werden weergegeven als je je apparaat fysiek bewoog terwijl je de startpaginasjablonen bekeek.
+Met het nieuwe Knoppenblok kun je meerdere knoppen aan dezelfde rij toevoegen.
+Het Omslagblok bevat meer uploadopties om afbeeldingen vanaf je apparaat op je site te zetten.
+Als je afbeeldingsbestanden ondertitels bevatten, vult het Afbeeldingenblok ze automatisch voor je in.
 
-Aangezien een app nooit te snel, nuttig of geordend kan zijn, hebben we een aantal UI-dingen verbeterd. Zul jij ze opmerken? Waarschijnlijk niet, maar dat is ook de bedoeling. Tot slot was er een inlogprobleem dat zorgde dat gegevens van zelf-gehoste sites onjuist werden geladen, en ook dat probleem is opgelost.
+Terwijl we het een en ander aan het bekijken waren, hebben we een paar bugs verwijderd; lege ruimten rondom Tekstblokken werden verwijderd, Citaatblokken waren niet goed uitgelijnd en knoppen in paginasjablonen werden niet op de juiste manier weergegeven online. En we hebben de schermen die je ziet nadat je bent ingelogd en je hebt aangemeld vernieuwd, zodat ze er strakker uitzien en consistenter zijn met de rest van de app.
