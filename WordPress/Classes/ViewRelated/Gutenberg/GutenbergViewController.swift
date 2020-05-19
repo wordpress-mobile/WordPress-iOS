@@ -381,7 +381,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.title = NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site")
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+
 
     func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)

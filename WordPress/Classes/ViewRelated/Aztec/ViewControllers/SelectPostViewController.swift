@@ -50,7 +50,7 @@ class SelectPostViewController: UITableViewController {
         searchController.dismiss(animated: false, completion: nil)
         invokeJSCallbackIfNecessary()
     }
-    
+
     func invokeJSCallbackIfNecessary() {
         if !wasCallbackInvoked {
             callback?("", "", true)
