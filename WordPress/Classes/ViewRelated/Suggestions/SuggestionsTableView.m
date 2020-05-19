@@ -55,8 +55,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     if (_useTransparentHeader) {
         [self.headerView setBackgroundColor: [UIColor clearColor]];
+        [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
     } else {
         [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
+        [self.separatorView setBackgroundColor: [UIColor clearColor]];
     }
     
 }
@@ -181,7 +183,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     if (!self.suggestions) {
         self.heightConstraint.constant = STVRowHeight;
     } else if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = (maxRows * STVRowHeight) + (STVRowHeight*0.4);
+        self.heightConstraint.constant = ceilf((maxRows * STVRowHeight) + (STVRowHeight*0.4));
     } else {
         self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
