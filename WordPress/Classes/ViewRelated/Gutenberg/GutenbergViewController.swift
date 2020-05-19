@@ -363,6 +363,25 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+    func gutenbergDidRequestLinkToExistingContent(selectedLink: String, with callback: @escaping LinkToExistingContentCallback) {
+        navigationController?.definesPresentationContext = true
+
+        let controller = SelectPostViewController(blog: post.blog, selectedLink: selectedLink, callback: { [weak self] (url, title, cancelled) in
+            guard let strongSelf = self else {
+                callback(nil)
+                return
+            }
+            if cancelled {
+                callback(nil)
+                return
+            }
+            strongSelf.navigationController?.popViewController(animated: true)
+            callback(ContentLink(url: url, title: title))
+        })
+        controller.title = NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site")
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
 
     func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
