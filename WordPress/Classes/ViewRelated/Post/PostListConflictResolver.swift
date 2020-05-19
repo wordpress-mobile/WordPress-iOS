@@ -1,20 +1,42 @@
 import Foundation
 
 struct PostListConflictResolver {
+    static var post: AbstractPost?
+    static var localClone: AbstractPost?
+    static var webClone: AbstractPost?
 
     /// Presents an alert with an option to discard the local or web version of a post, and opens the editor with the non-discarded version
     static func handle(post: Post, in viewController: UIViewController) {
+        self.post = post
+        localClone = post
+        webClone = post.original
+
+        DispatchQueue.main.async {
+            guard let original = self.post?.original,
+                let webClone = self.post?.clone(from: original) else {
+                    return
+            }
+            self.webClone = webClone
+
+            guard let post = self.post,
+                let localClone = self.post?.clone(from: post) else {
+                    return
+            }
+            self.localClone = localClone
+        }
+
         let alertController = presentAlertController(for: post) { discardWeb in
-            discardWeb ? keepLocalVersion(post: post, in: viewController) : keepWebVersion(post: post, in: viewController)
+            discardWeb ? discardWebVersion(post: post, in: viewController) : discardLocalVersion(post: post, in: viewController)
         }
         viewController.present(alertController, animated: true)
     }
 
     /// Discard web revision, load post with local changes
-    private static func keepLocalVersion(post: Post, in viewController: UIViewController) {
+    static func discardWebVersion(post: Post, in viewController: UIViewController) {
         PostCoordinator.shared.save(post, automatedRetry: true) { result in
             switch result {
             case .success(let uploadedPost):
+                self.post = uploadedPost
                 PostListHelper.openEditor(with: uploadedPost as! Post, loadAutosaveRevision: false, in: viewController as! PostListViewController)
             case .failure(let error):
                 DDLogError("Error resolving post conflict: \(error.localizedDescription)")
@@ -23,8 +45,9 @@ struct PostListConflictResolver {
     }
 
     /// Discard local changes, load latest web revision
-    private static func keepWebVersion(post: Post, in viewController: UIViewController) {
+    static func discardLocalVersion(post: Post, in viewController: UIViewController) {
         post.updateRevision()
+        self.post = post
         PostListHelper.openEditor(with: post, loadAutosaveRevision: false, in: viewController as! PostListViewController)
     }
 

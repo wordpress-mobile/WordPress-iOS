@@ -60,29 +60,37 @@ class PostListConflictResolverTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
-    func testDiscardingLocalVersion() {
+    func testDiscardWebVersion() {
         let post = createConflictedPost()
         PostListConflictResolver.handle(post: post, in: postListViewController)
+        PostListConflictResolver.discardWebVersion(post: post, in: postListViewController)
+
+        let actual = PostListConflictResolver.post?.postTitle
+        let expected = PostListConflictResolver.localClone?.postTitle
+
+        XCTAssertEqual(actual, expected)
     }
+
+    func testDiscardLocalVersion() {
+        let post = createConflictedPost()
+        PostListConflictResolver.handle(post: post, in: postListViewController)
+        PostListConflictResolver.discardLocalVersion(post: post, in: postListViewController)
+
+        let actual = PostListConflictResolver.post?.postTitle
+        let expected = PostListConflictResolver.webClone?.postTitle
+
+        XCTAssertEqual(actual, expected)
+    }
+
+    // MARK: - Private methods
 
     private func createConflictedPost() -> Post {
         let date = Date.init(timeIntervalSince1970: 0)
-        let original = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: date).build()
-        let local = original.createRevision() as! Post
-        local.dateModified = Calendar.current.date(byAdding: .day, value: 10, to: date)
-        local.tags = "test"
-        return local
-    }
-
-    private final class MockPostCoordinator: PostCoordinator {
-        private(set) var cancelAutoUploadOfInvocations: Int = 0
-
-        override func cancelAutoUploadOf(_ post: AbstractPost) {
-            cancelAutoUploadOfInvocations += 1
-        }
-
-        override func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, forceDraftIfCreating: Bool = false, defaultFailureNotice: Notice? = nil, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
-
-        }
+        let webPost = PostBuilder(context).published().with(remoteStatus: .sync).with(dateModified: date).build()
+        webPost.postTitle = "Post saved on web"
+        let localPost = webPost.createRevision()
+        localPost.dateModified = Calendar.current.date(byAdding: .day, value: 10, to: date)
+        localPost.postTitle = "Post updated, but not saved, locally"
+        return localPost as! Post
     }
 }

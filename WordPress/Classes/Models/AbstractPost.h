@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 @property (nonatomic, strong, nullable) NSDate * dateModified;
 @property (nonatomic, strong) NSSet<Media *> *media;
+/// The most recent, successfully saved version of the post
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSSet *comments;
@@ -67,8 +68,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 
-/// Returns the latest revision of a post.
-///
+/// Returns the latest revision of a post. If post does not have revisions, returns self.
 - (AbstractPost *)latest;
 - (AbstractPost *)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
@@ -179,7 +179,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 /**
  *  Whether the post has local changes or not.  Local changes are all changes that are have not been
- *  published to the server yet.
+ *  published to the server yet. If YES, the `post` contains the local changes.
  *
  *  @returns    YES if the post has local changes, NO otherwise.
  */
