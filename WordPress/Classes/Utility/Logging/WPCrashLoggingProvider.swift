@@ -33,7 +33,6 @@ extension WPCrashLoggingProvider: EventLoggingDelegate {
     var shouldUploadLogFiles: Bool {
         return
             !ProcessInfo.processInfo.isLowPowerModeEnabled
-            && ReachabilityUtils.isInternetReachable()
             && !self.userHasOptedOut
     }
 
