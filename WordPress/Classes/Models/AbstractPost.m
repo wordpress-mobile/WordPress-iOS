@@ -572,6 +572,11 @@
         return YES;
     }
 
+    if ( (self.featuredImage == NULL && self.original.featuredImage != NULL) ||
+        ![self.featuredImage.objectID isEqual: original.featuredImage.objectID] ) {
+        return YES;
+    }
+
     return NO;
 }
 
