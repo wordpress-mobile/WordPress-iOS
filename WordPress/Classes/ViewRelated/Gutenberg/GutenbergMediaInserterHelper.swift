@@ -244,7 +244,6 @@ class GutenbergMediaInserterHelper: NSObject {
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
                 return
             }
-            
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
             break
         case .uploading:
