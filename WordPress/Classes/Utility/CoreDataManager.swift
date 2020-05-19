@@ -68,7 +68,7 @@ class CoreDataManager: CoreDataStack {
 
     private func childContext(with concurrencyType: NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
         let childManagedObjectContext = NSManagedObjectContext(concurrencyType: concurrencyType)
-        childManagedObjectContext.parent = persistentContainer.viewContext
+        childManagedObjectContext.parent = self.mainContext
         childManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return childManagedObjectContext
     }
