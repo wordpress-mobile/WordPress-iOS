@@ -478,7 +478,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.0)
-  - WordPressAuthenticator (from `../WordPressAuthenticator-iOS`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `9c38b90`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `fix/244-redact-tokens`)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
@@ -611,7 +611,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.28.0
   WordPressAuthenticator:
-    :path: "../WordPressAuthenticator-iOS"
+    :commit: 9c38b90
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :branch: fix/244-redact-tokens
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -628,6 +629,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.28.0
+  WordPressAuthenticator:
+    :commit: 9c38b90
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: 4b722addeb01b379ffb40f852ffda647d92b9d44
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -719,6 +723,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: be0b7ba0ab39b899030c3a3d95833e11229b6806
+PODFILE CHECKSUM: de43d23bde2b420c6e8731331e16527c360069b9
 
 COCOAPODS: 1.8.4
