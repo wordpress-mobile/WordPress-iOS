@@ -3,11 +3,12 @@ import UIKit
 
 class SelectPostViewController: UITableViewController {
 
-    typealias SelectPostCallback = (_ url: String, _ title: String) -> ()
+    typealias SelectPostCallback = (_ url: String, _ title: String, _ cancelled: Bool) -> ()
     private var callback: SelectPostCallback?
 
     private var blog: Blog!
     private var selectedLink: String?
+    private var wasCallbackInvoked: Bool
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -28,10 +29,12 @@ class SelectPostViewController: UITableViewController {
         self.blog = blog
         self.selectedLink = selectedLink
         self.callback = callback
+        self.wasCallbackInvoked = false
         super.init(style: .plain)
     }
 
     required init?(coder aDecoder: NSCoder) {
+        self.wasCallbackInvoked = false
         super.init(coder: aDecoder)
     }
 
@@ -45,6 +48,14 @@ class SelectPostViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchController.dismiss(animated: false, completion: nil)
+        invokeJSCallbackIfNecessary()
+    }
+    
+    func invokeJSCallbackIfNecessary() {
+        if !wasCallbackInvoked {
+            callback?("", "", true)
+            wasCallbackInvoked = true
+        }
     }
 }
 
@@ -105,10 +116,12 @@ extension SelectPostViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = fetchController.object(at: indexPath)
         guard let title = post.titleForDisplay(), let url = post.permaLink else {
+            invokeJSCallbackIfNecessary()
             return
         }
 
-        callback?(url, title)
+        callback?(url, title, false)
+        wasCallbackInvoked = true
     }
 }
 
