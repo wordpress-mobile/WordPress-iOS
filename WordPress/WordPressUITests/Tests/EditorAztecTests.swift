@@ -74,6 +74,6 @@ class EditorAztecTests: XCTestCase {
 
         let twoLineTitleHeight = titleTextView.frame.height
 
-        XCTAssert(twoLineTitleHeight - oneLineTitleHeight >= titleLineHeight )        
+        XCTAssert(twoLineTitleHeight - oneLineTitleHeight >= titleLineHeight )
     }
 }

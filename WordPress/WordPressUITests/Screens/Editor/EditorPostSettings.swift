@@ -6,7 +6,7 @@ class EditorPostSettings: BaseScreen {
     let categoriesSection: XCUIElement
     let tagsSection: XCUIElement
     let featuredImageButton: XCUIElement
-    var changeFeaturedImageButton:XCUIElement {
+    var changeFeaturedImageButton: XCUIElement {
         return settingsTable.cells["CurrentFeaturedImage"]
     }
 
