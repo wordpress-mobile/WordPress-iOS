@@ -14,9 +14,11 @@ class CoreDataManager: CoreDataStack {
         return context
     }()
 
-    var mainContext: NSManagedObjectContext {
-        persistentContainer.viewContext
-    }
+    lazy var mainContext: NSManagedObjectContext = {
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.parent = self.writerContext
+        return context
+    }()
 
     var persistentStoreCoordinator: NSPersistentStoreCoordinator {
         persistentContainer.persistentStoreCoordinator
