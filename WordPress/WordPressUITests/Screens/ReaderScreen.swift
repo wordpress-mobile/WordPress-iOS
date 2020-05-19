@@ -10,7 +10,7 @@ class ReaderScreen: BaseScreen {
 
         super.init(element: readerTable)
     }
-    
+
     static func isLoaded() -> Bool {
         return XCUIApplication().tables["Reader"].exists
     }
