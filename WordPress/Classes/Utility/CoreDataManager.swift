@@ -46,10 +46,7 @@ class CoreDataManager: CoreDataStack {
             /// Backup the old Store
             ///
             do {
-                let sourceURL = self.storeURL
-                let backupURL = sourceURL.appendingPathExtension("~")
-                try FileManager.default.copyItem(at: sourceURL, to: backupURL)
-                try FileManager.default.removeItem(at: sourceURL)
+                try CoreDataIterativeMigrator.backupDatabase(at: self.storeURL)
             } catch {
                 fatalError("☠️ [CoreDataManager] Cannot backup Store: \(error)")
             }
