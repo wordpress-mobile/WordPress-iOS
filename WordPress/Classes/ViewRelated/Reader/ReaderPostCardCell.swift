@@ -271,6 +271,7 @@ import Gridicons
         self.contentProvider = contentProvider
 
         configureHeader()
+        configureAvatarImageView()
         configureFollowButton()
         configureFeaturedImageIfNeeded()
         configureTitle()
@@ -324,6 +325,11 @@ import Gridicons
 
         let byline = datePublished()
         bylineLabel.text = byline
+    }
+
+    fileprivate func configureAvatarImageView() {
+        avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        avatarImageView.layer.borderWidth = .hairlineBorderWidth
     }
 
     fileprivate func configureFollowButton() {

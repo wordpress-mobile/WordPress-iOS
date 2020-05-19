@@ -44,6 +44,10 @@ extension WPStyleGuide {
         return .neutral(.shade10)
     }
 
+    @objc public class func readerCardBlogIconBorderColor() -> UIColor {
+        return UIColor(white: 0, alpha: 0.12)
+    }
+
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
