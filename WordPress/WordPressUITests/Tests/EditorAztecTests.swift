@@ -49,6 +49,10 @@ class EditorAztecTests: XCTestCase {
             .addTag(name: tag)
             .setFeaturedImage()
             .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
+            .removeFeatureImage()
+            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: false)
+            .setFeaturedImage()
+            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
             .closePostSettings()
         AztecEditorScreen(mode: .rich).publish()
             .viewPublishedPost(withTitle: title)
@@ -70,6 +74,6 @@ class EditorAztecTests: XCTestCase {
 
         let twoLineTitleHeight = titleTextView.frame.height
 
-        XCTAssert(twoLineTitleHeight - oneLineTitleHeight >= titleLineHeight )
+        XCTAssert(twoLineTitleHeight - oneLineTitleHeight >= titleLineHeight )        
     }
 }

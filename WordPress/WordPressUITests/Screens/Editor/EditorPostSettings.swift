@@ -6,6 +6,9 @@ class EditorPostSettings: BaseScreen {
     let categoriesSection: XCUIElement
     let tagsSection: XCUIElement
     let featuredImageButton: XCUIElement
+    var changeFeaturedImageButton:XCUIElement {
+        return settingsTable.cells["CurrentFeaturedImage"]
+    }
 
     init() {
         let app = XCUIApplication()
@@ -39,6 +42,14 @@ class EditorPostSettings: BaseScreen {
         tagsSection.tap()
 
         return TagsComponent()
+    }
+
+    func removeFeatureImage() -> EditorPostSettings {
+        changeFeaturedImageButton.tap()
+        FeaturedImageScreen()
+            .tapRemoveFeaturedImageButton()
+
+        return EditorPostSettings()
     }
 
     func setFeaturedImage() -> EditorPostSettings {
