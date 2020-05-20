@@ -40,23 +40,38 @@ extension WPCrashLoggingProvider: EventLoggingDelegate {
 
 struct EventLoggingDataProvider: EventLoggingDataSource {
 
-    init(previousSessionLogUrl url: URL?) {
-        self.previousSessionLogPath = url
+    typealias LogFilesCallback = (() -> [URL])
+
+    /// A block that returns all existing log files
+    private let fetchLogFiles: LogFilesCallback?
+
+    /// Initialize the data provider using a block.
+    ///
+    /// Because the most recent log file path can change at runtime (for example; if a given session spans a day boundary the logging system may roll the
+    /// log file transparently in the background) we must determine which is the most recent log file each time we access it.
+    init(_ block: @escaping LogFilesCallback) {
+        self.fetchLogFiles = block
     }
 
+    /// The key used to encrypt log files
     let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey()
 
-    let previousSessionLogPath: URL?
+    /// The previous session log will be the most recent one, because they're split by day
+    var previousSessionLogPath: URL? {
+        return fetchLogFiles?().first
+    }
+
+    /// The current session log will always be the most recent one
+    var currentSessionLogPath: URL? {
+        return fetchLogFiles?().first
+    }
 
     static func fromDDFileLogger(_ logger: DDFileLogger) -> EventLoggingDataSource {
-
-        /// Logs are currently stored by day, so send the log file for the current day. It's possible that the app could
-        /// crash for someone and they choose to open it following day with a new log file, but that seems rare.
-        guard let logFile = logger.logFileManager.sortedLogFileInfos.first else {
-            return EventLoggingDataProvider(previousSessionLogUrl: nil)
+        EventLoggingDataProvider {
+            logger.logFileManager.sortedLogFileInfos.map {
+                URL(fileURLWithPath: $0.filePath)
+            }
         }
-
-        return EventLoggingDataProvider(previousSessionLogUrl: URL(fileURLWithPath: logFile.filePath))
     }
 }
 
