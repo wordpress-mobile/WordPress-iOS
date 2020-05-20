@@ -1,8 +1,7 @@
-Die Einstellungen für Planen, Schlagwörter und Sichtbarkeit erscheinen jetzt direkt im Beitragseditor, wenn du auf „Veröffentlichen“ oder „Planen“ tippst. Verleihe deinem Inhalt den letzten Schliff und tippe für die endgültige Veröffentlichung dann auf „Jetzt veröffentlichen“. Ab sofort musst du den Beitragseditor nicht mehr verlassen, um die Einstellungen an deinem Beitrag vorzunehmen!
+Es gab nie eine bessere Zeit, die WordPress-App zu benutzen, um deine Website zu verwalten – benutze sie, während du an der Türschwelle deines Hauses auf eine Lieferung wartest, in deinem Wohnzimmer, während du anderthalb Meter neben deinem Mitbewohner sitzt oder im Badezimmer, wo du fünf Minuten Pause von deinen Kindern hast. Die Möglichkeiten sind endlos, insbesondere seit v14.8 mehr Funktionen in den Block-Editor packt:
 
-Der mobile Block-Editor entwickelt sich stetig weiter:
-– Es gibt jetzt einen Spaltenblock und eine neue Neueinsteiger-Vorlage für Blogs.
-– Die Seitenvorlage für Neueinsteiger verstecken jetzt nicht mehr deinen Seiteninhalt.
-– Manchmal erschien ein Kästchen mit URL-Einstellungen, sobald du während der Vorschau der Seitenvorlage für Neueinsteiger dein Gerät bewegt hast. Dieser Fehler wurde behoben.
+Mit dem neuen Buttons-Block kannst du mehrere Buttons in dieselbe Zeile einbinden.
+Der Cover-Block beinhaltet mehr Funktionen für das Hochladen von Bildern deines Geräts zu deiner Website.
+Wenn deine Bilddateien Bildunterschriften haben, wird sie der Bild-Block automatisch für dich vor ausfüllen.
 
-Da eine App nie zu schnell, zu nutzerfreundlich oder zu übersichtlich sein kann, haben wir die Benutzeroberfläche hier und da etwas verbessert. Das wird dir wahrscheinlich gar nicht auffallen. Und genau so soll es sein. Zu guter Letzt haben wir noch einen Fehler bei der Anmeldung behoben, da die Kontoinformationen von selbst gehosteten Websites inkorrekt angezeigt wurden.
+Während wir uns genauer umgesehen haben, haben wir ein paar Fehler behoben – Leerzeichen um Text-Blöcken wurden entfernt, Zitat-Blöcke waren nicht richtig ausgerichtet und Buttons im Seiten-Template wurden nicht richtig im Web angezeigt. Und wir haben den Ansichten zur Anmeldung und zur Registrierung eine Verbesserung spendiert, sodass diese sauberer aussehen und konsistenter zur App passen.

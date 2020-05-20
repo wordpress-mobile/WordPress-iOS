@@ -1,11 +1,13 @@
 import Gridicons
+import WordPressFlux
 
 @objc class CreateButtonCoordinator: NSObject {
 
     private enum Constants {
-        static let padding: CGFloat = -16
-        static let heightWidth: CGFloat = 56
-        static let popoverOffset: CGFloat = -10
+        static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
+        static let heightWidth: CGFloat = 56 // Height and width of the button
+        static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
+        static let maximumTooltipViews = 5 // Caps the number of times the user can see the announcement tooltip
     }
 
     var button: FloatingActionButton = {
@@ -20,6 +22,43 @@ import Gridicons
 
     let newPost: () -> Void
     let newPage: () -> Void
+
+    private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
+
+    private lazy var notice: Notice = {
+        let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
+                            message: "",
+                            style: ToolTipNoticeStyle()) { [weak self] _ in
+                self?.didDismissTooltip = true
+                self?.hideNotice()
+        }
+        return notice
+    }()
+
+    // Once this reaches `maximumTooltipViews` we won't show the tooltip again
+    private var shownTooltipCount: Int {
+        set {
+            if newValue >= Constants.maximumTooltipViews {
+                didDismissTooltip = true
+            } else {
+                UserDefaults.standard.createButtonTooltipDisplayCount = newValue
+            }
+        }
+        get {
+            return UserDefaults.standard.createButtonTooltipDisplayCount
+        }
+    }
+
+    private var didDismissTooltip: Bool {
+        set {
+            UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
+        }
+        get {
+            return UserDefaults.standard.createButtonTooltipWasDisplayed
+        }
+    }
+
+    private weak var noticeContainerView: NoticeContainerView?
 
     @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
         self.viewController = viewController
@@ -60,7 +99,12 @@ import Gridicons
     }
 
     @objc private func showCreateSheet() {
-        guard let viewController = viewController else { return }
+        didDismissTooltip = true
+        hideNotice()
+
+        guard let viewController = viewController else {
+            return
+        }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
@@ -98,7 +142,15 @@ import Gridicons
         viewController.transitioningDelegate = self
     }
 
+    private func hideNotice() {
+        if let container = noticeContainerView {
+            NoticePresenter.dismiss(container: container)
+        }
+    }
+
     @objc func hideCreateButton() {
+        hideNotice()
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
         } else {
@@ -107,6 +159,11 @@ import Gridicons
     }
 
     @objc func showCreateButton() {
+        if !didDismissTooltip {
+            noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+            shownTooltipCount += 1
+        }
+
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {
@@ -141,5 +198,31 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return (viewController?.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+    }
+}
+
+@objc
+extension UserDefaults {
+    private enum Keys: String {
+        case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
+        case createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
+    }
+
+    var createButtonTooltipDisplayCount: Int {
+        get {
+            return integer(forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipDisplayCount.rawValue)
+        }
+    }
+
+    var createButtonTooltipWasDisplayed: Bool {
+        get {
+            return bool(forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
+        }
     }
 }
