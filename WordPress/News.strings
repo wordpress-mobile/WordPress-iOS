@@ -1,11 +1,14 @@
 /* News Card title. */
-"Title" = "Offline Support";
+"Title" = "Streamlined navigation";
 
 /* News Card content. */
-"Content" = "Our mobile apps now support offline publishing and editing.";
+"Content" = "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast.";
 
 /* News Card link. */
-"URL" = "https://en.blog.wordpress.com/2020/01/30/improved-offline-publishing/";
+"URL" = "https://en.blog.wordpress.com/2020/06/01/improved-navigation-in-the-wordpress-apps";
+
+/* News Card image name. */
+"ImageName" = "wp-illustration-mobile-save-for-later";
 
 /* Build version this card applies to. */
-"version" = "14.1";
+"version" = "14.9";

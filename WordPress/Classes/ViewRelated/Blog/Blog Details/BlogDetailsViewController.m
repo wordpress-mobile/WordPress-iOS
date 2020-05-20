@@ -283,7 +283,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.view addSubview:self.tableView];
     [self.view pinSubviewToAllEdges:self.tableView];
 
-    self.view.accessibilityIdentifier = @"Blog Details Table";
+    self.tableView.accessibilityIdentifier = @"Blog Details Table";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];

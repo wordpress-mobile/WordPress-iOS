@@ -3,6 +3,7 @@ struct NewsItem {
     let title: String
     let content: String
     let extendedInfoURL: URL
+    let imageName: String
     let version: Decimal
 }
 
@@ -11,6 +12,7 @@ extension NewsItem {
         static let title = "Title"
         static let content = "Content"
         static let URL = "URL"
+        static let imageName = "ImageName"
         static let version = "version"
     }
 
@@ -19,12 +21,13 @@ extension NewsItem {
             let content = fileContent[FileKeys.content],
             let urlString = fileContent[FileKeys.URL],
             let url = URL(string: urlString),
+            let imageName = fileContent[FileKeys.imageName],
             let versionString = fileContent[FileKeys.version],
             let version = Decimal(string: versionString) else {
                 return nil
         }
 
-        self.init(title: title, content: content, extendedInfoURL: url, version: version)
+        self.init(title: title, content: content, extendedInfoURL: url, imageName: imageName, version: version)
     }
 }
 

@@ -1,8 +1,7 @@
-Pengaturan penjadwalan, tag, dan visibilitas kini muncul langsung di penyunting pos saat Anda mengetuk “Publikasikan” atau “Jadwalkan” — lakukan sedikit penyesuaian, dan ketuk “Publikasikan Sekarang” untuk menyelesaikan publikasi. Tak perlu lagi keluar dari penyunting untuk mencari Layar Pengaturan Pos!
+Sekarang adalah waktu yang lebih tepat untuk menggunakan aplikasi WordPress guna mengelola situs web Anda — gunakan aplikasi saat di rumah menunggu makanan yang diantar oleh ojek online, duduk santai di ruang tamu bersebelahan dengan teman sekamar Anda, atau di kamar mandi untuk rehat sejenak saat mengasuh anak. Kemungkinannya tidak terbatas karena v14.8 punya lebih banyak fitur di penyunting Blok:
 
-Penyunting Blok seluler terus berkembang:-
-– Anda akan menemukan blok Kolom dan Template Starter baru untuk blog.
-– Opsi Template Halaman Starter kini tak lagi menutupi konten halaman Anda.
-– Kami telah memperbaiki bug yang menyebabkan munculnya kotak pengaturan URL jika Anda secara fisik memindahkan perangkat saat melakukan pratinjau Template Halaman Starter.
+Dengan blok Tombol baru, Anda dapat menambahkan beberapa tombol di baris yang sama.
+Blok Sampul menyertakan pilihan pengunggahan lebih banyak dari perangkat ke situs Anda.
+Jika file gambar Anda memiliki keterangan, blok Gambar akan menulisnya secara otomatis untuk Anda.
 
-Karena aplikasi tidak bisa terlalu cepat, praktis, atau jelas, kami menyederhanakan beberapa hal di UI. Akankah Anda memperhatikannya? Mungkin tidak, memang itu poinnya. Dan akhirnya, masalah login penyebab info akun untuk situs hosting mandiri dimuat secara tidak tepat kini telah ditangani.
+Saat kami memeriksa semuanya, kami memperbaiki beberapa bug — spasi putih di sekitar blok Teks dihapus, blok Kutipan yang tidak selaras dengan baik, dan tombol di template halaman yang tidak ditampilkan dengan baik di web. Dan kami memoles layar yang dapat Anda lihat setelah login dan daftar agar terlihat lebih bersih dan konsisten dalam aplikasi.
