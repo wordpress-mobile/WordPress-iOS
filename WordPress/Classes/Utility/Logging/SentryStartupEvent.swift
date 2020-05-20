@@ -58,7 +58,7 @@ extension CrashLogging {
      - userInfo: A dictionary containing additional data about this error.
      - level: The level of severity to report in Sentry (`.error` by default)
     */
-    static func logErrorAndWait(_ error: Error, userInfo: [String : Any]? = nil, level: SentrySeverity = .error) {
+    static func logErrorAndWait(_ error: Error, userInfo: [String: Any]? = nil, level: SentrySeverity = .error) {
         let event = Event(level: .error)
         event.message = error.localizedDescription
         event.extra = userInfo ?? (error as NSError).userInfo
