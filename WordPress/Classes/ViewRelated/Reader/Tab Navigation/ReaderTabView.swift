@@ -211,7 +211,7 @@ extension ReaderTabView {
         self.buttonsStackView.isHidden = shouldHideButtons
         self.horizontalDivider.isHidden = shouldHideButtons
     }
-    
+
     /// Filter button
     @objc private func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
@@ -222,7 +222,7 @@ extension ReaderTabView {
             }
         }
     }
-    
+
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
@@ -232,7 +232,7 @@ extension ReaderTabView {
         }
         viewModel.resetFilter(selectedItem: tabItem)
     }
-    
+
     @objc private func didTapSettingsButton() {
         viewModel.presentSettings(from: settingsButton)
     }
@@ -240,12 +240,12 @@ extension ReaderTabView {
 
 // MARK: - Appearance
 extension ReaderTabView {
-    
+
     private enum Appearance {
         static let barHeight: CGFloat = 48
-        
+
         static let tabBarAnimationsDuration = 0.2
-        
+
         static let settingsButtonAccessibilitylabel = NSLocalizedString("Manage", comment: "Label for managing sites and filters in the Reader tab")
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
@@ -253,11 +253,11 @@ extension ReaderTabView {
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-        
+
         static let resetButtonWidth: CGFloat = 32
         static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
         static let settingsButtonWidth: CGFloat = 56
-        
+
         static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
