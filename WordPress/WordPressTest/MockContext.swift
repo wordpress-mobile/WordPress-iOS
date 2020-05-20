@@ -1,6 +1,8 @@
 import XCTest
 import CoreData
 
+@testable import WordPress
+
 /// Mock context that uses the existing Test Core Data Stack and overrides fetch for testing purposes
 class MockContext: NSManagedObjectContext {
     // set it to any array of objects you want ot return
@@ -27,7 +29,7 @@ class MockContext: NSManagedObjectContext {
 
     class func getContext() -> MockContext? {
             let managedObjectContext = MockContext(concurrencyType: .privateQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = TestContextManager.sharedInstance().persistentStoreCoordinator
+            managedObjectContext.persistentStoreCoordinator = ContextManager.sharedInstance().persistentStoreCoordinator
             return managedObjectContext
     }
 }

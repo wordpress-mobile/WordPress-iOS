@@ -1,11 +1,12 @@
 import XCTest
 import Foundation
 import CoreData
-import WordPress
+
+@testable import WordPress
 
 final class ReaderTopicSwiftTest: XCTestCase {
 
-    private var testContextManager: TestContextManager?
+    private var testContextManager: CoreDataStack?
     private var context: NSManagedObjectContext?
     let expectationTimeout = 5.0
 
@@ -13,7 +14,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager.sharedInstance()
+        testContextManager = ContextManager.sharedInstance()
         context = testContextManager?.mainContext
     }
 
