@@ -83,8 +83,10 @@ import WordPressFlux
         }
     }
 
+    /// Button must be manually shown _after_ adding using `showCreateButton`
     @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
 
         view.addSubview(button)
 
