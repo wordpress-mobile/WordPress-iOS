@@ -1,4 +1,3 @@
-
 /// Handles the core data stack for the whole app
 class CoreDataManager: CoreDataStack {
 
@@ -31,6 +30,11 @@ class CoreDataManager: CoreDataStack {
         return mom
     }
 
+    // Error handling
+    private lazy var sentryStartupError: SentryStartupEvent = {
+        return SentryStartupEvent()
+    }()
+
     lazy var persistentContainer: NSPersistentContainer = {
         migrateDataModelIfNecessary()
 
@@ -42,12 +46,15 @@ class CoreDataManager: CoreDataStack {
                 return
             }
             DDLogError("⛔️ [CoreDataManager] loadPersistentStore failed. Attempting to recover... \(error)")
+            self.sentryStartupError.add(error: error)
 
             /// Backup the old Store
             ///
             do {
                 try CoreDataIterativeMigrator.backupDatabase(at: self.storeURL)
             } catch {
+                self.sentryStartupError.add(error: error)
+                self.sentryStartupError.send(title: "Can't initialize Core Data stack")
                 fatalError("☠️ [CoreDataManager] Cannot backup Store: \(error)")
             }
 
@@ -57,6 +64,9 @@ class CoreDataManager: CoreDataStack {
                 guard let error = error as NSError? else {
                     return
                 }
+
+                self?.sentryStartupError.add(error: error)
+                self?.sentryStartupError.send(title: "Can't initialize Core Data stack")
                 fatalError("☠️ [CoreDataManager] Recovery Failed! \(error) [\(error.userInfo)]")
             }
         }
@@ -220,6 +230,7 @@ extension CoreDataManager {
                                                            using: sortedKeys)
         } catch {
             DDLogError("☠️ [CoreDataManager] Unable to migrate store with error: \(error)")
+            sentryStartupError.add(error: error)
         }
     }
 }
