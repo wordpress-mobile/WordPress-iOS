@@ -36,6 +36,19 @@ extension WPCrashLoggingProvider: EventLoggingDelegate {
             && ReachabilityUtils.isInternetReachable()
             && !self.userHasOptedOut
     }
+
+    func didStartUploadingLog(_ log: LogFile) {
+        DDLogInfo("📜 Started uploading encrypted log: \(log.uuid)")
+    }
+
+    func didFinishUploadingLog(_ log: LogFile) {
+        DDLogInfo("📜 Finished uploading encrypted log: \(log.uuid)")
+    }
+
+    func uploadFailed(withError error: Error, forLog log: LogFile) {
+        DDLogInfo("📜 Error uploading encrypted log: \(log.uuid)")
+        DDLogError(error.localizedDescription)
+    }
 }
 
 struct EventLoggingDataProvider: EventLoggingDataSource {
