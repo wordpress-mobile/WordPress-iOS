@@ -52,7 +52,7 @@ class MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard url.isHostedAtWPCom || url.isPhoton() else {
+        guard !url.isFileURL || url.isHostedAtWPCom || url.isPhoton() else {
             let request = URLRequest(url: url)
             provide(request)
             return

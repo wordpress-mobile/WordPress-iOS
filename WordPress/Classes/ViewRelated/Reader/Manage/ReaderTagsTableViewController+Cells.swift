@@ -9,7 +9,10 @@ extension ReaderTagsTableViewModel {
 
         let button = UIButton.closeAccessoryButton()
         button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
+        let unfollowString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a tag")
+        button.accessibilityLabel = String(format: unfollowString, topic.title)
         cell.accessoryView = button
+        cell.accessibilityElements = [button]
     }
 
     private func configureAddTag(cell: UITableViewCell) {

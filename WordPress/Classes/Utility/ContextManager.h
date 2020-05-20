@@ -97,13 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification;
 
-/**
-  Verify if the Core Data model migration failed.
- 
-  @return YES if there were any errors during the migration: the PSC instance is mapping to a fresh database.
- */
-- (BOOL)didMigrationFail;
-
 @end
 
 NS_ASSUME_NONNULL_END

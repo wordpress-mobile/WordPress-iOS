@@ -2,12 +2,30 @@
 ----
 * Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
 
+-----
+ 
 14.9
 -----
+* Streamlined navigation: now there are fewer and better organized tabs, posting shortcuts and more, so you can find what you need fast.
+* My Site: the "Add Posts and Pages" features has been moved. There is a new "Floating Action Button" in "My Site" that lets you create a new post or page without having to navigate to another screen.
+* My Site: the "Me" section has been moved. There is a new button on the top right of "My Site" that lets you access the "Me" section from there.
+* Reader: revamped UI with a tab bar that lets you quickly switch between sections, and filtering and settings panes to easily access and manage your favorite content.
 * [internal] the "Change Username" on the Signup Epilogue screen has navigation changes that can cause regressions. See https://git.io/JfGnv for testing details.
 * [internal] the "3 button view" (WP.com email, Google, SIWA, Site Address) presented after pressing the "Log In" button has navigation changes that can cause regressions. See https://git.io/JfZUV for testing details.
+* [**] Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
+* [**] Block editor: Support for the pullquote block.
+* [**] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
+* [**] Block editor: Update page templates to use new blocks.
+* [**] Block editor: Fix a crash when uploading new videos on a video block.
+
+* [internal] the "enter your password" screen has navigation changes that can cause regressions. See https://git.io/Jfl1C for full testing details.
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
+* [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
  
+14.8.1
+-----
+* Fix adding and removing of featured images to posts.
+
 14.8
 -----
 * Block editor: Prefill caption for image blocks when available on the Media library

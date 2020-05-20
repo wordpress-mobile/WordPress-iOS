@@ -8,6 +8,7 @@ final class DefaultNewsManagerTests: XCTestCase {
         static let previousCardBuildNumber = "10.5"
         static let cardTitle = "Hello"
         static let cardContent = "How is your day going so far?"
+        static let cardImageName = "🦄"
         static let cardURL = URL(string: "http://wordpress.com")!
     }
 
@@ -15,7 +16,7 @@ final class DefaultNewsManagerTests: XCTestCase {
         func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
             let newsItem = NewsItem(title: Constants.title,
                                     content: Constants.contextId,
-                                    extendedInfoURL: Constants.cardURL,
+                                    extendedInfoURL: Constants.cardURL, imageName: Constants.cardImageName,
                                     version: currentBuildVersion()!)
 
             let result: Result<NewsItem, Error> = .success(newsItem)

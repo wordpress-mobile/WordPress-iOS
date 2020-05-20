@@ -5,6 +5,7 @@ final class NewsItemTests: XCTestCase {
     private struct Constants {
         static let title = "🦄"
         static let content = "🦄"
+        static let imageName = "🦄"
         static let infoURL = URL(string: "https://wordpress.com")!
         static let version: Decimal = Decimal(floatLiteral: 10.7)
     }
@@ -13,7 +14,7 @@ final class NewsItemTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        subject = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.infoURL, version: Constants.version)
+        subject = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.infoURL, imageName: Constants.imageName, version: Constants.version)
     }
 
     override func tearDown() {
