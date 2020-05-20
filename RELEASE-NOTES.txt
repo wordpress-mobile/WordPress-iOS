@@ -25,6 +25,8 @@
 
 14.8
 -----
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
 * Block editor: Prefill caption for image blocks when available on the Media library
 * Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
 * Block editor: Fix bug where whitespaces at start of text blocks were being removed

@@ -254,6 +254,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
+        tearDownKeyboardObservers()
         removeObservers(fromPost: post)
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
@@ -263,6 +264,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
@@ -279,6 +281,36 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
+
+    private var keyboardShowObserver: Any?
+    private var keyboardHideObserver: Any?
+    private var keyboardFrame = CGRect.zero
+    private var mentionsBottomConstraint: NSLayoutConstraint?
+    private var previousFirstResponder: UIView?
+
+    private func setupKeyboardObservers() {
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { (notification) in
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { (notification) in
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+    }
+
+    private func tearDownKeyboardObservers() {
+        if let keyboardShowObserver = keyboardShowObserver {
+            NotificationCenter.default.removeObserver(keyboardShowObserver)
+        }
+        if let keyboardHideObserver = keyboardHideObserver {
+            NotificationCenter.default.removeObserver(keyboardHideObserver)
+        }
+    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -614,6 +646,65 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
     }
+
+    func updateConstraintsToAvoidKeyboard(frame: CGRect) {
+        keyboardFrame = frame
+        let minimumKeyboardHeight = CGFloat(50)
+        guard let mentionsBottomConstraint = mentionsBottomConstraint else {
+            return
+        }
+
+        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
+        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
+        if keyboardFrame.height < minimumKeyboardHeight {
+            mentionsBottomConstraint.constant = -self.view.safeAreaInsets.bottom
+        }
+        else {
+            mentionsBottomConstraint.constant = -self.keyboardFrame.height
+        }
+    }
+
+    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.mentionShow(callback: callback)
+        })
+    }
+}
+
+// MARK: - Mention implementation
+
+extension GutenbergViewController {
+
+    private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        guard let siteID = post.blog.dotComID else {
+            callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
+            return
+        }
+
+        previousFirstResponder = view.findFirstResponder()
+        let mentionsController = GutenbergMentionsViewController(siteID: siteID)
+        mentionsController.onCompletion = { (result) in
+            callback(result)
+            mentionsController.view.removeFromSuperview()
+            mentionsController.removeFromParent()
+            if let previousFirstResponder = self.previousFirstResponder {
+                previousFirstResponder.becomeFirstResponder()
+            }
+        }
+        addChild(mentionsController)
+        view.addSubview(mentionsController.view)
+        let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        NSLayoutConstraint.activate([
+            mentionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
+            mentionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            mentionsBottomConstraint,
+            mentionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+        ])
+        self.mentionsBottomConstraint = mentionsBottomConstraint
+        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
+        mentionsController.didMove(toParent: self)
+    }
+
 }
 
 // MARK: - GutenbergBridgeDataSource
@@ -649,6 +740,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             FeatureFlag.tenor.enabled ? .tenor : nil,
             .filesApp,
         ].compactMap { $0 }
+    }
+
+    func gutenbergCapabilities() -> [String: Bool]? {
+        return [
+            "mentions": post.blog.isAccessibleThroughWPCom()
+        ]
     }
 }
 
