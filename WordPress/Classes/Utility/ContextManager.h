@@ -4,9 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol CoreDataStack
-@required
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
-//@optional
 @property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
 - (NSManagedObjectContext *const)newDerivedContext;

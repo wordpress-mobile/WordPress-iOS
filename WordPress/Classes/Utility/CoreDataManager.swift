@@ -120,13 +120,17 @@ class CoreDataManager: CoreDataStack {
 
     private func performSave(context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
 
+        guard context.hasChanges else {
+            DispatchQueue.main.async {
+                completion?()
+            }
+            return
+        }
+
         let objects = Array(context.insertedObjects)
         do {
             try context.obtainPermanentIDs(for: objects)
 
-            guard context.hasChanges else {
-                return
-            }
             try context.save()
             DispatchQueue.main.async {
                 completion?()
@@ -135,6 +139,9 @@ class CoreDataManager: CoreDataStack {
         } catch {
             DDLogError("Error obtaining permanent object IDs for \(objects), \(error)")
             handleSaveError(error as NSError, in: context)
+            DispatchQueue.main.async {
+                completion?()
+            }
         }
     }
 
@@ -274,7 +281,7 @@ extension CoreDataManager {
 
     private var storeURL: URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Okay: Missing Documents Folder?")
+            fatalError("Missing Documents Folder")
         }
         return url.appendingPathComponent(Constants.name + ".sqlite")
     }

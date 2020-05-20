@@ -51,7 +51,7 @@ startup time. This will block the thread. Do not use unless you're sure.
 
 extension CrashLogging {
     /**
-     Writes the error to the Crash Logging system, and includes a stack trace. This method will block the tread until the event is fired.
+     Writes the error to the Crash Logging system, and includes a stack trace. This method will block the thread until the event is fired.
 
      - Parameters:
      - error: The error object
