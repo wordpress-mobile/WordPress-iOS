@@ -34,6 +34,7 @@ private struct Constants {
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+    @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: UIButton!
 
@@ -260,6 +261,7 @@ private struct Constants {
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
@@ -274,6 +276,7 @@ private struct Constants {
     */
     fileprivate func applyOpaqueBackgroundColors() {
         blogNameLabel.backgroundColor = .listForeground
+        blogHostNameLabel.backgroundColor = .listForeground
         bylineLabel.backgroundColor = .listForeground
         titleLabel.backgroundColor = .listForeground
         summaryLabel.backgroundColor = .listForeground
@@ -328,23 +331,15 @@ private struct Constants {
             avatarImageView.isHidden = true
         }
 
-        var arr = [String]()
-        if let authorName = contentProvider.authorForDisplay() {
-            arr.append(authorName)
-        }
-        if let blogName = contentProvider.blogNameForDisplay() {
-            arr.append(blogName)
-        }
-        blogNameLabel.text = arr.joined(separator: ", ")
-
-        let byline = datePublished()
-        bylineLabel.text = byline
+        blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
+        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()  ?? ""
+        bylineLabel.text = [" ·", datePublished()].joined(separator: " ")
     }
 
     fileprivate func configureAvatarImageView() {
         avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
         avatarImageView.layer.borderWidth = Constants.imageBorderWidth
-        avatarImageView.layer.masksToBounds = false
+        avatarImageView.layer.masksToBounds = true
     }
 
     fileprivate func configureFollowButton() {
