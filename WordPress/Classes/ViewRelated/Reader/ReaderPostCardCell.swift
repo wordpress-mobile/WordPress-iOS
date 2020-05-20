@@ -6,6 +6,8 @@ import Gridicons
 private struct Constants {
     //16:9 Ratio (16 / 9) = 1.777777778
     static let featuredMediaHeightRatio: CGFloat = 1.777777778
+    static let featuredMediaCornerRadius: CGFloat = 4
+    static let imageBorderWidth: CGFloat = 1
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -181,6 +183,11 @@ private struct Constants {
         let height = featuredImageHeight(for: width)
 
         featuredMediaHeightConstraint.constant = height
+
+        // Round the corners, and add a border
+        featuredImageView.layer.cornerRadius = Constants.featuredMediaCornerRadius
+        featuredImageView.layer.borderColor = WPStyleGuide.readerCardFeaturedMediaBorderColor().cgColor
+        featuredImageView.layer.borderWidth = Constants.imageBorderWidth
     }
 
     fileprivate func setupSummaryLabel() {
@@ -336,7 +343,8 @@ private struct Constants {
 
     fileprivate func configureAvatarImageView() {
         avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
-        avatarImageView.layer.borderWidth = .hairlineBorderWidth
+        avatarImageView.layer.borderWidth = Constants.imageBorderWidth
+        avatarImageView.layer.masksToBounds = false
     }
 
     fileprivate func configureFollowButton() {
