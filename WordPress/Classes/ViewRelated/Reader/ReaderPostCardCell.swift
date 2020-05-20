@@ -3,6 +3,11 @@ import Foundation
 import WordPressShared
 import Gridicons
 
+private struct Constants {
+    //16:9 Ratio (16 / 9) = 1.777777778
+    static let featuredMediaHeightRatio: CGFloat = 1.777777778
+}
+
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
@@ -57,7 +62,6 @@ import Gridicons
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
-    fileprivate let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(100.0)
     fileprivate var featuredImageDesiredWidth = CGFloat()
 
     fileprivate let summaryMaxNumberOfLines = 3
@@ -173,7 +177,10 @@ import Gridicons
     }
 
     fileprivate func setupFeaturedImageView() {
-        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+        let width = featuredImageView.frame.width
+        let height = featuredImageHeight(for: width)
+
+        featuredMediaHeightConstraint.constant = height
     }
 
     fileprivate func setupSummaryLabel() {
@@ -365,7 +372,10 @@ import Gridicons
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
+
+        let height = featuredImageHeight(for: featuredImageDesiredWidth)
+
+        let size = CGSize(width: featuredImageDesiredWidth, height: height)
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
@@ -906,5 +916,11 @@ extension ReaderPostCardCell {
 
     func getReblogButtonForTesting() -> UIButton {
         return reblogActionButton
+    }
+}
+
+private extension ReaderPostCardCell {
+    func featuredImageHeight(for width: CGFloat) -> CGFloat {
+        return width / Constants.featuredMediaHeightRatio
     }
 }

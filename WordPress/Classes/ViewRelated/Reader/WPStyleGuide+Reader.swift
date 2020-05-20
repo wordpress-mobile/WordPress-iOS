@@ -47,6 +47,10 @@ extension WPStyleGuide {
     @objc public class func readerCardBlogIconBorderColor() -> UIColor {
         return UIColor(white: 0, alpha: 0.12)
     }
+    
+    @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
+        return .gray(.shade0)
+    }
 
     // MARK: - Card Attributed Text Attributes
 
