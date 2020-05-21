@@ -199,20 +199,19 @@ extension ReaderTabView {
         toggleButtonsView()
     }
 
-    private func toggleButtonsView() {
+        private func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
-                return
+            return
         }
         // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
         guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
             return
         }
-        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
-            self.buttonsStackView.isHidden = shouldHideButtons
-            self.horizontalDivider.isHidden = shouldHideButtons
-        }
+        let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
+        self.buttonsStackView.isHidden = shouldHideButtons
+        self.horizontalDivider.isHidden = shouldHideButtons
     }
+
 
     /// Filter button
     @objc private func didTapFilterButton() {
