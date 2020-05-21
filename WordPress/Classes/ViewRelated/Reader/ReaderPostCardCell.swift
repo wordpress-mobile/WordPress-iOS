@@ -411,7 +411,7 @@ private struct Constants {
     fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControl.State())
         button.isSelected = false
-        button.isHidden = true
+        button.isEnabled = false
     }
 
     private func configureActionButtonsInsets() {
@@ -435,7 +435,6 @@ private struct Constants {
         likeActionButton.tag = CardAction.like.rawValue
         likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
         likeActionButton.isSelected = contentProvider!.isLiked()
-        likeActionButton.isHidden = false
     }
 
     fileprivate var shouldShowLikeActionButton: Bool {
@@ -463,7 +462,7 @@ private struct Constants {
         }
 
         commentActionButton.tag = CardAction.comment.rawValue
-        commentActionButton.isHidden = false
+        commentActionButton.isEnabled = true
     }
 
     fileprivate var shouldShowCommentActionButton: Bool {
@@ -487,14 +486,16 @@ private struct Constants {
 
 
     fileprivate func configureSaveForLaterButton() {
-        saveForLaterButton.isHidden = false
+        saveForLaterButton.isEnabled = true
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.isSelected = postIsSavedForLater
     }
 
     fileprivate func configureReblogActionButton() {
         reblogActionButton.tag = CardAction.reblog.rawValue
-        reblogActionButton.isHidden = !shouldShowReblogActionButton
+        reblogActionButton.isEnabled = shouldShowReblogActionButton
+
+        print(reblogActionButton.isEnabled, shouldShowReblogActionButton)
     }
 
     fileprivate var shouldShowReblogActionButton: Bool {
@@ -695,7 +696,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareLikeForVoiceOver() {
-        guard likeActionButton.isHidden == false else {
+        guard likeActionButton.isEnabled == true else {
             return
         }
 
