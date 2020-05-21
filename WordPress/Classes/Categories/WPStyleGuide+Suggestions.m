@@ -3,8 +3,18 @@
 @implementation WPStyleGuide (Suggestions)
 
 + (UIColor *)suggestionsHeaderSmoke
-{
-    return [UIColor colorWithRed:0. green:0. blue:0. alpha:0.3];
+{    
+    if (@available(iOS 13.0, *)) {
+        return [UIColor colorWithDynamicProvider:^(UITraitCollection *traitCollection) {
+            if (traitCollection.userInterfaceStyle ==  UIUserInterfaceStyleDark) {
+                return [UIColor colorWithRed:0. green:0. blue:0. alpha:0.7];
+            } else {
+                return [UIColor colorWithRed:0. green:0. blue:0. alpha:0.3];
+            }
+        }];
+    } else {
+        return [UIColor colorWithRed:0. green:0. blue:0. alpha:0.3];
+    }
 }
 
 + (UIColor *)suggestionsSeparatorSmoke
