@@ -1,9 +1,18 @@
-import Foundation
+import UIKit
 import AutomatticTracks
 
 fileprivate let UserOptedOutKey = "crashlytics_opt_out"
 
 class WPCrashLoggingProvider: CrashLoggingDataProvider {
+
+    init() {
+        /// Upload any remaining files any time the app becomes active
+        let willEnterForeground = UIApplication.willEnterForegroundNotification
+        NotificationCenter.default.addObserver(forName: willEnterForeground, object: nil, queue: nil) { note in
+            CrashLogging.eventLogging?.uploadNextLogFileIfNeeded()
+            DDLogDebug("📜 Resumed encrypted log upload queue due to app entering foreground")
+        }
+    }
 
     var sentryDSN: String = ApiCredentials.sentryDSN()
 
@@ -36,17 +45,38 @@ extension WPCrashLoggingProvider: EventLoggingDelegate {
             && !self.userHasOptedOut
     }
 
+    var shouldUploadLogFilesForNonFatalEvents: Bool {
+        return true
+    }
+
+    func didQueueLogForUpload(_ log: LogFile) {
+        DDLogDebug("📜 Added log to queue: \(log.uuid)")
+
+        if let eventLogging = CrashLogging.eventLogging {
+            DDLogDebug("📜\t There are \(eventLogging.queuedLogFiles.count) logs in the queue.")
+        }
+    }
+
     func didStartUploadingLog(_ log: LogFile) {
-        DDLogInfo("📜 Started uploading encrypted log: \(log.uuid)")
+        DDLogDebug("📜 Started uploading encrypted log: \(log.uuid)")
     }
 
     func didFinishUploadingLog(_ log: LogFile) {
-        DDLogInfo("📜 Finished uploading encrypted log: \(log.uuid)")
+        DDLogDebug("📜 Finished uploading encrypted log: \(log.uuid)")
+        if let eventLogging = CrashLogging.eventLogging {
+            DDLogDebug("📜\t There are \(eventLogging.queuedLogFiles.count) logs remaining in the queue.")
+        }
     }
 
     func uploadFailed(withError error: Error, forLog log: LogFile) {
-        DDLogInfo("📜 Error uploading encrypted log: \(log.uuid)")
-        DDLogError(error.localizedDescription)
+        DDLogError("📜 Error uploading encrypted log: \(log.uuid)")
+        DDLogError("📜\t\(error.localizedDescription)")
+
+        let nserror = error as NSError
+        DDLogError("📜\t Code: \(nserror.code)")
+        if let details = nserror.localizedFailureReason {
+            DDLogError("📜\t Details: \(details)")
+        }
     }
 }
 
@@ -77,6 +107,8 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
     var currentSessionLogPath: URL? {
         return fetchLogFiles?().first
     }
+
+
 
     static func fromDDFileLogger(_ logger: DDFileLogger) -> EventLoggingDataSource {
         EventLoggingDataProvider {
