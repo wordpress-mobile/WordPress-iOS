@@ -10,6 +10,7 @@ enum FeatureFlag: Int, CaseIterable {
     case floatingCreateButton
     case newReaderNavigation
     case tenor
+    case homepageSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -34,6 +35,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .tenor:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .homepageSettings:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
@@ -68,6 +71,8 @@ extension FeatureFlag: OverrideableFlag {
             return "New Reader Navigation"
         case .tenor:
             return "Tenor GIF media source"
+        case .homepageSettings:
+            return "Homepage Settings"
         }
     }
 
