@@ -5,6 +5,11 @@ PODS:
     - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
+  - AppAuth (1.3.0):
+    - AppAuth/Core (= 1.3.0)
+    - AppAuth/ExternalUserAgent (= 1.3.0)
+  - AppAuth/Core (1.3.0)
+  - AppAuth/ExternalUserAgent (1.3.0)
   - AppCenter (2.5.1):
     - AppCenter/Analytics (= 2.5.1)
     - AppCenter/Crashes (= 2.5.1)
@@ -53,20 +58,19 @@ PODS:
   - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
   - glog (0.3.5)
-  - GoogleSignIn (4.4.0):
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.2.2):
-    - GoogleToolboxForMac/Defines (= 2.2.2)
-  - GoogleToolboxForMac/Defines (2.2.2)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.2)":
-    - GoogleToolboxForMac/DebugUtils (= 2.2.2)
-    - GoogleToolboxForMac/Defines (= 2.2.2)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
   - Gridicons (1.0.1)
+  - GTMAppAuth (1.0.0):
+    - AppAuth/Core (~> 1.0)
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.4.0):
+    - GTMSessionFetcher/Full (= 1.4.0)
   - GTMSessionFetcher/Core (1.4.0)
+  - GTMSessionFetcher/Full (1.4.0):
+    - GTMSessionFetcher/Core (= 1.4.0)
   - Gutenberg (1.28.0):
     - React (= 0.61.5)
     - React-CoreModules (= 0.61.5)
@@ -376,11 +380,11 @@ PODS:
   - WordPress-Aztec-iOS (1.19.1)
   - WordPress-Editor-iOS (1.19.1):
     - WordPress-Aztec-iOS (= 1.19.1)
-  - WordPressAuthenticator (1.17.0-beta.3):
+  - WordPressAuthenticator (1.17.0-beta.4):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
-    - GoogleSignIn (~> 4.4)
+    - GoogleSignIn (~> 5.0.2)
     - Gridicons (~> 1.0)
     - lottie-ios (= 3.1.6)
     - "NSURL+IDN (= 0.4)"
@@ -479,8 +483,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.1)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/277-redact-tokens`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `fix/244-redact-tokens`)
+  - WordPressAuthenticator (~> 1.17.0-beta.4)
+  - WordPressKit (~> 4.9.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
   - WordPressUI (~> 1.7.0)
@@ -495,6 +499,7 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
+    - AppAuth
     - AppCenter
     - Automattic-Tracks-iOS
     - boost-for-react-native
@@ -505,8 +510,8 @@ SPEC REPOS:
     - FormatterKit
     - Gifu
     - GoogleSignIn
-    - GoogleToolboxForMac
     - Gridicons
+    - GTMAppAuth
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
@@ -527,6 +532,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -613,13 +620,6 @@ EXTERNAL SOURCES:
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
-    :tag: v1.28.0
-  WordPressAuthenticator:
-    :branch: issue/277-redact-tokens
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :branch: fix/244-redact-tokens
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1f5ee28cfd84a9a7fd962f0d63f560baeb777ba7/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -636,19 +636,13 @@ CHECKOUT OPTIONS:
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
-    :tag: v1.28.0
-  WordPressAuthenticator:
-    :commit: c8a4391a57a1de5102c66125ebe7e19cb473f170
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: 4b722addeb01b379ffb40f852ffda647d92b9d44
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
+  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
   Automattic-Tracks-iOS: dbe6301bebdc1e444972475bae19299491702cef
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -663,9 +657,9 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: 8e19276b20bb15d1fda1d4d0db96d066d170135b
+  GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   Gutenberg: 0c90bd47ecf991fbe677172a3a2f8ab1ef715c07
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
@@ -714,7 +708,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 25a9cbe204a22dd6d540d66d90b8a889421e0b42
   WordPress-Editor-iOS: 9f3d720086b90fd8b73f8eccd744c15abbdb7607
-  WordPressAuthenticator: 7077fc3a8536cc785031f6e46d321c48f95f8b16
+  WordPressAuthenticator: 6648c27a13a5ef13045af7fe30ea6ef60a1252b5
   WordPressKit: e8aab0ace717c9b9be307ccfdda08821f31b655c
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 1bc316ed162f42af4e0fa2869437e9e28b532b01
@@ -731,6 +725,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: fb48652db7718e9d5336d738172a4e9637a264ac
+PODFILE CHECKSUM: 8ac727e03852bdec0c5bf5e901e73fc823a66725
 
 COCOAPODS: 1.8.4
