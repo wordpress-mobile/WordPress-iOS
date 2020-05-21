@@ -36,7 +36,6 @@ private struct Constants {
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: UIButton!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -77,7 +76,6 @@ private struct Constants {
     }
 
     // MARK: - Accessors
-    @objc open var hidesFollowButton = false
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
 
@@ -157,7 +155,6 @@ private struct Constants {
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
-        insetFollowButtonIcon()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -245,7 +242,6 @@ private struct Constants {
 
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
-        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
@@ -274,7 +270,6 @@ private struct Constants {
 
         configureHeader()
         configureAvatarImageView()
-        configureFollowButton()
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
@@ -325,11 +320,6 @@ private struct Constants {
         avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
         avatarImageView.layer.borderWidth = Constants.imageBorderWidth
         avatarImageView.layer.masksToBounds = true
-    }
-
-    fileprivate func configureFollowButton() {
-        followButton.isHidden = hidesFollowButton
-        followButton.isSelected = contentProvider?.isFollowing() ?? false
     }
 
     fileprivate func configureFeaturedImageIfNeeded() {
@@ -523,16 +513,6 @@ private struct Constants {
 
     }
 
-    /// Adds some space between the button and title.
-    /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
-    /// so we'll add/remove it from the image as needed.
-    fileprivate func insetFollowButtonIcon() {
-        var insets = followButton.imageEdgeInsets
-        insets.right = 2.0
-        followButton.imageEdgeInsets = insets
-        followButton.flipInsetsForRightToLeftLayoutDirection()
-    }
-
     fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
             self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().cgColor : WPStyleGuide.readerCardCellBorderColor().cgColor
@@ -558,13 +538,6 @@ private struct Constants {
 
 
     // MARK: - Actions
-
-    @IBAction func didTapFollowButton(_ sender: UIButton) {
-        guard let provider = contentProvider else {
-            return
-        }
-        delegate?.readerCell(self, followActionForProvider: provider)
-    }
 
     @IBAction func didTapHeaderBlogButton(_ sender: UIButton) {
         notifyDelegateHeaderWasTapped()
@@ -640,7 +613,6 @@ extension ReaderPostCardCell: Accessible {
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
-        prepareFollowButtonForVoiceOver()
         prepareReblogForVoiceOver()
     }
 
@@ -782,16 +754,6 @@ extension ReaderPostCardCell: Accessible {
         reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func prepareFollowButtonForVoiceOver() {
-        if hidesFollowButton {
-            return
-        }
-
-        followButton.accessibilityLabel = followLabel()
-        followButton.accessibilityHint = followHint()
-        followButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
     private func followLabel() -> String {
