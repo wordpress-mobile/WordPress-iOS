@@ -191,11 +191,6 @@ final class ReaderPostCardCellTests: XCTestCase {
         XCTAssertEqual(cell?.getMenuButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.moreLabel), "Incorrect accessibility label: Menu button")
     }
 
-    func testVisitButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.visitLabel), "Incorrect accessibility label: Visit button"
-    )
-    }
-
     func testReblogActionButtonMatchesExpectation() {
         XCTAssertEqual(cell?.getReblogButtonForTesting().accessibilityLabel, TestConstants.reblogLabel, "Incorrect accessibility label: Reblog button")
     }

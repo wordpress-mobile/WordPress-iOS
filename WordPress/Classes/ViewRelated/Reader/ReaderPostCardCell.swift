@@ -53,7 +53,7 @@ private struct Constants {
 
     @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
-    @IBOutlet fileprivate weak var visitButton: UIButton!
+
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
@@ -144,7 +144,6 @@ private struct Constants {
         interfaceVerticalSizingHelperView.isHidden = true
 
         setupMenuButton()
-        setupVisitButton()
         setupCommentActionButton()
         setupLikeActionButton()
 
@@ -213,18 +212,6 @@ private struct Constants {
         likeActionButton.setImage(likedImage, for: [.highlighted, .selected])
     }
 
-    fileprivate func setupVisitButton() {
-        let size = CGSize(width: 20, height: 20)
-        let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
-        let icon = UIImage.gridicon(.external, size: size)
-        let tintedIcon = icon.imageFlippedForRightToLeftLayoutDirection()
-        let highlightIcon = icon.imageFlippedForRightToLeftLayoutDirection()
-
-        visitButton.setTitle(title, for: UIControl.State())
-        visitButton.setImage(tintedIcon, for: .normal)
-        visitButton.setImage(highlightIcon, for: .highlighted)
-    }
-
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = UIImage.gridicon(.ellipsis, size: size)
@@ -237,7 +224,6 @@ private struct Constants {
 
     fileprivate func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
-            visitButton,
             likeActionButton,
             commentActionButton,
             saveForLaterButton,
@@ -267,7 +253,6 @@ private struct Constants {
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
         WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
-        WPStyleGuide.applyReaderActionButtonStyle(visitButton)
     }
 
 
@@ -655,7 +640,6 @@ extension ReaderPostCardCell: Accessible {
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
-        prepareVisitForVoiceOver()
         prepareFollowButtonForVoiceOver()
         prepareReblogForVoiceOver()
     }
@@ -794,13 +778,6 @@ extension ReaderPostCardCell: Accessible {
         menuButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
-    private func prepareVisitForVoiceOver() {
-        visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
-        let hintFormat = NSLocalizedString("Visit %@ in a web view", comment: "A call to action to visit the specified blog via a web view. Accessibility hint in Reader")
-        visitButton.accessibilityHint = String(format: hintFormat, blogName())
-        visitButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
     private func prepareReblogForVoiceOver() {
         reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
@@ -888,10 +865,6 @@ extension ReaderPostCardCell {
 
     func getMenuButtonForTesting() -> UIButton {
         return menuButton
-    }
-
-    func getVisitButtonForTesting() -> UIButton {
-        return visitButton
     }
 
     func getReblogButtonForTesting() -> UIButton {
