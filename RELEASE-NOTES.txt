@@ -1,6 +1,8 @@
 15.0
 -----
- 
+* [**] Block editor: Fix media upload progress when there's no connection.
+* [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
+
 14.9
 -----
 * Streamlined navigation: now there are fewer and better organized tabs, posting shortcuts and more, so you can find what you need fast.
@@ -19,8 +21,14 @@
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
 * [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
  
+14.8.1
+-----
+* Fix adding and removing of featured images to posts.
+
 14.8
 -----
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
 * Block editor: Prefill caption for image blocks when available on the Media library
 * Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
 * Block editor: Fix bug where whitespaces at start of text blocks were being removed
