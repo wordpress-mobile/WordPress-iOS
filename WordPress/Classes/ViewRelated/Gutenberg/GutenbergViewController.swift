@@ -25,6 +25,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var tenorMediaPicker: GutenbergTenorMediaPicker = {
         return GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
+    
+    lazy var gutenbergSettings: GutenbergSettings = {
+        return GutenbergSettings()
+    }()
 
     // MARK: - Aztec
 
@@ -224,7 +228,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var isFirstGutenbergLayout = true
     var shouldPresentInformativeDialog = false
     lazy var shouldPresentPhase2informativeDialog: Bool = {
-        return GutenbergSettings().shouldPresentInformativeDialog(for: post.blog)
+        return gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
     }()
 
     // MARK: - Initializers
@@ -615,12 +619,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.present(controller, animated: true)
     }
 
-    func gutenbergDidRequestGetStarterPageTemplatesTooltipShown() -> Bool {
-       return GutenbergSettings().getStarterPageTemplatesTooltipShown()
+    func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
+        return gutenbergSettings.starterPageTemplatesTooltipShown
     }
-
     func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
-       GutenbergSettings().setStarterPageTemplatesTooltipShown(tooltipShown)
+        gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
     }
 }
 

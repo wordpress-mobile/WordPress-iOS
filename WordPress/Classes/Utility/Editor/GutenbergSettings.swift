@@ -159,12 +159,13 @@ class GutenbergSettings {
     }
 
     /// True if it should show the tooltip for the starter page templates picker
-    func getStarterPageTemplatesTooltipShown() -> Bool {
-        return database.bool(forKey: Key.starterPageTemplatesTooltipShown)
-    }
-
-    func setStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
-        database.set(tooltipShown, forKey: Key.starterPageTemplatesTooltipShown)
+    var starterPageTemplatesTooltipShown: Bool {
+        get {
+            database.bool(forKey: Key.starterPageTemplatesTooltipShown)
+        }
+        set {
+            database.set(newValue, forKey: Key.starterPageTemplatesTooltipShown)
+        }
     }
 
     // MARK: - Gutenberg Choice Logic
