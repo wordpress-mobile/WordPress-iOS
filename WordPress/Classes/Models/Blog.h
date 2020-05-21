@@ -197,6 +197,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (BOOL)isPrivateAtWPCom;
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
+- (void)setValue:(id)value forOption:(NSString *)name;
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;

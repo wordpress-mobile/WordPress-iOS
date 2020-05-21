@@ -799,4 +799,20 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return optionValue;
 }
 
+- (void)setValue:(id)value forOption:(NSString *)name
+{
+    [self.managedObjectContext performBlockAndWait:^{
+        if ( self.options == nil || (self.options.count == 0) ) {
+            return;
+        }
+
+        NSMutableDictionary *mutableOptions = [self.options mutableCopy];
+
+        NSDictionary *valueDict = @{ @"value": value };
+        mutableOptions[name] = valueDict;
+
+        self.options = [NSDictionary dictionaryWithDictionary:mutableOptions];
+    }];
+}
+
 @end
