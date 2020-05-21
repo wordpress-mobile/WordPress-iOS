@@ -3,11 +3,11 @@ extension Blog {
         return getOptionValue(name) as? T
     }
 
-    private func getOptionString(name: String) -> String? {
+    func getOptionString(name: String) -> String? {
         return (getOption(name: name) as NSString?).map(String.init)
     }
 
-    private func getOptionNumeric(name: String) -> NSNumber? {
+    func getOptionNumeric(name: String) -> NSNumber? {
         switch getOptionValue(name) {
         case let numericValue as NSNumber:
             return numericValue

@@ -507,6 +507,8 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
+        case BlogFeatureHomepageSettings:
+            return [self supportsRestApi] && [self isAdmin];
     }
 }
 
