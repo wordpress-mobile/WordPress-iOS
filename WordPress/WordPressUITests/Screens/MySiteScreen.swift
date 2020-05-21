@@ -82,4 +82,8 @@ class MySiteScreen: BaseScreen {
         createButton.tap()
         return ActionSheetComponent()
     }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables[ElementStringIDs.blogTable].exists
+    }
 }
