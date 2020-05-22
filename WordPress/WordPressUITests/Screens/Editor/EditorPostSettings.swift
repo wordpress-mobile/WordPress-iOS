@@ -68,9 +68,11 @@ class EditorPostSettings: BaseScreen {
         if let postTag = tag {
             XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
+        let imageCount = settingsTable.images.count
         if hasImage {
-            let imageCount = settingsTable.images.count
             XCTAssertTrue(imageCount == 1, "Featured image not set")
+        } else {
+            XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }
 
         return EditorPostSettings()
