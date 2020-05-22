@@ -1056,6 +1056,7 @@
 		8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0732E8242BA1F000E7FBD3 /* PrepublishingHeaderView.swift */; };
 		8B0732F0242BF7E800E7FBD3 /* Blog+Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0732EE242BF6EA00E7FBD3 /* Blog+Title.swift */; };
 		8B0732F3242BF99B00E7FBD3 /* PrepublishingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0732F1242BF97B00E7FBD3 /* PrepublishingNavigationController.swift */; };
+		8B0CAA38247820700001C3CA /* CoreDataManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0CAA37247820700001C3CA /* CoreDataManagerMock.swift */; };
 		8B1CF00F2433902700578582 /* PasswordAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF00E2433902700578582 /* PasswordAlertController.swift */; };
 		8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */; };
 		8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
@@ -3498,6 +3499,7 @@
 		8B0732E8242BA1F000E7FBD3 /* PrepublishingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingHeaderView.swift; sourceTree = "<group>"; };
 		8B0732EE242BF6EA00E7FBD3 /* Blog+Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Title.swift"; sourceTree = "<group>"; };
 		8B0732F1242BF97B00E7FBD3 /* PrepublishingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingNavigationController.swift; sourceTree = "<group>"; };
+		8B0CAA37247820700001C3CA /* CoreDataManagerMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManagerMock.swift; sourceTree = "<group>"; };
 		8B1CF00E2433902700578582 /* PasswordAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAlertController.swift; sourceTree = "<group>"; };
 		8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+TitleForVisibility.swift"; sourceTree = "<group>"; };
 		8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
@@ -9744,16 +9746,17 @@
 				E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */,
 				3F50945C2455280300C4470B /* MockContext.swift */,
 				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
+				8B0CAA37247820700001C3CA /* CoreDataManagerMock.swift */,
 				93E9050519E6F3D8005513C9 /* ContextManagerMock.h */,
 				93E9050619E6F3D8005513C9 /* ContextManagerMock.m */,
+				8BD6E34B24775164009AE97C /* TestContextManager.h */,
+				8BD6E3492477514E009AE97C /* TestContextManager.m */,
 				933D1F451EA64108009FB462 /* TestingAppDelegate.h */,
 				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
 				933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */,
 				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
 				D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */,
 				8BE7C84023466927006EDE70 /* I18n.swift */,
-				8BD6E34B24775164009AE97C /* TestContextManager.h */,
-				8BD6E3492477514E009AE97C /* TestContextManager.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -13510,6 +13513,7 @@
 				40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */,
 				8BD6E34A2477514E009AE97C /* TestContextManager.m in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
+				8B0CAA38247820700001C3CA /* CoreDataManagerMock.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				40C403EE2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift in Sources */,
 				3F8CB104239E025F007627BF /* ReaderDetailViewControllerTests.swift in Sources */,

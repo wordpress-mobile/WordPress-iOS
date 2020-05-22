@@ -1,6 +1,9 @@
 #import "TestContextManager.h"
 #import "ContextManagerMock.h"
+#import "WordPressTest-Swift.h"
 
+// TestContextManager resolves on the Swift or Obj-C Core Data initialization
+// Based on the Feature Flag value
 @implementation TestContextManager
 
 static TestContextManager *_instance;
@@ -10,7 +13,11 @@ static TestContextManager *_instance;
     self = [super init];
     if (self) {
         // Override the shared ContextManager
-        _stack = [[ContextManagerMock alloc] init];
+        if([Feature enabled:FeatureFlagSwiftCoreData]) {
+            _stack = [SwiftManagerMock instance];
+        } else {
+            _stack = [[ContextManagerMock alloc] init];
+        }
         _requiresTestExpectation = YES;
     }
 
@@ -60,10 +67,10 @@ static TestContextManager *_instance;
 - (void)saveContext:(NSManagedObjectContext *)context
 {
     [self saveContext:context withCompletionBlock:^{
-        if (self.testExpectation) {
-            [self.testExpectation fulfill];
-            self.testExpectation = nil;
-        } else if (self.requiresTestExpectation) {
+        if (self->_stack.testExpectation) {
+            [self->_stack.testExpectation fulfill];
+            self->_stack.testExpectation = nil;
+        } else if (self->_stack.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
     }];
@@ -72,10 +79,10 @@ static TestContextManager *_instance;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
     [_stack saveContextAndWait:context];
-    if (self.testExpectation) {
-        [self.testExpectation fulfill];
-        self.testExpectation = nil;
-    } else if (self.requiresTestExpectation) {
+    if (self->_stack.testExpectation) {
+        [self->_stack.testExpectation fulfill];
+        self->_stack.testExpectation = nil;
+    } else if (self->_stack.requiresTestExpectation) {
         NSLog(@"No test expectation present for context save");
     }
 }
@@ -83,10 +90,10 @@ static TestContextManager *_instance;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
     [_stack saveContext:context withCompletionBlock:^{
-        if (self.testExpectation) {
-            [self.testExpectation fulfill];
-            self.testExpectation = nil;
-        } else if (self.requiresTestExpectation) {
+        if (self->_stack.testExpectation) {
+            [self->_stack.testExpectation fulfill];
+            self->_stack.testExpectation = nil;
+        } else if (self->_stack.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
         completionBlock();

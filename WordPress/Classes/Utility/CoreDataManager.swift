@@ -3,7 +3,8 @@ class CoreDataManager: CoreDataStack {
 
     static let shared = CoreDataManager()
 
-    private init() {
+    /// Only for tests, do not use this method directly
+    init() {
         observe()
     }
 
@@ -272,8 +273,7 @@ extension CoreDataManager {
     }
 
     private var modelURL: URL {
-        let bundle = Bundle(for: type(of: self))
-        guard let url = bundle.url(forResource: Constants.name, withExtension: "momd") else {
+        guard let url = Bundle.main.url(forResource: Constants.name, withExtension: "momd") else {
             fatalError("Missing Model Resource")
         }
         return url
