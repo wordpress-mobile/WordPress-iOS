@@ -25,6 +25,8 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 {
     [self layoutImageView];
     _imageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView gifStrategy:GIFStrategyLargeGIFs];
+    self.accessibilityLabel = NSLocalizedString(@"A featured image is set. Tap to change it.", @"Label for image that is set as a feature image for post/page");
+    self.accessibilityIdentifier = @"CurrentFeaturedImage";
 }
 
 - (void)setImageWithURL:(NSURL *)url inPost:(AbstractPost *)post withSize:(CGSize)size

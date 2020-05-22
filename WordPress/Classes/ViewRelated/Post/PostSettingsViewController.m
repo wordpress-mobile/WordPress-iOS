@@ -1445,8 +1445,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
 {
-    self.featuredImage = cell.image;
-    cell.accessibilityIdentifier = @"Current Featured Image";
+    self.featuredImage = cell.image;    
     NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
     NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
     [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
@@ -1461,7 +1460,7 @@ FeaturedImageViewControllerDelegate>
     self.animatedFeaturedImageData = nil;
     [self.apost setFeaturedImage:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:PostSettingsSectionFeaturedImage]  withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 @end
