@@ -110,17 +110,17 @@ private extension EditorThemeStore {
     }
 
     func processResponse(_ response: Any, for blog: Blog) {
-        guard let responseData = try? JSONSerialization.data(withJSONObject: response, options: []) else { return }
-        let themeSupports = try? JSONDecoder().decode([EditorTheme].self, from: responseData)
+        guard
+            let responseData = try? JSONSerialization.data(withJSONObject: response, options: []),
+            let themeKey = EditorThemeStoreState.key(forBlog: blog),
+            let themeSupports = try? JSONDecoder().decode([EditorTheme].self, from: responseData),
+            let newTheme = themeSupports.first
+            else { return }
 
-        if let themeKey = EditorThemeStoreState.key(forBlog: blog),
-            let newTheme = themeSupports?.first {
-            var existingThemes = state.storedThemes()
-
-            if newTheme != existingThemes[themeKey] {
-                existingThemes[themeKey] = newTheme
-                state = .loaded(existingThemes)
-            }
+        var existingThemes = state.storedThemes()
+        if newTheme != existingThemes[themeKey] {
+            existingThemes[themeKey] = newTheme
+            state = .loaded(existingThemes)
         }
     }
 }

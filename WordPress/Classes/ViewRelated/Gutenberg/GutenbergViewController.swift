@@ -277,16 +277,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
-
-        let themeSupportStore = StoreContainer.shared.editorTheme
-        themeSupportQuery = themeSupportStore.query(EditorThemeQuery(blog: post.blog))
-        themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
-            DispatchQueue.main.async {
-                if let strongSelf = self, let themeSupport = state.editorTheme(forBlog: strongSelf.post.blog)?.themeSupport {
-                    strongSelf.gutenberg.updateTheme(themeSupport)
-                }
-            }
-        }
+        fetchEditorTheme()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -353,12 +344,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         reloadBlogPickerButton()
         reloadEditorContents()
         reloadPublishButton()
-    }
-
-    private func refreshEditorTheme() {
-        if let themeSupport = StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport {
-            gutenberg.updateTheme(themeSupport)
-        }
     }
 
     func contentByStrippingMediaAttachments() -> String {
@@ -885,5 +870,27 @@ private extension GutenbergViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+    }
+}
+
+// Editor Theme Support
+private extension GutenbergViewController {
+
+    private func fetchEditorTheme() {
+        let themeSupportStore = StoreContainer.shared.editorTheme
+        themeSupportQuery = themeSupportStore.query(EditorThemeQuery(blog: post.blog))
+        themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
+            DispatchQueue.main.async {
+                if let strongSelf = self, let themeSupport = state.editorTheme(forBlog: strongSelf.post.blog)?.themeSupport {
+                    strongSelf.gutenberg.updateTheme(themeSupport)
+                }
+            }
+        }
+    }
+
+    private func refreshEditorTheme() {
+        if let themeSupport = StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport {
+            gutenberg.updateTheme(themeSupport)
+        }
     }
 }
