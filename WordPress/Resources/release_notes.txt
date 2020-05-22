@@ -1,7 +1,14 @@
-There’s never been a better time to use the WordPress app to manage your website — use it while hovering in the doorway of your house waiting for a curb-side delivery, in your living room while sitting six feet away from your roommate, or in the bathroom where you go to get a five minute break from your kids. The possibilities are endless, especially since v14.8 packs more features into the Block editor:
+Here’s what’s new:
 
-With the new Buttons block, you can add multiple buttons in the same row.
-The Cover block includes more uploading options for getting pictures from your device to your site.
-If your image files have captions, the Image block will automatically pre-fill them for you.
+Organization overhaul: We’ve made some changes that’ll let you find what you need faster:
 
-While we were poking around, we fixed a few bugs — whitespace around Text blocks getting removed, Quote blocks that didn’t align properly, and buttons in page templates not displaying correctly on the web. And we gave the screens you see post-login and signup some polish so they look cleaner and feel more consistent within the app.
+Want to start a new post or page? Tap the big pink button, always visible in the My Sites tab.
+Want to edit your profile? Look in the upper right corner.
+Want to find something to read? The Reader tab has a revamped layout for more intuitive searching and filtering.
+Block editor updates: There’s a new Pullquote block, to highlight quotes with more visual emphasis than the regular Quote block. Page templates got an update to make use of the newest blocks, and we fixed up icons in a few blocks that weren’t displaying quite right in RTL mode.
+
+The Button block got more color options for background and text. And there’s support for superscript and subscript HTML formatting (in the Classic editor, too).
+
+Image annotation: With the new “edit image” feature in the editor, you can draw directly on images.
+
+One really great bug fix: Sometimes you’d add a Video block and start uploading a video, and the app would crash. Counterproductive! That doesn’t happen anymore.

@@ -489,4 +489,34 @@ class PostTests: XCTestCase {
         XCTAssertNil(post.statusAfterSync)
         XCTAssertNil(post.statusAfterSyncString)
     }
+
+    /// When removing the featured image hasLocalChanges returns true
+    func testLocalChangesWhenfeaturedImageIsRemoved() {
+        let post = newTestPost()
+        post.featuredImage = Media.makeMedia(in: context)
+        let revision = post.createRevision()
+        revision.featuredImage = nil
+
+        XCTAssertTrue(revision.hasLocalChanges())
+    }
+
+    /// When adding a featured image hasLocalChanges returns true
+    func testLocalChangesWhenfeaturedImageIsAdded() {
+        let post = newTestPost()
+        let revision = post.createRevision()
+        revision.featuredImage = Media.makeMedia(in: context)
+
+        XCTAssertTrue(revision.hasLocalChanges())
+    }
+
+    /// When keeping the featured image hasLocalChanges returns false
+    func testLocalChangesWhenFeaturedImageIsTheSame() {
+        let post = newTestPost()
+        let media = Media.makeMedia(in: context)
+        post.featuredImage = media
+        let revision = post.createRevision()
+        revision.featuredImage = media
+
+        XCTAssertFalse(revision.hasLocalChanges())
+    }
 }
