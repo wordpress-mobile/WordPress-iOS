@@ -142,8 +142,6 @@ private struct Constants {
         interfaceVerticalSizingHelperView.isHidden = true
 
         setupMenuButton()
-        setupCommentActionButton()
-        setupLikeActionButton()
 
         // Buttons must be set up before applying styles,
         // as this tints the images used in the buttons
@@ -191,28 +189,11 @@ private struct Constants {
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .byTruncatingTail
     }
-
-    fileprivate func setupCommentActionButton() {
-        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
-        commentActionButton.setImage(image, for: UIControl.State())
-        commentActionButton.setImage(highlightImage, for: .highlighted)
-    }
-
-    fileprivate func setupLikeActionButton() {
-        let likeImage = UIImage(named: "icon-reader-like")
-        let likedImage = UIImage(named: "icon-reader-liked")
-
-        likeActionButton.setImage(likeImage, for: .normal)
-        likeActionButton.setImage(likedImage, for: .highlighted)
-        likeActionButton.setImage(likedImage, for: .selected)
-        likeActionButton.setImage(likedImage, for: [.highlighted, .selected])
-    }
-
+    
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = UIImage.gridicon(.ellipsis, size: size)
-        let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
+        let tintedIcon = icon.imageWithTintColor(.neutral(.shade50))
         let highlightIcon = icon.imageWithTintColor(.neutral)
 
         menuButton.setImage(tintedIcon, for: .normal)
@@ -240,15 +221,17 @@ private struct Constants {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
 
-        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
-        WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
+
+        // Action Buttons
+        WPStyleGuide.applyReaderCardSaveForLaterButtonStyle(saveForLaterButton)
+        WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
+        WPStyleGuide.applyReaderCardLikeButtonStyle(likeActionButton)
+        WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
     }
 
 

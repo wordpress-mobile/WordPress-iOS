@@ -229,6 +229,9 @@ extension WPStyleGuide {
 
 
     // MARK: - Button Styles and Text
+    class func applyReaderStreamActionButtonStyle(_ button: UIButton) {
+        return applyReaderActionButtonStyle(button, titleColor: .listIcon, imageColor: .neutral(.shade50))
+    }
 
     class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon) {
         button.tintColor = imageColor
@@ -295,6 +298,50 @@ extension WPStyleGuide {
         applyReaderActionButtonStyle(button)
     }
 
+    @objc public class func applyReaderCardSaveForLaterButtonStyle(_ button: UIButton) {
+        let size = Cards.actionButtonSize
+        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
+        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
+
+        button.setImage(icon, for: .normal)
+        button.setImage(selectedIcon, for: .selected)
+        button.setImage(selectedIcon, for: .highlighted)
+        button.setImage(selectedIcon, for: [.highlighted, .selected])
+
+        applyReaderStreamActionButtonStyle(button)
+    }
+
+    @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton) {
+        let size = Cards.actionButtonSize
+        let icon = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let selectedIcon = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
+
+        guard
+            let resizedIcon = icon?.resizedImage(size, interpolationQuality: .high),
+            let resizedSelectedIcon = selectedIcon?.resizedImage(size, interpolationQuality: .high)
+        else {
+            return
+        }
+
+        button.setImage(resizedIcon, for: UIControl.State())
+        button.setImage(resizedSelectedIcon, for: .highlighted)
+
+        applyReaderStreamActionButtonStyle(button)
+    }
+
+    @objc public class func applyReaderCardLikeButtonStyle(_ button: UIButton) {
+        let size = Cards.actionButtonSize
+        let icon = UIImage.gridicon(.starOutline, size: size)
+        let selectedIcon = UIImage.gridicon(.star, size: size)
+
+        button.setImage(icon, for: .normal)
+        button.setImage(selectedIcon, for: .selected)
+        button.setImage(selectedIcon, for: .highlighted)
+        button.setImage(selectedIcon, for: [.highlighted, .selected])
+
+        applyReaderStreamActionButtonStyle(button)
+    }
+
     /// Applies the save for later button style to the button passed as an argument
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
@@ -307,6 +354,17 @@ extension WPStyleGuide {
         button.setTitle(savedTitle, for: [.highlighted, .selected])
     }
 
+    /// Applies the reblog button style to the button passed as an argument
+    /// - Parameter button: the button to apply the style to
+    /// - Parameter showTitle: if set to true, will show the button label (default: true)
+    @objc public class func applyReaderCardReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
+        let size = Cards.actionButtonSize
+        let icon = UIImage.gridicon(.reblog, size: size)
+
+        button.setImage(icon, for: .normal)
+
+        applyReaderStreamActionButtonStyle(button)
+    }
     /// Applies the reblog button style to the button passed as an argument
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
@@ -431,6 +489,8 @@ extension WPStyleGuide {
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline
         public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .footnote
         public static let crossPostLineSpacing: CGFloat = 2.0
+
+        public static let actionButtonSize: CGSize = CGSize(width: 18, height: 18)
     }
 
     public struct Detail {
