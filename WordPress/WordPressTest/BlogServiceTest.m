@@ -3,7 +3,6 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
-#import "ContextManager-Internals.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "TestContextManager.h"

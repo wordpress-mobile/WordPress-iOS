@@ -1,6 +1,5 @@
 #import "TestContextManager.h"
 #import "ContextManagerMock.h"
-#import "ContextManager-Internals.h"
 
 @implementation TestContextManager
 
