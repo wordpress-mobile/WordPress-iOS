@@ -6,6 +6,9 @@ class EditorPostSettings: BaseScreen {
     let categoriesSection: XCUIElement
     let tagsSection: XCUIElement
     let featuredImageButton: XCUIElement
+    var changeFeaturedImageButton: XCUIElement {
+        return settingsTable.cells["CurrentFeaturedImage"]
+    }
 
     init() {
         let app = XCUIApplication()
@@ -41,6 +44,14 @@ class EditorPostSettings: BaseScreen {
         return TagsComponent()
     }
 
+    func removeFeatureImage() -> EditorPostSettings {
+        changeFeaturedImageButton.tap()
+        FeaturedImageScreen()
+            .tapRemoveFeaturedImageButton()
+
+        return EditorPostSettings()
+    }
+
     func setFeaturedImage() -> EditorPostSettings {
         featuredImageButton.tap()
         MediaPickerAlbumListScreen()
@@ -57,9 +68,11 @@ class EditorPostSettings: BaseScreen {
         if let postTag = tag {
             XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
+        let imageCount = settingsTable.images.count
         if hasImage {
-            let imageCount = settingsTable.images.count
             XCTAssertTrue(imageCount == 1, "Featured image not set")
+        } else {
+            XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }
 
         return EditorPostSettings()
