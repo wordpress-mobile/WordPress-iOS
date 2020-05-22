@@ -45,11 +45,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardBlogIconBorderColor() -> UIColor {
-        return UIColor(white: 0, alpha: 0.12)
+        return .neutral(.shade0)
     }
     
     @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
-        return .gray(.shade0)
+        return .neutral(.shade0)
     }
 
     // MARK: - Card Attributed Text Attributes
@@ -94,7 +94,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Cards.titleTextStyle)
+        let font = WPStyleGuide.notoFontForTextStyle(Cards.titleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
@@ -106,7 +106,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardSummaryAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoFontForTextStyle(Cards.contentTextStyle)
+        let font = WPStyleGuide.fontForTextStyle(Cards.contentTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.contentLineSpacing
@@ -181,11 +181,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
-        label.textColor = .text
+        label.textColor = .neutral(.shade90)
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = .text
+        label.textColor = .neutral(.shade40)
     }
 
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {

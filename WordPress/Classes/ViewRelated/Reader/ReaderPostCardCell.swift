@@ -494,8 +494,6 @@ private struct Constants {
     fileprivate func configureReblogActionButton() {
         reblogActionButton.tag = CardAction.reblog.rawValue
         reblogActionButton.isEnabled = shouldShowReblogActionButton
-
-        print(reblogActionButton.isEnabled, shouldShowReblogActionButton)
     }
 
     fileprivate var shouldShowReblogActionButton: Bool {
