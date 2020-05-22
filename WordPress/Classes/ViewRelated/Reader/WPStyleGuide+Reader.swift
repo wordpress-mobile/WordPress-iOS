@@ -482,7 +482,7 @@ extension WPStyleGuide {
         public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
         public static let titleTextStyle: UIFont.TextStyle = WPDeviceIdentification.isiPad() ? .title2 : .title3
         public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 0.0 : 0.0
-        public static let contentTextStyle: UIFont.TextStyle = .subheadline
+        public static let contentTextStyle: UIFont.TextStyle = .caption1
         public static let contentLineSpacing: CGFloat = 4
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
         public static let subtextTextStyle: UIFont.TextStyle = .caption1
