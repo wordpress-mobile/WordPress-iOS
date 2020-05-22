@@ -17,10 +17,11 @@
 * [**] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
 * [**] Block editor: Update page templates to use new blocks.
 * [**] Block editor: Fix a crash when uploading new videos on a video block.
-
+* [**] Block Editor: Add support for changing background and text color in Buttons block
 * [internal] the "enter your password" screen has navigation changes that can cause regressions. See https://git.io/Jfl1C for full testing details.
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
 * [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
+* [*] Fixed a bug on the editors where changing a featured image didn't trigger that the post/page changed.
  
 14.8.1
 -----
