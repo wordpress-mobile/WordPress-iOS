@@ -4,17 +4,17 @@ import XCTest
 class FeaturedImageScreen: BaseScreen {
 
 
-    let navigationBar: XCUIElement
+    let removeButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        navigationBar = app.navigationBars["Featured Image"]
-        super.init(element: navigationBar )
+        removeButton = app.navigationBars.buttons["Remove Featured Image"]
+        super.init(element: removeButton )
     }
 
     func tapRemoveFeaturedImageButton() {
-        navigationBar.buttons["Remove Featured Image"].tap()
-        app.sheets["Remove this Featured Image?"].scrollViews.otherElements.buttons["Remove"].tap()
+        removeButton.tap()
+        app.sheets.buttons.element(boundBy: 0).tap()
     }
 
 }
