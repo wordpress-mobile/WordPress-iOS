@@ -483,7 +483,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.1)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/282-refactor_google_login`)
+  - WordPressAuthenticator (~> 1.17.0-beta.5)
   - WordPressKit (~> 4.9.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
@@ -532,6 +532,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -616,9 +617,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 1f5ee28cfd84a9a7fd962f0d63f560baeb777ba7
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: feature/282-refactor_google_login
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
@@ -635,9 +633,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 1f5ee28cfd84a9a7fd962f0d63f560baeb777ba7
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 2c4c4292136af56a256c16c01a318a6666775939
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
@@ -730,6 +725,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 33d363bcf485dfc7dafef75205fe4d5a3639ec69
+PODFILE CHECKSUM: f25835e97e70334ef16fd5cf879321ad5966dc7a
 
 COCOAPODS: 1.8.4
