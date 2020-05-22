@@ -25,7 +25,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var tenorMediaPicker: GutenbergTenorMediaPicker = {
         return GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
-    
+
     lazy var gutenbergSettings: GutenbergSettings = {
         return GutenbergSettings()
     }()
