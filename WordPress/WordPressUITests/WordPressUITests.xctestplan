@@ -22,7 +22,6 @@
       "skippedTests" : [
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
-        "MainNavigationTests\/testTabBarNavigation()",
         "SignupTests\/testEmailSignup()"
       ],
       "target" : {
