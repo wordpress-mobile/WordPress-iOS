@@ -30,6 +30,24 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
         }
     }
 
+    var _mainContext: NSManagedObjectContext?
+    override var mainContext: NSManagedObjectContext {
+        set {
+            _mainContext = newValue
+        }
+
+        get {
+            if let context = _mainContext {
+                return context
+            } else {
+                let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+                context.persistentStoreCoordinator = persistentStoreCoordinator
+                _mainContext = context
+                return context
+            }
+        }
+    }
+
     override func save(_ context: NSManagedObjectContext) {
         save(context) {
             if let testExpectation = self.testExpectation {
@@ -80,27 +98,17 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
         return container
     }()
 
-    override var persistentContainer: NSPersistentContainer {
-        set {
-            // Noop
-        }
-
-        get {
-            return _persistentContainer
-        }
-    }
-
     var standardPSC: NSPersistentStoreCoordinator {
         return super.persistentStoreCoordinator
     }
 
     var requiresTestExpectation = true
 
-    var storeURL: URL {
+    override var storeURL: URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Missing Documents Folder")
         }
-        return url.appendingPathComponent("WordPress.sqlite")
+        return url.appendingPathComponent("WordPressTest.sqlite")
     }
 
     var testExpectation: XCTestExpectation?
