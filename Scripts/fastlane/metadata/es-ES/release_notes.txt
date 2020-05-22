@@ -1,8 +1,7 @@
-Ahora, los ajustes de programación, etiquetas y visibilidad aparecen en el editor de entradas cuando tocas «Publicar» o «Programar», ponlos a punto y toca «Publicar ahora» para finalizar la publicación. ¡Ya no es necesario salir del editor para buscar la pantalla de ajustes de entradas!
+Nunca ha habido un mejor momento para usar la aplicación de WordPress para gestionar tu web: úsala mientras estás por la puerta de tu casa esperando una entrega, en tu salón mientras estás sentado a dos metros de tu compañero de habitación o en el cuarto de baño donde vas a tener un descanso de cinco minutos de tus hijos. Las posibilidades son infinitas, sobre todo porque la versión 14.8 contiene más características en el editor de bloques:
 
-El editor de bloques para móviles sigue creciendo:
-- Encontrarás un bloque de columnas y una nueva plantilla de inicio para blogs.
-- Las opciones de la plantilla de página de inicio ya no oscurecen el contenido de tu página.
-- Hemos corregido un fallo que hacía que apareciera un cuadro de ajustes de URL si movías físicamente tu dispositivo mientras previsualizabas las plantillas de página de inicio.
+Con el nuevo bloque de botones, puedes añadir varios botones en la misma fila.
+El bloque cubierta incluye más opciones de subida para llevar las fotos de tu dispositivo a tu sitio.
+Si tus archivos de imagen tienen leyendas, el bloque imagen los rellenará automáticamente por ti.
 
-Dado que una aplicación nunca puede ser demasiado rápida, demasiado utilizable o demasiado limpia, hemos racionalizado algunas cosas de la interfaz de usuario aquí y allá. ¿Te darás cuenta? Probablemente no, ese es el punto. Y finalmente, hubo un problema de acceso que causaba que la información de la cuenta de los sitios autoalojados no se cargara correctamente.
+Mientras estábamos hurgando, hemos corregido algunos fallos: se han eliminado los espacios en blanco en los bloques de texto, los bloques de citas que no se alineaban correctamente y los botones de las plantillas de páginas que no se mostraban correctamente en la web. Y hemos pulido las pantallas que se ven después del acceso y las del registro para que se vean más limpias y más consistentes dentro de la aplicación.

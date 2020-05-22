@@ -7,6 +7,8 @@
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSNumber *siteID;
 @property (nonatomic) BOOL useTransparentHeader;
+@property (nonatomic) BOOL animateWithKeyboard;
+@property (nonatomic) BOOL showLoading;
 
 - (nonnull instancetype)init;
 
@@ -27,6 +29,14 @@
 - (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
 
 - (void)hideSuggestions;
+
+/// Tells the number of suggestions available for the current search
+- (NSInteger)numberOfSuggestions;
+
+/// Select the suggestion at a certain position and triggers the selection delegate
+/// @param position the index to select
+- (void)selectSuggestionAtPosition:(NSInteger)position;
+
 @end
 
 @protocol SuggestionsTableViewDelegate <NSObject>
@@ -52,5 +62,10 @@
   will call this method to let the UIViewController know
  */
 - (NSInteger)suggestionsTableViewMaxDisplayedRows:(nonnull SuggestionsTableView *)suggestionsTableView;
+
+/// This method is called every the header view above the suggestion is tapped.
+/// @param suggestionsTableView the suggestion view.
+- (void)suggestionsTableViewDidTapHeader:(nonnull SuggestionsTableView *)suggestionsTableView;
+
 
 @end

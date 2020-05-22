@@ -43,9 +43,11 @@ class ReaderTabViewController: UIViewController {
     }
 
     func setupSearchButton() {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
-                                                          target: self,
-                                                          action: #selector(didTapSearchButton))
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
+                                           target: self,
+                                           action: #selector(didTapSearchButton))
+        searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
+        navigationItem.rightBarButtonItem = searchButton
     }
 
     override func loadView() {
@@ -98,6 +100,7 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 extension ReaderTabViewController {
     private enum ReaderTabConstants {
         static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
