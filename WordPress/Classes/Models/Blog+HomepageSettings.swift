@@ -12,13 +12,26 @@ enum HomepageType: String {
             return NSLocalizedString("Classic Blog", comment: "Name of setting configured when a site uses a list of blog posts as its homepage")
         }
     }
+
+    var remoteType: RemoteHomepageType {
+        switch self {
+        case .page:
+            return .page
+        case .posts:
+            return .posts
+        }
+    }
 }
 
 extension Blog {
     private enum OptionsKeys {
         static let homepageType = "show_on_front"
+        static let homepageID = "page_on_front"
+        static let postsPageID = "page_for_posts"
     }
 
+    /// The type of homepage used for the site: blog posts, or static pages
+    ///
     var homepageType: HomepageType? {
         get {
             guard let options = options,
@@ -35,5 +48,33 @@ extension Blog {
                 setValue(value, forOption: OptionsKeys.homepageType)
             }
         }
+    }
+
+    /// The ID of the page to use for the site's 'posts' page,
+    /// if `homepageType` is set to `.posts`
+    ///
+    var homepagePostsPageID: Int? {
+        guard let options = options,
+            !options.isEmpty,
+            let pageID = getOptionNumeric(name: OptionsKeys.postsPageID)
+            else {
+                return nil
+        }
+
+        return pageID.intValue
+    }
+
+    /// The ID of the page to use for the site's homepage,
+    /// if `homepageType` is set to `.page`
+    ///
+    var homepagePageID: Int? {
+        guard let options = options,
+            !options.isEmpty,
+            let pageID = getOptionNumeric(name: OptionsKeys.homepageID)
+            else {
+                return nil
+        }
+
+        return pageID.intValue
     }
 }

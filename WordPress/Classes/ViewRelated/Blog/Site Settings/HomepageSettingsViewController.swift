@@ -7,6 +7,8 @@ import WordPressShared
     /// Are we currently updating the homepage type?
     fileprivate var updating: Bool = false
 
+    fileprivate var postService: PostService!
+
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -17,7 +19,11 @@ import WordPressShared
     ///
     @objc public convenience init(blog: Blog) {
         self.init(style: .grouped)
+
         self.blog = blog
+
+        let context = blog.managedObjectContext ?? ContextManager.shared.mainContext
+        postService = PostService(managedObjectContext: context)
     }
 
     open override func viewDidLoad() {
@@ -32,6 +38,19 @@ import WordPressShared
 
         ImmuTable.registerRows([CheckmarkRow.self, NavigationItemRow.self, ActivityIndicatorRow.self], tableView: tableView)
         reloadViewModel()
+
+        fetchAllPages()
+    }
+
+    private func fetchAllPages() {
+        let options = PostServiceSyncOptions()
+        options.number = 20
+
+        postService.syncPosts(ofType: .page, with: options, for: blog, success: { posts in
+            self.reloadViewModel()
+        }, failure: { _ in
+
+        })
     }
 
     // MARK: - Model
@@ -49,12 +68,7 @@ import WordPressShared
                                                  rows: updating ? updatingHomepageTypeRows : homepageTypeRows,
                                                  footerText: Strings.footerText)
 
-        let choosePage: ImmuTableAction = { _ in
-        }
-
-        let homepageRow = NavigationItemRow(title: Strings.homepage, action: choosePage )
-        let postsPageRow = NavigationItemRow(title: Strings.postsPage, action: choosePage)
-        let choosePagesSection = ImmuTableSection(headerText: Strings.choosePagesHeaderText, rows: [homepageRow, postsPageRow], footerText: nil)
+        let choosePagesSection = ImmuTableSection(headerText: Strings.choosePagesHeaderText, rows: selectedPagesRows)
 
         var sections = [changeTypeSection]
         if homepageType == .page {
@@ -88,6 +102,29 @@ import WordPressShared
                 self.setHomepageType(.page)
             })
         ]
+    }
+
+    var selectedPagesRows: [ImmuTableRow] {
+        var homepageTitle = ""
+        var postsPageTitle = ""
+
+        if let homepageID = blog.homepagePageID,
+            let homepage = postService.findPost(withID: NSNumber(value: homepageID), in: blog) {
+            homepageTitle = homepage.titleForDisplay()
+        }
+
+        if let postsPageID = blog.homepagePostsPageID,
+            let postsPage = postService.findPost(withID: NSNumber(value: postsPageID), in: blog) {
+            postsPageTitle = postsPage.titleForDisplay()
+        }
+
+        let selectPage: ImmuTableAction = { _ in
+        }
+
+        let homepageRow = NavigationItemRow(title: Strings.homepage, detail: homepageTitle, action: selectPage)
+        let postsPageRow = NavigationItemRow(title: Strings.postsPage, detail: postsPageTitle, action: selectPage)
+
+        return [homepageRow, postsPageRow]
     }
 
     // MARK: - Updating Settings
