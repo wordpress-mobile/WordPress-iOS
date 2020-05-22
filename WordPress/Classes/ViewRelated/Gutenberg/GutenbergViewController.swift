@@ -669,6 +669,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self?.mentionShow(callback: callback)
         })
     }
+
+    func gutenbergDidRequestLinks(query: String, callback: @escaping RCTResponseSenderBlock) {
+        let fetchController = PostCoordinator.shared.posts(for: post.blog, wichTitleContains: query)
+        let links = (fetchController.fetchedObjects as! [Post]).map {[
+            "url": $0.permaLink,
+            "title": $0.postTitle
+        ]}
+        callback([links])
+    }
 }
 
 // MARK: - Mention implementation
