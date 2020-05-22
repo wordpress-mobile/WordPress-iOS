@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite, assign) BOOL                           requiresTestExpectation;
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
 @property (nonatomic, nullable,  readwrite, strong) XCTestExpectation   *testExpectation;
-@property (nonatomic, strong, nullable) ContextManagerMock              *stack;
+@property (nonatomic, strong, nullable) id<ManagerMock, CoreDataStack>  stack;
 
 
 /**

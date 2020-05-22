@@ -4,14 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  @class      ContextManagerMock
- *  @brief      This class overrides standard ContextManager functionality, for testing purposes.
- *  @details    The SQLite-Backed PSC is replaced by an InMemory store. This allows us to easily reset
- *              the contents of the database, without even hitting the filesystem.
- */
-@interface ContextManagerMock : ContextManager
-
+@protocol ManagerMock
 @property (nonatomic, readwrite, strong) NSManagedObjectContext         *mainContext;
 @property (nonatomic, readwrite, strong) NSManagedObjectModel           *managedObjectModel;
 @property (nonatomic, readwrite, strong) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
@@ -19,6 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite, assign) BOOL                           requiresTestExpectation;
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
 @property (nonatomic, nullable,  readwrite, strong) XCTestExpectation   *testExpectation;
+@end
+
+/**
+ *  @class      ContextManagerMock
+ *  @brief      This class overrides standard ContextManager functionality, for testing purposes.
+ *  @details    The SQLite-Backed PSC is replaced by an InMemory store. This allows us to easily reset
+ *              the contents of the database, without even hitting the filesystem.
+ */
+@interface ContextManagerMock : ContextManager <ManagerMock, CoreDataStack>
 
 
 /**

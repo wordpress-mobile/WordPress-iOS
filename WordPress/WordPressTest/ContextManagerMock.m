@@ -6,6 +6,8 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
+@synthesize requiresTestExpectation = _requiresTestExpectation;
+@synthesize testExpectation = _testExpectation;
 
 - (instancetype)init
 {
