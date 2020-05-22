@@ -74,6 +74,13 @@ class CoreDataManager: CoreDataStack {
         return container
     }()
 
+    var storeURL: URL {
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("Missing Documents Folder")
+        }
+        return url.appendingPathComponent(Constants.name + ".sqlite")
+    }
+
     private func childContext(with concurrencyType: NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
         let childManagedObjectContext = NSManagedObjectContext(concurrencyType: concurrencyType)
         childManagedObjectContext.parent = self.mainContext
@@ -222,8 +229,7 @@ extension CoreDataManager {
         let versionPath = modelURL.appendingPathComponent(Constants.versionInfoPlist).path
         guard let versionInfo = NSDictionary(contentsOfFile: versionPath),
             let modelNames = versionInfo[Constants.versionHashesKey] as? NSDictionary,
-            let allKeys = modelNames.allKeys as? [String],
-            let objectModel = NSManagedObjectModel(contentsOf: modelURL) else {
+            let allKeys = modelNames.allKeys as? [String] else {
                 return
         }
 
@@ -234,7 +240,7 @@ extension CoreDataManager {
         do {
             try CoreDataIterativeMigrator.iterativeMigrate(sourceStore: storeURL,
                                                            storeType: NSSQLiteStoreType,
-                                                           to: objectModel,
+                                                           to: managedObjectModel,
                                                            using: sortedKeys)
         } catch {
             DDLogError("☠️ [CoreDataManager] Unable to migrate store with error: \(error)")
@@ -277,13 +283,6 @@ extension CoreDataManager {
             fatalError("Missing Model Resource")
         }
         return url
-    }
-
-    private var storeURL: URL {
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Missing Documents Folder")
-        }
-        return url.appendingPathComponent(Constants.name + ".sqlite")
     }
 }
 
