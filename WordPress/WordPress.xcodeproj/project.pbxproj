@@ -1077,6 +1077,7 @@
 		8BC6020D2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC6020C2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift */; };
 		8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */; };
 		8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */; };
+		8BD6E34A2477514E009AE97C /* TestContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD6E3492477514E009AE97C /* TestContextManager.m */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
@@ -1135,7 +1136,7 @@
 		93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93E5284219A7741A003A1A9C /* MainInterface.storyboard */; };
 		93E5284619A7741A003A1A9C /* WordPressTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
-		93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 93E9050619E6F3D8005513C9 /* TestContextManager.m */; };
+		93E9050719E6F3D8005513C9 /* ContextManagerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 93E9050619E6F3D8005513C9 /* ContextManagerMock.m */; };
 		93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9050319E6F242005513C9 /* ContextManagerTests.swift */; };
 		93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
 		93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */; };
@@ -3518,6 +3519,8 @@
 		8BC6020C2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullBlogPropertySanitizerTests.swift; sourceTree = "<group>"; };
 		8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+Description.swift"; sourceTree = "<group>"; };
 		8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+DescriptionTests.swift"; sourceTree = "<group>"; };
+		8BD6E3492477514E009AE97C /* TestContextManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestContextManager.m; sourceTree = "<group>"; };
+		8BD6E34B24775164009AE97C /* TestContextManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestContextManager.h; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
 		8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLs.swift"; sourceTree = "<group>"; };
@@ -3613,8 +3616,8 @@
 		93E5285719A7AA5C003A1A9C /* WordPressTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WordPressTodayWidget.entitlements; sourceTree = "<group>"; };
 		93E9050219E6F240005513C9 /* WordPressTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		93E9050319E6F242005513C9 /* ContextManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManagerTests.swift; sourceTree = "<group>"; };
-		93E9050519E6F3D8005513C9 /* TestContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestContextManager.h; sourceTree = "<group>"; };
-		93E9050619E6F3D8005513C9 /* TestContextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestContextManager.m; sourceTree = "<group>"; };
+		93E9050519E6F3D8005513C9 /* ContextManagerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManagerMock.h; sourceTree = "<group>"; };
+		93E9050619E6F3D8005513C9 /* ContextManagerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextManagerMock.m; sourceTree = "<group>"; };
 		93EF094B19ED4F1100C89770 /* ContextManager-Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContextManager-Internals.h"; sourceTree = "<group>"; };
 		93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		93F2E5411E9E5A350050D489 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -9743,14 +9746,16 @@
 				E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */,
 				3F50945C2455280300C4470B /* MockContext.swift */,
 				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
-				93E9050519E6F3D8005513C9 /* TestContextManager.h */,
-				93E9050619E6F3D8005513C9 /* TestContextManager.m */,
+				93E9050519E6F3D8005513C9 /* ContextManagerMock.h */,
+				93E9050619E6F3D8005513C9 /* ContextManagerMock.m */,
 				933D1F451EA64108009FB462 /* TestingAppDelegate.h */,
 				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
 				933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */,
 				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
 				D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */,
 				8BE7C84023466927006EDE70 /* I18n.swift */,
+				8BD6E34B24775164009AE97C /* TestContextManager.h */,
+				8BD6E3492477514E009AE97C /* TestContextManager.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -13505,6 +13510,7 @@
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
 				40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */,
+				8BD6E34A2477514E009AE97C /* TestContextManager.m in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				40C403EE2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift in Sources */,
@@ -13532,7 +13538,7 @@
 				40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */,
 				57240224234E5BE200227067 /* PostServiceSelfHostedTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
-				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
+				93E9050719E6F3D8005513C9 /* ContextManagerMock.m in Sources */,
 				D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */,
 				F565190323CF6D1D003FACAF /* WKCookieJarTests.swift in Sources */,
 				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
