@@ -1460,7 +1460,7 @@ FeaturedImageViewControllerDelegate>
     self.animatedFeaturedImageData = nil;
     [self.apost setFeaturedImage:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:PostSettingsSectionFeaturedImage]  withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 @end
