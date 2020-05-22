@@ -1,8 +1,7 @@
-Les réglages de la planification, des étiquettes et de la visibilité apparaissent désormais correctement dans l'éditeur d'articles lorsque vous appuyez sur « Publier » ou « Planifier ». Adaptez ces réglages, puis sélectionnez « Publier maintenant » pour valider la publication. Vous n'avez plus besoin de quitter l'éditeur pour consulter l'écran Réglages de l'article !
+C’est le moment idéal pour utiliser l’application WordPress pour gérer votre site Web. Vous pouvez l’utiliser pendant que vous patientez devant votre porte en attendant une livraison, lorsque vous êtes assis dans votre salon à une distance de 1,5 mètre de votre colocataire, ou lorsque vous vous isolez dans la salle de bains pour faire une pause de 5 minutes avant de retourner vous occuper de vos enfants. Les possibilités sont infinies, en particulier avec les fonctionnalités supplémentaires de l’Éditeur de blocs de la version v14.8 :
 
-L'éditeur de blocs pour applications mobiles continue d'évoluer :-
-– Vous découvrirez un bloc de colonnes et un nouveau modèle de démarrage pour les blogs.
-– Les options du modèle de page de démarrage ne masquent plus le contenu de votre page.
-– Nous avons résolu un bug entraînant l'affichage des réglages de l'URL lors du déplacement physique de votre appareil pendant la prévisualisation des modèles de page de démarrage.
+Avec le nouveau bloc de boutons, vous pouvez ajouter plusieurs boutons sur la même ligne.
+Le bloc de couverture inclut davantage d’options de chargement permettant de transférer des images de votre appareil vers votre site.
+Si vos fichiers image comportent des légendes, le bloc d’image les préremplit automatiquement pour vous.
 
-Une application n'étant jamais trop rapide, accessible ou épurée, nous avons quelque peu simplifié l'interface utilisateur çà et là. Le remarquerez-vous ? Probablement pas et c'est très bien ainsi. Enfin, un problème de connexion entraînant un chargement incorrect des informations relatives aux comptes des sites auto-hébergés a été résolu.
+À l’occasion de cette mise à jour, nous avons corrigé quelques bogues : espace supprimé autour des blocs de texte, problème d’alignement des blocs de citation et boutons des modèles de page qui ne s’affichaient pas correctement sur le Web. Nous avons également donné un coup de neuf aux écrans s’affichant après la connexion et lors de l’inscription, afin de gagner en clarté et en cohérence dans l’application.

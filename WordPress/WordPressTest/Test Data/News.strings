@@ -7,5 +7,8 @@
 /* News Card link. */
 "URL" = "https://wordpress.com";
 
+/* News Card image name. */
+"ImageName" = "test-image-name";
+
 /* Build version this card applies to. */
 "version" = "10.8";
