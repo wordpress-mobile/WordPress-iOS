@@ -2,7 +2,7 @@
 #import <WordPressShared/WPFontManager.h>
 #import "WordPress-Swift.h"
 
-NSInteger const SuggestionsTableViewCellAvatarSize = 23;
+NSInteger const SuggestionsTableViewCellAvatarSize = 24;
 
 @implementation SuggestionsTableViewCell
 
@@ -14,15 +14,21 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
         [self setupDisplayNameLabel];
         [self setupAvatarImageView];
         [self setupConstraints];
+        self.backgroundColor = [UIColor murielListForeground];
     }
     return self;
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.imageDownloadHash = 0;
 }
 
 - (void)setupUsernameLabel
 {
     _usernameLabel = [[UILabel alloc] init];
     [_usernameLabel setTextColor:[UIColor murielPrimary]];
-    [_usernameLabel setFont:[WPFontManager systemRegularFontOfSize:14.0]];
+    [_usernameLabel setFont:[WPFontManager systemRegularFontOfSize:17.0]];
     [_usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.contentView addSubview:_usernameLabel];
 }
@@ -30,7 +36,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 - (void)setupDisplayNameLabel
 {
     _displayNameLabel = [[UILabel alloc] init];
-    [_displayNameLabel setTextColor:[WPStyleGuide allTAllShadeGrey]];
+    [_displayNameLabel setTextColor:[UIColor murielTextSubtle]];
     [_displayNameLabel setFont:[WPFontManager systemRegularFontOfSize:14.0]];
     [_displayNameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     _displayNameLabel.textAlignment = NSTextAlignmentRight;
