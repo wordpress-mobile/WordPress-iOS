@@ -492,8 +492,33 @@ private struct Constants {
     }
 
     fileprivate func configureButtonTitles() {
-         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
+        guard let provider = contentProvider else {
+            return
+        }
+
+        let likeCount = provider.likeCount()?.intValue ?? 0
+        let commentCount = provider.commentCount()?.intValue ?? 0
+
+        if self.traitCollection.horizontalSizeClass == .compact {
+            // remove title text
+            let likeTitle = likeCount > 0 ?  String(likeCount) : ""
+            let commentTitle = commentCount > 0 ? String(commentCount) : ""
+            likeActionButton.setTitle(likeTitle, for: .normal)
+            commentActionButton.setTitle(commentTitle, for: .normal)
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton, showTitle: false)
+
+        } else {
+            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
+            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
+
+            likeActionButton.setTitle(likeTitle, for: .normal)
+            commentActionButton.setTitle(commentTitle, for: .normal)
+
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
+        }
+
 
     }
 
