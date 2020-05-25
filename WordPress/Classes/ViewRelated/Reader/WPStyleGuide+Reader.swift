@@ -28,7 +28,7 @@ extension WPStyleGuide {
     // MARK: - Reader Card Styles
 
     @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
-        return .primary
+        return .neutral(.shade90)
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
@@ -177,7 +177,8 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = UIColor.textSubtle
+        label.textColor = .neutral(.shade40)
+
     }
 
     @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
