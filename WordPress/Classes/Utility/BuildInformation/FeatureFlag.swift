@@ -39,7 +39,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .tenor:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerWebview:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         }
     }
 }
