@@ -15,9 +15,28 @@
                     <view key="view" contentMode="scaleToFill" id="HkO-UB-8qv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="5xu-xy-F0b"/>
+                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" id="7Mc-Gl-VHM"/>
+                            <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="UUS-bP-ZjL"/>
+                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="iSu-TI-yew" secondAttribute="bottom" id="sPU-IY-OkA"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aGx-LJ-atS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

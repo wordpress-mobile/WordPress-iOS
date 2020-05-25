@@ -1,6 +1,26 @@
 import UIKit
 
 class ReaderDetailWebviewViewController: UIViewController {
+    @IBOutlet weak var webView: WKWebView!
+
+    /// The post to be shown
+    private(set) var post: ReaderPost?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        renderContent()
+    }
+
+    /// Displays the post content in the webview
+    private func renderContent() {
+        guard let post = post else {
+            return
+        }
+
+        webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
+    }
+
     /// A View Controller that displays a Post content.
     ///
     /// Use this method to present content for the user.
@@ -38,7 +58,9 @@ class ReaderDetailWebviewViewController: UIViewController {
         } else if post.isCross() {
             return ReaderDetailWebviewViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
         } else {
-            return ReaderDetailWebviewViewController.loadFromStoryboard()
+            let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+            controller.post = post
+            return controller
         }
     }
 }

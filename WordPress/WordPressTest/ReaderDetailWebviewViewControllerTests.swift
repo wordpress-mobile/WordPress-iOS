@@ -26,14 +26,14 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
         expect(controller).to(beAKindOf(ReaderDetailWebviewViewController.self))
     }
 
-    /// Given a ReaderPost returns a ReaderDetailWebviewViewController
+    /// Given a ReaderPost sets the VC post to the given
     ///
-    func testControllerWithPost() {
+    func testControllerWithPostRendersPostContent() {
         let post: ReaderPost = ReaderPostBuilder().build()
 
         let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
 
-        expect(controller).to(beAKindOf(ReaderDetailWebviewViewController.self))
+        expect(controller.post).to(equal(post))
     }
 
 }
