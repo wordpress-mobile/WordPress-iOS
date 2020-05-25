@@ -159,6 +159,10 @@ private struct Constants {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
         configureButtonTitles()
+
+        // Update colors
+        configureFeaturedImageView()
+        configureAvatarImageView()
     }
 
     open override func prepareForReuse() {
@@ -179,10 +183,7 @@ private struct Constants {
 
         featuredMediaHeightConstraint.constant = height
 
-        // Round the corners, and add a border
-        featuredImageView.layer.cornerRadius = Constants.featuredMediaCornerRadius
-        featuredImageView.layer.borderColor = WPStyleGuide.readerCardFeaturedMediaBorderColor().cgColor
-        featuredImageView.layer.borderWidth = Constants.imageBorderWidth
+        configureFeaturedImageView()
     }
 
     fileprivate func setupSummaryLabel() {
@@ -220,8 +221,6 @@ private struct Constants {
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderedView.backgroundColor = .listForeground
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
@@ -305,6 +304,13 @@ private struct Constants {
         avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
         avatarImageView.layer.borderWidth = Constants.imageBorderWidth
         avatarImageView.layer.masksToBounds = true
+    }
+
+    private func configureFeaturedImageView() {
+        // Round the corners, and add a border
+        featuredImageView.layer.cornerRadius = Constants.featuredMediaCornerRadius
+        featuredImageView.layer.borderColor = WPStyleGuide.readerCardFeaturedMediaBorderColor().cgColor
+        featuredImageView.layer.borderWidth = Constants.imageBorderWidth
     }
 
     fileprivate func configureFeaturedImageIfNeeded() {
