@@ -1080,8 +1080,8 @@
 		8BDA5A6B247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */; };
 		8BDA5A6D247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6C247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift */; };
 		8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */; };
-		8BDA5A72247C5E5800AB124C /* ReaderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */; };
 		8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */; };
+		8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
@@ -12531,6 +12531,7 @@
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
 				983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */,
 				98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */,
+				8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
@@ -13628,7 +13629,6 @@
 				F551E7F723FC9A5C00751212 /* Collection+RotateTests.swift in Sources */,
 				E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */,
 				57D66B9D234BB78B005A2D74 /* PostServiceWPComTests.swift in Sources */,
-				8BDA5A72247C5E5800AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
