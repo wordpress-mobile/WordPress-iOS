@@ -65,12 +65,13 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
-                                        <rect key="frame" x="244" y="8" width="44" height="24"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
+                                        <rect key="frame" x="244" y="9" width="44" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="e2h-Nw-J4L"/>
                                         </constraints>
-                                        <state key="normal" image="icon-menu-ellipsis">
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" image="icon-menu-vertical-ellipsis">
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -86,7 +87,7 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
-                                <rect key="frame" x="16" y="188" width="288" height="121"/>
+                                <rect key="frame" x="16" y="188" width="288" height="114"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="46.5"/>
@@ -141,10 +142,10 @@
                                         </connections>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                        <rect key="frame" x="0.0" y="77" width="288" height="44"/>
+                                        <rect key="frame" x="0.0" y="77" width="288" height="37"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="72" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="72" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="nN7-IP-LxP"/>
                                                 </constraints>
@@ -160,7 +161,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mch-Ja-RJu" customClass="PostMetaButton">
-                                                <rect key="frame" x="72" y="0.0" width="72" height="44"/>
+                                                <rect key="frame" x="72" y="0.0" width="72" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="xtD-oQ-xDy"/>
                                                 </constraints>
@@ -176,7 +177,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
-                                                <rect key="frame" x="144" y="0.0" width="72" height="44"/>
+                                                <rect key="frame" x="144" y="0.0" width="72" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="248-Kf-BzV"/>
                                                 </constraints>
@@ -192,7 +193,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
-                                                <rect key="frame" x="216" y="0.0" width="72" height="44"/>
+                                                <rect key="frame" x="216" y="0.0" width="72" height="37"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="BWy-fX-yzf"/>
                                                 </constraints>
@@ -209,13 +210,13 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="RDJ-jr-Y8h"/>
+                                            <constraint firstAttribute="height" constant="37" id="RDJ-jr-Y8h"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                <rect key="frame" x="16" y="325" width="288" height="137"/>
+                                <rect key="frame" x="16" y="318" width="288" height="144"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
@@ -280,7 +281,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon-menu-ellipsis" width="24" height="24"/>
+        <image name="icon-menu-vertical-ellipsis" width="4" height="18"/>
         <image name="icon-reader-comment" width="24" height="24"/>
         <image name="icon-reader-like" width="24" height="24"/>
         <image name="post-blavatar-placeholder" width="32" height="32"/>

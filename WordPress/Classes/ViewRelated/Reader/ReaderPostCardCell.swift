@@ -191,8 +191,10 @@ private struct Constants {
     }
     
     fileprivate func setupMenuButton() {
-        let size = CGSize(width: 20, height: 20)
-        let icon = UIImage.gridicon(.ellipsis, size: size)
+        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
+            return
+        }
+
         let tintedIcon = icon.imageWithTintColor(.neutral(.shade50))
         let highlightIcon = icon.imageWithTintColor(.neutral)
 
