@@ -5,6 +5,7 @@ class ReaderDetailCoordinator {
     /// Reader Post Service
     private let service: ReaderPostService
 
+    /// Reader View
     private weak var view: ReaderDetailView?
 
     /// Initialize the Reader Detail Coordinator
