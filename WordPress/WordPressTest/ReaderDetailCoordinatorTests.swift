@@ -5,18 +5,21 @@ import Nimble
 
 class ReaderDetailCoordinatorTests: XCTestCase {
 
-    /// Given a post and site ID, fetches the post from the service
+    /// Given a post, site ID and isFeed fetches the post from the service
     ///
     func testRetrieveAReaderPostWhenSiteAndPostAreGiven() {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postID = 1
+        coordinator.siteID = 2
+        coordinator.isFeed = true
 
-        coordinator.fetch(postID: 1, siteID: 2, isFeed: false)
+        coordinator.start()
 
         expect(serviceMock.didCallFetchPostWithPostID).to(equal(1))
         expect(serviceMock.didCallFetchPostWithSiteID).to(equal(2))
-        expect(serviceMock.didCallFetchPostWithIsFeed).to(beFalse())
+        expect(serviceMock.didCallFetchPostWithIsFeed).to(beTrue())
     }
 
     /// Given the returned ReaderPost to the view
@@ -27,8 +30,11 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         serviceMock.returnPost = post
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postID = 1
+        coordinator.siteID = 2
+        coordinator.isFeed = false
 
-        coordinator.fetch(postID: 1, siteID: 2, isFeed: false)
+        coordinator.start()
 
         expect(viewMock.didCallRenderWithPost).to(equal(post))
     }
@@ -40,10 +46,28 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         serviceMock.forceError = true
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postID = 1
+        coordinator.siteID = 2
+        coordinator.isFeed = false
 
-        coordinator.fetch(postID: 1, siteID: 2, isFeed: false)
+        coordinator.start()
 
         expect(viewMock.didCallShowError).to(beTrue())
+    }
+
+    /// If a post is given, do not call the servce and render the content right away
+    ///
+    func testGivenAPostRenderItRightAway() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.start()
+
+        expect(viewMock.didCallRenderWithPost).to(equal(post))
+        expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
     }
 
 }
