@@ -11,9 +11,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
-        coordinator.postID = 1
-        coordinator.siteID = 2
-        coordinator.isFeed = true
+        coordinator.set(postID: 1, siteID: 2, isFeed: true)
 
         coordinator.start()
 
@@ -30,9 +28,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         serviceMock.returnPost = post
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
-        coordinator.postID = 1
-        coordinator.siteID = 2
-        coordinator.isFeed = false
+        coordinator.set(postID: 1, siteID: 2, isFeed: false)
 
         coordinator.start()
 
@@ -46,9 +42,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         serviceMock.forceError = true
         let viewMock = ReaderDetailViewMock()
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
-        coordinator.postID = 1
-        coordinator.siteID = 2
-        coordinator.isFeed = false
+        coordinator.set(postID: 1, siteID: 2, isFeed: false)
 
         coordinator.start()
 

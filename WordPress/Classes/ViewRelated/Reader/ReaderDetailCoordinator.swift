@@ -2,23 +2,23 @@ import Foundation
 
 class ReaderDetailCoordinator {
 
+    /// A post to be displayed
+    var post: ReaderPost?
+
     /// Reader Post Service
     private let service: ReaderPostService
 
     /// Reader View
     private weak var view: ReaderDetailView?
 
-    /// A post to be displayed
-    var post: ReaderPost?
-
     /// A post ID to fetch
-    var postID: NSNumber?
+    private var postID: NSNumber?
 
     /// A site ID to be used to fetch a post
-    var siteID: NSNumber?
+    private var siteID: NSNumber?
 
     /// If the site is an external feed (not hosted at WPcom and not using Jetpack)
-    var isFeed: Bool?
+    private var isFeed: Bool?
 
     /// Initialize the Reader Detail Coordinator
     ///
@@ -35,6 +35,12 @@ class ReaderDetailCoordinator {
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         }
+    }
+
+    func set(postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
+        self.postID = postID
+        self.siteID = siteID
+        self.isFeed = isFeed
     }
 
     /// Requests a ReaderPost from the service and updates the View.
