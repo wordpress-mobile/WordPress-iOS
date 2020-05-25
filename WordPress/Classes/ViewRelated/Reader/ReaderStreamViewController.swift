@@ -1290,7 +1290,14 @@ extension ReaderStreamViewController: NewsManagerDelegate {
     }
 
     private func presentReaderDetailViewControllerWithURL(_ url: URL) {
-        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        var viewController: UIViewController!
+
+        if FeatureFlag.readerWebview.enabled {
+            viewController = ReaderDetailWebviewViewController.controllerWithPostURL(url)
+        } else {
+            viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        }
+
         navigationController?.pushFullscreenViewController(viewController, animated: true)
     }
 }
@@ -1547,18 +1554,25 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        var controller: ReaderDetailViewController
-        if post.sourceAttributionStyle() == .post &&
-            post.sourceAttribution.postID != nil &&
-            post.sourceAttribution.blogID != nil {
+        var controller: UIViewController
 
-            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-
-        } else if post.isCross() {
-            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-
+        if FeatureFlag.readerWebview.enabled {
+            controller = ReaderDetailWebviewViewController.controllerWithPost(post)
         } else {
-            controller = ReaderDetailViewController.controllerWithPost(post)
+
+            if post.sourceAttributionStyle() == .post &&
+                post.sourceAttribution.postID != nil &&
+                post.sourceAttribution.blogID != nil {
+
+                controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+
+            } else if post.isCross() {
+                controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+
+            } else {
+                controller = ReaderDetailViewController.controllerWithPost(post)
+
+            }
 
         }
 
