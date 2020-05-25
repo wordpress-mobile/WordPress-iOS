@@ -8,6 +8,7 @@ private struct Constants {
     static let featuredMediaHeightRatio: CGFloat = 1.777777778
     static let featuredMediaCornerRadius: CGFloat = 4
     static let imageBorderWidth: CGFloat = 1
+    static let featuredMediaTopSpacing: CGFloat = 16
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -31,6 +32,8 @@ private struct Constants {
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
 
     // Header realated Views
+
+    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
@@ -305,6 +308,7 @@ private struct Constants {
             imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
+            contentStackView.setCustomSpacing(0, after: headerStackView)
             return
         }
 
@@ -322,6 +326,7 @@ private struct Constants {
             return
         }
 
+        contentStackView.setCustomSpacing(Constants.featuredMediaTopSpacing, after: headerStackView)
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width

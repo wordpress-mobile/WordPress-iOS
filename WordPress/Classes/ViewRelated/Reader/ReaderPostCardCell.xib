@@ -272,6 +272,7 @@
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
                 <outlet property="featuredMediaHeightConstraint" destination="6Qh-iW-StJ" id="bxu-gx-46h"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
+                <outlet property="headerStackView" destination="xwk-ft-EDo" id="mVV-0H-yAh"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
                 <outlet property="likeActionButton" destination="z4x-8W-5Dc" id="anJ-1J-8im"/>
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
