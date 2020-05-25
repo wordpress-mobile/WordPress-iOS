@@ -170,7 +170,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle, fontWeight: .medium)
         label.textColor = readerCardBlogNameLabelTextColor()
         label.highlightedTextColor = .primaryLight
     }
