@@ -24,6 +24,23 @@ class ReaderDetailWebviewViewController: UIViewController {
 
         return controller
     }
+
+    /// A View Controller that displays a Post content.
+    ///
+    /// Use this method to present content for the user.
+    /// - Parameter post: a Reader Post
+    /// - Returns: A `ReaderDetailWebviewViewController` instance
+    @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailWebviewViewController {
+        if post.sourceAttributionStyle() == .post &&
+            post.sourceAttribution.postID != nil &&
+            post.sourceAttribution.blogID != nil {
+            return ReaderDetailWebviewViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+        } else if post.isCross() {
+            return ReaderDetailWebviewViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+        } else {
+            return ReaderDetailWebviewViewController.loadFromStoryboard()
+        }
+    }
 }
 
 // MARK: - StoryboardLoadable

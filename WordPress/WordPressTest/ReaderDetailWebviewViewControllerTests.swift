@@ -26,4 +26,28 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
         expect(controller).to(beAKindOf(ReaderDetailWebviewViewController.self))
     }
 
+    /// Given a ReaderPost returns a ReaderDetailWebviewViewController
+    ///
+    func testControllerWithPost() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+
+        let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
+
+        expect(controller).to(beAKindOf(ReaderDetailWebviewViewController.self))
+    }
+
+}
+
+/// Builds a ReaderPost
+///
+private class ReaderPostBuilder: PostBuilder {
+    private let post: ReaderPost
+
+    override init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {
+        post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: context) as! ReaderPost
+    }
+
+    func build() -> ReaderPost {
+        return post
+    }
 }
