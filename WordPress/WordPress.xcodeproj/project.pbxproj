@@ -6483,6 +6483,8 @@
 				5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */,
 				5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
+				8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */,
+				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
 				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
@@ -9570,8 +9572,6 @@
 				D8212CC020AA7C58008E8AE8 /* ReaderShowMenuAction.swift */,
 				D8212CB420AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift */,
 				D8212CBC20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift */,
-				8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */,
-				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
 			);
 			name = ReaderPostActions;
 			sourceTree = "<group>";
