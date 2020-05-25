@@ -78,22 +78,6 @@ private struct Constants {
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
-
-    open override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        setHighlighted(selected, animated: animated)
-    }
-
-    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = self.isHighlighted
-        super.setHighlighted(highlighted, animated: animated)
-
-        if previouslyHighlighted == highlighted {
-            return
-        }
-        applyHighlightedEffect(highlighted, animated: animated)
-    }
-
     @objc open var headerBlogButtonIsEnabled: Bool {
         get {
             return headerBlogButton.isEnabled
@@ -527,21 +511,6 @@ private struct Constants {
 
 
     }
-
-    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
-        func updateBorder() {
-            self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().cgColor : WPStyleGuide.readerCardCellBorderColor().cgColor
-        }
-        guard animated else {
-            updateBorder()
-            return
-        }
-        UIView.animate(withDuration: 0.25,
-            delay: 0,
-            options: UIView.AnimationOptions(),
-            animations: updateBorder)
-    }
-
 
     // MARK: -
 
