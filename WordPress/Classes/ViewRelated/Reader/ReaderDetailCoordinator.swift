@@ -2,8 +2,12 @@ import Foundation
 
 class ReaderDetailCoordinator {
 
+    /// Reader Post Service
     private let service: ReaderPostService
 
+    /// Initialize the Reader Detail Coordinator
+    ///
+    /// - Parameter service: a Reader Post Service
     init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
         self.service = service
     }
