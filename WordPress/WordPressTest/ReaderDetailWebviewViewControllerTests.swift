@@ -40,7 +40,7 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
 
 /// Builds a ReaderPost
 ///
-private class ReaderPostBuilder: PostBuilder {
+class ReaderPostBuilder: PostBuilder {
     private let post: ReaderPost
 
     override init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {

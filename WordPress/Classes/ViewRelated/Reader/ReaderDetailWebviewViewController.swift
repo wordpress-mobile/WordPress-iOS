@@ -1,15 +1,31 @@
 import UIKit
 
-class ReaderDetailWebviewViewController: UIViewController {
+protocol ReaderDetailView: class {
+    func render(_ post: ReaderPost)
+    func showError()
+}
+
+class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var webView: WKWebView!
 
     /// The post to be shown
     private(set) var post: ReaderPost?
 
+    /// The coordinator, responsible for the logic
+    private var coordinator: ReaderDetailCoordinator!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         renderContent()
+    }
+
+    func render(_ post: ReaderPost) {
+        webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
+    }
+
+    func showError() {
+        // Show error
     }
 
     /// Displays the post content in the webview
