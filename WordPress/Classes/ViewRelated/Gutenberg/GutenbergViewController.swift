@@ -284,6 +284,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         verificationPromptHelper?.updateVerificationStatus()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
+    }
+
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
