@@ -1,6 +1,6 @@
 import WordPressShared
 
-extension WPTableViewCell {
+extension UITableViewCell {
     /// Enable cell interaction
     @objc func enable() {
         isUserInteractionEnabled = true

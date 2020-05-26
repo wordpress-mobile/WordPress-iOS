@@ -175,11 +175,6 @@ class PrepublishingViewController: UITableViewController {
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
                 self?.showPasswordAlert()
-            } else if option == AbstractPost.privateLabel {
-                // If a post is private, we can't schedule it, so we reset the schedulded date
-                self?.publishSettingsViewModel.setDate(nil)
-                self?.post.status = .publishPrivate
-                self?.navigationController?.popViewController(animated: true)
             } else {
                 self?.navigationController?.popViewController(animated: true)
             }
