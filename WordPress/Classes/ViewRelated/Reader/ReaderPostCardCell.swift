@@ -781,7 +781,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func datePublished() -> String {
-        return (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
+        return contentProvider?.dateForDisplay()?.readerDateForDisplay() ?? ""
     }
 }
 
@@ -817,5 +817,12 @@ extension ReaderPostCardCell {
 private extension ReaderPostCardCell {
     func featuredImageHeight(for width: CGFloat) -> CGFloat {
         return width / Constants.featuredMediaHeightRatio
+    }
+}
+
+private extension Date {
+    func readerDateForDisplay() -> String {
+        let relativeFormatter = ReaderRelativeTimeFormatter()
+        return relativeFormatter.string(from: self)
     }
 }
