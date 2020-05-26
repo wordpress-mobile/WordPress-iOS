@@ -199,7 +199,7 @@ extension ReaderTabView {
         toggleButtonsView()
     }
 
-        private func toggleButtonsView() {
+    private func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
             return
         }
@@ -211,7 +211,6 @@ extension ReaderTabView {
         self.buttonsStackView.isHidden = shouldHideButtons
         self.horizontalDivider.isHidden = shouldHideButtons
     }
-
 
     /// Filter button
     @objc private func didTapFilterButton() {
