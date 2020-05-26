@@ -47,7 +47,7 @@ extension WPStyleGuide {
     @objc public class func readerCardBlogIconBorderColor() -> UIColor {
         return .neutral(.shade0)
     }
-    
+
     @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
         return .neutral(.shade0)
     }
