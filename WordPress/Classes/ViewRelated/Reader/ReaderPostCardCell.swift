@@ -37,6 +37,7 @@ private struct Constants {
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
+    @IBOutlet weak var bylineSeparatorLabel: UILabel!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -269,8 +270,10 @@ private struct Constants {
 
         blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
-
-        bylineLabel.text = [Constants.byLineSeparatorString, datePublished()].joined()
+        
+        let dateString: String = datePublished()
+        bylineSeparatorLabel.isHidden = dateString.isEmpty
+        bylineLabel.text = dateString
     }
 
     fileprivate func configureAvatarImageView() {
