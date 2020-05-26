@@ -753,10 +753,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             "mentions": post.blog.isAccessibleThroughWPCom()
         ]
     }
-
-    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
-        return StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport
-    }
 }
 
 // MARK: - PostEditorStateContextDelegate
@@ -874,7 +870,12 @@ private extension GutenbergViewController {
 }
 
 // Editor Theme Support
-private extension GutenbergViewController {
+extension GutenbergViewController {
+
+    // GutenbergBridgeDataSource
+    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
+        return StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport
+    }
 
     private func fetchEditorTheme() {
         let themeSupportStore = StoreContainer.shared.editorTheme
