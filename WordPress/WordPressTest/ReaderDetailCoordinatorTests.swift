@@ -5,7 +5,7 @@ import Nimble
 
 class ReaderDetailCoordinatorTests: XCTestCase {
 
-    /// Given a post, site ID and isFeed fetches the post from the service
+    /// Given a post ID, site ID and isFeed fetches the post from the service
     ///
     func testRetrieveAReaderPostWhenSiteAndPostAreGiven() {
         let serviceMock = ReaderPostServiceMock()
