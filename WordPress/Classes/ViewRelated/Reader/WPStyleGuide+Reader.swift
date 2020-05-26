@@ -177,7 +177,8 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = .neutral(.shade40)
+        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
+                                  dark: .muriel(color: .gray, .shade20))
 
     }
 
@@ -186,7 +187,8 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = .neutral(.shade40)
+        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
+                                  dark: .muriel(color: .gray, .shade20))
     }
 
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
@@ -231,15 +233,23 @@ extension WPStyleGuide {
 
     // MARK: - Button Styles and Text
     class func applyReaderStreamActionButtonStyle(_ button: UIButton) {
-        return applyReaderActionButtonStyle(button, titleColor: .listIcon, imageColor: .neutral(.shade50))
+        let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
+                                dark: .muriel(color: .gray, .shade10))
+
+        let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
+                                    dark: .muriel(color: .gray, .shade60))
+
+        return applyReaderActionButtonStyle(button,
+                                            titleColor: tintColor,
+                                            imageColor: tintColor,
+                                            disabledColor: disabledColor)
     }
 
-    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon) {
+    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon, disabledColor: UIColor = .neutral(.shade10)) {
         button.tintColor = imageColor
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
-        let disabledColor: UIColor = .neutral(.shade10)
 
         let highlightedImage = button.image(for: .highlighted)
         let selectedImage = button.image(for: .selected)
