@@ -9,6 +9,7 @@ private struct Constants {
     static let featuredMediaCornerRadius: CGFloat = 4
     static let imageBorderWidth: CGFloat = 1
     static let featuredMediaTopSpacing: CGFloat = 16
+    static let byLineSeparatorString: String = " · "
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -177,7 +178,7 @@ private struct Constants {
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .byTruncatingTail
     }
-    
+
     fileprivate func setupMenuButton() {
         guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
             return
@@ -283,8 +284,9 @@ private struct Constants {
         }
 
         blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
-        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()  ?? ""
-        bylineLabel.text = [" ·", datePublished()].joined(separator: " ")
+        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
+
+        bylineLabel.text = [Constants.byLineSeparatorString, datePublished()].joined()
     }
 
     fileprivate func configureAvatarImageView() {
