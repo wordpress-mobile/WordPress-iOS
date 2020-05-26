@@ -2,6 +2,7 @@
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
 * [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
+* Reader: Updated card design
 
 14.9
 -----
