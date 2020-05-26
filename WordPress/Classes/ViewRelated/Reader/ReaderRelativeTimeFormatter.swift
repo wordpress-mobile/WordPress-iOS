@@ -33,7 +33,7 @@ class ReaderRelativeTimeFormatter: NSObject {
         let dateYear = calendar.component(.year, from: date)
         let nowYear = calendar.component(.year, from: now)
 
-        if (dateYear != nowYear) {
+        if dateYear != nowYear {
             return dateFormatter.string(from: date)
         }
 
@@ -59,7 +59,7 @@ class ReaderRelativeTimeFormatter: NSObject {
 
         // If the date is within an hour, display the relative time in minutes
         // 1m, 50m, 59m
-        if let minute = deltaComponents.minute, minute >= 0{
+        if let minute = deltaComponents.minute, minute >= 0 {
             // If the minute value is 0 round it up to 1 so we don't display "0m"
             // Example being if the date is 30 seconds old
             let value = (minute == 0) ? 1 : minute
