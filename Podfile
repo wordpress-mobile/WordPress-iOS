@@ -121,7 +121,8 @@ def gutenberg_dependencies(options)
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
-        'react-native-linear-gradient'
+        'react-native-linear-gradient',
+        'react-native-get-random-values'
     ]
     if options[:path]
         podspec_prefix = options[:path]

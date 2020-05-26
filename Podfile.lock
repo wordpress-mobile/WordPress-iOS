@@ -288,6 +288,8 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
+  - react-native-get-random-values (1.4.0):
+    - React
   - react-native-keyboard-aware-scroll-view (0.8.8):
     - React
   - react-native-linear-gradient (2.5.6):
@@ -458,6 +460,7 @@ DEPENDENCIES:
   - React-jsi (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/React-jsi.podspec.json`)
   - React-jsiexecutor (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/React-jsiexecutor.podspec.json`)
   - React-jsinspector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/React-jsinspector.podspec.json`)
+  - react-native-get-random-values (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-get-random-values.podspec.json`)
   - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
   - react-native-linear-gradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-linear-gradient.podspec.json`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-safe-area.podspec.json`)
@@ -578,6 +581,8 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/React-jsiexecutor.podspec.json
   React-jsinspector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/React-jsinspector.podspec.json
+  react-native-get-random-values:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-get-random-values.podspec.json
   react-native-keyboard-aware-scroll-view:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bacc6df70a4831b8f8bfdb67d7dbe7e3f6c75221/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json
   react-native-linear-gradient:
@@ -682,6 +687,7 @@ SPEC CHECKSUMS:
   React-jsi: 6d6afac4873e8a3433334378589a0a8190d58070
   React-jsiexecutor: 9dfdcd0db23042623894dcbc02d61a772da8e3c1
   React-jsinspector: 89927b9ec6d75759882949d2043ba704565edaec
+  react-native-get-random-values: 8940331a943a46c165d3ed05802c09c392f8dd46
   react-native-keyboard-aware-scroll-view: ffa9152671fec9a571197ed2d02e0fcb90206e60
   react-native-linear-gradient: 258ba8c61848324b1f2019bed5f460e6396137b7
   react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
@@ -726,6 +732,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 65dbde7c974982be94bd347d4c66e21d7ef6f29d
+PODFILE CHECKSUM: a1f2f3344fbe6f944309ae211450f979c8e66ea1
 
 COCOAPODS: 1.8.4
