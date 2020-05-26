@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Till https://github.com/danger/danger-js/issues/1042 is fixed, we need
+      # this workaround
+      DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
     steps:
       - uses: actions/checkout@v2
 
