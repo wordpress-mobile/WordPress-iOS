@@ -10,6 +10,7 @@ private struct Constants {
     static let imageBorderWidth: CGFloat = 1
     static let featuredMediaTopSpacing: CGFloat = 16
     static let byLineSeparatorString: String = " · "
+    static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -56,7 +57,6 @@ private struct Constants {
 
     @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
-
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
@@ -70,9 +70,6 @@ private struct Constants {
 
     fileprivate var featuredImageDesiredWidth = CGFloat()
 
-    fileprivate let summaryMaxNumberOfLines = 3
-    fileprivate let avgWordsPerMinuteRead = 250
-    fileprivate let minimumMinutesToRead = 2
     fileprivate var currentLoadedCardImageURL: String?
     fileprivate var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
@@ -175,7 +172,7 @@ private struct Constants {
     }
 
     fileprivate func setupSummaryLabel() {
-        summaryLabel.numberOfLines = summaryMaxNumberOfLines
+        summaryLabel.numberOfLines = Constants.summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .byTruncatingTail
     }
 
