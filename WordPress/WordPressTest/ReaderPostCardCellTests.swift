@@ -135,6 +135,10 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
         return "http://automattic.com"
     }
 
+    func siteHostNameForDisplay() -> String! {
+        return "automattic.com"
+    }
+
     func crossPostOriginSiteURLForDisplay() -> String! {
         return ""
     }
@@ -158,7 +162,6 @@ final class ReaderPostCardCellTests: XCTestCase {
         static let saveLabel = NSLocalizedString("Save post", comment: "Save post")
         static let moreLabel = NSLocalizedString("More", comment: "More")
         static let commentsLabelformat = NSLocalizedString("%@ comments", comment: "Number of Comments")
-        static let visitLabel = NSLocalizedString("Visit", comment: "Visit")
         static let reblogLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
     }
 
@@ -211,6 +214,6 @@ final class ReaderPostCardCellTests: XCTestCase {
             XCTFail("Reblog button not found.")
             return
         }
-        XCTAssertTrue(button.isHidden, "Reblog button should not be visible.")
+        XCTAssertFalse(button.isEnabled, "Reblog button should be disabled.")
     }
 }
