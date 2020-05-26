@@ -337,14 +337,16 @@ extension WPStyleGuide {
         let selectedIcon = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
 
         guard
-            let resizedIcon = icon?.resizedImage(size, interpolationQuality: .high),
-            let resizedSelectedIcon = selectedIcon?.resizedImage(size, interpolationQuality: .high)
+            let resizedIcon = icon?.resizedImage(size, interpolationQuality: .high)?.withRenderingMode(.alwaysTemplate),
+            let resizedSelectedIcon = selectedIcon?.resizedImage(size, interpolationQuality: .high).withRenderingMode(.alwaysTemplate)
         else {
             return
         }
 
-        button.setImage(resizedIcon, for: UIControl.State())
+        button.setImage(resizedIcon, for: .normal)
+        button.setImage(resizedSelectedIcon, for: .selected)
         button.setImage(resizedSelectedIcon, for: .highlighted)
+        button.setImage(resizedSelectedIcon, for: [.highlighted, .selected])
 
         applyReaderStreamActionButtonStyle(button)
     }
