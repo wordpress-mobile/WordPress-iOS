@@ -6,7 +6,8 @@ import Gridicons
 private struct Constants {
     static let featuredMediaCornerRadius: CGFloat = 4
     static let imageBorderWidth: CGFloat = 1
-    static let featuredMediaTopSpacing: CGFloat = 16
+    static let featuredMediaTopSpacing: CGFloat = 8
+    static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
@@ -297,9 +298,12 @@ private struct Constants {
             imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
-            contentStackView.setCustomSpacing(0, after: headerStackView)
+
+            contentStackView.setCustomSpacing(Constants.headerBottomSpacing, after: headerStackView)
             return
         }
+
+        contentStackView.setCustomSpacing(Constants.headerBottomSpacing + Constants.featuredMediaTopSpacing, after: headerStackView)
 
         featuredImageView.layoutIfNeeded()
         if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
@@ -315,7 +319,6 @@ private struct Constants {
             return
         }
 
-        contentStackView.setCustomSpacing(Constants.featuredMediaTopSpacing, after: headerStackView)
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
