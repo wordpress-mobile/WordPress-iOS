@@ -130,7 +130,7 @@ def gutenberg_dependencies(options)
     end
 
     for pod_name in dependencies do
-        pod pod_name, :podspec => "#{podspec_prefix}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+        pod pod_name, :podspec => "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
     end
 end
 
