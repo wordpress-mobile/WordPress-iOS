@@ -29,6 +29,8 @@ class ReaderDetailCoordinator {
         self.view = view
     }
 
+    /// Start the cordinator
+    ///
     func start() {
         if let post = post {
             view?.render(post)
@@ -37,6 +39,11 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Set a postID, siteID and isFeed
+    ///
+    /// - Parameter postID: A post ID to fetch
+    /// - Parameter siteID: A site ID to fetch
+    /// - Parameter isFeed: If the site is an external feed (not hosted at WPcom and not using Jetpack)
     func set(postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
         self.postID = postID
         self.siteID = siteID
