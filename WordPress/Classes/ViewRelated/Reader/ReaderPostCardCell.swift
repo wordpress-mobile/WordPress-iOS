@@ -492,7 +492,7 @@ private struct Constants {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton, showTitle: false)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
 
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
@@ -502,7 +502,7 @@ private struct Constants {
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
         }
 
 
