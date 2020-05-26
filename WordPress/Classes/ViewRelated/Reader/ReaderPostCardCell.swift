@@ -4,12 +4,9 @@ import WordPressShared
 import Gridicons
 
 private struct Constants {
-    //16:9 Ratio (16 / 9) = 1.777777778
-    static let featuredMediaHeightRatio: CGFloat = 1.777777778
     static let featuredMediaCornerRadius: CGFloat = 4
     static let imageBorderWidth: CGFloat = 1
     static let featuredMediaTopSpacing: CGFloat = 16
-    static let byLineSeparatorString: String = " · "
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
@@ -132,8 +129,8 @@ private struct Constants {
         applyStyles()
 
         applyOpaqueBackgroundColors()
-        setupFeaturedImageView()
 
+        configureFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
@@ -159,15 +156,6 @@ private struct Constants {
 
     fileprivate func setupAttributionView() {
         attributionView.delegate = self
-    }
-
-    fileprivate func setupFeaturedImageView() {
-        let width = featuredImageView.frame.width
-        let height = featuredImageHeight(for: width)
-
-        featuredMediaHeightConstraint.constant = height
-
-        configureFeaturedImageView()
     }
 
     fileprivate func setupSummaryLabel() {
@@ -329,9 +317,9 @@ private struct Constants {
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
 
-        let height = featuredImageHeight(for: featuredImageDesiredWidth)
+        let featuredImageHeight = featuredImageView.frame.height
 
-        let size = CGSize(width: featuredImageDesiredWidth, height: height)
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredImageHeight)
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
@@ -811,11 +799,5 @@ extension ReaderPostCardCell {
 
     func getReblogButtonForTesting() -> UIButton {
         return reblogActionButton
-    }
-}
-
-private extension ReaderPostCardCell {
-    func featuredImageHeight(for width: CGFloat) -> CGFloat {
-        return width / Constants.featuredMediaHeightRatio
     }
 }
