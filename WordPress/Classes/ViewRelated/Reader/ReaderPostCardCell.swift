@@ -4,12 +4,10 @@ import WordPressShared
 import Gridicons
 
 private struct Constants {
-    //16:9 Ratio (16 / 9) = 1.777777778
-    static let featuredMediaHeightRatio: CGFloat = 1.777777778
     static let featuredMediaCornerRadius: CGFloat = 4
     static let imageBorderWidth: CGFloat = 1
-    static let featuredMediaTopSpacing: CGFloat = 16
-    static let byLineSeparatorString: String = " · "
+    static let featuredMediaTopSpacing: CGFloat = 8
+    static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
@@ -40,6 +38,7 @@ private struct Constants {
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
+    @IBOutlet weak var bylineSeparatorLabel: UILabel!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -132,8 +131,8 @@ private struct Constants {
         applyStyles()
 
         applyOpaqueBackgroundColors()
-        setupFeaturedImageView()
 
+        configureFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
@@ -145,6 +144,8 @@ private struct Constants {
         configureButtonTitles()
 
         // Update colors
+        applyStyles()
+
         configureFeaturedImageView()
         configureAvatarImageView()
     }
@@ -159,15 +160,6 @@ private struct Constants {
 
     fileprivate func setupAttributionView() {
         attributionView.delegate = self
-    }
-
-    fileprivate func setupFeaturedImageView() {
-        let width = featuredImageView.frame.width
-        let height = featuredImageHeight(for: width)
-
-        featuredMediaHeightConstraint.constant = height
-
-        configureFeaturedImageView()
     }
 
     fileprivate func setupSummaryLabel() {
@@ -209,6 +201,7 @@ private struct Constants {
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineSeparatorLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
 
@@ -218,7 +211,6 @@ private struct Constants {
         WPStyleGuide.applyReaderCardLikeButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
     }
-
 
     /**
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
@@ -282,7 +274,9 @@ private struct Constants {
         blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
 
-        bylineLabel.text = [Constants.byLineSeparatorString, datePublished()].joined()
+        let dateString: String = datePublished()
+        bylineSeparatorLabel.isHidden = dateString.isEmpty
+        bylineLabel.text = dateString
     }
 
     fileprivate func configureAvatarImageView() {
@@ -306,9 +300,12 @@ private struct Constants {
             imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
-            contentStackView.setCustomSpacing(0, after: headerStackView)
+
+            contentStackView.setCustomSpacing(Constants.headerBottomSpacing, after: headerStackView)
             return
         }
+
+        contentStackView.setCustomSpacing(Constants.headerBottomSpacing + Constants.featuredMediaTopSpacing, after: headerStackView)
 
         featuredImageView.layoutIfNeeded()
         if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
@@ -324,14 +321,13 @@ private struct Constants {
             return
         }
 
-        contentStackView.setCustomSpacing(Constants.featuredMediaTopSpacing, after: headerStackView)
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
 
-        let height = featuredImageHeight(for: featuredImageDesiredWidth)
+        let featuredImageHeight = featuredImageView.frame.height
 
-        let size = CGSize(width: featuredImageDesiredWidth, height: height)
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredImageHeight)
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
@@ -499,7 +495,7 @@ private struct Constants {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton, showTitle: false)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
 
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
@@ -509,7 +505,7 @@ private struct Constants {
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
         }
 
 
@@ -811,12 +807,6 @@ extension ReaderPostCardCell {
 
     func getReblogButtonForTesting() -> UIButton {
         return reblogActionButton
-    }
-}
-
-private extension ReaderPostCardCell {
-    func featuredImageHeight(for width: CGFloat) -> CGFloat {
-        return width / Constants.featuredMediaHeightRatio
     }
 }
 

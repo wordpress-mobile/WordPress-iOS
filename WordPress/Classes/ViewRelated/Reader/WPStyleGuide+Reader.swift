@@ -93,15 +93,24 @@ extension WPStyleGuide {
         ]
     }
 
-    @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoFontForTextStyle(Cards.titleTextStyle)
+    /// Returns a the system serif font (New York) for iOS 13+ but defaults to noto for older devices
+    private class func serifFontForTextStyle(_ style: UIFont.TextStyle) -> UIFont {
+        guard #available(iOS 13, *),
+            let fontDescriptor = WPStyleGuide.fontForTextStyle(style).fontDescriptor.withDesign(.serif)
+        else {
+            return WPStyleGuide.notoFontForTextStyle(style)
+        }
 
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
+    }
+
+    @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: font
+            .font: serifFontForTextStyle(Cards.titleTextStyle)
         ]
     }
 
@@ -324,7 +333,7 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton) {
         let size = Cards.actionButtonSize
-        let icon = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
         let selectedIcon = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
 
         guard
@@ -493,7 +502,7 @@ extension WPStyleGuide {
         public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
         public static let titleTextStyle: UIFont.TextStyle = WPDeviceIdentification.isiPad() ? .title2 : .title3
         public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 0.0 : 0.0
-        public static let summaryTextStyle: UIFont.TextStyle = .caption1
+        public static let summaryTextStyle: UIFont.TextStyle = .footnote
         public static let contentTextStyle: UIFont.TextStyle = .subheadline
         public static let contentLineSpacing: CGFloat = 4
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
