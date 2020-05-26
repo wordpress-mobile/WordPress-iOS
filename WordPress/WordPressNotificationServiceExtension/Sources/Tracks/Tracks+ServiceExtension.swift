@@ -60,7 +60,12 @@ extension Tracks {
     }
 
     /// Tracks the unsuccessful unwrapping of push notification payload data.
-    func trackNotificationMalformed(properties: [String: AnyObject]? = nil) {
+    func trackNotificationMalformed(hasToken: Bool, notificationBody: String) {
+        let properties: [String: AnyObject] = [
+            "have_token": hasToken as AnyObject,
+            "content": notificationBody as AnyObject
+        ]
+
         trackEvent(ServiceExtensionEvents.malformed, properties: properties)
     }
 
