@@ -144,6 +144,8 @@ private struct Constants {
         configureButtonTitles()
 
         // Update colors
+        applyStyles()
+
         configureFeaturedImageView()
         configureAvatarImageView()
     }
