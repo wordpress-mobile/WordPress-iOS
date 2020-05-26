@@ -175,6 +175,11 @@ class PrepublishingViewController: UITableViewController {
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
                 self?.showPasswordAlert()
+            } else if option == AbstractPost.privateLabel {
+                // If a post is private, we can't schedule it, so we reset the schedulded date
+                self?.publishSettingsViewModel.setDate(nil)
+                self?.post.status = .publishPrivate
+                self?.navigationController?.popViewController(animated: true)
             } else {
                 self?.navigationController?.popViewController(animated: true)
             }
@@ -188,6 +193,7 @@ class PrepublishingViewController: UITableViewController {
     func configureScheduleCell(_ cell: WPTableViewCell) {
         cell.textLabel?.text = post.shouldPublishImmediately() ? Constants.publishDateLabel : Constants.scheduledLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
+        post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
