@@ -94,7 +94,7 @@ extension WPStyleGuide {
     }
 
     /// Returns a the system serif font (New York) for iOS 13+ but defaults to noto for older devices
-    private class func serifFontForTextStyle(_ style: UIFont.TextStyle) -> UIFont{
+    private class func serifFontForTextStyle(_ style: UIFont.TextStyle) -> UIFont {
         guard #available(iOS 13, *),
             let fontDescriptor = WPStyleGuide.fontForTextStyle(style).fontDescriptor.withDesign(.serif)
         else {

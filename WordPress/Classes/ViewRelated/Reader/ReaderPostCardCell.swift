@@ -209,7 +209,6 @@ private struct Constants {
         WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
     }
 
-
     /**
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
@@ -271,7 +270,7 @@ private struct Constants {
 
         blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
-        
+
         let dateString: String = datePublished()
         bylineSeparatorLabel.isHidden = dateString.isEmpty
         bylineLabel.text = dateString
