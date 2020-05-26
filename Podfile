@@ -29,7 +29,7 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.1'
+    pod 'WordPress-Editor-iOS', '~> 1.19.2'
 end
 
 def wordpress_ui
@@ -147,7 +147,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'c85e8a23a7056e4d2d795942d152dd717b16a437'
+    gutenberg :commit => 'fab6583bb2ac2825d203fbfa37792ca223cb1da4'
 
     ## Third party libraries
     ## =====================
