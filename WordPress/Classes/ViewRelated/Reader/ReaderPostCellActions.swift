@@ -72,13 +72,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         sharePost(post, fromView: sender)
     }
 
-    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        visitSiteForPost(post)
-    }
-
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
             return

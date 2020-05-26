@@ -19,7 +19,6 @@ private struct Constants {
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
@@ -533,13 +532,6 @@ private struct Constants {
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
-    }
-
-    @IBAction func didTapVisitButton(_ sender: UIButton) {
-        guard let provider = contentProvider else {
-            return
-        }
-        delegate?.readerCell(self, visitActionForProvider: provider)
     }
 
     @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
