@@ -12,13 +12,13 @@ class ReaderDetailCoordinator {
     private weak var view: ReaderDetailView?
 
     /// A post ID to fetch
-    private var postID: NSNumber?
+    private(set) var postID: NSNumber?
 
     /// A site ID to be used to fetch a post
-    private var siteID: NSNumber?
+    private(set) var siteID: NSNumber?
 
     /// If the site is an external feed (not hosted at WPcom and not using Jetpack)
-    private var isFeed: Bool?
+    private(set) var isFeed: Bool?
 
     /// Initialize the Reader Detail Coordinator
     ///

@@ -8,16 +8,13 @@ protocol ReaderDetailView: class {
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var webView: WKWebView!
 
-    /// The post to be shown
-    private(set) var post: ReaderPost?
-
     /// The coordinator, responsible for the logic
-    private var coordinator: ReaderDetailCoordinator!
+    var coordinator: ReaderDetailCoordinator!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        renderContent()
+        coordinator.start()
     }
 
     func render(_ post: ReaderPost) {
@@ -26,15 +23,6 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     func showError() {
         // Show error
-    }
-
-    /// Displays the post content in the webview
-    private func renderContent() {
-        guard let post = post else {
-            return
-        }
-
-        webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
     /// A View Controller that displays a Post content.
@@ -46,6 +34,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Returns: A `ReaderDetailWebviewViewController` instance
     @objc class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false) -> ReaderDetailWebviewViewController {
         let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.set(postID: postID, siteID: siteID, isFeed: isFeed)
+        controller.coordinator = coordinator
 
         return controller
     }
@@ -75,7 +66,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             return ReaderDetailWebviewViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
         } else {
             let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
-            controller.post = post
+            let coordinator = ReaderDetailCoordinator(view: controller)
+            coordinator.post = post
+            controller.coordinator = coordinator
             return controller
         }
     }
