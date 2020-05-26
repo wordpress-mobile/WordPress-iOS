@@ -4,7 +4,7 @@ import Nimble
 @testable import WordPress
 
 class ReaderDetailWebviewViewControllerTests: XCTestCase {
-    
+
     /// Given a post URL. returns a ReaderDetailWebviewViewController
     ///
     func testControllerWithURL() {
