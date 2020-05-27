@@ -129,6 +129,30 @@ struct CheckmarkRow: ImmuTableRow {
 
 }
 
+struct ActivityIndicatorRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+    let title: String
+    let animating: Bool
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text = title
+
+        let indicator = UIActivityIndicatorView(style: .gray)
+        indicator.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+
+        if animating {
+            indicator.startAnimating()
+        }
+
+        cell.accessoryView = indicator
+
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+
+}
+
 struct LinkRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 

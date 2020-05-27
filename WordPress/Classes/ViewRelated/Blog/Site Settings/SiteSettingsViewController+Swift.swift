@@ -58,6 +58,21 @@ extension SiteSettingsViewController {
         }
     }
 
+    // MARK: - Homepage Settings
+
+    @objc var homepageSettingsCell: SettingTableViewCell? {
+        let cell = SettingTableViewCell(label: NSLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"), editable: true, reuseIdentifier: nil)
+        cell?.textValue = blog.homepageType?.title
+        return cell
+    }
+
+    // MARK: - Navigation
+
+    @objc(showHomepageSettingsForBlog:) func showHomepageSettings(for blog: Blog) {
+        let settingsViewController = HomepageSettingsViewController(blog: blog)
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
     @objc func showTimezoneSelector() {
         let controller = TimeZoneSelectorViewController(selectedValue: timezoneValue) { [weak self] (newValue) in
             self?.navigationController?.popViewController(animated: true)
