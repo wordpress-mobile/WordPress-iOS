@@ -67,9 +67,13 @@ extension CrashLogging {
             Client.shared?.appendStacktrace(to: event)
         }
 
+        guard let client = Client.shared else {
+           return
+        }
+
         let semaphore = DispatchSemaphore(value: 0)
 
-        Client.shared?.send(event: event) { _ in
+        client.send(event: event) { _ in
             semaphore.signal()
         }
 
