@@ -200,6 +200,12 @@ extension WPStyleGuide {
                                   dark: .muriel(color: .gray, .shade20))
     }
 
+    @objc public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
+        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
+                                  dark: .muriel(color: .gray, .shade20))
+    }
+
+
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
         button.setTitleColor(.primary, for: UIControl.State())
@@ -505,7 +511,7 @@ extension WPStyleGuide {
         public static let titleTextStyle: UIFont.TextStyle = WPDeviceIdentification.isiPad() ? .title2 : .title3
         public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 0.0 : 0.0
         public static let summaryTextStyle: UIFont.TextStyle = .footnote
-        public static let contentTextStyle: UIFont.TextStyle = .subheadline
+        public static let contentTextStyle: UIFont.TextStyle = .footnote
         public static let contentLineSpacing: CGFloat = 4
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
         public static let subtextTextStyle: UIFont.TextStyle = .caption1
