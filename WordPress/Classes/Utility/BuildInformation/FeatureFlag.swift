@@ -5,6 +5,7 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case unifiedAuth
+    case unifiedSiteAddress
     case quickActions
     case meMove
     case floatingCreateButton
@@ -24,6 +25,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
+            return BuildConfiguration.current == .localDeveloper
+        case .unifiedSiteAddress:
             return BuildConfiguration.current == .localDeveloper
         case .quickActions:
             return true
@@ -61,6 +64,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Debug menu"
         case .unifiedAuth:
             return "Unified Auth"
+        case .unifiedSiteAddress:
+            return "Unified Auth - Site Address"
         case .quickActions:
             return "Quick Actions"
         case .meMove:
