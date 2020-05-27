@@ -8,7 +8,7 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
         ContextManager.overrideSharedInstance(self)
     }
 
-    var _managedObjectModel: NSManagedObjectModel?
+    private var _managedObjectModel: NSManagedObjectModel?
     override var managedObjectModel: NSManagedObjectModel {
         set {
             _managedObjectModel = newValue
@@ -19,7 +19,7 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
         }
     }
 
-    var _persistentStoreCoordinator: NSPersistentStoreCoordinator?
+    private var _persistentStoreCoordinator: NSPersistentStoreCoordinator?
     override var persistentStoreCoordinator: NSPersistentStoreCoordinator {
         set {
             _persistentStoreCoordinator = newValue
@@ -30,7 +30,7 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
         }
     }
 
-    var _mainContext: NSManagedObjectContext?
+    private var _mainContext: NSManagedObjectContext?
     override var mainContext: NSManagedObjectContext {
         set {
             _mainContext = newValue
