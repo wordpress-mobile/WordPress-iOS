@@ -205,6 +205,10 @@ target 'WordPress' do
 
 
     post_install do
+        puts 'Patching RCTActionSheetManager to add possibility to disable buttons in ActionSheet - it could be removed after upgrade to 0.63(?)'
+        %x(patch Pods/React-CoreModules/RCTActionSheetManager.mm < patches/RCTActionSheetManager.patch)
+        puts 'Patching FBReactNativeSpec to support possibility to disable buttons in ActionSheet - it could be removed after upgrade to 0.63(?)'
+        %x(patch Pods/FBReactNativeSpec/FBReactNativeSpec/FBReactNativeSpec.h < patches/FBReactNativeSpec.patch)
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
