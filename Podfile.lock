@@ -484,7 +484,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.1)
   - WordPressAuthenticator (~> 1.17.0-beta.7)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/homepage-settings`)
+  - WordPressKit (~> 4.9.0-beta.2)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
   - WordPressUI (~> 1.7.0)
@@ -533,6 +533,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -616,9 +617,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 59220b0adb795557639a017b065af270d284c9bf
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressKit:
-    :branch: feature/homepage-settings
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
@@ -635,9 +633,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 59220b0adb795557639a017b065af270d284c9bf
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressKit:
-    :commit: 2e03d9727d0438aaec788daab49c79ea98e21577
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
     :tag: 1.7.0-beta.2
@@ -730,6 +725,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: e0dfd02ae61713002be3d1e51fe929ccbd4662d6
+PODFILE CHECKSUM: 101e0cc713d0978244471453c85f8c85d0408049
 
 COCOAPODS: 1.8.4
