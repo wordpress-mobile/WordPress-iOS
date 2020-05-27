@@ -613,3 +613,4 @@ A line changes repeated 500+ times, in order to trigger Danger's diff size warni
 A line changes repeated 500+ times, in order to trigger Danger's diff size warning
 A line changes repeated 500+ times, in order to trigger Danger's diff size warning
 A line changes repeated 500+ times, in order to trigger Danger's diff size warning
+Yet another line change
