@@ -1283,7 +1283,7 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull else {
+        guard inlinePromptView.alpha != WPAlphaFull, UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
             return
         }
 
