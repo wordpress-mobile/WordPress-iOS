@@ -55,7 +55,7 @@ extension WPStyleGuide {
     // MARK: - Card Attributed Text Attributes
 
     @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Cards.titleTextStyle)
+        let font = WPStyleGuide.serifFontForTextStyle(Cards.crossPostTitleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
@@ -71,12 +71,10 @@ extension WPStyleGuide {
         let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
-
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.textSubtle
+            .foregroundColor: UIColor.neutral(.shade40)
         ]
     }
 
@@ -89,7 +87,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.textSubtle
+            .foregroundColor: UIColor.neutral(.shade40)
         ]
     }
 
@@ -516,7 +514,9 @@ extension WPStyleGuide {
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
         public static let subtextTextStyle: UIFont.TextStyle = .caption1
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline
-        public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .footnote
+
+        public static let crossPostTitleTextStyle: UIFont.TextStyle = .body
+        public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .caption1
         public static let crossPostLineSpacing: CGFloat = 2.0
 
         public static let actionButtonSize: CGSize = CGSize(width: 20, height: 20)
