@@ -46,8 +46,8 @@ import WordPressShared
         let options = PostServiceSyncOptions()
         options.number = 20
 
-        postService.syncPosts(ofType: .page, with: options, for: blog, success: { posts in
-            self.reloadViewModel()
+        postService.syncPosts(ofType: .page, with: options, for: blog, success: { [weak self] posts in
+            self?.reloadViewModel()
         }, failure: { _ in
 
         })
@@ -95,11 +95,11 @@ import WordPressShared
         }
 
         return [
-            CheckmarkRow(title: HomepageType.posts.title, checked: homepageType == .posts, action: { _ in
-                self.setHomepageType(.posts)
+            CheckmarkRow(title: HomepageType.posts.title, checked: homepageType == .posts, action: { [weak self] _ in
+                self?.setHomepageType(.posts)
             }),
-            CheckmarkRow(title: HomepageType.page.title, checked: homepageType == .page, action: { _ in
-                self.setHomepageType(.page)
+            CheckmarkRow(title: HomepageType.page.title, checked: homepageType == .page, action: { [weak self] _ in
+                self?.setHomepageType(.page)
             })
         ]
     }
