@@ -257,7 +257,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
-    self = [super init];
+    self = [self init];
     self.meScenePresenter = meScenePresenter;
     return self;
 }
@@ -377,7 +377,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] && [Feature enabled:FeatureFlagFloatingCreateButton]) {
         [self.createButtonCoordinator showCreateButton];
     }
     [self createUserActivity];
