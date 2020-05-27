@@ -176,6 +176,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             setupAppRatings()
             self.showInlinePrompt()
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.showNotificationPrimerAlert()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1622,5 +1625,49 @@ private extension NotificationsViewController {
 
     enum InlinePrompt {
         static let section = "notifications"
+    }
+}
+
+// MARK: - Push Notifications Permission Alert
+extension NotificationsViewController: UIViewControllerTransitioningDelegate {
+
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard let fancyAlertController = presented as? FancyAlertViewController else {
+            return nil
+        }
+        return FancyAlertPresentationController(presentedViewController: fancyAlertController, presenting: presenting)
+    }
+
+    private func showNotificationPrimerAlert() {
+
+        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+            return
+        }
+
+        let mainContext = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: mainContext)
+
+        guard accountService.defaultWordPressComAccount() != nil else {
+            return
+        }
+
+        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
+            guard enabled == .notDetermined else {
+                return
+            }
+
+            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
+
+            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
+                InteractiveNotificationsManager.shared.requestAuthorization {
+                    DispatchQueue.main.async {
+                        controller.dismiss(animated: true)
+                    }
+                }
+            }
+            alert.modalPresentationStyle = .custom
+            alert.transitioningDelegate = self
+            self?.tabBarController?.present(alert, animated: true)
+        }
     }
 }
