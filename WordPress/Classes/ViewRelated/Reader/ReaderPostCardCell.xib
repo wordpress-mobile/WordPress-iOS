@@ -163,11 +163,11 @@
                                             <constraint firstAttribute="height" constant="12" id="mpS-B0-iI3"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
                                         <rect key="frame" x="0.0" y="88.666666666666686" width="288" height="32"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="72" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="44" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="nN7-IP-LxP"/>
                                                 </constraints>
@@ -183,7 +183,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mch-Ja-RJu" customClass="PostMetaButton">
-                                                <rect key="frame" x="72" y="0.0" width="72" height="32"/>
+                                                <rect key="frame" x="81.333333333333329" y="0.0" width="44" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="xtD-oQ-xDy"/>
                                                 </constraints>
@@ -199,7 +199,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
-                                                <rect key="frame" x="144" y="0.0" width="72" height="32"/>
+                                                <rect key="frame" x="162.66666666666666" y="0.0" width="44" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="248-Kf-BzV"/>
                                                 </constraints>
@@ -215,7 +215,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
-                                                <rect key="frame" x="216" y="0.0" width="72" height="32"/>
+                                                <rect key="frame" x="244" y="0.0" width="44" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="BWy-fX-yzf"/>
                                                 </constraints>
