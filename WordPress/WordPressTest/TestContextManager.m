@@ -67,10 +67,10 @@ static TestContextManager *_instance;
 - (void)saveContext:(NSManagedObjectContext *)context
 {
     [self saveContext:context withCompletionBlock:^{
-        if (self->_stack.testExpectation) {
-            [self->_stack.testExpectation fulfill];
-            self->_stack.testExpectation = nil;
-        } else if (self->_stack.requiresTestExpectation) {
+        if (self.stack.testExpectation) {
+            [self.stack.testExpectation fulfill];
+            self.stack.testExpectation = nil;
+        } else if (self.stack.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
     }];
@@ -79,10 +79,10 @@ static TestContextManager *_instance;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
     [_stack saveContextAndWait:context];
-    if (self->_stack.testExpectation) {
-        [self->_stack.testExpectation fulfill];
-        self->_stack.testExpectation = nil;
-    } else if (self->_stack.requiresTestExpectation) {
+    if (self.stack.testExpectation) {
+        [self.stack.testExpectation fulfill];
+        self.stack.testExpectation = nil;
+    } else if (self.stack.requiresTestExpectation) {
         NSLog(@"No test expectation present for context save");
     }
 }
@@ -90,10 +90,10 @@ static TestContextManager *_instance;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
     [_stack saveContext:context withCompletionBlock:^{
-        if (self->_stack.testExpectation) {
-            [self->_stack.testExpectation fulfill];
-            self->_stack.testExpectation = nil;
-        } else if (self->_stack.requiresTestExpectation) {
+        if (self.stack.testExpectation) {
+            [self.stack.testExpectation fulfill];
+            self.stack.testExpectation = nil;
+        } else if (self.stack.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
         completionBlock();
