@@ -334,7 +334,7 @@ extension WPStyleGuide {
     @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton) {
         let size = Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
-        let selectedIcon = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
+        let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 
         guard
             let resizedIcon = icon?.resizedImage(size, interpolationQuality: .high)?.withRenderingMode(.alwaysTemplate),
