@@ -636,7 +636,7 @@ CHECKOUT OPTIONS:
     :commit: 59220b0adb795557639a017b065af270d284c9bf
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: c990694d9ef8516474dd17a122a0552706ea7d5e
+    :commit: 5ca4b5af4775383831db15c0423d8f3a85c92995
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WPMediaPicker:
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
