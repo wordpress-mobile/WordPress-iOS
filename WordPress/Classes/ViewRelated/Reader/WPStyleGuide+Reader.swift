@@ -513,7 +513,7 @@ extension WPStyleGuide {
         public static let crossPostSubtitleTextStyle: UIFont.TextStyle = .footnote
         public static let crossPostLineSpacing: CGFloat = 2.0
 
-        public static let actionButtonSize: CGSize = CGSize(width: 18, height: 18)
+        public static let actionButtonSize: CGSize = CGSize(width: 20, height: 20)
     }
 
     public struct Detail {
