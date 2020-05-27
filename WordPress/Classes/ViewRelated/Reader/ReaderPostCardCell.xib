@@ -96,7 +96,9 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D4Q-6L-ZIL" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="16" y="64" width="288" height="162"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="D4Q-6L-ZIL" secondAttribute="height" multiplier="16:9" priority="999" id="Pba-Ze-b3r"/>
+                                    <constraint firstAttribute="width" secondItem="D4Q-6L-ZIL" secondAttribute="height" multiplier="16:9" priority="999" id="Pba-Ze-b3r">
+                                        <variation key="widthClass=regular" constant="300"/>
+                                    </constraint>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp" userLabel="Title / Summary / Attr / Action Stack View">
