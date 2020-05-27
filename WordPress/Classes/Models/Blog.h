@@ -70,7 +70,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support deleting media?
     BlogFeatureMediaDeletion,
     /// Does the blog support Stock Photos feature (free photos library)
-    BlogFeatureStockPhotos
+    BlogFeatureStockPhotos,
+    /// Does the blog support setting the homepage type and pages?
+    BlogFeatureHomepageSettings
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -195,6 +197,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (BOOL)isPrivateAtWPCom;
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
+- (void)setValue:(id)value forOption:(NSString *)name;
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
