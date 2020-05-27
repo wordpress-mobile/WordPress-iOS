@@ -100,7 +100,7 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp" userLabel="Title / Summary / Attr / Action Stack View">
-                                <rect key="frame" x="16" y="233.99999999999997" width="288" height="116.66666666666666"/>
+                                <rect key="frame" x="16" y="233.99999999999997" width="288" height="120.66666666666666"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="46.333333333333336"/>
@@ -155,14 +155,14 @@
                                         </connections>
                                     </view>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="bAu-jB-BR1" userLabel="View (Spacer)">
-                                        <rect key="frame" x="0.0" y="76.666666666666686" width="288" height="8"/>
+                                        <rect key="frame" x="0.0" y="76.666666666666686" width="288" height="12"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="8" id="mpS-B0-iI3"/>
+                                            <constraint firstAttribute="height" constant="12" id="mpS-B0-iI3"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                        <rect key="frame" x="0.0" y="84.666666666666686" width="288" height="32"/>
+                                        <rect key="frame" x="0.0" y="88.666666666666686" width="288" height="32"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="72" height="32"/>
@@ -236,7 +236,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                <rect key="frame" x="16" y="358.66666666666669" width="288" height="106.33333333333331"/>
+                                <rect key="frame" x="16" y="362.66666666666669" width="288" height="102.33333333333331"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
