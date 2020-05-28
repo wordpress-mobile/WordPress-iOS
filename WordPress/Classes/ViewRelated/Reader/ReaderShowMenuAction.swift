@@ -47,6 +47,13 @@ final class ReaderShowMenuAction {
             })
         }
 
+        // Visit
+        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
+                                           style: .default,
+                                           handler: { (action: UIAlertAction) in
+                                            ReaderVisitSiteAction().execute(with: post, context: context, origin: vc)
+        })
+
         // Share
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
                                            style: .default,

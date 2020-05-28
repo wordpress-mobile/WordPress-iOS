@@ -39,14 +39,6 @@ final class ReaderCellConfiguration {
 
         postCell.delegate = delegate
 
-        if let topic = topic {
-            postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
-            postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
-        } else {
-            postCell.hidesFollowButton = true
-            postCell.headerBlogButtonIsEnabled = true
-        }
-
         postCell.loggedInActionVisibility = loggedInActionVisibility
         postCell.configureCell(post)
     }
