@@ -1290,7 +1290,7 @@ extension ReaderStreamViewController: NewsManagerDelegate {
     }
 
     private func presentReaderDetailViewControllerWithURL(_ url: URL) {
-        var viewController: UIViewController!
+        var viewController: UIViewController
 
         if FeatureFlag.readerWebview.enabled {
             viewController = ReaderDetailWebviewViewController.controllerWithPostURL(url)
