@@ -25,8 +25,8 @@ extension NoResultsViewController {
                              attributedSubtitleConfiguration: { (attributedText: NSAttributedString) -> NSAttributedString? in
                                 return subtitleText },
                              image: Constants.noFollowedSitesImage)
-        controller.labelStackViewSpacing = 4
-        controller.labelButtonStackViewSpacing = 11
+        controller.labelStackViewSpacing = 12
+        controller.labelButtonStackViewSpacing = 18
 
         return controller
     }
