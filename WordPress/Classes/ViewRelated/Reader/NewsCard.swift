@@ -46,7 +46,6 @@ final class NewsCard: UIViewController {
     private func setupUI() {
         setUpDismissButton()
         setUpReadMoreButton()
-        populateIllustration()
     }
 
     private func setUpDismissButton() {
@@ -57,8 +56,8 @@ final class NewsCard: UIViewController {
         readMore.addTarget(self, action: #selector(readMoreAction), for: .touchUpInside)
     }
 
-    private func populateIllustration() {
-        illustration.image = UIImage(named: "wp-illustration-notifications")?.imageFlippedForRightToLeftLayoutDirection()
+    private func populateIllustration(name: String) {
+        illustration.image = UIImage(named: name)?.imageFlippedForRightToLeftLayoutDirection()
     }
 
     @objc private func dismissAction() {
@@ -99,7 +98,7 @@ final class NewsCard: UIViewController {
 
     private func styleReadMoreButton() {
         readMore.naturalContentHorizontalAlignment = .leading
-        let title = NSLocalizedString("Read More", comment: "Button providing More information in the News Card")
+        let title = NSLocalizedString("Learn More", comment: "Button providing More information in the News Card")
         readMore.setTitle(title, for: .normal)
     }
 
@@ -119,6 +118,8 @@ final class NewsCard: UIViewController {
 
         newsTitle.text = title
         newsSubtitle.text = content
+
+        populateIllustration(name: item.imageName)
 
         prepareTitleForVoiceOver(label: title)
         prepareSubtitleForVoiceOver(label: content)
@@ -149,7 +150,7 @@ extension NewsCard: Accessible {
     }
 
     private func prepareReadMoreButtonForVoiceOver() {
-        readMore.accessibilityLabel = NSLocalizedString("Read More", comment: "Accessibility label for the Read More button on Reader's News Card")
+        readMore.accessibilityLabel = NSLocalizedString("Learn More", comment: "Accessibility label for the Learn More button on Reader's News Card")
         dismiss.accessibilityTraits = UIAccessibilityTraits.button
         dismiss.accessibilityHint = NSLocalizedString("Provides more information.", comment: "Accessibility hint for the Read More button on Reader's News Card")
     }

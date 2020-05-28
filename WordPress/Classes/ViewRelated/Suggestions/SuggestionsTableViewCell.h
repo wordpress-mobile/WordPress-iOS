@@ -7,5 +7,6 @@ extern NSInteger const SuggestionsTableViewCellAvatarSize;
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, assign) NSUInteger imageDownloadHash;
 
 @end

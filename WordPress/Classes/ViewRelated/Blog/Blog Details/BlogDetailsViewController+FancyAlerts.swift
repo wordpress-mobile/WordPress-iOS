@@ -168,7 +168,7 @@ extension BlogDetailsViewController {
 
         let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { [weak self] (controller) in
             controller.dismiss(animated: true)
-            if let url = URL(string: "https://wordpress.com/blog/") {
+            if let url = URL(string: "https://wordpress.com/blog/2020/06/01/improved-navigation-in-the-wordpress-apps/") {
                 let webViewController = WebViewControllerFactory.controller(url: url)
                 let navController = LightNavigationController(rootViewController: webViewController)
                 self?.tabBarController?.present(navController, animated: true)

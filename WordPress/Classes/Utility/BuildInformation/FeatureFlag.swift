@@ -5,12 +5,14 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case unifiedAuth
+    case unifiedSiteAddress
     case quickActions
     case meMove
     case floatingCreateButton
     case newReaderNavigation
     case tenor
     case swiftCoreData
+    case homepageSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -25,17 +27,21 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
+        case .unifiedSiteAddress:
+            return BuildConfiguration.current == .localDeveloper
         case .quickActions:
             return true
         case .meMove:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .floatingCreateButton:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .newReaderNavigation:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .tenor:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .swiftCoreData:
+            return BuildConfiguration.current == .localDeveloper
+        case .homepageSettings:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -61,6 +67,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Debug menu"
         case .unifiedAuth:
             return "Unified Auth"
+        case .unifiedSiteAddress:
+            return "Unified Auth - Site Address"
         case .quickActions:
             return "Quick Actions"
         case .meMove:
@@ -73,6 +81,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Tenor GIF media source"
         case .swiftCoreData:
             return "Migrate Core Data Stack to Swift"
+        case .homepageSettings:
+            return "Homepage Settings"
         }
     }
 

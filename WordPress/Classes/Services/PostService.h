@@ -30,7 +30,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
-- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
+- (nullable AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
 - (NSUInteger)countPostsWithoutRemote;
 
