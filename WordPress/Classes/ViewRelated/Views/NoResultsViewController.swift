@@ -30,6 +30,8 @@ import Reachability
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
     @IBOutlet weak var accessoryStackView: UIStackView!
+    @IBOutlet weak var labelStackView: UIStackView!
+    @IBOutlet weak var labelButtonStackView: UIStackView!
 
     private(set) var isReachable = false
 
@@ -43,6 +45,9 @@ import Reachability
     private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
+
+    var labelStackViewSpacing: CGFloat = 10
+    var labelButtonStackViewSpacing: CGFloat = 20
 
     /// Allows caller to customize subtitle attributed text after default styling.
     typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString?
@@ -119,6 +124,7 @@ import Reachability
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
+                                    attributedTitle: NSAttributedString? = nil,
                                     buttonTitle: String? = nil,
                                     subtitle: String? = nil,
                                     attributedSubtitle: NSAttributedString? = nil,
@@ -180,7 +186,6 @@ import Reachability
             configureAttributedSubtitle = attributedSubtitleConfiguration
         }
 
-        configureAttributedSubtitle = attributedSubtitleConfiguration
         buttonText = buttonTitle
         imageName = !isReachable ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
@@ -309,10 +314,8 @@ private extension NoResultsViewController {
     // MARK: - View
 
     func configureView() {
-
-        guard let titleText = titleText else {
-            return
-        }
+        labelStackView.spacing = labelStackViewSpacing
+        labelButtonStackView.spacing = labelButtonStackViewSpacing
 
         titleLabel.text = titleText
         titleLabel.textColor = .text
