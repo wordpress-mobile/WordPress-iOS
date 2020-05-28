@@ -2,6 +2,7 @@
 #import "PostCategory.h"
 #import "Blog.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN

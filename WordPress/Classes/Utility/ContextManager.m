@@ -1,5 +1,4 @@
 #import "ContextManager.h"
-#import "ContextManager-Internals.h"
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 
@@ -40,7 +39,7 @@ static ContextManager *_override;
     return self;
 }
 
-+ (instancetype)sharedInstance
++ (instancetype)internalSharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -49,13 +48,6 @@ static ContextManager *_override;
 
     return _override ?: _instance;
 }
-
-+ (void)overrideSharedInstance:(ContextManager *)contextManager
-{
-    [ContextManager sharedInstance];
-    _override = contextManager;
-}
-
 
 #pragma mark - Contexts
 

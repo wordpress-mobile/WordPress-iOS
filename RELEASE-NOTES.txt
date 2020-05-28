@@ -3,6 +3,7 @@
 * [**] Block editor: Fix media upload progress when there's no connection.
 * [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
 * [internal] Logging in via 'Continue with Google' has changes that can cause regressions. See https://git.io/Jf2LF for full testing details.
+* [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
 
 14.9
 -----

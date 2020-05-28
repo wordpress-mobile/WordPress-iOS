@@ -186,6 +186,7 @@ class PrepublishingViewController: UITableViewController {
     func configureScheduleCell(_ cell: WPTableViewCell) {
         cell.textLabel?.text = post.shouldPublishImmediately() ? Constants.publishDateLabel : Constants.scheduledLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
+        post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {

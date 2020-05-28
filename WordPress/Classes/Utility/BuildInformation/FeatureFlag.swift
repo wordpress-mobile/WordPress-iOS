@@ -11,6 +11,8 @@ enum FeatureFlag: Int, CaseIterable {
     case floatingCreateButton
     case newReaderNavigation
     case tenor
+    case swiftCoreData
+    case homepageSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,6 +39,10 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .tenor:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .swiftCoreData:
+            return BuildConfiguration.current == .localDeveloper
+        case .homepageSettings:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
@@ -73,6 +79,10 @@ extension FeatureFlag: OverrideableFlag {
             return "New Reader Navigation"
         case .tenor:
             return "Tenor GIF media source"
+        case .swiftCoreData:
+            return "Migrate Core Data Stack to Swift"
+        case .homepageSettings:
+            return "Homepage Settings"
         }
     }
 
@@ -83,6 +93,8 @@ extension FeatureFlag: OverrideableFlag {
         case .floatingCreateButton:
             return false
         case .newReaderNavigation:
+            return false
+        case .swiftCoreData:
             return false
         default:
             return true
