@@ -13,7 +13,10 @@ class SelectPostViewController: UITableViewController {
     private var showsPostType: Bool = true
 
     /// An entity to fetch which is of type `AbstractPost`
-    private var entityName: String? = nil
+    private let entityName: String?
+
+    /// The IDs of posts which should be hidden from the list
+    private let hiddenPosts: [Int]
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -25,7 +28,7 @@ class SelectPostViewController: UITableViewController {
     }()
 
     private lazy var fetchController: NSFetchedResultsController<AbstractPost> = {
-        return PostCoordinator.shared.posts(for: self.blog, containsTitle: "", entityName: entityName)
+        return PostCoordinator.shared.posts(for: blog, containsTitle: "", entityName: entityName, excludingPostIDs: hiddenPosts)
     }()
 
     // MARK: - Initialization
@@ -34,17 +37,20 @@ class SelectPostViewController: UITableViewController {
          isSelectedPost: ((AbstractPost) -> Bool)? = nil,
          showsPostType: Bool = true,
          entityName: String? = nil,
+         hiddenPosts: [Int] = [],
          callback: SelectPostCallback? = nil) {
         self.blog = blog
         self.isSelectedPost = isSelectedPost
         self.callback = callback
         self.showsPostType = showsPostType
         self.entityName = entityName
+        self.hiddenPosts = hiddenPosts
         super.init(style: .plain)
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Lifecycle methods
@@ -129,7 +135,7 @@ extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText)
+        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText, entityName: entityName, excludingPostIDs: hiddenPosts)
         tableView.reloadData()
     }
 }

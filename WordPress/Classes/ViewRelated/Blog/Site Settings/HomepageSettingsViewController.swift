@@ -149,7 +149,7 @@ import WordPressShared
             homepageRow = ActivityIndicatorRow(title: Strings.homepage, animating: true, action: nil)
         } else {
             homepageRow = NavigationItemRow(title: Strings.homepage, detail: homepageTitle, action: { _ in
-                self.pushPageSelection(selectedPostID: self.blog?.homepagePageID) { [weak self] selected in
+                self.pushPageSelection(selectedPostID: self.blog?.homepagePageID, hiddenPostID: self.blog.homepagePostsPageID) { [weak self] selected in
                     if let postID = selected.postID?.intValue {
                         self?.setHomepageType(.page, postsPageID: self?.blog.homepagePostsPageID, homePageID: postID)
                     }
@@ -162,7 +162,7 @@ import WordPressShared
             postsPageRow = ActivityIndicatorRow(title: Strings.postsPage, animating: true, action: nil)
         } else {
             postsPageRow = NavigationItemRow(title: Strings.postsPage, detail: postsPageTitle, action: { _ in
-                self.pushPageSelection(selectedPostID: self.blog?.homepagePostsPageID) { [weak self] selected in
+                self.pushPageSelection(selectedPostID: self.blog?.homepagePostsPageID, hiddenPostID: self.blog?.homepagePageID) { [weak self] selected in
                     if let postID = selected.postID?.intValue {
                         self?.setHomepageType(.page, postsPageID: postID, homePageID: self?.blog.homepagePageID)
                     }
@@ -178,11 +178,18 @@ import WordPressShared
         animateDeselectionInteractively()
     }
 
-    fileprivate func pushPageSelection(selectedPostID: Int?, _ completion: @escaping (Page) -> Void) {
+    fileprivate func pushPageSelection(selectedPostID: Int?, hiddenPostID: Int?, _ completion: @escaping (Page) -> Void) {
+        let hiddenPosts: [Int]
+        if let postID = hiddenPostID {
+            hiddenPosts = [postID]
+        } else {
+            hiddenPosts = []
+        }
         let viewController = SelectPostViewController(blog: blog,
                                                       isSelectedPost: { $0.postID?.intValue == selectedPostID },
                                                       showsPostType: false,
-                                                      entityName: Page.entityName()) { (post) in
+                                                      entityName: Page.entityName(),
+                                                      hiddenPosts: hiddenPosts) { (post) in
             if let page = post as? Page {
                 completion(page)
             }
