@@ -41,7 +41,18 @@ import WordPressFlux
         return currentHelper
     }
 
-    private(set) var resultsStatusView = NoResultsViewController.controller()
+    private var noResultsStatusViewController = NoResultsViewController.controller()
+    private var noFollowedSitesViewController: NoResultsViewController?
+
+    var resultsStatusView: NoResultsViewController {
+        get {
+            guard let noFollowedSitesVC = noFollowedSitesViewController else {
+                return noResultsStatusViewController
+            }
+
+            return noFollowedSitesVC
+        }
+    }
 
     private lazy var footerView: PostListFooterView = {
         return tableConfiguration.footer()
@@ -716,7 +727,8 @@ import WordPressFlux
 
     func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: animated)
+        navigationController?.present(controller, animated: animated)
+//        navigationController?.pushViewController(controller, animated: animated)
     }
 
     private func showFollowing() {
@@ -1657,9 +1669,12 @@ private extension ReaderStreamViewController {
 
         view.isUserInteractionEnabled = true
 
-        let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
-        controller.delegate = self
-        resultsStatusView = controller
+        if noFollowedSitesViewController == nil {
+            let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
+            controller.delegate = self
+            noFollowedSitesViewController = controller
+        }
+
         displayResultsStatus()
     }
 
@@ -1668,16 +1683,26 @@ private extension ReaderStreamViewController {
         displayResultsStatus()
     }
 
+    /// Removes the no followed sites view controller if it exists
+    func resetNoFollowedSitesViewController() {
+        if let noFollowedSitesVC = noFollowedSitesViewController {
+            noFollowedSitesVC.removeFromView()
+            noFollowedSitesViewController = nil
+        }
+    }
+
     func configureResultsStatus(title: String,
                                 subtitle: String? = nil,
                                 buttonTitle: String? = nil,
                                 imageName: String? = nil,
                                 accessoryView: UIView? = nil) {
+        resetNoFollowedSitesViewController()
 
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
     }
 
     private func displayNoResultsForSavedPosts() {
+        resetNoFollowedSitesViewController()
         configureNoResultsViewForSavedPosts()
         displayResultsStatus()
     }
