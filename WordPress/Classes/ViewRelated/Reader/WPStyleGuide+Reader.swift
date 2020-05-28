@@ -166,7 +166,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: fontForTextStyle(.footnote),
+            .font: fontForTextStyle(.subheadline),
             .foregroundColor: UIColor(light: .muriel(color: .gray, .shade40),
                                       dark: .muriel(color: .gray, .shade20))
         ]
