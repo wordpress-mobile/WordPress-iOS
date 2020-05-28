@@ -3,8 +3,13 @@
 @font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype'); font-style: italic; }
 @font-face { font-family: 'Noto Serif'; src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype'); font-weight: bold; font-style: italic; }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
-  font: -apple-system-body; font-family: 'Noto Serif', serif; font-weight: 400; color: var(--main-txt-color); padding: 0; margin: 0 1em; background-color: transparent;
+  -webkit-text-size-adjust: none; font: -apple-system-body; font-family: 'Noto Serif', serif; font-weight: 400; color: var(--main-txt-color); padding: 0; margin: 0 1em; background-color: transparent;
 }
 
 body, p, div { max-width: 100% !important; word-wrap: break-word; }
