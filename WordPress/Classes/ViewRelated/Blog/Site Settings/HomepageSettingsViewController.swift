@@ -4,30 +4,6 @@ import WordPressShared
 
 @objc open class HomepageSettingsViewController: UITableViewController {
 
-    enum UpdateState {
-        case homepageType
-        case selectedHomepage
-        case selectedPostsPage
-
-        /// Compares each property from `blog` and produces an update state based on which changed
-        init?(blog: Blog, homepageType: HomepageType, postsPageID: Int?, homepagePageID: Int?) {
-            if blog.homepageType != homepageType {
-                self = .homepageType
-            } else if blog.homepagePostsPageID != postsPageID {
-                self = .selectedPostsPage
-            } else if blog.homepagePageID != homepagePageID {
-                self = .selectedHomepage
-            } else {
-                return nil
-            }
-        }
-    }
-
-    /// Are we currently updating the homepage type?
-    fileprivate var updateState: UpdateState? = nil
-
-    fileprivate var postService: PostService!
-
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -72,6 +48,11 @@ import WordPressShared
         })
     }
 
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animateDeselectionInteractively()
+    }
+
     // MARK: - Model
 
     fileprivate func reloadViewModel() {
@@ -84,7 +65,7 @@ import WordPressShared
         }
 
         let homepageRows: [ImmuTableRow]
-        if case .homepageType = updateState {
+        if case .homepageType(_) = inProgressChange {
             homepageRows = updatingHomepageTypeRows
         } else {
             homepageRows = homepageTypeRows
@@ -104,6 +85,8 @@ import WordPressShared
         return ImmuTable(sections: sections)
     }
 
+    // MARK: - Table Rows
+
     var updatingHomepageTypeRows: [ImmuTableRow] {
         guard let homepageType = blog.homepageType else {
             return []
@@ -122,10 +105,10 @@ import WordPressShared
 
         return [
             CheckmarkRow(title: HomepageType.posts.title, checked: homepageType == .posts, action: { [weak self] _ in
-                self?.setHomepageType(.posts, postsPageID: self?.blog.homepagePostsPageID, homePageID: self?.blog.homepagePageID)
+                self?.update(with: .homepageType(.posts))
             }),
             CheckmarkRow(title: HomepageType.page.title, checked: homepageType == .page, action: { [weak self] _ in
-                self?.setHomepageType(.page, postsPageID: self?.blog.homepagePostsPageID, homePageID: self?.blog.homepagePageID)
+                self?.update(with: .homepageType(.page))
             })
         ]
     }
@@ -145,37 +128,34 @@ import WordPressShared
         }
 
         let homepageRow: ImmuTableRow
-        if case .selectedHomepage = updateState {
+        if case .selectedHomepage(_) = inProgressChange {
             homepageRow = ActivityIndicatorRow(title: Strings.homepage, animating: true, action: nil)
         } else {
-            homepageRow = NavigationItemRow(title: Strings.homepage, detail: homepageTitle, action: { _ in
-                self.pushPageSelection(selectedPostID: self.blog?.homepagePageID, hiddenPostID: self.blog.homepagePostsPageID) { [weak self] selected in
-                    if let postID = selected.postID?.intValue {
-                        self?.setHomepageType(.page, postsPageID: self?.blog.homepagePostsPageID, homePageID: postID)
-                    }
-                }
+            homepageRow = NavigationItemRow(title: Strings.homepage, detail: homepageTitle, action: { [weak self] _ in
+                self?.showPageSelection(selectedPostID: self?.blog?.homepagePageID, hiddenPostID: self?.blog?.homepagePostsPageID, change: { .selectedHomepage($0) })
             })
         }
 
         let postsPageRow: ImmuTableRow
-        if case .selectedPostsPage = updateState {
+        if case .selectedPostsPage(_) = inProgressChange {
             postsPageRow = ActivityIndicatorRow(title: Strings.postsPage, animating: true, action: nil)
         } else {
-            postsPageRow = NavigationItemRow(title: Strings.postsPage, detail: postsPageTitle, action: { _ in
-                self.pushPageSelection(selectedPostID: self.blog?.homepagePostsPageID, hiddenPostID: self.blog?.homepagePageID) { [weak self] selected in
-                    if let postID = selected.postID?.intValue {
-                        self?.setHomepageType(.page, postsPageID: postID, homePageID: self?.blog.homepagePageID)
-                    }
-                }
+            postsPageRow = NavigationItemRow(title: Strings.postsPage, detail: postsPageTitle, action: { [weak self] _ in
+                self?.showPageSelection(selectedPostID: self?.blog?.homepagePostsPageID, hiddenPostID: self?.blog?.homepagePageID, change: { .selectedPostsPage($0) })
             })
         }
 
         return [homepageRow, postsPageRow]
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        animateDeselectionInteractively()
+    // MARK: - Page Selection Navigation
+
+    private func showPageSelection(selectedPostID: Int?, hiddenPostID: Int?, change: @escaping (Int) -> HomepageChange) {
+        pushPageSelection(selectedPostID: selectedPostID, hiddenPostID: hiddenPostID) { [weak self] selected in
+            if let postID = selected.postID?.intValue {
+                self?.update(with: change(postID))
+            }
+        }
     }
 
     fileprivate func pushPageSelection(selectedPostID: Int?, hiddenPostID: Int?, _ completion: @escaping (Page) -> Void) {
@@ -189,40 +169,62 @@ import WordPressShared
                                                       isSelectedPost: { $0.postID?.intValue == selectedPostID },
                                                       showsPostType: false,
                                                       entityName: Page.entityName(),
-                                                      hiddenPosts: hiddenPosts) { (post) in
+                                                      hiddenPosts: hiddenPosts,
+                                                      callback: { [weak self] (post) in
             if let page = post as? Page {
                 completion(page)
             }
-            self.navigationController?.popViewController(animated: true)
-        }
+            self?.navigationController?.popViewController(animated: true)
+        })
         viewController.title = NSLocalizedString("Choose Posts Page", comment: "Title for selecting a new home page")
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    fileprivate func endUpdating() {
-        updateState = nil
-        reloadViewModel()
+    // MARK: - Remote Updating
+
+    /// The options for changing a homepage
+    /// Note: This is mapped to the actual property changes in `update(with change:)`
+    private enum HomepageChange {
+        case homepageType(HomepageType)
+        case selectedHomepage(Int)
+        case selectedPostsPage(Int)
     }
 
-    fileprivate func setHomepageType(_ type: HomepageType,
-                                     postsPageID: Int?,
-                                     homePageID: Int?) {
-
-        guard updateState == nil else {
+    /// Sends the remote service call to update `blog` homepage settings properties.
+    /// - Parameter change: The change to update for `blog`.
+    private func update(with change: HomepageChange) {
+        guard inProgressChange == nil else {
                 return
         }
 
-        updateState = UpdateState(blog: blog, homepageType: type, postsPageID: postsPageID, homepagePageID: homePageID)
+        /// Configure `blog` properties for the remote call
+        let homepageType: HomepageType
+        var homepagePostsPageID = blog.homepagePostsPageID
+        var homepagePageID = blog.homepagePageID
 
-        /// Will be `nil` if there are no changes to `blog`
-        guard updateState != nil else {
-            return
+        switch change {
+        case .homepageType(let type):
+            homepageType = type
+        case .selectedPostsPage(let id):
+            homepageType = .page
+            homepagePostsPageID = id
+        case .selectedHomepage(let id):
+            homepageType = .page
+            homepagePageID = id
         }
 
+        /// If the blog hasn't changed, don't waste time saving it.
+        guard blog.homepageType != homepageType ||
+                blog.homepagePostsPageID != homepagePostsPageID ||
+                blog.homepagePageID != homepagePageID else { return }
+
+        inProgressChange = change
+
+        /// Send the remove service call
         let service = HomepageSettingsService(blog: blog, context: blog.managedObjectContext!)
-        service?.setHomepageType(type,
-                                 withPostsPageID: postsPageID,
-                                 homePageID: homePageID,
+        service?.setHomepageType(homepageType,
+                                 withPostsPageID: homepagePostsPageID,
+                                 homePageID: homepagePageID,
                                  success: { [weak self] in
             self?.endUpdating()
         }, failure: { [weak self] error in
@@ -235,8 +237,18 @@ import WordPressShared
         reloadViewModel()
     }
 
+    fileprivate func endUpdating() {
+        inProgressChange = nil
+        reloadViewModel()
+    }
+
     // MARK: - Private Properties
     fileprivate var blog: Blog!
+
+    fileprivate var postService: PostService!
+
+    /// Are we currently updating the homepage type?
+    fileprivate var inProgressChange: HomepageChange? = nil
 
     fileprivate enum Strings {
         static let title = NSLocalizedString("Homepage Settings", comment: "Title for the Homepage Settings screen")
