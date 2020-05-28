@@ -167,12 +167,10 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         currentKeyboardHeight = keyboardFrame.height
-//        configureNoResultsView()
     }
 
     @objc func keyboardWillHide(_ notification: Foundation.Notification) {
         currentKeyboardHeight = 0
-//        configureNoResultsView()
     }
 
 
