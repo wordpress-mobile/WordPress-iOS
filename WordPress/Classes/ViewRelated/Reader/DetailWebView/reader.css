@@ -1,0 +1,52 @@
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Regular'), url('NotoSerif-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Bold'), url('NotoSerif-Bold.ttf') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype'); font-style: italic; }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype'); font-weight: bold; font-style: italic; }
+
+body {
+  font: -apple-system-body; font-family: 'Noto Serif', serif; font-weight: 400; color: var(--main-txt-color); padding: 0; margin: 0 1em; background-color: transparent;
+}
+
+body, p, div { max-width: 100% !important; word-wrap: break-word; }
+
+p, div, li { line-height: 1.6em; font-size: 100%; }
+
+h1, h2, h3 { line-height: 1.6em; }
+
+p, div, dl, table { width: auto !important; height: auto !important; }
+
+body, p, div, a { word-wrap: break-word; }
+
+hr { border-color: var(--main-grey-extra-light); }
+
+p { margin-top: 1em; margin-bottom: 1em; }
+
+pre { overflow-x: scroll; background-color: var(--main-grey-extra-light); padding: 1em; }
+
+blockquote { color: var(--main-grey-medium-dark); padding-left: 32px; margin-left: 0px; border-left: 3px solid var(--main-grey-extra-light); }
+
+a { text-decoration: none; color: var(--main-link-color); }
+
+figure { margin: 0; }
+
+img { max-width: 100%; width: auto; height: auto; }
+
+img.size-none, .size-none img { max-width: 100% !important; height: auto !important; }
+
+img.size-full, img.size-large, .size-medium img, .size-full img, .size-large img, .size-medium img { display: block; margin-left: auto; margin-right: auto; background-color: var(--main-grey-medium-dark); margin-bottom: 1em; }
+
+.wp-caption img { margin-top: 0px; margin-bottom: 0px; }
+
+.wp-caption .wp-caption-text { font-size: smaller; line-height: 1.2em; margin: 0px; text-align: center; padding: 1em; color: var(--main-grey-medium-dark); }
+
+div#discover { margin-top: 1em; font-family: sans-serif; }
+
+iframe { display: block; margin: 0 auto; }
+
+video { width: 100% !important; height: 100% !important; }
+
+form, input, select, button textarea { display: none; }
+
+div.feedflare { display: none; }
+
+.sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
