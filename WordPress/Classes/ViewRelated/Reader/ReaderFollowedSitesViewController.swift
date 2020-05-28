@@ -20,7 +20,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     private var currentKeyboardHeight: CGFloat = 0
     private var deviceIsRotating = false
-    private let noResultsViewController = NoResultsViewController.controller()
+    private lazy var noResultsViewController: NoResultsViewController = {
+        return NoResultsViewController.controller()
+    }()
 
     private var showsAccessoryFollowButtons: Bool = false
     private var showsSectionTitle: Bool = true
@@ -69,7 +71,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableViewHandler()
         configureSearchBar()
         setupBackgroundTapGestureRecognizer()
-        noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
@@ -166,12 +167,12 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         currentKeyboardHeight = keyboardFrame.height
-        configureNoResultsView()
+//        configureNoResultsView()
     }
 
     @objc func keyboardWillHide(_ notification: Foundation.Notification) {
         currentKeyboardHeight = 0
-        configureNoResultsView()
+//        configureNoResultsView()
     }
 
 
@@ -334,22 +335,13 @@ private extension ReaderFollowedSitesViewController {
             return
         }
 
+        noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            noResultsViewController.configure(title: NoResultsText.noResultsTitle,
-                                              buttonTitle: NoResultsText.buttonTitle,
-                                              subtitle: NoResultsText.noResultsMessage)
-
-            // Due to limited space when the keyboard is visible,
-            // hide the image on iPhone and iPad landscape.
-            var hideImageView = false
-            if currentKeyboardHeight > 0 {
-                hideImageView = WPDeviceIdentification.isiPhone() ||
-                                (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isLandscape)
-            }
-
-            noResultsViewController.hideImageView(hideImageView)
+            noResultsViewController = NoResultsViewController.noFollowedSitesController(showActionButton: false)
         }
 
         showNoResultView()
@@ -376,9 +368,6 @@ private extension ReaderFollowedSitesViewController {
     }
 
     struct NoResultsText {
-        static let noResultsTitle = NSLocalizedString("No followed sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
-        static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
-        static let buttonTitle = NSLocalizedString("Discover Sites", comment: "Button title. Tapping takes the user to the Discover sites list.")
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
     }
 
