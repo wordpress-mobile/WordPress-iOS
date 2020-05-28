@@ -6,7 +6,7 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var webView: ReaderWebView!
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator!
