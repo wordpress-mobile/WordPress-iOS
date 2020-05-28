@@ -66,7 +66,7 @@ class ReaderDetailCoordinator {
                             }
 
                             self?.view?.render(post)
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.view?.showError()
         })
     }
