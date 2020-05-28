@@ -27,6 +27,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
 
+    lazy var gutenbergSettings: GutenbergSettings = {
+        return GutenbergSettings()
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -225,7 +229,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var isFirstGutenbergLayout = true
     var shouldPresentInformativeDialog = false
     lazy var shouldPresentPhase2informativeDialog: Bool = {
-        return GutenbergSettings().shouldPresentInformativeDialog(for: post.blog)
+        return gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
     }()
 
     private var themeSupportQuery: Receipt? = nil
@@ -283,6 +287,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
     }
 
     // MARK: - Functions
@@ -675,6 +685,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self?.mentionShow(callback: callback)
         })
     }
+
+    func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
+        return gutenbergSettings.starterPageTemplatesTooltipShown
+    }
+    func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
+        gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
+    }
 }
 
 // MARK: - Mention implementation
@@ -710,7 +727,6 @@ extension GutenbergViewController {
         updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
         mentionsController.didMove(toParent: self)
     }
-
 }
 
 // MARK: - GutenbergBridgeDataSource

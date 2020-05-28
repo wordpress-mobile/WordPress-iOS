@@ -651,6 +651,14 @@ FeaturedImageViewControllerDelegate>
             cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
+
+        if ([self.apost.status isEqualToString:PostStatusPrivate]) {
+            [cell disable];
+        } else {
+            [cell enable];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+
         cell.tag = PostSettingsRowPublishDate;
     } else if (indexPath.row == 1) {
         // Publish Status
@@ -1445,8 +1453,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
 {
-    self.featuredImage = cell.image;
-    cell.accessibilityIdentifier = @"Current Featured Image";
+    self.featuredImage = cell.image;    
     NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
     NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
     [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
@@ -1461,7 +1468,7 @@ FeaturedImageViewControllerDelegate>
     self.animatedFeaturedImageData = nil;
     [self.apost setFeaturedImage:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:PostSettingsSectionFeaturedImage]  withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 @end
