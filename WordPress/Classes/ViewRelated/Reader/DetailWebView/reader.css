@@ -55,3 +55,24 @@ form, input, select, button textarea { display: none; }
 div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
+
+/* iPad */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)  {
+  .alignleft {
+    max-width: 100%;
+    float: left;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-right: 32px;
+  }
+
+  .alignright {
+    max-width: 100%;
+    float: right;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 32px;
+  }
+}
