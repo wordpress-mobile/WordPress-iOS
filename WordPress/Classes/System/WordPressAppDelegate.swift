@@ -67,6 +67,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        // Start CrashLogging as soon as possible (in case a crash happens during startup)
+        CrashLogging.start(withDataProvider: crashLoggingProvider)
+
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -233,8 +236,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         addNotificationObservers()
 
         logger = WPLogger()
-
-        CrashLogging.start(withDataProvider: crashLoggingProvider)
 
         configureAppCenterSDK()
         configureAppRatingUtility()

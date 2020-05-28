@@ -1,23 +1,21 @@
-#import "TestContextManager.h"
 #import "ContextManagerMock.h"
-#import "WordPressTest-Swift.h"
 
-// TestContextManager resolves on the Swift or Obj-C Core Data initialization
-// Based on the Feature Flag value
-@implementation TestContextManager
 
-static TestContextManager *_instance;
+@implementation ContextManagerMock
+
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize mainContext = _mainContext;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize requiresTestExpectation = _requiresTestExpectation;
+@synthesize testExpectation = _testExpectation;
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         // Override the shared ContextManager
-        if([Feature enabled:FeatureFlagSwiftCoreData]) {
-            _stack = [SwiftManagerMock instance];
-        } else {
-            _stack = [[ContextManagerMock alloc] init];
-        }
+        [ContextManager internalSharedInstance];
+        [ContextManager overrideSharedInstance:self];
         _requiresTestExpectation = YES;
     }
 
@@ -26,51 +24,61 @@ static TestContextManager *_instance;
 
 - (NSManagedObjectModel *)managedObjectModel
 {
-    return [_stack managedObjectModel];
-}
-
-- (void)setManagedObjectModel:(NSManagedObjectModel *)managedObjectModel
-{
-    [_stack setManagedObjectModel:managedObjectModel];
+    return _managedObjectModel ?: [super managedObjectModel];
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
-    return [_stack persistentStoreCoordinator];
-}
+    if (_persistentStoreCoordinator) {
+        return _persistentStoreCoordinator;
+    }
 
-- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    return [_stack setPersistentStoreCoordinator:persistentStoreCoordinator];
+    // This is important for automatic version migration. Leave it here!
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+
+    NSError *error = nil;
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
+                                   initWithManagedObjectModel:self.managedObjectModel];
+
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                   configuration:nil
+                                                             URL:nil
+                                                         options:options
+                                                           error:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+    return _persistentStoreCoordinator;
 }
 
 - (NSPersistentStoreCoordinator *)standardPSC
 {
-    return [_stack standardPSC];
+    return [super persistentStoreCoordinator];
 }
 
 - (NSManagedObjectContext *)mainContext
 {
-    return [_stack mainContext];
-}
+    if (_mainContext) {
+        return _mainContext;
+    }
 
-- (void)setMainContext:(NSManagedObjectContext *)mainContext
-{
-    [_stack setMainContext:mainContext];
-}
+    _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    _mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
 
--(void)setTestExpectation:(XCTestExpectation *)testExpectation
-{
-    [_stack setTestExpectation:testExpectation];
+    return _mainContext;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context
 {
     [self saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
+        if (self.testExpectation) {
+            [self.testExpectation fulfill];
+            self.testExpectation = nil;
+        } else if (self.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
     }];
@@ -78,43 +86,26 @@ static TestContextManager *_instance;
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
-    [_stack saveContextAndWait:context];
-    if (self.stack.testExpectation) {
-        [self.stack.testExpectation fulfill];
-        self.stack.testExpectation = nil;
-    } else if (self.stack.requiresTestExpectation) {
+    [super saveContextAndWait:context];
+    if (self.testExpectation) {
+        [self.testExpectation fulfill];
+        self.testExpectation = nil;
+    } else if (self.requiresTestExpectation) {
         NSLog(@"No test expectation present for context save");
     }
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
-    [_stack saveContext:context withCompletionBlock:^{
-        if (self.stack.testExpectation) {
-            [self.stack.testExpectation fulfill];
-            self.stack.testExpectation = nil;
-        } else if (self.stack.requiresTestExpectation) {
+    [super saveContext:context withCompletionBlock:^{
+        if (self.testExpectation) {
+            [self.testExpectation fulfill];
+            self.testExpectation = nil;
+        } else if (self.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
         completionBlock();
     }];
-}
-
-- (void)mergeChanges:(nonnull NSManagedObjectContext *)context fromContextDidSaveNotification:(nonnull NSNotification *)notification
-{
-    [_stack mergeChanges: context fromContextDidSaveNotification:notification];
-}
-
-- (nonnull NSManagedObjectContext *const)newDerivedContext {
-    return [_stack newDerivedContext];
-}
-
-- (nonnull NSManagedObjectContext *const)newMainContextChildContext {
-    return [_stack newMainContextChildContext];
-}
-
-- (BOOL)obtainPermanentIDForObject:(nonnull NSManagedObject *)managedObject {
-    return [_stack obtainPermanentIDForObject:managedObject];
 }
 
 - (NSURL *)storeURL
@@ -159,21 +150,6 @@ static TestContextManager *_instance;
                                                             error:nil];
     NSAssert(dict, @"Mockup data could not be parsed");
     return dict;
-}
-
-+ (instancetype)sharedInstance
-{
-    if (_instance) {
-        return _instance;
-    }
-
-    _instance = [[TestContextManager alloc] init];
-    return _instance;
-}
-
-+ (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager
-{
-    [ContextManager overrideSharedInstance: contextManager];
 }
 
 @end
