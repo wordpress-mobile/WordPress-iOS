@@ -22,9 +22,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         super.viewDidLoad()
 
         applyStyles()
-
         observeWebViewHeight()
-
         coordinator.start()
     }
 
@@ -47,8 +45,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
 
         NSLayoutConstraint.activate([
-            webView.rightAnchor.constraint(equalTo: readableGuide.rightAnchor),
-            webView.leftAnchor.constraint(equalTo: readableGuide.leftAnchor)
+            webView.rightAnchor.constraint(equalTo: readableGuide.rightAnchor, constant: -Constants.margin),
+            webView.leftAnchor.constraint(equalTo: readableGuide.leftAnchor, constant: Constants.margin)
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,6 +112,10 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             controller.coordinator = coordinator
             return controller
         }
+    }
+
+    private enum Constants {
+        static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
     }
 }
 
