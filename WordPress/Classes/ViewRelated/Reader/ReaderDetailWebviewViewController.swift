@@ -22,7 +22,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     }
 
     func showError() {
-        // Show error
+        /// TODO: Show error
     }
 
     /// A View Controller that displays a Post content.
