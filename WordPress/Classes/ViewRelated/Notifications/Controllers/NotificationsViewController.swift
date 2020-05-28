@@ -176,9 +176,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             setupAppRatings()
             self.showInlinePrompt()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.showNotificationPrimerAlert()
-        }
+        showNotificationPrimerAlertIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1638,11 +1636,17 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         return FancyAlertPresentationController(presentedViewController: fancyAlertController, presenting: presenting)
     }
 
-    private func showNotificationPrimerAlert() {
-
+    private func showNotificationPrimerAlertIfNeeded() {
         guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
             return
         }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.showNotificationPrimerAlert()
+        }
+    }
+
+    private func showNotificationPrimerAlert() {
 
         let mainContext = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: mainContext)
@@ -1650,7 +1654,6 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         guard accountService.defaultWordPressComAccount() != nil else {
             return
         }
-
         PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
             guard enabled == .notDetermined else {
                 return
