@@ -273,7 +273,7 @@ task :oss => %w[
   credentials:setup
 ]
 
-desc "Install and configure WordPress iOS and it's dependencies - a8c Developers"
+desc "Install and configure WordPress iOS and it's dependencies - Automattic Developers"
 task :developer => %w[
   install:xcode:check
   dependencies
@@ -294,7 +294,7 @@ namespace :install do
     namespace :xcode_app do
       #check the existance of xcode, and compare version to CI specs
       task :check do
-        puts "Checking for system for XCode"
+        puts "Checking for system for Xcode"
         if !xcode_installed?
           #if xcode is not installed, prompt user to install and terminate rake
           puts "XCode not Found!"
@@ -312,7 +312,7 @@ namespace :install do
 
         if !xcode_version_is_correct?
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake
-          puts "Not recommended version of XCode installed"
+          puts "Not recommended version of Xcode installed"
           puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
           STDOUT.puts "Please press enter to continue"
           complete = STDIN.gets.strip
@@ -417,7 +417,7 @@ namespace :install do
         tool_check(developer_tools)
       end
 
-      #check machine for if the developer tool is present, if not install
+      #check if the developer tool is present in the machine, if not install
       def tool_check(hash)
         hash.each do |key, value|
           puts "Checking system for #{key}"
@@ -502,7 +502,7 @@ namespace :credentials do
   end
 
   def get_client_id
-    STDOUT.puts "Please enter your Cliet id"
+    STDOUT.puts "Please enter your Client id"
     STDIN.gets.strip
   end
 
