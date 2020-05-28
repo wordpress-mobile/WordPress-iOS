@@ -179,7 +179,10 @@ import WordPressShared
     }
 
     fileprivate func pushPageSelection(selectedPostID: Int?, _ completion: @escaping (Page) -> Void) {
-        let viewController = SelectPostViewController(blog: blog, isSelectedPost: { $0.postID?.intValue == selectedPostID }, showsPostType: false) { (post) in
+        let viewController = SelectPostViewController(blog: blog,
+                                                      isSelectedPost: { $0.postID?.intValue == selectedPostID },
+                                                      showsPostType: false,
+                                                      entityName: Page.entityName()) { (post) in
             if let page = post as? Page {
                 completion(page)
             }

@@ -12,6 +12,9 @@ class SelectPostViewController: UITableViewController {
     /// If the cell should display the post type in the `detailTextLabel`
     private var showsPostType: Bool = true
 
+    /// An entity to fetch which is of type `AbstractPost`
+    private var entityName: String? = nil
+
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -22,16 +25,21 @@ class SelectPostViewController: UITableViewController {
     }()
 
     private lazy var fetchController: NSFetchedResultsController<AbstractPost> = {
-        return PostCoordinator.shared.posts(for: self.blog, wichTitleContains: "")
+        return PostCoordinator.shared.posts(for: self.blog, containsTitle: "", entityName: entityName)
     }()
 
     // MARK: - Initialization
 
-    init(blog: Blog, isSelectedPost: ((AbstractPost) -> Bool)? = nil, showsPostType: Bool = true, callback: SelectPostCallback? = nil) {
+    init(blog: Blog,
+         isSelectedPost: ((AbstractPost) -> Bool)? = nil,
+         showsPostType: Bool = true,
+         entityName: String? = nil,
+         callback: SelectPostCallback? = nil) {
         self.blog = blog
         self.isSelectedPost = isSelectedPost
         self.callback = callback
         self.showsPostType = showsPostType
+        self.entityName = entityName
         super.init(style: .plain)
     }
 
@@ -121,7 +129,7 @@ extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: blog, wichTitleContains: searchText)
+        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText)
         tableView.reloadData()
     }
 }
