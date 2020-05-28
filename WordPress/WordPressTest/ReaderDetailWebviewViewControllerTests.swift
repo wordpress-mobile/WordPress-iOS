@@ -38,9 +38,9 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
 
         let controller = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: sideID)
 
-        expect(controller.coordinator.postID).to(equal(1))
-        expect(controller.coordinator.siteID).to(equal(2))
-        expect(controller.coordinator.isFeed).to(beFalse())
+        expect(controller.coordinator?.postID).to(equal(1))
+        expect(controller.coordinator?.siteID).to(equal(2))
+        expect(controller.coordinator?.isFeed).to(beFalse())
     }
 
 }
