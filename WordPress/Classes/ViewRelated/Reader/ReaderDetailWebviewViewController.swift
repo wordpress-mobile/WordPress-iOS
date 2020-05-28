@@ -6,13 +6,24 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
+    /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
+
+    /// WebView height constraint
+    @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    /// An observer of the content size of the webview
+    private var scrollObserver: NSKeyValueObservation?
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        applyStyles()
+
+        observeWebViewHeight()
 
         coordinator.start()
     }
@@ -23,6 +34,38 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     func showError() {
         /// TODO: Show error
+    }
+
+    deinit {
+        scrollObserver?.invalidate()
+    }
+
+    /// Apply view styles
+    private func applyStyles() {
+        guard let readableGuide = webView.superview?.readableContentGuide else {
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            webView.rightAnchor.constraint(equalTo: readableGuide.rightAnchor),
+            webView.leftAnchor.constraint(equalTo: readableGuide.leftAnchor)
+        ])
+
+        webView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Webview is scroll is done by it's superview
+        webView.scrollView.isScrollEnabled = false
+    }
+
+    /// Updates the webview height constraint with it's height
+    private func observeWebViewHeight() {
+        scrollObserver = webView.scrollView.observe(\.contentSize, options: .new) { [weak self] _, change in
+            guard let height = change.newValue?.height else {
+                return
+            }
+
+            self?.webViewHeight.constant = height
+        }
     }
 
     /// A View Controller that displays a Post content.

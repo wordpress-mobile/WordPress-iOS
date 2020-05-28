@@ -16,26 +16,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                                <subviews>
+                                    <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="0.0" width="414" height="100"/>
+                                        <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
+                                            <constraint firstAttribute="height" constant="100" id="ywz-kG-xyW"/>
+                                        </constraints>
+                                        <wkWebViewConfiguration key="configuration">
+                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                            <wkPreferences key="preferences"/>
+                                        </wkWebViewConfiguration>
+                                    </wkWebView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="9JA-VQ-zzw" secondAttribute="leading" constant="16" id="9Vy-Wt-ZIb"/>
+                                    <constraint firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" constant="16" id="FvD-7O-znG"/>
+                                    <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="e2B-yu-g86"/>
+                                    <constraint firstAttribute="bottom" secondItem="iSu-TI-yew" secondAttribute="bottom" id="ehB-y0-aYn"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="eXr-4k-Adq"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="5xu-xy-F0b"/>
-                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" id="7Mc-Gl-VHM"/>
-                            <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="UUS-bP-ZjL"/>
-                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="iSu-TI-yew" secondAttribute="bottom" id="sPU-IY-OkA"/>
+                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="IBx-xv-963"/>
+                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="JMy-49-ddC"/>
+                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
+                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="9JA-VQ-zzw" secondAttribute="trailing" id="u3i-rm-kZv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                     </view>
                     <connections>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
+                        <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aGx-LJ-atS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
