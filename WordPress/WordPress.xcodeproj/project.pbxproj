@@ -1081,6 +1081,11 @@
 		8BC6020D2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC6020C2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift */; };
 		8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */; };
 		8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */; };
+		8BDA5A6B247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */; };
+		8BDA5A6D247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6C247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift */; };
+		8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */; };
+		8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */; };
+		8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */; };
 		8BD6E34A2477514E009AE97C /* TestContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD6E3492477514E009AE97C /* TestContextManager.m */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
@@ -3531,6 +3536,11 @@
 		8BC6020C2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullBlogPropertySanitizerTests.swift; sourceTree = "<group>"; };
 		8BD36E012395CAEA00EFFF1C /* MediaEditorOperation+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+Description.swift"; sourceTree = "<group>"; };
 		8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+DescriptionTests.swift"; sourceTree = "<group>"; };
+		8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailWebviewViewController.swift; sourceTree = "<group>"; };
+		8BDA5A6C247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailWebviewViewControllerTests.swift; sourceTree = "<group>"; };
+		8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReaderDetailViewController.storyboard; sourceTree = "<group>"; };
+		8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCoordinator.swift; sourceTree = "<group>"; };
+		8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCoordinatorTests.swift; sourceTree = "<group>"; };
 		8BD6E3492477514E009AE97C /* TestContextManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestContextManager.m; sourceTree = "<group>"; };
 		8BD6E34B24775164009AE97C /* TestContextManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestContextManager.h; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
@@ -6490,6 +6500,9 @@
 				5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */,
 				5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
+				8BDA5A6A247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift */,
+				8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */,
+				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
 				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
@@ -10163,6 +10176,8 @@
 			isa = PBXGroup;
 			children = (
 				3F8CB103239E025F007627BF /* ReaderDetailViewControllerTests.swift */,
+				8BDA5A6C247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift */,
+				8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */,
 				D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */,
 				D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */,
 				748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */,
@@ -11089,6 +11104,7 @@
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
 				4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */,
+				8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
 				17E363E722C4280A000E0C79 /* pride_icon_20pt@3x.png in Resources */,
@@ -11994,6 +12010,7 @@
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
 				F16C35D623F33DE400C81331 /* PageAutoUploadMessageProvider.swift in Sources */,
+				8BDA5A6B247C2EAF00AB124C /* ReaderDetailWebviewViewController.swift in Sources */,
 				7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */,
 				B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */,
 				F12FA5D92428FA8F0054DA21 /* AuthenticationService.swift in Sources */,
@@ -12534,6 +12551,7 @@
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
 				983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */,
 				98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */,
+				8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
@@ -13515,6 +13533,7 @@
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
 				732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */,
+				8BDA5A6D247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift in Sources */,
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */,
@@ -13620,6 +13639,7 @@
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
 				40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */,
+				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
 				8B7623382384373E00AB3EE7 /* PageListViewControllerTests.swift in Sources */,
 				D88A64B0208DA093008AE9BC /* StockPhotosResultsPageTests.swift in Sources */,
