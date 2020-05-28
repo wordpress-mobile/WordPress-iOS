@@ -24,7 +24,6 @@
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
-#import "ContextManager-Internals.h"
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 

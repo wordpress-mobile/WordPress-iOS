@@ -25,7 +25,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 class NotificationSyncMediator {
     /// Returns the Main Managed Context
     ///
-    fileprivate let contextManager: ContextManager
+    fileprivate let contextManager: CoreDataStack
 
     /// Sync Service Remote
     ///
@@ -70,7 +70,7 @@ class NotificationSyncMediator {
     ///     - manager: ContextManager Instance
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    init?(manager: ContextManager, dotcomAPI: WordPressComRestApi) {
+    init?(manager: CoreDataStack, dotcomAPI: WordPressComRestApi) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }
@@ -396,7 +396,7 @@ extension NotificationSyncMediator {
     /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new
     /// derived context, given a specified ContextManager.
     ///
-    static func sharedDerivedContext(with manager: ContextManager) -> NSManagedObjectContext {
+    static func sharedDerivedContext(with manager: CoreDataStack) -> NSManagedObjectContext {
         lock.lock()
         if privateContext == nil {
             privateContext = manager.newDerivedContext()
