@@ -248,7 +248,7 @@ import WordPressShared
     fileprivate var postService: PostService!
 
     /// Are we currently updating the homepage type?
-    fileprivate var inProgressChange: HomepageChange? = nil
+    private var inProgressChange: HomepageChange? = nil
 
     fileprivate enum Strings {
         static let title = NSLocalizedString("Homepage Settings", comment: "Title for the Homepage Settings screen")
