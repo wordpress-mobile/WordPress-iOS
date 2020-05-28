@@ -1645,11 +1645,21 @@ private extension ReaderStreamViewController {
             return
         }
 
-        let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
+        guard ReaderHelpers.topicIsFollowing(topic) else {
+            let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
 
-        let buttonTitle = buttonTitleForTopic(topic)
+            let buttonTitle = buttonTitleForTopic(topic)
 
-        configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: readerEmptyImageName)
+            configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: readerEmptyImageName)
+            displayResultsStatus()
+            return
+        }
+
+        view.isUserInteractionEnabled = true
+
+        let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
+        controller.delegate = self
+        resultsStatusView = controller
         displayResultsStatus()
     }
 
@@ -1837,26 +1847,38 @@ private extension ReaderStreamViewController {
     }
 
     func displaySelfHostedFollowingController() {
-        addNoTopicController(title: NoTopicConstants.noFollowedSitesTitle)
-    }
+        let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
+        controller.delegate = self
 
-    func displayContentErrorController() {
-        addNoTopicController(title: NoTopicConstants.contentErrorTitle,
-                             subtitle: NoTopicConstants.contentErrorSubtitle,
-                             image: NoTopicConstants.contentErrorImage)
+        addNoTopicController(controller)
+
         view.isUserInteractionEnabled = true
     }
 
-    func addNoTopicController(title: String,
-                                      buttonTitle: String? = nil,
-                                      subtitle: String? = nil,
-                                      image: String? = nil) {
+    func displayContentErrorController() {
+        let controller = noTopicViewController(title: NoTopicConstants.contentErrorTitle,
+                             subtitle: NoTopicConstants.contentErrorSubtitle,
+                             image: NoTopicConstants.contentErrorImage)
+        addNoTopicController(controller)
 
+        view.isUserInteractionEnabled = true
+    }
+
+
+    func noTopicViewController(title: String,
+                               buttonTitle: String? = nil,
+                               subtitle: String? = nil,
+                               image: String? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
         controller.configure(title: title,
                              buttonTitle: buttonTitle,
+                             subtitle: subtitle,
                              image: image)
 
+        return controller
+    }
+
+    func addNoTopicController(_ controller: NoResultsViewController) {
         addChild(controller)
         view.addSubview(controller.view)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -1873,7 +1895,6 @@ private extension ReaderStreamViewController {
     }
 
     enum NoTopicConstants {
-        static let noFollowedSitesTitle = NSLocalizedString("Use the filter button to find posts on specific subjects.", comment: "Title for the no followed sites result screen")
         static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
