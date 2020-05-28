@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newReaderNavigation
     case tenor
     case readerWebview
+    case homepageSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +41,8 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerWebview:
             return false
+        case .homepageSettings:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
@@ -78,6 +81,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Tenor GIF media source"
         case .readerWebview:
             return "Reader content displayed in a WebView"
+        case .homepageSettings:
+            return "Homepage Settings"
         }
     }
 

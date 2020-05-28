@@ -23,6 +23,7 @@
 - [Localization](localization.md)
 - [Feature Flags](feature-flags.md)
 - [Formattable Content](formattable-content.md)
+- [Issue Triage](issue-triage.md)
 
 ## Further Reading
 
