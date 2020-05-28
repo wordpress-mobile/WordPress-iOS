@@ -155,7 +155,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(.title2),
+            .font: serifFontForTextStyle(.title3),
 
         ]
     }
