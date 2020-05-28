@@ -4,6 +4,7 @@
 * [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
 * [internal] Logging in via 'Continue with Google' has changes that can cause regressions. See https://git.io/Jf2LF for full testing details.
 * [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
+* My Site: Add support for setting the Homepage and Posts Page for a site.
 
 14.9
 -----
