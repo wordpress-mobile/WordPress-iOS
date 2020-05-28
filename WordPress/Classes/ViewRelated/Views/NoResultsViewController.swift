@@ -35,6 +35,7 @@ import Reachability
 
     // To allow storing values until view is loaded.
     private var titleText: String?
+    private var attributedTitleText: NSAttributedString?
     private var subtitleText: String?
     private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
@@ -153,6 +154,7 @@ import Reachability
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
+                         attributedTitle: NSAttributedString? = nil,
                          noConnectionTitle: String? = nil,
                          buttonTitle: String? = nil,
                          subtitle: String? = nil,
@@ -168,10 +170,14 @@ import Reachability
             let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle
             subtitleText = subtitle
             attributedSubtitleText = NSAttributedString(string: subtitleText!)
+            configureAttributedSubtitle = nil
+            attributedTitleText = nil
         } else {
             titleText = title
             subtitleText = subtitle
             attributedSubtitleText = attributedSubtitle
+            attributedTitleText = attributedTitle
+            configureAttributedSubtitle = attributedSubtitleConfiguration
         }
 
         configureAttributedSubtitle = attributedSubtitleConfiguration
@@ -310,6 +316,15 @@ private extension NoResultsViewController {
 
         titleLabel.text = titleText
         titleLabel.textColor = .text
+
+        if let titleText = titleText {
+            titleLabel.attributedText = nil
+            titleLabel.text = titleText
+        }
+
+        if let attributedTitleText = attributedTitleText {
+            titleLabel.attributedText = attributedTitleText
+        }
 
         subtitleTextView.textColor = .textSubtle
 
