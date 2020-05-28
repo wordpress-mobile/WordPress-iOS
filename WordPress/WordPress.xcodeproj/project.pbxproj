@@ -1082,6 +1082,7 @@
 		8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
+		8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */; };
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
 		8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
@@ -1596,10 +1597,10 @@
 		C81CCD83243BF7A600A83E27 /* TenorDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */; };
 		C81CCD84243BF7A600A83E27 /* NoResultsTenorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */; };
 		C81CCD86243C00E000A83E27 /* TenorPageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */; };
+		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		C8567492243F3751001A995E /* tenor-search-response.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567491243F3751001A995E /* tenor-search-response.json */; };
 		C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */; };
 		C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567495243F3D37001A995E /* TenorResultsPageTests.swift */; };
-		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		C8567498243F41CA001A995E /* MockTenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567497243F41CA001A995E /* MockTenorService.swift */; };
 		C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567499243F4292001A995E /* TenorMockDataHelper.swift */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
@@ -3529,6 +3530,7 @@
 		8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaEditorOperation+DescriptionTests.swift"; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
+		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
 		8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLs.swift"; sourceTree = "<group>"; };
 		8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLsTests.swift"; sourceTree = "<group>"; };
 		8CE5BBD00FF1470AC4B88247 /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4099,10 +4101,10 @@
 		C81CCD79243BF7A600A83E27 /* TenorDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorDataLoader.swift; sourceTree = "<group>"; };
 		C81CCD7A243BF7A600A83E27 /* NoResultsTenorConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsTenorConfiguration.swift; sourceTree = "<group>"; };
 		C81CCD85243C00E000A83E27 /* TenorPageableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorPageableTests.swift; sourceTree = "<group>"; };
+		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
 		C8567491243F3751001A995E /* tenor-search-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-search-response.json"; sourceTree = "<group>"; };
 		C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-invalid-search-reponse.json"; sourceTree = "<group>"; };
 		C8567495243F3D37001A995E /* TenorResultsPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorResultsPageTests.swift; sourceTree = "<group>"; };
-		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
 		C8567497243F41CA001A995E /* MockTenorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTenorService.swift; sourceTree = "<group>"; };
 		C8567499243F4292001A995E /* TenorMockDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorMockDataHelper.swift; sourceTree = "<group>"; };
 		C856749B243F462F001A995E /* TenorDataSouceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorDataSouceTests.swift; sourceTree = "<group>"; };
@@ -8896,6 +8898,7 @@
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
 				177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */,
 				7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */,
+				8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */,
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
 				F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */,
 				9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */,
@@ -12797,6 +12800,7 @@
 				17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */,
 				9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
+				8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
 				7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */,
 				F53FF3AA23EA725C001AD596 /* SiteIconView.swift in Sources */,
