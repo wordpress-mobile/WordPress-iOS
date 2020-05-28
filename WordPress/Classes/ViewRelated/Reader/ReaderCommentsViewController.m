@@ -687,6 +687,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
+                                     attributedTitle:nil
                                    noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
