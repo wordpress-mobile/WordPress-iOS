@@ -70,5 +70,4 @@ class ReaderDetailCoordinator {
             self?.view?.showError()
         })
     }
-
 }
