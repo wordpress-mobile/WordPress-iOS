@@ -16,14 +16,14 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     private var scrollObserver: NSKeyValueObservation?
 
     /// The coordinator, responsible for the logic
-    var coordinator: ReaderDetailCoordinator!
+    var coordinator: ReaderDetailCoordinator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         applyStyles()
         observeWebViewHeight()
-        coordinator.start()
+        coordinator?.start()
     }
 
     func render(_ post: ReaderPost) {

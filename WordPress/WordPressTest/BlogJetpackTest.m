@@ -8,7 +8,6 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TestContextManager.h"
-#import "ContextManager-Internals.h"
 @import WordPressKit;
 
 @interface BlogJetpackTest : XCTestCase
