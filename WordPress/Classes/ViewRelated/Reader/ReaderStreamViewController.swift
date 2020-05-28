@@ -727,8 +727,7 @@ import WordPressFlux
 
     func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.present(controller, animated: animated)
-//        navigationController?.pushViewController(controller, animated: animated)
+        navigationController?.pushViewController(controller, animated: animated)
     }
 
     private func showFollowing() {
