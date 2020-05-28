@@ -147,6 +147,28 @@ extension WPStyleGuide {
         ]
     }
 
+    // MARK: - No Followed Sites Error Text Attributes
+    @objc public class func noFollowedSitesErrorTitleAttributes() -> [NSAttributedString.Key: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+
+        return [
+            .paragraphStyle: paragraphStyle,
+            .font: serifFontForTextStyle(.title3),
+
+        ]
+    }
+
+    @objc public class func noFollowedSitesErrorSubtitleAttributes() -> [NSAttributedString.Key: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        return [
+            .paragraphStyle: paragraphStyle,
+            .font: fontForTextStyle(.subheadline),
+            .foregroundColor: UIColor(light: .muriel(color: .gray, .shade40),
+                                      dark: .muriel(color: .gray, .shade20))
+        ]
+    }
 
     // MARK: - Stream Header Attributed Text Attributes
 
