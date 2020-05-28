@@ -3,11 +3,14 @@ import UIKit
 
 class SelectPostViewController: UITableViewController {
 
-    typealias SelectPostCallback = (_ url: String, _ title: String) -> ()
+    typealias SelectPostCallback = (AbstractPost) -> ()
     private var callback: SelectPostCallback?
 
     private var blog: Blog!
-    private var selectedLink: String?
+    private var isSelectedPost: ((AbstractPost) -> Bool)? = nil
+
+    /// If the cell should display the post type in the `detailTextLabel`
+    private var showsPostType: Bool = true
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -24,10 +27,11 @@ class SelectPostViewController: UITableViewController {
 
     // MARK: - Initialization
 
-    init(blog: Blog, selectedLink: String? = nil, callback: SelectPostCallback? = nil) {
+    init(blog: Blog, isSelectedPost: ((AbstractPost) -> Bool)? = nil, showsPostType: Bool = true, callback: SelectPostCallback? = nil) {
         self.blog = blog
-        self.selectedLink = selectedLink
+        self.isSelectedPost = isSelectedPost
         self.callback = callback
+        self.showsPostType = showsPostType
         super.init(style: .plain)
     }
 
@@ -82,12 +86,14 @@ extension SelectPostViewController {
 
         let post = fetchController.object(at: indexPath)
         cell.textLabel?.text = post.titleForDisplay()
-        if post is Page {
-            cell.detailTextLabel?.text = NSLocalizedString("Page", comment: "Noun. Type of content being selected is a blog page")
-        } else {
-            cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
+        if showsPostType {
+            if post is Page {
+                cell.detailTextLabel?.text = NSLocalizedString("Page", comment: "Noun. Type of content being selected is a blog page")
+            } else {
+                cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
+            }
         }
-        if post.permaLink == selectedLink {
+        if isSelectedPost?(post) == true {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -104,11 +110,7 @@ extension SelectPostViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = fetchController.object(at: indexPath)
-        guard let title = post.titleForDisplay(), let url = post.permaLink else {
-            return
-        }
-
-        callback?(url, title)
+        callback?(post)
     }
 }
 
