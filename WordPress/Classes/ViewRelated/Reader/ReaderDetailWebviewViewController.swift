@@ -23,6 +23,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         super.viewDidLoad()
 
         applyStyles()
+        configureShareButton()
         observeWebViewHeight()
         coordinator?.start()
     }
@@ -70,6 +71,25 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
             self?.webViewHeight.constant = height
         }
+    }
+
+    /// Adds the sahre button at the right of the nav bar
+    ///
+    private func configureShareButton() {
+        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
+
+        let shareButton = UIBarButtonItem(customView: button)
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+    }
+
+    /// Ask the coordinator to present the share sheet
+    ///
+    @objc func didTapShareButton(_ sender: UIButton) {
+        coordinator?.share(fromView: sender)
     }
 
     /// A View Controller that displays a Post content.

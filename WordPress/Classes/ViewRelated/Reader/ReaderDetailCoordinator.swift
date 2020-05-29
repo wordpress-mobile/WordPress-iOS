@@ -8,6 +8,9 @@ class ReaderDetailCoordinator {
     /// Reader Post Service
     private let service: ReaderPostService
 
+    /// Post Sharing Controller
+    private let sharingController: PostSharingController
+
     /// Reader View
     private weak var view: ReaderDetailView?
 
@@ -24,8 +27,10 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter service: a Reader Post Service
     init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         sharingController: PostSharingController = PostSharingController(),
          view: ReaderDetailView) {
         self.service = service
+        self.sharingController = sharingController
         self.view = view
     }
 
@@ -38,6 +43,16 @@ class ReaderDetailCoordinator {
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         }
+    }
+
+    /// Share the current post
+    ///
+    func share(fromView anchorView: UIView) {
+        guard let post = post, let view = view as? UIViewController else {
+            return
+        }
+
+        sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
     }
 
     /// Set a postID, siteID and isFeed
@@ -66,6 +81,7 @@ class ReaderDetailCoordinator {
                                 return
                             }
 
+                            self?.post = post
                             self?.view?.render(post)
                             self?.view?.show(title: post.postTitle)
         }, failure: { [weak self] _ in

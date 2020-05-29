@@ -20,7 +20,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(serviceMock.didCallFetchPostWithIsFeed).to(beTrue())
     }
 
-    /// Given the returned ReaderPost to the view
+    /// Inform the view to render a post after it is fetched
     ///
     func testUpdateViewWithRetrievedPost() {
         let post: ReaderPost = ReaderPostBuilder().build()
@@ -35,7 +35,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(viewMock.didCallRenderWithPost).to(equal(post))
     }
 
-    /// Given the returned ReaderPost to the view
+    /// When an error happens, tell the view to show an error
     ///
     func testShowErrorInView() {
         let serviceMock = ReaderPostServiceMock()
@@ -96,6 +96,24 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
     }
 
+    /// Show the share sheet
+    ///
+    func testShowShareSheet() {
+        let button = UIView()
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let postSharingControllerMock = PostSharingControllerMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.share(fromView: button)
+
+        expect(postSharingControllerMock.didCallShareReaderPostWith).to(equal(post))
+        expect(postSharingControllerMock.didCallShareReaderPostWithView).to(equal(button))
+        expect(postSharingControllerMock.didCallShareReaderPostWithViewController).to(equal(viewMock))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
@@ -127,7 +145,7 @@ private class ReaderPostServiceMock: ReaderPostService {
     }
 }
 
-private class ReaderDetailViewMock: ReaderDetailView {
+private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallRenderWithPost: ReaderPost?
     var didCallShowError = false
     var didCallShowTitleWith: String?
@@ -142,5 +160,17 @@ private class ReaderDetailViewMock: ReaderDetailView {
 
     func show(title: String?) {
         didCallShowTitleWith = title
+    }
+}
+
+private class PostSharingControllerMock: PostSharingController {
+    var didCallShareReaderPostWith: ReaderPost?
+    var didCallShareReaderPostWithView: UIView?
+    var didCallShareReaderPostWithViewController: UIViewController?
+
+    override func shareReaderPost(_ post: ReaderPost, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+        didCallShareReaderPostWith = post
+        didCallShareReaderPostWithView = anchorView
+        didCallShareReaderPostWithViewController = viewController
     }
 }
