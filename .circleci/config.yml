@@ -170,6 +170,29 @@ jobs:
           webhook: '${SLACK_BUILD_WEBHOOK}'
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
+  PR check:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: | 
+            bundle exec fastlane check_next_milestone_pr_state
+            SLACK_PRBOT_MESSAGE = $(cat ./fastlane/comment.txt )
+            echo "export SLACK_PRBOT_MESSAGE" >> $BASH_ENV
+      - slack/notify:
+          include_job_number_field: false
+          include_project_field: false
+          include_visit_job_action: false
+          message: '${SLACK_PRBOT_MESSAGE}'
+
 
 workflows:
   wordpress_ios:
@@ -235,4 +258,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/ 
+  PR Bot:
+    jobs:
+      - PR check
 
