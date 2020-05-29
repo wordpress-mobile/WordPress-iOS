@@ -278,6 +278,7 @@ static NSInteger HideSearchMinSites = 3;
     // If we have no sites, show the No Results VC.
     if (siteCount == 0) {
         [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
+                                         attributedTitle:nil
                                        noConnectionTitle:nil
                                              buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                 subtitle:nil
@@ -304,9 +305,10 @@ static NSInteger HideSearchMinSites = 3;
     
     NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
     NSString *imageName = @"mysites-nosites";
-
+    
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
+                                         attributedTitle:nil
                                        noConnectionTitle:nil
                                              buttonTitle:buttonTitle
                                                 subtitle:singularTitle
@@ -318,6 +320,7 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
+                                         attributedTitle:nil
                                        noConnectionTitle:nil
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
