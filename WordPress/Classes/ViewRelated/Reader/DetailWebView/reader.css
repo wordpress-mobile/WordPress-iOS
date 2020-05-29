@@ -24,6 +24,10 @@ hr {
   border: 1px solid var(--color-neutral-0);
 }
 
+table {
+  width: 100%
+}
+
 div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
