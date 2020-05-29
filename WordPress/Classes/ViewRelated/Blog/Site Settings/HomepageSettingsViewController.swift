@@ -128,21 +128,30 @@ import WordPressShared
 
         let homepageRow = pageSelectionRow(title: Strings.homepage,
                                                       detail: homepageTitle,
+                                                      selectedPostID: blog?.homepagePageID,
+                                                      hiddenPostID: blog?.homepagePostsPageID,
                                                       isInProgress: HomepageChange.isSelectedHomepage,
                                                       changeForPost: { .selectedHomepage($0) })
         let postsPageRow = pageSelectionRow(title: Strings.postsPage,
                                                        detail: postsPageTitle,
+                                                       selectedPostID: blog?.homepagePostsPageID,
+                                                       hiddenPostID: blog?.homepagePageID,
                                                        isInProgress: HomepageChange.isSelectedPostsPage,
                                                        changeForPost: { .selectedPostsPage($0) })
         return [homepageRow, postsPageRow]
     }
 
-    private func pageSelectionRow(title: String, detail: String, isInProgress: (HomepageChange) -> Bool, changeForPost: @escaping (Int) -> HomepageChange) -> ImmuTableRow {
+    private func pageSelectionRow(title: String,
+                                          detail: String,
+                                          selectedPostID: Int?,
+                                          hiddenPostID: Int?,
+                                          isInProgress: (HomepageChange) -> Bool,
+                                          changeForPost: @escaping (Int) -> HomepageChange) -> ImmuTableRow {
         if let inProgressChange = inProgressChange, isInProgress(inProgressChange) {
             return ActivityIndicatorRow(title: title, animating: true, action: nil)
         } else {
             return NavigationItemRow(title: title, detail: detail, action: { [weak self] _ in
-                self?.showPageSelection(selectedPostID: self?.blog?.homepagePageID, hiddenPostID: self?.blog?.homepagePostsPageID, change: changeForPost)
+                self?.showPageSelection(selectedPostID: selectedPostID, hiddenPostID: hiddenPostID, change: changeForPost)
             })
         }
     }
