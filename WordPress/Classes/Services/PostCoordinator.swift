@@ -204,7 +204,7 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
-    func posts(for blog: Blog, containsTitle title: String, entityName: String? = nil, excludingPostIDs excludedPostIDs: [Int] = []) -> NSFetchedResultsController<AbstractPost> {
+    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil) -> NSFetchedResultsController<AbstractPost> {
         let context = self.mainContext
         let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName ?? AbstractPost.entityName())
 
@@ -217,7 +217,9 @@ class PostCoordinator: NSObject {
         if !title.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
             compoundPredicates.append(NSPredicate(format: "postTitle contains[c] %@", title))
         }
-        compoundPredicates.append(NSPredicate(format: "NOT (postID IN %@)", excludedPostIDs))
+        if !excludedPostIDs.isEmpty {
+            compoundPredicates.append(NSPredicate(format: "NOT (postID IN %@)", excludedPostIDs))
+        }
         let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
 
         fetchRequest.predicate = resultPredicate

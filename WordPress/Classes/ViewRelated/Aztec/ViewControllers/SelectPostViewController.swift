@@ -28,7 +28,7 @@ class SelectPostViewController: UITableViewController {
     }()
 
     private lazy var fetchController: NSFetchedResultsController<AbstractPost> = {
-        return PostCoordinator.shared.posts(for: blog, containsTitle: "", entityName: entityName, excludingPostIDs: hiddenPosts)
+        return PostCoordinator.shared.posts(for: blog, containsTitle: "", excludingPostIDs: hiddenPosts, entityName: entityName)
     }()
 
     // MARK: - Initialization
@@ -135,7 +135,7 @@ extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText, entityName: entityName, excludingPostIDs: hiddenPosts)
+        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText, excludingPostIDs: hiddenPosts, entityName: entityName)
         tableView.reloadData()
     }
 }

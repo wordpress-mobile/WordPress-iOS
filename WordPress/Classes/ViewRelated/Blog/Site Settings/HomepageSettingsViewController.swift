@@ -105,47 +105,46 @@ import WordPressShared
 
         return [
             CheckmarkRow(title: HomepageType.posts.title, checked: homepageType == .posts, action: { [weak self] _ in
-                self?.update(with: .homepageType(.posts))
+                if self?.inProgressChange == nil {
+                    self?.update(with: .homepageType(.posts))
+                }
             }),
             CheckmarkRow(title: HomepageType.page.title, checked: homepageType == .page, action: { [weak self] _ in
-                self?.update(with: .homepageType(.page))
+                if self?.inProgressChange == nil {
+                    self?.update(with: .homepageType(.page))
+                }
             })
         ]
     }
 
     var selectedPagesRows: [ImmuTableRow] {
-        var homepageTitle = ""
-        var postsPageTitle = ""
+        let homepageID = blog.homepagePageID
+        let homepage = homepageID.flatMap { postService.findPost(withID: NSNumber(value: $0), in: blog) }
+        let homepageTitle = homepage?.titleForDisplay() ?? ""
 
-        if let homepageID = blog.homepagePageID,
-            let homepage = postService.findPost(withID: NSNumber(value: homepageID), in: blog) {
-            homepageTitle = homepage.titleForDisplay()
-        }
+        let postsPageID = blog.homepagePostsPageID
+        let postsPage = postsPageID.flatMap { postService.findPost(withID: NSNumber(value: $0), in: blog) }
+        let postsPageTitle = postsPage?.titleForDisplay() ?? ""
 
-        if let postsPageID = blog.homepagePostsPageID,
-            let postsPage = postService.findPost(withID: NSNumber(value: postsPageID), in: blog) {
-            postsPageTitle = postsPage.titleForDisplay()
-        }
-
-        let homepageRow: ImmuTableRow
-        if case .selectedHomepage(_) = inProgressChange {
-            homepageRow = ActivityIndicatorRow(title: Strings.homepage, animating: true, action: nil)
-        } else {
-            homepageRow = NavigationItemRow(title: Strings.homepage, detail: homepageTitle, action: { [weak self] _ in
-                self?.showPageSelection(selectedPostID: self?.blog?.homepagePageID, hiddenPostID: self?.blog?.homepagePostsPageID, change: { .selectedHomepage($0) })
-            })
-        }
-
-        let postsPageRow: ImmuTableRow
-        if case .selectedPostsPage(_) = inProgressChange {
-            postsPageRow = ActivityIndicatorRow(title: Strings.postsPage, animating: true, action: nil)
-        } else {
-            postsPageRow = NavigationItemRow(title: Strings.postsPage, detail: postsPageTitle, action: { [weak self] _ in
-                self?.showPageSelection(selectedPostID: self?.blog?.homepagePostsPageID, hiddenPostID: self?.blog?.homepagePageID, change: { .selectedPostsPage($0) })
-            })
-        }
-
+        let homepageRow = pageSelectionRow(title: Strings.homepage,
+                                                      detail: homepageTitle,
+                                                      isInProgress: HomepageChange.isSelectedHomepage,
+                                                      changeForPost: { .selectedHomepage($0) })
+        let postsPageRow = pageSelectionRow(title: Strings.postsPage,
+                                                       detail: postsPageTitle,
+                                                       isInProgress: HomepageChange.isSelectedPostsPage,
+                                                       changeForPost: { .selectedPostsPage($0) })
         return [homepageRow, postsPageRow]
+    }
+
+    private func pageSelectionRow(title: String, detail: String, isInProgress: (HomepageChange) -> Bool, changeForPost: @escaping (Int) -> HomepageChange) -> ImmuTableRow {
+        if let inProgressChange = inProgressChange, isInProgress(inProgressChange) {
+            return ActivityIndicatorRow(title: title, animating: true, action: nil)
+        } else {
+            return NavigationItemRow(title: title, detail: detail, action: { [weak self] _ in
+                self?.showPageSelection(selectedPostID: self?.blog?.homepagePageID, hiddenPostID: self?.blog?.homepagePostsPageID, change: changeForPost)
+            })
+        }
     }
 
     // MARK: - Page Selection Navigation
@@ -188,6 +187,18 @@ import WordPressShared
         case homepageType(HomepageType)
         case selectedHomepage(Int)
         case selectedPostsPage(Int)
+
+        static func isHomepageType(_ change: HomepageChange) -> Bool {
+            if case .homepageType = change { return true } else { return false }
+        }
+
+        static func isSelectedHomepage(_ change: HomepageChange) -> Bool {
+            if case .selectedHomepage = change { return true } else { return false }
+        }
+
+        static func isSelectedPostsPage(_ change: HomepageChange) -> Bool {
+            if case .selectedPostsPage = change { return true } else { return false }
+        }
     }
 
     /// Sends the remote service call to update `blog` homepage settings properties.
@@ -220,6 +231,9 @@ import WordPressShared
 
         inProgressChange = change
 
+        /// If there is already an in progress change (i.e. bad network), don't push the view controller and deselect the selection immediately.
+        tableView.allowsSelection = false
+
         /// Send the remove service call
         let service = HomepageSettingsService(blog: blog, context: blog.managedObjectContext!)
         service?.setHomepageType(homepageType,
@@ -239,6 +253,7 @@ import WordPressShared
 
     fileprivate func endUpdating() {
         inProgressChange = nil
+        tableView.allowsSelection = true
         reloadViewModel()
     }
 
