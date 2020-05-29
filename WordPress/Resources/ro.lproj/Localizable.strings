@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-05 13:38:15+0000 */
+/* Translation-Revision-Date: 2020-05-27 07:22:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ro */
@@ -814,7 +814,7 @@
 "Block editor enabled" = "Editor de blocuri activat";
 
 /* Jetpack Settings: Block malicious login attempts */
-"Block malicious login attempts" = "Blochează încercări de autentificare rău intenționate";
+"Block malicious login attempts" = "Blochează încercările de autentificare rău intenționate";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -840,12 +840,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Bold";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Rotunjire chenar";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Setări chenar";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Împarte firele de discuție pe mai multe pagini.";
 
@@ -861,14 +855,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Ocupat";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "URL legătură buton";
-
 /* Title for a list of different button styles. */
 "Button Style" = "Stil buton";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "Setările pentru culoarea butoanelor vor fi disponibile în curând.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "De %@.";
@@ -1149,9 +1137,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Colectează informații";
-
-/* No comment provided by engineer. */
-"Color settings are coming soon." = "Setările de culoare vor fi disponibile în curând.";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Setări coloane";
@@ -1465,6 +1450,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Creează un sit nou pentru afacerea, revista ta sau blogul personal; sau conectează o instalare WordPress existentă.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "Creează un articol sau o pagină";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te asupra datelor care te interesează cel mai mult.";
 
@@ -1757,6 +1745,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "Atinge de două ori pentru a edita această valoare";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Atinge de două ori pentru a merge la setări culori";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Atinge de două ori pentru a muta blocul în jos";
 
@@ -1771,9 +1762,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Atinge de două ori pentru a reface ultima modificare";
-
-/* No comment provided by engineer. */
-"Double tap to remove the block" = "Atinge de două ori pentru a înlătura blocul";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "Atinge de două ori pentru a selecta";
@@ -2190,9 +2178,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Urmărește alte situri";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "Urmărește blogul nostru";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2243,6 +2228,9 @@
 
 /* Browse free themes selection title */
 "Free" = "Gratuit";
+
+/* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Bibliotecă de GIF-uri gratuite";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Bibliotecă de fotografii gratuite";
@@ -2322,6 +2310,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Înregistrarea pe Google a eșuat.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "Am înțeles!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Preiau URL-ul sitului";
@@ -2695,20 +2686,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "Nume";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "Ultimele articole pe de blog";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "Rezumat cu ultimele articole";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Află mai mult";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Află despre instrumentele SEO și de marketing din planurile nostre plătite.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Află mai mult";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2941,8 +2933,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2960,6 +2954,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Administrează siturile";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "Administrează siturile urmărite și etichetele";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Administrează situl";
@@ -3487,6 +3484,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Acum, după ce ai instalat Jetpack, trebuie doar să te pregătim pentru inițializare. Nu va dura decât un minut.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Acum există mai puține file și sunt mai bine organizate, scurtături la articole și altele, deci poți găsi rapid ceea ce îți trebuie.";
+
 /* Register Domain - Address information field Number */
 "Number" = "Număr";
 
@@ -3739,7 +3739,7 @@ translators: sample content for \"Services\" page template */
 "Personalize" = "Personalizează";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
-"Photo Library" = "Bibliotecă fotografii";
+"Photo Library" = "Bibliotecă de fotografii";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotografii oferite de Pexels";
@@ -3985,6 +3985,9 @@ translators: sample content for \"Services\" page template */
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Propulsat de Giphy";
 
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Propulsat de Tenor";
+
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -4166,11 +4169,6 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Evaluează-ne în App Store";
 
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "Citește mai mult";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Citește pe";
 
@@ -4310,9 +4308,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Înlătură adnotările";
 
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "Înlătură blocul de pe rândul %s";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Înlătură din perspective";
 
@@ -4395,6 +4390,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "Resetează blocul";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Resetează filtrul";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionare și decupare";
 
@@ -4415,6 +4413,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Reîncearcă";
@@ -4589,7 +4588,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Caută articole";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Caută pentru a găsi imagini GIF pe care să le adaugi în biblioteca ta Media!";
 
 /* Title for placeholder in Free Photos */
@@ -4622,6 +4622,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Selectează județul (provincia, statul)";
+
+/* No comment provided by engineer. */
+"Select a color" = "Selectează o culoare";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selectează media.";
@@ -4884,6 +4887,9 @@ translators: sample content for \"Services\" page template */
    Title for screen that show site title editor */
 "Site Title" = "Titlu sit";
 
+/* The accessibility label for the followed sites search field */
+"Site URL" = "URL sit";
+
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Realizările sitului";
 
@@ -5084,6 +5090,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategie";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Navigare simplificată";
+
 /* Section title of the default reader items. */
 "Streams" = "Fluxuri";
 
@@ -5101,9 +5110,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Trimit pentru recenzie...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "Abonează-te";
 
 /* No comment provided by engineer. */
 "Success Message" = "Mesaj de succes";
@@ -5923,6 +5929,10 @@ translators: sample content for \"Services\" page template */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Anulează urmărirea";
 
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Anulează urmărirea %@";
+
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Dez-urmărire sit";
 
@@ -6082,6 +6092,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
+
+/* Title for the no followed sites result screen */
+"Use the filter button to find posts on specific subjects." = "Folosește butonul de filtrare pentru a găsi articole pentru anumite subiecte.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Folosește acest sit";
@@ -6446,6 +6459,9 @@ translators: sample content for \"Services\" page template */
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Bun venit la WordPress";
+
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "Bine ai venit la noul nostru blog";
 
 /* A message title */
 "Welcome to the Reader" = "Bine ai venit în cititor";
