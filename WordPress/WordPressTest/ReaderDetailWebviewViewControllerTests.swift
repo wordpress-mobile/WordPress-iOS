@@ -23,6 +23,7 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
         let coordinatorMock = ReaderDetailCoordinatorMock(view: controller)
         let originalCoordinator = controller.coordinator
         controller.coordinator = coordinatorMock
+        _ = controller.view
 
         controller.viewDidLoad()
 
