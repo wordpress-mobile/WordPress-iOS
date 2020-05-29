@@ -560,4 +560,17 @@ import "./ScreenshotFastfile"
     
     UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
   end
+
+  desc "Get a list of open PRs that target the next milestone"
+  lane :check_next_milestone_pr_state do | options |
+    report = get_open_prs_for_next_milestone_report(repository: GHHELPER_REPO)
+
+    return 1 if report.nil?
+    UI.message("Version: #{report[:version]}\nPR Count: #{report[:count]}\n#{report[:report]}")
+
+    return 1 if (report[:count] == 0)
+    # Create a comment.txt file so that CI can comment on Slack
+    comment_body = "Hey there! Friendly reminder that #{report[:version]} is going to be cut on Monday. There are #{report[:count]} open PRs that target it:\n#{report[:report]}\nPlease, make sure to merge or move yours.\n"
+    File.write("comment.txt", comment_body)
+  end
 end
