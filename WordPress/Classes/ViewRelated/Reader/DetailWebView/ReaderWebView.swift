@@ -19,11 +19,13 @@ class ReaderWebView: WKWebView {
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
+        <link rel="stylesheet" type="text/css"
+              href="https://wordpress.com/calypso/fallback/async-load-blocks-reader-full-post.feb2901cfbd98579fa81.min.css">
         <style>
         \(cssColors())
         \(cssStyles())
         </style>
-        </head><body>
+        </head><body class="reader-full-post reader-full-post__story-content">
         \(string)
         </body></html>
         """
@@ -67,11 +69,12 @@ class ReaderWebView: WKWebView {
         let trait = UITraitCollection(userInterfaceStyle: style)
         return """
             :root {
-              --main-txt-color: #\(UIColor.text.color(for: trait).hexString() ?? "");
-              --main-grey-extra-light: #\(UIColor.listIcon.color(for: trait).hexString() ?? "");
-              --main-grey-medium-dark: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
+              --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
+              --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
+              --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
+              --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
               --main-link-color: #\(UIColor.primary.color(for: trait).hexString() ?? "");
-              --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "")'
+              --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "");
             }
         """
     }
@@ -81,11 +84,12 @@ class ReaderWebView: WKWebView {
     private func lightCSSColors() -> String {
         return """
             :root {
-              --main-txt-color: #\(UIColor.text.hexString() ?? "");
-              --main-grey-extra-light: #\(UIColor.listIcon.hexString() ?? "");
-              --main-grey-medium-dark: #\(UIColor.textSubtle.hexString() ?? "");
+              --color-text: #\(UIColor.text.hexString() ?? "");
+              --color-neutral-70: #\(UIColor.text.hexString() ?? "");
+              --color-neutral-0: #\(UIColor.listForegroundUnread.hexString() ?? "");
+              --color-neutral-50: #\(UIColor.textSubtle.hexString() ?? "");
               --main-link-color: #\(UIColor.primary.hexString() ?? "");
-              --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "")'
+              --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "");
             }
         """
     }
