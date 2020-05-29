@@ -613,18 +613,6 @@ namespace :gpg_key do
     display_prompt_response
   end
 
-  #prompt for a Y or N response, continue asking if other character
-  #return true for Y and false for N
-  def display_prompt_response
-    response = STDIN.gets.strip.upcase
-    until response == "Y" || response == "N"
-        puts "Invalid entry, please enter Y or N"
-        response = STDIN.gets.strip.upcase
-    end
-
-    return response == "Y"
-  end
-
   #display prompt for developer to aid in setting up default key
   def display_default_config_helpers
     puts ""
@@ -634,6 +622,18 @@ namespace :gpg_key do
     puts "Please enter your real name, email address, and a password for your key when prompted"
     puts "====================================================================================="
   end
+end
+
+#prompt for a Y or N response, continue asking if other character
+#return true for Y and false for N
+def display_prompt_response
+  response = STDIN.gets.strip.upcase
+  until response == "Y" || response == "N"
+      puts "Invalid entry, please enter Y or N"
+      response = STDIN.gets.strip.upcase
+  end
+
+  return response == "Y"
 end
 
 
