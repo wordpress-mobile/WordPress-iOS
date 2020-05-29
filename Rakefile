@@ -355,7 +355,7 @@ namespace :install do
       task :check do
         puts "Checking system for Xcode-select"
         unless command?("xcode-select")
-          Rake::Task["xcode:xcode_select:install"].invoke
+          Rake::Task["install:xcode:xcode_select:install"].invoke
         else
           puts "Xcode-select installed"
         end
@@ -378,9 +378,26 @@ namespace :install do
       task :check do
         puts "Checking system for Homebrew"
         unless command?("brew")
-          Rake::Task["tools:homebrew:install"].invoke
+          Rake::Task["install:tools:homebrew:prompt"].invoke
         else
           puts "Homebrew installed"
+        end
+      end
+
+      #prompt developer that Homebrew is required to install required tools and confirm they want to install
+      #allow to bail out of install script if they developer declines to install homebrew
+      task :prompt do
+        puts "====================================================================================="
+        puts "Setting WordPress iOS requires installing Homebrew to manage installing some tools"
+        puts "For more information on Homebrew check out https://brew.sh/"
+        puts "Do you want to continue with the WordPress iOS setup and install Homebrew?"
+        puts "Press 'Y' to install Homebrew.  Press 'N' for exit"
+        puts "====================================================================================="
+        
+        if display_prompt_response == true
+          Rake::Task["install:tools:homebrew:install"].invoke
+        else
+          abort("")
         end
       end
 
