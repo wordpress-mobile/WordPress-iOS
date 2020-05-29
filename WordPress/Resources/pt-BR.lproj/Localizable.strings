@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-04 12:37:26+0000 */
+/* Translation-Revision-Date: 2020-05-21 21:09:42+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: pt_BR */
@@ -238,7 +238,7 @@
 "1080p" = "1080p";
 
 /* Site creation. Step 2. Screen title */
-"2 of 2" = "2 of 2";
+"2 of 2" = "2 de 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -319,7 +319,7 @@
 "Account Details" = "Detalhes da conta";
 
 /* Accessibility description for account information after logging in. */
-"Account Information. %@. %@." = "Account Information. %@. %@.";
+"Account Information. %@. %@." = "Informações da conta. %1$@. %2$@.";
 
 /* Account Settings Title
    Link to Account Settings section */
@@ -415,13 +415,13 @@
 "Add a shortcode…" = "Adicione um shortcode…";
 
 /* No Tags View Button Label */
-"Add a site" = "Add a site";
+"Add a site" = "Adicionar um site";
 
 /* No Tags View Button Label */
 "Add a tag" = "Adicionar uma tag";
 
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
-"Add account image." = "Add account image.";
+"Add account image." = "Adicionar imagem da conta.";
 
 /* No comment provided by engineer. */
 "Add annotation" = "Adicionar anotação";
@@ -430,7 +430,7 @@
 "Add any tag" = "Adicionar qualquer tag";
 
 /* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
+"Add image, or avatar, to represent this new account." = "Adicionar uma imagem ou avatar para representar essa nova conta.";
 
 /* No comment provided by engineer. */
 "Add link text" = "Adicionar texto do link";
@@ -840,12 +840,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Negrito";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Raio da borda";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Configurações da borda";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Dividir threads de comentários em várias páginas.";
 
@@ -861,14 +855,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Ocupado";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "URL do link do botão";
-
 /* Title for a list of different button styles. */
 "Button Style" = "Estilo do botão";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "Configurações de cor do botão em breve.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Por %@.";
@@ -1101,7 +1089,7 @@
 "Clear Spotlight Index" = "Liberar índice do spotlight";
 
 /* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Clear all old activity logs?";
+"Clear all old activity logs?" = "Limpar resumos de atividades antigos?";
 
 /* Title of a button. */
 "Clear search history" = "Limpar histórico de pesquisas";
@@ -1151,10 +1139,7 @@
 "Collect information" = "Coletar informação";
 
 /* No comment provided by engineer. */
-"Color settings are coming soon." = "Configurações de cor em breve.";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "Configurações de colunas";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "HQs";
@@ -1331,10 +1316,10 @@
 "Continue reading" = "Continuar lendo";
 
 /* Button title. Tapping begins log in using Apple. */
-"Continue with Apple" = "Continue with Apple";
+"Continue with Apple" = "Continuar com Apple";
 
 /* Button title. Tapping begins log in using Google. */
-"Continue with Google" = "Continue with Google";
+"Continue with Google" = "Continuar com Google";
 
 /* Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "Continuar com WordPress.com";
@@ -1464,6 +1449,9 @@
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Crie um novo site para o seu negócio, revista ou blog pessoal ou conecte uma instalação WordPress já existente.";
+
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "Criar um post ou página";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crie seu painel personalizado e escolha quais relatórios visualizar. Foque nas informações que você mais se importa.";
@@ -1757,23 +1745,23 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "Toque duas vezes para editar essa informação";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Toque duas vezes para ir para as configurações de cor";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Toque duas vezes para mover o bloco para baixo";
 
 /* No comment provided by engineer. */
-"Double tap to move the block to the left" = "Double tap to move the block to the left";
+"Double tap to move the block to the left" = "Toque duas vezes para mover o bloco para a esquerda";
 
 /* No comment provided by engineer. */
-"Double tap to move the block to the right" = "Double tap to move the block to the right";
+"Double tap to move the block to the right" = "Toque duas vezes para mover o bloco para a direita";
 
 /* No comment provided by engineer. */
 "Double tap to move the block up" = "Toque duas vezes para mover o bloco para cima";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Toque duas vezes para refazer a última alteração";
-
-/* No comment provided by engineer. */
-"Double tap to remove the block" = "Toque duas vezes para remover o bloco";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "Toque duas vezes para selecionar";
@@ -1820,7 +1808,7 @@
 "Edit \"More\" button" = "Editar botão \"Mais\"";
 
 /* Button that displays the media editor to the user */
-"Edit %@" = "Edit %@";
+"Edit %@" = "Editar %@";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "Editar chave da lista negra";
@@ -1925,7 +1913,7 @@
 "Enter a password" = "Digite uma senha";
 
 /* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Enter a password to protect this post";
+"Enter a password to protect this post" = "Digite uma senha para proteger esse post";
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Digite palavras diferentes das acima e tentaremos encontrar um endereço relacionado a elas.";
@@ -2164,7 +2152,7 @@
 "Fill with password manager" = "Preencher com gerenciador de senhas";
 
 /* Title of the filter button in the Reader */
-"Filter" = "Filter";
+"Filter" = "Filtrar";
 
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Encontre sites com conteúdos de seu interesse e siga-os para receber atualizações assim que forem publicadas.";
@@ -2186,9 +2174,6 @@
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Siga outros sites";
-
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "Siga o nosso blog";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2240,6 +2225,9 @@
 
 /* Browse free themes selection title */
 "Free" = "Gratuito";
+
+/* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Biblioteca gratuita de gif";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Biblioteca gratuita de fotos";
@@ -2319,6 +2307,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "O cadastro com o Google falhou.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "Entendi!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Criando um endereço para o site";
@@ -2692,20 +2683,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "Sobrenome";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "Posts mais recentes";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "Resumo dos posts mais recentes";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Saiba Mais";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Saiba mais sobre as ferramentas de marketing e SEO de seu plano pago.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Saiba mais";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2938,8 +2930,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Navegação principal";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2951,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Gerenciar sites";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "Gerenciar sites e tags seguidos";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Gerenciar site";
@@ -3107,16 +3104,16 @@ translators: sample content for \"Services\" page template */
 "Move block down from row %1$s to row %2$s" = "Mover o bloco abaixo da linha %1$s para a linha %2$s";
 
 /* No comment provided by engineer. */
-"Move block left" = "Move block left";
+"Move block left" = "Mover o bloco para a esquerda";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block left from position %1$s to position %2$s" = "Move block left from position %1$s to position %2$s";
+"Move block left from position %1$s to position %2$s" = "Mover o bloco para a esquerda da posição %1$s para a posição %2$s";
 
 /* No comment provided by engineer. */
-"Move block right" = "Move block right";
+"Move block right" = "Mover o bloco para a direita";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
-"Move block right from position %1$s to position %2$s" = "Move block right from position %1$s to position %2$s";
+"Move block right from position %1$s to position %2$s" = "Mover o bloco para a direita da posição %1$s para a posição %2$s";
 
 /* No comment provided by engineer. */
 "Move block up" = "Mover o bloco para cima";
@@ -3483,6 +3480,9 @@ translators: sample content for \"Services\" page template */
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Agora que o Jetpack está instalado, só precisamos configurá-lo. Isso só levará um minuto.";
+
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Agora há menos abas e estão melhor organizadas, atalhos para publicar e muito mais. Assim você pode encontrar o que precisa mais rapidamente.";
 
 /* Register Domain - Address information field Number */
 "Number" = "Número";
@@ -3982,6 +3982,9 @@ translators: sample content for \"Services\" page template */
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Oferecido por Giphy";
 
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Desenvolvido por Tenor";
+
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -4134,7 +4137,7 @@ translators: sample content for \"Services\" page template */
 "Published on" = "Publicado em";
 
 /* Label that describes in which blog the user is publishing to */
-"Publishing To" = "Publishing To";
+"Publishing To" = "Publicando para";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publicando post...";
@@ -4162,11 +4165,6 @@ translators: sample content for \"Services\" page template */
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Avalie-nos na App Store";
-
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "Leia mais";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Ler em";
@@ -4307,9 +4305,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Remover anotações";
 
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "Remover bloco na linha %s";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remover do resumo";
 
@@ -4392,6 +4387,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "Redefinir bloco";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Redefinir filtros";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionar e cortar";
 
@@ -4412,6 +4410,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Tentar novamente";
@@ -4586,7 +4585,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Pesquisar posts";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Pesquise por gifs para adicionar em sua biblioteca de arquivos.";
 
 /* Title for placeholder in Free Photos */
@@ -4619,6 +4619,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Selecione seu estado";
+
+/* No comment provided by engineer. */
+"Select a color" = "Selecionar uma cor";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selecione a mídia.";
@@ -4881,6 +4884,9 @@ translators: sample content for \"Services\" page template */
    Title for screen that show site title editor */
 "Site Title" = "Título do site";
 
+/* The accessibility label for the followed sites search field */
+"Site URL" = "URL do site";
+
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Conquistas do site";
 
@@ -5081,6 +5087,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Estratégia";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Streamlined navigation";
+
 /* Section title of the default reader items. */
 "Streams" = "Streams";
 
@@ -5098,9 +5107,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Enviando para avaliação...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "Subscribe";
 
 /* No comment provided by engineer. */
 "Success Message" = "Mensagem de sucesso";
@@ -5208,7 +5214,7 @@ translators: sample content for \"Services\" page template */
 "Tags created here can be quickly added to new posts" = "As tags criadas aqui podem ser adicionadas rapidamente a novos posts";
 
 /* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Tags help tell readers what a post is about. Separate different tags with commas.";
+"Tags help tell readers what a post is about. Separate different tags with commas." = "As tags indicam aos visitantes o assunto do post. Separe tags com vírgulas.";
 
 /* Menu option for taking an image or video with the device's camera. */
 "Take Photo or Video" = "Fotografar ou filmar";
@@ -5920,6 +5926,10 @@ translators: sample content for \"Services\" page template */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Deixar de seguir";
 
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Deixar de seguir %@";
+
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Deixar de seguir o site";
 
@@ -6079,6 +6089,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar o editor de blocos";
+
+/* Title for the no followed sites result screen */
+"Use the filter button to find posts on specific subjects." = "Use o botão de filtro para encontrar posts de assuntos específicos.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Usar este site";
@@ -6444,6 +6457,9 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Bem-vindo ao WordPress";
 
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "Boas-vindas ao nosso novo blog";
+
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo(a) ao leitor";
 
@@ -6666,7 +6682,7 @@ translators: sample content for \"Services\" page template */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Você pode exibir as estatísticas de um único site na Central de Notificações\/Hoje do iOS.";
 
 /* No Sites View Label */
-"You can follow posts on a specific site by following it." = "You can follow posts on a specific site by following it.";
+"You can follow posts on a specific site by following it." = "Você pode receber notificações de posts publicados em um site específico seguindo o site.";
 
 /* No Tags View Label */
 "You can follow posts on a specific subject by adding a tag." = "Você pode seguir posts de um assunto específico adicionando uma tag.";

@@ -1,7 +1,14 @@
-Nunca ha habido un mejor momento para usar la aplicación de WordPress para gestionar tu web: úsala mientras estás por la puerta de tu casa esperando una entrega, en tu salón mientras estás sentado a dos metros de tu compañero de habitación o en el cuarto de baño donde vas a tener un descanso de cinco minutos de tus hijos. Las posibilidades son infinitas, sobre todo porque la versión 14.8 contiene más características en el editor de bloques:
+Estas son las novedades:
 
-Con el nuevo bloque de botones, puedes añadir varios botones en la misma fila.
-El bloque cubierta incluye más opciones de subida para llevar las fotos de tu dispositivo a tu sitio.
-Si tus archivos de imagen tienen leyendas, el bloque imagen los rellenará automáticamente por ti.
+Reforma de la organización: Hemos hecho algunos cambios que te permitirán encontrar más rápido lo que necesitas:
 
-Mientras estábamos hurgando, hemos corregido algunos fallos: se han eliminado los espacios en blanco en los bloques de texto, los bloques de citas que no se alineaban correctamente y los botones de las plantillas de páginas que no se mostraban correctamente en la web. Y hemos pulido las pantallas que se ven después del acceso y las del registro para que se vean más limpias y más consistentes dentro de la aplicación.
+¿Quieres empezar una nueva entrada o página? Toca el botón rosa grande, siempre visible en la pestaña «Mis sitios».
+¿Quieres editar tu perfil? Mira en la esquina superior derecha.
+¿Quieres encontrar algo para leer? La pestaña «Lector» tiene un diseño renovado para una búsqueda y un filtrado más intuitivos.
+Actualizaciones del editor de bloques: Hay un nuevo bloque de párrafo de cita para resaltar las citas con más énfasis visual que el bloque normal de citas. Las plantillas de página se han actualizado para usar los bloques más recientes y hemos corregido los iconos en algunos bloques que no se mostraban correctamente en el modo RTL.
+
+El bloque de botones tiene más opciones de color para el fondo y el texto. Y hay compatibilidad para formato HTML de superíndice y subíndice (también en el editor clásico).
+
+Anotación de la imagen: Con la nueva función "editar imagen" del editor, puedes dibujar directamente sobre las imágenes.
+
+Realmente una corrección de un gran fallo: Algunas veces añadías un bloque de vídeo, empezabas a subir el vídeo y la aplicación se caía. ¡Contraproducente! Eso ya no ocurre más.
