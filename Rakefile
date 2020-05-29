@@ -310,7 +310,7 @@ namespace :install do
 
         puts "Checking CI recommendded installed Xcode version"
 
-        if !xcode_version_is_correct?
+        unless xcode_version_is_correct?
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake
           puts "Not recommended version of Xcode installed"
           puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
