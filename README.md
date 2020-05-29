@@ -13,14 +13,14 @@ Please refer to the sections below for more detailed information. The instructio
 1. From a command line, run `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
 1. Now, run `cd WordPress-iOS` to enter the working directory.
 
-### Create WordPress.com API Credentials
+#### Create WordPress.com API Credentials
 
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
 
-### Configure Your WordPress App Development Environment
+#### Configure Your WordPress App Development Environment
 
 1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
 1. Once completed, run `rake xcode` to open the project in Xcode.
@@ -31,7 +31,7 @@ Note: You can only log in with the WordPress.com account that you used to create
 
 ## Configuration Details
 
-The steps above will help you configure the WordPress app to run and compile.  But you may sometimes need to update or re run specific parts of the initial setup (like updating the dependencies)  To see how to do that, please check out the steps below
+The steps above will help you configure the WordPress app to run and compile.  But you may sometimes need to update or re-run specific parts of the initial setup (like updating the dependencies.)  To see how to do that, please check out the steps below.
 
 ### Third party tools
 
