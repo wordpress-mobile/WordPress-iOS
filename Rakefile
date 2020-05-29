@@ -482,24 +482,23 @@ namespace :credentials do
     puts ""
     puts "====================================================================================="
 
-    puts "1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one)."
-    prompt_for_continue
+    puts "1. Go to https://wordpress.com/start/user and create a WordPress.com account (if you don't already have one)."
+    prompt_for_continue("Once you have created your account,")
 
     puts "====================================================================================="
-    puts "2. Create an application at https://developer.wordpress.com/apps/."
-    prompt_for_continue
+    puts "2. Now register an API application at https://developer.wordpress.com/apps/."
+    prompt_for_continue("Once you have registered your API App,")
 
     puts "====================================================================================="
-    puts '3. Set "Redirect URLs"= https://localhost and "Type" = Native and click "Create" then "Update".'
-    prompt_for_continue
+    puts '3. Make sure to set "Redirect URLs"= https://localhost and "Type" = Native and click "Create" then "Update".'
+    prompt_for_continue("Once you have set the redirect url and type,")
 
     puts "====================================================================================="
-    puts "4. Copy the Client ID and Client Secret from the OAuth Information."
-    prompt_for_continue
+    prompt_for_continue("Lastly, Keep your Client ID and App Secret on hand for the next steps,")
   end
 
-  def prompt_for_continue
-    STDOUT.puts "Please press enter to continue"
+  def prompt_for_continue(prompt)
+    puts "#{prompt} Please press enter to continue"
     STDIN.gets.strip
   end
 
