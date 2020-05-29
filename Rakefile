@@ -297,18 +297,18 @@ namespace :install do
         puts "Checking for system for Xcode"
         if !xcode_installed?
           #if xcode is not installed, prompt user to install and terminate rake
-          puts "XCode not Found!"
+          puts "Xcode not Found!"
           puts ""
           puts "====================================================================================="
-          puts "Developing for WordPressiOS requires XCode."
-          puts "Please install XCode before setting up WordPressiOS"
+          puts "Developing for WordPressiOS requires Xcode."
+          puts "Please install Xcode before setting up WordPressiOS"
           puts "https://apps.apple.com/app/xcode/id497799835?mt=12"
           abort("")
         else
           puts "Xcode installed"
         end
 
-        puts "Checking CI recommendded installed XCode version"
+        puts "Checking CI recommendded installed Xcode version"
 
         if !xcode_version_is_correct?
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake
@@ -320,7 +320,7 @@ namespace :install do
         end
       end
 
-      #Check if XCode is installed
+      #Check if Xcode is installed
       def xcode_installed?
         system "xcodebuild -version", [:out, :err] => File::NULL
       end
@@ -328,14 +328,14 @@ namespace :install do
       #compare xcode version to expected CI spec version
       def xcode_version_is_correct?
         if get_xcode_version == get_ci_xcode_version
-          puts "Correct version of XCode installed"
+          puts "Correct version of Xcode installed"
           return true
         end
       end
 
       #get xcode version
       def get_xcode_version
-        puts 'Checking installed version of XCode'
+        puts 'Checking installed version of Xcode'
         version = %x[xcodebuild -version]
 
         version.split(" ")[1]
@@ -350,15 +350,15 @@ namespace :install do
     #End namespace xcode-app
     end
 
-    #XCode-select command line tools must be installed to update dependencies
+    #Xcode-select command line tools must be installed to update dependencies
     #xcode_select checks the existence of xcode-select on developer's machine, installs if not found
     namespace :xcode_select do
       task :check do
-        puts "Checking system for XCode-select"
+        puts "Checking system for Xcode-select"
         unless command?("xcode-select")
           Rake::Task["xcode:xcode_select:install"].invoke
         else
-          puts "XCode-select installed"
+          puts "Xcode-select installed"
         end
       end
 
