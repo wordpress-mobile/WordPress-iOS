@@ -330,6 +330,8 @@ namespace :install do
         if get_xcode_version == get_ci_xcode_version
           puts "Correct version of Xcode installed"
           return true
+        else
+          return false
         end
       end
 
@@ -393,7 +395,7 @@ namespace :install do
         puts "Do you want to continue with the WordPress iOS setup and install Homebrew?"
         puts "Press 'Y' to install Homebrew.  Press 'N' for exit"
         puts "====================================================================================="
-        
+
         if display_prompt_response == true
           Rake::Task["install:tools:homebrew:install"].invoke
         else
