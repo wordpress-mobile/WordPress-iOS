@@ -635,11 +635,7 @@ namespace :gpg_key do
         response = STDIN.gets.strip.upcase
     end
 
-    if response == "Y"
-      return true
-    elsif response == "N"
-      return false
-    end
+    return response == "Y"
   end
 
   #display prompt for developer to aid in setting up default key
