@@ -347,11 +347,10 @@ namespace :install do
 
         ci_version = specs["jobs"]["Build Tests"]["executor"]["xcode-version"]
       end
-    #End namespace xcode-app
     end
 
     #Xcode-select command line tools must be installed to update dependencies
-    #xcode_select checks the existence of xcode-select on developer's machine, installs if not found
+    #Xcode_select checks the existence of xcode-select on developer's machine, installs if not found
     namespace :xcode_select do
       task :check do
         puts "Checking system for Xcode-select"
@@ -366,9 +365,7 @@ namespace :install do
         puts "Installing xcode select"
         sh "xcode-select --install"
       end
-    #End namesapce :xcode-select
     end
-  #End namespace xcode
   end
 
   #Tools namespace deals with installing developer and OSS tools required to work on WPiOS
@@ -391,7 +388,6 @@ namespace :install do
         command = "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)\""
         sh command
       end
-    #End namespace homebrew
     end
 
     #Install required tools to work with WPiOS
@@ -429,16 +425,12 @@ namespace :install do
         end
       end
 
-      ##install selected developer tool
+      #install selected developer tool
       def tool_install(tool)
         puts "#{tool} not found.  Installing #{tool}"
         sh "brew install #{tool}"
       end
-
-    #End namespace addons
     end
-
-  #End namespace Tools
   end
 
   namespace :lint do
@@ -455,8 +447,6 @@ namespace :install do
       sh "git rev-parse --is-inside-work-tree > /dev/null 2>&1", verbose: false
     end
   end
-
-#End namespace install
 end
 
 #Credentials deals with the setting up the developer's WPCOM API app ID and app Secret
@@ -537,8 +527,6 @@ namespace :credentials do
   def remove_temp_file
     sh "rm .configure-files/temp_wpcom_app_credentials", verbose: false
   end
-
-#End namesapce Credentials
 end
 
 namespace :gpg_key do
@@ -574,7 +562,6 @@ namespace :gpg_key do
     else
       next
     end
-
   end
 
   #Generate new GPG key
@@ -647,8 +634,6 @@ namespace :gpg_key do
     puts "Please enter your real name, email address, and a password for your key when prompted"
     puts "====================================================================================="
   end
-
-#end namespace GPG_key_setup
 end
 
 
