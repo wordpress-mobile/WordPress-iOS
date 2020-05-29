@@ -530,10 +530,9 @@ namespace :credentials do
     new_file = File.new(".configure-files/wpcom_app_credentials", "w")
     File.open(".configure-files/temp_wpcom_app_credentials") do |file|
       file.each_line do |line|
-        string = line.to_s()
-        if string.include? "WPCOM_APP_ID="
+        if line.include? "WPCOM_APP_ID="
           new_file.puts("WPCOM_APP_ID=#{id}")
-        elsif string.include? "WPCOM_APP_SECRET="
+        elsif line.include? "WPCOM_APP_SECRET="
           new_file.puts("WPCOM_APP_SECRET=#{secret}")
         else
           new_file.write(line)
