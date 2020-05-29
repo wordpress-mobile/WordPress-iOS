@@ -34,6 +34,7 @@ class ReaderDetailCoordinator {
     func start() {
         if let post = post {
             view?.render(post)
+            view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         }
@@ -66,6 +67,7 @@ class ReaderDetailCoordinator {
                             }
 
                             self?.view?.render(post)
+                            self?.view?.show(title: post.postTitle)
         }, failure: { [weak self] _ in
             self?.view?.showError()
         })

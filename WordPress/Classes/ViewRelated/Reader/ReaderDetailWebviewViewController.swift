@@ -3,6 +3,7 @@ import UIKit
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
     func showError()
+    func show(title: String?)
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
@@ -32,6 +33,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     func showError() {
         /// TODO: Show error
+    }
+
+    func show(title: String?) {
+        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
+        self.title = title ?? placeholder
     }
 
     deinit {
