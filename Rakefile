@@ -314,8 +314,8 @@ namespace :install do
           #if xcode is the wrong version, prompt user to install the correct version and terminate rake
           puts "Not recommended version of Xcode installed"
           puts "It is recommended to use Xcode version #{get_ci_xcode_version}"
-          STDOUT.puts "Please press enter to continue"
-          complete = STDIN.gets.strip
+          puts "Please press enter to continue"
+          STDIN.gets.strip
           next
         end
       end
