@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-07 16:37:04+0000 */
+/* Translation-Revision-Date: 2020-05-18 19:37:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: sq_AL */
@@ -840,12 +840,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Të trasha";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Rreze Anësh";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Rregullime Anësh";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Copëzojini rrjedhat e komenteve në disa faqe.";
 
@@ -861,14 +855,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "I zënë";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "URL Lidhjeje Butoni";
-
 /* Title for a list of different button styles. */
 "Button Style" = "Stil Butoni";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "Rregullimet për ngjyrë butoni vijnë së shpejti.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Nga %@.";
@@ -1149,9 +1137,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Grumbullo të dhëna";
-
-/* No comment provided by engineer. */
-"Color settings are coming soon." = "Rregullimet për ngjyrë vijnë së shpejti.";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Rregullime Shtyllash";
@@ -1465,6 +1450,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Krijoni një sajt të ri për biznesin tuaj, revistë ose blog personal; ose lidhni një instalim WordPress ekzistues.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "Krijoni një postim ose faqe";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Krijoni pultin tuaj të personalizuar dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
 
@@ -1757,6 +1745,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "Që të përpunoni këtë vlerë, prekeni dyfish";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Që të kaloni te rregullimet e ngjyrave, prekeni dyfish";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Që ta ulni bllokun poshtë, prekeni dyfish";
 
@@ -1771,9 +1762,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Që të ribëhet ndryshimi i fundit, prekeni dyfish";
-
-/* No comment provided by engineer. */
-"Double tap to remove the block" = "Që të hiqet blloku, prekeni dyfish";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "Që të përzgjidhet, prekeni dyfish";
@@ -2187,9 +2175,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Ndiqni sajte të tjerë";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "Ndiqni Blogun tonë";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2240,6 +2225,9 @@
 
 /* Browse free themes selection title */
 "Free" = "Falas";
+
+/* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Librari GIF-esh e lirë";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Fototekë e Lirë";
@@ -2319,6 +2307,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Hyrja në llogarinë Google dështoi.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "E mora vesh!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Marrje URL-je sajti";
@@ -2692,20 +2683,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "Mbiemri";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "Postimet Më të Reja të Blogut";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "Përmbledhje Postimesh Më të Reja";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Mësoni Më Tepër";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Mësoni rreth mjetesh marketingu dhe SEO në planet tona me pagesë.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Mësoni më tepër";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2938,8 +2930,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Lëvizjet Kryesore";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2951,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Administroni Sajte";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "Administroni sajtet dhe etiketat vijuese";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Administroni sajtin";
@@ -3484,6 +3481,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Tani që Jetpack-u është i instaluar, na duhet vetëm t’ju vëmë në udhë. Kjo do të zgjasë vetëm një minutë.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Tani ka më pak skeda dhe të sistemuara më mirë, shkurtore postimi, etj, që të gjeni më shpejt ç’ju duhet.";
+
 /* Register Domain - Address information field Number */
 "Number" = "Numër";
 
@@ -3982,6 +3982,9 @@ translators: sample content for \"Services\" page template */
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Bazuar në Giphy";
 
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Bazuar në Tenor";
+
 /* Browse premium themes selection title */
 "Premium" = "Me pagesë";
 
@@ -4163,11 +4166,6 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Vlerësonani në App Store";
 
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "Lexoni Më Tepër";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Lexoni më poshtë";
 
@@ -4307,9 +4305,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Hiqi shënimet";
 
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "Hiqe bllokun te rreshti %s";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
 
@@ -4392,6 +4387,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "Rikthejeni Bllokun Te Parazgjedhjet";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Zeroje filtrin";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ripërmasojeni & Qetheni";
 
@@ -4412,6 +4410,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Riprovo";
@@ -4586,7 +4585,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Kërkoni te postime";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Kërkoni për të gjetur GIF-e që t’i shtoni te Mediateka juaj!";
 
 /* Title for placeholder in Free Photos */
@@ -4619,6 +4619,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Përzgjidhni Shtet";
+
+/* No comment provided by engineer. */
+"Select a color" = "Përzgjidhni një ngjyrë";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Përzgjidhni media.";
@@ -4881,6 +4884,9 @@ translators: sample content for \"Services\" page template */
    Title for screen that show site title editor */
 "Site Title" = "Titull Sajti";
 
+/* The accessibility label for the followed sites search field */
+"Site URL" = "URL sajti";
+
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Arritje sajti";
 
@@ -5081,6 +5087,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategji";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Lëvizje e thjeshtuar";
+
 /* Section title of the default reader items. */
 "Streams" = "Rrjedha";
 
@@ -5098,9 +5107,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Po parashtrohet për Shqyrtim…";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "Pajtohuni";
 
 /* No comment provided by engineer. */
 "Success Message" = "Mesazh Suksesi";
@@ -5920,6 +5926,10 @@ translators: sample content for \"Services\" page template */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Mos e ndiq";
 
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Hiqe ndjekjen e %@";
+
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Hiqja Ndjekjen Sajtit";
 
@@ -6079,6 +6089,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Përdorni përpunuesin me blloqe";
+
+/* Title for the no followed sites result screen */
+"Use the filter button to find posts on specific subjects." = "Përdorni butonin i filtrit që të gjeni postime mbi subjekte të caktuar.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Përdor këtë sajt";
@@ -6443,6 +6456,9 @@ translators: sample content for \"Services\" page template */
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Mirë se vini në WordPress";
+
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "Mirë se vini te blogu ynë i ri";
 
 /* A message title */
 "Welcome to the Reader" = "Mirë se vini te Lexuesi";

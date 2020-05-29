@@ -61,16 +61,12 @@ class LoginEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
+        WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -112,7 +108,7 @@ class LoginEpilogueViewController: UIViewController {
 
 }
 
-// MARK: - Configuration
+// MARK: - Private Extension
 //
 private extension LoginEpilogueViewController {
 
@@ -174,12 +170,7 @@ private extension LoginEpilogueViewController {
         static let ipadLandscape: CGFloat = 0.25
     }
 
-}
-
-
-// MARK: - Actions
-//
-extension LoginEpilogueViewController {
+    // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
         onDismiss?()

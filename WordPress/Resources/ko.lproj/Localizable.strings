@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-07 04:41:49+0000 */
+/* Translation-Revision-Date: 2020-05-21 16:33:49+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ko_KR */
@@ -840,12 +840,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "굵게";
 
-/* No comment provided by engineer. */
-"Border Radius" = "경계선 반경";
-
-/* No comment provided by engineer. */
-"Border Settings" = "경계선 설정";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "댓글 스레드를 여러 페이지로 나눕니다.";
 
@@ -861,14 +855,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "사용 중";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "버튼 링크 URL";
-
 /* Title for a list of different button styles. */
 "Button Style" = "버튼 스타일";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "조만간 버튼 색상 설정을 이용할 수 있습니다.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "%@ 작성.";
@@ -1149,9 +1137,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "정보 수집";
-
-/* No comment provided by engineer. */
-"Color settings are coming soon." = "머잖아 색 설정을 이용하실 수 있습니다.";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "열 설정";
@@ -1465,6 +1450,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "비즈니스, 잡지 또는 개인 블로그를 위한 새 사이트를 만들거나 기존 워드프레스 사이트에 연결하세요.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "글 또는 페이지 만들기";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
 
@@ -1757,6 +1745,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "이 값을 편집하려면 두 번 탭하세요.";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "두 번 탭하여 색상 설정으로 가기";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "블록을 아래로 이동하려면 두 번 탭하세요.";
 
@@ -1771,9 +1762,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
-
-/* No comment provided by engineer. */
-"Double tap to remove the block" = "블록을 제거하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "선택하려면 두 번 탭하세요.";
@@ -2113,7 +2101,7 @@
 "Feature flags" = "기능 플래그";
 
 /* Header of section in Plugin Directory showing featured plugins */
-"Featured" = "특성";
+"Featured" = "대표";
 
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
@@ -2187,9 +2175,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "다른 사이트 팔로우";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "이 블로그 팔로우하기";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2240,6 +2225,9 @@
 
 /* Browse free themes selection title */
 "Free" = "무료";
+
+/* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "무료 GIF 라이브러리";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "무료 사진 라이브러리";
@@ -2319,6 +2307,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 가입에 실패했습니다.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "알겠습니다!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "사이트 URL 확보";
@@ -2692,20 +2683,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "성";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "최신 블로그 글";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "최신 글 요약";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "더 알아보기";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "유료 요금제의 마케팅 및 SEO 도구에 대해 알아보세요.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "더 알아보기";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2938,8 +2930,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2951,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "사이트 관리";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "다음 사이트와 태그 관리하기";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "사이트 관리";
@@ -3484,6 +3481,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "젯팩 설치되었으므로 설정해야 합니다. 이 작업은 1분 정도 소요됩니다.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "이제 더 적고 더 관리하기 좋은 탭, 글 작성 바로가기, 등이 있어서, 필요한 것을 더 빨리 찾을 수 있습니다.";
+
 /* Register Domain - Address information field Number */
 "Number" = "번호";
 
@@ -3982,6 +3982,9 @@ translators: sample content for \"Services\" page template */
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Giphy 제공";
 
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "테너가 제공합니다";
+
 /* Browse premium themes selection title */
 "Premium" = "프리미엄";
 
@@ -4163,11 +4166,6 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
 
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "더 읽기";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "사이트 계속 읽기:";
 
@@ -4307,9 +4305,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "주석 제거";
 
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "%s 행에서 블록 제거";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
 
@@ -4392,6 +4387,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "블록 리셋";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "필터 재설정하기";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "크기 조정 및 자르기";
 
@@ -4412,6 +4410,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "재실행";
@@ -4586,7 +4585,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "글 검색";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "GIF를 검색하여 미디어 라이브러리에 추가하세요!";
 
 /* Title for placeholder in Free Photos */
@@ -4619,6 +4619,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "주 선택";
+
+/* No comment provided by engineer. */
+"Select a color" = "색상 선택하기";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "미디어를 선택합니다.";
@@ -4881,6 +4884,9 @@ translators: sample content for \"Services\" page template */
    Title for screen that show site title editor */
 "Site Title" = "사이트 제목";
 
+/* The accessibility label for the followed sites search field */
+"Site URL" = "사이트 URL";
+
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "사이트 작성 글";
 
@@ -5081,6 +5087,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "전략";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "간소화된 탐색";
+
 /* Section title of the default reader items. */
 "Streams" = "스트림";
 
@@ -5098,9 +5107,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "검토를 위해 제출 중...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "구독";
 
 /* No comment provided by engineer. */
 "Success Message" = "성공 메시지";
@@ -5920,6 +5926,10 @@ translators: sample content for \"Services\" page template */
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "팔로우 취소";
 
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "%@(을)를 팔로우 취소하기";
+
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "사이트의 팔로우 취소";
 
@@ -6079,6 +6089,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "블록 편집기 사용";
+
+/* Title for the no followed sites result screen */
+"Use the filter button to find posts on specific subjects." = "필터 버튼을 사용하여 특정 주제의 글을 찾습니다.";
 
 /* No comment provided by engineer. */
 "Use this site" = "이 사이트 사용";
@@ -6443,6 +6456,9 @@ translators: sample content for \"Services\" page template */
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "워드프레스에 오신 것을 환영합니다";
+
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "새로운 블로그에 오신 것을 환영합니다";
 
 /* A message title */
 "Welcome to the Reader" = "리더에 오신 것을 환영합니다.";

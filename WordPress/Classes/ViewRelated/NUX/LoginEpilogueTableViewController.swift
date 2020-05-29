@@ -56,6 +56,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
 
         view.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -206,26 +207,7 @@ extension LoginEpilogueTableViewController {
     }
 }
 
-// MARK: - UITableViewDelegate methods
-//
-extension LoginEpilogueTableViewController {
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let headerView = view as? UITableViewHeaderFooterView else {
-            return
-        }
-
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .basicBackground
-        headerView.backgroundView = backgroundView
-
-        headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        headerView.textLabel?.textColor = .neutral(.shade50)
-    }
-}
-
-
-// MARK: - Private Methods
+// MARK: - Private Extension
 //
 private extension LoginEpilogueTableViewController {
 
@@ -262,6 +244,17 @@ private extension LoginEpilogueTableViewController {
         return blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
     }
 
+    enum Sections {
+        static let userInfoSection = 0
+    }
+
+    enum Settings {
+        static let headerReuseIdentifier = "SectionHeader"
+        static let userCellReuseIdentifier = "userInfo"
+        static let profileRowHeight = CGFloat(180)
+        static let blogRowHeight = CGFloat(60)
+        static let headerHeight = CGFloat(50)
+    }
 }
 
 
@@ -288,7 +281,7 @@ private extension LoginEpilogueTableViewController {
 
     /// Loads the Blog for a given Username / XMLRPC, if any.
     ///
-    private func loadBlog(username: String, xmlrpc: String) -> Blog? {
+    func loadBlog(username: String, xmlrpc: String) -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
 
@@ -297,7 +290,7 @@ private extension LoginEpilogueTableViewController {
 
     /// The self-hosted flow sets user info, if no user info is set, assume a wpcom flow and try the default wp account.
     ///
-    private func loadEpilogueForDotcom() -> LoginEpilogueUserInfo {
+    func loadEpilogueForDotcom() -> LoginEpilogueUserInfo {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
@@ -309,7 +302,7 @@ private extension LoginEpilogueTableViewController {
 
     /// Loads the EpilogueInfo for a SelfHosted site, with the specified credentials, at the given endpoint.
     ///
-    private func loadEpilogueForSelfhosted(username: String, password: String, xmlrpc: String, completion: @escaping (LoginEpilogueUserInfo?) -> ()) {
+    func loadEpilogueForSelfhosted(username: String, password: String, xmlrpc: String, completion: @escaping (LoginEpilogueUserInfo?) -> ()) {
         guard let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
             completion(nil)
             return
@@ -336,23 +329,5 @@ private extension LoginEpilogueTableViewController {
                 completion(epilogueInfo)
             }
         }
-    }
-}
-
-
-// MARK: - UITableViewDelegate methods
-//
-private extension LoginEpilogueTableViewController {
-
-    enum Sections {
-        static let userInfoSection = 0
-    }
-
-    enum Settings {
-        static let headerReuseIdentifier = "SectionHeader"
-        static let userCellReuseIdentifier = "userInfo"
-        static let profileRowHeight = CGFloat(180)
-        static let blogRowHeight = CGFloat(60)
-        static let headerHeight = CGFloat(50)
     }
 }

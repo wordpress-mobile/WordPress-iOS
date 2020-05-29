@@ -15,7 +15,7 @@ class ReaderTabViewTests: XCTestCase {
                                            tabItemsStore: store,
                                            settingsPresenter: MockSettingsPresenter())
         let view = ReaderTabView(viewModel: viewModel)
-        store.newItems = [ReaderTabItem(topic: topic)]
+        store.newItems = [ReaderTabItem(ReaderContent(topic: topic))]
         // When
         store.getItems()
         // Then
@@ -40,7 +40,7 @@ class ReaderTabViewTests: XCTestCase {
                                            tabItemsStore: store,
                                            settingsPresenter: MockSettingsPresenter())
         let view = ReaderTabView(viewModel: viewModel)
-        store.newItems = [ReaderTabItem(topic: topic)]
+        store.newItems = [ReaderTabItem(ReaderContent(topic: topic))]
         // When
         store.getItems()
         // Then
@@ -65,7 +65,7 @@ class ReaderTabViewTests: XCTestCase {
                                            tabItemsStore: store,
                                            settingsPresenter: MockSettingsPresenter())
         let view = ReaderTabView(viewModel: viewModel)
-        store.newItems = [ReaderTabItem(title: "not a following tab"), ReaderTabItem(topic: topic)]
+        store.newItems = [ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), ReaderTabItem(ReaderContent(topic: topic))]
         store.getItems()
         // initial tab is not a 'Following' tab, buttons should be hidden
         guard let _ = view.subviews.first!.subviews.first(where: {
@@ -99,7 +99,7 @@ extension ReaderTabViewTests {
         XCTAssertTrue(view.subviews.contains(where: { $0 is PostMetaButton }))
     }
 
-    private func readerContentControllerFactory(_ topic: ReaderAbstractTopic?) -> ReaderContentViewController {
+    private func readerContentControllerFactory(_ content: ReaderContent) -> ReaderContentViewController {
         return MockContentController()
     }
 }

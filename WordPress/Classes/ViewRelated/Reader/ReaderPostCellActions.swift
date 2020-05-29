@@ -51,7 +51,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-        if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController {
+        if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
             if let post = provider as? ReaderPost {
                 removedPosts.add(post)
             }
@@ -129,7 +129,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         // TODO: - READERNAV - Update this check once the old reader is removed
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
-        } else if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController, FeatureFlag.newReaderNavigation.enabled {
+        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved, FeatureFlag.newReaderNavigation.enabled {
             actionOrigin = .savedStream
 
         } else {
@@ -137,7 +137,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         }
 
         if !post.isSavedForLater {
-            if let origin = origin as? ReaderStreamViewController, !origin.isSavedPostsController {
+            if let origin = origin as? ReaderStreamViewController, origin.contentType != .saved {
                 FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: origin)
             }
         }

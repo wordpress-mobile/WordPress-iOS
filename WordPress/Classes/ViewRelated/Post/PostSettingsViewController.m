@@ -651,6 +651,14 @@ FeaturedImageViewControllerDelegate>
             cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
+
+        if ([self.apost.status isEqualToString:PostStatusPrivate]) {
+            [cell disable];
+        } else {
+            [cell enable];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+
         cell.tag = PostSettingsRowPublishDate;
     } else if (indexPath.row == 1) {
         // Publish Status

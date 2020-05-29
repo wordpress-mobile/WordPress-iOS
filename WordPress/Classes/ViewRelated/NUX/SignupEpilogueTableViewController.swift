@@ -17,7 +17,7 @@ protocol SignupEpilogueTableViewControllerDataSource {
     var username: String? { get }
 }
 
-class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInfoCellViewControllerProvider {
+class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfoCellViewControllerProvider {
 
     // MARK: - Properties
 
@@ -30,32 +30,6 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     private var userInfoCell: EpilogueUserInfoCell?
     private var showPassword: Bool = true
     private var reloaded: Bool = false
-
-    private struct Constants {
-        static let numberOfSections = 2
-        static let userInfoRows = 1
-        static let noPasswordRows = 2
-        static let allAccountRows = 3
-        static let headerFooterHeight: CGFloat = 50
-        static let footerTrailingMargin: CGFloat = 16
-        static let footerTopMargin: CGFloat = 8
-    }
-
-    private struct TableSections {
-        static let userInfo = 0
-    }
-
-    private struct CellIdentifiers {
-        static let sectionHeaderFooter = "SectionHeaderFooter"
-        static let signupEpilogueCell = "SignupEpilogueCell"
-        static let epilogueUserInfoCell = "userInfo"
-    }
-
-    private struct CellNibNames {
-        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
-        static let signupEpilogueCell = "SignupEpilogueCell"
-        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
-    }
 
     // MARK: - View
 
@@ -211,7 +185,7 @@ private extension SignupEpilogueTableViewController {
         epilogueUserInfo = userInfo
     }
 
-    private func generateDisplayName(from rawEmail: String) -> String {
+    func generateDisplayName(from rawEmail: String) -> String {
         // step 1: lower case
         let email = rawEmail.lowercased()
         // step 2: remove the @ and everything after
@@ -250,6 +224,31 @@ private extension SignupEpilogueTableViewController {
         return cell
     }
 
+    struct Constants {
+        static let numberOfSections = 2
+        static let userInfoRows = 1
+        static let noPasswordRows = 2
+        static let allAccountRows = 3
+        static let headerFooterHeight: CGFloat = 50
+        static let footerTrailingMargin: CGFloat = 16
+        static let footerTopMargin: CGFloat = 8
+    }
+
+    struct TableSections {
+        static let userInfo = 0
+    }
+
+    struct CellIdentifiers {
+        static let sectionHeaderFooter = "SectionHeaderFooter"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "userInfo"
+    }
+
+    struct CellNibNames {
+        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
+    }
 }
 
 // MARK: - SignupEpilogueCellDelegate
