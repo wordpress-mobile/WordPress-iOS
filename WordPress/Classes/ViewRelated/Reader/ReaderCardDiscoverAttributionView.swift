@@ -37,6 +37,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
+    var displayAsLink = false
+
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {
@@ -134,9 +136,12 @@ private enum ReaderCardDiscoverAttribution: Int {
         let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(.font, value: font, range: range)
-        textLabel.textColor = .primary
-        textLabel.highlightedTextColor = .primary
-        WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
+        if !displayAsLink {
+            WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
+        } else {
+            textLabel.textColor = .primary
+            textLabel.highlightedTextColor = .primary
+        }
         textLabel.attributedText = attributedString
         attributionAction = .visitSite
     }

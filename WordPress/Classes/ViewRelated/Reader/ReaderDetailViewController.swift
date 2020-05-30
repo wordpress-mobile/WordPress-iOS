@@ -858,6 +858,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func configureDiscoverAttribution() {
+        attributionView.displayAsLink = true
         attributionViewContainer.addSubview(attributionView)
         attributionViewContainer.pinSubviewToAllEdges(attributionView)
         attributionView.translatesAutoresizingMaskIntoConstraints = false
