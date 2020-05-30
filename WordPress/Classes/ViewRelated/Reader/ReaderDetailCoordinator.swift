@@ -144,6 +144,27 @@ class ReaderDetailCoordinator {
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
+
+    /// Show the featured image fullscreen
+    ///
+    private func showFeaturedImage(_ sender: CachedAnimatedImageView) {
+        guard let post = post else {
+            return
+        }
+
+        var controller: WPImageViewController
+        if post.featuredImageURL.isGif, let data = sender.animatedGifData {
+            controller = WPImageViewController(gifData: data)
+        } else if let featuredImage = sender.image {
+            controller = WPImageViewController(image: featuredImage)
+        } else {
+            return
+        }
+
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        viewController?.present(controller, animated: true)
+    }
 }
 
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
@@ -163,7 +184,7 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
-    func didTapFeaturedImage() {
-        // Show image
+    func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
+        showFeaturedImage(sender)
     }
 }

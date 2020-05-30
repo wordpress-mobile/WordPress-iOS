@@ -6,7 +6,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapMenuButton(_ sender: UIView)
     func didTapTagButton()
     func didTapHeaderAvatar()
-    func didTapFeaturedImage()
+    func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable {
@@ -88,11 +88,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
-        guard gesture.state == .ended, let post = post else {
+        guard gesture.state == .ended else {
             return
         }
 
-        delegate?.didTapFeaturedImage()
+        delegate?.didTapFeaturedImage(featuredImageView)
     }
 
     override func awakeFromNib() {
