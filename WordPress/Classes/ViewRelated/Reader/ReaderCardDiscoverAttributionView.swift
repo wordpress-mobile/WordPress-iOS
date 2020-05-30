@@ -11,7 +11,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     case visitSite // Action for verbose attribution to visit a site
 }
 
-@objc open class ReaderCardDiscoverAttributionView: UIView {
+@objc open class ReaderCardDiscoverAttributionView: UIView, NibLoadable {
     fileprivate let gravatarImageName = "gravatar"
     fileprivate let blavatarImageName = "post-blavatar-placeholder"
 
