@@ -114,6 +114,25 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(postSharingControllerMock.didCallShareReaderPostWithViewController).to(equal(viewMock))
     }
 
+    /// Present a site preview in the current view stack
+    ///
+    func testShowPresentSitePreview() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        post.siteID = 1
+        post.isExternal = false
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let postSharingControllerMock = PostSharingControllerMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let navigationControllerMock = UINavigationControllerMock()
+        viewMock.navigationController = navigationControllerMock
+        coordinator.post = post
+
+        coordinator.didTapBlogName()
+
+        expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
@@ -150,6 +169,17 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallShowError = false
     var didCallShowTitleWith: String?
 
+    private var _navigationController: UINavigationController?
+    override var navigationController: UINavigationController? {
+        set {
+            _navigationController = newValue
+        }
+
+        get {
+            return _navigationController
+        }
+    }
+
     func render(_ post: ReaderPost) {
         didCallRenderWithPost = post
     }
@@ -172,5 +202,13 @@ private class PostSharingControllerMock: PostSharingController {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchorView
         didCallShareReaderPostWithViewController = viewController
+    }
+}
+
+private class UINavigationControllerMock: UINavigationController {
+    var didCallPushViewControllerWith: UIViewController?
+
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        didCallPushViewControllerWith = viewController
     }
 }

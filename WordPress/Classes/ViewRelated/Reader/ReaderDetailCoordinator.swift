@@ -14,6 +14,11 @@ class ReaderDetailCoordinator {
     /// Reader View
     private weak var view: ReaderDetailView?
 
+    /// Reader View Controller
+    private var viewController: UIViewController? {
+        return view as? UIViewController
+    }
+
     /// A post ID to fetch
     private(set) var postID: NSNumber?
 
@@ -48,7 +53,7 @@ class ReaderDetailCoordinator {
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
-        guard let post = post, let view = view as? UIViewController else {
+        guard let post = post, let view = viewController else {
             return
         }
 
@@ -88,11 +93,25 @@ class ReaderDetailCoordinator {
             self?.view?.showError()
         })
     }
+
+    /// Shows the current post site posts in a new screen
+    ///
+    private func previewSite() {
+        guard let post = post else {
+            return
+        }
+
+        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
+
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
+        WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
+    }
 }
 
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didTapBlogName() {
-        /// TODO: Preview site
+        previewSite()
     }
 
     func didTapMenuButton() {
@@ -104,7 +123,7 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     }
 
     func didTapHeaderAvatar() {
-        /// TODO: Preview site
+        previewSite()
     }
 
     func didTapFeaturedImage() {
