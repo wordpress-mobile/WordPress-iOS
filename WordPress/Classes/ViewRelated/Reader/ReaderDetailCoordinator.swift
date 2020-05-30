@@ -130,6 +130,20 @@ class ReaderDetailCoordinator {
             return
         }
     }
+
+    /// Show a list with posts contianing this tag
+    ///
+    private func showTag() {
+        guard let post = post else {
+            return
+        }
+
+        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
+
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
+        WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
+    }
 }
 
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
@@ -142,7 +156,7 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     }
 
     func didTapTagButton() {
-        /// TODO: Show tag
+        showTag()
     }
 
     func didTapHeaderAvatar() {

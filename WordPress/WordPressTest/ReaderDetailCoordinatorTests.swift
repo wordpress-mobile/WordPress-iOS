@@ -133,6 +133,24 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
     }
 
+    /// Present a tag in the current view stack
+    ///
+    func testShowPresentTag() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        post.primaryTagSlug = "tag"
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let postSharingControllerMock = PostSharingControllerMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let navigationControllerMock = UINavigationControllerMock()
+        viewMock.navigationController = navigationControllerMock
+        coordinator.post = post
+
+        coordinator.didTapTagButton()
+
+        expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
