@@ -3,7 +3,7 @@ import AutomatticTracks
 
 protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
-    func didTapMenuButton()
+    func didTapMenuButton(_ sender: UIView)
     func didTapTagButton()
     func didTapHeaderAvatar()
     func didTapFeaturedImage()
@@ -71,8 +71,8 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         delegate?.didTapBlogName()
     }
 
-    @IBAction func didTapMenuButton(_ sender: Any) {
-        delegate?.didTapMenuButton()
+    @IBAction func didTapMenuButton(_ sender: UIButton) {
+        delegate?.didTapMenuButton(sender)
     }
 
     @IBAction func didTapTagButton(_ sender: Any) {

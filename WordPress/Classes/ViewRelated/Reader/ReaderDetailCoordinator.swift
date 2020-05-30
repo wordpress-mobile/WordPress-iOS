@@ -8,6 +8,9 @@ class ReaderDetailCoordinator {
     /// Reader Post Service
     private let service: ReaderPostService
 
+    /// Reader Topic Service
+    private let topicService: ReaderTopicService
+
     /// Post Sharing Controller
     private let sharingController: PostSharingController
 
@@ -32,9 +35,11 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter service: a Reader Post Service
     init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          view: ReaderDetailView) {
         self.service = service
+        self.topicService = topicService
         self.sharingController = sharingController
         self.view = view
     }
@@ -107,6 +112,24 @@ class ReaderDetailCoordinator {
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
+
+    /// Show a menu with options forthe current post's site
+    ///
+    private func showMenu(_ anchorView: UIView) {
+        guard let post = post else {
+            return
+        }
+
+        guard post.isFollowing else {
+            ReaderPostMenu.showMenuForPost(post, fromView: anchorView, inViewController: viewController)
+            return
+        }
+
+        if let topic = topicService.findSiteTopic(withSiteID: post.siteID) {
+            ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: anchorView, inViewController: viewController)
+            return
+        }
+    }
 }
 
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
@@ -114,8 +137,8 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
-    func didTapMenuButton() {
-        /// TODO: Show menu
+    func didTapMenuButton(_ sender: UIView) {
+        showMenu(sender)
     }
 
     func didTapTagButton() {
