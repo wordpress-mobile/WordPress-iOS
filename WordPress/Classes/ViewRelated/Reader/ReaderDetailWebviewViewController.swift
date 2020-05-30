@@ -13,6 +13,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
 
+    /// Header container
+    @IBOutlet weak var headerContainerView: UIView!
+
+    /// The actual header
+    let header: ReaderDetailHeaderView = .loadFromNib()
+
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
@@ -24,11 +30,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
         applyStyles()
         configureShareButton()
+        configureHeader()
         observeWebViewHeight()
         coordinator?.start()
     }
 
     func render(_ post: ReaderPost) {
+        header.configure(for: post)
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
@@ -84,6 +92,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         let shareButton = UIBarButtonItem(customView: button)
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+    }
+
+    private func configureHeader() {
+        headerContainerView.addSubview(header)
+        headerContainerView.pinSubviewToAllEdges(header)
+        headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     /// Ask the coordinator to present the share sheet
