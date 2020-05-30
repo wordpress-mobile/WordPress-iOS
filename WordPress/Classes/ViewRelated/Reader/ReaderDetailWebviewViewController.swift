@@ -95,6 +95,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
+        header.delegate = coordinator
         headerContainerView.addSubview(header)
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true

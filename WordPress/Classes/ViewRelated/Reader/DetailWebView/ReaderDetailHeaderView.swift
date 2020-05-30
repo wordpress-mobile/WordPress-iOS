@@ -43,7 +43,9 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
     }
 
-    private var delegate: ReaderDetailHeaderViewDelegate?
+    /// Any interaction with the header is sent to the delegate
+    ///
+    var delegate: ReaderDetailHeaderViewDelegate?
 
     func configure(for post: ReaderPost) {
         self.post = post
@@ -66,17 +68,14 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     @IBAction func didTapBlogName(_ sender: Any) {
-        /// TODO: Preview site
         delegate?.didTapBlogName()
     }
 
     @IBAction func didTapMenuButton(_ sender: Any) {
         delegate?.didTapMenuButton()
-        /// TODO: Show menu
     }
 
     @IBAction func didTapTagButton(_ sender: Any) {
-        /// TODO: Show tag
         delegate?.didTapTagButton()
     }
 
@@ -85,7 +84,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
             return
         }
 
-        /// TODO: Preview site
         delegate?.didTapHeaderAvatar()
     }
 
@@ -94,7 +92,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
             return
         }
 
-        // Show image
         delegate?.didTapFeaturedImage()
     }
 

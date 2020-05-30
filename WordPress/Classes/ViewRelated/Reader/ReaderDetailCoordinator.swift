@@ -89,3 +89,25 @@ class ReaderDetailCoordinator {
         })
     }
 }
+
+extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
+    func didTapBlogName() {
+        /// TODO: Preview site
+    }
+
+    func didTapMenuButton() {
+        /// TODO: Show menu
+    }
+
+    func didTapTagButton() {
+        /// TODO: Show tag
+    }
+
+    func didTapHeaderAvatar() {
+        /// TODO: Preview site
+    }
+
+    func didTapFeaturedImage() {
+        // Show image
+    }
+}
