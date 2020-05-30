@@ -15,6 +15,7 @@
 * [*] Block Editor: Fix button alignment in page templates and make strings consistent
 * [*] Block Editor: Add support for displaying radial gradients in Buttons and Cover blocks
 * [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
+* My Site: Add support for setting the Homepage and Posts Page for a site.
 
 14.9
 -----
