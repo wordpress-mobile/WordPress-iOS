@@ -76,6 +76,31 @@ class ReaderDetailCoordinator {
         self.isFeed = isFeed
     }
 
+    /// Show more about a specific site in Discovery
+    ///
+    func showMore() {
+        guard let post = post, post.sourceAttribution != nil else {
+            return
+        }
+
+        if let blogID = post.sourceAttribution.blogID {
+            let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
+            viewController?.navigationController?.pushViewController(controller, animated: true)
+            return
+        }
+
+        var path: String?
+        if post.sourceAttribution.attributionType == SourcePostAttributionTypePost {
+            path = post.sourceAttribution.permalink
+        } else {
+            path = post.sourceAttribution.blogURL
+        }
+
+        if let path = path, let linkURL = URL(string: path) {
+            presentWebViewControllerWithURL(linkURL)
+        }
+    }
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost.
@@ -164,6 +189,25 @@ class ReaderDetailCoordinator {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
         viewController?.present(controller, animated: true)
+    }
+
+    /// Displays a specific URL in a separated View Controller
+    ///
+    /// - Parameter url: the URL to be loaded
+    private func presentWebViewControllerWithURL(_ url: URL) {
+        var url = url
+        if url.host == nil {
+            if let postURLString = post?.permaLink {
+                let postURL = URL(string: postURLString)
+                url = URL(string: url.absoluteString, relativeTo: postURL)!
+            }
+        }
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
+        viewController?.present(navController, animated: true)
     }
 }
 

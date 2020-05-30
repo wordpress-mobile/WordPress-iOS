@@ -16,8 +16,14 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
+    /// Wrapper for the attribution view
+    @IBOutlet weak var attributionViewContainer: UIStackView!
+
+    /// Attribution view for Discovery posts
+    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
+    
     /// The actual header
-    let header: ReaderDetailHeaderView = .loadFromNib()
+    private let header: ReaderDetailHeaderView = .loadFromNib()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
@@ -36,6 +42,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     }
 
     func render(_ post: ReaderPost) {
+        configureDiscoverAttribution(post)
         header.configure(for: post)
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
@@ -102,6 +109,19 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    private func configureDiscoverAttribution(_ post: ReaderPost) {
+        if post.sourceAttributionStyle() == SourceAttributionStyle.none {
+            attributionView.isHidden = true
+        } else {
+            attributionView.displayAsLink = true
+            attributionViewContainer.addSubview(attributionView)
+            attributionViewContainer.pinSubviewToAllEdges(attributionView)
+            attributionView.translatesAutoresizingMaskIntoConstraints = false
+            attributionView.configureViewWithVerboseSiteAttribution(post)
+            attributionView.delegate = self
+        }
+    }
+
     /// Ask the coordinator to present the share sheet
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
@@ -166,5 +186,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailWebviewViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "ReaderDetailViewController"
+    }
+}
+
+extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
+    public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
+        coordinator?.showMore()
     }
 }
