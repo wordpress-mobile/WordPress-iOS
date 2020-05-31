@@ -1079,6 +1079,8 @@
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8BA77BCB2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
+		8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */; };
+		8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */; };
 		8BAD272C241FEF3300E9D105 /* PrepublishingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */; };
 		8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */; };
 		8BADF16524801BCE005AD038 /* ReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF16424801BCE005AD038 /* ReaderWebView.swift */; };
@@ -3542,6 +3544,8 @@
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderCardDiscoverAttributionView.xib; sourceTree = "<group>"; };
+		8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderDetailToolbar.xib; sourceTree = "<group>"; };
+		8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailToolbar.swift; sourceTree = "<group>"; };
 		8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingViewController.swift; sourceTree = "<group>"; };
 		8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPAnalyticsEvent.swift; sourceTree = "<group>"; };
 		8BADF16424801BCE005AD038 /* ReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderWebView.swift; sourceTree = "<group>"; };
@@ -7764,6 +7768,8 @@
 				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
 				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
 				8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */,
+				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
+				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
 			);
 			path = DetailWebView;
 			sourceTree = "<group>";
@@ -11032,6 +11038,7 @@
 				17E363E222C4280A000E0C79 /* pride_icon_76pt.png in Resources */,
 				17E3633C22C417F0000E0C79 /* jetpack_green_icon_40pt.png in Resources */,
 				17E3639C22C41DBA000E0C79 /* hot_pink_icon_40pt.png in Resources */,
+				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
@@ -12020,6 +12027,7 @@
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
+				8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
 				F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */,

@@ -19,11 +19,17 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the attribution view
     @IBOutlet weak var attributionViewContainer: UIStackView!
 
+    /// Wrapper for the toolbar
+    @IBOutlet weak var toolbarContainerView: UIView!
+
     /// Attribution view for Discovery posts
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
 
     /// The actual header
     private let header: ReaderDetailHeaderView = .loadFromNib()
+
+    /// Bottom toolbar
+    private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
@@ -34,15 +40,21 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let scrollView = webView.superview as? UIScrollView
+        scrollView?.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
+        scrollView?.scrollIndicatorInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
+
         applyStyles()
         configureShareButton()
         configureHeader()
+        configureToolbar()
         observeWebViewHeight()
         coordinator?.start()
     }
 
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
+        toolbar.configure(for: post, in: self)
         header.configure(for: post)
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
@@ -107,6 +119,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func configureToolbar() {
+        toolbarContainerView.addSubview(toolbar)
+        toolbarContainerView.pinSubviewToAllEdges(toolbar)
+        toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -192,5 +210,15 @@ extension ReaderDetailWebviewViewController: StoryboardLoadable {
 extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
+    }
+}
+
+extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelegate {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
