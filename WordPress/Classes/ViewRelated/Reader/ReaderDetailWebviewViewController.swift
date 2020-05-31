@@ -96,7 +96,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
                 return
             }
 
-            self?.webViewHeight.constant = height
+            /// ScrollHeight returned by JS is always more accurated as the value from the contentSize
+            /// (except for a few times when it returns a very big weird number)
+            /// We use that value so the content is not displayed with weird empty space at the bottom
+            ///
+            self?.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
+                guard let webViewHeight = webViewHeight as? CGFloat else {
+                    self?.webViewHeight.constant = height
+                    return
+                }
+
+                self?.webViewHeight.constant = min(height, webViewHeight)
+            })
         }
     }
 
