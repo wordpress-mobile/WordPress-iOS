@@ -1,7 +1,14 @@
-C’est le moment idéal pour utiliser l’application WordPress pour gérer votre site Web. Vous pouvez l’utiliser pendant que vous patientez devant votre porte en attendant une livraison, lorsque vous êtes assis dans votre salon à une distance de 1,5 mètre de votre colocataire, ou lorsque vous vous isolez dans la salle de bains pour faire une pause de 5 minutes avant de retourner vous occuper de vos enfants. Les possibilités sont infinies, en particulier avec les fonctionnalités supplémentaires de l’Éditeur de blocs de la version v14.8 :
+Here’s what’s new:
 
-Avec le nouveau bloc de boutons, vous pouvez ajouter plusieurs boutons sur la même ligne.
-Le bloc de couverture inclut davantage d’options de chargement permettant de transférer des images de votre appareil vers votre site.
-Si vos fichiers image comportent des légendes, le bloc d’image les préremplit automatiquement pour vous.
+Organization overhaul: We’ve made some changes that’ll let you find what you need faster:
 
-À l’occasion de cette mise à jour, nous avons corrigé quelques bogues : espace supprimé autour des blocs de texte, problème d’alignement des blocs de citation et boutons des modèles de page qui ne s’affichaient pas correctement sur le Web. Nous avons également donné un coup de neuf aux écrans s’affichant après la connexion et lors de l’inscription, afin de gagner en clarté et en cohérence dans l’application.
+Want to start a new post or page? Tap the big pink button, always visible in the My Sites tab.
+Want to edit your profile? Look in the upper right corner.
+Want to find something to read? The Reader tab has a revamped layout for more intuitive searching and filtering.
+Block editor updates: There’s a new Pullquote block, to highlight quotes with more visual emphasis than the regular Quote block. Page templates got an update to make use of the newest blocks, and we fixed up icons in a few blocks that weren’t displaying quite right in RTL mode.
+
+The Button block got more color options for background and text. And there’s support for superscript and subscript HTML formatting (in the Classic editor, too).
+
+Image annotation: With the new “edit image” feature in the editor, you can draw directly on images.
+
+One really great bug fix: Sometimes you’d add a Video block and start uploading a video, and the app would crash. Counterproductive! That doesn’t happen anymore.
