@@ -123,6 +123,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     [super viewDidAppear:animated];
     [self.textField becomeFirstResponder];
+    // Fire initial status
+    [self validateTextInput:_textField];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -172,22 +174,52 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     // Hook up to Change Events
     [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
-    
-    // Fire initial status
-    [self validateTextInput:_textField];
 }
 
 - (BOOL)textPassesValidation
 {
-    BOOL isEmail = (self.mode == SettingsTextModesEmail);
-    return (self.validatesInput == false || isEmail == false || (isEmail && self.textField.text.isValidEmail));
+    switch(self.mode){
+        case SettingsTextModesEmail:
+            return !self.validatesInput || self.textField.text.isValidEmail;
+            break;
+        case SettingsTextModesLowerCaseText:
+        case SettingsTextModesText:
+            return !self.validatesInput || [self isValidText:self.textField.text];
+            break;
+        case SettingsTextModesURL:
+        case SettingsTextModesPassword:
+        case SettingsTextModesNewPassword:
+        default:
+            return (!self.validatesInput);
+            break;
+    }
+}
+//TODO: This method should be stay in the WorpressShared project
+- (BOOL)isValidText:(NSString*)text
+{
+    NSString *regex = @"\\w+";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@" argumentArray:@[regex]];
+
+    return [predicate evaluateWithObject:text];
 }
 
 - (void)validateTextInput:(id)sender
 {
     self.doneButtonEnabled = [self textPassesValidation];
+    [self evaluateActionButton];
 }
 
+- (void)evaluateActionButton
+{
+    BOOL isValid = self.textPassesValidation;
+    if (isValid){
+        [_actionCell setUserInteractionEnabled: isValid];
+        _actionCell.textLabel.textColor = UIColor.murielText;
+    }else{
+        [_actionCell setUserInteractionEnabled: isValid];
+        _actionCell.textLabel.textColor = UIColor.murielTextSubtle;
+    }
+}
 
 #pragma mark - Properties
 
