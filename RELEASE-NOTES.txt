@@ -1,3 +1,6 @@
+15.1
+-----
+ 
 15.0
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
