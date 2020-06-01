@@ -86,6 +86,7 @@
                     <connections>
                         <outlet property="attributionViewContainer" destination="TWq-e0-xZe" id="0Bb-jI-gSy"/>
                         <outlet property="headerContainerView" destination="Xyq-y6-zPR" id="duy-5z-Fdl"/>
+                        <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
                         <outlet property="toolbarContainerView" destination="Qzd-gm-oIu" id="Esk-Iq-Wbd"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>

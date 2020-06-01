@@ -7,6 +7,9 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
+    /// Content scroll view
+    @IBOutlet weak var scrollView: UIScrollView!
+
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
 
@@ -40,14 +43,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let scrollView = webView.superview as? UIScrollView
-        scrollView?.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
-        scrollView?.scrollIndicatorInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
-
         applyStyles()
         configureShareButton()
         configureHeader()
         configureToolbar()
+        configureScrollView()
         observeWebViewHeight()
         coordinator?.start()
     }
@@ -149,6 +149,14 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
         }
+    }
+
+    /// Add content and scroll insets based on the toolbar height
+    ///
+    private func configureScrollView() {
+        let toolbarHeight = toolbarContainerView.frame.height
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
     }
 
     /// Ask the coordinator to present the share sheet
