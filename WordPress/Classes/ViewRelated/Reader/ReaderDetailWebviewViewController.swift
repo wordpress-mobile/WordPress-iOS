@@ -21,7 +21,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// Attribution view for Discovery posts
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
-    
+
     /// The actual header
     private let header: ReaderDetailHeaderView = .loadFromNib()
 
