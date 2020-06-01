@@ -155,7 +155,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     private func configureScrollView() {
         let toolbarHeight = toolbarContainerView.frame.height
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight + Constants.bottomMargin, right: 0)
         scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
     }
 
@@ -215,6 +215,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
+        static let bottomMargin: CGFloat = 16
     }
 }
 
