@@ -100,4 +100,8 @@ typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
                                    placeholder:(NSString * __nullable)placeholder
                                           hint:(NSString * __nullable)hint;
 
+/// The method has been exposed for the testcase
+///
+- (BOOL)textPassesValidation;
+
 @end
