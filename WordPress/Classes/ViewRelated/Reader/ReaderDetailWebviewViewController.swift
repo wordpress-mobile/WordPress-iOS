@@ -154,9 +154,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Add content and scroll insets based on the toolbar height
     ///
     private func configureScrollView() {
-        let toolbarHeight = toolbarContainerView.frame.height
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight + Constants.bottomMargin, right: 0)
-        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
     }
 
     /// Ask the coordinator to present the share sheet
