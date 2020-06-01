@@ -201,7 +201,7 @@ class PostBuilder {
         return post
     }
 
-    private static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
+    static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
 
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
