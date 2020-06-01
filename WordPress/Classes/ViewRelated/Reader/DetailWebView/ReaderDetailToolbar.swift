@@ -7,8 +7,10 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     @IBOutlet weak var commentButton: PostMetaButton!
     @IBOutlet weak var likeButton: PostMetaButton!
 
+    /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
 
+    /// The VC where the toolbar is inserted
     private weak var viewController: UIViewController?
 
     /// An observer of the number of likes of the post
@@ -17,16 +19,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     /// An observer of the number of likes of the post
     private var commentCountObserver: NSKeyValueObservation?
 
+    /// If we should hide the comments button
     var shouldHideComments = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        backgroundColor = .listForeground
-        dividerView.backgroundColor = .divider
-
-        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+        applyStyles()
 
         adjustInsetsForTextDirection()
 
@@ -52,6 +51,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         likeCountObserver?.invalidate()
         commentCountObserver?.invalidate()
     }
+
+    // MARK: - Actions
 
     @IBAction func didTapSaveForLater(_ sender: Any) {
         guard let readerPost = post, let context = readerPost.managedObjectContext,
@@ -103,7 +104,19 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         })
     }
 
-    fileprivate func configureActionButtons() {
+    // MARK: - Styles
+
+    private func applyStyles() {
+        backgroundColor = .listForeground
+        dividerView.backgroundColor = .divider
+
+        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+    }
+
+    // MARK: - Configuration
+
+    private func configureActionButtons() {
         resetActionButton(likeButton)
         resetActionButton(commentButton)
         resetActionButton(saveForLaterButton)
@@ -135,8 +148,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         configureSaveForLaterButton()
     }
 
-
-    fileprivate func resetActionButton(_ button: UIButton) {
+    private func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControl.State())
         button.setTitle(nil, for: .highlighted)
         button.setTitle(nil, for: .disabled)
@@ -148,8 +160,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.isEnabled = true
     }
 
-
-    fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
+    private func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
         button.setTitle(title, for: UIControl.State())
         button.setTitle(title, for: .highlighted)
         button.setTitle(title, for: .disabled)
@@ -164,8 +175,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
-
-    fileprivate func configureLikeActionButton(_ animated: Bool = false) {
+    private func configureLikeActionButton(_ animated: Bool = false) {
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
         // as by design spec, only display like counts
         let likeCount = post?.likeCount()?.intValue ?? 0
@@ -183,12 +193,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     /// Uses the configuration in WPStyleGuide for the reblog button
-    fileprivate func configureReblogButton() {
+    private func configureReblogButton() {
         reblogButton.isHidden = false
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
     }
 
-    fileprivate func playLikeButtonAnimation() {
+    private func playLikeButtonAnimation() {
         let likeImageView = likeButton.imageView!
         let frame = likeButton.convert(likeImageView.frame, from: likeImageView)
 
@@ -250,8 +260,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
     }
 
-
-    fileprivate func configureCommentActionButton() {
+    private func configureCommentActionButton() {
         guard let commentCount = post?.commentCount else {
             return
         }
@@ -262,7 +271,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
-    fileprivate func configureSaveForLaterButton() {
+    private func configureSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
@@ -270,7 +279,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
-    fileprivate func adjustInsetsForTextDirection() {
+    private func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
             likeButton,
             commentButton,
