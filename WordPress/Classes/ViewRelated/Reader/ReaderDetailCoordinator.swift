@@ -101,6 +101,17 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Loads an image (or GIF) from a URL and displays it in fullscreen
+    ///
+    /// - Parameter url: URL of the image or gif
+    func presentImage(_ url: URL) {
+        let imageViewController = WPImageViewController(url: url)
+        imageViewController.modalTransitionStyle = .crossDissolve
+        imageViewController.modalPresentationStyle = .fullScreen
+
+        viewController?.present(imageViewController, animated: true)
+    }
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost.

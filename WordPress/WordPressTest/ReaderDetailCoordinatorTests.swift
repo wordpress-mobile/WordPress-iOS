@@ -151,6 +151,20 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
     }
 
+    /// Present an image in the view cntroller
+    ///
+    func testShowPresentImage() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.presentImage(URL(string: "https://wordpress.com")!)
+
+        expect(viewMock.didCallPresentWith).to(beAKindOf(WPImageViewController.self))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
@@ -186,6 +200,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallRenderWithPost: ReaderPost?
     var didCallShowError = false
     var didCallShowTitleWith: String?
+    var didCallPresentWith: UIViewController?
 
     private var _navigationController: UINavigationController?
     override var navigationController: UINavigationController? {
@@ -208,6 +223,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func show(title: String?) {
         didCallShowTitleWith = title
+    }
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        didCallPresentWith = viewControllerToPresent
     }
 }
 
