@@ -510,7 +510,7 @@ namespace :credentials do
   end
 
   def get_client_id
-    STDOUT.puts "Please enter your Client id"
+    STDOUT.puts "Please enter your Client ID"
     STDIN.gets.strip
   end
 
