@@ -5,6 +5,9 @@ class ReaderDetailCoordinator {
     /// A post to be displayed
     var post: ReaderPost?
 
+    /// A post URL to be loaded and be displayed
+    var postURL: URL?
+
     /// Reader Post Service
     private let service: ReaderPostService
 
@@ -57,6 +60,8 @@ class ReaderDetailCoordinator {
             view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
+        } else if let postURL = postURL {
+            fetch(postURL)
         }
     }
 
@@ -136,6 +141,26 @@ class ReaderDetailCoordinator {
                             self?.view?.render(post)
                             self?.view?.show(title: post.postTitle)
         }, failure: { [weak self] _ in
+            self?.view?.showError()
+        })
+    }
+
+    /// Requests a ReaderPost from the service and updates the View.
+    ///
+    /// Use this method to fetch a ReaderPost from a URL.
+    /// - Parameter url: a post URL
+    private func fetch(_ url: URL) {
+        service.fetchPost(at: postURL,
+                          success: { [weak self] post in
+                            guard let post = post else {
+                                return
+                            }
+
+                            self?.post = post
+                            self?.view?.render(post)
+                            self?.view?.show(title: post.postTitle)
+        }, failure: { [weak self] error in
+            DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.view?.showError()
         })
     }
