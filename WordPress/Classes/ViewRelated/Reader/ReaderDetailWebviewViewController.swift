@@ -192,6 +192,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Returns: A `ReaderDetailWebviewViewController` instance
     @objc class func controllerWithPostURL(_ url: URL) -> ReaderDetailWebviewViewController {
         let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.postURL = url
+        controller.coordinator = coordinator
 
         return controller
     }
