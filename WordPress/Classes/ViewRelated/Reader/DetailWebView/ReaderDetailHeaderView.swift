@@ -308,11 +308,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func preparePostTitleForVoiceOver() {
-        guard let post = post else {
-            return
-        }
-
-        guard let title = post.titleForDisplay() else {
+        guard let title = post?.titleForDisplay() else {
             return
         }
         isAccessibilityElement = false
