@@ -42,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }
