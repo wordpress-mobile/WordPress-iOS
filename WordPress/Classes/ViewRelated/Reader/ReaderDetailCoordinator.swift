@@ -202,11 +202,29 @@ class ReaderDetailCoordinator {
         viewController?.present(controller, animated: true)
     }
 
-    /// Given a URL presents it in a new screen
+    /// Given a URL presents it in a new Reader detail screen
     ///
     func presentReaderDetail(_ url: URL) {
         let readerDetail = ReaderDetailWebviewViewController.controllerWithPostURL(url)
         viewController?.navigationController?.pushViewController(readerDetail, animated: true)
+    }
+
+    /// Given a URL presents it in a web view controller screen
+    ///
+    func presentWebViewController(_ url: URL) {
+        var url = url
+        if url.host == nil {
+            if let postURLString = post?.permaLink {
+                let postURL = URL(string: postURLString)
+                url = URL(string: url.absoluteString, relativeTo: postURL)!
+            }
+        }
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
+        viewController?.present(navController, animated: true)
     }
 
     /// Displays a specific URL in a separated View Controller
