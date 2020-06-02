@@ -102,7 +102,7 @@ class ReaderDetailCoordinator {
         }
 
         if let path = path, let linkURL = URL(string: path) {
-            presentWebViewControllerWithURL(linkURL)
+            presentWebViewController(linkURL)
         }
     }
 
@@ -186,6 +186,13 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
+    /// Given a URL presents it the best way possible.
+    ///
+    /// If it's an image, shows it fullscreen.
+    /// If it's a post, open a new detail screen.
+    /// If it's a regular URL, open it in the webview controller
+    ///
+    /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
         if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
@@ -228,26 +235,8 @@ class ReaderDetailCoordinator {
 
     /// Given a URL presents it in a web view controller screen
     ///
-    private func presentWebViewController(_ url: URL) {
-        var url = url
-        if url.host == nil {
-            if let postURLString = post?.permaLink {
-                let postURL = URL(string: postURLString)
-                url = URL(string: url.absoluteString, relativeTo: postURL)!
-            }
-        }
-        let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticateWithDefaultAccount()
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        viewController?.present(navController, animated: true)
-    }
-
-    /// Displays a specific URL in a separated View Controller
-    ///
     /// - Parameter url: the URL to be loaded
-    private func presentWebViewControllerWithURL(_ url: URL) {
+    private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
