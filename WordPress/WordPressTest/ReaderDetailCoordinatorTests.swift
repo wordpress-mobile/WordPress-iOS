@@ -151,7 +151,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
     }
 
-    /// Present an image in the view cntroller
+    /// Present an image in the view controller
     ///
     func testShowPresentImage() {
         let post: ReaderPost = ReaderPostBuilder().build()
@@ -160,7 +160,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
         coordinator.post = post
 
-        coordinator.presentImage(URL(string: "https://wordpress.com")!)
+        coordinator.handle(URL(string: "https://wordpress.com/image.png")!)
 
         expect(viewMock.didCallPresentWith).to(beAKindOf(WPImageViewController.self))
     }
@@ -176,7 +176,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let navigationControllerMock = UINavigationControllerMock()
         viewMock.navigationController = navigationControllerMock
 
-        coordinator.presentReaderDetail(URL(string: "https://wordpress.com")!)
+        coordinator.handle(URL(string: "https://wpmobilep2.wordpress.com/2020/06/01/hello-test/")!)
 
         expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailWebviewViewController.self))
     }
@@ -190,7 +190,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
         coordinator.post = post
 
-        coordinator.presentWebViewController(URL(string: "https://wordpress.com")!)
+        coordinator.handle(URL(string: "https://wordpress.com")!)
 
         let presentedViewController = (viewMock.didCallPresentWith as? UINavigationController)?.viewControllers.first
         expect(presentedViewController).to(beAKindOf(WebKitViewController.self))

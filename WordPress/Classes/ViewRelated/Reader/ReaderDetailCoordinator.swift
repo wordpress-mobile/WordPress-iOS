@@ -14,6 +14,9 @@ class ReaderDetailCoordinator {
     /// Post Sharing Controller
     private let sharingController: PostSharingController
 
+    /// Reader Link Router
+    private let readerLinkRouter: UniversalLinkRouter
+
     /// Reader View
     private weak var view: ReaderDetailView?
 
@@ -37,10 +40,12 @@ class ReaderDetailCoordinator {
     init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
+         readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
         self.service = service
         self.topicService = topicService
         self.sharingController = sharingController
+        self.readerLinkRouter = readerLinkRouter
         self.view = view
     }
 
@@ -181,6 +186,18 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
+    func handle(_ url: URL) {
+        if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
+            presentImage(url)
+        } else if readerLinkRouter.canHandle(url: url) {
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
+        } else if url.isWordPressDotComPost {
+            presentReaderDetail(url)
+        } else {
+            presentWebViewController(url)
+        }
+    }
+
     /// Show the featured image fullscreen
     ///
     private func showFeaturedImage(_ sender: CachedAnimatedImageView) {
@@ -204,14 +221,14 @@ class ReaderDetailCoordinator {
 
     /// Given a URL presents it in a new Reader detail screen
     ///
-    func presentReaderDetail(_ url: URL) {
+    private func presentReaderDetail(_ url: URL) {
         let readerDetail = ReaderDetailWebviewViewController.controllerWithPostURL(url)
         viewController?.navigationController?.pushViewController(readerDetail, animated: true)
     }
 
     /// Given a URL presents it in a web view controller screen
     ///
-    func presentWebViewController(_ url: URL) {
+    private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
