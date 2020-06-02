@@ -252,16 +252,14 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.isLoadingImage = YES;
     __weak __typeof__(self) weakSelf = self;
-    [_imageView downloadImageUsingRequest:[NSURLRequest requestWithURL:self.url]
-                      placeholderImage:self.image
-                               success:^(UIImage *image) {
-                                   weakSelf.image = image;
-                                   [weakSelf updateImageView];
-                                   weakSelf.isLoadingImage = NO;
-                               } failure:^(NSError *error) {
-                                   DDLogError(@"Error loading image: %@", error);
-                                   [weakSelf.activityIndicatorView showError];
-                               }];
+    [self.imageLoader loadImageWithURL:self.url fromPost:self.post preferredSize:CGSizeZero placeholder:self.image success:^{
+        weakSelf.isLoadingImage = NO;
+        weakSelf.image = weakSelf.imageView.image;
+        [weakSelf updateImageView];
+    } error:^(NSError * _Nullable error) {
+        [weakSelf.activityIndicatorView showError];
+        DDLogError(@"Error loading image: %@", error);
+    }];
 }
 
 - (void)loadImageFromMedia
