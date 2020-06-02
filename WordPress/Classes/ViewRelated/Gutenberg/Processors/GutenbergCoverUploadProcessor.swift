@@ -38,7 +38,7 @@ class GutenbergCoverUploadProcessor: Processor {
             block += jsonString
         }
 
-        let innerProcessor = self.isVideo(attributes) ? self.videoUploadProcessor : self.imgUploadProcessor
+        let innerProcessor = self.isVideo(attributes) ? self.videoUploadProcessor() : self.imgUploadProcessor()
 
         block += " -->"
         block += innerProcessor.process(coverBlock.content)
@@ -64,54 +64,61 @@ class GutenbergCoverUploadProcessor: Processor {
         block += "<!-- /wp:cover -->"
         return block
     }
+}
 
-    // Image Support
+// Image Support
+extension GutenbergCoverUploadProcessor {
     private struct ImgHTMLKeys {
         static let name = "div"
         static let styleComponents = "style"
         static let backgroundImage = "background-image:url"
     }
 
-    lazy var imgUploadProcessor = HTMLProcessor(for: ImgHTMLKeys.name, replacer: { (div) in
+    private func imgUploadProcessor() -> HTMLProcessor {
+        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { (div) in
 
-        guard let styleAttributeValue = div.attributes[ImgHTMLKeys.styleComponents]?.value,
-            case let .string(styleAttribute) = styleAttributeValue
-            else {
+            guard let styleAttributeValue = div.attributes[ImgHTMLKeys.styleComponents]?.value,
+                case let .string(styleAttribute) = styleAttributeValue
+                else {
+                    return nil
+            }
+
+            let range = styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex)
+            let regex = self.localBackgroundImageRegex()
+            let matches = regex.matches(in: styleAttribute,
+                                        options: [],
+                                        range: range)
+            guard matches.count == 1 else {
                 return nil
-        }
+            }
 
-        let range = styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex)
-        let matches = self.localBackgroundImageRegex.matches(in: styleAttribute,
-                                                             options: [],
-                                                             range: range)
-        guard matches.count == 1 else {
-            return nil
-        }
+            let style = "\(ImgHTMLKeys.backgroundImage)(\(self.remoteURLString))"
+            let updatedStyleAttribute = regex.stringByReplacingMatches(in: styleAttribute,
+                                                                       options: [],
+                                                                       range: range,
+                                                                       withTemplate: style)
 
-        let style = "\(ImgHTMLKeys.backgroundImage)(\(self.remoteURLString))"
-        let updatedStyleAttribute = self.localBackgroundImageRegex.stringByReplacingMatches(in: styleAttribute,
-                                                                                            options: [],
-                                                                                            range: range,
-                                                                                            withTemplate: style)
+            var attributes = div.attributes
+            attributes.set(.string(updatedStyleAttribute), forKey: ImgHTMLKeys.styleComponents)
 
-        var attributes = div.attributes
-        attributes.set(.string(updatedStyleAttribute), forKey: ImgHTMLKeys.styleComponents)
+            let attributeSerializer = ShortcodeAttributeSerializer()
+            var html = "<\(ImgHTMLKeys.name) "
+            html += attributeSerializer.serialize(attributes)
+            html += ">"
+            html += div.content ?? ""
+            html += "</\(ImgHTMLKeys.name)>"
+            return html
+        })
+    }
 
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        var html = "<\(ImgHTMLKeys.name) "
-        html += attributeSerializer.serialize(attributes)
-        html += ">"
-        html += div.content ?? ""
-        html += "</\(ImgHTMLKeys.name)>"
-        return html
-    })
-
-    private let localBackgroundImageRegex: NSRegularExpression = {
+    private func localBackgroundImageRegex() -> NSRegularExpression {
         let pattern = "background-image:[ ]?url\\(file:\\/\\/\\/.*\\)"
         return try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-    }()
+    }
+}
 
-    // Video Support
+// Video Support
+extension GutenbergCoverUploadProcessor {
     private struct VideoHTMLKeys {
         static let name = "video"
         static let source = "src"
@@ -122,16 +129,18 @@ class GutenbergCoverUploadProcessor: Processor {
         return backgroundType == CoverBlockKeys.videoType
     }
 
-    lazy var videoUploadProcessor = HTMLProcessor(for: VideoHTMLKeys.name, replacer: { (video) in
-        var attributes = video.attributes
-        attributes.set(.string(self.remoteURLString), forKey: VideoHTMLKeys.source)
+    private func videoUploadProcessor() -> HTMLProcessor {
+        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { (video) in
+            var attributes = video.attributes
+            attributes.set(.string(self.remoteURLString), forKey: VideoHTMLKeys.source)
 
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        var html = "<\(VideoHTMLKeys.name) "
-        html += attributeSerializer.serialize(attributes)
-        html += ">"
-        html += video.content ?? ""
-        html += "</\(VideoHTMLKeys.name)>"
-        return html
-    })
+            let attributeSerializer = ShortcodeAttributeSerializer()
+            var html = "<\(VideoHTMLKeys.name) "
+            html += attributeSerializer.serialize(attributes)
+            html += ">"
+            html += video.content ?? ""
+            html += "</\(VideoHTMLKeys.name)>"
+            return html
+        })
+    }
 }
