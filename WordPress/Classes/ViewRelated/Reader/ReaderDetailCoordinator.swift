@@ -202,6 +202,13 @@ class ReaderDetailCoordinator {
         viewController?.present(controller, animated: true)
     }
 
+    /// Given a URL presents it in a new screen
+    ///
+    func presentReaderDetail(_ url: URL) {
+        let readerDetail = ReaderDetailWebviewViewController.controllerWithPostURL(url)
+        viewController?.navigationController?.pushViewController(readerDetail, animated: true)
+    }
+
     /// Displays a specific URL in a separated View Controller
     ///
     /// - Parameter url: the URL to be loaded

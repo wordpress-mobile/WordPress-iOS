@@ -165,6 +165,22 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(viewMock.didCallPresentWith).to(beAKindOf(WPImageViewController.self))
     }
 
+    /// Present an image in the view cntroller
+    ///
+    func testShowPresentURL() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+        let navigationControllerMock = UINavigationControllerMock()
+        viewMock.navigationController = navigationControllerMock
+
+        coordinator.presentReaderDetail(URL(string: "https://wordpress.com")!)
+
+        expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailWebviewViewController.self))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
