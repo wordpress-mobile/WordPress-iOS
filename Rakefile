@@ -494,7 +494,7 @@ namespace :credentials do
     prompt_for_continue("Once you have set the redirect url and type,")
 
     puts "====================================================================================="
-    prompt_for_continue("Lastly, Keep your Client ID and App Secret on hand for the next steps,")
+    prompt_for_continue("Lastly, keep your Client ID and App Secret on hand for the next steps,")
   end
 
   def prompt_for_continue(prompt)
