@@ -199,8 +199,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: #selector(didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
-
-        layoutIfNeeded()
     }
 
     private func configureTitle() {
