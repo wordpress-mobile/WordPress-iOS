@@ -1682,7 +1682,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private enum Constants {
-        static let inlineTabAccessCount = 5
+        static let inlineTabAccessCount = 6
         static let displayAlertDelay = 0.2
     }
 }
