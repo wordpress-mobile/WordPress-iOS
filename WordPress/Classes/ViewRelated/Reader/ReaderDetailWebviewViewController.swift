@@ -3,6 +3,7 @@ import UIKit
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
     func showError()
+    func show(title: String?)
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
@@ -11,6 +12,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    /// Header container
+    @IBOutlet weak var headerContainerView: UIView!
+
+    /// Wrapper for the attribution view
+    @IBOutlet weak var attributionViewContainer: UIStackView!
+
+    /// Attribution view for Discovery posts
+    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
+
+    /// The actual header
+    private let header: ReaderDetailHeaderView = .loadFromNib()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
@@ -22,16 +35,25 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         super.viewDidLoad()
 
         applyStyles()
+        configureShareButton()
+        configureHeader()
         observeWebViewHeight()
         coordinator?.start()
     }
 
     func render(_ post: ReaderPost) {
+        configureDiscoverAttribution(post)
+        header.configure(for: post)
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
     func showError() {
         /// TODO: Show error
+    }
+
+    func show(title: String?) {
+        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
+        self.title = title ?? placeholder
     }
 
     deinit {
@@ -64,6 +86,46 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
             self?.webViewHeight.constant = height
         }
+    }
+
+    /// Adds the sahre button at the right of the nav bar
+    ///
+    private func configureShareButton() {
+        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
+
+        let shareButton = UIBarButtonItem(customView: button)
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+    }
+
+    private func configureHeader() {
+        header.delegate = coordinator
+        headerContainerView.addSubview(header)
+        headerContainerView.pinSubviewToAllEdges(header)
+        headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func configureDiscoverAttribution(_ post: ReaderPost) {
+        if post.sourceAttributionStyle() == .none {
+            attributionView.isHidden = true
+        } else {
+            attributionView.displayAsLink = true
+            attributionViewContainer.addSubview(attributionView)
+            attributionViewContainer.pinSubviewToAllEdges(attributionView)
+            attributionView.translatesAutoresizingMaskIntoConstraints = false
+            attributionView.configureViewWithVerboseSiteAttribution(post)
+            attributionView.delegate = self
+        }
+    }
+
+    /// Ask the coordinator to present the share sheet
+    ///
+    @objc func didTapShareButton(_ sender: UIButton) {
+        coordinator?.share(fromView: sender)
     }
 
     /// A View Controller that displays a Post content.
@@ -124,5 +186,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailWebviewViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "ReaderDetailViewController"
+    }
+}
+
+extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
+    public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
+        coordinator?.showMore()
     }
 }

@@ -11,7 +11,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     case visitSite // Action for verbose attribution to visit a site
 }
 
-@objc open class ReaderCardDiscoverAttributionView: UIView {
+@objc open class ReaderCardDiscoverAttributionView: UIView, NibLoadable {
     fileprivate let gravatarImageName = "gravatar"
     fileprivate let blavatarImageName = "post-blavatar-placeholder"
 
@@ -36,6 +36,8 @@ private enum ReaderCardDiscoverAttribution: Int {
             applyOpaqueBackgroundColors()
         }
     }
+
+    var displayAsLink = false
 
     // MARK: - Lifecycle Methods
 
@@ -134,9 +136,12 @@ private enum ReaderCardDiscoverAttribution: Int {
         let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(.font, value: font, range: range)
-        textLabel.textColor = .primary
-        textLabel.highlightedTextColor = .primary
-        WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
+        if !displayAsLink {
+            WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
+        } else {
+            textLabel.textColor = .primary
+            textLabel.highlightedTextColor = .primary
+        }
         textLabel.attributedText = attributedString
         attributionAction = .visitSite
     }

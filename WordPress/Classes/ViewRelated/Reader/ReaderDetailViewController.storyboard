@@ -16,11 +16,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="0.0" width="414" height="100"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
+                                        <rect key="frame" x="0.0" y="0.0" width="446" height="48"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <wkWebView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="128" width="414" height="100"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
@@ -31,12 +35,21 @@
                                             <wkPreferences key="preferences"/>
                                         </wkWebViewConfiguration>
                                     </wkWebView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O4e-BA-8jp">
+                                        <rect key="frame" x="16" y="309" width="414" height="0.0"/>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="O4e-BA-8jp" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="5DL-7x-ujm"/>
+                                    <constraint firstItem="O4e-BA-8jp" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" constant="16" id="7iH-iW-yEQ"/>
+                                    <constraint firstItem="O4e-BA-8jp" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="8SP-Rw-zUY"/>
                                     <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="9JA-VQ-zzw" secondAttribute="leading" constant="16" placeholder="YES" id="9Vy-Wt-ZIb"/>
                                     <constraint firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" constant="16" placeholder="YES" id="FvD-7O-znG"/>
-                                    <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="e2B-yu-g86"/>
-                                    <constraint firstAttribute="bottom" secondItem="iSu-TI-yew" secondAttribute="bottom" id="ehB-y0-aYn"/>
+                                    <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Xyq-y6-zPR" secondAttribute="bottom" id="IET-mv-Ieo"/>
+                                    <constraint firstItem="Xyq-y6-zPR" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="JZU-vN-GKO"/>
+                                    <constraint firstItem="Xyq-y6-zPR" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="RTC-cI-v2j"/>
+                                    <constraint firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="bottom" id="eFL-lL-cEF"/>
+                                    <constraint firstItem="Xyq-y6-zPR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" constant="32" id="xfj-7c-Lke"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="eXr-4k-Adq"/>
@@ -45,20 +58,22 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="IBx-xv-963"/>
-                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="JMy-49-ddC"/>
+                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="9JA-VQ-zzw" secondAttribute="trailing" id="u3i-rm-kZv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                     </view>
                     <connections>
+                        <outlet property="attributionViewContainer" destination="O4e-BA-8jp" id="VKk-RS-iTc"/>
+                        <outlet property="headerContainerView" destination="Xyq-y6-zPR" id="duy-5z-Fdl"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aGx-LJ-atS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142" y="100"/>
+            <point key="canvasLocation" x="140.57971014492756" y="99.776785714285708"/>
         </scene>
     </scenes>
 </document>
