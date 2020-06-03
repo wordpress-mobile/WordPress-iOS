@@ -2,7 +2,6 @@
 
 #import "AccountService.h"
 #import "BlogService.h"
-#import "BlogDetailHeaderView.h"
 #import "CommentsViewController.h"
 #import "ContextManager.h"
 #import "ReachabilityUtils.h"
@@ -32,7 +31,6 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
-NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
 CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
@@ -163,7 +161,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UIView<BlogDetailHeader> *headerView;
+@property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -337,15 +335,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
     
-    if ([Feature enabled:FeatureFlagQuickActions]) {
-        UIView *headerView = self.tableView.tableHeaderView;
+    UIView *headerView = self.tableView.tableHeaderView;
+    
+    CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    if (headerView.frame.size.height != size.height) {
+        headerView.frame = CGRectMake(headerView.frame.origin.x, headerView.frame.origin.y, headerView.frame.size.width, size.height);
         
-        CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        if (headerView.frame.size.height != size.height) {
-            headerView.frame = CGRectMake(headerView.frame.origin.x, headerView.frame.origin.y, headerView.frame.size.width, size.height);
-            
-            self.tableView.tableHeaderView = headerView;
-        }
+        self.tableView.tableHeaderView = headerView;
     }
 }
 
@@ -945,35 +941,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
-    if ([Feature enabled:FeatureFlagQuickActions]) {
-        NewBlogDetailHeaderView *headerView = [self configureHeaderView];
-        headerView.delegate = self;
-        
-        self.headerView = headerView;
-        
-        self.tableView.tableHeaderView = headerView;
-    } else {
-        // Wrapper view
-        UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
-        headerWrapper.preservesSuperviewLayoutMargins = YES;
-        self.tableView.tableHeaderView = headerWrapper;
-
-        // Blog detail header view
-        BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
-        headerView.translatesAutoresizingMaskIntoConstraints = NO;
-        headerView.delegate = self;
-        [headerWrapper addSubview:headerView];
-        self.headerView = headerView;
-        
-        
-        UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [headerView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
-                                                  [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
-                                                  [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
-                                                  [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
-                                                  ]];
-    }
+    BlogDetailHeaderView *headerView = [self configureHeaderView];
+    headerView.delegate = self;
+    
+    self.headerView = headerView;
+    
+    self.tableView.tableHeaderView = headerView;
 }
 
 #pragma mark BlogDetailHeaderViewDelegate

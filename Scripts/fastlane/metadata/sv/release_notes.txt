@@ -1,7 +1,14 @@
-Du har aldrig tidigare varit ett bättre läge att hantera din webbplats med hjälp av WordPress-appen – använd  medan du väntar i farstun på att en leverans ska komma, i vardagsrummet medan du sitter på föreskrivna två meters avstånd från din respektive, eller på toan när du lyckats ta en paus från barnen i några minuter. Möjligheterna är obegränsade, i synnerhet med tanke på alla nya funktioner som finns i blockredigeraren sedan version 14.8:
+Här är nyheterna:
 
-Det nya knappblocket låter dig lägga till flera knappar i samma rad.
-Cover-blocket innehåller fler uppladdningsfunktioner för att kopiera bilder från din enhet till webbplatsen.
-Om dina bildfiler innehåller bildtexter kommer bildbeskrivningen att automatiskt förifyllas med dessa.
+Uppdaterad organisering: Vi har genomfört några ändringar som hjälper dig att snabbare hitta det du behöver:
 
-Medan vi ändå höll på och arbetade med appen fixade vi några fel också – tomrum runt textblock som kunde försvinna, citatblock där textjusteringen inte fungerade helt, och knappar i sidmallar som inte visades på rätt sätt på webben. Dessutom har vi sett över layouten för inloggningsbekräftelse och registrering så att de fått ett renare utseende som passar bättre överens med resten av appen.
+Vill du skapa ett nytt inlägg eller en ny sida? Tryck på den stora rosa knappen som alltid är synlig under fliken Mina webbplatser.
+Vill du redigera din profil? Kolla i övre högra hörnet.
+Vill du hitta något att läsa? Fliken för läsning har fått en ny layout som underlättar sökning och filtrering.
+Uppdateringar i blockredigeraren: Nu finns ett nytt block för framhävda citat som visuellt kan markera citat ännu starkare än vanliga citatblocket. Sidmallarna har uppdaterats så att de använder även de nyaste typerna av block. Dessutom har vi rättat ikoner i några block som inte visades på rätt sätt i RTL-läge (dvs språk som skrivs från höger till vänster).
+
+I blocket för knappar finns det nu fler färginställningar för bakgrund och text. Och nu finns stöd för upphöjd och nedsänkt text via HTML-kodning (även i den klassiska redigeraren).
+
+Bildförklaring: Med den nya funktionen ”redigera bild” kan du direkt i redigeraren rita på bilder.
+
+Och en viktig rättelse av ett programfel: Ibland kunde appen krascha när du lade till ett videoblock och började ladda upp en video. Inte särskilt produktivt! Nu ska det vara fixat.

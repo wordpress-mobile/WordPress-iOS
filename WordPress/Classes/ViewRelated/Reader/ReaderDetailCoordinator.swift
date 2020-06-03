@@ -48,7 +48,7 @@ class ReaderDetailCoordinator {
     ///
     func start() {
         if let post = post {
-            view?.render(post)
+            renderPostAndBumpStats()
             view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
@@ -117,11 +117,21 @@ class ReaderDetailCoordinator {
                             }
 
                             self?.post = post
-                            self?.view?.render(post)
+                            self?.renderPostAndBumpStats()
                             self?.view?.show(title: post.postTitle)
         }, failure: { [weak self] _ in
             self?.view?.showError()
         })
+    }
+
+    private func renderPostAndBumpStats() {
+        guard let post = post else {
+            return
+        }
+
+        view?.render(post)
+        bumpStats()
+        bumpPageViewsForPost()
     }
 
     /// Shows the current post site posts in a new screen
@@ -208,6 +218,47 @@ class ReaderDetailCoordinator {
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
+    }
+
+    // MARK: - Analytics
+
+    /// Bump WP App Analytics
+    ///
+    private func bumpStats() {
+        guard let readerPost = post else {
+            return
+        }
+
+        let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
+        let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
+
+
+        var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
+        properties[DetailAnalyticsConstants.TypeKey] = detailType
+        properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+        WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
+
+        if let railcar = readerPost.railcarDictionary() {
+            WPAppAnalytics.trackTrainTracksInteraction(.readerArticleOpened, withProperties: railcar)
+        }
+    }
+
+    /// Bum post page view
+    ///
+    private func bumpPageViewsForPost() {
+        guard let readerPost = post else {
+            return
+        }
+
+        ReaderHelpers.bumpPageViewForPost(readerPost)
+    }
+
+    private struct DetailAnalyticsConstants {
+        static let TypeKey = "post_detail_type"
+        static let TypeNormal = "normal"
+        static let TypePreviewSite = "preview_site"
+        static let OfflineKey = "offline_view"
+        static let PixelStatReferrer = "https://wordpress.com/"
     }
 }
 

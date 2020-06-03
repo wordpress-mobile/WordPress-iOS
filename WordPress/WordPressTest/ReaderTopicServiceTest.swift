@@ -14,7 +14,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testContextManager = ContextManager.sharedInstance()
+        testContextManager = TestContextManager.sharedInstance()
         context = testContextManager?.mainContext
     }
 

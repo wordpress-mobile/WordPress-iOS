@@ -1,7 +1,14 @@
-Er is nooit een beter moment geweest om de WordPress-app te gebruiken om je website te beheren. Gebruik deze terwijl je bij de voordeur wacht tot je bestelling aan de stoep wordt geleverd, in je huiskamer terwijl je op anderhalve meter afstand van je huisgenoot blijft of in de badkamer waar je vijf minuten pauze van je kinderen neemt. De mogelijkheden zijn eindeloos, vooral omdat v14.8 nu nog meer functies bevat voor de blokeditor:
+Vernieuwingen:
 
-Met het nieuwe Knoppenblok kun je meerdere knoppen aan dezelfde rij toevoegen.
-Het Omslagblok bevat meer uploadopties om afbeeldingen vanaf je apparaat op je site te zetten.
-Als je afbeeldingsbestanden ondertitels bevatten, vult het Afbeeldingenblok ze automatisch voor je in.
+Organisatievernieuwingen: We hebben een aantal wijzigingen aangebracht waarmee je sneller kunt vinden wat je nodig hebt:
 
-Terwijl we het een en ander aan het bekijken waren, hebben we een paar bugs verwijderd; lege ruimten rondom Tekstblokken werden verwijderd, Citaatblokken waren niet goed uitgelijnd en knoppen in paginasjablonen werden niet op de juiste manier weergegeven online. En we hebben de schermen die je ziet nadat je bent ingelogd en je hebt aangemeld vernieuwd, zodat ze er strakker uitzien en consistenter zijn met de rest van de app.
+Wil je een nieuw bericht of een nieuwe pagina opstellen? Druk op de grote roze knop, die altijd zichtbaar is in het tabblad Mijn sites.
+Wil je je profiel bewerken? Kijk dan in de hoek rechtsboven.
+Op zoek naar iets om te lezen? Het tabblad Reader heeft een verbeterde opmaak, zodat het zoeken en filteren intuïtiever wordt.
+Updates van de blokeditor: Er is een nieuw Pull-quote-blok om citaten meer nadruk te geven dan met het normale Citaatblok. De paginasjablonen zijn bijgewerkt en maken nu gebruik van de nieuwste blokken. We hebben ook pictogrammen van een paar blokken bijgewerkt die niet helemaal goed werden weergegeven in de RTL-modus.
+
+Het Knopblok heeft meer kleurenopties gekregen voor achtergrond en tekst. Er is bovendien ondersteuning voor HTML-opmaak in superscript en subscript (ook in de klassieke editor).
+
+Afbeeldingnotitie: Met de nieuwe functie 'afbeelding bewerken' in de editor kun je nu rechtstreeks op afbeeldingen tekenen.
+
+Een geweldige bugfix: Soms voegde je een Videoblok toe en begon je een video te uploaden en dan crashte de app. Helemaal niet handig! Dat gebeurt nu niet meer.

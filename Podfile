@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.9.0-beta.2'
+    pod 'WordPressKit', '~> 4.9.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/homepage-settings'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -147,7 +147,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '59220b0adb795557639a017b065af270d284c9bf'
+    gutenberg :commit => 'a3a155d0053c75985960ae7ac8ecfaa2e3732efa'
 
     ## Third party libraries
     ## =====================
@@ -176,16 +176,15 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    # pod 'WPMediaPicker', '~> 1.6.1'
-    pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0-beta.2'
+    pod 'WPMediaPicker', '~> 1.7.0'
+    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.0.1'
 
-
-    pod 'WordPressAuthenticator', '~> 1.17.0-beta.8'
+    pod 'WordPressAuthenticator', '~> 1.18.0-beta.4'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

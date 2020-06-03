@@ -458,7 +458,9 @@ extension WordPressAppDelegate {
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: url)
+        trackDeepLink(for: url) { url in
+            UniversalLinkRouter.shared.handle(url: url)
+        }
     }
 
     @objc func setupNetworkActivityIndicator() {
@@ -470,6 +472,31 @@ extension WordPressAppDelegate {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
         }
     }
+}
+
+// MARK: - Deep Link Handling
+
+extension WordPressAppDelegate {
+
+    private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
+        guard isIterableDeepLink(url) else {
+            completion(url)
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) {(_, response, error) in
+            if let url = response?.url {
+                completion(url)
+            }
+        }
+        task.resume()
+    }
+
+    private func isIterableDeepLink(_ url: URL) -> Bool {
+        return url.absoluteString.contains(WordPressAppDelegate.iterableDomain)
+    }
+
+    private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
 // MARK: - UIAppearance

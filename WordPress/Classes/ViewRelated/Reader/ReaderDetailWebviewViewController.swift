@@ -139,7 +139,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
-        if post.sourceAttributionStyle() == SourceAttributionStyle.none {
+        if post.sourceAttributionStyle() == .none {
             attributionView.isHidden = true
         } else {
             attributionView.displayAsLink = true
