@@ -1,7 +1,14 @@
-Web sitenizi yönetmek için WordPress uygulamasını kullanmanın daha iyi bir zamanı olamazdı - evinizin kapısında, boş bir taraf teslimatı beklerken, oturma odanızda, oda arkadaşınızdan altı metre uzakta otururken veya çocuklarınıza beş dakikalık bir mola vermek için gideceğiniz banyo. Olasılıklar sonsuzdur, özellikle v14.8, blok düzenleyiciye daha fazla özellik eklediğinden:
+İşte yenilikler:
 
-Yeni düğmeler bloğu ile aynı satıra birden fazla düğme ekleyebilirsiniz.
-Kapak bloğu, cihazınızdan sitenize resim çekmek için daha fazla yükleme seçeneği içerir.
-Resim dosyalarınızda altyazı varsa, görüntü bloğu sizin için otomatik olarak önceden doldurur.
+Kuruluşun elden geçirilmesi: İhtiyacınız olanı daha hızlı bulmanızı sağlayacak bazı değişiklikler yaptık:
 
-Etrafta dolaşırken birkaç hatayı düzelttik - Metin bloklarının kaldırıldığı boşluk, düzgün hizalanmayan alıntı blokları ve sayfa şablonlarındaki düğmeler web'de düzgün görüntülenmiyor. Ve giriş sonrası gördüğünüz ekranları verdik ve bazı lehçe kaydettik, böylece daha temiz görünüyorlar ve uygulama içinde daha tutarlı hissediyorlar.
+Yeni bir yazı veya sayfa başlatmak ister misiniz? Sitelerim sekmesinde her zaman görülebilen büyük pembe düğmeye dokunun.
+Profilinizi düzenlemek ister misiniz? Sağ üst köşeye bakın.
+Okumak için bir şeyler mi bulmak istiyorsunuz? Okuyucu sekmesinde, daha sezgisel arama ve filtreleme için yenilenmiş bir düzen bulunur.
+Blok düzenleyici güncellemeleri: Normal alıntı bloğundan daha görsel, vurgulu alıntıları vurgulamak için yeni bir Pullquote bloğu var. Sayfa şablonları en yeni blokları kullanmak için bir güncelleme aldı ve RTL modunda tam olarak görünmeyen birkaç bloktaki simgeleri düzelttik.
+
+Düğme bloğunda arka plan ve metin için daha fazla renk seçeneği var. Üst simge ve alt simge HTML biçimlendirmesi (Klasik düzenleyicide de) desteği vardır.
+
+Görsel notu: Editördeki yeni "görseli düzenle" özelliği ile doğrudan görüntülere çizim yapabilirsiniz.
+
+Gerçekten harika bir hata düzeltmesi: Bazen bir video bloğu ekler ve bir video yüklemeye başlarsınız ve uygulama kilitlenir. Hiç üretken değil! Bu artık gerçekleşmiyor.

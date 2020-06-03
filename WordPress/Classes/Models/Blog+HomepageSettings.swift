@@ -54,27 +54,49 @@ extension Blog {
     /// if `homepageType` is set to `.posts`
     ///
     var homepagePostsPageID: Int? {
-        guard let options = options,
-            !options.isEmpty,
-            let pageID = getOptionNumeric(name: OptionsKeys.postsPageID)
-            else {
-                return nil
-        }
+        get {
+            guard let options = options,
+                !options.isEmpty,
+                let pageID = getOptionNumeric(name: OptionsKeys.postsPageID)
+                else {
+                    return nil
+            }
 
-        return pageID.intValue
+            return pageID.intValue
+        }
+        set {
+            let number: NSNumber?
+            if let newValue = newValue {
+                number = NSNumber(integerLiteral: newValue)
+            } else {
+                number = nil
+            }
+            setValue(number as Any, forOption: OptionsKeys.postsPageID)
+        }
     }
 
     /// The ID of the page to use for the site's homepage,
     /// if `homepageType` is set to `.page`
     ///
     var homepagePageID: Int? {
-        guard let options = options,
-            !options.isEmpty,
-            let pageID = getOptionNumeric(name: OptionsKeys.homepageID)
-            else {
-                return nil
-        }
+        get {
+            guard let options = options,
+                !options.isEmpty,
+                let pageID = getOptionNumeric(name: OptionsKeys.homepageID)
+                else {
+                    return nil
+            }
 
-        return pageID.intValue
+            return pageID.intValue
+        }
+        set {
+            let number: NSNumber?
+            if let newValue = newValue {
+                number = NSNumber(integerLiteral: newValue)
+            } else {
+                number = nil
+            }
+            setValue(number as Any, forOption: OptionsKeys.homepageID)
+        }
     }
 }

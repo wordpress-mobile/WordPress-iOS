@@ -35,8 +35,10 @@ import UIKit
             }
 
             if visibility == AbstractPost.privateLabel {
-                // Make sure the post is not scheduled anymore. The user can't schedule a private post
-                post.publishImmediately()
+                if post.isScheduled() {
+                    // Make sure the post is not scheduled anymore. The user can't schedule a private post
+                    post.publishImmediately()
+                }
                 post.status = .publishPrivate
                 post.password = nil
             } else {

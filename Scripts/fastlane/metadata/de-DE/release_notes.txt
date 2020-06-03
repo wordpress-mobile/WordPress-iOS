@@ -1,7 +1,14 @@
-Es gab nie eine bessere Zeit, die WordPress-App zu benutzen, um deine Website zu verwalten – benutze sie, während du an der Türschwelle deines Hauses auf eine Lieferung wartest, in deinem Wohnzimmer, während du anderthalb Meter neben deinem Mitbewohner sitzt oder im Badezimmer, wo du fünf Minuten Pause von deinen Kindern hast. Die Möglichkeiten sind endlos, insbesondere seit v14.8 mehr Funktionen in den Block-Editor packt:
+Neuheiten:
 
-Mit dem neuen Buttons-Block kannst du mehrere Buttons in dieselbe Zeile einbinden.
-Der Cover-Block beinhaltet mehr Funktionen für das Hochladen von Bildern deines Geräts zu deiner Website.
-Wenn deine Bilddateien Bildunterschriften haben, wird sie der Bild-Block automatisch für dich vor ausfüllen.
+Überholung der Organisation: Wir haben ein paar Änderungen vorgenommen, damit du schneller findest, wonach du suchst:
 
-Während wir uns genauer umgesehen haben, haben wir ein paar Fehler behoben – Leerzeichen um Text-Blöcken wurden entfernt, Zitat-Blöcke waren nicht richtig ausgerichtet und Buttons im Seiten-Template wurden nicht richtig im Web angezeigt. Und wir haben den Ansichten zur Anmeldung und zur Registrierung eine Verbesserung spendiert, sodass diese sauberer aussehen und konsistenter zur App passen.
+Möchtest du einen neuen Beitrag oder eine neue Seite beginnen? Tippe auf den großen, rosa Button, der dir stets im Tab „Meine Websites“ angezeigt wird.
+Möchtest du dein Profil bearbeiten? Das geht jetzt ganz leicht oben rechts in der Ecke.
+Auf der Suche nach guter Lektüre? Der Tab „Reader“ hat einen neuen Look bekommen, sodass du nutzerfreundlich suchen und filtern kannst.
+* Updates im Block-Editor: Es gibt jetzt einen neuen Pullquote-Block, mit dem Zitate visuell besser hervorgehoben werden können, als im herkömmlichen Zitat-Block. Die Seitenvorlagen haben ebenfalls ein Update bekommen, um die neuesten Blocks voll und ganz nutzen zu können, und in ein paar Blocks haben wir die Icons korrigiert, die im RTL-Modus nicht richtig angezeigt wurden.
+
+Im Button-Block findest du jetzt eine größere Farbauswahl für Hintergrund und Text. Und ab sofort erhältst du Unterstützung für hoch- und tiefgestellte HTML-Formatierungen (auch im klassischen Editor).
+
+Bildanmerkung: Mit der neuen Bildbearbeitungsfunktion im Editor kannst du nun direkt in die Bilder malen.
+
+Eine Fehlerbehebung war besonders toll: Manchmal ist die App abgestürzt, wenn du einen Video-Block hinzugefügt hast, und dann das Video hochladen wolltest. Sehr kontraproduktiv! Das wird dir in Zukunft nicht mehr passieren.

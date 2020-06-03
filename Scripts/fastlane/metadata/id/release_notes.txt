@@ -1,7 +1,14 @@
-Sekarang adalah waktu yang lebih tepat untuk menggunakan aplikasi WordPress guna mengelola situs web Anda — gunakan aplikasi saat di rumah menunggu makanan yang diantar oleh ojek online, duduk santai di ruang tamu bersebelahan dengan teman sekamar Anda, atau di kamar mandi untuk rehat sejenak saat mengasuh anak. Kemungkinannya tidak terbatas karena v14.8 punya lebih banyak fitur di penyunting Blok:
+Berikut adalah kabar terbaru:
 
-Dengan blok Tombol baru, Anda dapat menambahkan beberapa tombol di baris yang sama.
-Blok Sampul menyertakan pilihan pengunggahan lebih banyak dari perangkat ke situs Anda.
-Jika file gambar Anda memiliki keterangan, blok Gambar akan menulisnya secara otomatis untuk Anda.
+Perombakan susunan: Kami membuat beberapa perubahan yang memungkinkan Anda menemukan apa yang Anda cari dengan lebih cepat:
 
-Saat kami memeriksa semuanya, kami memperbaiki beberapa bug — spasi putih di sekitar blok Teks dihapus, blok Kutipan yang tidak selaras dengan baik, dan tombol di template halaman yang tidak ditampilkan dengan baik di web. Dan kami memoles layar yang dapat Anda lihat setelah login dan daftar agar terlihat lebih bersih dan konsisten dalam aplikasi.
+Ingin memulai pos atau halaman baru? Ketuk tombol merah mudah besar yang selalu terlihat di tab Situs Saya.
+Ingin menyunting profil Anda? Lihat bagian pojok kanan atas.
+Ingin mencari bacaan? Tata letak tab Pembaca dirombak sedemikian rupa demi pencarian dan penyaringan yang lebih intuitif.
+Pembaruan pada penyunting blok: Terdapat blok Kutipan Menonjol yang baru untuk menyorot kutipan dengan penekanan visual yang lebih baik daripada blok Kutipan biasa. Template halaman mendapatkan pembaruan untuk memanfaatkan blok terbaik, dan kami memperbaiki beberapa ikon pada beberapa blok yang tidak ditampilkan dengan baik di mode RTL.
+
+Blok tombol mendapatkan pilihan warna yang lebih banyak untuk latar belakang dan teks. Selain itu terdapat dukungan untuk pemformatan HTML subskrip dan superskrip (termasuk di penyunting Klasik juga).
+
+Anotasi gambar: Dengan fitur “sunting gambar” yang baru di penyunting, Anda dapat menggambar langsung di gambar.
+
+Satu perbaikan bug yang sangat bagus: Terkadang Anda menambahkan blok Video dan mulai mengunggah video, lalu aplikasi mengalami crash. Sangat mengganggu! Namun hal itu tidak akan terjadi lagi.
