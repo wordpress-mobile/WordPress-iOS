@@ -116,9 +116,7 @@ class ReaderDetailCoordinator {
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
         WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
 
-        // We can remove the nil check and use `if let` when `ReaderPost` adopts nullibility.
-        let railcar = readerPost.railcarDictionary()
-        if railcar != nil {
+        if let railcar = readerPost.railcarDictionary() {
             WPAppAnalytics.trackTrainTracksInteraction(.readerArticleOpened, withProperties: railcar)
         }
     }
