@@ -48,7 +48,7 @@ class ReaderDetailCoordinator {
     ///
     func start() {
         if let post = post {
-            view?.render(post)
+            renderPostAndBumpStats()
             view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
