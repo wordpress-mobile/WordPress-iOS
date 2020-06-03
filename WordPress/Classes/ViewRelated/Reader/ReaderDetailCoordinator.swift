@@ -225,8 +225,7 @@ class ReaderDetailCoordinator {
     /// Bump WP App Analytics
     ///
     private func bumpStats() {
-        guard let readerPost = post,
-            viewController?.isViewLoaded == true && viewController?.view.window != nil else {
+        guard let readerPost = post else {
             return
         }
 
@@ -247,8 +246,7 @@ class ReaderDetailCoordinator {
     /// Bum post page view
     ///
     private func bumpPageViewsForPost() {
-        guard let readerPost = post,
-            viewController?.isViewLoaded == true && viewController?.view.window != nil else {
+        guard let readerPost = post else {
             return
         }
 
