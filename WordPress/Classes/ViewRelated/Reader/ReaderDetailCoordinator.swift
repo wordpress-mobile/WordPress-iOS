@@ -101,6 +101,28 @@ class ReaderDetailCoordinator {
         }
     }
 
+    func bumpStats() {
+        guard let readerPost = post,
+            viewController?.isViewLoaded == true && viewController?.view.window != nil else {
+            return
+        }
+
+        let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
+        let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
+
+
+        var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
+        properties[DetailAnalyticsConstants.TypeKey] = detailType
+        properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+        WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
+
+        // We can remove the nil check and use `if let` when `ReaderPost` adopts nullibility.
+        let railcar = readerPost.railcarDictionary()
+        if railcar != nil {
+            WPAppAnalytics.trackTrainTracksInteraction(.readerArticleOpened, withProperties: railcar)
+        }
+    }
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost.
@@ -208,6 +230,14 @@ class ReaderDetailCoordinator {
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
+    }
+
+    private struct DetailAnalyticsConstants {
+        static let TypeKey = "post_detail_type"
+        static let TypeNormal = "normal"
+        static let TypePreviewSite = "preview_site"
+        static let OfflineKey = "offline_view"
+        static let PixelStatReferrer = "https://wordpress.com/"
     }
 }
 

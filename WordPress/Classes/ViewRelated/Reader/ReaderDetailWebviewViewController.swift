@@ -41,6 +41,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        coordinator?.bumpStats()
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
         header.configure(for: post)
