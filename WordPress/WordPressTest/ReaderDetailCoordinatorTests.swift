@@ -62,6 +62,20 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(viewMock.didCallShowError).to(beTrue())
     }
 
+    /// When an error happens, tell the view to show an error
+    ///
+    func testShowErrorWithWebActionInView() {
+        let serviceMock = ReaderPostServiceMock()
+        serviceMock.forceError = true
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postURL = URL(string: "https://wordpress.com/")
+
+        coordinator.start()
+
+        expect(viewMock.didCallShowErrorWithWebAction).to(beTrue())
+    }
+
     /// Inform the view to show post title after it is fetched
     ///
     func testShowTitleAfterPostIsFetched() {
@@ -256,6 +270,11 @@ private class ReaderPostServiceMock: ReaderPostService {
 
     override func fetchPost(at postURL: URL!, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
         didCallFetchWithURL = postURL
+
+        guard !forceError else {
+            failure(nil)
+            return
+        }
     }
 }
 
@@ -265,6 +284,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallShowTitleWith: String?
     var didCallPresentWith: UIViewController?
     var didCallShowLoading = false
+    var didCallShowErrorWithWebAction = false
 
     private var _navigationController: UINavigationController?
     override var navigationController: UINavigationController? {
@@ -283,6 +303,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func showError() {
         didCallShowError = true
+    }
+
+    func showErrorWithWebAction() {
+        didCallShowErrorWithWebAction = true
     }
 
     func show(title: String?) {

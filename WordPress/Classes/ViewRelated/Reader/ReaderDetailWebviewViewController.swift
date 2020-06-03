@@ -4,6 +4,7 @@ protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
     func showLoading()
     func showError()
+    func showErrorWithWebAction()
     func show(title: String?)
 }
 
@@ -38,6 +39,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
+    /// View used to show errors
+    private let noResultsViewController = NoResultsViewController.controller()
+
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
@@ -46,6 +50,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        noResultsViewController.delegate = self
 
         applyStyles()
         configureWebView()
@@ -64,6 +70,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
+    /// Show ghost cells indicating the content is loading
     func showLoading() {
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
@@ -72,15 +79,25 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         loadingView.startGhostAnimation(style: style)
     }
 
+    /// Hide the ghost cells
     func hideLoading() {
         loadingView.stopGhostAnimation()
         loadingView.isHidden = true
     }
 
+    /// Shown an error
     func showError() {
-        /// TODO: Show error
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
+    /// Shown an error with a button to open the post on the browser
+    func showErrorWithWebAction() {
+        configureAndDisplayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+    }
+
+    /// Show a given title
+    ///
+    /// - Parameter title: a optional String containing the title
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         self.title = title ?? placeholder
@@ -292,5 +309,47 @@ extension ReaderDetailWebviewViewController: WKScriptMessageHandler {
         if message.name == ReaderWebView.domContentLoadMessageName {
             hideLoading()
         }
+    }
+}
+
+// MARK: - Error View Handling (NoResultsViewController)
+
+private extension ReaderDetailWebviewViewController {
+    func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title, accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+                                          accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func showLoadingView() {
+        hideLoadingView()
+        addChild(noResultsViewController)
+        view.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    func hideLoadingView() {
+        noResultsViewController.removeFromView()
+    }
+
+    struct LoadingText {
+        static let loadingTitle = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
+        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
+    }
+
+}
+
+// MARK: - NoResultsViewControllerDelegate
+///
+extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        coordinator?.openInBrowser()
     }
 }
