@@ -53,13 +53,21 @@ class ImageDownloader {
     @discardableResult
     func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         let task = session.dataTask(with: request) { (data, _, error) in
-            guard let data = data, let image = UIImage(data: data) else {
-                let error = error ?? ImageDownloaderError.failed
-                completion(nil, error)
-                return
+            guard let data = data else {
+              completion(nil, ImageDownloaderError.failed)
+              return
             }
-
-            completion(image, nil)
+            var image: UIImage?
+            if let url = request.url, url.pathExtension.lowercased() == "gif" {
+              image = RCTAnimatedImage(data: data, scale:1)
+            } else {
+              image = UIImage.init(data: data)
+            }
+            if let finalImage = image {
+              completion(finalImage, nil)
+            } else {
+              completion(nil, ImageDownloaderError.failed)
+            }
         }
 
         task.resume()
