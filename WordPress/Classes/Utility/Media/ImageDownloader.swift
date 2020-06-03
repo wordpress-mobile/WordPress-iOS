@@ -59,7 +59,7 @@ class ImageDownloader {
             }
             var image: UIImage?
             if let url = request.url, url.pathExtension.lowercased() == "gif" {
-              image = RCTAnimatedImage(data: data, scale:1)
+              image = RCTAnimatedImage(data: data, scale: 1)
             } else {
               image = UIImage.init(data: data)
             }
