@@ -32,10 +32,14 @@ struct HomepageSettingsService {
                                 failure: @escaping (Error) -> Void) {
 
         let originalHomepageType = blog.homepageType
+        let originalHomePageID = blog.homepagePageID
+        let originalPostsPageID = blog.homepagePostsPageID
 
         switch type {
         case .page:
             blog.homepageType = .page
+            blog.homepagePostsPageID = postsPageID
+            blog.homepagePageID = homePageID
         case .posts:
             blog.homepageType = .posts
         }
@@ -50,6 +54,8 @@ struct HomepageSettingsService {
                                failure: { error in
                                 self.context.performAndWait {
                                     self.blog.homepageType = originalHomepageType
+                                    self.blog.homepagePostsPageID = originalPostsPageID
+                                    self.blog.homepagePageID = originalHomePageID
                                     ContextManager.sharedInstance().saveContextAndWait(self.context)
                                 }
 

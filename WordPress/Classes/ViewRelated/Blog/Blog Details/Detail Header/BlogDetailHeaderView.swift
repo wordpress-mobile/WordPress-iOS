@@ -1,4 +1,10 @@
-class NewBlogDetailHeaderView: UIView {
+@objc protocol BlogDetailHeaderViewDelegate: class {
+    func siteIconTapped()
+    func siteIconReceivedDroppedImage(_ image: UIImage?)
+    func siteIconShouldAllowDroppedImages() -> Bool
+}
+
+class BlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
@@ -49,7 +55,7 @@ class NewBlogDetailHeaderView: UIView {
         }
     }
 
-    func refreshIconImage() {
+    @objc func refreshIconImage() {
         if let blog = blog,
             blog.hasIcon == true {
             siteIconView.imageView.downloadSiteIcon(for: blog)

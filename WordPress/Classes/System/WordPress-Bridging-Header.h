@@ -10,7 +10,6 @@
 #import "ApiCredentials.h"
 
 #import "Blog.h"
-#import "BlogDetailHeaderView.h"
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
@@ -24,7 +23,6 @@
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
-#import "ContextManager-Internals.h"
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 

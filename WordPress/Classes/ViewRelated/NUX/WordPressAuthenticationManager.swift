@@ -38,7 +38,8 @@ class WordPressAuthenticationManager: NSObject {
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
-                                                                enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled)
+                                                                enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
+                                                                enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -58,7 +59,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 instructionColor: .text,
                                                 subheadlineColor: .textSubtle,
                                                 placeholderColor: .textPlaceholder,
-                                                viewControllerBackgroundColor: .listBackground,
+                                                viewControllerBackgroundColor: FeatureFlag.unifiedSiteAddress.enabled ? .white : .listBackground,
                                                 textFieldBackgroundColor: .listForeground,
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),

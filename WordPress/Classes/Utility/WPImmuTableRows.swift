@@ -139,8 +139,12 @@ struct ActivityIndicatorRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
 
-        let indicator = UIActivityIndicatorView(style: .gray)
-        indicator.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+        let indicator: UIActivityIndicatorView
+        if #available(iOS 13, *) {
+            indicator = UIActivityIndicatorView(style: .medium)
+        } else {
+            indicator = UIActivityIndicatorView(style: .gray)
+        }
 
         if animating {
             indicator.startAnimating()
