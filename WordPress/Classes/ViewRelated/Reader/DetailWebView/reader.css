@@ -40,7 +40,3 @@ figure {
   margin-inline-start: 0;
   margin-inline-end: 0;
 }
-
-@media(-webkit-min-device-pixel-ratio: 2) {
-  hr { border-width: 0.5px; }
-}

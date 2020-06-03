@@ -6,7 +6,7 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case unifiedAuth
     case unifiedSiteAddress
-    case quickActions
+    case unifiedGoogle
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -29,9 +29,9 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
         case .unifiedSiteAddress:
-            return BuildConfiguration.current == .localDeveloper
-        case .quickActions:
-            return true
+            return false
+        case .unifiedGoogle:
+            return false
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -72,8 +72,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth"
         case .unifiedSiteAddress:
             return "Unified Auth - Site Address"
-        case .quickActions:
-            return "Quick Actions"
+        case .unifiedGoogle:
+            return "Unified Auth - Google"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:

@@ -1,7 +1,14 @@
-Non c'è mai stato un momento migliore per utilizzare l'app di WordPress per la gestione del tuo sito web. Usala mentre gironzoli nell'atrio di casa in attesa di una consegna al piano strada, nel tuo salotto mentre sei seduto a meno di due metri dal tuo coinquilino oppure al bagno dove ti rifugi per avere cinque minuti di pausa dai bambini. Le possibilità sono infinite, soprattutto dal momento che la versione 14.8 aggiunge più funzionalità all'editor a blocchi:
+Ecco quali sono le novità:
 
-Con il nuovo blocco Pulsanti, puoi aggiungere più pulsanti sulla stessa riga.
-Il blocco Copertina comprende più opzioni di caricamento per spostare le immagini dal dispositivo al sito.
-Se i tuoi file di immagine hanno didascalie, il blocco Immagine le precompilerà automaticamente per te.
+Revisione dell'organizzazione: abbiamo apportato alcune modifiche che ti permetteranno di trovare più rapidamente ciò di cui hai bisogno:
 
-Mentre stavamo curiosando, abbiamo corretto alcuni bug: spazio bianco intorno ai blocchi Testo che veniva rimosso, blocchi Citazione che non venivano allineati correttamente e pulsanti nei modelli di pagina che non venivano visualizzati correttamente sul sito. Inoltre, abbiamo ritoccato le schermate che vedi dopo aver effettuato l'accesso e la registrazione, in modo che siano più pulite e coerenti con l'app.
+Desideri iniziare un nuovo articolo o una nuova pagina? Tocca il grande pulsante rosa, sempre visibile nella scheda Il mio sito.
+Desideri modificare il profilo? Guarda nell'angolo in altro a destra.
+Desideri trovare qualcosa da leggere? La scheda Reader ha un layout rinnovato per una ricerca e un filtro più intuitivi.
+Aggiornamenti all'editor a blocchi: È presente un nuovo blocco Citazione evidenziata, per evidenziare le citazioni con un maggiore enfasi visiva rispetto al blocco standard Citazione. I modelli della pagina sono stati aggiornati per poter utilizzare i blocchi più recenti e abbiamo risistemato le icone in alcuni blocchi nei quali non venivano visualizzate in modo del tutto corretto in modalità RTL.
+
+Il blocco Pulsante ha più opzioni del colore per sfondo e testo. È presente inoltre il supporto per la formattazione HTML di apice e pedice (anche nell'editor Classico).
+
+Annotazione dell'immagine: con la nuova funzionalità di "modifica dell'immagine" nell'editor, puoi disegnare direttamente sulle immagini.
+
+Correzione davvero eccezionale di un bug: a volte hai desiderato aggiungere un blocco Video e avviare il caricamento di un video e l'app si è arrestata in modo anomalo. Controproducente! Questo non accadrà mai più.

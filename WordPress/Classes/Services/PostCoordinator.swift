@@ -204,9 +204,9 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
-    func posts(for blog: Blog, wichTitleContains value: String) -> NSFetchedResultsController<AbstractPost> {
+    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil) -> NSFetchedResultsController<AbstractPost> {
         let context = self.mainContext
-        let fetchRequest = NSFetchRequest<AbstractPost>(entityName: "AbstractPost")
+        let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName ?? AbstractPost.entityName())
 
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date_created_gmt", ascending: false)]
 
@@ -214,8 +214,11 @@ class PostCoordinator: NSObject {
         let urlPredicate = NSPredicate(format: "permaLink != NULL")
         let noVersionPredicate = NSPredicate(format: "original == NULL")
         var compoundPredicates = [blogPredicate, urlPredicate, noVersionPredicate]
-        if !value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
-            compoundPredicates.append(NSPredicate(format: "postTitle contains[c] %@", value))
+        if !title.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+            compoundPredicates.append(NSPredicate(format: "postTitle contains[c] %@", title))
+        }
+        if !excludedPostIDs.isEmpty {
+            compoundPredicates.append(NSPredicate(format: "NOT (postID IN %@)", excludedPostIDs))
         }
         let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
 
