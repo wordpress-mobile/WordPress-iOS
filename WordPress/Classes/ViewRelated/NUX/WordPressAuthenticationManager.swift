@@ -59,7 +59,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 instructionColor: .text,
                                                 subheadlineColor: .textSubtle,
                                                 placeholderColor: .textPlaceholder,
-                                                viewControllerBackgroundColor: .listBackground,
+                                                viewControllerBackgroundColor: FeatureFlag.unifiedSiteAddress.enabled ? .white : .listBackground,
                                                 textFieldBackgroundColor: .listForeground,
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
