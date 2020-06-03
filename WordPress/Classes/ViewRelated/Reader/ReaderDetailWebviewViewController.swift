@@ -2,6 +2,7 @@ import UIKit
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
+    func showLoading()
     func showError()
     func show(title: String?)
 }
@@ -24,6 +25,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
+
+    /// The loading view, which contains all the ghost views
+    @IBOutlet weak var loadingView: UIView!
 
     /// Attribution view for Discovery posts
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
@@ -60,6 +64,19 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
+    func showLoading() {
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+
+        loadingView.startGhostAnimation(style: style)
+    }
+
+    func hideLoading() {
+        loadingView.stopGhostAnimation()
+        loadingView.isHidden = true
+    }
+
     func showError() {
         /// TODO: Show error
     }
@@ -93,6 +110,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Configure the webview
     private func configureWebView() {
         webView.navigationDelegate = self
+        webView.configuration.userContentController.add(self, name: ReaderWebView.domContentLoadMessageName)
     }
 
     /// Updates the webview height constraint with it's height
@@ -265,6 +283,14 @@ extension ReaderDetailWebviewViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
+        }
+    }
+}
+
+extension ReaderDetailWebviewViewController: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == ReaderWebView.domContentLoadMessageName {
+            hideLoading()
         }
     }
 }

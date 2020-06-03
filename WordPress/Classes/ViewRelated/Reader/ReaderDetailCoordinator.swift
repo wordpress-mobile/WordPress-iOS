@@ -55,6 +55,8 @@ class ReaderDetailCoordinator {
     /// Start the cordinator
     ///
     func start() {
+        view?.showLoading()
+
         if let post = post {
             view?.render(post)
             view?.show(title: post.postTitle)

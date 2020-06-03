@@ -109,6 +109,20 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
     }
 
+    /// Tell the view to show a loading indicator when start is called
+    ///
+    func testStartCallsTheViewToShowLoader() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.start()
+
+        expect(viewMock.didCallShowLoading).to(beTrue())
+    }
+
     /// Show the share sheet
     ///
     func testShowShareSheet() {
@@ -250,6 +264,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallShowError = false
     var didCallShowTitleWith: String?
     var didCallPresentWith: UIViewController?
+    var didCallShowLoading = false
 
     private var _navigationController: UINavigationController?
     override var navigationController: UINavigationController? {
@@ -272,6 +287,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func show(title: String?) {
         didCallShowTitleWith = title
+    }
+
+    func showLoading() {
+        didCallShowLoading = true
     }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {

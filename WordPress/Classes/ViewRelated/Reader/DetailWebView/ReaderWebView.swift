@@ -4,6 +4,9 @@ import UIKit
 ///
 class ReaderWebView: WKWebView {
 
+    /// The JS event name to tell the DOM is ready
+    static let domContentLoadMessageName = "domContentLoad"
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -27,7 +30,13 @@ class ReaderWebView: WKWebView {
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
         \(string)
-        </body></html>
+        </body>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(event) {
+        window.webkit.messageHandlers.\(ReaderWebView.domContentLoadMessageName).postMessage({})
+            })
+        </script>
+        </html>
         """
 
         return super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
