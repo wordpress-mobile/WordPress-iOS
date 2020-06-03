@@ -1,6 +1,7 @@
 15.1
 -----
- 
+* [**] Block editor: Adds support for theme colors and gradients.
+
 15.0
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
@@ -38,7 +39,7 @@
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
 * [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
 * [*] Fixed a bug on the editors where changing a featured image didn't trigger that the post/page changed.
- 
+
 14.8.1
 -----
 * Fix adding and removing of featured images to posts.
@@ -59,7 +60,7 @@
 * [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
 * Updated UI for Login and Signup epilogues.
 * Fixes delayed split view resizing while rotating your device.
- 
+
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
@@ -78,9 +79,9 @@
 * Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
 * You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
 
-* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
-* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
- 
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites.
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
+
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
