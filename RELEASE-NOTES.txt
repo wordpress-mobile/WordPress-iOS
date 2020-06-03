@@ -1,6 +1,7 @@
 15.1
 -----
- 
+* [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
+
 15.0
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
