@@ -11,7 +11,7 @@ protocol ReaderDetailView: class {
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Content scroll view
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: ReaderScrollView!
 
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
@@ -210,7 +210,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Add content and scroll insets based on the toolbar height
     ///
     private func configureScrollView() {
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin + Constants.toolbarHeight, right: 0)
+        scrollView.navigationBar = navigationController?.navigationBar
         scrollView.delegate = self
     }
 
@@ -280,6 +281,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
         static let bottomMargin: CGFloat = 16
+        static let toolbarHeight: CGFloat = 50
     }
 }
 
