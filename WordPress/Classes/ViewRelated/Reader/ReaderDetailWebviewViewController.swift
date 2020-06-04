@@ -51,6 +51,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.hidesBarsOnSwipe = true
+
         applyStyles()
         configureWebView()
         configureShareButton()
