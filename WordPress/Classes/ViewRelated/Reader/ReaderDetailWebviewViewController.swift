@@ -51,14 +51,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noResultsViewController.delegate = self
-
         applyStyles()
         configureWebView()
         configureShareButton()
         configureHeader()
         configureToolbar()
         configureScrollView()
+        configureNoResultsViewController()
         observeWebViewHeight()
         coordinator?.start()
     }
@@ -195,6 +194,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     private func configureScrollView() {
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
+    }
+
+    /// Configure the NoResultsViewController
+    ///
+    private func configureNoResultsViewController() {
+        noResultsViewController.delegate = self
     }
 
     /// Ask the coordinator to present the share sheet
