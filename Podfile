@@ -164,6 +164,7 @@ target 'WordPress' do
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
+    pod 'AMScrollingNavbar', '~> 5.6.1'
 
     ## Automattic libraries
     ## ====================
