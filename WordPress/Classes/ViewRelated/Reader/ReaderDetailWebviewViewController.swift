@@ -211,6 +211,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     private func configureScrollView() {
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
+        scrollView.delegate = self
     }
 
     /// Configure the NoResultsViewController
@@ -368,5 +369,14 @@ private extension ReaderDetailWebviewViewController {
 extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
+    }
+}
+
+extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
+    // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
+            (navigationController as? ScrollingNavigationController)?.showNavbar()
+        }
     }
 }
