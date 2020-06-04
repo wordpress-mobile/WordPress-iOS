@@ -375,8 +375,13 @@ extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
 extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
     // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let navigationController = self.navigationController as? ScrollingNavigationController,
+            navigationController.state != .expanded else {
+                return
+        }
+
         if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
-            (navigationController as? ScrollingNavigationController)?.showNavbar()
+            navigationController.showNavbar()
         }
     }
 }
