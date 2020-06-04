@@ -69,7 +69,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 statusBarStyle: .lightContent)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(viewControllerBackgroundColor: .basicBackground)
-        
+
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
                                           unifiedStyle: unifiedStyle)
