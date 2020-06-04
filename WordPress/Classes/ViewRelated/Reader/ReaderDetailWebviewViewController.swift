@@ -1,4 +1,5 @@
 import UIKit
+import AMScrollingNavbar
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
@@ -51,8 +52,6 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.hidesBarsOnSwipe = true
-
         applyStyles()
         configureWebView()
         configureShareButton()
@@ -62,6 +61,22 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         coordinator?.start()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbar, direction: .scrollDown)])
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if let navigationController = navigationController as? ScrollingNavigationController {
+          navigationController.stopFollowingScrollView(showingNavbar: true)
+        }
     }
 
     func render(_ post: ReaderPost) {
