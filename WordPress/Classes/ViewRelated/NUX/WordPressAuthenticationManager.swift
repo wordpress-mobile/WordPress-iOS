@@ -37,6 +37,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
+                                                                enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
                                                                 enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
                                                                 enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled)
