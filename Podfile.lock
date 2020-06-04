@@ -634,7 +634,7 @@ CHECKOUT OPTIONS:
     :commit: a3a155d0053c75985960ae7ac8ecfaa2e3732efa
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: 3be87650efbec30ea3c9dc0d113f5a024a7b7348
+    :commit: 877472f48ae45b38aa9e3fde3e4523b92ab78c22
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
