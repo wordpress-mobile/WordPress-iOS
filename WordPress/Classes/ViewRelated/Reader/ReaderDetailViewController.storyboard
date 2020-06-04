@@ -31,7 +31,8 @@
                                             <constraint firstAttribute="height" constant="700" id="ywz-kG-xyW"/>
                                         </constraints>
                                         <wkWebViewConfiguration key="configuration">
-                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                            <dataDetectorTypes key="dataDetectorTypes"/>
+                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" audio="YES" video="YES"/>
                                             <wkPreferences key="preferences"/>
                                         </wkWebViewConfiguration>
                                     </wkWebView>

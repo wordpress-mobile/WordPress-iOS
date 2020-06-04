@@ -127,7 +127,6 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Configure the webview
     private func configureWebView() {
         webView.navigationDelegate = self
-        webView.configuration.userContentController.add(self, name: ReaderWebView.domContentLoadMessageName)
     }
 
     /// Updates the webview height constraint with it's height
@@ -292,6 +291,11 @@ extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelega
 // MARK: - Navigation Delegate
 
 extension ReaderDetailWebviewViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.webView.loadMedia()
+        hideLoading()
+    }
+
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated  {
             if let url = navigationAction.request.url {
@@ -300,14 +304,6 @@ extension ReaderDetailWebviewViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
-        }
-    }
-}
-
-extension ReaderDetailWebviewViewController: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == ReaderWebView.domContentLoadMessageName {
-            hideLoading()
         }
     }
 }
