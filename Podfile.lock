@@ -483,7 +483,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/282-google_signup_redirect`)
+  - WordPressAuthenticator (~> 1.18.0-beta.6)
   - WordPressKit (~> 4.9.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
@@ -532,6 +532,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -617,9 +618,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: a3a155d0053c75985960ae7ac8ecfaa2e3732efa
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: feature/282-google_signup_redirect
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a3a155d0053c75985960ae7ac8ecfaa2e3732efa/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -633,9 +631,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: a3a155d0053c75985960ae7ac8ecfaa2e3732efa
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 877472f48ae45b38aa9e3fde3e4523b92ab78c22
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -725,6 +720,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: eaa436bb2cce78a4a82c665cfddd17439d6b0f1e
+PODFILE CHECKSUM: 93cc9f1e6777c0daea472ac6875b3ffeec60c0b3
 
 COCOAPODS: 1.8.4
