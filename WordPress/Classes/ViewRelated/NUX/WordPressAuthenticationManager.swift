@@ -59,7 +59,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 instructionColor: .text,
                                                 subheadlineColor: .textSubtle,
                                                 placeholderColor: .textPlaceholder,
-                                                viewControllerBackgroundColor: FeatureFlag.unifiedSiteAddress.enabled ? .white : .listBackground,
+                                                viewControllerBackgroundColor: .listBackground,
                                                 textFieldBackgroundColor: .listForeground,
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
@@ -68,8 +68,11 @@ class WordPressAuthenticationManager: NSObject {
                                                 prologueTitleColor: .textInverted,
                                                 statusBarStyle: .lightContent)
 
+        let unifiedStyle = WordPressAuthenticatorUnifiedStyle(viewControllerBackgroundColor: .basicBackground)
+
         WordPressAuthenticator.initialize(configuration: configuration,
-                                          style: style)
+                                          style: style,
+                                          unifiedStyle: unifiedStyle)
     }
 }
 
