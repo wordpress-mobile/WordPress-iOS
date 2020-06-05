@@ -74,7 +74,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.neutral(.shade40)
+            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
         ]
     }
 
@@ -87,7 +87,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.neutral(.shade40)
+            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
         ]
     }
 

@@ -24,21 +24,21 @@
                         <rect key="frame" x="0.0" y="8" width="320" height="106"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4qr-gg-TCP">
-                                <rect key="frame" x="16" y="16" width="288" height="52.5"/>
+                                <rect key="frame" x="16" y="12" width="288" height="56.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="31R-gx-fKg">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="52.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="56.5"/>
                                         <subviews>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="blavatar" translatesAutoresizingMaskIntoConstraints="NO" id="WUC-gY-tp6" userLabel="First" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="16.5" width="20" height="20"/>
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="WUC-gY-tp6" userLabel="First" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="18.5" width="20" height="20"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="HiT-Lq-HXe"/>
                                                     <constraint firstAttribute="height" constant="20" id="ykn-4s-Ni8"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blavatar" translatesAutoresizingMaskIntoConstraints="NO" id="JOq-VL-EJD" userLabel="Second" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="16.5" width="20" height="20"/>
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JOq-VL-EJD" userLabel="Second" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="10" y="18.5" width="20" height="20"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="Wly-6B-Yyx"/>
@@ -55,14 +55,14 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="andrei cross-posted from designomatticp2 to teamxthings" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5MU-iV-oPy">
-                                        <rect key="frame" x="40" y="0.0" width="248" height="52.5"/>
+                                        <rect key="frame" x="40" y="0.0" width="248" height="56.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="750" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lca-uT-huN" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
+                            <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lca-uT-huN" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="16" y="74.5" width="288" height="20.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -70,7 +70,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <edgeInsets key="layoutMargins" top="16" left="16" bottom="6" right="16"/>
+                        <edgeInsets key="layoutMargins" top="12" left="16" bottom="8" right="16"/>
                     </stackView>
                 </subviews>
                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -92,10 +92,7 @@
                 <outlet property="label" destination="5MU-iV-oPy" id="9OI-1R-pcP"/>
                 <outlet property="titleLabel" destination="lca-uT-huN" id="cRk-nM-vEy"/>
             </connections>
-            <point key="canvasLocation" x="887" y="471"/>
+            <point key="canvasLocation" x="535" y="470"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="blavatar" width="40" height="40"/>
-    </resources>
 </document>
