@@ -9,6 +9,7 @@ class ReaderDetailCoordinator {
     var post: ReaderPost? {
         didSet {
             postInUse(true)
+            indexReaderPostInSpotlight()
         }
     }
 
@@ -329,6 +330,7 @@ class ReaderDetailCoordinator {
         postLoadFailureBlock = nil
     }
 
+    /// Change post's inUse property and saves the context
     private func postInUse(_ inUse: Bool) {
         guard let context = post?.managedObjectContext else {
             return
@@ -336,6 +338,15 @@ class ReaderDetailCoordinator {
 
         post?.inUse = inUse
         coreDataStack.save(context)
+    }
+
+    /// Index the post in Spotlight
+    private func indexReaderPostInSpotlight() {
+        guard let post = post else {
+            return
+        }
+
+        SearchManager.shared.indexItem(post)
     }
 
     // MARK: - Analytics
