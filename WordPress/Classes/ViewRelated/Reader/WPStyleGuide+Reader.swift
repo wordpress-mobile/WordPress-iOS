@@ -213,23 +213,19 @@ extension WPStyleGuide {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
                                   dark: .muriel(color: .gray, .shade20))
-
     }
 
     @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
-        label.textColor = .neutral(.shade90)
+        label.textColor = UIColor(light: .gray(.shade90), dark: .text)
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
-                                  dark: .muriel(color: .gray, .shade20))
+        label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
 
     @objc public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
-                                  dark: .muriel(color: .gray, .shade20))
+        label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
-
 
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
