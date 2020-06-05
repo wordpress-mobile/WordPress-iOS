@@ -15,8 +15,13 @@ jobs:
       # this workaround
       DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
     steps:
-      - uses: actions/checkout@v2
+      # For debugging
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node_version: 10.x
