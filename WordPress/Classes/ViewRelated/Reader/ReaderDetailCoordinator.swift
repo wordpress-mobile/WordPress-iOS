@@ -8,6 +8,9 @@ class ReaderDetailCoordinator {
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? = nil
+
     /// Reader Post Service
     private let service: ReaderPostService
 
@@ -155,6 +158,7 @@ class ReaderDetailCoordinator {
                             self?.view?.show(title: post.postTitle)
         }, failure: { [weak self] _ in
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+            self?.reportPostLoadFailure()
         })
     }
 
@@ -175,6 +179,7 @@ class ReaderDetailCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+            self?.reportPostLoadFailure()
         })
     }
 
@@ -298,6 +303,14 @@ class ReaderDetailCoordinator {
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
+    }
+
+    /// Report to the callback that the post failed to load
+    private func reportPostLoadFailure() {
+        postLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        postLoadFailureBlock = nil
     }
 
     // MARK: - Analytics
