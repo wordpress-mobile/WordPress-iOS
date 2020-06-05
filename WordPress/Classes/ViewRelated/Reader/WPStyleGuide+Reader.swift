@@ -270,10 +270,10 @@ extension WPStyleGuide {
     // MARK: - Button Styles and Text
     class func applyReaderStreamActionButtonStyle(_ button: UIButton) {
         let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
-                                dark: .muriel(color: .gray, .shade10))
+                                dark: .textSubtle)
 
         let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
-                                    dark: .muriel(color: .gray, .shade60))
+                                    dark: .textQuaternary)
 
         return applyReaderActionButtonStyle(button,
                                             titleColor: tintColor,
