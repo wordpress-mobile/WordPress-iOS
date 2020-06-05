@@ -59,6 +59,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    /// The post being shown
+    @objc var post: ReaderPost? {
+        return coordinator?.post
+    }
+
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? {
         didSet {
