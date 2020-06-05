@@ -302,7 +302,11 @@ import WordPressShared
         showDetailViewController(viewControllerForPost(postID, siteID: blogID), sender: self)
     }
 
-    fileprivate func viewControllerForPost(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
+    fileprivate func viewControllerForPost(_ postID: NSNumber, siteID: NSNumber) -> UIViewController {
+        if FeatureFlag.readerWebview.enabled {
+            return ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
+        }
+
         return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
     }
 
