@@ -1,0 +1,24 @@
+name: Run Checks with Danger on Status Changes
+on:
+  status
+
+jobs:
+  danger:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Till https://github.com/danger/danger-js/issues/1042 is fixed, we need
+      # this workaround
+      DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
+    steps:
+      # For debugging
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Danger
+        run: |
+          yarn run danger ci \
+            --dangerfile Automattic/danger-settings/org/installable-builds.ts@installable-builds \
+            --id installable_builds

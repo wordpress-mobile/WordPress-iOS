@@ -1,4 +1,4 @@
-name: Run Checks with Danger
+name: Run Checks with Danger on PR
 on:
   pull_request:
     # Because we have a rule that validates the PR labels, we want it to run
