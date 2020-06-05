@@ -250,6 +250,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    /// Update scroll view insets to take into account if toolbar is visible or not
+    private func updateScrollInsets(toolbarVisibile: Bool) {
+        let bottomInset: CGFloat = toolbarVisibile ? Constants.toolbarHeight : 0
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
+    }
+
     /// A View Controller that displays a Post content.
     ///
     /// Use this method to present content for the user.
@@ -409,8 +415,10 @@ extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
             }
 
             stopFollowingScrollView()
+            updateScrollInsets(toolbarVisibile: true)
         } else {
             followScrollView()
+            updateScrollInsets(toolbarVisibile: false)
         }
     }
 }
