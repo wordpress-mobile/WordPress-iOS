@@ -3,13 +3,20 @@ import Foundation
 class ReaderDetailCoordinator {
 
     /// A post to be displayed
-    var post: ReaderPost?
+    var post: ReaderPost? {
+        didSet {
+            postInUse(true)
+        }
+    }
 
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
+
+    /// Core Data stack manager
+    private let coreDataStack: CoreDataStack
 
     /// Reader Post Service
     private let service: ReaderPostService
@@ -43,16 +50,22 @@ class ReaderDetailCoordinator {
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
-    init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
+        self.coreDataStack = coreDataStack
         self.service = service
         self.topicService = topicService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
         self.view = view
+    }
+
+    deinit {
+        postInUse(false)
     }
 
     /// Start the cordinator
@@ -311,6 +324,15 @@ class ReaderDetailCoordinator {
 
         // We'll nil out the failure block so we don't perform multiple callbacks
         postLoadFailureBlock = nil
+    }
+
+    private func postInUse(_ inUse: Bool) {
+        guard let context = post?.managedObjectContext else {
+            return
+        }
+
+        post?.inUse = inUse
+        coreDataStack.save(context)
     }
 
     // MARK: - Analytics
