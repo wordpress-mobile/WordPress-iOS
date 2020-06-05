@@ -2,6 +2,9 @@ import Foundation
 
 class ReaderDetailCoordinator {
 
+    /// Key for restoring the VC post
+    static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
+
     /// A post to be displayed
     var post: ReaderPost? {
         didSet {
@@ -396,5 +399,35 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
+    }
+}
+
+// MARK: - State Restoration
+
+extension ReaderDetailCoordinator {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                                      coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObject(forKey: restorablePostObjectURLhKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let url = URL(string: path),
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
+            return nil
+        }
+
+        guard let post = (try? context.existingObject(with: objectID)) as? ReaderPost else {
+            return nil
+        }
+
+        return ReaderDetailWebviewViewController.controllerWithPost(post)
+    }
+
+
+    func encodeRestorableState(with coder: NSCoder) {
+        if let post = post {
+            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
+        }
     }
 }
