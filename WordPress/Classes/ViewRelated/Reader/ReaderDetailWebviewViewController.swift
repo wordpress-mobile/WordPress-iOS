@@ -52,6 +52,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
+    /// Hide the comments button in the toolbar
+    @objc var shouldHideComments: Bool = false {
+        didSet {
+            toolbar.shouldHideComments = shouldHideComments
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
