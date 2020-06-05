@@ -1,4 +1,5 @@
 import UIKit
+import AutomatticTracks
 
 class DebugMenuViewController: UITableViewController {
     private var blogService: BlogService {
@@ -10,7 +11,7 @@ class DebugMenuViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-
+        CrashLogging.crash()
         title = NSLocalizedString("Debug Settings", comment: "Debug settings title")
     }
 
