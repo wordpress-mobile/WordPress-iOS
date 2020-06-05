@@ -63,6 +63,7 @@ open class ReaderCrossPostCell: UITableViewCell {
     // MARK: - Appearance
 
     fileprivate func applyStyles() {
+        backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderView?.backgroundColor = .listForeground
         label?.backgroundColor = .listForeground
