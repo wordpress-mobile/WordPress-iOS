@@ -236,7 +236,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
         
         if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbar, direction: .scrollDown)])
+            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
             isFollowingScrollView = true
         }
     }
