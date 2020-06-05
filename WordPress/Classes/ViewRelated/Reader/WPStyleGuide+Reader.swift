@@ -45,11 +45,15 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardBlogIconBorderColor() -> UIColor {
-        return .neutral(.shade0)
+        if #available(iOS 13.0, *) {
+            return UIColor(light: .gray(.shade0), dark: .systemGray5)
+        } else {
+            return .neutral(.shade0)
+        }
     }
 
     @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
-        return .neutral(.shade0)
+        return readerCardBlogIconBorderColor()
     }
 
     // MARK: - Card Attributed Text Attributes
