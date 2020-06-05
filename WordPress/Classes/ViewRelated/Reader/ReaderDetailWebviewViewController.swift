@@ -59,6 +59,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? {
+        didSet {
+            coordinator?.postLoadFailureBlock = postLoadFailureBlock
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
