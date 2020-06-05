@@ -4,7 +4,6 @@ import AutomatticTracks
 import WordPressShared.WPStyleGuide
 
 private struct Constants {
-    static let imageBorderWidth: CGFloat = 1
     static let blavatarPlaceholder: String = "post-blavatar-placeholder"
     static let xPostTitlePrefix = "X-post: "
     static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
