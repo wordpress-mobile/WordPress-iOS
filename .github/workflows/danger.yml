@@ -1,5 +1,6 @@
 name: Run Checks with Danger on PR
 on:
+  status:
   pull_request:
     # Because we have a rule that validates the PR labels, we want it to run
     # when the labels change, not only when a PR is opened/reopened or changes
@@ -7,8 +8,22 @@ on:
     types: [opened, reopened, synchronize, labeled, unlabeled]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    # if:
+    #   # This makes the job run only for NON-PR events, i.e. status
+    #   github.event.pull_request == null && github.event.issue.pull_request == null
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
   danger:
     runs-on: ubuntu-latest
+    if:
+      # This makes the job run only for PR events, not status
+      github.event.pull_request != null || github.event.issue.pull_request != null
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Till https://github.com/danger/danger-js/issues/1042 is fixed, we need
