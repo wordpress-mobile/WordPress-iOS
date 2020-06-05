@@ -11,7 +11,7 @@ Please refer to the sections below for more detailed information. The instructio
 1. From a command line, `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
 1. `cd WordPress-iOS` to enter the working directory.
 1. `rake dependencies` to install all dependencies required to run the project (this may take some time to complete).
-1. `rake xcode` to open the project in Xcode. 
+1. `rake xcode` to open the project in Xcode.
 1. Compile and run the app on a device or an simulator.
 
 In order to login to WordPress.com using the app:
@@ -19,7 +19,7 @@ In order to login to WordPress.com using the app:
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
-1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
+1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
 1. From a command line, ensure you are in the project's working directory and run `cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials` to copy the sample credentials file.
 1. Open the newly copied `.configure-files/wpcom_app_credentials` with the text editor of your choice, and replace `WPCOM_APP_ID` and `WPCOM_APP_SECRET` with the `Client ID` and `Client Secret` of the application you created. Note that `.configure-files` will be hidden by default in Finder. If you need to view it in Finder, hold down `Control`+`Shift`+`.` and it should appear.
 1. Recompile and run the app on a device or an simulator.
@@ -32,7 +32,7 @@ We use a few tools to help with development. Running `rake dependencies` will co
 
 #### CocoaPods
 
-WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.  
+WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.
 Third party libraries and resources managed by CocoaPods will be installed by the `rake dependencies` command above.
 
 #### SwiftLint
@@ -63,7 +63,7 @@ Launch the workspace by running the following from the command line:
 
 `rake xcode`
 
-This will ensure any dependencies are ready before launching Xcode. 
+This will ensure any dependencies are ready before launching Xcode.
 
 You can also open the project by double clicking on `WordPress.xcworkspace` file, or launching Xcode and choose `File` > `Open` and browse to `WordPress.xcworkspace`.
 
@@ -75,7 +75,7 @@ After you create an account you can create an application on the [WordPress.com 
 
 When creating your application, select "Native client" for the application type. The applications manager currently requires a "redirect URL", but this isn't used for mobile apps. Just use "https://localhost".
 
-Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application. 
+Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 
 Next, create a credential file. Start by copying the sample credentials file in your local repo by doing this:
 
@@ -85,7 +85,7 @@ Then edit the `WordPress/Credentials/wpcom_app_credentials-example` file and cha
 
 Now you can compile and run the app on a simulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
 
-**Remember the only WordPress.com account you will be able to login in with is the one used to create your client ID and client secret.** 
+**Remember the only WordPress.com account you will be able to login in with is the one used to create your client ID and client secret.**
 
 Read more about [OAuth2](https://developer.wordpress.com/docs/oauth2/) and the [WordPress.com REST endpoint](https://developer.wordpress.com/docs/api/).
 
