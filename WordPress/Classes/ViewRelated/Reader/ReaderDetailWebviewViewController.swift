@@ -66,17 +66,13 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbar, direction: .scrollDown)])
-        }
+        followScrollView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if let navigationController = navigationController as? ScrollingNavigationController {
-          navigationController.stopFollowingScrollView(showingNavbar: true)
-        }
+        stopFollowingScrollView()
     }
 
     func render(_ post: ReaderPost) {
@@ -225,6 +221,27 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
         coordinator?.share(fromView: sender)
+    }
+
+    /// Start following the scroll view to hide nav bar and toolbar
+    /// Only if VoiceOver is not active
+    ///
+    private func followScrollView() {
+        if UIAccessibility.isVoiceOverRunning {
+            return
+        }
+        
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbar, direction: .scrollDown)])
+        }
+    }
+
+    /// Stop following the scroll view to hide nav bar and toolbar
+    ///
+    private func stopFollowingScrollView() {
+        if let navigationController = navigationController as? ScrollingNavigationController {
+          navigationController.stopFollowingScrollView(showingNavbar: true)
+        }
     }
 
     /// A View Controller that displays a Post content.
