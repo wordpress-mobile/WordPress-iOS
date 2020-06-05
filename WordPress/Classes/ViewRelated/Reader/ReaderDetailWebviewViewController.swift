@@ -464,12 +464,12 @@ extension ReaderDetailWebviewViewController: UIViewControllerRestoration {
     }
 }
 
-// MARK: - Full screen display (iPad)
+// MARK: - PrefersFullscreenDisplay (iPad)
 
 // Expand this view controller to full screen if possible
 extension ReaderDetailWebviewViewController: PrefersFullscreenDisplay {}
 
-// MARK: - DefinesVariableStatusBarStyle
+// MARK: - DefinesVariableStatusBarStyle (iPad)
 
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailWebviewViewController: DefinesVariableStatusBarStyle {}
