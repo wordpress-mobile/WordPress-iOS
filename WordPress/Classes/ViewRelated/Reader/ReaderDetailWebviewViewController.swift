@@ -46,6 +46,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    /// If we're following the scrollview to hide/show nav and toolbar
+    private var isFollowingScrollView = false
+
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
@@ -227,12 +230,14 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Only if VoiceOver is not active
     ///
     private func followScrollView() {
-        if UIAccessibility.isVoiceOverRunning {
+        if isFollowingScrollView,
+            UIAccessibility.isVoiceOverRunning {
             return
         }
         
         if let navigationController = navigationController as? ScrollingNavigationController {
             navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbar, direction: .scrollDown)])
+            isFollowingScrollView = true
         }
     }
 
@@ -240,7 +245,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     private func stopFollowingScrollView() {
         if let navigationController = navigationController as? ScrollingNavigationController {
-          navigationController.stopFollowingScrollView(showingNavbar: true)
+            navigationController.stopFollowingScrollView(showingNavbar: true)
+            isFollowingScrollView = false
         }
     }
 
@@ -396,13 +402,15 @@ extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
 extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
     // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let navigationController = self.navigationController as? ScrollingNavigationController,
-            navigationController.state != .expanded else {
-                return
-        }
-
         if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
-            navigationController.showNavbar()
+            guard let navigationController = self.navigationController as? ScrollingNavigationController,
+                navigationController.state != .expanded else {
+                    return
+            }
+
+            stopFollowingScrollView()
+        } else {
+            followScrollView()
         }
     }
 }
