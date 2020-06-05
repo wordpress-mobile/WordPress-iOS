@@ -281,7 +281,11 @@ extension WPStyleGuide {
                                             disabledColor: disabledColor)
     }
 
-    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon, disabledColor: UIColor = .neutral(.shade10)) {
+
+    class func applyReaderActionButtonStyle(_ button: UIButton,
+                                            titleColor: UIColor = .listIcon,
+                                            imageColor: UIColor = .listIcon,
+                                            disabledColor: UIColor = .neutral(.shade10)) {
         button.tintColor = imageColor
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
@@ -354,6 +358,7 @@ extension WPStyleGuide {
         button.setImage(selectedIcon, for: .selected)
         button.setImage(selectedIcon, for: .highlighted)
         button.setImage(selectedIcon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -374,6 +379,7 @@ extension WPStyleGuide {
         button.setImage(resizedSelectedIcon, for: .selected)
         button.setImage(resizedSelectedIcon, for: .highlighted)
         button.setImage(resizedSelectedIcon, for: [.highlighted, .selected])
+        button.setImage(resizedIcon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -387,6 +393,7 @@ extension WPStyleGuide {
         button.setImage(selectedIcon, for: .selected)
         button.setImage(selectedIcon, for: .highlighted)
         button.setImage(selectedIcon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -411,6 +418,10 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.reblog, size: size)
 
         button.setImage(icon, for: .normal)
+        button.setImage(icon, for: .selected)
+        button.setImage(icon, for: .highlighted)
+        button.setImage(icon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
