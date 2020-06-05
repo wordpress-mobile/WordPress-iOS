@@ -309,3 +309,13 @@ extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
         dismiss(animated: true)
     }
 }
+
+extension PrepublishingViewController: PrepublishingDismissible {
+    func handleDismiss() {
+        guard let orginalStatus = post.original?.status else {
+            return
+        }
+
+        post.status = orginalStatus
+    }
+}

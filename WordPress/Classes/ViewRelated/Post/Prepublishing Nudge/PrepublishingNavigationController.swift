@@ -1,5 +1,9 @@
 import UIKit
 
+protocol PrepublishingDismissible {
+    func handleDismiss()
+}
+
 class PrepublishingNavigationController: LightNavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,5 +40,11 @@ extension PrepublishingNavigationController: DrawerPresentable {
         let scroll = topViewController?.view as? UIScrollView
 
         return scroll
+    }
+    
+    func handleDismiss() {
+        if let rootViewController = viewControllers.first as? PrepublishingDismissible {
+            rootViewController.handleDismiss()
+        }
     }
 }
