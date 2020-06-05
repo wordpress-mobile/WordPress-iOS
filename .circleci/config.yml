@@ -180,6 +180,9 @@ jobs:
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
       - run:
           name: Build
           working_directory: Scripts
