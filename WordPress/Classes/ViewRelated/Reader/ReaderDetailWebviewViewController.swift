@@ -86,7 +86,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// Shown an error
     func showError() {
-        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
     }
 
     /// Shown an error with a button to open the post on the browser
@@ -340,7 +340,6 @@ private extension ReaderDetailWebviewViewController {
     }
 
     struct LoadingText {
-        static let loadingTitle = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
         static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
