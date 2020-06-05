@@ -316,6 +316,7 @@ extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
 extension PrepublishingViewController: PrepublishingDismissible {
     func handleDismiss() {
         guard
+            !didTapPublish,
             post.status == .publishPrivate,
             let originalStatus = post.original?.status else {
             return
