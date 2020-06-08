@@ -75,7 +75,7 @@ class ImageDownloader {
         return task
     }
 
-    private func makeGIF(with data:Data, request: URLRequest) -> RCTAnimatedImage? {
+    private func makeGIF(with data: Data, request: URLRequest) -> RCTAnimatedImage? {
         guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
             return nil
         }
