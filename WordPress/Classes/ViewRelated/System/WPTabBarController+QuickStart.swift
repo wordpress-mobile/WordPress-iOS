@@ -19,7 +19,7 @@ extension WPTabBarController {
             tabBar.addSubview(newSpotlight)
 
             let x: CGFloat
-            if element == .newpost {
+            if element == .readerTab {
                 x = tabBar.bounds.size.width / 2.0
             } else {
                 x = tabBar.bounds.size.width * 0.40 - newSpotlight.frame.size.width
