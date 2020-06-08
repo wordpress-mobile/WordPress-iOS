@@ -17,15 +17,51 @@ struct AppAppearance {
         return currentWindow?.overrideUserInterfaceStyle ?? .unspecified
     }
 
-    /// Overrides the app's current appeareance with the specified style
-    static func overrideAppearance(with style: UIUserInterfaceStyle) {
+    /// Overrides the app's current appeareance with the specified style.
+    /// If no style is provided, the app's appearance will be overridden
+    /// by any preference that may be currently saved in user defaults.
+    ///
+    static func overrideAppearance(with style: UIUserInterfaceStyle? = nil) {
         guard let window = currentWindow else {
             return
         }
 
-        WPAnalytics.track(.appSettingsAppearanceChanged, properties: ["style": style.appearanceDescription])
+        if let style = style {
+            trackEvent(with: style)
+            savedStyle = style
+        }
 
-        window.overrideUserInterfaceStyle = style
+        window.overrideUserInterfaceStyle = style ?? savedStyle
+    }
+
+    // MARK: - Tracks
+
+    private static func trackEvent(with style: UIUserInterfaceStyle) {
+        WPAnalytics.track(.appSettingsAppearanceChanged, properties: [Keys.styleTracksProperty: style.appearanceDescription])
+    }
+
+    // MARK: - Persistence
+
+    /// Saves or gets the current interface style preference.
+    /// If no style has been saved, returns the default.
+    ///
+    private static var savedStyle: UIUserInterfaceStyle {
+        get {
+            guard let rawValue = UserDefaults.standard.value(forKey: Keys.appAppearanceDefaultsKey) as? Int,
+                let style = UIUserInterfaceStyle(rawValue: rawValue) else {
+                    return AppAppearance.default
+            }
+
+            return style
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.appAppearanceDefaultsKey)
+        }
+    }
+
+    enum Keys {
+        static let styleTracksProperty = "style"
+        static let appAppearanceDefaultsKey = "app-appearance-override"
     }
 }
 
