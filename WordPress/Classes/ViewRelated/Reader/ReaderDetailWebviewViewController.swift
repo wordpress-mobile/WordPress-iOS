@@ -258,7 +258,7 @@ extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelega
 
 extension ReaderDetailWebviewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if navigationAction.navigationType == .linkActivated  {
+        if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url {
                 coordinator?.handle(url)
             }
