@@ -43,6 +43,12 @@ class QuickStartChecklistCell: UITableViewCell {
                                                                             .foregroundColor: UIColor.neutral(.shade30)])
                 descriptionLabel.textColor = .neutral(.shade30)
                 iconView?.tintColor = .neutral(.shade30)
+
+                // Overrides the existing accessibility hint in the tour property observer.
+                if let hint = tour?.accessibilityHintText, !hint.isEmpty {
+                    accessibilityHint = NSLocalizedString("Task completed.",
+                                                          comment: "Accessibility hint to let the user know they completed a quick site task.")
+                }
             } else {
                 titleLabel.textColor = .text
                 descriptionLabel.textColor = .textSubtle
