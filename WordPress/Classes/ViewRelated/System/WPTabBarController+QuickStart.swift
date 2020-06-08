@@ -27,6 +27,10 @@ extension WPTabBarController {
         quickStartObserver = observer as? NSObject
     }
 
+    @objc func alertQuickStartThatWriteWasTapped() {
+        tourGuide.visited(.newpost)
+    }
+
     @objc func alertQuickStartThatReaderWasTapped() {
         tourGuide.visited(.readerTab)
     }
