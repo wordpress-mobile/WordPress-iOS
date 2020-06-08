@@ -52,7 +52,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
-@property (nonatomic, strong) UINavigationController *blogListNavigationController;
+@property (nonatomic, strong) UINavigationController *mySiteNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -177,23 +177,23 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Tab Bar Items
 
-- (UINavigationController *)blogListNavigationController
+- (UINavigationController *)mySiteNavigationController
 {
-    if (_blogListNavigationController) {
-        return _blogListNavigationController;
+    if (_mySiteNavigationController) {
+        return _mySiteNavigationController;
     }
 
     self.blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
-    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    _blogListNavigationController.navigationBar.translucent = NO;
+    _mySiteNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
+    _mySiteNavigationController.navigationBar.translucent = NO;
 
     UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
-    _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
-    _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
-    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
+    _mySiteNavigationController.tabBarItem.image = mySitesTabBarImage;
+    _mySiteNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
+    _mySiteNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    _mySiteNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
+    _mySiteNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
+    _mySiteNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -202,7 +202,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListViewController.selectedBlog = blogToOpen;
     }
     
-    return _blogListNavigationController;
+    return _mySiteNavigationController;
 }
 
 - (UINavigationController *)readerNavigationController
@@ -345,12 +345,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _mySiteSplitViewController = [WPSplitViewController new];
         _mySiteSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
         _mySiteSplitViewController.presentsWithGesture = NO;
-        [_mySiteSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+        [_mySiteSplitViewController setInitialPrimaryViewController:self.mySiteNavigationController];
         _mySiteSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _mySiteSplitViewController.dimsDetailViewControllerAutomatically = YES;
 
-        _mySiteSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
+        _mySiteSplitViewController.tabBarItem = self.mySiteNavigationController.tabBarItem;
     }
 
     return _mySiteSplitViewController;
@@ -420,7 +420,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)reloadSplitViewControllers
 {
-    _blogListNavigationController = nil;
+    _mySiteNavigationController = nil;
     _mySiteSplitViewController = nil;
     _readerNavigationController = nil;
     _readerMenuViewController = nil;
@@ -646,7 +646,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     [self switchMySitesTabToBlogDetailsForBlog:post.blog];
 
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
     }
@@ -666,7 +666,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     [self switchMySitesTabToBlogDetailsForBlog:post.blog];
 
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPages];
     }
@@ -682,7 +682,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
     }
@@ -691,7 +691,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)switchMySitesTabToMediaForBlog:(Blog *)blog
 {
     if ([self adjustedTabIndex:self.selectedIndex toTabType:false] == WPTabMySites) {
-        UIViewController *topViewController = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+        UIViewController *topViewController = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
         if ([topViewController isKindOfClass:[MediaLibraryViewController class]]) {
             MediaLibraryViewController *mediaVC = (MediaLibraryViewController *)topViewController;
             if (mediaVC.blog == blog) {
@@ -703,7 +703,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
     }
@@ -724,7 +724,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self switchMySitesTabToBlogDetailsForBlog:blog];
 
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.mySiteNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionThemes];
     }
@@ -735,7 +735,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabMySites];
 
     BlogListViewController *blogListVC = self.blogListViewController;
-    self.blogListNavigationController.viewControllers = @[blogListVC];
+    self.mySiteNavigationController.viewControllers = @[blogListVC];
     [blogListVC setSelectedBlog:blog animated:NO];
 }
 
@@ -793,7 +793,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         return nil;
     }
 
-    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
+    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.mySiteNavigationController.viewControllers wp_filter:^BOOL(id obj) {
         return [obj isKindOfClass:[BlogDetailsViewController class]];
     }] firstObject];
     return blogDetailsController.blog;

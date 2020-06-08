@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 @property (nonatomic, strong, readonly) WPSplitViewController *mySiteSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
-@property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
+@property (nonatomic, strong, readonly) UINavigationController *mySiteNavigationController;
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 // will be removed when the new IA implementation completes
