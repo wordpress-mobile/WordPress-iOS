@@ -85,11 +85,11 @@ private extension ChangeUsernameViewController {
     }
 
     func adjustForKeyboard(notification: Foundation.Notification) {
-        let wrappedRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
-        let keyboardRect = wrappedRect?.cgRectValue ?? CGRect.zero
-        let relativeRect = view.convert(keyboardRect, from: nil)
-        let bottomInset = max(relativeRect.height - relativeRect.maxY + view.frame.height, 0)
-        var insets = tableView.contentInset
+        let wrappedRect: NSValue? = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        let keyboardRect: CGRect = wrappedRect?.cgRectValue ?? CGRect.zero
+        let relativeRect: CGRect = view.convert(keyboardRect, from: nil)
+        let bottomInset: CGFloat = max(relativeRect.height - relativeRect.maxY + view.frame.height, 0)
+        var insets: UIEdgeInsets = tableView.contentInset
         insets.bottom = bottomInset
         tableView.contentInset = insets
         tableView.scrollIndicatorInsets = insets
