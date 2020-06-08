@@ -123,7 +123,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         resetActionButton(reblogButton)
 
         guard let post = post else {
-            assertionFailure()
             return
         }
 
