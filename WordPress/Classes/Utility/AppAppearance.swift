@@ -23,6 +23,8 @@ struct AppAppearance {
             return
         }
 
+        WPAnalytics.track(.appSettingsAppearanceChanged, properties: ["style": style.appearanceDescription])
+
         window.overrideUserInterfaceStyle = style
     }
 }

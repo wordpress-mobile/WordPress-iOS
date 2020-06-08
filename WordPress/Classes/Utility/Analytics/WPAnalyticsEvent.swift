@@ -33,6 +33,9 @@ import Foundation
     case editorPostSlugChanged
     case editorPostExcerptChanged
 
+    // App Settings
+    case appSettingsAppearanceChanged
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -85,6 +88,8 @@ import Foundation
             return "editor_post_slug_changed"
         case .editorPostExcerptChanged:
             return "editor_post_excerpt_changed"
+        case .appSettingsAppearanceChanged:
+            return "app_settings_appearance_changed"
         }
     }
 
