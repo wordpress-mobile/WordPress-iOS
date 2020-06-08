@@ -7,6 +7,7 @@ open class QuickStartTourGuide: NSObject {
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
+    private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -97,7 +98,8 @@ open class QuickStartTourGuide: NSObject {
                             message: tour.description,
                             style: noticeStyle,
                             actionTitle: tour.suggestionYesText,
-                            cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+                            cancelTitle: tour.suggestionNoText,
+                            tag: noticeTag) { [weak self] accepted in
                                 self?.currentSuggestion = nil
 
                                 if accepted {
@@ -349,7 +351,7 @@ private extension QuickStartTourGuide {
 
     func showStepNotice(_ description: NSAttributedString) {
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: description)
-        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
+        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle, tag: noticeTag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
@@ -371,7 +373,7 @@ private extension QuickStartTourGuide {
         }
 
         currentSuggestion = nil
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
     }
 
     func getNextStep() -> TourState? {
@@ -389,7 +391,7 @@ private extension QuickStartTourGuide {
     }
 
     func dismissCurrentNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
