@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
 
-@property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
+@property (nonatomic, strong, readonly) WPSplitViewController *mySiteSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
 @property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
@@ -45,7 +45,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 + (instancetype)sharedInstance;
 
 - (NSString *)currentlySelectedScreen;
-- (BOOL)isNavigatingMySitesTab;
 
 - (void)showMySitesTab;
 - (void)showReaderTab;

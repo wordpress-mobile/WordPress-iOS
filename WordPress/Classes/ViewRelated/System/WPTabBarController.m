@@ -57,7 +57,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
-@property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *mySiteSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
@@ -109,7 +109,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setViewControllers:[self tabViewControllers]];
 
-        [self setSelectedViewController:self.blogListSplitViewController];
+        [self setSelectedViewController:self.mySiteSplitViewController];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -339,21 +339,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Split View Controllers
 
-- (UISplitViewController *)blogListSplitViewController
+- (UISplitViewController *)mySiteSplitViewController
 {
-    if (!_blogListSplitViewController) {
-        _blogListSplitViewController = [WPSplitViewController new];
-        _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
-        _blogListSplitViewController.presentsWithGesture = NO;
-        [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+    if (!_mySiteSplitViewController) {
+        _mySiteSplitViewController = [WPSplitViewController new];
+        _mySiteSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
+        _mySiteSplitViewController.presentsWithGesture = NO;
+        [_mySiteSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+        _mySiteSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
-        _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
+        _mySiteSplitViewController.dimsDetailViewControllerAutomatically = YES;
 
-        _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
+        _mySiteSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
     }
 
-    return _blogListSplitViewController;
+    return _mySiteSplitViewController;
 }
 
 - (UISplitViewController *)readerSplitViewController
@@ -421,7 +421,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)reloadSplitViewControllers
 {
     _blogListNavigationController = nil;
-    _blogListSplitViewController = nil;
+    _mySiteSplitViewController = nil;
     _readerNavigationController = nil;
     _readerMenuViewController = nil;
     _readerSplitViewController = nil;
@@ -448,7 +448,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
-    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
+    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.mySiteSplitViewController
                                               mySitesNavigationController:self.blogListNavigationController
                                                    blogListViewController:self.blogListViewController];
 }
@@ -467,13 +467,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySiteSplitViewController,
         self.readerNavigationController,
         self.newPostViewController,
         self.meSplitViewController,
         self.notificationsSplitViewController]];
     } else {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySiteSplitViewController,
         self.readerSplitViewController,
         self.newPostViewController,
         self.meSplitViewController,
@@ -634,7 +634,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    UIViewController *topVC = [self.mySiteSplitViewController topDetailViewController];
     if ([topVC isKindOfClass:[PostListViewController class]]) {
         Blog *blog = ((PostListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
@@ -654,7 +654,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchTabToPagesListForPost:(AbstractPost *)post
 {
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    UIViewController *topVC = [self.mySiteSplitViewController topDetailViewController];
     if ([topVC isKindOfClass:[PageListViewController class]]) {
         Blog *blog = ((PageListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
@@ -713,7 +713,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self switchMySitesTabToThemesViewForBlog:blog];
 
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    UIViewController *topVC = [self.mySiteSplitViewController topDetailViewController];
     if ([topVC isKindOfClass:[ThemeBrowserViewController class]]) {
         ThemeBrowserViewController *themeViewController = (ThemeBrowserViewController *)topVC;
         [themeViewController presentCustomizeForTheme:[themeViewController currentTheme]];
@@ -867,7 +867,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // If the user has one blog then we don't want to present them with the main "My Sites"
     // screen where they can see all their blogs. In the case of only one blog just show
     // the main blog details screen
-    UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+    UINavigationController *navController = (UINavigationController *)[self.mySiteSplitViewController.viewControllers firstObject];
     BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
 
     if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
@@ -881,11 +881,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self showTabForIndex:WPTabNotifications];
     [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
-}
-
-- (BOOL)isNavigatingMySitesTab
-{
-    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Zendesk Notifications
