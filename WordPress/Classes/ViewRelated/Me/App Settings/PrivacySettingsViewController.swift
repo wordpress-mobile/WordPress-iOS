@@ -56,7 +56,7 @@ class PrivacySettingsViewController: UITableViewController {
             title: NSLocalizedString("Collect information", comment: "Label for switch to turn on/off sending app usage data"),
             value: !WPAppAnalytics.userHasOptedOut(),
             icon: .gridicon(.stats),
-            onChange: usageTrackingChanged()
+            onChange: usageTrackingChanged
         )
 
         let shareInfoText = PaddedInfoRow(
@@ -90,7 +90,7 @@ class PrivacySettingsViewController: UITableViewController {
             title: NSLocalizedString("Crash reports", comment: "Label for switch to turn on/off sending crashes info"),
             value: !WPCrashLoggingProvider.userHasOptedOut,
             icon: .gridicon(.bug),
-            onChange: crashReportingChanged()
+            onChange: crashReportingChanged
         )
 
         let reportCrashesInfoText = PaddedInfoRow(
@@ -114,14 +114,12 @@ class PrivacySettingsViewController: UITableViewController {
         ])
     }
 
-    func usageTrackingChanged() -> (Bool) -> Void {
-        return { enabled in
-            let appAnalytics = WordPressAppDelegate.shared?.analytics
-            appAnalytics?.setUserHasOptedOut(!enabled)
+    func usageTrackingChanged(_ enabled: Bool) {
+        let appAnalytics = WordPressAppDelegate.shared?.analytics
+        appAnalytics?.setUserHasOptedOut(!enabled)
 
-            let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
-        }
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
     }
 
     func openCookiePolicy() -> ImmuTableAction {
@@ -145,13 +143,11 @@ class PrivacySettingsViewController: UITableViewController {
         present(navigation, animated: true)
     }
 
-    func crashReportingChanged() -> (Bool) -> Void {
-        return { enabled in
-            WPCrashLoggingProvider.userHasOptedOut = !enabled
-
-            CrashLogging.setNeedsDataRefresh()
-        }
+    func crashReportingChanged(_ enabled: Bool) {
+      WPCrashLoggingProvider.userHasOptedOut = !enabled
+      CrashLogging.setNeedsDataRefresh()
     }
+
 }
 
 private class InfoCell: WPTableViewCellDefault {
