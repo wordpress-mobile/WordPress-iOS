@@ -1071,7 +1071,7 @@ private extension StatsPeriodStore {
     }
 
     func shouldFetchOverview() -> Bool {
-        return [state.summaryStatus,
+        let states = [state.summaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -1080,7 +1080,12 @@ private extension StatsPeriodStore {
                 state.topSearchTermsStatus,
                 state.topCountriesStatus,
                 state.topVideosStatus,
-                state.topFileDownloadsStatus].first { $0 == .loading } == nil
+                state.topFileDownloadsStatus]
+        
+        let result: StoreFetchingStatus? = states.first { (element: StoreFetchingStatus) -> Bool in
+            return element == .loading
+        }
+        return result == nil
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
