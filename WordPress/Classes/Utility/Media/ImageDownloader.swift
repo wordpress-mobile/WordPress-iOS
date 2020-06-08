@@ -54,24 +54,32 @@ class ImageDownloader {
     func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         let task = session.dataTask(with: request) { (data, _, error) in
             guard let data = data else {
-              completion(nil, ImageDownloaderError.failed)
+                if let error = error {
+                    completion(nil, error)
+                } else {
+                    completion(nil, ImageDownloaderError.failed)
+                }
               return
             }
-            var image: UIImage?
-            if let url = request.url, url.pathExtension.lowercased() == "gif" {
-              image = RCTAnimatedImage(data: data, scale: 1)
+
+            if let gif = self.makeGIF(with: data, request: request) {
+                completion(gif, nil)
+            } else if let image = UIImage.init(data: data) {
+                completion(image, nil)
             } else {
-              image = UIImage.init(data: data)
-            }
-            if let finalImage = image {
-              completion(finalImage, nil)
-            } else {
-              completion(nil, ImageDownloaderError.failed)
+                completion(nil, ImageDownloaderError.failed)
             }
         }
 
         task.resume()
         return task
+    }
+
+    private func makeGIF(with data:Data, request: URLRequest) -> RCTAnimatedImage? {
+        guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
+            return nil
+        }
+        return RCTAnimatedImage(data: data, scale: 1)
     }
 }
 
