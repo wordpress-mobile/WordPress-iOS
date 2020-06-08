@@ -79,7 +79,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     @IBAction func didTapComment(_ sender: Any) {
-        guard let post = self.post, let viewController = viewController else {
+        guard let post = post, let viewController = viewController else {
             return
         }
 
