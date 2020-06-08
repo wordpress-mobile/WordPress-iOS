@@ -56,6 +56,7 @@ class ReaderPostBuilder: PostBuilder {
     }
 
     func build() -> ReaderPost {
+        post.blogURL = "https://wordpress.com"
         return post
     }
 }
