@@ -863,7 +863,15 @@ extension StatsInsightsStore {
          * with value .loading. If at least one exists then the store is still fetching the overview.
          */
         let mirror = Mirror(reflecting: state)
-        return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 == .loading } != nil
+        let mapped = mirror.children.compactMap { (label: String?, value: Any) -> StoreFetchingStatus? in
+            return value as? StoreFetchingStatus
+        }
+
+        let result: StoreFetchingStatus? = mapped.first { (element: StoreFetchingStatus) -> Bool in
+            return element == .loading
+        }
+
+        return result != nil
     }
 
     var isFetchingAllFollowers: Bool {
