@@ -448,8 +448,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
-    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.mySiteSplitViewController
-                                              mySitesNavigationController:self.blogListNavigationController
+    return [[MySitesCoordinator alloc] initWithMySiteSplitViewController:self.mySiteSplitViewController
+                                              mySiteNavigationController:self.mySiteNavigationController
                                                    blogListViewController:self.blogListViewController];
 }
 

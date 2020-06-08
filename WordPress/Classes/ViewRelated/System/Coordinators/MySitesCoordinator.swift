@@ -2,16 +2,16 @@ import UIKit
 
 @objc
 class MySitesCoordinator: NSObject {
-    let mySitesSplitViewController: WPSplitViewController
-    let mySitesNavigationController: UINavigationController
+    let mySiteSplitViewController: WPSplitViewController
+    let mySiteNavigationController: UINavigationController
     let blogListViewController: BlogListViewController
 
     @objc
-    init(mySitesSplitViewController: WPSplitViewController,
-         mySitesNavigationController: UINavigationController,
+    init(mySiteSplitViewController: WPSplitViewController,
+         mySiteNavigationController: UINavigationController,
          blogListViewController: BlogListViewController) {
-        self.mySitesSplitViewController = mySitesSplitViewController
-        self.mySitesNavigationController = mySitesNavigationController
+        self.mySiteSplitViewController = mySiteSplitViewController
+        self.mySiteNavigationController = mySiteNavigationController
         self.blogListViewController = blogListViewController
 
         super.init()
@@ -20,7 +20,7 @@ class MySitesCoordinator: NSObject {
     private func prepareToNavigate() {
         WPTabBarController.sharedInstance().showMySitesTab()
 
-        mySitesNavigationController.viewControllers = [blogListViewController]
+        mySiteNavigationController.viewControllers = [blogListViewController]
     }
 
     func showMySites() {
@@ -33,7 +33,7 @@ class MySitesCoordinator: NSObject {
         blogListViewController.setSelectedBlog(blog, animated: false)
 
         if let subsection = subsection,
-            let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+            let blogDetailsViewController = mySiteNavigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }
@@ -47,7 +47,7 @@ class MySitesCoordinator: NSObject {
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+        if let blogDetailsViewController = mySiteNavigationController.topViewController as? BlogDetailsViewController {
             // Setting this user default is a bit of a hack, but it's by far the easiest way to
             // get the stats view controller displaying the correct period. I spent some time
             // trying to do it differently, but the existing stats view controller setup is
@@ -109,7 +109,7 @@ class MySitesCoordinator: NSObject {
         }
 
         guard let site = JetpackSiteRef(blog: blog),
-            let navigationController = mySitesSplitViewController.topDetailViewController?.navigationController else {
+            let navigationController = mySiteSplitViewController.topDetailViewController?.navigationController else {
             return
         }
 
