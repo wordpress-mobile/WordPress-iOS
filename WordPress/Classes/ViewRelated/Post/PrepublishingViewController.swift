@@ -169,6 +169,7 @@ class PrepublishingViewController: UITableViewController {
 
         visbilitySelectorViewController.completion = { [weak self] option in
             self?.reloadData()
+            self?.updatePublishButtonLabel()
 
             WPAnalytics.track(.editorPostVisibilityChanged, properties: Constants.analyticsDefaultProperty)
 
