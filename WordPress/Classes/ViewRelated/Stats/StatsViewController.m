@@ -189,6 +189,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                            @"Error message shown when trying to view Stats and there is no internet connection.");
 
     self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
+                                                                attributedTitle:nil
                                                                     buttonTitle:nil
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil

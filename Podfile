@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.9.0-beta.2'
+    pod 'WordPressKit', '~> 4.9.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/homepage-settings'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -147,7 +147,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '0bc5bad80b3df02eed64eb3a31559e38986e0401'
+    gutenberg :commit => '3d10d026ea0175ba6ffc94345546704056662365'
 
     ## Third party libraries
     ## =====================
@@ -176,16 +176,15 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    # pod 'WPMediaPicker', '~> 1.6.1'
-    pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0-beta.2'
+    pod 'WPMediaPicker', '~> 1.7.0'
+    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.0.1'
 
-
-    pod 'WordPressAuthenticator', '~> 1.17.0-beta.8'
+    pod 'WordPressAuthenticator', '~> 1.18.0-beta.6'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -207,16 +206,17 @@ target 'WordPress' do
 
 
     post_install do
+        project_root = File.dirname(__FILE__)
+      
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-        %x(patch Pods/React-Core/React/Views/RCTShadowView.m < patches/react-native+0.61.5.patch)
+        %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/react-native+0.61.5.patch")
         puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
         it could be removed once PR with that functionality will be merged into RN'
-        %x(patch Pods/React-RCTActionSheet/RCTActionSheetManager.m < patches/react-native+0.61.5.patch)
+        %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/react-native+0.61.5.patch")
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-
-        project_root = File.dirname(__FILE__)
+        
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
