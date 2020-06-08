@@ -197,6 +197,48 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    @available(iOS 13.0, *)
+    func pushAppearanceSettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let values = UIUserInterfaceStyle.allStyles
+
+            let rawValues = values.map({ $0.rawValue })
+            let titles = values.map({ $0.appearanceDescription })
+
+            let currentStyle = AppAppearance.current
+
+            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: AppAppearance.default.rawValue,
+                                                  SettingsSelectionCurrentValueKey: currentStyle.rawValue,
+                                                  SettingsSelectionTitleKey: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: rawValues] as [String: Any]
+
+            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
+
+            viewController?.onItemSelected = { [weak self] (style: Any!) -> () in
+                guard let style = style as? Int,
+                    let newStyle = UIUserInterfaceStyle(rawValue: style) else {
+                        return
+                }
+
+                self?.overrideAppAppearance(with: newStyle)
+            }
+
+            self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func overrideAppAppearance(with style: UIUserInterfaceStyle) {
+        let transitionView: UIView = WordPressAppDelegate.shared?.window ?? view
+        UIView.transition(with: transitionView,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            AppAppearance.overrideAppearance(with: style)
+        })
+    }
+
     func pushDebugMenu() -> ImmuTableAction {
         return { [weak self] row in
             let controller = DebugMenuViewController()
@@ -419,7 +461,7 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
-        var rows = [settingsRow, aboutRow]
+        var rows: [ImmuTableRow] = [settingsRow, aboutRow]
         if #available(iOS 10.3, *),
             UIApplication.shared.supportsAlternateIcons {
                 rows.insert(iconRow, at: 0)
@@ -427,6 +469,12 @@ private extension AppSettingsViewController {
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
+        }
+
+        if #available(iOS 13.0, *) {
+            let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+
+            rows.insert(appearanceRow, at: 0)
         }
 
         return ImmuTableSection(
