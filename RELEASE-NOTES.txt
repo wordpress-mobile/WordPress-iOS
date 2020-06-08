@@ -1,5 +1,6 @@
 15.1
 -----
+* [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
 * [**] Block editor: Adds support for theme colors and gradients.
 
 15.0
