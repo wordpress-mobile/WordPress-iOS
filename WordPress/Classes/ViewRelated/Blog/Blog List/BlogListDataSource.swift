@@ -71,9 +71,9 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
-    
+
     //Create array of urls
-    var siteURLS = [NSString]()
+    var siteURLS = [String]()
 
     override init() {
         super.init()
@@ -322,9 +322,10 @@ extension BlogListDataSource: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }
-        
+
         let displayURL = blog.displayURL as String? ?? ""
-        siteURLS.append(blog.displayURL!)
+
+        siteURLS.append(displayURL)
         if let name = blog.settings?.name?.nonEmptyString() {
             cell.textLabel?.text = name
             cell.detailTextLabel?.text = displayURL

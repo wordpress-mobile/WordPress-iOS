@@ -137,7 +137,7 @@ extension LoginEpilogueTableViewController {
         // Site Rows
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
-        
+
         guard let loginCell = cell as? LoginEpilogueBlogCell else {
             return cell
         }
@@ -150,8 +150,8 @@ extension LoginEpilogueTableViewController {
 
         // Don't show section header for User Info
         guard section != Sections.userInfoSection,
-        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
-            return nil
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
+                return nil
         }
 
         // Don't show section header if there are no sites.
@@ -199,25 +199,26 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section != Sections.userInfoSection,
-            indexPath.row == lastRowInSection(indexPath.section) else {
-                
-                //checks if section is the same section as the sites
-                if indexPath.section != 1 {
-                    return
-                }
-                //pulls the URL from the URL array created in the blogListDataSource and displays it
-                var siteURLString = String(blogDataSource.siteURLS[indexPath.row])
-                siteURLString = siteURLString.hasPrefix("https://") ? siteURLString : "https://" + siteURLString
-                let siteURL = URL(string: siteURLString)
-
-                let vc = SFSafariViewController(url: siteURL!)
-                self.present(vc, animated: true, completion: nil)
-            
-                return
+        guard indexPath.section != Sections.userInfoSection else {
+            return
         }
-        
-        onConnectSite?()
+
+        //checks if section is the same section as the connect site button
+        if indexPath.row == lastRowInSection(indexPath.section) {
+            onConnectSite?()
+        }
+        else {
+            //pulls the URL from the URL array created in the blogListDataSource and displays it
+            var siteURLString = blogDataSource.siteURLS[indexPath.row]
+            siteURLString = siteURLString.hasPrefix("https://") ?
+                siteURLString : "https://" + siteURLString
+            guard let siteURL = URL(string: siteURLString) else {
+                return
+            }
+
+            let vc = SFSafariViewController(url: siteURL)
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 }
 
