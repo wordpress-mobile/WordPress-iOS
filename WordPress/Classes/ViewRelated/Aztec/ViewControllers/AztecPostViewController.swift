@@ -3554,6 +3554,36 @@ extension AztecPostViewController {
     }
 
     private func edit(_ imageAttachment: ImageAttachment) {
+
+        guard imageAttachment.mediaURL?.isGif == false else {
+            confirmEditingGIF(imageAttachment)
+            return
+        }
+
+        editAttachment(imageAttachment)
+    }
+
+    private func confirmEditingGIF(_ imageAttachment: ImageAttachment) {
+        let alertController = UIAlertController(title: GIFAlertStrings.title,
+                                                message: GIFAlertStrings.message,
+                                                preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(GIFAlertStrings.cancel) { _ in
+            if imageAttachment == self.currentSelectedAttachment {
+                self.currentSelectedAttachment = nil
+                self.resetMediaAttachmentOverlay(imageAttachment)
+                self.richTextView.refresh(imageAttachment)
+            }
+        }
+
+        alertController.addDefaultActionWithTitle(GIFAlertStrings.continue) { _ in
+            self.editAttachment(imageAttachment)
+        }
+
+        present(alertController, animated: true)
+    }
+
+    private func editAttachment(_ imageAttachment: ImageAttachment) {
         guard let image = imageAttachment.image else {
             return
         }
@@ -3562,13 +3592,13 @@ extension AztecPostViewController {
         mediaEditor.editingAlreadyPublishedImage = true
 
         mediaEditor.edit(from: self,
-                              onFinishEditing: { [weak self] images, actions in
-                                guard !actions.isEmpty, let image = images.first as? UIImage else {
-                                    // If the image wasn't edited, do nothing
-                                    return
-                                }
+                         onFinishEditing: { [weak self] images, actions in
+                            guard !actions.isEmpty, let image = images.first as? UIImage else {
+                                // If the image wasn't edited, do nothing
+                                return
+                            }
 
-                                self?.replace(attachment: imageAttachment, with: image, actions: actions)
+                            self?.replace(attachment: imageAttachment, with: image, actions: actions)
         })
     }
 
@@ -3584,4 +3614,5 @@ extension AztecPostViewController {
         }
         attachment.uploadID = media.uploadID
     }
+
 }

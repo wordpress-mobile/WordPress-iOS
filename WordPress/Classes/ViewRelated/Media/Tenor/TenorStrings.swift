@@ -23,4 +23,12 @@ extension String {
     static var tenorSearchLoading: String {
         return NSLocalizedString("Loading GIFs...", comment: "Phrase to show when the user has searched for GIFs and they are being loaded.")
     }
+
+}
+
+enum GIFAlertStrings {
+    static let title = NSLocalizedString("Warning", comment: "Editing GIF alert title.")
+    static let message = NSLocalizedString("Editing a GIF will remove its animation.", comment: "Editing GIF alert message.")
+    static let cancel = NSLocalizedString("Cancel", comment: "Editing GIF alert Cancel button.")
+    static let `continue` = NSLocalizedString("Continue", comment: "Editing GIF alert Continue button.")
 }
