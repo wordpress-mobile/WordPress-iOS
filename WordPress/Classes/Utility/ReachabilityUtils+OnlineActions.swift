@@ -34,11 +34,17 @@ extension ReachabilityUtils {
             object: nil,
             queue: .main,
             using: { _ in action() },
-            filter: { (notification) in
-                return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
+            filter: { (notification: Foundation.Notification) in
+                let key: String = Foundation.Notification.reachabilityKey
+                let userInfo: [AnyHashable: Any]? = notification.userInfo
+
+                guard (userInfo?[key]) != nil else {
+                    return false
+                }
+
+                return true
         })
     }
-
     /// Shows a generic non-blocking "No Connection" error message to the user.
     ///
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
