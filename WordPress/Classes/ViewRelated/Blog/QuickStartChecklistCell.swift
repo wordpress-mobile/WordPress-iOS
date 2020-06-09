@@ -34,16 +34,17 @@ class QuickStartChecklistCell: UITableViewCell {
     public var completed = false {
         didSet {
             if completed {
-                guard let completedTitleText = tour?.titleMarkedCompleted else {
+                guard let titleText = tour?.title else {
                     return
                 }
 
-                titleLabel.attributedText = NSAttributedString(string: completedTitleText,
+                titleLabel.attributedText = NSAttributedString(string: titleText,
                                                                attributes: [.strikethroughStyle: 1,
                                                                             .foregroundColor: UIColor.neutral(.shade30)])
                 // Overrides the existing accessibility hint in the tour property observer,
                 // because users don't need the hint repeated to them after a task is completed.
                 accessibilityHint = nil
+                accessibilityLabel = tour?.titleMarkedCompleted
                 descriptionLabel.textColor = .neutral(.shade30)
                 iconView?.tintColor = .neutral(.shade30)
             } else {
