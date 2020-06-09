@@ -2786,6 +2786,7 @@ extension AztecPostViewController {
         let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+
         let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
             if attachment == self.currentSelectedAttachment {
                 self.currentSelectedAttachment = nil
@@ -2814,6 +2815,7 @@ extension AztecPostViewController {
                     self.richTextView.remove(attachmentID: attachmentID)
             })
         }
+
         if let mediaUploadID = attachment.uploadID,
            let media = mediaCoordinator.media(withObjectID: mediaUploadID),
            let error = media.error {
@@ -2849,7 +2851,7 @@ extension AztecPostViewController {
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
 
-                if imageAttachment.isLoaded {
+                if imageAttachment.isLoaded && imageAttachment.mediaURL?.isGif == false {
                     alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
                                                                                          style: .default,
                                                                                          handler: { (action) in
