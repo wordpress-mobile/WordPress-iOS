@@ -134,13 +134,9 @@ class ReaderDetailCoordinator {
                           forSite: siteID.uintValue,
                           isFeed: isFeed,
                           success: { [weak self] post in
-                            guard let post = post else {
-                                return
-                            }
-
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post.postTitle)
+                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
             self?.view?.showError()
         })
@@ -153,13 +149,9 @@ class ReaderDetailCoordinator {
     private func fetch(_ url: URL) {
         service.fetchPost(at: url,
                           success: { [weak self] post in
-                            guard let post = post else {
-                                return
-                            }
-
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post.postTitle)
+                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.view?.showError()
