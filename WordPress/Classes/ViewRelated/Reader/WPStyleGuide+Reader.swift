@@ -44,7 +44,7 @@ extension WPStyleGuide {
         return .neutral(.shade10)
     }
 
-    @objc public class func readerCardBlogIconBorderColor() -> UIColor {
+    public class func readerCardBlogIconBorderColor() -> UIColor {
         if #available(iOS 13.0, *) {
             return UIColor(light: .gray(.shade0), dark: .systemGray5)
         } else {
@@ -52,7 +52,7 @@ extension WPStyleGuide {
         }
     }
 
-    @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
+    public class func readerCardFeaturedMediaBorderColor() -> UIColor {
         return readerCardBlogIconBorderColor()
     }
 
@@ -223,7 +223,7 @@ extension WPStyleGuide {
         label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
 
-    @objc public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
+    public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
         label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
 
