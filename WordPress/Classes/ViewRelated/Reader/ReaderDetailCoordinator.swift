@@ -116,6 +116,7 @@ class ReaderDetailCoordinator {
     /// - Parameter url: URL of the image or gif
     func presentImage(_ url: URL) {
         let imageViewController = WPImageViewController(url: url)
+        imageViewController.readerPost = post
         imageViewController.modalTransitionStyle = .crossDissolve
         imageViewController.modalPresentationStyle = .fullScreen
 
