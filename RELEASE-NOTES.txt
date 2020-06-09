@@ -2,6 +2,7 @@
 -----
 * [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
 * [**] Block editor: Adds support for theme colors and gradients.
+* [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 
 15.0
 -----
