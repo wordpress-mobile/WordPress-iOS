@@ -175,7 +175,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerBack]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch, .readerBack]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
