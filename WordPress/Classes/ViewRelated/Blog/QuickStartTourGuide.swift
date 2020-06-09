@@ -390,6 +390,7 @@ private extension QuickStartTourGuide {
         recentlyTouredBlog = nil
     }
 
+    // - TODO: Research if dispatching `NoticeAction.empty` is still necessary now that we use `.clearWithTag`.
     func dismissCurrentNotice() {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
         ActionDispatcher.dispatch(NoticeAction.empty)
