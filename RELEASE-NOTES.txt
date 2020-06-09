@@ -3,6 +3,7 @@
 * [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
 * [**] Block editor: Adds support for theme colors and gradients.
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
+* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 
 15.0
 -----
