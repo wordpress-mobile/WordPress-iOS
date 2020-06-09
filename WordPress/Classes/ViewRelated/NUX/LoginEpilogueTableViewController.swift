@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressAuthenticator
+import SafariServices
 
 
 // MARK: - LoginEpilogueTableViewController
@@ -136,7 +137,7 @@ extension LoginEpilogueTableViewController {
         // Site Rows
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
-
+        
         guard let loginCell = cell as? LoginEpilogueBlogCell else {
             return cell
         }
@@ -200,9 +201,22 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section != Sections.userInfoSection,
             indexPath.row == lastRowInSection(indexPath.section) else {
-            return
-        }
+                
+                //checks if section is the same section as the sites
+                if indexPath.section != 1 {
+                    return
+                }
+                //pulls the URL from the URL array created in the blogListDataSource and displays it
+                var siteURLString = String(blogDataSource.siteURLS[indexPath.row])
+                siteURLString = siteURLString.hasPrefix("https://") ? siteURLString : "https://" + siteURLString
+                let siteURL = URL(string: siteURLString)
 
+                let vc = SFSafariViewController(url: siteURL!)
+                self.present(vc, animated: true, completion: nil)
+            
+                return
+        }
+        
         onConnectSite?()
     }
 }

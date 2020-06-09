@@ -3,6 +3,8 @@ import Foundation
 import UIKit
 import WordPressShared
 
+
+
 private protocol BlogListDataSourceMapper {
     func map(_ data: [Blog]) -> [[Blog]]
 }
@@ -69,6 +71,10 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
+    
+    //Create array of urls
+    var siteURLS = [NSString]()
+
     override init() {
         super.init()
         // We can't decide if we're using recent sites until the results controller
@@ -316,7 +322,9 @@ extension BlogListDataSource: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }
+        
         let displayURL = blog.displayURL as String? ?? ""
+        siteURLS.append(blog.displayURL!)
         if let name = blog.settings?.name?.nonEmptyString() {
             cell.textLabel?.text = name
             cell.detailTextLabel?.text = displayURL
