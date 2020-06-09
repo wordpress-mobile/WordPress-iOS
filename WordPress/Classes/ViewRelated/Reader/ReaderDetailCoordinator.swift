@@ -151,7 +151,7 @@ class ReaderDetailCoordinator {
     /// Use this method to fetch a ReaderPost from a URL.
     /// - Parameter url: a post URL
     private func fetch(_ url: URL) {
-        service.fetchPost(at: postURL,
+        service.fetchPost(at: url,
                           success: { [weak self] post in
                             guard let post = post else {
                                 return
