@@ -190,13 +190,13 @@ struct QuickStartFollowTour: QuickStartTour {
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
-        let step2DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerBack, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.chevronLeft)))
+        let step2DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
+        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
 
-        let step3DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step3DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
-        let step3: WayPoint = (element: .readerSearch, description: step3DescriptionBase.highlighting(phrase: step3DescriptionTarget, icon: .gridicon(.search)))
+        let step3DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step3DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
+        let step3: WayPoint = (element: .readerBack, description: step3DescriptionBase.highlighting(phrase: step3DescriptionTarget, icon: .gridicon(.chevronLeft)))
 
         return [step1, step2, step3]
     }()
