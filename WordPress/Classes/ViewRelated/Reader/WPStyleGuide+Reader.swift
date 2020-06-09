@@ -28,7 +28,8 @@ extension WPStyleGuide {
     // MARK: - Reader Card Styles
 
     @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
-        return .neutral(.shade90)
+        return UIColor(light: .muriel(color: .gray, .shade90),
+                       dark: .muriel(color: .gray, .shade0))
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
@@ -220,7 +221,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
+        label.textColor = UIColor(light: .gray(.shade80), dark: .muriel(color: .gray, .shade0))
     }
 
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
