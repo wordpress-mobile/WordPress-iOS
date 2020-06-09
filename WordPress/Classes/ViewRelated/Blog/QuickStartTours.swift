@@ -194,11 +194,7 @@ struct QuickStartFollowTour: QuickStartTour {
         let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
         let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
 
-        let step3DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step3DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
-        let step3: WayPoint = (element: .readerBack, description: step3DescriptionBase.highlighting(phrase: step3DescriptionTarget, icon: .gridicon(.chevronLeft)))
-
-        return [step1, step2, step3]
+        return [step1, step2]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of following other sites.", comment: "This value is used to set the accessibility hint text for following the sites of other users.")

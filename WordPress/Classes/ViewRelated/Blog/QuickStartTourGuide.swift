@@ -175,7 +175,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch, .readerBack]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -195,11 +195,6 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         currentTourState = nextStep
-
-        if currentElement == .readerBack && navigationSettings.shouldSkipReaderBack() {
-            visited(.readerBack)
-            return
-        }
 
         showCurrentStep()
     }
