@@ -34,14 +34,11 @@ class QuickStartChecklistCell: UITableViewCell {
     public var completed = false {
         didSet {
             if completed {
-                guard let titleText = tour?.title else {
+                guard let completedTitleText = tour?.titleMarkedCompleted else {
                     return
                 }
 
-                let appendCompleted = NSLocalizedString("Completed: %@",
-                                                        comment: "Appends the word 'completed' to the Quick Start task title. Example: 'Completed: Create your site'")
-                let completedTitle = String(format: appendCompleted, titleText)
-                titleLabel.attributedText = NSAttributedString(string: completedTitle,
+                titleLabel.attributedText = NSAttributedString(string: completedTitleText,
                                                                attributes: [.strikethroughStyle: 1,
                                                                             .foregroundColor: UIColor.neutral(.shade30)])
                 // Overrides the existing accessibility hint in the tour property observer,
