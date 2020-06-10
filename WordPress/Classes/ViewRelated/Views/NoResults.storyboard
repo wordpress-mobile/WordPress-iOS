@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="30" y="105.5" width="315" height="456.5"/>
+                                        <rect key="frame" x="30" y="100" width="315" height="456.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                                 <rect key="frame" x="38" y="0.0" width="239" height="234"/>
@@ -92,7 +92,7 @@
                                 <constraints>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" constant="30" id="Gn9-QB-PCu"/>
                                     <constraint firstAttribute="trailing" secondItem="Mkl-mm-wtH" secondAttribute="trailing" constant="30" id="gZv-Ze-rOt"/>
-                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerY" secondItem="0Ae-eX-ae9" secondAttribute="centerY" id="kju-zT-gzN"/>
+                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="100" id="kju-zT-gzN"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -111,6 +111,8 @@
                         <outlet property="accessoryView" destination="czl-5D-gem" id="VNX-la-T42"/>
                         <outlet property="actionButton" destination="CPl-cH-d7b" id="aGa-gx-Vlh"/>
                         <outlet property="imageView" destination="Fwm-rl-dKS" id="dxy-k9-CRH"/>
+                        <outlet property="labelButtonStackView" destination="gjj-bC-32w" id="SpG-ND-9yD"/>
+                        <outlet property="labelStackView" destination="v7c-T9-kZq" id="EJk-7Y-Yz6"/>
                         <outlet property="noResultsView" destination="0Ae-eX-ae9" id="5Di-z7-FWM"/>
                         <outlet property="subtitleImageView" destination="3N8-XV-xJk" id="4CS-7n-hs3"/>
                         <outlet property="subtitleTextView" destination="pAg-XC-9IM" id="LSi-5l-rYL"/>
