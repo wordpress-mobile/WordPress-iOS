@@ -211,6 +211,10 @@ jobs:
             mkdir -p ../Artifacts
             mv /var/tmp/Debug-iphonesimulator/WordPress.zip "../Artifacts/WordPress-${VERSION_NAME}.zip"
           no_output_timeout: 60m
+      - run: 
+          name: Upload APP
+          command: |
+            curl --http1.1 https://${APPET_TOKEN}@api.appetize.io/v1/apps/${APPET_APPID} -F "file=@Artifacts/WordPress-${VERSION_NAME}.zip" -F "platform=ios"
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
