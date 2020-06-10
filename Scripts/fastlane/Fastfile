@@ -456,6 +456,8 @@ import "./ScreenshotFastfile"
         configuration: "Debug",
         xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
     )
+
+    zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
   end
 
 ########################################################################
