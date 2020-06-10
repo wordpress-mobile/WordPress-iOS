@@ -22,8 +22,7 @@ class ReaderWebView: WKWebView {
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
-        <link rel="stylesheet" type="text/css"
-              href="https://wordpress.com/calypso/evergreen/async-load-blocks-reader-full-post.84e76b170c6d683fd52f.min.css">
+        <link rel="stylesheet" type="text/css" href="https://wordpress.com/calypso/reader-mobile.css">
         <style>
         \(cssColors())
         \(cssStyles())
