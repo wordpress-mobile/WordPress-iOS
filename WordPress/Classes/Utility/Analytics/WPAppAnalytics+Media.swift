@@ -20,21 +20,29 @@ public extension WPAppAnalytics {
      - returns: Dictionary
      */
     @objc class func properties(for media: Media) -> Dictionary<String, Any> {
-        var properties = [String: Any]()
-        properties[MediaProperties.mime] = media.mimeType()
-        if let fileExtension = media.fileExtension(), !fileExtension.isEmpty {
+        var properties: [String: Any] = [String: Any]()
+
+        if let mimeType: String = media.mimeType() {
+            properties[MediaProperties.mime] = mimeType
+        }
+
+        if let fileExtension: String = media.fileExtension(), !fileExtension.isEmpty {
             properties[MediaProperties.fileExtension] = fileExtension
         }
-        if media.mediaType == .image {
-            if let width = media.width, let height = media.height {
-                let megaPixels = round((width.floatValue * height.floatValue) / 1000000)
-                properties[MediaProperties.megapixels] = Int(megaPixels)
+
+        let mediaType: MediaType = media.mediaType
+
+        if mediaType == .image {
+            if let width: NSNumber = media.width, let height: NSNumber = media.height {
+                let value: Int = 100000
+                let megaPixels: Int = (width.intValue * height.intValue) / value
+                properties[MediaProperties.megapixels] = megaPixels
             }
-        } else if media.mediaType == .video {
+        } else if mediaType == .video {
             properties[MediaProperties.durationSeconds] = media.length
         }
         if let filesize = media.filesize {
-            properties[MediaProperties.bytes] = filesize.int64Value * 1024
+            properties[MediaProperties.bytes] = NSNumber(value: filesize.int64Value * 1024)
         }
         return properties
     }
