@@ -13,6 +13,7 @@ extern NSString *const WPMobileReaderDetailURL;
 extern NSString *const WPAutomatticMainURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
+extern NSString *const WPAutomatticCCPAPrivacyNoticeURL;
 extern NSString *const WPAutomatticCookiesURL;
 extern NSString *const WPAutomatticAppsBlogURL;
 extern NSString *const WPGithubMainURL;
