@@ -67,6 +67,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        if #available(iOS 13.0, *) {
+            // Overrides the current user interface appearance
+            AppAppearance.overrideAppearance()
+        }
+
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         CrashLogging.start(withDataProvider: crashLoggingProvider)
 

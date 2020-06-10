@@ -7,6 +7,9 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
+    /// Content scroll view
+    @IBOutlet weak var scrollView: UIScrollView!
+
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
 
@@ -19,11 +22,17 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the attribution view
     @IBOutlet weak var attributionViewContainer: UIStackView!
 
+    /// Wrapper for the toolbar
+    @IBOutlet weak var toolbarContainerView: UIView!
+
     /// Attribution view for Discovery posts
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
 
     /// The actual header
     private let header: ReaderDetailHeaderView = .loadFromNib()
+
+    /// Bottom toolbar
+    private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
@@ -35,14 +44,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         super.viewDidLoad()
 
         applyStyles()
+        configureWebView()
         configureShareButton()
         configureHeader()
+        configureToolbar()
+        configureScrollView()
         observeWebViewHeight()
         coordinator?.start()
     }
 
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
+        toolbar.configure(for: post, in: self)
         header.configure(for: post)
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
@@ -77,6 +90,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         webView.scrollView.isScrollEnabled = false
     }
 
+    /// Configure the webview
+    private func configureWebView() {
+        webView.navigationDelegate = self
+    }
+
     /// Updates the webview height constraint with it's height
     private func observeWebViewHeight() {
         scrollObserver = webView.scrollView.observe(\.contentSize, options: .new) { [weak self] _, change in
@@ -84,7 +102,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
                 return
             }
 
-            self?.webViewHeight.constant = height
+            /// ScrollHeight returned by JS is always more accurated as the value from the contentSize
+            /// (except for a few times when it returns a very big weird number)
+            /// We use that value so the content is not displayed with weird empty space at the bottom
+            ///
+            self?.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
+                guard let webViewHeight = webViewHeight as? CGFloat else {
+                    self?.webViewHeight.constant = height
+                    return
+                }
+
+                self?.webViewHeight.constant = min(height, webViewHeight)
+            })
         }
     }
 
@@ -109,6 +138,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    private func configureToolbar() {
+        toolbarContainerView.addSubview(toolbar)
+        toolbarContainerView.pinSubviewToAllEdges(toolbar)
+        toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
     private func configureDiscoverAttribution(_ post: ReaderPost) {
         if post.sourceAttributionStyle() == .none {
             attributionView.isHidden = true
@@ -120,6 +155,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
         }
+    }
+
+    /// Add content and scroll insets based on the toolbar height
+    ///
+    private func configureScrollView() {
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
     }
 
     /// Ask the coordinator to present the share sheet
@@ -151,6 +192,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Returns: A `ReaderDetailWebviewViewController` instance
     @objc class func controllerWithPostURL(_ url: URL) -> ReaderDetailWebviewViewController {
         let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.postURL = url
+        controller.coordinator = coordinator
 
         return controller
     }
@@ -178,6 +222,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
+        static let bottomMargin: CGFloat = 16
     }
 }
 
@@ -189,8 +234,37 @@ extension ReaderDetailWebviewViewController: StoryboardLoadable {
     }
 }
 
+// MARK: - Reader Card Discover
+
 extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
+    }
+}
+
+// MARK: - Transitioning Delegate
+
+extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelegate {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - Navigation Delegate
+
+extension ReaderDetailWebviewViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated {
+            if let url = navigationAction.request.url {
+                coordinator?.handle(url)
+            }
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
     }
 }
