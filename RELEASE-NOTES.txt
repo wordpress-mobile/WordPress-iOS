@@ -7,6 +7,7 @@
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 * [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [**] Quick Start: added VoiceOver support to the Next Steps section.
 
 15.0
 -----
