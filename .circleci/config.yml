@@ -208,8 +208,8 @@ jobs:
             VERSION_NAME="all-land-build-${CIRCLE_BUILD_NUM}"
             echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
 
-            mkdir -p Artifacts
-            mv /var/tmp/Debug-iphonesimulator/WordPress.zip "Artifacts/WordPress-${VERSION_NAME}.zip"
+            mkdir -p ../Artifacts
+            mv /var/tmp/Debug-iphonesimulator/WordPress.zip "../Artifacts/WordPress-${VERSION_NAME}.zip"
           no_output_timeout: 60m
       - store_artifacts:
           path: Artifacts
