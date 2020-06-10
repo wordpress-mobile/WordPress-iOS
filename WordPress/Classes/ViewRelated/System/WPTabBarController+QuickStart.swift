@@ -10,7 +10,7 @@ extension WPTabBarController {
 
             guard let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
-                [.newpost, .readerTab].contains(element),
+                [.readerTab].contains(element),
                 let tabBar = self?.tabBar else {
                     return
             }
@@ -18,12 +18,8 @@ extension WPTabBarController {
             let newSpotlight = QuickStartSpotlightView()
             tabBar.addSubview(newSpotlight)
 
-            let x: CGFloat
-            if element == .newpost {
-                x = tabBar.bounds.size.width / 2.0
-            } else {
-                x = tabBar.bounds.size.width * 0.40 - newSpotlight.frame.size.width
-            }
+            let x = tabBar.bounds.size.width / 2.0
+
             newSpotlight.frame = CGRect(x: x, y: spotlightViewOffset, width: newSpotlight.frame.width, height: newSpotlight.frame.height)
             spotlightView = newSpotlight
         }
