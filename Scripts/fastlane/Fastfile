@@ -435,6 +435,29 @@ import "./ScreenshotFastfile"
     end
   end
 
+  #####################################################################################
+  # build_for_translation_review
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app with pending translations for reviewers  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_for_translation_review 
+  #
+  # Example:
+  # bundle exec fastlane build_for_translation_review 
+  #####################################################################################
+  desc "Builds and uploads for translation review"
+  lane :build_for_translation_review do | options |
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    xcbuild(
+        workspace: "../WordPress.xcworkspace",
+        scheme: "WordPress",
+        configuration: "Debug",
+        xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
+    )
+  end
+
 ########################################################################
 # Cnfigure Lanes
 ########################################################################
