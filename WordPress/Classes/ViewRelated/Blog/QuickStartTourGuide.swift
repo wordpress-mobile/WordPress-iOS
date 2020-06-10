@@ -9,6 +9,7 @@ open class QuickStartTourGuide: NSObject {
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
+    static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
     @objc static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
@@ -344,9 +345,17 @@ private extension QuickStartTourGuide {
             return
         }
 
-        showStepNotice(waypoint.description)
+        if let state = currentTourState,
+            state.tour.showWaypointNotices {
+            showStepNotice(waypoint.description)
+        }
 
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: waypoint.element])
+        let userInfo: [String: Any] = [
+            QuickStartTourGuide.notificationElementKey: waypoint.element,
+            QuickStartTourGuide.notificationDescriptionKey: waypoint.description
+            ]
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: userInfo)
     }
 
     func showStepNotice(_ description: NSAttributedString) {

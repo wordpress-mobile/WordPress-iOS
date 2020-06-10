@@ -12,12 +12,19 @@ protocol QuickStartTour {
     var suggestionYesText: String { get }
     var waypoints: [WayPoint] { get }
     var accessibilityHintText: String { get }
+    var showWaypointNotices: Bool { get }
 }
 
 extension QuickStartTour {
     var waypoints: [WayPoint] {
         get {
             return []
+        }
+    }
+
+    var showWaypointNotices: Bool {
+        get {
+            return true
         }
     }
 }
@@ -167,7 +174,8 @@ struct QuickStartPublishTour: QuickStartTour {
     let icon = UIImage.gridicon(.create)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
+    let showWaypointNotices = false
+    
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
