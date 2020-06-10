@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.org.wordpress.alpha</string>
+		<string>group.voyage.beau.alpha</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

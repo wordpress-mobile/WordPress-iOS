@@ -12,12 +12,10 @@
 		<string>applinks:links.wp.a8cmail.com</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.org.wordpress.internal</string>
-	</array>
+	<array/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>99KV9Z6BKV.org.wordpress.internal</string>
+		<string>$(AppIdentifierPrefix)C7B8L9KZV4.voyage.beau.internal</string>
 	</array>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1150"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "93E5283919A7741A003A1A9C"
-               BuildableName = "WordPressTodayWidget.appex"
-               BlueprintName = "WordPressTodayWidget"
+               BlueprintIdentifier = "733F36022126197800988727"
+               BuildableName = "BeauVoyageNotificationContentExtension.appex"
+               BlueprintName = "BeauVoyageNotificationContentExtension"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,7 +31,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
                BuildableName = "WordPress.app"
-               BlueprintName = "WordPress"
+               BlueprintName = "BeauVoyage"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,36 +42,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
-            ReferencedContainer = "container:WordPress.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8511CFB51C607A7000B7CEED"
-               BuildableName = "WordPressScreenshotGeneration.xctest"
-               BlueprintName = "WordPressScreenshotGeneration"
-               ReferencedContainer = "container:WordPress.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF27168E1CAAC87A0006E2D4"
-               BuildableName = "WordPressUITests.xctest"
-               BlueprintName = "WordPressUITests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -86,17 +57,16 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
-      <IDEBundleIdentifierRunnable>
-      </IDEBundleIdentifierRunnable>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -111,7 +81,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

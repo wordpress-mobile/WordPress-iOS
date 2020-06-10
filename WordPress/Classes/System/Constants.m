@@ -26,22 +26,22 @@ NSString *const WPComDomain                                         = @"wordpres
 /// Notifications Constants
 ///
 #ifdef DEBUG
-NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
+NSString *const  WPPushNotificationAppId                            = @"voyage.beau.appstore.dev";
 #else
 #ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
+NSString *const   WPPushNotificationAppId                           = @"voyage.beau.internal";
 #else
-NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
+NSString *const WPPushNotificationAppId                             = @"voyage.beau.appstore";
 #endif
 #endif
 /// Keychain Constants
 ///
 #ifdef INTERNAL_BUILD
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
+NSString *const WPAppGroupName                                      = @"group.voyage.beau.internal";
+NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.voyage.beau.internal";
 #else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
-NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
+NSString *const WPAppGroupName                                      = @"group.voyage.beau";
+NSString *const WPAppKeychainAccessGroup                            = @"C7B8L9KZV4.group.voyage.beau";
 #endif
 
 /// Notification Content Extension Constants

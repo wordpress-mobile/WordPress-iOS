@@ -38,34 +38,34 @@
                 (SUBQUERY(
                 $extensionItem.attachments,
                 $attachment,
-                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.image&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.png&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.jpeg&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.jpeg-2000&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.tiff&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.compuserve.gif&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.microsoft.bmp&quot;
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.png"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg-2000"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.tiff"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.compuserve.gif"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.microsoft.bmp"
                 ).@count &gt;= 1
                 OR
                 SUBQUERY(
                 $extensionItem.attachments,
                 $attachment,
-                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.plain-text&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.text&quot;
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.plain-text"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
                 ).@count == 1
                 OR
                 SUBQUERY(
                 $extensionItem.attachments,
                 $attachment,
-                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.url&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.file-url&quot;
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.file-url"
                 ).@count == 1)
                 AND
                 SUBQUERY(
                 $extensionItem.attachments,
                 $attachment,
-                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.appextension.find-login-action&quot;
-                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;org.appextension.save-login-action&quot;
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.find-login-action"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.save-login-action"
                 ).@count == 0
                 ).@count &gt;= 1
             </string>

@@ -234,9 +234,7 @@
 			<key>CFBundleURLName</key>
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>GOOGLE_LOGIN_SCHEME_ID</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -251,7 +249,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>4.0</string>
+	<string>11.0</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -274,7 +272,7 @@
 		<string>Noticons.ttf</string>
 	</array>
 	<key>UIApplicationShortcutWidget</key>
-	<string>org.wordpress.internal.WordPressTodayWidget</string>
+	<string>voyage.beau.BeauVoyageTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

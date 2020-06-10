@@ -25,7 +25,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -35,8 +35,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8511CFB51C607A7000B7CEED"
-               BuildableName = "WordPressScreenshotGeneration.xctest"
-               BlueprintName = "WordPressScreenshotGeneration"
+               BuildableName = "BeauVoyageScreenshotGeneration.xctest"
+               BlueprintName = "BeauVoyageScreenshotGeneration"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

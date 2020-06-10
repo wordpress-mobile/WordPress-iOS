@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
                BuildableName = "WordPress.app"
-               BlueprintName = "WordPress"
+               BlueprintName = "BeauVoyage"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -65,8 +65,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E16AB92914D978240047A2E5"
-               BuildableName = "WordPressTest.xctest"
-               BlueprintName = "WordPressTest"
+               BuildableName = "BeauVoyageTest.xctest"
+               BlueprintName = "BeauVoyageTest"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -148,7 +148,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -190,7 +190,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
+            BlueprintName = "BeauVoyage"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
