@@ -91,11 +91,13 @@ import Gridicons
 
     // MARK: - Public Methods
     @objc open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
-        guard let replacementText = replacement,
-              let textToReplace = text,
-              let selectedRange = textView.selectedTextRange,
-              let newPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
-              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else {
+        guard
+            let replacementText: String = replacement,
+            let textToReplace: NSString = text,
+            let selectedRange: UITextRange = textView.selectedTextRange,
+            let newPosition: UITextPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
+            let newRange: UITextRange = textView.textRange(from: newPosition, to: selectedRange.start)
+        else {
             return
         }
 
@@ -177,24 +179,24 @@ import Gridicons
     }
 
     @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
-        guard let editViewController = FullScreenCommentReplyViewController.newEdit() else {
+        guard let editViewController: FullScreenCommentReplyViewController = FullScreenCommentReplyViewController.newEdit() else {
             return
         }
 
-        guard let presenter = WPTabBarController.sharedInstance() else {
+        guard let presenter: WPTabBarController = WPTabBarController.sharedInstance() else {
             return
         }
 
 
         // Inform any listeners
-        let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
+        let respondsToWillEnter: Bool = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
 
         if respondsToWillEnter {
             delegate?.replyTextView?(self, willEnterFullScreen: editViewController)
         }
 
         // Snapshot the first reponder status before presenting so we can restore it later
-        let didHaveFirstResponder = textView.isFirstResponder
+        let didHaveFirstResponder: Bool = textView.isFirstResponder
 
         editViewController.content = textView.text
 
@@ -202,7 +204,7 @@ import Gridicons
             editViewController.isModalInPresentation = true
         }
 
-        editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
+        editViewController.onExitFullscreen = { (shouldSave: Bool, updatedContent: String) in
             self.text = updatedContent
 
             // If the user was editing before they entered fullscreen, then restore that state
@@ -225,7 +227,7 @@ import Gridicons
 
         self.resignFirstResponder()
 
-        let navController = LightNavigationController(rootViewController: editViewController)
+        let navController: LightNavigationController = LightNavigationController(rootViewController: editViewController)
         presenter.present(navController, animated: true)
     }
 
@@ -324,7 +326,7 @@ import Gridicons
         separatorsView.topVisible = true
 
         // Recognizers
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
+        let recognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
         gestureRecognizers = [recognizer]
 
         /// Initial Sizing: Final step, since this depends on other control(s) initialization
@@ -379,7 +381,9 @@ import Gridicons
     }
 
     fileprivate func transitionReplyButton(animated: Bool = true) {
-        replyButtonTrailingConstraint.constant = isFirstResponder ? 0.0 : -(frame.width * 2)
+        let width: CGFloat = frame.width
+
+        replyButtonTrailingConstraint.constant = isFirstResponder ? 0.0 : -(width * 2)
 
         let updateFrame = {
             self.layoutIfNeeded()
@@ -419,8 +423,13 @@ private extension ReplyTextView {
     /// Padding: Bezier Margins (Top / Bottom) + Bezier Constraints (Top / Bottom)
     ///
     var contentPadding: CGFloat {
-        return bezierContainerView.layoutMargins.top + bezierContainerView.layoutMargins.bottom
-                + bezierTopConstraint.constant + bezierBottomConstraint.constant
+        let layoutMargins: UIEdgeInsets = bezierContainerView.layoutMargins
+        let top: CGFloat = layoutMargins.top
+        let bottom: CGFloat = layoutMargins.bottom
+        let topConstraint: CGFloat = bezierTopConstraint.constant
+        let bottomConstraint: CGFloat = bezierBottomConstraint.constant
+
+        return top + bottom + topConstraint + bottomConstraint
     }
 
     /// Returns the Content Height (non capped).
