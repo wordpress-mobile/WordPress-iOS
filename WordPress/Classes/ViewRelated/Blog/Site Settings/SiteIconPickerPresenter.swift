@@ -18,7 +18,7 @@ class SiteIconPickerPresenter: NSObject {
 
     // MARK: - Private Properties
 
-    fileprivate let noResultsView = NoResultsViewController.controller()
+    fileprivate let noResultsView: NoResultsViewController = NoResultsViewController.controller()
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
     /// Media Library Data Source
@@ -91,7 +91,7 @@ class SiteIconPickerPresenter: NSObject {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
-            imageCropViewController.onCompletion = { [weak self] image, modified in
+            imageCropViewController.onCompletion = { [weak self] (image: UIImage, modified: Bool) in
                 guard let self = self else {
                     return
                 }
@@ -108,7 +108,7 @@ class SiteIconPickerPresenter: NSObject {
                                              post: nil,
                                              progress: nil,
                                              thumbnailCallback: nil,
-                                             completion: { (media, error) in
+                                             completion: { (media: Media?, error: Error?) in
                         guard let media = media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
@@ -121,7 +121,7 @@ class SiteIconPickerPresenter: NSObject {
                                                  success: {
                             WPAnalytics.track(.siteSettingsSiteIconUploaded)
                             self.onCompletion?(media, nil)
-                        }, failure: { (error) in
+                        }, failure: { (error: Error?) in
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
                         })
@@ -138,8 +138,8 @@ class SiteIconPickerPresenter: NSObject {
 
             self?.updateSearchBar(mediaPicker: picker)
 
-            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
-            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+            let isNotSearching: Bool = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+            let hasNoAssets: Bool = self?.mediaLibraryDataSource.numberOfAssets() == 0
 
             if isNotSearching && hasNoAssets {
                 self?.noResultsView.removeFromView()
@@ -156,8 +156,8 @@ class SiteIconPickerPresenter: NSObject {
     }
 
     fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
-        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
-        let hasAssets = mediaLibraryDataSource.numberOfAssets() > 0
+        let isSearching: Bool = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets: Bool = mediaLibraryDataSource.numberOfAssets() > 0
 
         if mediaLibraryDataSource.dataSourceType == .mediaLibrary && (isSearching || hasAssets) {
             mediaPicker.showSearchBar()
@@ -219,20 +219,20 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             let exporter = MediaAssetExporter(asset: phAsset)
             exporter.imageOptions = MediaImageExporter.Options()
 
-            exporter.export(onCompletion: { [weak self](assetExport) in
+            exporter.export(onCompletion: { [weak self] (assetExport: MediaExport) in
                 guard let image = UIImage(contentsOfFile: assetExport.url.path) else {
                     self?.showErrorLoadingImageMessage()
                     return
                 }
                 self?.showImageCropViewController(image)
 
-            }, onError: { [weak self](error) in
+                }, onError: { [weak self] (error: Error?) in
                 self?.showErrorLoadingImageMessage()
             })
         case let media as Media:
             showLoadingMessage()
             originalMedia = media
-            MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image, error) in
+            MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image: UIImage?, error: Error?) in
                 guard let image = image else {
                     self?.showErrorLoadingImageMessage()
                     return
