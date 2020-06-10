@@ -101,8 +101,8 @@ extension WPTabBarController {
     /// switches to a menu item topic whose title matched the passed value
     func switchToTitle(_ title: String) {
         navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            $0 == title
+        readerTabViewModel.switchToTab(where: { (value: String) in
+            value == title
         })
     }
 }
