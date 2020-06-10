@@ -1581,36 +1581,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showNotificationPrimerAlert
-{
-    if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
-        return;
-    }
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (defaultAccount == nil) {
-        return;
-    }
-    [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {
-        if (enabled == UNAuthorizationStatusNotDetermined) {
-            [NSUserDefaults standardUserDefaults].notificationPrimerAlertWasDisplayed = YES;
-
-            FancyAlertViewController *alert = [FancyAlertViewController makeNotificationPrimerAlertControllerWithApproveAction:^(FancyAlertViewController* controller) {
-                [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^() {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [controller dismissViewControllerAnimated:true completion:^{}];
-                    });
-                }];
-            }];
-            alert.modalPresentationStyle = UIModalPresentationCustom;
-            alert.transitioningDelegate = self;
-
-            [self.tabBarController presentViewController:alert animated:YES completion:nil];
-        }
-    }];
-}
-
 #pragma mark - Remove Site
 
 - (void)showRemoveSiteAlert

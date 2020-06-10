@@ -663,6 +663,30 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.present(controller, animated: true)
     }
 
+    func gutenbergDidRequestUnsupportedBlockFallback(for block: Block) {
+        do {
+            let controller = try GutenbergWebNavigationController(with: post, block: block)
+            showGutenbergWeb(controller)
+        } catch {
+            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            return showUnsupportedBlockUnexpectedErrorAlert()
+        }
+    }
+
+    func showGutenbergWeb(_ controller: GutenbergWebNavigationController) {
+        controller.onSave = { [weak self] newBlock in
+            self?.gutenberg.replace(block: newBlock)
+        }
+        present(controller, animated: true)
+    }
+
+    func showUnsupportedBlockUnexpectedErrorAlert() {
+        WPError.showAlert(
+            withTitle: NSLocalizedString("Error", comment: "Generic error alert title"),
+            message: NSLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
+            withSupportButton: false
+        )
+    }
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
