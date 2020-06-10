@@ -162,7 +162,7 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     func mapViewModel(_ viewModel: PublishSettingsViewModel, presenter: ImmuTablePresenter) -> ImmuTable {
 
-        let rows: [ImmuTableRow] = viewModel.cells.map { cell in
+        let rows: [ImmuTableRow] = viewModel.cells.map { (cell: PublishSettingsCell) in
             switch cell {
             case .dateTime:
                 return DateAndTimeRow(
@@ -177,11 +177,11 @@ private struct DateAndTimeRow: ImmuTableRow {
         let footerText: String?
 
         if let date = viewModel.date {
-            let publishedOnString = viewModel.dateTimeFormatter.string(from: date)
+            let publishedOnString: String = viewModel.dateTimeFormatter.string(from: date)
 
-            let offsetInHours = viewModel.timeZone.secondsFromGMT(for: date) / 60 / 60
+            let offsetInHours: Int = viewModel.timeZone.secondsFromGMT(for: date) / 60 / 60
             let offsetTimeZone = OffsetTimeZone(offset: Float(offsetInHours))
-            let offsetLabel = offsetTimeZone.label
+            let offsetLabel: String = offsetTimeZone.label
 
             switch viewModel.state {
             case .scheduled, .immediately:
