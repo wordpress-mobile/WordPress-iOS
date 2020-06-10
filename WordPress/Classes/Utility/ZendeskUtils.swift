@@ -462,6 +462,7 @@ private extension ZendeskUtils {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: getHighestPriorityPlan()))
         requestConfig.customFields = ticketFields
 
         // Set tags
@@ -648,6 +649,28 @@ private extension ZendeskUtils {
         return blogInfo.joined(separator: Constants.blogSeperator)
     }
 
+
+    /// Retrieves the highest priority plan, if it exists
+    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    func getHighestPriorityPlan() -> String {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        let allBlogs = blogService.blogsForAllAccounts()
+
+        let unlocalizedPlans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+
+        let plans = (unlocalizedPlans.isEmpty ? Set(allBlogs.compactMap { $0.planTitle }) : unlocalizedPlans)
+            .map { $0 == "Business" ? "business_professional" : $0.lowercased() }
+
+        for plan in Constants.planPriority {
+            if plans.contains(plan) {
+                return plan
+            }
+        }
+        // in case no existing plan was found, but there still is at least one unlocalized plan
+        return plans.first ?? ""
+    }
+
     static func getTags() -> [String] {
 
         let context = ContextManager.sharedInstance().mainContext
@@ -659,11 +682,7 @@ private extension ZendeskUtils {
             return [Constants.wpComTag]
         }
 
-        // Get all unique site plans
-        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
-        if tags.count == 0 {
-            tags = allBlogs.compactMap { $0.planTitle }.unique
-        }
+        var tags = [String]()
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
@@ -956,13 +975,14 @@ private extension ZendeskUtils {
         static let logFieldCharacterLimit = 50000
         static let sourcePlatform = "mobile_-_ios"
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
+        static let planPriority = ["ecommerce", "business_professional", "premium", "personal", "blogger", "free"]
     }
 
     enum TicketFieldIDs {
         // Zendesk expects this as NSNumber. However, it is defined as Int64 to satisfy 32-bit devices (ex: iPhone 5).
         // Which means it has to be converted to NSNumber when sending to Zendesk.
         static let form: Int64 = 360000010286
-
+        static let plan: Int64 = 25175963
         static let appVersion: Int64 = 360000086866
         static let allBlogs: Int64 = 360000087183
         static let deviceFreeSpace: Int64 = 360000089123
