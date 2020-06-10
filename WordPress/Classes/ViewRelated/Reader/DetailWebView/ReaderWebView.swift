@@ -35,9 +35,6 @@ class ReaderWebView: WKWebView {
             document.addEventListener('DOMContentLoaded', function(event) {
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
-
-                // Make all images tappable
-                document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
             })
         </script>
         </html>
@@ -58,6 +55,9 @@ class ReaderWebView: WKWebView {
                     el.outerHTML = el.outerHTML.replace(regex, element)
                 })
             })
+
+            // Make all images tappable
+            document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
         """, completionHandler: nil)
     }
 
