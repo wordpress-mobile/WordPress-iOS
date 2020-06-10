@@ -5,6 +5,9 @@ class ReaderDetailCoordinator {
     /// A post to be displayed
     var post: ReaderPost?
 
+    /// A post URL to be loaded and be displayed
+    var postURL: URL?
+
     /// Reader Post Service
     private let service: ReaderPostService
 
@@ -13,6 +16,9 @@ class ReaderDetailCoordinator {
 
     /// Post Sharing Controller
     private let sharingController: PostSharingController
+
+    /// Reader Link Router
+    private let readerLinkRouter: UniversalLinkRouter
 
     /// Reader View
     private weak var view: ReaderDetailView?
@@ -37,10 +43,12 @@ class ReaderDetailCoordinator {
     init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
+         readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
         self.service = service
         self.topicService = topicService
         self.sharingController = sharingController
+        self.readerLinkRouter = readerLinkRouter
         self.view = view
     }
 
@@ -52,6 +60,8 @@ class ReaderDetailCoordinator {
             view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
+        } else if let postURL = postURL {
+            fetch(postURL)
         }
     }
 
@@ -97,8 +107,20 @@ class ReaderDetailCoordinator {
         }
 
         if let path = path, let linkURL = URL(string: path) {
-            presentWebViewControllerWithURL(linkURL)
+            presentWebViewController(linkURL)
         }
+    }
+
+    /// Loads an image (or GIF) from a URL and displays it in fullscreen
+    ///
+    /// - Parameter url: URL of the image or gif
+    func presentImage(_ url: URL) {
+        let imageViewController = WPImageViewController(url: url)
+        imageViewController.readerPost = post
+        imageViewController.modalTransitionStyle = .crossDissolve
+        imageViewController.modalPresentationStyle = .fullScreen
+
+        viewController?.present(imageViewController, animated: true)
     }
 
     /// Requests a ReaderPost from the service and updates the View.
@@ -112,14 +134,26 @@ class ReaderDetailCoordinator {
                           forSite: siteID.uintValue,
                           isFeed: isFeed,
                           success: { [weak self] post in
-                            guard let post = post else {
-                                return
-                            }
-
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post.postTitle)
+                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
+            self?.view?.showError()
+        })
+    }
+
+    /// Requests a ReaderPost from the service and updates the View.
+    ///
+    /// Use this method to fetch a ReaderPost from a URL.
+    /// - Parameter url: a post URL
+    private func fetch(_ url: URL) {
+        service.fetchPost(at: url,
+                          success: { [weak self] post in
+                            self?.post = post
+                            self?.renderPostAndBumpStats()
+                            self?.view?.show(title: post?.postTitle)
+        }, failure: { [weak self] error in
+            DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.view?.showError()
         })
     }
@@ -180,6 +214,25 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
+    /// Given a URL presents it the best way possible.
+    ///
+    /// If it's an image, shows it fullscreen.
+    /// If it's a post, open a new detail screen.
+    /// If it's a regular URL, open it in the webview controller
+    ///
+    /// - Parameter url: the URL to be handled
+    func handle(_ url: URL) {
+        if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
+            presentImage(url)
+        } else if readerLinkRouter.canHandle(url: url) {
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
+        } else if url.isWordPressDotComPost {
+            presentReaderDetail(url)
+        } else {
+            presentWebViewController(url)
+        }
+    }
+
     /// Show the featured image fullscreen
     ///
     private func showFeaturedImage(_ sender: CachedAnimatedImageView) {
@@ -201,10 +254,17 @@ class ReaderDetailCoordinator {
         viewController?.present(controller, animated: true)
     }
 
-    /// Displays a specific URL in a separated View Controller
+    /// Given a URL presents it in a new Reader detail screen
+    ///
+    private func presentReaderDetail(_ url: URL) {
+        let readerDetail = ReaderDetailWebviewViewController.controllerWithPostURL(url)
+        viewController?.navigationController?.pushViewController(readerDetail, animated: true)
+    }
+
+    /// Given a URL presents it in a web view controller screen
     ///
     /// - Parameter url: the URL to be loaded
-    private func presentWebViewControllerWithURL(_ url: URL) {
+    private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
