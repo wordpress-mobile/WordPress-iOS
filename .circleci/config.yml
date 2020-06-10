@@ -6,6 +6,14 @@ orbs:
   git: wordpress-mobile/git@1.0
   slack: circleci/slack@3.4.2
 
+parameters:
+  translation_review_build:
+    type: boolean
+    default: false
+  translation_review_lang_id:
+    type: string
+    default: all-lang
+
 commands:
   fix-path:
     steps:
@@ -170,9 +178,37 @@ jobs:
           webhook: '${SLACK_BUILD_WEBHOOK}'
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
+  translation-review-build:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run: 
+          name: Install other tools
+          command: |
+            brew unlink python@2
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: | 
+            bundle exec fastlane build_for_translation_review
+          no_output_timeout: 60m
 
 workflows:
   wordpress_ios:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Build Tests
       - Unit Tests:
@@ -216,6 +252,7 @@ workflows:
           device: iPad Air \\(3rd generation\\)
           requires: [ "Optional Tests" ]
   Installable Build:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Hold:
           type: approval
@@ -228,11 +265,16 @@ workflows:
             branches:
               ignore: /pull\/[0-9]+/
   Release Build:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Release Build: 
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/ 
+              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
+  Translation Review Build:
+    when: << pipeline.parameters.translation_review_build >>
+    jobs:
+      - translation-review-build
 
