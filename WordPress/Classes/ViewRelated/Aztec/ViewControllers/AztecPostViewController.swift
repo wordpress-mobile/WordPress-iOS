@@ -3576,7 +3576,7 @@ extension AztecPostViewController {
             }
         }
 
-        alertController.addDefaultActionWithTitle(GIFAlertStrings.continue) { _ in
+        alertController.addActionWithTitle(GIFAlertStrings.edit, style: .destructive) { _ in
             self.editAttachment(imageAttachment)
         }
 
