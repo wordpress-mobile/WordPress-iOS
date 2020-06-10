@@ -64,6 +64,14 @@ import WordPressFlux
         self.viewController = viewController
         self.newPost = newPost
         self.newPage = newPage
+
+        super.init()
+        
+        listenForQuickStart()
+    }
+
+    deinit {
+        quickStartObserver = nil
     }
 
     /// Should be called any time the `viewController`'s trait collections will change. Dismisses when horizontal class changes to transition from .popover -> .custom
@@ -110,15 +118,12 @@ import WordPressFlux
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
+            QuickStartTourGuide.find()?.visited(.newpost)
         })
     }
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
-        let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
-                                            image: .gridicon(.posts),
-                                            identifier: "blogPostButton",
-                                            target: self,
-                                            selector: #selector(showNewPost))
+        let postsButton = makePostsButton()
         let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
                                             image: .gridicon(.pages),
                                             identifier: "sitePageButton",
@@ -130,6 +135,17 @@ import WordPressFlux
         setupPresentation(on: actionSheetController, for: traitCollection)
 
         return actionSheetController
+    }
+
+    private func makePostsButton() -> ActionSheetButton {
+        let highlight: Bool = QuickStartTourGuide.find()?.shouldSpotlight(.newpost) ?? false
+
+        return ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
+                                 image: .gridicon(.posts),
+                                 identifier: "blogPostButton",
+                                 target: self,
+                                 selector: #selector(showNewPost),
+                                 highlight: highlight)
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
@@ -161,6 +177,12 @@ import WordPressFlux
     }
 
     @objc func showCreateButton() {
+        showCreateButton(notice: nil)
+    }
+
+    func showCreateButton(notice: Notice? = nil) {
+        let notice = notice ?? self.notice
+
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
             shownTooltipCount += 1
@@ -179,6 +201,36 @@ import WordPressFlux
 
     @objc func showNewPage() {
         newPage()
+    }
+
+    // MARK: - Quick Start
+
+    private var quickStartObserver: Any?
+
+    private func quickStartNotice(_ description: NSAttributedString) -> Notice {
+        let notice = Notice(title: "",
+                            message: "",
+                            style: ToolTipNoticeStyle(attributedMessage: description)) { [weak self] _ in
+                self?.didDismissTooltip = true
+                self?.hideNotice()
+        }
+
+        return notice
+    }
+
+    func listenForQuickStart() {
+        quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            guard let self = self,
+                let userInfo = notification.userInfo,
+                let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+                let description = userInfo[QuickStartTourGuide.notificationDescriptionKey] as? NSAttributedString,
+                element == .newpost else {
+                    return
+            }
+
+            self.didDismissTooltip = false
+            self.showCreateButton(notice: self.quickStartNotice(description))
+        }
     }
 }
 
