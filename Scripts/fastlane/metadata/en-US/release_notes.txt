@@ -1,8 +1,14 @@
-The scheduling, tag, and visibility settings now pop up right in the post editor when you tap “Publish” or “Schedule” — fine-tune them, and tap “Publish Now” to complete publication. No more leaving the editor to look for the Post Settings Screen!
+Here’s what’s new:
 
-The mobile Block editor continues to grow:-
-– You’ll find a Columns block and a new Starter Template for blogs.
-– The Starter Page Template options no longer obscure your page content.
-– We fixed a bug that caused a URL settings box to pop up if you physically moved your device around while previewing Starter Page Templates.
+Organization overhaul: We’ve made some changes that’ll let you find what you need faster:
 
-Since an app can never be too fast, too usable, or too clean, we streamlined a few UI things here and there. Will you notice? Probably not, which is the point. And finally, there was a login issue causing account info for self-hosted sites to load incorrectly that’s been taken care of.
+Want to start a new post or page? Tap the big pink button, always visible in the My Sites tab.
+Want to edit your profile? Look in the upper right corner.
+Want to find something to read? The Reader tab has a revamped layout for more intuitive searching and filtering.
+Block editor updates: There’s a new Pullquote block, to highlight quotes with more visual emphasis than the regular Quote block. Page templates got an update to make use of the newest blocks, and we fixed up icons in a few blocks that weren’t displaying quite right in RTL mode.
+
+The Button block got more color options for background and text. And there’s support for superscript and subscript HTML formatting (in the Classic editor, too).
+
+Image annotation: With the new “edit image” feature in the editor, you can draw directly on images.
+
+One really great bug fix: Sometimes you’d add a Video block and start uploading a video, and the app would crash. Counterproductive! That doesn’t happen anymore.

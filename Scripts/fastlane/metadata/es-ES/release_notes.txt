@@ -1,8 +1,14 @@
-Ahora, los ajustes de programación, etiquetas y visibilidad aparecen en el editor de entradas cuando tocas «Publicar» o «Programar», ponlos a punto y toca «Publicar ahora» para finalizar la publicación. ¡Ya no es necesario salir del editor para buscar la pantalla de ajustes de entradas!
+Estas son las novedades:
 
-El editor de bloques para móviles sigue creciendo:
-- Encontrarás un bloque de columnas y una nueva plantilla de inicio para blogs.
-- Las opciones de la plantilla de página de inicio ya no oscurecen el contenido de tu página.
-- Hemos corregido un fallo que hacía que apareciera un cuadro de ajustes de URL si movías físicamente tu dispositivo mientras previsualizabas las plantillas de página de inicio.
+Reforma de la organización: Hemos hecho algunos cambios que te permitirán encontrar más rápido lo que necesitas:
 
-Dado que una aplicación nunca puede ser demasiado rápida, demasiado utilizable o demasiado limpia, hemos racionalizado algunas cosas de la interfaz de usuario aquí y allá. ¿Te darás cuenta? Probablemente no, ese es el punto. Y finalmente, hubo un problema de acceso que causaba que la información de la cuenta de los sitios autoalojados no se cargara correctamente.
+¿Quieres empezar una nueva entrada o página? Toca el botón rosa grande, siempre visible en la pestaña «Mis sitios».
+¿Quieres editar tu perfil? Mira en la esquina superior derecha.
+¿Quieres encontrar algo para leer? La pestaña «Lector» tiene un diseño renovado para una búsqueda y un filtrado más intuitivos.
+Actualizaciones del editor de bloques: Hay un nuevo bloque de párrafo de cita para resaltar las citas con más énfasis visual que el bloque normal de citas. Las plantillas de página se han actualizado para usar los bloques más recientes y hemos corregido los iconos en algunos bloques que no se mostraban correctamente en el modo RTL.
+
+El bloque de botones tiene más opciones de color para el fondo y el texto. Y hay compatibilidad para formato HTML de superíndice y subíndice (también en el editor clásico).
+
+Anotación de la imagen: Con la nueva función "editar imagen" del editor, puedes dibujar directamente sobre las imágenes.
+
+Realmente una corrección de un gran fallo: Algunas veces añadías un bloque de vídeo, empezabas a subir el vídeo y la aplicación se caía. ¡Contraproducente! Eso ya no ocurre más.

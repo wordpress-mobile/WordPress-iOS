@@ -47,18 +47,17 @@ extension BlogDetailsViewController {
 
     private func showNoticeOrAlertAsNeeded() {
         guard let tourGuide = QuickStartTourGuide.find() else {
-            showNotificationPrimerAlert()
             return
         }
 
-        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+        if shouldShowCreateButtonAnnouncement() {
+            showCreateButtonAnnouncementAlert()
+        } else if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
             tourGuide.didShowUpgradeToV2Notice(for: blog)
         } else if let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
             tourGuide.suggest(tourToSuggest, for: blog)
-        } else {
-            showNotificationPrimerAlert()
         }
     }
 
@@ -117,40 +116,28 @@ extension BlogDetailsViewController {
         return section
     }
 
-    private func showNotificationPrimerAlert() {
+    private func shouldShowCreateButtonAnnouncement() -> Bool {
+        return AppRatingUtility.shared.didUpgradeVersion && !UserDefaults.standard.createButtonAlertWasDisplayed
+    }
+
+    private func showCreateButtonAnnouncementAlert() {
         guard noPresentedViewControllers else {
             return
         }
 
-        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
-            return
-        }
+        UserDefaults.standard.createButtonAlertWasDisplayed = true
 
-        let mainContext = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        guard accountService.defaultWordPressComAccount() != nil else {
-            return
-        }
-
-        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
-            guard enabled == .notDetermined else {
-                return
+        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { [weak self] (controller) in
+            controller.dismiss(animated: true)
+            if let url = URL(string: "https://wordpress.com/blog/2020/06/01/improved-navigation-in-the-wordpress-apps/") {
+                let webViewController = WebViewControllerFactory.controller(url: url)
+                let navController = LightNavigationController(rootViewController: webViewController)
+                self?.tabBarController?.present(navController, animated: true)
             }
-
-            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
-
-            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
-                InteractiveNotificationsManager.shared.requestAuthorization {
-                    DispatchQueue.main.async {
-                        controller.dismiss(animated: true)
-                    }
-                }
-            }
-            alert.modalPresentationStyle = .custom
-            alert.transitioningDelegate = self
-            self?.tabBarController?.present(alert, animated: true)
         }
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        tabBarController?.present(alert, animated: true)
     }
 
     private func showUpgradeToV2Alert(for blog: Blog) {

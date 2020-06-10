@@ -17,14 +17,6 @@ final class SearchTextField: UITextField {
         static let textInset        = CGFloat(56)
     }
 
-    // MARK: Becoming First Responder
-
-    var allowFirstResponderStatus: Bool = true
-
-    override var canBecomeFirstResponder: Bool {
-        return allowFirstResponderStatus
-    }
-
     // MARK: UIView
 
     init() {

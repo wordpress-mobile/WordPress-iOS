@@ -1,8 +1,14 @@
-De planning-, tag- en zichtbaarheidsinstellingen worden nu in de berichteditor weergegeven wanneer je op 'Publiceren' of 'Plannen' tikt. Je kunt ze aanpassen en op 'Nu publiceren' tikken om de publicatie af te ronden. Je hoeft de editor nooit meer te verlaten om het scherm Berichtinstellingen te openen!
+Vernieuwingen:
 
-De mobiele blokeditor blijft zich uitbreiden:-
-– Je zult een kolommenblok en een nieuwe startsjabloon voor blogs ontdekken.
-– De opties voor de startpaginasjabloon bedekken niet meer de content op je site.
-– We hebben een bug opgelost die zorgde dat URL-instellingen werden weergegeven als je je apparaat fysiek bewoog terwijl je de startpaginasjablonen bekeek.
+Organisatievernieuwingen: We hebben een aantal wijzigingen aangebracht waarmee je sneller kunt vinden wat je nodig hebt:
 
-Aangezien een app nooit te snel, nuttig of geordend kan zijn, hebben we een aantal UI-dingen verbeterd. Zul jij ze opmerken? Waarschijnlijk niet, maar dat is ook de bedoeling. Tot slot was er een inlogprobleem dat zorgde dat gegevens van zelf-gehoste sites onjuist werden geladen, en ook dat probleem is opgelost.
+Wil je een nieuw bericht of een nieuwe pagina opstellen? Druk op de grote roze knop, die altijd zichtbaar is in het tabblad Mijn sites.
+Wil je je profiel bewerken? Kijk dan in de hoek rechtsboven.
+Op zoek naar iets om te lezen? Het tabblad Reader heeft een verbeterde opmaak, zodat het zoeken en filteren intuïtiever wordt.
+Updates van de blokeditor: Er is een nieuw Pull-quote-blok om citaten meer nadruk te geven dan met het normale Citaatblok. De paginasjablonen zijn bijgewerkt en maken nu gebruik van de nieuwste blokken. We hebben ook pictogrammen van een paar blokken bijgewerkt die niet helemaal goed werden weergegeven in de RTL-modus.
+
+Het Knopblok heeft meer kleurenopties gekregen voor achtergrond en tekst. Er is bovendien ondersteuning voor HTML-opmaak in superscript en subscript (ook in de klassieke editor).
+
+Afbeeldingnotitie: Met de nieuwe functie 'afbeelding bewerken' in de editor kun je nu rechtstreeks op afbeeldingen tekenen.
+
+Een geweldige bugfix: Soms voegde je een Videoblok toe en begon je een video te uploaden en dan crashte de app. Helemaal niet handig! Dat gebeurt nu niet meer.

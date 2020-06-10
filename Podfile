@@ -29,25 +29,23 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.18.0'
+    pod 'WordPress-Editor-iOS', '~> 1.19.2'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.6.0'
+    pod 'WordPressUI', '~> 1.7.0'
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'issue/downloaded-image-not-set'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/bottom-sheet-pan-gesture'
     # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '85b2a8cfb9d3c27194a14bdcb3c8391e13fbaa0f'
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fancybutton-public-isprimary'
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '05d82b280a4b65e084f34e282ec392cb80afdec1'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.8.0'
+    pod 'WordPressKit', '~> 4.9.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/homepage-settings'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -149,7 +147,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.27.0'
+    gutenberg :commit => '3d10d026ea0175ba6ffc94345546704056662365'
 
     ## Third party libraries
     ## =====================
@@ -178,20 +176,21 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.6.1'
+    pod 'WPMediaPicker', '~> 1.7.0'
+    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.16.0-beta.3'
+    pod 'WordPressAuthenticator', '~> 1.18.0-beta.8'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
-    pod 'MediaEditor', '~> 1.0.1'
+    pod 'MediaEditor', '~> 1.1.0'
     # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
     # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
@@ -207,14 +206,17 @@ target 'WordPress' do
 
 
     post_install do
+        project_root = File.dirname(__FILE__)
+      
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-        %x(patch Pods/React-Core/React/Views/RCTShadowView.m < patches/react-native+0.61.5.patch)
-
+        %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/react-native+0.61.5.patch")
+        puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
+        it could be removed once PR with that functionality will be merged into RN'
+        %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/react-native+0.61.5.patch")
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-
-        project_root = File.dirname(__FILE__)
+        
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)

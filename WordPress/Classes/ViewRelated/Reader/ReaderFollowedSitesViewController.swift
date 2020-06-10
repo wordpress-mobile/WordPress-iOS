@@ -20,7 +20,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     private var currentKeyboardHeight: CGFloat = 0
     private var deviceIsRotating = false
-    private let noResultsViewController = NoResultsViewController.controller()
+    private lazy var noResultsViewController: NoResultsViewController = {
+        return NoResultsViewController.controller()
+    }()
 
     private var showsAccessoryFollowButtons: Bool = false
     private var showsSectionTitle: Bool = true
@@ -69,7 +71,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableViewHandler()
         configureSearchBar()
         setupBackgroundTapGestureRecognizer()
-        noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
@@ -138,6 +139,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.returnKeyType = .done
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+            searchBar.searchTextField.accessibilityValue = nil
+            searchBar.searchTextField.accessibilityHint = placeholderText
+        }
     }
 
     func setupBackgroundTapGestureRecognizer() {
@@ -161,12 +167,10 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         currentKeyboardHeight = keyboardFrame.height
-        configureNoResultsView()
     }
 
     @objc func keyboardWillHide(_ notification: Foundation.Notification) {
         currentKeyboardHeight = 0
-        configureNoResultsView()
     }
 
 
@@ -329,22 +333,13 @@ private extension ReaderFollowedSitesViewController {
             return
         }
 
+        noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            noResultsViewController.configure(title: NoResultsText.noResultsTitle,
-                                              buttonTitle: NoResultsText.buttonTitle,
-                                              subtitle: NoResultsText.noResultsMessage)
-
-            // Due to limited space when the keyboard is visible,
-            // hide the image on iPhone and iPad landscape.
-            var hideImageView = false
-            if currentKeyboardHeight > 0 {
-                hideImageView = WPDeviceIdentification.isiPhone() ||
-                                (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isLandscape)
-            }
-
-            noResultsViewController.hideImageView(hideImageView)
+            noResultsViewController = NoResultsViewController.noFollowedSitesController(showActionButton: false)
         }
 
         showNoResultView()
@@ -371,9 +366,6 @@ private extension ReaderFollowedSitesViewController {
     }
 
     struct NoResultsText {
-        static let noResultsTitle = NSLocalizedString("No followed sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
-        static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
-        static let buttonTitle = NSLocalizedString("Discover Sites", comment: "Button title. Tapping takes the user to the Discover sites list.")
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
     }
 
@@ -424,7 +416,10 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
             button.imageView?.tintColor = UIColor.success
             button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
+            let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
+            button.accessibilityLabel = String(format: unfollowSiteString, site.title)
             cell.accessoryView = button
+            cell.accessibilityElements = [button]
         } else {
             cell.accessoryType = .disclosureIndicator
         }

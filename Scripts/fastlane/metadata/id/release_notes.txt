@@ -1,8 +1,14 @@
-Pengaturan penjadwalan, tag, dan visibilitas kini muncul langsung di penyunting pos saat Anda mengetuk “Publikasikan” atau “Jadwalkan” — lakukan sedikit penyesuaian, dan ketuk “Publikasikan Sekarang” untuk menyelesaikan publikasi. Tak perlu lagi keluar dari penyunting untuk mencari Layar Pengaturan Pos!
+Berikut adalah kabar terbaru:
 
-Penyunting Blok seluler terus berkembang:-
-– Anda akan menemukan blok Kolom dan Template Starter baru untuk blog.
-– Opsi Template Halaman Starter kini tak lagi menutupi konten halaman Anda.
-– Kami telah memperbaiki bug yang menyebabkan munculnya kotak pengaturan URL jika Anda secara fisik memindahkan perangkat saat melakukan pratinjau Template Halaman Starter.
+Perombakan susunan: Kami membuat beberapa perubahan yang memungkinkan Anda menemukan apa yang Anda cari dengan lebih cepat:
 
-Karena aplikasi tidak bisa terlalu cepat, praktis, atau jelas, kami menyederhanakan beberapa hal di UI. Akankah Anda memperhatikannya? Mungkin tidak, memang itu poinnya. Dan akhirnya, masalah login penyebab info akun untuk situs hosting mandiri dimuat secara tidak tepat kini telah ditangani.
+Ingin memulai pos atau halaman baru? Ketuk tombol merah mudah besar yang selalu terlihat di tab Situs Saya.
+Ingin menyunting profil Anda? Lihat bagian pojok kanan atas.
+Ingin mencari bacaan? Tata letak tab Pembaca dirombak sedemikian rupa demi pencarian dan penyaringan yang lebih intuitif.
+Pembaruan pada penyunting blok: Terdapat blok Kutipan Menonjol yang baru untuk menyorot kutipan dengan penekanan visual yang lebih baik daripada blok Kutipan biasa. Template halaman mendapatkan pembaruan untuk memanfaatkan blok terbaik, dan kami memperbaiki beberapa ikon pada beberapa blok yang tidak ditampilkan dengan baik di mode RTL.
+
+Blok tombol mendapatkan pilihan warna yang lebih banyak untuk latar belakang dan teks. Selain itu terdapat dukungan untuk pemformatan HTML subskrip dan superskrip (termasuk di penyunting Klasik juga).
+
+Anotasi gambar: Dengan fitur “sunting gambar” yang baru di penyunting, Anda dapat menggambar langsung di gambar.
+
+Satu perbaikan bug yang sangat bagus: Terkadang Anda menambahkan blok Video dan mulai mengunggah video, lalu aplikasi mengalami crash. Sangat mengganggu! Namun hal itu tidak akan terjadi lagi.

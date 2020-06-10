@@ -1,8 +1,14 @@
-Die Einstellungen für Planen, Schlagwörter und Sichtbarkeit erscheinen jetzt direkt im Beitragseditor, wenn du auf „Veröffentlichen“ oder „Planen“ tippst. Verleihe deinem Inhalt den letzten Schliff und tippe für die endgültige Veröffentlichung dann auf „Jetzt veröffentlichen“. Ab sofort musst du den Beitragseditor nicht mehr verlassen, um die Einstellungen an deinem Beitrag vorzunehmen!
+Neuheiten:
 
-Der mobile Block-Editor entwickelt sich stetig weiter:
-– Es gibt jetzt einen Spaltenblock und eine neue Neueinsteiger-Vorlage für Blogs.
-– Die Seitenvorlage für Neueinsteiger verstecken jetzt nicht mehr deinen Seiteninhalt.
-– Manchmal erschien ein Kästchen mit URL-Einstellungen, sobald du während der Vorschau der Seitenvorlage für Neueinsteiger dein Gerät bewegt hast. Dieser Fehler wurde behoben.
+Überholung der Organisation: Wir haben ein paar Änderungen vorgenommen, damit du schneller findest, wonach du suchst:
 
-Da eine App nie zu schnell, zu nutzerfreundlich oder zu übersichtlich sein kann, haben wir die Benutzeroberfläche hier und da etwas verbessert. Das wird dir wahrscheinlich gar nicht auffallen. Und genau so soll es sein. Zu guter Letzt haben wir noch einen Fehler bei der Anmeldung behoben, da die Kontoinformationen von selbst gehosteten Websites inkorrekt angezeigt wurden.
+Möchtest du einen neuen Beitrag oder eine neue Seite beginnen? Tippe auf den großen, rosa Button, der dir stets im Tab „Meine Websites“ angezeigt wird.
+Möchtest du dein Profil bearbeiten? Das geht jetzt ganz leicht oben rechts in der Ecke.
+Auf der Suche nach guter Lektüre? Der Tab „Reader“ hat einen neuen Look bekommen, sodass du nutzerfreundlich suchen und filtern kannst.
+* Updates im Block-Editor: Es gibt jetzt einen neuen Pullquote-Block, mit dem Zitate visuell besser hervorgehoben werden können, als im herkömmlichen Zitat-Block. Die Seitenvorlagen haben ebenfalls ein Update bekommen, um die neuesten Blocks voll und ganz nutzen zu können, und in ein paar Blocks haben wir die Icons korrigiert, die im RTL-Modus nicht richtig angezeigt wurden.
+
+Im Button-Block findest du jetzt eine größere Farbauswahl für Hintergrund und Text. Und ab sofort erhältst du Unterstützung für hoch- und tiefgestellte HTML-Formatierungen (auch im klassischen Editor).
+
+Bildanmerkung: Mit der neuen Bildbearbeitungsfunktion im Editor kannst du nun direkt in die Bilder malen.
+
+Eine Fehlerbehebung war besonders toll: Manchmal ist die App abgestürzt, wenn du einen Video-Block hinzugefügt hast, und dann das Video hochladen wolltest. Sehr kontraproduktiv! Das wird dir in Zukunft nicht mehr passieren.

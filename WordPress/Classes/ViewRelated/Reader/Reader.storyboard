@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -276,44 +276,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fO8-Q5-Boc">
                                 <rect key="frame" x="14" y="0.0" width="345" height="50"/>
                                 <subviews>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU">
                                         <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lUA-Mu-a4u">
-                                                <rect key="frame" x="0.0" y="0.0" width="345" height="34"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAQ-jD-BAz" customClass="CircularImageView" customModule="WordPress">
-                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="20" id="2i8-DL-fkV"/>
-                                                            <constraint firstAttribute="height" priority="999" constant="20" id="IzH-3N-1dv"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-ci-UB0">
-                                                        <rect key="frame" x="28" y="0.0" width="80.5" height="20.5"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="YBQ-xA-5CN" userLabel="View (spacer)">
-                                                        <rect key="frame" x="116.5" y="0.0" width="228.5" height="0.0"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </view>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="lUA-Mu-a4u" secondAttribute="trailing" id="29T-ZN-CUn"/>
-                                            <constraint firstItem="lUA-Mu-a4u" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="Jbh-tW-3mu"/>
-                                            <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" priority="999" constant="16" id="Wvl-3O-WyW"/>
-                                            <constraint firstItem="lUA-Mu-a4u" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="f82-aL-C6b"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="imageView" destination="TAQ-jD-BAz" id="VaQ-fj-5Zv"/>
-                                            <outlet property="textLabel" destination="I5s-ci-UB0" id="ekY-ts-7Ib"/>
-                                        </connections>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -422,7 +387,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="attributionView" destination="UJH-3y-QkU" id="dId-rK-9ZJ"/>
+                        <outlet property="attributionViewContainer" destination="UJH-3y-QkU" id="dId-rK-9ZJ"/>
                         <outlet property="avatarImageView" destination="LYY-JU-FkT" id="he1-0e-r5o"/>
                         <outlet property="blavatarImageView" destination="y56-tB-S9Z" id="mUs-XL-BC9"/>
                         <outlet property="blogNameButton" destination="MZS-4C-m9c" id="xEo-vw-rkz"/>

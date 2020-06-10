@@ -53,14 +53,25 @@ extension FancyAlertViewController {
 extension UserDefaults {
     private enum Keys: String {
         case notificationPrimerAlertWasDisplayed = "NotificationPrimerAlertWasDisplayed"
+        case notificationsTabAccessCount = "NotificationsTabAccessCount"
     }
 
     var notificationPrimerAlertWasDisplayed: Bool {
         get {
-            return bool(forKey: Keys.notificationPrimerAlertWasDisplayed.rawValue)
+            bool(forKey: Keys.notificationPrimerAlertWasDisplayed.rawValue)
         }
         set {
             set(newValue, forKey: Keys.notificationPrimerAlertWasDisplayed.rawValue)
+        }
+    }
+
+    var notificationsTabAccessCount: Int {
+        get {
+            integer(forKey: Keys.notificationsTabAccessCount.rawValue)
+        }
+
+        set {
+            set(newValue, forKey: Keys.notificationsTabAccessCount.rawValue)
         }
     }
 }

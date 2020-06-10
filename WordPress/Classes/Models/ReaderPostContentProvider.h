@@ -35,6 +35,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (NSNumber *)wordCount;
 
 - (NSString *)siteURLForDisplay;
+- (NSString *)siteHostNameForDisplay;
 - (NSString *)crossPostOriginSiteURLForDisplay;
 - (BOOL)isCommentCrossPost;
 

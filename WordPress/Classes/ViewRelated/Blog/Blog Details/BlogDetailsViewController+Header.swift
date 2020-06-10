@@ -1,8 +1,8 @@
 import Gridicons
 
 extension BlogDetailsViewController {
-    @objc func configureHeaderView() -> NewBlogDetailHeaderView {
-        let headerView = NewBlogDetailHeaderView(items: [
+    @objc func configureHeaderView() -> BlogDetailHeaderView {
+        let headerView = BlogDetailHeaderView(items: [
             ActionRow.Item(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showStats(from: .button)
@@ -22,18 +22,4 @@ extension BlogDetailsViewController {
         ])
         return headerView
     }
-}
-
-/// A protocol to temporarily share implementations between `BlogDetailHeaderView` and `NewBlogDetailHeaderView`
-@objc protocol BlogDetailHeader where Self: UIView {
-    var blog: Blog? { get set }
-    var updatingIcon: Bool { get set }
-    @objc var blavatarImageView: UIImageView { get }
-    func refreshIconImage()
-}
-
-extension NewBlogDetailHeaderView: BlogDetailHeader {
-}
-
-extension BlogDetailHeaderView: BlogDetailHeader {
 }

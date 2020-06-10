@@ -121,7 +121,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     @objc func setupReplyButton() {
-        let icon = UIImage.gridicon(.reply, size: Constants.buttonSize).rotate180Degrees()
+        let icon = UIImage.gridicon(.reply, size: Constants.buttonSize).rotate180Degrees()?.withRenderingMode(.alwaysTemplate)
         replyButton.setImage(icon, for: .normal)
         replyButton.setImage(icon, for: .highlighted)
 

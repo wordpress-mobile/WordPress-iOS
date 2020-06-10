@@ -1,8 +1,14 @@
-Zamanlama, etiket ve görünürlük ayarları artık "Yayınla" ya da "Zamanla"ya dokunduğunuzda yayın düzenleyicide açılır. Bunlarda ince ayar yapabilir ve "Şimdi Yayınla"ya dokunarak yayını tamamlayabilirsiniz. Artık Gönderi Ayarları Ekranını aramak için editörden ayrılmanıza gerek yok.
+İşte yenilikler:
 
-Mobil Blok editörü büyümeye devam ediyor: -
-- Bloglar için bir Sütunlar bloğu ve yeni bir Başlangıç Şablonu bulacaksınız.
-- Başlangıç Sayfası Şablonu seçenekleri artık sayfa içeriğinizi gizlemiyor.
-- Başlangıç Sayfası Şablonlarını önizlerken cihazınızı fiziksel olarak hareket ettirdiğinizde URL ayarları kutusunun açılmasına neden olan bir hata düzeltildi.
+Kuruluşun elden geçirilmesi: İhtiyacınız olanı daha hızlı bulmanızı sağlayacak bazı değişiklikler yaptık:
 
-Bir uygulama hiçbir zaman çok hızlı, çok kullanışlı veya çok açık olamayacağından, bazı yerlerde birkaç kullanıcı arayüzü öğesini modernleştirdik. Acaba fark edecek misiniz? Muhtemelen hayır, işte bunun için önemli. Son olarak, kullanıcı tarafından barındırılan sitelerin hesap bilgilerinin yanlış yüklenmesine neden olan bir oturum açma sorunu düzeltildi.
+Yeni bir yazı veya sayfa başlatmak ister misiniz? Sitelerim sekmesinde her zaman görülebilen büyük pembe düğmeye dokunun.
+Profilinizi düzenlemek ister misiniz? Sağ üst köşeye bakın.
+Okumak için bir şeyler mi bulmak istiyorsunuz? Okuyucu sekmesinde, daha sezgisel arama ve filtreleme için yenilenmiş bir düzen bulunur.
+Blok düzenleyici güncellemeleri: Normal alıntı bloğundan daha görsel, vurgulu alıntıları vurgulamak için yeni bir Pullquote bloğu var. Sayfa şablonları en yeni blokları kullanmak için bir güncelleme aldı ve RTL modunda tam olarak görünmeyen birkaç bloktaki simgeleri düzelttik.
+
+Düğme bloğunda arka plan ve metin için daha fazla renk seçeneği var. Üst simge ve alt simge HTML biçimlendirmesi (Klasik düzenleyicide de) desteği vardır.
+
+Görsel notu: Editördeki yeni "görseli düzenle" özelliği ile doğrudan görüntülere çizim yapabilirsiniz.
+
+Gerçekten harika bir hata düzeltmesi: Bazen bir video bloğu ekler ve bir video yüklemeye başlarsınız ve uygulama kilitlenir. Hiç üretken değil! Bu artık gerçekleşmiyor.

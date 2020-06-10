@@ -1,8 +1,14 @@
-Inställningarna för schemaläggning, etiketter och synlighet visas nu direkt i inläggsredigeraren när du trycker på ”Publicera” eller ”Schemalägg” – finjustera dem och tryck på ”Publicera nu” för att fullfölja publiceringen. Nu behöver du inte längre gå ut ur redigeraren för att komma till skärmen för inläggsinställningar!
+Här är nyheterna:
 
-Den mobila blockredigeraren fortsätter att växa:
-– Nu finns det ett kolumnblock och startmall för bloggar.
-– Inställningarna för startsidesmallarna skymmer inte längre sidans innehåll.
-– Vi har rättat ett fel som gjorde att rutan för URL-inställningar dök upp om flyttade runt din enhet i rummet samtidigt som du förhandsvisade startsidesmallar.
+Uppdaterad organisering: Vi har genomfört några ändringar som hjälper dig att snabbare hitta det du behöver:
 
-Eftersom en app aldrig kan bli för snabb, för användbar eller ha för rent utseende har vi förbättrat användargränssnittet här och där. Du kommer antagligen inte ens att märka skillnaden, och det är just det som är poängen. Slutligen har vi löst ett inloggningsproblem där det kunde hända att kontouppgifterna för webbhotellsbaserade webbplatser laddades in på fel sätt.
+Vill du skapa ett nytt inlägg eller en ny sida? Tryck på den stora rosa knappen som alltid är synlig under fliken Mina webbplatser.
+Vill du redigera din profil? Kolla i övre högra hörnet.
+Vill du hitta något att läsa? Fliken för läsning har fått en ny layout som underlättar sökning och filtrering.
+Uppdateringar i blockredigeraren: Nu finns ett nytt block för framhävda citat som visuellt kan markera citat ännu starkare än vanliga citatblocket. Sidmallarna har uppdaterats så att de använder även de nyaste typerna av block. Dessutom har vi rättat ikoner i några block som inte visades på rätt sätt i RTL-läge (dvs språk som skrivs från höger till vänster).
+
+I blocket för knappar finns det nu fler färginställningar för bakgrund och text. Och nu finns stöd för upphöjd och nedsänkt text via HTML-kodning (även i den klassiska redigeraren).
+
+Bildförklaring: Med den nya funktionen ”redigera bild” kan du direkt i redigeraren rita på bilder.
+
+Och en viktig rättelse av ett programfel: Ibland kunde appen krascha när du lade till ett videoblock och började ladda upp en video. Inte särskilt produktivt! Nu ska det vara fixat.

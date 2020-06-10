@@ -1,8 +1,14 @@
-Les réglages de la planification, des étiquettes et de la visibilité apparaissent désormais correctement dans l'éditeur d'articles lorsque vous appuyez sur « Publier » ou « Planifier ». Adaptez ces réglages, puis sélectionnez « Publier maintenant » pour valider la publication. Vous n'avez plus besoin de quitter l'éditeur pour consulter l'écran Réglages de l'article !
+Here’s what’s new:
 
-L'éditeur de blocs pour applications mobiles continue d'évoluer :-
-– Vous découvrirez un bloc de colonnes et un nouveau modèle de démarrage pour les blogs.
-– Les options du modèle de page de démarrage ne masquent plus le contenu de votre page.
-– Nous avons résolu un bug entraînant l'affichage des réglages de l'URL lors du déplacement physique de votre appareil pendant la prévisualisation des modèles de page de démarrage.
+Organization overhaul: We’ve made some changes that’ll let you find what you need faster:
 
-Une application n'étant jamais trop rapide, accessible ou épurée, nous avons quelque peu simplifié l'interface utilisateur çà et là. Le remarquerez-vous ? Probablement pas et c'est très bien ainsi. Enfin, un problème de connexion entraînant un chargement incorrect des informations relatives aux comptes des sites auto-hébergés a été résolu.
+Want to start a new post or page? Tap the big pink button, always visible in the My Sites tab.
+Want to edit your profile? Look in the upper right corner.
+Want to find something to read? The Reader tab has a revamped layout for more intuitive searching and filtering.
+Block editor updates: There’s a new Pullquote block, to highlight quotes with more visual emphasis than the regular Quote block. Page templates got an update to make use of the newest blocks, and we fixed up icons in a few blocks that weren’t displaying quite right in RTL mode.
+
+The Button block got more color options for background and text. And there’s support for superscript and subscript HTML formatting (in the Classic editor, too).
+
+Image annotation: With the new “edit image” feature in the editor, you can draw directly on images.
+
+One really great bug fix: Sometimes you’d add a Video block and start uploading a video, and the app would crash. Counterproductive! That doesn’t happen anymore.

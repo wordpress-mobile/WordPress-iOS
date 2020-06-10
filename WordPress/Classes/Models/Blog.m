@@ -126,24 +126,6 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return [value boolValue];
 }
 
-- (NSString *)icon
-{
-    [self willAccessValueForKey:@"icon"];
-    NSString *icon = [self primitiveValueForKey:@"icon"];
-    [self didAccessValueForKey:@"icon"];
-
-    if (icon) {
-        return icon;
-    }
-
-    // if the icon is not set we can use the host url to construct it
-    NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
-    if (hostUrl == nil) {
-        hostUrl = self.xmlrpc;
-    }
-    return hostUrl;
-}
-
 // Used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL
 {
@@ -525,6 +507,8 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
+        case BlogFeatureHomepageSettings:
+            return [self supportsRestApi] && [self isAdmin];
     }
 }
 
@@ -813,6 +797,22 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
         optionValue = currentOption[@"value"];
     }];
     return optionValue;
+}
+
+- (void)setValue:(id)value forOption:(NSString *)name
+{
+    [self.managedObjectContext performBlockAndWait:^{
+        if ( self.options == nil || (self.options.count == 0) ) {
+            return;
+        }
+
+        NSMutableDictionary *mutableOptions = [self.options mutableCopy];
+
+        NSDictionary *valueDict = @{ @"value": value };
+        mutableOptions[name] = valueDict;
+
+        self.options = [NSDictionary dictionaryWithDictionary:mutableOptions];
+    }];
 }
 
 @end
