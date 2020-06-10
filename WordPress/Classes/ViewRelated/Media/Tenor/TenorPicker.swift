@@ -157,6 +157,7 @@ extension TenorPicker: WPMediaPickerViewControllerDelegate {
             return
         }
 
+        animatedImageView.prepForReuse()
         animatedImageView.gifStrategy = .tinyGIFs
         animatedImageView.contentMode = .scaleAspectFill
         animatedImageView.clipsToBounds = true

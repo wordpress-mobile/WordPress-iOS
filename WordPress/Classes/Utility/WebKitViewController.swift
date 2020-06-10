@@ -3,7 +3,27 @@ import Gridicons
 import UIKit
 import WebKit
 
-class WebKitViewController: UIViewController {
+protocol WebKitAuthenticatable {
+    var authenticator: RequestAuthenticator? { get }
+    func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void)
+}
+
+extension WebKitAuthenticatable {
+    func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
+        guard let authenticator = authenticator else {
+            return completion(URLRequest(url: url))
+        }
+
+        DispatchQueue.main.async {
+            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+            authenticator.request(url: url, cookieJar: cookieStore) { (request) in
+                completion(request)
+            }
+        }
+    }
+}
+
+class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
@@ -172,26 +192,14 @@ class WebKitViewController: UIViewController {
 
     @objc func loadWebViewRequest() {
         if ReachabilityUtils.alertIsShowing() {
-            self.dismiss(animated: false)
+            dismiss(animated: false)
         }
-
-        guard let authenticator = authenticator else {
-            if let url = url {
-                load(request: URLRequest(url: url))
-            }
+        guard let url = url else {
             return
         }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-
-            if let url = strongSelf.url {
-                authenticator.request(url: url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-                    self?.load(request: request)
-                }
-            }
+        authenticatedRequest(for: url, on: webView) { [weak self] (request) in
+            self?.load(request: request)
         }
     }
 

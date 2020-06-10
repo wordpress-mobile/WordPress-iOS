@@ -27,6 +27,11 @@ class ReaderWebView: WKWebView {
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
         \(string)
+        <script>
+            window.onload = () => {
+                document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+            }
+        </script>
         </body></html>
         """
 

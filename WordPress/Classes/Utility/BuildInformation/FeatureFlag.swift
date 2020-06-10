@@ -27,11 +27,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedSiteAddress:
             return false
         case .unifiedGoogle:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerWebview:
             return false
         case .swiftCoreData:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .homepageSettings:
             return true
         }
