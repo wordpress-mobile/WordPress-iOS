@@ -1,5 +1,6 @@
 15.1
 -----
+* [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
 * [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
 * [**] Block editor: Adds support for theme colors and gradients.
 * [*] App Settings: Added an app-level toggle for light or dark appearance.
