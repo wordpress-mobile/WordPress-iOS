@@ -5,6 +5,7 @@ protocol QuickStartTour {
 
     var key: String { get }
     var title: String { get }
+    var titleMarkedCompleted: String { get } // assists VoiceOver users
     var analyticsKey: String { get }
     var description: String { get }
     var icon: UIImage { get }
@@ -31,6 +32,7 @@ struct QuickStartChecklistTour: QuickStartTour {
     let key = "quick-start-checklist-tour"
     let analyticsKey = "view_list"
     let title = NSLocalizedString("Continue with site setup", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Continue with site setup", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Time to finish setting up your site! Our checklist walks you through the next steps.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
@@ -49,6 +51,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let key = "quick-start-create-tour"
     let analyticsKey = "create_site"
     let title = NSLocalizedString("Create your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Create your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Get your site up and running", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
@@ -65,6 +68,7 @@ struct QuickStartUpgradeToV2Tour: QuickStartTour {
     let key = "quick-start-upgrade-to-v2"
     let analyticsKey = "upgrade_to_v2"
     let title = ""
+    let titleMarkedCompleted = ""
     let description = ""
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
@@ -79,6 +83,7 @@ struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let analyticsKey = "view_site"
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: View your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
@@ -97,6 +102,7 @@ struct QuickStartThemeTour: QuickStartTour {
     let key = "quick-start-theme-tour"
     let analyticsKey = "browse_themes"
     let title = NSLocalizedString("Choose a theme", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Choose a theme", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Browse all our themes to find your perfect fit.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.themes)
     let suggestionNoText = Strings.notNow
@@ -115,6 +121,7 @@ struct QuickStartCustomizeTour: QuickStartTour {
     let key = "quick-start-customize-tour"
     let analyticsKey = "customize_site"
     let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Customize your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.customize)
     let suggestionNoText = Strings.notNow
@@ -139,6 +146,7 @@ struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
     let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Enable post sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.share)
     let suggestionNoText = Strings.notNow
@@ -163,6 +171,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let key = "quick-start-publish-tour"
     let analyticsKey = "publish_post"
     let title = NSLocalizedString("Publish a post", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Publish a post", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("It's time! Draft and publish your very first post.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.create)
     let suggestionNoText = Strings.notNow
@@ -180,6 +189,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let key = "quick-start-follow-tour"
     let analyticsKey = "follow_site"
     let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Follow other sites", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
@@ -212,6 +222,7 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let key = "quick-start-site-icon-tour"
     let analyticsKey = "site_icon"
     let title = NSLocalizedString("Upload a site icon", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Upload a site icon", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
@@ -230,6 +241,7 @@ struct QuickStartNewPageTour: QuickStartTour {
     let key = "quick-start-new-page-tour"
     let analyticsKey = "new_page"
     let title = NSLocalizedString("Create a new page", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Create a new page", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Add a page for key content — an “About” page is a great start.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
@@ -254,6 +266,7 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let key = "quick-start-check-stats-tour"
     let analyticsKey = "check_stats"
     let title = NSLocalizedString("Check your site stats", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Check your site stats", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Keep up to date on your site’s performance.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.statsAlt)
     let suggestionNoText = Strings.notNow
@@ -272,6 +285,7 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let key = "quick-start-explore-plans-tour"
     let analyticsKey = "explore_plans"
     let title = NSLocalizedString("Explore plans", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Explore plans", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Learn about the marketing and SEO tools in our paid plans.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.plans)
     let suggestionNoText = Strings.notNow
@@ -292,6 +306,7 @@ struct QuickStartCongratulationsTour: QuickStartTour {
     let key = "quick-start-congratulations-tour"
     let analyticsKey = "congratulations"
     let title = congratsTitle
+    let titleMarkedCompleted = ""  // Not applicable for this tour type
     let description = congratsDescription
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
