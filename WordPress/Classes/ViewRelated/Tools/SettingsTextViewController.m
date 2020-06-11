@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [super viewDidAppear:animated];
     [self.textField becomeFirstResponder];
     // Fire initial status
-    [self validateTextInput:_textField];
+    [self validateTextInput:self.textField];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (BOOL)textPassesValidation
 {
-    switch(self.mode){
+    switch (self.mode) {
         case SettingsTextModesEmail:
             return !self.validatesInput || self.textField.text.isValidEmail;
             break;
@@ -197,10 +197,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 //TODO: This method should be stay in the WorpressShared project
 - (BOOL)isValidText:(NSString*)text
 {
-    NSString *regex = @"\\w+";
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@" argumentArray:@[regex]];
-
-    return [predicate evaluateWithObject:text];
+    return [text length] > 0;
 }
 
 - (void)validateTextInput:(id)sender
@@ -212,12 +209,12 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)evaluateActionButton
 {
     BOOL isValid = self.textPassesValidation;
-    if (isValid){
-        [_actionCell setUserInteractionEnabled: isValid];
-        _actionCell.textLabel.textColor = UIColor.murielText;
-    }else{
-        [_actionCell setUserInteractionEnabled: isValid];
-        _actionCell.textLabel.textColor = UIColor.murielTextSubtle;
+    if (isValid) {
+        [self.actionCell setUserInteractionEnabled: isValid];
+        self.actionCell.textLabel.textColor = UIColor.murielText;
+    } else {
+        [self.actionCell setUserInteractionEnabled: isValid];
+        self.actionCell.textLabel.textColor = UIColor.murielTextSubtle;
     }
 }
 
