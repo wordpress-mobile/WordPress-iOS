@@ -54,6 +54,8 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private weak var presentInController: UIViewController?
 
+    private var unrecognizedPlans: Set<String>?
+
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
@@ -205,16 +207,21 @@ extension NSNotification.Name {
     /// - Returns: the highest priority plan found, or an empty string if none was foundq
     private func getHighestPriorityPlan() -> String {
 
-        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
-            .map { $0 == "Business" ? "business_professional" : $0.lowercased() } // replaces Zendesk Automation on 'Business' tag
+        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }
+            .map { $0 == "Business" ? "business_professional" : $0.lowercased() }) // replaces Zendesk Automation on 'Business' tag
 
         for plan in Constants.planPriority {
             if plans.contains(plan) {
                 return plan
             }
         }
-        // in case no existing plan was found, but there still is at least one unlocalized plan
-        return plans.first ?? ""
+        // in case no existing plan was found, but there still is at least one unrecognized plan.
+        // If there's more than one, we still don't know the priority, so we might as well return the first one.
+        if let firstUnrecognizedPlan = plans.first {
+            unrecognizedPlans = plans
+            return firstUnrecognizedPlan
+        }
+        return ""
     }
 
     func createRequest() -> RequestUiConfiguration {
@@ -238,7 +245,12 @@ extension NSNotification.Name {
         requestConfig.customFields = ticketFields
 
         // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
+        var tags = ZendeskUtils.getTags()
+        // send unrecognized plans as tags to Zendesk
+        if let plans = unrecognizedPlans {
+            tags.append(contentsOf: plans.map { "unrecognized_plan_" + $0 })
+        }
+        requestConfig.tags = tags
 
         // Set the ticket subject
         requestConfig.subject = Constants.ticketSubject
