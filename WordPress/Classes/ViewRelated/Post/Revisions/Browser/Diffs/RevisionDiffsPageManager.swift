@@ -1,5 +1,5 @@
 import Foundation
-
+import Extensions
 
 protocol RevisionDiffsPageManagerDelegate: class {
     func currentIndex() -> Int

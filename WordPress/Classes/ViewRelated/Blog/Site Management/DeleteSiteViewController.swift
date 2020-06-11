@@ -3,6 +3,7 @@ import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import Gridicons
+import Extensions
 
 /// DeleteSiteViewController allows user delete their site.
 ///

@@ -1,4 +1,5 @@
 // Empty state for Stock Photos
+import Extensions
 
 struct NoResultsStockPhotosConfiguration {
 

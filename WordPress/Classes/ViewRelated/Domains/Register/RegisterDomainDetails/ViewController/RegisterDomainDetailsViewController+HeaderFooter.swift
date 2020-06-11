@@ -1,4 +1,5 @@
 import UIKit
+import Extensions
 
 extension RegisterDomainDetailsViewController {
 
