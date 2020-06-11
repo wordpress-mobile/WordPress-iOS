@@ -1081,7 +1081,7 @@ private extension StatsPeriodStore {
                 state.topCountriesStatus,
                 state.topVideosStatus,
                 state.topFileDownloadsStatus]
-        
+
         let result: StoreFetchingStatus? = states.first { (element: StoreFetchingStatus) -> Bool in
             return element == .loading
         }

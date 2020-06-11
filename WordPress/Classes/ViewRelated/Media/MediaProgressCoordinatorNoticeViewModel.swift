@@ -29,7 +29,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         guard
             let success = mediaProgressCoordinator.successfulMedia as? [Media],
             let failed = mediaProgressCoordinator.failedMedia as? [Media]
-        else{
+        else {
             return nil
         }
 
