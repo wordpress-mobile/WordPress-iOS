@@ -203,7 +203,7 @@ extension NSNotification.Name {
 
     /// Retrieves the highest priority plan, if it exists
     /// - Returns: the highest priority plan found, or an empty string if none was foundq
-    func getHighestPriorityPlan() -> String {
+    private func getHighestPriorityPlan() -> String {
 
         let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
             .map { $0 == "Business" ? "business_professional" : $0.lowercased() } // replaces Zendesk Automation on 'Business' tag
@@ -215,6 +215,35 @@ extension NSNotification.Name {
         }
         // in case no existing plan was found, but there still is at least one unlocalized plan
         return plans.first ?? ""
+    }
+
+    func createRequest() -> RequestUiConfiguration {
+
+        let requestConfig = RequestUiConfiguration()
+
+        // Set Zendesk ticket form to use
+        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
+
+        // Set form field values
+        var ticketFields = [CustomField]()
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: getHighestPriorityPlan()))
+        requestConfig.customFields = ticketFields
+
+        // Set tags
+        requestConfig.tags = ZendeskUtils.getTags()
+
+        // Set the ticket subject
+        requestConfig.subject = Constants.ticketSubject
+
+        return requestConfig
     }
 
     // MARK: - Device Registration
@@ -456,34 +485,7 @@ private extension ZendeskUtils {
         }
     }
 
-    func createRequest() -> RequestUiConfiguration {
 
-        let requestConfig = RequestUiConfiguration()
-
-        // Set Zendesk ticket form to use
-        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
-
-        // Set form field values
-        var ticketFields = [CustomField]()
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: getHighestPriorityPlan()))
-        requestConfig.customFields = ticketFields
-
-        // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
-
-        // Set the ticket subject
-        requestConfig.subject = Constants.ticketSubject
-
-        return requestConfig
-    }
 
     // MARK: - View
 

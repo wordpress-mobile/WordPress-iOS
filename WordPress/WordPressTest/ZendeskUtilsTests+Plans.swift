@@ -1,4 +1,5 @@
 import XCTest
+import ZendeskCoreSDK
 
 @testable import WordPress
 @testable import WordPressKit
@@ -43,9 +44,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "ecommerce")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "ecommerce"
+        }))
     }
 
     func testBusinessPlanSelected() {
@@ -58,9 +61,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "business_professional")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "business_professional"
+        }))
     }
 
     func testPremiumPlanSelected() {
@@ -73,9 +78,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "premium")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "premium"
+        }))
     }
 
     func testPresonalPlanSelected() {
@@ -88,9 +95,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "personal")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "personal"
+        }))
     }
 
     func testBloggerPlanSelected() {
@@ -103,9 +112,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "blogger")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "blogger"
+        }))
     }
 
     func testFreePlanSelected() {
@@ -114,9 +125,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    2: RemotePlanSimpleDescription(planID: 2, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "free")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "free"
+        }))
     }
 
     func testNewPlanSelected() {
@@ -125,9 +138,11 @@ class ZendeskUtilsPlans: XCTestCase {
                                    2: RemotePlanSimpleDescription(planID: 2, name: "NewPlan")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "newplan")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == "newplan"
+        }))
     }
 
     func testNoPlanSelected() {
@@ -135,8 +150,10 @@ class ZendeskUtilsPlans: XCTestCase {
         planService.presetPlans = [:]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let highestPriorityPlan = ZendeskUtils.sharedInstance.getHighestPriorityPlan()
+        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
         // Then
-        XCTAssertEqual(highestPriorityPlan, "")
+        XCTAssert(requestFields.contains(where: {
+            return $0.fieldId == 25175963 && $0.value as! String == ""
+        }))
     }
 }
