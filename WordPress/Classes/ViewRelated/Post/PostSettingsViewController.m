@@ -130,7 +130,7 @@ FeaturedImageViewControllerDelegate>
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
+    self.title = NSLocalizedString(@"Page Settings", @"The title of the Page Settings screen.");
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
