@@ -44,6 +44,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         super.viewDidLoad()
 
         applyStyles()
+        configureWebView()
         configureShareButton()
         configureHeader()
         configureToolbar()
@@ -87,6 +88,11 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
         // Webview is scroll is done by it's superview
         webView.scrollView.isScrollEnabled = false
+    }
+
+    /// Configure the webview
+    private func configureWebView() {
+        webView.navigationDelegate = self
     }
 
     /// Updates the webview height constraint with it's height
@@ -186,6 +192,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Returns: A `ReaderDetailWebviewViewController` instance
     @objc class func controllerWithPostURL(_ url: URL) -> ReaderDetailWebviewViewController {
         let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.postURL = url
+        controller.coordinator = coordinator
 
         return controller
     }
@@ -225,11 +234,15 @@ extension ReaderDetailWebviewViewController: StoryboardLoadable {
     }
 }
 
+// MARK: - Reader Card Discover
+
 extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
     }
 }
+
+// MARK: - Transitioning Delegate
 
 extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelegate {
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -238,5 +251,20 @@ extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelega
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - Navigation Delegate
+
+extension ReaderDetailWebviewViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated {
+            if let url = navigationAction.request.url {
+                coordinator?.handle(url)
+            }
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
     }
 }
