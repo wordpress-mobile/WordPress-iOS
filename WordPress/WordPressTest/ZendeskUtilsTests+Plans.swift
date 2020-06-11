@@ -16,7 +16,9 @@ class ZendeskUtilsPlans: XCTestCase {
     class MockPlanService: PlanService {
         var presetPlans = [Int: RemotePlanSimpleDescription]()
 
-        override func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount, success: @escaping ([Int : RemotePlanSimpleDescription]) -> Void, failure: @escaping (Error?) -> Void) {
+        override func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
+                                                                        success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
+                                                                        failure: @escaping (Error?) -> Void) {
             success(presetPlans)
         }
     }
