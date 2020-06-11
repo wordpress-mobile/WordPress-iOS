@@ -3,6 +3,7 @@ import NotificationCenter
 import WordPressKit
 import WordPressUI
 import Reachability
+import Extensions
 
 class AllTimeViewController: UIViewController {
 

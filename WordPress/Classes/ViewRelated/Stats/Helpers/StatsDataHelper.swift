@@ -1,4 +1,5 @@
 import Foundation
+import Extensions
 
 /// Helper class for getting/modifying Stats data for display purposes.
 ///

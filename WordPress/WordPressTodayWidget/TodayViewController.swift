@@ -4,6 +4,7 @@ import CocoaLumberjack
 import WordPressKit
 import WordPressUI
 import Reachability
+import Extensions
 
 class TodayViewController: UIViewController {
 

@@ -1,4 +1,5 @@
 import UIKit
+import Extensions
 
 class WidgetDifferenceCell: UITableViewCell {
 
