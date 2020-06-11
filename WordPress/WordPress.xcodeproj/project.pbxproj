@@ -344,7 +344,7 @@
 		324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */; };
 		3249615223F20111004C7733 /* PostSignUpInterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3249615023F20111004C7733 /* PostSignUpInterstitialViewController.swift */; };
 		3249615323F20111004C7733 /* PostSignUpInterstitialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3249615123F20111004C7733 /* PostSignUpInterstitialViewController.xib */; };
-		325158F32492894400304770 /* MediaProgressCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 325158F22492894400304770 /* MediaProgressCoordinator */; };
+		325158F524929C2D00304770 /* MediaProgressCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 325158F424929C2D00304770 /* MediaProgressCoordinator */; };
 		325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325D3B3C23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift */; };
 		327B48C3247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C2247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift */; };
 		327B48C5247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */; };
@@ -4970,7 +4970,7 @@
 				E19FED0A1FBD85F300D77FAB /* WordPressFlux.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
-				325158F32492894400304770 /* MediaProgressCoordinator in Frameworks */,
+				325158F524929C2D00304770 /* MediaProgressCoordinator in Frameworks */,
 				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
 				1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
@@ -10539,7 +10539,7 @@
 			);
 			name = WordPress;
 			packageProductDependencies = (
-				325158F22492894400304770 /* MediaProgressCoordinator */,
+				325158F424929C2D00304770 /* MediaProgressCoordinator */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -14206,7 +14206,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -Xfrontend -debug-time-function-bodies -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100 -Xfrontend -debug-time-expression-type-checking";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "WPiOS Development Profile";
@@ -16974,7 +16974,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		325158F22492894400304770 /* MediaProgressCoordinator */ = {
+		325158F424929C2D00304770 /* MediaProgressCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MediaProgressCoordinator;
 		};

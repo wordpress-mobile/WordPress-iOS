@@ -21,9 +21,11 @@ platforms: [.iOS(.v10)],
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "MediaProgressCoordinator",
-            dependencies: []),
+            dependencies: []
+        ),
         .testTarget(
             name: "MediaProgressCoordinatorTests",
             dependencies: ["MediaProgressCoordinator"]),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
