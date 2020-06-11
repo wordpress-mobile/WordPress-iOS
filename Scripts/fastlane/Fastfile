@@ -450,10 +450,12 @@ import "./ScreenshotFastfile"
   lane :build_for_translation_review do | options |
     ios_build_preflight() unless (options[:skip_prechecks])
 
-    sh("../Scripts/update-translations.rb")
-    sh("../Scripts/update-translations.rb ALL_LANGS waiting")
-    sh("../Scripts/update-translations.rb ALL_LANGS fuzzy")
-    sh("../Scripts/extract-framework-translations.swift")
+    sh("cd ../.. && ./Scripts/update-translations.rb review current")
+    sh("cd ../.. && ./Scripts/update-translations.rb review waiting")
+    sh("cd ../.. && ./Scripts/update-translations.rb review fuzzy")
+
+    ios_merge_translators_strings(strings_folder:"../WordPress/Resources/")
+    sh("cd ../.. && ./Scripts/extract-framework-translations.swift")
 
     xcbuild(
         workspace: "../WordPress.xcworkspace",
