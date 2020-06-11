@@ -7,6 +7,7 @@
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 * [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
 
 15.0
 -----
