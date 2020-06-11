@@ -228,6 +228,7 @@ import WordPressFlux
                     return
             }
 
+            self.hideNotice()
             self.didDismissTooltip = false
             self.showCreateButton(notice: self.quickStartNotice(description))
         }
