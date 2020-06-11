@@ -1,10 +1,3 @@
-//
-//  SettingsTextViewControllerTest.swift
-//  WordPressTest
-//
-//  Created by Francesco Scalise on 27/05/2020.
-//  Copyright © 2020 WordPress. All rights reserved.
-//
 
 import XCTest
 @testable import WordPress
