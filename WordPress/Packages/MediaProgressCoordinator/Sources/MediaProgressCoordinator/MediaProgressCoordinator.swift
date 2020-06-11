@@ -19,7 +19,7 @@ extension ProgressUserInfoKey {
 public class MediaProgressCoordinator: NSObject {
 
     public weak var delegate: MediaProgressCoordinatorDelegate?
-    private(set) var mediaGlobalProgress: Progress?
+    public var mediaGlobalProgress: Progress?
     public lazy var mediaInProgress: [String: Progress] = {
         return [String: Progress]()
     }()

@@ -1,4 +1,5 @@
 import Foundation
+import MediaProgressCoordinator
 @testable import WordPress
 
 class MediaProgressCoordinatorTests: XCTestCase {
