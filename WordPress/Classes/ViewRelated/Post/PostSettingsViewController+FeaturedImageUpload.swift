@@ -1,6 +1,7 @@
 import Foundation
 import Photos
 import WordPressFlux
+import MediaProgressCoordinator
 
 extension PostSettingsViewController {
 

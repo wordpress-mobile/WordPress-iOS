@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import MediaProgressCoordinator
 
 import class AutomatticTracks.CrashLogging
 import enum Alamofire.AFError
@@ -387,7 +388,7 @@ class MediaCoordinator: NSObject {
     /// - Returns: The media object for the specified uploadID.
     ///
     func media(withIdentifier uploadID: String, for post: AbstractPost) -> Media? {
-        return coordinator(for: post).media(withIdentifier: uploadID)
+        return coordinator(for: post).media(withIdentifier: uploadID) as? Media
     }
 
     /// Returns an existing media objcect with the specificed objectID
@@ -638,7 +639,9 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
-            guard let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
+            guard
+                let media = mediaProgressCoordinator.media(withIdentifier: mediaID) as? Media
+            else {
                 continue
             }
             if media.remoteStatus == .pushing || media.remoteStatus == .processing {
@@ -656,11 +659,18 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
         // the media library.
         // If the errors are causes by a missing file, we want to ignore that too.
 
-        let allFailedMediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
+        guard
+            let failedMedia: [Media] = mediaProgressCoordinator.failedMedia as? [Media]
+            else {
+                return
+        }
 
-        let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
 
-        if mediaProgressCoordinator.failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
+        let allFailedMediaErrorsAreMissingFilesErrors = failedMedia.allSatisfy { $0.hasMissingFileError }
+
+        let allFailedMediaHaveAssociatedPost = failedMedia.allSatisfy { $0.hasAssociatedPost() }
+
+        if failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)

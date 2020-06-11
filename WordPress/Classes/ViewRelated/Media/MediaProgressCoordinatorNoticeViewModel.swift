@@ -1,3 +1,5 @@
+import MediaProgressCoordinator
+
 enum MediaNoticeUserInfoKey {
     static let blogID = "blog_id"
     static let failedMediaIDs = "failed_media_ids"
@@ -24,8 +26,15 @@ struct MediaProgressCoordinatorNoticeViewModel {
         self.mediaProgressCoordinator = mediaProgressCoordinator
         self.isPostMedia = isPostMedia
 
-        successfulMedia = mediaProgressCoordinator.successfulMedia
-        failedMedia = mediaProgressCoordinator.failedMedia
+        guard
+            let success = mediaProgressCoordinator.successfulMedia as? [Media],
+            let failed = mediaProgressCoordinator.failedMedia as? [Media]
+        else{
+            return nil
+        }
+
+        successfulMedia = success
+        failedMedia = failed
 
         guard successfulMedia.count + failedMedia.count > 0 else {
             return nil
@@ -157,8 +166,10 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var blogInContext: Blog? {
-        guard let mediaID = mediaProgressCoordinator.inProgressMediaIDs.first,
-            let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
+        guard
+            let mediaID = mediaProgressCoordinator.inProgressMediaIDs.first,
+            let media = mediaProgressCoordinator.media(withIdentifier: mediaID) as? Media
+        else {
                 return nil
         }
 
