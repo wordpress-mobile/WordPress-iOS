@@ -104,6 +104,7 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
         cameraPicker.options.filter = filter
+        cameraPicker.options.allowMultipleSelection = false
         cameraPicker.showCapture()
     }
 }
