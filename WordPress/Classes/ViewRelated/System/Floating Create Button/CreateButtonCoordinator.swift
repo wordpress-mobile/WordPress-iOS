@@ -66,7 +66,7 @@ import WordPressFlux
         self.newPage = newPage
 
         super.init()
-        
+
         listenForQuickStart()
     }
 

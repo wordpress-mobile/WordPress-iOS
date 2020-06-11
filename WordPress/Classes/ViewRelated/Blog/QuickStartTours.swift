@@ -184,7 +184,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
-    
+
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]

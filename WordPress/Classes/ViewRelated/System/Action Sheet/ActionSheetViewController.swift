@@ -155,7 +155,7 @@ class ActionSheetViewController: UIViewController {
         let spotlight = QuickStartSpotlightView()
         spotlight.translatesAutoresizingMaskIntoConstraints = false
         button.addSubview(spotlight)
-        
+
         NSLayoutConstraint.activate([
             spotlight.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -Constants.Header.insets.right),
             spotlight.centerYAnchor.constraint(equalTo: button.centerYAnchor)
