@@ -57,7 +57,6 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     cell.frame = self.bounds;
     cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     cell.alpha = 0.0;
-    [cell setTitle:@"Dummy Text For Sizing the Label"];
     [self addSubview:cell];
     self.sourceCell = cell;
 }
