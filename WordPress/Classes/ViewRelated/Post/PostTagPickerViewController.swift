@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import Extensions
 
 class PostTagPickerViewController: UIViewController, DrawerPresentable {
     private let originalTags: [String]

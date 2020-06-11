@@ -2,12 +2,12 @@ import UIKit
 
 /// This delegate forces popover presentation even on iPhone / in compact size classes
 class ForcePopoverPresenter: NSObject, UIPopoverPresentationControllerDelegate {
-    @objc static let presenter = ForcePopoverPresenter()
+    static let presenter = ForcePopoverPresenter()
 
     fileprivate static let verticalPadding: CGFloat = 10
 
     /// Configures a view controller to use a popover presentation style
-    @objc static func configurePresentationControllerForViewController(_ controller: UIViewController, presentingFromView sourceView: UIView) {
+    static func configurePresentationControllerForViewController(_ controller: UIViewController, presentingFromView sourceView: UIView) {
         controller.modalPresentationStyle = .popover
 
         let presentationController = controller.popoverPresentationController

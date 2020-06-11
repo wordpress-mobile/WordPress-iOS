@@ -22,12 +22,14 @@ class TableViewKeyboardObserver: NSObject {
     }
 
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
-        let key = UIResponder.keyboardFrameBeginUserInfoKey
-        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
+        let key: String = UIResponder.keyboardFrameBeginUserInfoKey
+
+        guard let keyboardFrame: CGRect = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
             return
         }
 
-        var inset = originalInset
+        var inset: UIEdgeInsets = originalInset
+
         if UIApplication.shared.statusBarOrientation.isPortrait {
             inset.bottom += keyboardFrame.height
         } else {
