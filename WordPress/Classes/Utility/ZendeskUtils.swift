@@ -188,22 +188,33 @@ extension NSNotification.Name {
         }
     }
 
-    func cacheUnlocalizedSitePlans() {
-        guard !WordPressComLanguageDatabase().deviceLanguage.slug.hasPrefix("en") else {
-            // Don't fetch if its already "en".
-            return
-        }
-
+    func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
         let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = accountService ?? AccountService(managedObjectContext: context)
         guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
 
-        let planService = PlanService(managedObjectContext: context)
+        let planService = planService ?? PlanService(managedObjectContext: context)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
         }, failure: { error in })
+    }
+
+    /// Retrieves the highest priority plan, if it exists
+    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    func getHighestPriorityPlan() -> String {
+
+        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+            .map { $0 == "Business" ? "business_professional" : $0.lowercased() } // replaces Zendesk Automation on 'Business' tag
+
+        for plan in Constants.planPriority {
+            if plans.contains(plan) {
+                return plan
+            }
+        }
+        // in case no existing plan was found, but there still is at least one unlocalized plan
+        return plans.first ?? ""
     }
 
     // MARK: - Device Registration
@@ -647,28 +658,6 @@ private extension ZendeskUtils {
             return desc
         }
         return blogInfo.joined(separator: Constants.blogSeperator)
-    }
-
-
-    /// Retrieves the highest priority plan, if it exists
-    /// - Returns: the highest priority plan found, or an empty string if none was foundq
-    func getHighestPriorityPlan() -> String {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let allBlogs = blogService.blogsForAllAccounts()
-
-        let unlocalizedPlans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
-
-        let plans = (unlocalizedPlans.isEmpty ? Set(allBlogs.compactMap { $0.planTitle }) : unlocalizedPlans)
-            .map { $0 == "Business" ? "business_professional" : $0.lowercased() }
-
-        for plan in Constants.planPriority {
-            if plans.contains(plan) {
-                return plan
-            }
-        }
-        // in case no existing plan was found, but there still is at least one unlocalized plan
-        return plans.first ?? ""
     }
 
     static func getTags() -> [String] {
