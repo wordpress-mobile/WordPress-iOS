@@ -7,6 +7,7 @@
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 * [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [***] Free GIFs can now be added to the media library, posts, and pages.
 
 15.0
 -----
