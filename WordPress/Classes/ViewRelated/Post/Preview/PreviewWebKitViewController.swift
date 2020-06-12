@@ -1,5 +1,6 @@
 import Gridicons
 import WebKit
+import MurielColors
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {

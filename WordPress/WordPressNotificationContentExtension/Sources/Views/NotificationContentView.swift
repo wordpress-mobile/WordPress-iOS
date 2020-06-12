@@ -2,6 +2,7 @@ import UIKit
 
 import WordPressShared
 import WordPressUI
+import MurielColors
 
 // MARK: - NotificationContentView
 

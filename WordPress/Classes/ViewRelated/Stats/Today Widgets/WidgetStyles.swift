@@ -1,5 +1,6 @@
 import Foundation
 import NotificationCenter
+import MurielColors
 
 class WidgetStyles: NSObject {
 

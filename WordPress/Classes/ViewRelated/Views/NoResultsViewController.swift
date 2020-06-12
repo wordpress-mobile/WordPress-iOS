@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import Reachability
+import MurielColors
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()

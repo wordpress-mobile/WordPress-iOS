@@ -1,6 +1,6 @@
 import Foundation
 import WordPressShared
-
+import MurielColors
 
 extension WPStyleGuide {
     // MARK: - Styles Used by the WordPress Share Extension

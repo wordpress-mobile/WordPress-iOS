@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import MurielColors
 
 fileprivate extension OriginatingExtension {
     var viewControllerIdentifier: String {

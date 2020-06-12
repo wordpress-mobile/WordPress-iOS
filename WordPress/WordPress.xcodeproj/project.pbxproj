@@ -336,6 +336,13 @@
 		319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8019E44C680013871C /* SuggestionsTableView.m */; };
 		319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */; };
 		31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */; };
+		320676EC2493D381009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676EB2493D381009ACB9A /* MurielColors */; };
+		320676EE2493D3EB009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676ED2493D3EB009ACB9A /* MurielColors */; };
+		320676F02493D3F0009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676EF2493D3F0009ACB9A /* MurielColors */; };
+		320676F22493D3F8009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676F12493D3F8009ACB9A /* MurielColors */; };
+		320676F42493D3FC009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676F32493D3FC009ACB9A /* MurielColors */; };
+		320676F62493D401009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676F52493D401009ACB9A /* MurielColors */; };
+		320676F82493D481009ACB9A /* MurielColors in Frameworks */ = {isa = PBXBuildFile; productRef = 320676F72493D481009ACB9A /* MurielColors */; };
 		321E292623A5F10900588610 /* FullScreenCommentReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */; };
 		323F8F3023A22C4C000BA49C /* SiteCreationRotatingMessageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */; };
 		323F8F3123A22C8F000BA49C /* SiteCreationRotatingMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221278523A0BD27002CA183 /* SiteCreationRotatingMessageView.swift */; };
@@ -486,11 +493,6 @@
 		4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */; };
 		431EF35A21F7D4000017BE16 /* QuickStartListTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 431EF35921F7D4000017BE16 /* QuickStartListTitleCell.xib */; };
 		4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */; };
-		4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
-		4326191622FCB9F8003C7642 /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
-		4326191722FCB9F9003C7642 /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
-		4326191822FCB9F9003C7642 /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
-		4326191922FCB9FA003C7642 /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
 		4328FED12314788C000EC32A /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		43290CF4214F755400F6B398 /* FancyAlertViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43290CF3214F755400F6B398 /* FancyAlertViewController+QuickStart.swift */; };
 		43290D04215C28D800F6B398 /* Blog+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43290D03215C28D800F6B398 /* Blog+QuickStart.swift */; };
@@ -519,17 +521,12 @@
 		4352211722B1B68F00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */; };
 		4353BFA9219E0E820009CED3 /* RevisionOperationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353BFA8219E0E820009CED3 /* RevisionOperationViewController.swift */; };
 		4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353BFB121A376BF0009CED3 /* UntouchableWindow.swift */; };
-		435B762222973D0600511813 /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
-		435B762322973D0600511813 /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
-		435B762422973D0600511813 /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		435B762A2297484200511813 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		435B762B2297484200511813 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		435B762C2297484200511813 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		435D101A2130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D10192130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift */; };
-		436110D922C3ED18000773AD /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		436110DB22C3ED4C000773AD /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
-		436110DC22C41ADB000773AD /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		436110DD22C41AFD000773AD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		436110DE22C41B02000773AD /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
 		436110E022C4241A000773AD /* UIColor+MurielColorsObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436110DF22C4241A000773AD /* UIColor+MurielColorsObjC.swift */; };
@@ -1276,8 +1273,6 @@
 		98921EFB21372E57004949AA /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EFA21372E57004949AA /* NewsService.swift */; };
 		9895B6E021ED49160053D370 /* TopTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9895B6DF21ED49160053D370 /* TopTotalsCell.xib */; };
 		989643E223A02F080070720A /* WidgetUnconfiguredCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989064FB237CC1DE00218CD2 /* WidgetUnconfiguredCell.swift */; };
-		989643E423A02F4E0070720A /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
-		989643E523A02F640070720A /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
 		989643E823A031CD0070720A /* WidgetUnconfiguredCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FC237CC1DE00218CD2 /* WidgetUnconfiguredCell.xib */; };
 		989643EC23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */; };
 		989643ED23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */; };
@@ -1292,8 +1287,6 @@
 		98A437AE20069098004A8A57 /* DomainSuggestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AD20069097004A8A57 /* DomainSuggestionsTableViewController.swift */; };
 		98A6B98F2398807F0031AEBD /* WidgetTwoColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989064FD237CC1DE00218CD2 /* WidgetTwoColumnCell.swift */; };
 		98A6B9902398808B0031AEBD /* WidgetUnconfiguredCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989064FB237CC1DE00218CD2 /* WidgetUnconfiguredCell.swift */; };
-		98A6B992239881630031AEBD /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
-		98A6B993239881860031AEBD /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
 		98A6B9942398821B0031AEBD /* WidgetTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */; };
 		98A6B996239882350031AEBD /* WidgetUnconfiguredCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FC237CC1DE00218CD2 /* WidgetUnconfiguredCell.xib */; };
 		98AE3DF5219A1789003C0E24 /* StatsInsightsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */; };
@@ -2728,6 +2721,7 @@
 		31EC15061A5B6675009FC8B3 /* WPStyleGuide+Suggestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Suggestions.h"; sourceTree = "<group>"; };
 		31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Suggestions.m"; sourceTree = "<group>"; };
 		31FA16CC1A49B3C0003E1887 /* WordPress 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 25.xcdatamodel"; sourceTree = "<group>"; };
+		320676EA2493D362009ACB9A /* MurielColors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MurielColors; path = Packages/MurielColors; sourceTree = "<group>"; };
 		3221278523A0BD27002CA183 /* SiteCreationRotatingMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationRotatingMessageView.swift; sourceTree = "<group>"; };
 		32282CF82390B614003378A7 /* WordPress 94.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 94.xcdatamodel"; sourceTree = "<group>"; };
 		324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+FollowedSites.swift"; sourceTree = "<group>"; };
@@ -2884,7 +2878,6 @@
 		4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+NotificationPrimer.swift"; sourceTree = "<group>"; };
 		431EF35921F7D4000017BE16 /* QuickStartListTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartListTitleCell.xib; sourceTree = "<group>"; };
 		4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameTableViewController.swift; sourceTree = "<group>"; };
-		4326191422FCB9DC003C7642 /* MurielColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MurielColor.swift; sourceTree = "<group>"; };
 		43290CF3214F755400F6B398 /* FancyAlertViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		43290D012159652800F6B398 /* WordPress 81.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 81.xcdatamodel"; sourceTree = "<group>"; };
 		43290D03215C28D800F6B398 /* Blog+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+QuickStart.swift"; sourceTree = "<group>"; };
@@ -2900,7 +2893,6 @@
 		4349BFF6221205740084F200 /* BlogDetailsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSectionHeaderView.swift; sourceTree = "<group>"; };
 		4353BFA8219E0E820009CED3 /* RevisionOperationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionOperationViewController.swift; sourceTree = "<group>"; };
 		4353BFB121A376BF0009CED3 /* UntouchableWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UntouchableWindow.swift; sourceTree = "<group>"; };
-		435B762122973D0600511813 /* UIColor+MurielColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+MurielColors.swift"; sourceTree = "<group>"; };
 		435B76292297484200511813 /* ColorPalette.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorPalette.xcassets; sourceTree = "<group>"; };
 		435D10192130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+FancyAlerts.swift"; sourceTree = "<group>"; };
 		436110DF22C4241A000773AD /* UIColor+MurielColorsObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+MurielColorsObjC.swift"; sourceTree = "<group>"; };
@@ -4935,6 +4927,7 @@
 				93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */,
 				E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */,
 				FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */,
+				320676EC2493D381009ACB9A /* MurielColors in Frameworks */,
 				93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */,
 				3254721B2492D7F4002E3EAD /* Extensions in Frameworks */,
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
@@ -4969,6 +4962,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676F82493D481009ACB9A /* MurielColors in Frameworks */,
 				733F36062126197800988727 /* UserNotificationsUI.framework in Frameworks */,
 				733F36042126197800988727 /* UserNotifications.framework in Frameworks */,
 				04936A8B3D936CD1FC4AB1EF /* Pods_WordPressNotificationContentExtension.framework in Frameworks */,
@@ -4987,6 +4981,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676F02493D3F0009ACB9A /* MurielColors in Frameworks */,
 				3254721F2492D7FF002E3EAD /* Extensions in Frameworks */,
 				6867C0633E597372235CB5E0 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
 			);
@@ -5004,6 +4999,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676EE2493D3EB009ACB9A /* MurielColors in Frameworks */,
 				3254721D2492D7FC002E3EAD /* Extensions in Frameworks */,
 				4C8A715EBCE7E73AEE216293 /* Pods_WordPressShareExtension.framework in Frameworks */,
 			);
@@ -5013,6 +5009,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676F22493D3F8009ACB9A /* MurielColors in Frameworks */,
 				325472212492D803002E3EAD /* Extensions in Frameworks */,
 				98E58A442361019300E5534B /* Pods_WordPressTodayWidget.framework in Frameworks */,
 				93E5283C19A7741A003A1A9C /* NotificationCenter.framework in Frameworks */,
@@ -5023,6 +5020,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676F62493D401009ACB9A /* MurielColors in Frameworks */,
 				325472252492D80B002E3EAD /* Extensions in Frameworks */,
 				98A3C2F0239997DA0048D38D /* NotificationCenter.framework in Frameworks */,
 				26D66DEC36ACF7442186B07D /* Pods_WordPressThisWeekWidget.framework in Frameworks */,
@@ -5033,6 +5031,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320676F42493D3FC009ACB9A /* MurielColors in Frameworks */,
 				325472232492D807002E3EAD /* Extensions in Frameworks */,
 				98D31B8F2396ED7F009CFF43 /* NotificationCenter.framework in Frameworks */,
 				638E2F3D4DFE9E93AF660CED /* Pods_WordPressAllTimeWidget.framework in Frameworks */,
@@ -5566,6 +5565,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				320676EA2493D362009ACB9A /* MurielColors */,
 				325472192492D7A6002E3EAD /* Extensions */,
 				325158F12492893B00304770 /* MediaProgressCoordinator */,
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -6254,8 +6254,6 @@
 		4326191322FCB8BE003C7642 /* Colors and Styles */ = {
 			isa = PBXGroup;
 			children = (
-				4326191422FCB9DC003C7642 /* MurielColor.swift */,
-				435B762122973D0600511813 /* UIColor+MurielColors.swift */,
 				436110DF22C4241A000773AD /* UIColor+MurielColorsObjC.swift */,
 				E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */,
 				17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */,
@@ -10528,6 +10526,7 @@
 			packageProductDependencies = (
 				325158F424929C2D00304770 /* MediaProgressCoordinator */,
 				3254721A2492D7F4002E3EAD /* Extensions */,
+				320676EB2493D381009ACB9A /* MurielColors */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -10548,6 +10547,9 @@
 			dependencies = (
 			);
 			name = WordPressNotificationContentExtension;
+			packageProductDependencies = (
+				320676F72493D481009ACB9A /* MurielColors */,
+			);
 			productName = WordPressNotificationContentExtension;
 			productReference = 733F36032126197800988727 /* WordPressNotificationContentExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -10588,6 +10590,7 @@
 			name = WordPressDraftActionExtension;
 			packageProductDependencies = (
 				3254721E2492D7FF002E3EAD /* Extensions */,
+				320676EF2493D3F0009ACB9A /* MurielColors */,
 			);
 			productName = WordPressDraftActionExtension;
 			productReference = 74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */;
@@ -10629,6 +10632,7 @@
 			name = WordPressShareExtension;
 			packageProductDependencies = (
 				3254721C2492D7FC002E3EAD /* Extensions */,
+				320676ED2493D3EB009ACB9A /* MurielColors */,
 			);
 			productName = WordPressShare;
 			productReference = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */;
@@ -10651,6 +10655,7 @@
 			name = WordPressTodayWidget;
 			packageProductDependencies = (
 				325472202492D803002E3EAD /* Extensions */,
+				320676F12493D3F8009ACB9A /* MurielColors */,
 			);
 			productName = WordPressTodayWidget;
 			productReference = 93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */;
@@ -10673,6 +10678,7 @@
 			name = WordPressThisWeekWidget;
 			packageProductDependencies = (
 				325472242492D80B002E3EAD /* Extensions */,
+				320676F52493D401009ACB9A /* MurielColors */,
 			);
 			productName = WordPressThisWeekWidget;
 			productReference = 98A3C2EF239997DA0048D38D /* WordPressThisWeekWidget.appex */;
@@ -10695,6 +10701,7 @@
 			name = WordPressAllTimeWidget;
 			packageProductDependencies = (
 				325472222492D807002E3EAD /* Extensions */,
+				320676F32493D3FC009ACB9A /* MurielColors */,
 			);
 			productName = WordPressAllTimeWidget;
 			productReference = 98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */;
@@ -12696,7 +12703,6 @@
 				E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				177B4C27212316DC00CF8084 /* GiphyStrings.swift in Sources */,
-				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
@@ -12868,7 +12874,6 @@
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				E10290741F30615A00DAC588 /* Role.swift in Sources */,
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
-				435B762222973D0600511813 /* UIColor+MurielColors.swift in Sources */,
 				7326A4A8221C8F4100B4EB8C /* UIStackView+Subviews.swift in Sources */,
 				4349B0AC218A45270034118A /* RevisionsTableViewController.swift in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
@@ -13120,10 +13125,8 @@
 			files = (
 				7345EAC4212DD49400607EC9 /* CircularImageView.swift in Sources */,
 				436110DD22C41AFD000773AD /* FeatureFlag.swift in Sources */,
-				436110DC22C41ADB000773AD /* UIColor+MurielColors.swift in Sources */,
 				170BEC8A239153160017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				433ADC1B223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
-				4326191622FCB9F8003C7642 /* MurielColor.swift in Sources */,
 				73B05D2921374F1E0073ECAA /* Constants.m in Sources */,
 				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
 				73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */,
@@ -13222,7 +13225,6 @@
 				74021A16202E139A006CC39F /* ShareData.swift in Sources */,
 				74C2044E20363316006FB344 /* WPReusableTableViewCells.swift in Sources */,
 				F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */,
-				4326191822FCB9F9003C7642 /* MurielColor.swift in Sources */,
 				4338672622B2E0D600C8DEBD /* FeatureFlag.swift in Sources */,
 				74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */,
 				74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */,
@@ -13235,7 +13237,6 @@
 				74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */,
 				1752D4F9238D702D002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74021A23202E1743006CC39F /* FormatBarItemProviders.swift in Sources */,
-				435B762422973D0600511813 /* UIColor+MurielColors.swift in Sources */,
 				74021A0A202E1329006CC39F /* AppExtensionsService.swift in Sources */,
 				74021A11202E1370006CC39F /* ExtensionPresentationAnimator.swift in Sources */,
 			);
@@ -13334,7 +13335,6 @@
 				74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
 				74D06FEA1FE0787400AF1788 /* Header+WordPress.swift in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
-				4326191922FCB9FA003C7642 /* MurielColor.swift in Sources */,
 				4338672522B2E0D600C8DEBD /* FeatureFlag.swift in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				74D06FE81FE076F700AF1788 /* FormatBarItemProviders.swift in Sources */,
@@ -13346,7 +13346,6 @@
 				F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */,
 				1752D4FA238D702E002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
-				435B762322973D0600511813 /* UIColor+MurielColors.swift in Sources */,
 				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
 				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
 			);
@@ -13367,8 +13366,6 @@
 				98906503237CC1DF00218CD2 /* WidgetUnconfiguredCell.swift in Sources */,
 				93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */,
 				98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */,
-				4326191722FCB9F9003C7642 /* MurielColor.swift in Sources */,
-				436110D922C3ED18000773AD /* UIColor+MurielColors.swift in Sources */,
 				988F073A23D0D16700AC67A6 /* WidgetUrlCell.swift in Sources */,
 				1752D4FB238D702F002B79E7 /* KeyValueDatabase.swift in Sources */,
 				170BEC89239153120017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
@@ -13385,14 +13382,12 @@
 				983AE84C2399AC5B00E5B7F6 /* SFHFKeychainUtils.m in Sources */,
 				98F93184239AF76900E4E96E /* CocoaLumberjack.swift in Sources */,
 				98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */,
-				989643E423A02F4E0070720A /* UIColor+MurielColors.swift in Sources */,
 				989643E223A02F080070720A /* WidgetUnconfiguredCell.swift in Sources */,
 				980D3B1B23C925F40060A890 /* WidgetStyles.swift in Sources */,
 				988F073C23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */,
 				98712D1F23DA1D0A00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A3C3052399A2370048D38D /* ThisWeekViewController.swift in Sources */,
-				989643E523A02F640070720A /* MurielColor.swift in Sources */,
 				983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */,
 				989643ED23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */,
 				98F93183239AF64800E4E96E /* ThisWeekWidgetStats.swift in Sources */,
@@ -13407,13 +13402,11 @@
 				98D31BAD2397015C009CFF43 /* Tracks.swift in Sources */,
 				98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */,
 				98BFF57F23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */,
-				98A6B992239881630031AEBD /* UIColor+MurielColors.swift in Sources */,
 				98A6B9902398808B0031AEBD /* WidgetUnconfiguredCell.swift in Sources */,
 				98D31BAC23970078009CFF43 /* Tracks+AllTimeWidget.swift in Sources */,
 				988F073B23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */,
 				98712D1E23DA1D0900555316 /* WidgetNoConnectionCell.swift in Sources */,
-				98A6B993239881860031AEBD /* MurielColor.swift in Sources */,
 				98D31BC223972A79009CFF43 /* SFHFKeychainUtils.m in Sources */,
 				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,
 				985ED0E823C6964600B8D06A /* WidgetStyles.swift in Sources */,
@@ -16861,6 +16854,34 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		320676EB2493D381009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676ED2493D3EB009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676EF2493D3F0009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676F12493D3F8009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676F32493D3FC009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676F52493D401009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
+		320676F72493D481009ACB9A /* MurielColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MurielColors;
+		};
 		325158F424929C2D00304770 /* MediaProgressCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MediaProgressCoordinator;

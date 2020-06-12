@@ -3,6 +3,7 @@ import UIKit
 import WordPressShared
 import WordPressUI
 import Gridicons
+import MurielColors
 
 class WPReusableTableViewCell: WPTableViewCell {
     override func prepareForReuse() {
