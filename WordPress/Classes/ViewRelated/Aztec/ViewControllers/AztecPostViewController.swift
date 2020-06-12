@@ -3381,6 +3381,7 @@ extension AztecPostViewController {
             "Switch to block editor",
             comment: "Switches from the classic editor to block editor."
         )
+        static let saveAsDraft = NSLocalizedString("Save As Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

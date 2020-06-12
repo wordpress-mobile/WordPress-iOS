@@ -19,13 +19,14 @@ extension GutenbergViewController {
 
             alert.title = textCounterTitle
         }*/
-
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
-            }
+        
+        let action: PostEditorAction = .saveAsDraft
+        alert.addDefaultActionWithTitle(MoreSheetAlert.saveAsDraft) { [weak self] _ in
+            guard let self = self else {return}
+            self.publishPost(
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
         }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
@@ -39,7 +40,7 @@ extension GutenbergViewController {
                 return MoreSheetAlert.richTitle
             }
         }()
-
+        
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
         }
@@ -98,6 +99,7 @@ extension GutenbergViewController {
             "Switch to classic editor",
             comment: "Switches from Gutenberg mobile to the classic editor"
         )
+        static let saveAsDraft = NSLocalizedString("Save As Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
