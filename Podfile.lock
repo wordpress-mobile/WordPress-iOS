@@ -484,7 +484,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
   - WordPressAuthenticator (~> 1.18.0-beta.9)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/14224-add-zendesk-plan-field`)
+  - WordPressKit (~> 5.0.0-beta.2)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.9.0-beta.1)
   - WordPressUI (~> 1.7.0)
@@ -533,6 +533,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -617,9 +618,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.30.0
-  WordPressKit:
-    :branch: issue/14224-add-zendesk-plan-field
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.30.0/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -633,9 +631,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.30.0
-  WordPressKit:
-    :commit: a152de9d01461b3456a375806395be14b4972268
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -725,6 +720,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: d24dbe0c0406dd714e52cc39711d45bae47e3279
+PODFILE CHECKSUM: e883e836d5fe11167803b7446b3aa621e5580a02
 
 COCOAPODS: 1.8.4
