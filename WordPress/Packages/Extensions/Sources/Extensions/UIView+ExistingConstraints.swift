@@ -1,4 +1,6 @@
-extension UIView {
+import UIKit
+
+public extension UIView {
 
     /// Call this method to get any existing constraint for the specified axis and the specified relation.
     ///

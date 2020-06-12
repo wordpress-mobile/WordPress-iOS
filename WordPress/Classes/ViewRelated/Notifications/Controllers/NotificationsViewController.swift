@@ -4,6 +4,7 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
+import Extensions
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.

@@ -28,7 +28,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         static let dataLink = "data-link"
     }
 
-    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: ImageKeys.name, replacer: { (img) in
+    lazy var imgPostMediaUploadProcessor: HTMLProcessor = HTMLProcessor(for: ImageKeys.name, replacer: { (img) in
         guard let imgClassAttributeValue = img.attributes[ImageKeys.classAttributes]?.value,
             case let .string(imgClass) = imgClassAttributeValue else {
                 return nil
@@ -71,7 +71,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         static let name = "a"
     }
 
-    lazy var linkPostMediaUploadProcessor = HTMLProcessor(for: LinkKeys.name, replacer: { (link) in
+    lazy var linkPostMediaUploadProcessor: HTMLProcessor = HTMLProcessor(for: LinkKeys.name, replacer: { (link) in
 
         guard let linkOriginalContent = link.content else {
             return nil
@@ -117,7 +117,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         return ids
     }
 
-    lazy var galleryBlockProcessor = GutenbergBlockProcessor(for: GalleryBlockKeys.name, replacer: { block in
+    lazy var galleryBlockProcessor: GutenbergBlockProcessor = GutenbergBlockProcessor(for: GalleryBlockKeys.name, replacer: { block in
         guard let idsAny = block.attributes[GalleryBlockKeys.ids] as? [Any] else {
                 return nil
         }

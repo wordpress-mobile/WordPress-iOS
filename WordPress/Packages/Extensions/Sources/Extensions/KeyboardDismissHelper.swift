@@ -13,42 +13,42 @@ import UIKit
 /// -   Initialize it with a reference to the scrollView + bottom constraint + dismissableControl
 /// -   Forward the scrollView willBegin/didScroll events
 ///
-@objc class KeyboardDismissHelper: NSObject {
+@objc public class KeyboardDismissHelper: NSObject {
     /// Reference to the control to-be-dismissed
     ///
-    @objc var dismissableControl: UIView?
+    @objc public var dismissableControl: UIView?
 
     /// Reference to the bottom layout constraint
     ///
-    @objc var bottomLayoutConstraint: NSLayoutConstraint
+    @objc public var bottomLayoutConstraint: NSLayoutConstraint
 
     /// Closure to be executed whenever the Keyboard will be Hidden
     ///
-    @objc var onWillHide: (() -> Void)?
+    @objc public var onWillHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was hidden
     ///
-    @objc var onDidHide: (() -> Void)?
+    @objc public var onDidHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard will be Shown
     ///
-    @objc var onWillShow: (() -> Void)?
+    @objc public var onWillShow: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was Shown
     ///
-    @objc var onDidShow: (() -> Void)?
+    @objc public var onDidShow: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard *will* change its frame
     ///
-    @objc var onWillChangeFrame: (() -> Void)?
+    @objc public var onWillChangeFrame: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard *did* change its frame
     ///
-    @objc var onDidChangeFrame: (() -> Void)?
+    @objc public var onDidChangeFrame: (() -> Void)?
 
     /// Indicates whether the keyboard is visible or not
     ///
-    @objc var isKeyboardVisible = false {
+    @objc public var isKeyboardVisible = false {
         didSet {
             // Reset any current Drag OP on change
             trackingDragOperation = false
@@ -79,7 +79,7 @@ import UIKit
     ///
     /// -   Parameter scrollView: View that contains everything
     ///
-    @objc init(parentView: UIView, scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
+    @objc public init(parentView: UIView, scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
         self.parentView = parentView
         self.scrollView = scrollView
         self.dismissableControl = dismissableControl
@@ -91,7 +91,7 @@ import UIKit
 
     /// Initializes the Keyboard Event Listeners
     ///
-    @objc func startListeningToKeyboardNotifications() {
+    @objc public func startListeningToKeyboardNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self,
                        selector: #selector(keyboardWillShow),
@@ -122,38 +122,40 @@ import UIKit
 
     /// Removes all of the Keyboard Event Listeners
     ///
-    @objc func stopListeningToKeyboardNotifications() {
+    @objc public func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
 
     /// ScrollView willBeginDragging Event
     ///
-    @objc func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard let dismissableControl = dismissableControl, isKeyboardVisible == true else {
+    @objc public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard let dismissableControl: UIView = dismissableControl, isKeyboardVisible == true else {
             return
         }
 
-        initialControlPositionY = dismissableControl.frame.maxY
+        let frame: CGRect = dismissableControl.frame
+
+        initialControlPositionY = frame.maxY
         initialBottomConstraint = bottomLayoutConstraint.constant
         trackingDragOperation = true
     }
 
     /// ScrollView didScroll Event
     ///
-    @objc func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    @objc public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard trackingDragOperation == true else {
             return
         }
 
-        let location = scrollView.panGestureRecognizer.location(in: parentView)
-        let delta = location.y - initialControlPositionY
-        let newConstant = min(max(initialBottomConstraint - delta, 0), initialBottomConstraint)
+        let location: CGPoint = scrollView.panGestureRecognizer.location(in: parentView)
+        let delta: CGFloat = location.y - initialControlPositionY
+        let newConstant: CGFloat = min(max(initialBottomConstraint - delta, 0), initialBottomConstraint)
 
         guard newConstant != bottomLayoutConstraint.constant else {
             return
         }
 
-        let previousContentOffset = scrollView.contentOffset
+        let previousContentOffset: CGPoint = scrollView.contentOffset
 
         bottomLayoutConstraint.constant = newConstant
         parentView.layoutIfNeeded()
@@ -162,7 +164,7 @@ import UIKit
         scrollView.contentOffset = previousContentOffset
     }
 
-    @objc func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    @objc public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         trackingDragOperation = false
     }
 

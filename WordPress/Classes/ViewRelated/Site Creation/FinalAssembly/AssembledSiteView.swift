@@ -51,9 +51,10 @@ final class AssembledSiteView: UIView {
 
     /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
     var preferredSize: CGSize {
-        let screenBounds = UIScreen.main.bounds
+        let screenBounds: CGRect = UIScreen.main.bounds
 
         let preferredWidth: CGFloat
+
         if WPDeviceIdentification.isiPad() {
             if UIDevice.current.orientation.isLandscape {
                 preferredWidth = Parameters.iPadWidthLandscape
@@ -64,7 +65,7 @@ final class AssembledSiteView: UIView {
             preferredWidth = screenBounds.width * Parameters.iPhoneWidthScaleFactor
         }
 
-        let preferredHeight = screenBounds.height * Parameters.minimumHeightScaleFactor
+        let preferredHeight: CGFloat = screenBounds.height * Parameters.minimumHeightScaleFactor
 
         return CGSize(width: preferredWidth, height: preferredHeight)
     }

@@ -4,7 +4,7 @@ import UIKit
 class CircularImageView: UIImageView {
     @objc var shouldRoundCorners: Bool = true {
         didSet {
-            let rect = frame
+            let rect: CGRect = frame
             frame = rect
         }
     }
@@ -25,13 +25,14 @@ class CircularImageView: UIImageView {
     }
 
     fileprivate func refreshRadius() {
-
-        let radius = shouldRoundCorners ? (frame.width * 0.5) : 0
+        let shouldRound: Bool = shouldRoundCorners
+        let width: CGFloat = frame.width
+        let radius: CGFloat = shouldRound ? (width * 0.5) : 0
         if layer.cornerRadius != radius {
             layer.cornerRadius = radius
         }
-        if layer.masksToBounds != shouldRoundCorners {
-            layer.masksToBounds = shouldRoundCorners
+        if layer.masksToBounds != shouldRound {
+            layer.masksToBounds = shouldRound
         }
     }
 }

@@ -12,7 +12,7 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressUI/WordPressUI.h>
 
-
+@import Extensions;
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
 static CGFloat const CommentsActivityFooterHeight               = 50.0;

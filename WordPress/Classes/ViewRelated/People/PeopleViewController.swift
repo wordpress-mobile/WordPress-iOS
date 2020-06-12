@@ -2,6 +2,7 @@ import UIKit
 
 import CocoaLumberjack
 import WordPressShared
+import Extensions
 
 // MARK: - PeopleViewController
 

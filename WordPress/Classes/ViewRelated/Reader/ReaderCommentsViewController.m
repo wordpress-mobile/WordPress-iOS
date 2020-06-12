@@ -14,7 +14,7 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
-
+@import Extensions;
 
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,

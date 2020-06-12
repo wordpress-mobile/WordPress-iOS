@@ -16,22 +16,23 @@ public class TopCommentedPostStatsRecordValue: StatsRecordValue {
 // This could arguably live both here and in `TopCommentsAuthor` — I've arbitrarily chosen this location.
 extension StatsCommentsInsight: StatsRecordValueConvertible {
     func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
-        let posts: [StatsRecordValue] = topPosts.map {
+
+        let posts: [StatsRecordValue] = topPosts.map  { (obj: StatsTopCommentsPost) -> TopCommentedPostStatsRecordValue in
             let value = TopCommentedPostStatsRecordValue(context: context)
 
-            value.title = $0.name
-            value.commentCount = Int64($0.commentCount)
-            value.postURLString = $0.postURL?.absoluteString
-            value.postID = $0.postID
+            value.title = obj.name
+            value.commentCount = Int64(obj.commentCount)
+            value.postURLString = obj.postURL?.absoluteString
+            value.postID = obj.postID
 
             return value
         }
-        let authors: [StatsRecordValue] = topAuthors.compactMap {
+        let authors: [StatsRecordValue] = topAuthors.compactMap { (obj: StatsTopCommentsAuthor) -> StatsRecordValue in
             let value = TopCommentsAuthorStatsRecordValue(context: context)
 
-            value.name = $0.name
-            value.commentCount = Int64($0.commentCount)
-            value.avatarURLString = $0.iconURL?.absoluteString
+            value.name = obj.name
+            value.commentCount = Int64(obj.commentCount)
+            value.avatarURLString = obj.iconURL?.absoluteString
 
             return value
         }

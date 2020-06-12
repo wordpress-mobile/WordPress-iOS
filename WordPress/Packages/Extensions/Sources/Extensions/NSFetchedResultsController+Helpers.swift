@@ -1,7 +1,7 @@
 import Foundation
+import CoreData
 
-
-extension NSFetchedResultsController {
+public extension NSFetchedResultsController {
     /// Returns whether an indexPath represents the last row in it's section, or not
     ///
     @objc func isLastIndexPathInSection(_ indexPath: IndexPath) -> Bool {

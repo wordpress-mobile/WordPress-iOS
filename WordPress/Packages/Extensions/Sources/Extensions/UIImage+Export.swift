@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-extension UIImage {
+public extension UIImage {
     // MARK: - Error Handling
     enum ErrorCode: Int {
         case failedToWrite = 1

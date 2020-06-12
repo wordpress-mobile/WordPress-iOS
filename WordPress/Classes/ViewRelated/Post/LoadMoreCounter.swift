@@ -30,14 +30,14 @@ class LoadMoreCounter {
         // 100: Its unlikely this should happen in a normal session. Bears more investigation.
         // 1000: We should never see this many in a normal session. Something is probably broken.
         // 10000: Ditto
-        let benchmarks = [1, 100, 1000, 10000]
+        let benchmarks: [Int] = [1, 100, 1000, 10000]
 
         guard benchmarks.contains(count) else {
             return false
         }
 
         if !dryRun {
-            var props = properties
+            var props: [String: AnyObject] = properties
             props["count"] = count as AnyObject
             WPAnalytics.track(.postListExcessiveLoadMoreDetected, withProperties: props)
         }

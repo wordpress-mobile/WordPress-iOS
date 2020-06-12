@@ -5,6 +5,8 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 
+@import Extensions;
+
 @interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) MediaLibraryGroup *mediaGroup;

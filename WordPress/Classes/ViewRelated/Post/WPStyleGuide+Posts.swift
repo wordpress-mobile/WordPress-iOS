@@ -1,5 +1,7 @@
 /// A WPStyleGuide extension with styles and methods specific to the Posts feature.
 ///
+import Extensions
+
 extension WPStyleGuide {
 
     // MARK: - General Posts Styles
