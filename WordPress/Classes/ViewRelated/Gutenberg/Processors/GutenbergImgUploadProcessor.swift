@@ -14,50 +14,53 @@ class GutenbergImgUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { (img) in
-        guard let imgClassAttributeValue = img.attributes["class"]?.value,
+    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { (img: HTMLElement) in
+        var attributes: [ShortcodeAttribute] = img.attributes
+
+        guard
+            let imgClassAttributeValue = attributes["class"]?.value,
             case let .string(imgClass) = imgClassAttributeValue else {
                 return nil
         }
 
-        let classAttributes = imgClass.components(separatedBy: " ")
+        let classAttributes: [String] = imgClass.components(separatedBy: " ")
 
-        guard let imageIDAttribute = classAttributes.filter({ (value) -> Bool in
-            value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
-        }).first else {
+        let filteredAttributes: [String] = classAttributes.filter { (value: String) -> Bool in
+            return value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
+        }
+
+        guard let imageIDAttribute: String = filteredAttributes.first else {
             return nil
         }
 
-        let imageIDString = String(imageIDAttribute.dropFirst(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute.count))
+        let imageIDString: String = String(imageIDAttribute.dropFirst(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute.count))
         let imgUploadID = Int32(imageIDString)
 
         guard imgUploadID == self.mediaUploadID else {
             return nil
         }
 
-        let newImgClassAttributes = imgClass.replacingOccurrences(of: imageIDAttribute, with: GutenbergImgUploadProcessor.imgClassIDPrefixAttribute + String(self.serverMediaID))
+        let newImgClassAttributes: String = imgClass.replacingOccurrences(of: imageIDAttribute, with: GutenbergImgUploadProcessor.imgClassIDPrefixAttribute + String(self.serverMediaID))
 
-        var attributes = img.attributes
         attributes.set(.string(self.remoteURLString), forKey: "src")
         attributes.set(.string(newImgClassAttributes), forKey: "class")
 
-        var html = "<img "
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        html += attributeSerializer.serialize(attributes)
-        html += "/>"
+        let attributeSerializer: ShortcodeAttributeSerializer = ShortcodeAttributeSerializer()
+        let attribute: String = attributeSerializer.serialize(attributes)
+        let html: String = String(format: "%@%@%@", "<img ", attribute, "/>")
         return html
     })
 
-    lazy var imgBlockProcessor = GutenbergBlockProcessor(for: "wp:image", replacer: { imgBlock in
-        guard let mediaID = imgBlock.attributes["id"] as? Int,
+    lazy var imgBlockProcessor = GutenbergBlockProcessor(for: "wp:image", replacer: { (imgBlock: GutenbergBlock) in
+        guard let mediaID: Int = imgBlock.attributes["id"] as? Int,
             mediaID == self.mediaUploadID else {
                 return nil
         }
-        var block = "<!-- wp:image "
-        var attributes = imgBlock.attributes
+        var block: String = "<!-- wp:image "
+        var attributes: [String: Any] = imgBlock.attributes
         attributes["id"] = self.serverMediaID
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
+        if let jsonData: Data = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
+            let jsonString: String = String(data: jsonData, encoding: .utf8) {
             block += jsonString
         }
         block += " -->"
@@ -66,16 +69,17 @@ class GutenbergImgUploadProcessor: Processor {
         return block
     })
 
-    lazy var mediaTextBlockProcessor = GutenbergBlockProcessor(for: "wp:media-text", replacer: { imgBlock in
-        guard let mediaID = imgBlock.attributes["mediaId"] as? Int,
+    lazy var mediaTextBlockProcessor = GutenbergBlockProcessor(for: "wp:media-text", replacer: { (imgBlock: GutenbergBlock) in
+        guard let mediaID: Int = imgBlock.attributes["mediaId"] as? Int,
             mediaID == self.mediaUploadID else {
                 return nil
         }
-        var block = "<!-- wp:media-text "
-        var attributes = imgBlock.attributes
+        var block: String = "<!-- wp:media-text "
+        var attributes: [String: Any] = imgBlock.attributes
         attributes["mediaId"] = self.serverMediaID
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
+
+        if let jsonData: Data = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
+            let jsonString: String = String(data: jsonData, encoding: .utf8) {
             block += jsonString
         }
         block += " -->"
