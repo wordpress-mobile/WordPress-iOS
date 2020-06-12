@@ -53,11 +53,17 @@ extension GutenbergViewController {
                 self?.displayHistory()
             }
         }
-
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
-            self?.displayPostSettings()
+        
+        if let _ = post as? Post {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
+                self?.displayPostSettings()
+            }
+        } else if let _ = post as? Page {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.pageSettingsTitle) { [weak self] _ in
+                self?.displayPostSettings()
+            }
         }
-
+        
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
         alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
@@ -102,7 +108,8 @@ extension GutenbergViewController {
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let postSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
+        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 }
