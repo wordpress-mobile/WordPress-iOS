@@ -482,46 +482,6 @@ import WordPressFlux
     }
 
     // MARK: - Configuration / Topic Presentation
-//remove news card header from reader Stream
-//    @objc private func configureStreamHeader() {
-//        guard let topic = readerTopic else {
-//            assertionFailure()
-//            return
-//        }
-//
-//        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
-//            tableView.tableHeaderView = nil
-//            return
-//        }
-//
-//        guard !hideHeader else {
-//            tableView.tableHeaderView = nil
-//            hideHeader = false
-//            return
-//        }
-//
-//        if let tableHeaderView = tableView.tableHeaderView {
-//            header.isHidden = tableHeaderView.isHidden
-//        }
-//
-//        tableView.tableHeaderView = header
-//            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-//        let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-//        let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
-//        let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-//        if FeatureFlag.newReaderNavigation.enabled {
-//            headerWidthConstraint.priority = UILayoutPriority(999)
-//        }
-//
-//        NSLayoutConstraint.activate([
-//            centerConstraint,
-//            headerWidthConstraint,
-//            topConstraint
-//        ])
-//        tableView.tableHeaderView?.layoutIfNeeded()
-//        tableView.tableHeaderView = tableView.tableHeaderView
-//    }
-
 
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
@@ -567,11 +527,6 @@ import WordPressFlux
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-//        if readerTopic != nil {
-//            configureStreamHeader()
-//        } else {
-//            tableView.tableHeaderView = nil
-//        }
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
@@ -1268,20 +1223,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 }
 // remove news card . there is dependencies to newsc card because it implements delegate so didDismissNews and didSelectReadMore function must not be here
 extension ReaderStreamViewController {
-//    func didDismissNews() {
-//        refreshTableHeaderIfNeeded()
-//    }
-//
-//    func didSelectReadMore(_ url: URL) {
-//        let readerLinkRouter = UniversalLinkRouter.shared
-//        if readerLinkRouter.canHandle(url: url) {
-//            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
-//        } else if url.isWordPressDotComPost {
-//            presentReaderDetailViewControllerWithURL(url)
-//        } else {
-//            presentWebViewControllerWithURL(url)
-//        }
-//    }
 
     private func presentWebViewControllerWithURL(_ url: URL) {
         let configuration = WebViewControllerConfiguration(url: url)

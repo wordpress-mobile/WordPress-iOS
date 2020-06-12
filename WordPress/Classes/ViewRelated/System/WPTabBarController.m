@@ -121,15 +121,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                      name:NSNotification.ZendeskPushNotificationClearedNotification
                                                    object:nil];
 //remove news card notifications
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(showReaderBadge:)
-//                                                     name:NSNotification.NewsCardAvailable
-//                                                   object:nil];
-//
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(hideReaderBadge:)
-//                                                     name:NSNotification.NewsCardNotAvailable
-//                                                   object:nil];
+
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
