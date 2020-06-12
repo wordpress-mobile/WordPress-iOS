@@ -83,7 +83,7 @@ extension BlogDetailsViewController {
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
         let detailFormatStr = NSLocalizedString("%1$d of %2$d completed",
-                                                comment: "Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
+                                                comment: "Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
 
         let customizeTitle = NSLocalizedString("Customize Your Site",
                                                comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
