@@ -20,6 +20,19 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(serviceMock.didCallFetchPostWithIsFeed).to(beTrue())
     }
 
+    /// Given a URL, retrieves the post
+    ///
+    func testRetrieveAReaderPostWhenURLIsGiven() {
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postURL = URL(string: "https://wpmobilep2.wordpress.com/post/")
+
+        coordinator.start()
+
+        expect(serviceMock.didCallFetchWithURL).to(equal(URL(string: "https://wpmobilep2.wordpress.com/post/")))
+    }
+
     /// Inform the view to render a post after it is fetched
     ///
     func testUpdateViewWithRetrievedPost() {
@@ -151,12 +164,58 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
     }
 
+    /// Present an image in the view controller
+    ///
+    func testShowPresentImage() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.handle(URL(string: "https://wordpress.com/image.png")!)
+
+        expect(viewMock.didCallPresentWith).to(beAKindOf(WPImageViewController.self))
+    }
+
+    /// Present an URL in a new Reader Detail screen
+    ///
+    func testShowPresentURL() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+        let navigationControllerMock = UINavigationControllerMock()
+        viewMock.navigationController = navigationControllerMock
+
+        coordinator.handle(URL(string: "https://wpmobilep2.wordpress.com/2020/06/01/hello-test/")!)
+
+        expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailWebviewViewController.self))
+    }
+
+    /// Present an URL in a webview controller
+    ///
+    func testShowPresentURLInWebViewController() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.handle(URL(string: "https://wordpress.com")!)
+
+        let presentedViewController = (viewMock.didCallPresentWith as? UINavigationController)?.viewControllers.first
+        expect(presentedViewController).to(beAKindOf(WebKitViewController.self))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
     var didCallFetchPostWithPostID: UInt?
     var didCallFetchPostWithSiteID: UInt?
     var didCallFetchPostWithIsFeed: Bool?
+    var didCallFetchWithURL: URL?
 
     /// The post that should be returned by the mock
     var returnPost: ReaderPost?
@@ -180,12 +239,17 @@ private class ReaderPostServiceMock: ReaderPostService {
 
         success(returnPost)
     }
+
+    override func fetchPost(at postURL: URL!, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
+        didCallFetchWithURL = postURL
+    }
 }
 
 private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallRenderWithPost: ReaderPost?
     var didCallShowError = false
     var didCallShowTitleWith: String?
+    var didCallPresentWith: UIViewController?
 
     private var _navigationController: UINavigationController?
     override var navigationController: UINavigationController? {
@@ -208,6 +272,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func show(title: String?) {
         didCallShowTitleWith = title
+    }
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        didCallPresentWith = viewControllerToPresent
     }
 }
 

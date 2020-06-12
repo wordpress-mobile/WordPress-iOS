@@ -77,6 +77,11 @@ class PrivacySettingsViewController: UITableViewController {
             action: openPrivacyPolicy()
         )
 
+        let ccpaLink = PaddedLinkRow(
+            title: NSLocalizedString("Privacy notice for California users", comment: "Link to the CCPA privacy notice for residents of California."),
+            action: openCCPANotice()
+        )
+
         let otherTracking = PaddedInfoRow(
             title: NSLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools")
         )
@@ -104,6 +109,7 @@ class PrivacySettingsViewController: UITableViewController {
                 shareInfoLink,
                 privacyText,
                 privacyLink,
+                ccpaLink,
                 otherTracking,
                 otherTrackingLink
                 ]),
@@ -124,13 +130,22 @@ class PrivacySettingsViewController: UITableViewController {
 
     func openCookiePolicy() -> ImmuTableAction {
         return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
             self?.displayWebView(WPAutomatticCookiesURL)
         }
     }
 
     func openPrivacyPolicy() -> ImmuTableAction {
         return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
             self?.displayWebView(WPAutomatticPrivacyURL)
+        }
+    }
+
+    func openCCPANotice() -> ImmuTableAction {
+        return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
+            self?.displayWebView(WPAutomatticCCPAPrivacyNoticeURL)
         }
     }
 
