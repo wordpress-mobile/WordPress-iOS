@@ -21,6 +21,7 @@ extension PostEditor where Self: UIViewController {
         // Setup Handlers
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
             self.dismiss(animated: true)
+            WPAnalytics.track(.editorPostSiteChanged)
 
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return

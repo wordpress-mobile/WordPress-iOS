@@ -5,8 +5,12 @@
 * [**] Block editor: Adds support for theme colors and gradients.
 * [*] App Settings: Added an app-level toggle for light or dark appearance.
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
+* Block editor: [*] Support for breaking out of captions/citation authors by pressing enter on the following blocks: image, video, gallery, quote, and pullquote.
+* Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
 * [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
+* [***] Free GIFs can now be added to the media library, posts, and pages.
 * [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
 
 15.0
