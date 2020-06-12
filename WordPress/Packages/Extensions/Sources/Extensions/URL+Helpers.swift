@@ -1,7 +1,9 @@
 import Foundation
 import MobileCoreServices
+import UIKit
+import AVFoundation
 
-extension URL {
+public extension URL {
 
     /// The URLResource fileSize of the file at the URL in bytes, if available.
     ///
@@ -147,7 +149,7 @@ extension URL {
     }
 }
 
-extension NSURL {
+public extension NSURL {
     @objc var isVideo: Bool {
         return (self as URL).isVideo
     }
@@ -165,7 +167,7 @@ extension NSURL {
     }
 }
 
-extension URL {
+public extension URL {
     func appendingLocale() -> URL {
         guard let selfComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
                 return self
