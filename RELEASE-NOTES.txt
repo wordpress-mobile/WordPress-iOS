@@ -9,6 +9,7 @@
 * Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
 * [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 
 15.0
