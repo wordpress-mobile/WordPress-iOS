@@ -25,34 +25,37 @@ extension ExtensionPresentationAnimator: UIViewControllerAnimatedTransitioning {
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let key = isPresentation ? UITransitionContextViewControllerKey.to : UITransitionContextViewControllerKey.from
-        let controller = transitionContext.viewController(forKey: key)!
+        let key: UITransitionContextViewControllerKey = isPresentation ? UITransitionContextViewControllerKey.to : UITransitionContextViewControllerKey.from
+        let controller: UIViewController = transitionContext.viewController(forKey: key)!
 
         if isPresentation {
             transitionContext.containerView.addSubview(controller.view)
         }
 
-        let presentedFrame = transitionContext.finalFrame(for: controller)
-        var dismissedFrame = presentedFrame
+        let presentedFrame: CGRect = transitionContext.finalFrame(for: controller)
+        var dismissedFrame: CGRect = presentedFrame
+
+        let contextFrame: CGRect = transitionContext.containerView.frame
+
         switch direction {
         case .left:
             dismissedFrame.origin.x = -presentedFrame.width
         case .right:
-            dismissedFrame.origin.x = transitionContext.containerView.frame.size.width
+            dismissedFrame.origin.x = contextFrame.width
         case .top:
             dismissedFrame.origin.y = -presentedFrame.height
         case .bottom:
-            dismissedFrame.origin.y = transitionContext.containerView.frame.size.height
+            dismissedFrame.origin.y = contextFrame.height
         }
 
-        let initialFrame = isPresentation ? dismissedFrame : presentedFrame
-        let finalFrame = isPresentation ? presentedFrame : dismissedFrame
+        let initialFrame: CGRect = isPresentation ? dismissedFrame : presentedFrame
+        let finalFrame: CGRect = isPresentation ? presentedFrame : dismissedFrame
 
-        let animationDuration = transitionDuration(using: transitionContext)
+        let animationDuration: TimeInterval = transitionDuration(using: transitionContext)
         controller.view.frame = initialFrame
         UIView.animate(withDuration: animationDuration, animations: {
             controller.view.frame = finalFrame
-        }) { finished in
+        }) { (finished: Bool) in
             transitionContext.completeTransition(finished)
         }
     }

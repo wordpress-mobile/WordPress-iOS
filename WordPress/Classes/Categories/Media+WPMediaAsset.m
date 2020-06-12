@@ -3,7 +3,7 @@
 #import "Blog.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-
+@import Extensions;
 @implementation Media(WPMediaAsset)
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler

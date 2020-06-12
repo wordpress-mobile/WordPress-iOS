@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import UIKit
 import WebKit
+import Extensions
 
 class WebKitViewController: UIViewController {
     @objc let webView: WKWebView

@@ -56,29 +56,31 @@ extension PostEditor where Self: UIViewController {
         }
 
         let publishBlock = { [unowned self] in
+            let post: AbstractPost = self.post
+
             if action == .saveAsDraft {
-                self.post.status = .draft
+                post.status = .draft
             } else if action == .publish {
-                if self.post.date_created_gmt == nil {
-                    self.post.date_created_gmt = Date()
+                if post.date_created_gmt == nil {
+                    post.date_created_gmt = Date()
                 }
 
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
+                if post.status != .publishPrivate {
+                    post.status = .publish
                 }
             } else if action == .publishNow {
-                self.post.date_created_gmt = Date()
+                post.date_created_gmt = Date()
 
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
+                if post.status != .publishPrivate {
+                    post.status = .publish
                 }
             } else if action == .submitForReview {
-                self.post.status = .pending
+                post.status = .pending
             }
 
-            self.post.shouldAttemptAutoUpload = true
+            post.shouldAttemptAutoUpload = true
 
-            if let analyticsStat = analyticsStat {
+            if let analyticsStat: WPAnalyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
 

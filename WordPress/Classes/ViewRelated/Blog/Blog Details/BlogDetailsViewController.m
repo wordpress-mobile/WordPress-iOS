@@ -17,6 +17,7 @@
 #import <WordPressShared/WPTableViewCell.h>
 
 @import Gridicons;
+@import Extensions;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";

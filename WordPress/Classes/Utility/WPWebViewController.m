@@ -10,7 +10,7 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-
+@import Extensions;
 
 #pragma mark - Constants
 

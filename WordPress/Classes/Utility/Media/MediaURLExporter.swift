@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import Extensions
 
 /// Media export handling of URLs.
 ///

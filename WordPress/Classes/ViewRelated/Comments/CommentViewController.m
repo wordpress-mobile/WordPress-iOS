@@ -13,6 +13,7 @@
 #import <WordPressUI/WordPressUI.h>
 
 
+@import Extensions;
 
 #pragma mark ==========================================================================================
 #pragma mark Constants

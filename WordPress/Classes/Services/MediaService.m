@@ -13,6 +13,7 @@
 @import WordPressKit;
 @import WordPressUI;
 @import WordPressShared;
+@import Extensions;
 
 NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 

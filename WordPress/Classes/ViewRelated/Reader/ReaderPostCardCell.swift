@@ -2,6 +2,7 @@ import AutomatticTracks
 import Foundation
 import WordPressShared
 import Gridicons
+import Extensions
 
 private struct Constants {
     static let featuredMediaCornerRadius: CGFloat = 4

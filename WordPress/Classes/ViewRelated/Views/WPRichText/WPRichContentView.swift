@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import CocoaLumberjack
 import WordPressShared
+import Extensions
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
