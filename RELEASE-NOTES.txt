@@ -11,6 +11,7 @@
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
 * [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
 * [***] Free GIFs can now be added to the media library, posts, and pages.
+* [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
 
 15.0
 -----
