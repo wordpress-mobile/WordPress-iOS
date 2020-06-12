@@ -203,7 +203,7 @@ extension NSNotification.Name {
         }, failure: { error in })
     }
 
-    func createRequest() -> RequestUiConfiguration {
+    func createRequest(planService: PlanService? = nil) -> RequestUiConfiguration {
 
         let requestConfig = RequestUiConfiguration()
 
@@ -220,7 +220,7 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: getHighestPriorityPlan()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
         requestConfig.customFields = ticketFields
 
         // Set tags
@@ -931,25 +931,38 @@ private extension ZendeskUtils {
 
     /// Retrieves the highest priority plan, if it exists
     /// - Returns: the highest priority plan found, or an empty string if none was foundq
-    func getHighestPriorityPlan() -> String {
+    static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
 
-        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+        let availablePlans = getAvailablePlansWithPriority(planService: planService)
+        ZendeskUtils.sharedInstance.sitePlansCache.removeAll()
+        if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
+            let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
 
-        let availablePlans = getAvailablePlansWithPriority()
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.nonLocalizedName) {
+                    return availablePlan.supportName
+                }
+            }
+        } else {
+            // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
+            // and compare the localized names
+            let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+            let plans = Set(blogService.blogsForAllAccounts().compactMap { $0.planTitle })
 
-        for plan in availablePlans {
-            if plans.contains(plan.nonLocalizedName) {
-                return plan.supportName
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.name) {
+                    return availablePlan.supportName
+                }
             }
         }
         return ""
     }
 
     /// Obtains the available plans, sorted by priority
-    func getAvailablePlansWithPriority() -> [SupportPlan] {
-        let planService = PlanService(managedObjectContext: ContextManager.shared.mainContext)
+    static func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
+        let planService = planService ?? PlanService(managedObjectContext: ContextManager.shared.mainContext)
         return planService.allPlans().map {
-            SupportPlan(priority: Int($0.supportPriority),
+            SupportPlan(priority: $0.supportPriority,
                         name: $0.shortname,
                         nonLocalizedName: $0.nonLocalizedShortname,
                         supportName: $0.supportName)
@@ -963,6 +976,20 @@ private extension ZendeskUtils {
         let name: String
         let nonLocalizedName: String
         let supportName: String
+
+        // used to resolve discrepancies of unlocalized names between endpoints
+        let mappings = ["E-commerce": "eCommerce"]
+
+        init(priority: Int16,
+             name: String,
+             nonLocalizedName: String,
+             supportName: String) {
+
+            self.priority = Int(priority)
+            self.name = name
+            self.nonLocalizedName = mappings[nonLocalizedName] ?? nonLocalizedName
+            self.supportName = supportName
+        }
     }
 
 

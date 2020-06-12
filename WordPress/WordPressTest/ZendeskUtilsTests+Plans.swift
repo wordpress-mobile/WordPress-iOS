@@ -16,6 +16,48 @@ class ZendeskUtilsPlans: XCTestCase {
     class MockPlanService: PlanService {
         var presetPlans = [Int: RemotePlanSimpleDescription]()
 
+        override func allPlans() -> [Plan] {
+            let context = TestContextManager.sharedInstance().mainContext
+            let freePlan = Plan(context: context)
+            freePlan.supportPriority = 1
+            freePlan.supportName = "free"
+            freePlan.nonLocalizedShortname = "Free"
+            freePlan.shortname = "Free"
+
+            let bloggerPlan = Plan(context: context)
+            bloggerPlan.supportPriority = 2
+            bloggerPlan.supportName = "blogger"
+            bloggerPlan.nonLocalizedShortname = "Blogger"
+            bloggerPlan.shortname = "Blogger"
+
+            let personalPlan = Plan(context: context)
+            personalPlan.supportPriority = 3
+            personalPlan.supportName = "personal"
+            personalPlan.nonLocalizedShortname = "Personal"
+            personalPlan.shortname = "Personal"
+
+            let premiumPlan = Plan(context: context)
+            premiumPlan.supportPriority = 4
+            premiumPlan.supportName = "premium"
+            premiumPlan.nonLocalizedShortname = "Premium"
+            premiumPlan.shortname = "Premium"
+
+            let businessPlan = Plan(context: context)
+            businessPlan.supportPriority = 5
+            businessPlan.supportName = "business_professional"
+            businessPlan.nonLocalizedShortname = "Business"
+            businessPlan.shortname = "Business"
+
+            let ecommercePlan = Plan(context: context)
+            ecommercePlan.supportPriority = 6
+            ecommercePlan.supportName = "ecommerce"
+            ecommercePlan.nonLocalizedShortname = "E-commerce"
+            ecommercePlan.shortname = "E-commerce"
+
+            return [freePlan, bloggerPlan, personalPlan, premiumPlan, businessPlan, ecommercePlan]
+
+        }
+
         override func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
                                                                         success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
                                                                         failure: @escaping (Error?) -> Void) {
@@ -46,7 +88,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "ecommerce"
@@ -63,7 +105,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "business_professional"
@@ -80,7 +122,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "premium"
@@ -97,7 +139,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "personal"
@@ -114,7 +156,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "blogger"
@@ -127,23 +169,10 @@ class ZendeskUtilsPlans: XCTestCase {
                                    2: RemotePlanSimpleDescription(planID: 2, name: "Free")]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == "free"
-        }))
-    }
-
-    func testNewPlanSelected() {
-        // Given
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "NewPlan"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "NewPlan")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
-        // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
-        // Then
-        XCTAssert(requestFields.contains(where: {
-            return $0.fieldId == 25175963 && $0.value as! String == "newplan"
         }))
     }
 
@@ -152,7 +181,7 @@ class ZendeskUtilsPlans: XCTestCase {
         planService.presetPlans = [:]
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
         // When
-        let requestFields = ZendeskUtils.sharedInstance.createRequest().customFields
+        let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
         XCTAssert(requestFields.contains(where: {
             return $0.fieldId == 25175963 && $0.value as! String == ""
