@@ -54,8 +54,6 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private weak var presentInController: UIViewController?
 
-    private var unrecognizedPlans: Set<String>?
-
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
@@ -1017,7 +1015,6 @@ private extension ZendeskUtils {
         static let logFieldCharacterLimit = 50000
         static let sourcePlatform = "mobile_-_ios"
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
-        static let planPriority = ["ecommerce", "business_professional", "premium", "personal", "blogger", "free"]
     }
 
     enum TicketFieldIDs {

@@ -399,12 +399,12 @@
         <attribute name="groups" attributeType="String" syncable="YES"/>
         <attribute name="icon" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="nonLocalizedShortname" attributeType="String" syncable="YES"/>
+        <attribute name="nonLocalizedShortname" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="products" attributeType="String" syncable="YES"/>
         <attribute name="shortname" attributeType="String" syncable="YES"/>
         <attribute name="summary" attributeType="String" syncable="YES"/>
-        <attribute name="supportName" attributeType="String" syncable="YES"/>
+        <attribute name="supportName" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="supportPriority" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="tagline" attributeType="String" syncable="YES"/>
     </entity>
