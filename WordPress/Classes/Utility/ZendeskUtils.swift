@@ -203,27 +203,6 @@ extension NSNotification.Name {
         }, failure: { error in })
     }
 
-    /// Retrieves the highest priority plan, if it exists
-    /// - Returns: the highest priority plan found, or an empty string if none was foundq
-    private func getHighestPriorityPlan() -> String {
-
-        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }
-            .map { $0 == "Business" ? "business_professional" : $0.lowercased() }) // replaces Zendesk Automation on 'Business' tag
-
-        for plan in Constants.planPriority {
-            if plans.contains(plan) {
-                return plan
-            }
-        }
-        // in case no existing plan was found, but there still is at least one unrecognized plan.
-        // If there's more than one, we still don't know the priority, so we might as well return the first one.
-        if let firstUnrecognizedPlan = plans.first {
-            unrecognizedPlans = plans
-            return firstUnrecognizedPlan
-        }
-        return ""
-    }
-
     func createRequest() -> RequestUiConfiguration {
 
         let requestConfig = RequestUiConfiguration()
@@ -245,12 +224,7 @@ extension NSNotification.Name {
         requestConfig.customFields = ticketFields
 
         // Set tags
-        var tags = ZendeskUtils.getTags()
-        // send unrecognized plans as tags to Zendesk
-        if let plans = unrecognizedPlans {
-            tags.append(contentsOf: plans.map { "unrecognized_plan_" + $0 })
-        }
-        requestConfig.tags = tags
+        requestConfig.tags = ZendeskUtils.getTags()
 
         // Set the ticket subject
         requestConfig.subject = Constants.ticketSubject
@@ -952,6 +926,45 @@ private extension ZendeskUtils {
             break
         }
     }
+
+    // MARK: - Plans
+
+    /// Retrieves the highest priority plan, if it exists
+    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    func getHighestPriorityPlan() -> String {
+
+        let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+
+        let availablePlans = getAvailablePlansWithPriority()
+
+        for plan in availablePlans {
+            if plans.contains(plan.nonLocalizedName) {
+                return plan.supportName
+            }
+        }
+        return ""
+    }
+
+    /// Obtains the available plans, sorted by priority
+    func getAvailablePlansWithPriority() -> [SupportPlan] {
+        let planService = PlanService(managedObjectContext: ContextManager.shared.mainContext)
+        return planService.allPlans().map {
+            SupportPlan(priority: Int($0.supportPriority),
+                        name: $0.shortname,
+                        nonLocalizedName: $0.nonLocalizedShortname,
+                        supportName: $0.supportName)
+
+        }
+        .sorted { $0.priority > $1.priority }
+    }
+
+    struct SupportPlan {
+        let priority: Int
+        let name: String
+        let nonLocalizedName: String
+        let supportName: String
+    }
+
 
     // MARK: - Constants
 
