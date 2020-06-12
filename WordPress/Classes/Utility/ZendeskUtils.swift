@@ -934,7 +934,6 @@ private extension ZendeskUtils {
     static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
 
         let availablePlans = getAvailablePlansWithPriority(planService: planService)
-        ZendeskUtils.sharedInstance.sitePlansCache.removeAll()
         if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
             let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
 
