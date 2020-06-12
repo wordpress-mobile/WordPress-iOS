@@ -152,6 +152,14 @@ static CGFloat const FeaturedImageSize = 120.0;
         [badges addObject:timestamp];
     }
 
+    if (page.isSiteHomepage) {
+        [badges addObject:NSLocalizedString(@"Homepage", @"Title of the Homepage Badge")];
+    }
+
+    if (page.isSitePostsPage) {
+        [badges addObject:NSLocalizedString(@"Posts page", @"Title of the Posts Page Badge")];
+    }
+
     if (page.hasPrivateState) {
         [badges addObject:NSLocalizedString(@"Private", @"Title of the Private Badge")];
     } else if (page.hasPendingReviewState) {
