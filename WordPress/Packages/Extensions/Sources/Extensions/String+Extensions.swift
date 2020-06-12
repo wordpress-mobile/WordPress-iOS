@@ -3,7 +3,7 @@ import Social
 
 /// Encapsulates String Helper Methods.
 ///
-extension String {
+public extension String {
     func arrayOfTags() -> [String] {
         guard !self.isEmpty else {
             return [String()]
