@@ -3,13 +3,11 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate
-                                & GiphyPickerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
 
     private let stockPhotos = StockPhotosPicker()
-    private var giphy = GiphyPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
@@ -18,7 +16,6 @@ final class MediaLibraryMediaPickingCoordinator {
 
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
-        giphy.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -75,13 +72,6 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
-
-    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
-            self?.showGiphy(origin: origin, blog: blog)
-        })
-    }
-
     private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
             self?.showTenor(origin: origin, blog: blog)
@@ -104,16 +94,6 @@ final class MediaLibraryMediaPickingCoordinator {
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         stockPhotos.presentPicker(origin: origin, blog: blog)
-    }
-
-    private func showGiphy(origin: UIViewController, blog: Blog) {
-        let delegate = giphy.delegate
-
-        // Create a new GiphyPicker each time so we don't save state
-        giphy = GiphyPicker()
-        giphy.delegate = delegate
-
-        giphy.presentPicker(origin: origin, blog: blog)
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
