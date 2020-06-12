@@ -486,16 +486,52 @@ import WordPressFlux
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     
-    //remove news card . as I see ther is no need to be thisfunction because there must not be any header , but it is possible to add some
-    //header , so i only delete configureStreamHeader()
     private func refreshTableHeaderIfNeeded() {
         guard let _ = readerTopic else {
             return
         }
-       // configureStreamHeader()
+    }
+    
+    @objc private func configureStreamHeader() {
+        guard let topic = readerTopic else {
+            assertionFailure()
+            return
+        }
+        
+        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+            tableView.tableHeaderView = nil
+            return
+        }
+        
+        guard !hideHeader else {
+            tableView.tableHeaderView = nil
+            hideHeader = false
+            return
+        }
+
+        if let tableHeaderView = tableView.tableHeaderView {
+            header.isHidden = tableHeaderView.isHidden
+        }
+
+        tableView.tableHeaderView = header
+                // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+        let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
+        let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
+        let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
+        if FeatureFlag.newReaderNavigation.enabled {
+            headerWidthConstraint.priority = UILayoutPriority(999)
+        }
+
+        NSLayoutConstraint.activate([
+                centerConstraint,
+                headerWidthConstraint,
+                topConstraint
+            ])
+        tableView.tableHeaderView?.layoutIfNeeded()
+        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
-    //remove news card
+    
     /// Updates the content based on the values of `readerTopic` and `contentType`
     private func updateContent(synchronize: Bool = true) {
         // if the view has not been loaded yet, this will be called in viewDidLoad
