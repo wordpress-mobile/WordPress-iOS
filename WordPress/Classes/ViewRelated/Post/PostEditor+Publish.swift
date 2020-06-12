@@ -281,7 +281,7 @@ extension PostEditor where Self: UIViewController {
         let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
         let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-
+        let scheduleItTitle = NSLocalizedString("Schedule It", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page And if publish date is future.")
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.view.accessibilityIdentifier = "post-has-changes-alert"
 
@@ -297,7 +297,9 @@ extension PostEditor where Self: UIViewController {
                     } else {
                         return updateTitle
                     }
-                } else if post is Page {
+                }else if post.status == .scheduled{
+                    return scheduleItTitle
+                }else if post is Page {
                     return updatePageTitle
                 } else {
                     return updatePostTitle
