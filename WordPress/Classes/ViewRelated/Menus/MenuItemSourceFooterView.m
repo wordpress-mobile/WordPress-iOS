@@ -26,6 +26,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 @property (nonatomic, strong) MenuItemSourceLoadingDrawView *drawView;
 @property (nonatomic, strong) NSTimer *beginLoadingAnimationsTimer;
 @property (nonatomic, strong) NSTimer *endLoadingAnimationsTimer;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
 
@@ -57,8 +58,16 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     cell.frame = self.bounds;
     cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     cell.alpha = 0.0;
-    [cell setTitle:@"Dummy Text For Sizing the Label"];
     [self addSubview:cell];
+    _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIView *topView = window.rootViewController.view;
+    CGFloat xPlace = topView.frame.size.width;
+    CGFloat yPlace = cell.frame.size.height;
+    CGFloat heightOfIndicator = cell.frame.size.height - 4;
+    CGFloat widthOfIndicator = heightOfIndicator;
+    _spinner.frame = CGRectMake(xPlace / 2 - widthOfIndicator / 2 , yPlace / 2 - heightOfIndicator / 2, widthOfIndicator, heightOfIndicator);
+    [self addSubview:_spinner];
     self.sourceCell = cell;
 }
 
@@ -83,44 +92,12 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 - (void)startLoadingIndicatorAnimation
 {
-    if (self.isAnimating) {
-        return;
-    }
-
-    self.drawsLabelTextIfNeeded = NO;
-
-    [self.beginLoadingAnimationsTimer invalidate];
-    self.beginLoadingAnimationsTimer = nil;
-    [self.endLoadingAnimationsTimer invalidate];
-    self.endLoadingAnimationsTimer = nil;
-
-    self.isAnimating = YES;
-    self.sourceCell.hidden = NO;
-
-    // Will begin animations on next runloop incase there are upcoming layout upates in-which the animation won't play.
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.0 target:self selector:@selector(beginCellAnimations) userInfo:nil repeats:NO];
-    self.beginLoadingAnimationsTimer = timer;
-    // Add the timer to the runloop scheduling under common modes, to not pause for UIScrollView scrolling.
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [_spinner startAnimating];
 }
 
 - (void)stopLoadingIndicatorAnimation
 {
-    if (!self.isAnimating) {
-        return;
-    }
-
-    [self.beginLoadingAnimationsTimer invalidate];
-    self.beginLoadingAnimationsTimer = nil;
-    [self.endLoadingAnimationsTimer invalidate];
-    self.endLoadingAnimationsTimer = nil;
-
-    self.isAnimating = NO;
-    // Let the animation play for just a bit before ending it. This avoids flickering.
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(endCellAnimations) userInfo:nil repeats:NO];
-    self.endLoadingAnimationsTimer = timer;
-    // Add the timer to the runloop scheduling under common modes so it does not pause while a UIScrollView scrolls.
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [_spinner stopAnimating];
 }
 
 - (void)beginCellAnimations
