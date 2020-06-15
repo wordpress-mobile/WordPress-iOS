@@ -12,7 +12,7 @@ class ReaderRelativeTimeFormatter: NSObject {
     /// Date formatter used for dates older than a week but earlier than a year
     private lazy var recentDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM d")
+        formatter.setLocalizedDateFormatFromTemplate("MMM dd")
         return formatter
     }()
 
