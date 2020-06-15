@@ -14,7 +14,7 @@ extension GutenbergViewController {
 
         if mode == .richText, let contentInfo = contentInfo {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-            let textCounterTitle = String(format: NSLocalizedString("%li block(s), %li word(s), %li character(s)", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
+            let textCounterTitle = String(format: NSLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
 
             alert.title = textCounterTitle
         }
