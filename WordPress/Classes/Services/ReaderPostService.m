@@ -1227,6 +1227,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.sourceAttribution = nil;
     }
 
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        post.content = remotePost.content;
+    } else {
+        post.content = [RichContentFormatter formatContentString:remotePost.content isPrivateSite:remotePost.isBlogPrivate];
+    }
+
     // assign the topic last.
     post.topic = topic;
 
