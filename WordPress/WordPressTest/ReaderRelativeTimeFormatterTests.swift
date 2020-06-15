@@ -44,8 +44,8 @@ class ReaderRelativeTimeFormatterTests: XCTestCase {
 
     func testOlderThanAWeek() {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd"
-
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM dd")
+        
         let formatter = ReaderRelativeTimeFormatter(calendar: calendar)
         let date = Date(timeIntervalSinceNow: -(86400 * 14))
 
@@ -54,8 +54,9 @@ class ReaderRelativeTimeFormatterTests: XCTestCase {
 
     func testNotThisYear() {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d, YYYY"
-
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        
         let formatter = ReaderRelativeTimeFormatter(calendar: calendar)
 
         guard let date = calendar.date(from: DateComponents(year: 2001, month: 01, day: 01)) else {
