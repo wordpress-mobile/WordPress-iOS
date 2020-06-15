@@ -1,3 +1,6 @@
+15.2
+-----
+ 
 15.1
 -----
 * [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
