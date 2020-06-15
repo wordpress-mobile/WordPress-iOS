@@ -52,7 +52,7 @@ end
 
 def shared_with_all_pods
     wordpress_shared
-    pod 'CocoaLumberjack', '3.5.2'
+    pod 'CocoaLumberjack', '~> 3.0'
     pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
