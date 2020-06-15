@@ -148,6 +148,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
+    lazy var postContent: String? = {
+        return post?.contentForDisplay()
+    }()
+
     open var postURL: URL? = nil
 
     fileprivate var isLoaded: Bool {
@@ -801,7 +805,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func configureRichText() {
-        guard let post = post else {
+        guard let post = post,
+              let contentForDisplay = postContent else {
             return
         }
 
@@ -809,14 +814,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
         })
-        textView.content = post.contentForDisplay()
+        textView.content = contentForDisplay
 
         updateRichText()
         updateTextViewMargins()
     }
 
     private func updateRichText() {
-        guard let post = post else {
+        guard let contentForDisplay = postContent else {
             return
         }
 
@@ -824,15 +829,15 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let isDark = traitCollection.userInterfaceStyle == .dark
             textView.attributedText = isDark ? darkTextViewAttributedString : lightTextViewAttributedString
         } else {
-            let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+            let attrStr = WPRichContentView.formattedAttributedStringForString(contentForDisplay)
             textView.attributedText = attributedString(with: attrStr)
         }
     }
 
     private func configureAttributedString() {
-        if #available(iOS 13, *), let post = post {
-            let light = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .light)
-            let dark = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .dark)
+        if #available(iOS 13, *), let contentForDisplay = postContent {
+            let light = WPRichContentView.formattedAttributedString(for: contentForDisplay, style: .light)
+            let dark = WPRichContentView.formattedAttributedString(for: contentForDisplay, style: .dark)
             lightTextViewAttributedString = attributedString(with: light)
             darkTextViewAttributedString = attributedString(with: dark)
         }
