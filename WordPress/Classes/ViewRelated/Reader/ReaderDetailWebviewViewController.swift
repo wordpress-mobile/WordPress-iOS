@@ -86,12 +86,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// Shown an error
     func showError() {
-        configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+        displayLoadingView(title: LoadingText.errorLoadingTitle)
     }
 
     /// Shown an error with a button to open the post on the browser
     func showErrorWithWebAction() {
-        configureAndDisplayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
     }
 
     /// Show a given title
@@ -316,12 +316,12 @@ extension ReaderDetailWebviewViewController: WKNavigationDelegate {
 // MARK: - Error View Handling (NoResultsViewController)
 
 private extension ReaderDetailWebviewViewController {
-    func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
+    func displayLoadingView(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title, accessoryView: accessoryView)
         showLoadingView()
     }
 
-    func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+    func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
                                           accessoryView: accessoryView)
