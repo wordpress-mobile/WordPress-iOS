@@ -321,4 +321,13 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return nil;
 }
 
+- (NSString *)contentForDisplay
+{
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        return self.content;
+    } else {
+        return [RichContentFormatter formatContentString:self.content isPrivateSite:self.isPrivate];
+    }
+}
+
 @end
