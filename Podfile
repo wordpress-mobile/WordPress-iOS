@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 5.0.0-beta.2'
+    #pod 'WordPressKit', '~> 5.0.0-beta.2'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14224-add-zendesk-plan-field'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14313_remove_post_content_sanitization'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -207,7 +207,7 @@ target 'WordPress' do
 
     post_install do
         project_root = File.dirname(__FILE__)
-      
+
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
         %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/react-native+0.61.5.patch")
         puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
@@ -216,7 +216,7 @@ target 'WordPress' do
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-        
+
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
