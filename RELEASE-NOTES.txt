@@ -1,3 +1,7 @@
+15.2
+----
+* [**] Block editor: Display content metrics information (blocks, words, characters count).
+
 15.1
 -----
 * [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
@@ -11,7 +15,6 @@
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
 * [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
 * [***] Free GIFs can now be added to the media library, posts, and pages.
-* [**] Block editor: Display content metrics information (blocks, words, characters count).
 
 15.0
 -----
