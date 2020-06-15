@@ -1,14 +1,9 @@
-Här är nyheterna:
+Som vanligt har vi gjort många förbättringar i blockredigeraren. Knappen för att ta bort block ligger nu i en meny som du når genom att trycka på knappen med tre punkter i blockets verktygsfält. Vi har också lagt till stöd för överläggsfärger i omslagsblocket, stöd för radiella gradienter i blocken för knappar och omslag, animering in/ut av det flytande verktygsfältet och en inforuta för knapparna vid val av sidmall. Blockets verktygsfält minieras om blocket är smalare än verktygsfältet.
 
-Uppdaterad organisering: Vi har genomfört några ändringar som hjälper dig att snabbare hitta det du behöver:
+Vi har rättat mycket för att skapa en renare upplevelse i blockredigeraren.
+Om förbindelse saknas visar uppladning av media meddelandet ”Försök igen” (i stället för att fastna), ångra/gör om fungerar mer tillförlitligt för både block och text, vi har rättat ett problem vid sammanslagning av textblock och knapparnas justering i sidmallar.
 
-Vill du skapa ett nytt inlägg eller en ny sida? Tryck på den stora rosa knappen som alltid är synlig under fliken Mina webbplatser.
-Vill du redigera din profil? Kolla i övre högra hörnet.
-Vill du hitta något att läsa? Fliken för läsning har fått en ny layout som underlättar sökning och filtrering.
-Uppdateringar i blockredigeraren: Nu finns ett nytt block för framhävda citat som visuellt kan markera citat ännu starkare än vanliga citatblocket. Sidmallarna har uppdaterats så att de använder även de nyaste typerna av block. Dessutom har vi rättat ikoner i några block som inte visades på rätt sätt i RTL-läge (dvs språk som skrivs från höger till vänster).
+En ny inställning låter dig välja startsida och inläggssida under webbplatsinställningarna.
 
-I blocket för knappar finns det nu fler färginställningar för bakgrund och text. Och nu finns stöd för upphöjd och nedsänkt text via HTML-kodning (även i den klassiska redigeraren).
+Slutligen har vi tagit hand om ett problem med Gravatar där man kunde fastna i fotoredigeringen när man försökte ta en ny bild samt gjort några uppdateringar i läsaren.
 
-Bildförklaring: Med den nya funktionen ”redigera bild” kan du direkt i redigeraren rita på bilder.
-
-Och en viktig rättelse av ett programfel: Ibland kunde appen krascha när du lade till ett videoblock och började ladda upp en video. Inte särskilt produktivt! Nu ska det vara fixat.

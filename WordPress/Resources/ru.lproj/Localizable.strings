@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-18 19:38:39+0000 */
+/* Translation-Revision-Date: 2020-06-01 20:19:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ru */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@ - %2$@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d записей.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d лет";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dд";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dч";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dм";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$d пикс.";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li слов, %2$li символов";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "%s: настройки";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Блок %s. Пустой";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "Описание проекта и представляемых работ.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "Изображение записи установлено. Нажмите, чтобы изменить его.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Список сайтов на этой учётной записи.";
@@ -1043,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Проверка покупок…";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Выбрать страницы";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Выбрать страницу записей";
+
 /* Label for Publish date picker */
 "Choose a date" = "Выберите дату";
 
@@ -1061,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Выбрать с моего устройства";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Выберите в качестве главной страницы страницу последних записей (классический блог) или фиксированную (статическую) страницу.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "Выбрать с устройства";
 
@@ -1073,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "Воронеж, 394077";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "Очистить все настройки";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Классический блог";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Очистить мультимедиа кеш устройства";
@@ -1194,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "Завершено";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "Завершение регистрации";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Настроить";
@@ -1652,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Если отключить учетную запись, то ваши материалы не будут автоматически становиться доступными учетной записи %@.";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "Найти сайты";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1759,6 +1777,12 @@
 
 /* No comment provided by engineer. */
 "Double tap to move the block up" = "Нажмите дважды для перемещения блока вверх";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Нажмите дважды для того, чтобы открыть панель действий с доступными возможностями";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Нажмите дважды для того, чтобы открыть нижнюю панель действий с доступными возможностями";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Нажмите дважды для повторения последнего изименения";
@@ -2265,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "Присоединяйтесь";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "Присоединяйтесь!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "Присоединяйтесь!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Оставайтесь в гуще событий: комментируйте прочитанные записи.";
@@ -2440,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Отправить на модерацию";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Главная страница";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Настройки главной страницы";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Ура!\nПочти всё готово";
 
@@ -2545,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Вставить файл";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Вставить упоминание";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Выбрана вставка";
@@ -2713,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "Обратитесь к нам за помощью.";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "Давайте сотворим что-нибудь вместе.";
+"Let's build something together!" = "Давайте сотворим что-нибудь вместе!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "Давайте общаться 👋 Не стесняйтесь воспользоваться контактной информацией ниже или послать сообщение через форму.";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "Давайте сотворим что-нибудь вместе";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "Давайте сотворим что-нибудь вместе";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "Давайте сотворим что-нибудь вместе!";
 
 /* Like (verb)
    Like a post.
@@ -3091,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Самое популярное время";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Сдвинуть %s вниз";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Сдвинуть %s влево";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Сдвинуть %s вправо";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Сдвинуть %s наверх";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Переместить изображение назад";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Переместить изображение вперед";
 
-/* No comment provided by engineer. */
-"Move block down" = "Переместить блок вниз";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Переместить блок вниз из ряда %1$s в ряд %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Переместить блок влево";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Переместить блок влево из позиции %1$s в позицию %2$s";
 
-/* No comment provided by engineer. */
-"Move block right" = "Переместить блок вправо";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Переместить блок вправо из позиции %1$s в позицию %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Переместить блок вверх";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Переместить блок вверх из ряда %1$s в ряд %2$s";
@@ -3319,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Пока нет данных";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "Нет подписок на сайты";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Ой!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Открыть меню действий с блоком";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Открыть настройки устройства";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Пожалуйста, выйдите перед тем, как подключиться к другому сайту wordpress.com";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Повторите попытку позже.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Пожалуйста введите ваши данные снова.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Записи";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Страница записей";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -4064,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Если вы продолжите, с вашего устройства будут удалены все данные WordPress.com и сохранённые локально черновики. Всё, что уже сохранено на ваших блогах WordPress.com, не пропадёт.";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Обработка данных учётной записи";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Имя проекта";
@@ -4270,6 +4311,9 @@ translators: sample content for \"Services\" page template */
    User action to remove media.
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Удалить";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Удалить %s";
 
 /* Remove Person Alert Title
    Remove User. Verb */
@@ -4592,6 +4636,9 @@ translators: sample content for \"Services\" page template */
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Найдите бесплатные фотографии для добавления в медиатеку!";
 
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Поиск пользователей...";
+
 /* Menus search bar placeholder text. */
 "Search..." = "Поиск...";
 
@@ -4807,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "Показывает диалог для изменения контактного адреса эл.почты.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "Показывает меню для изменения значка сайта.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Посмотреть всех подписчиков";
 
@@ -4864,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Очистить предложения ярлыков Siri";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "Значок сайта";
 
 /* Title for the Language Picker View */
@@ -5052,6 +5095,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Domain Address field State */
 "State" = "Округ\/Область";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Статическая главная страница";
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
@@ -5778,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "Попробуйте еще раз.";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Попробуйте стартовый макет";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5875,6 +5924,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Невозможно удалить записи в корзину при отсутствии подключения к сети. Попробуйте позже.";
+
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Не удалось обновить настройки главной страницы";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Возникла проблема с указанным блогом при обновлении цен тарифа. ";
@@ -6090,9 +6142,6 @@ translators: sample content for \"Services\" page template */
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Использовать редактор блоков";
 
-/* Title for the no followed sites result screen */
-"Use the filter button to find posts on specific subjects." = "Используйте кнопку фильтра для поиска записей на нужную тему.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Использовать этот сайт";
 
@@ -6215,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "Видимость";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "Перейти";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6226,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Перейдите на сайт «%@», чтобы читать далее";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "Посмотреть %@ в веб-браузере";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Перейдите в справочный центр, чтобы получить ответы на часто задаваемые вопросы, или обратитесь к нам за дополнительной информацией.";
@@ -6505,6 +6548,9 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Комментарии, содержащие любые из этих слов в тексте, имени автора, URL-адресе, адресе электронной почты или IP-адресе, будут помечены как спам. Можно вводить фрагменты слов, то есть по слову «press» будет найдено «WordPress».";
 
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "При подписке на сайты вы увидите их содержимое здесь.";
+
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "При внесении изменений в редакторе, вы увидите историю изменений тут";
 
@@ -6671,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "В данный момент выполняется загрузка медиафайлов. В результате этого действия загрузка будет прервана.\n\nПродолжить?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "Вы еще не подписаны ни на один веб-сайт. Подпишитесь прямо сейчас!";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Вы всегда можете войти с магической ссылкой, как вы только что использовали, но если хотите, то можно и установить пароль.";
@@ -6901,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "в разделе «Обновление»";
+
+/* Relative time format */
+"just now" = "Только что";
 
 /* Later today */
 "later today" = "позже сегодня";

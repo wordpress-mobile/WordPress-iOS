@@ -1,14 +1,9 @@
-Estas son las novedades:
+Como siempre, hay muchas mejoras en el editor de bloques. El icono de la papelera que usas para eliminar bloques, ahora está en un menú al que se accede tocando el botón de la elipse en la barra de herramientas de bloques. También hemos añadido compatibilidad para colores superpuestos en el bloque de cubierta, compatibilidad para gradientes radiales en los bloques de botón y cubierta, animación de entrada/salida en la barra de herramientas flotante y una información emergente para los botones de selección de la plantilla de página. Y la barra de herramientas del bloque, ahora se cierra si el bloque es más estrecho que la barra de herramientas.
 
-Reforma de la organización: Hemos hecho algunos cambios que te permitirán encontrar más rápido lo que necesitas:
+También hemos hecho muchas correcciones para una experiencia de edición de bloques más limpia.
+La carga de medios mostrará un mensaje para «reintentar» cuando no haya conexión (en lugar de congelarse), deshacer/rehacer el trabajo de forma más fiable, tanto para los bloques como para el texto, hemos corregido un problema de fusión con los bloques de texto y hemos corregido la alineación de los botones en las plantillas de página.
 
-¿Quieres empezar una nueva entrada o página? Toca el botón rosa grande, siempre visible en la pestaña «Mis sitios».
-¿Quieres editar tu perfil? Mira en la esquina superior derecha.
-¿Quieres encontrar algo para leer? La pestaña «Lector» tiene un diseño renovado para una búsqueda y un filtrado más intuitivos.
-Actualizaciones del editor de bloques: Hay un nuevo bloque de párrafo de cita para resaltar las citas con más énfasis visual que el bloque normal de citas. Las plantillas de página se han actualizado para usar los bloques más recientes y hemos corregido los iconos en algunos bloques que no se mostraban correctamente en el modo RTL.
+Hemos añadido un nuevo ajuste que te permite cambiar tu página de inicio y la página de entradas desde los ajustes del sitio.
 
-El bloque de botones tiene más opciones de color para el fondo y el texto. Y hay compatibilidad para formato HTML de superíndice y subíndice (también en el editor clásico).
+Por último, nos hemos ocupado de un problema de Gravatar que te dejaba atascado en la pantalla de edición de fotos cuando intentabas hacer una nueva foto y hemos hecho algunas actualizaciones de la interfaz de usuario en el lector.
 
-Anotación de la imagen: Con la nueva función "editar imagen" del editor, puedes dibujar directamente sobre las imágenes.
-
-Realmente una corrección de un gran fallo: Algunas veces añadías un bloque de vídeo, empezabas a subir el vídeo y la aplicación se caía. ¡Contraproducente! Eso ya no ocurre más.
