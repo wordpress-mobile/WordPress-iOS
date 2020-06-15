@@ -1,3 +1,6 @@
+15.2
+-----
+ 
 15.1
 -----
 * [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
@@ -25,11 +28,11 @@
 * [**] Block Editor: Add support for changing overlay color settings in Cover block
 * [**] Block Editor: Add enter/exit animation in FloatingToolbar
 * [**] Block Editor: Block toolbar can now collapse when the block width is smaller than the toolbar content
-* [**] Block Editor: Creating undo levels less frequently
 * [**] Block Editor: Tooltip for page template selection buttons
 * [*] Block Editor: Fix merging of text blocks when text had active formatting (bold, italic, strike, link)
 * [*] Block Editor: Fix button alignment in page templates and make strings consistent
 * [*] Block Editor: Add support for displaying radial gradients in Buttons and Cover blocks
+* [*] Block Editor: Fix a bug where it was not possible to add a second image after previewing a post
 * [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
 * My Site: Add support for setting the Homepage and Posts Page for a site.
 
