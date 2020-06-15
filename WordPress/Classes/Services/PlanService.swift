@@ -127,6 +127,9 @@ open class PlanService: LocalCoreDataService {
             plan?.summary = remotePlan.description
             plan?.features = remotePlan.features
             plan?.icon = remotePlan.icon
+            plan?.nonLocalizedShortname = remotePlan.nonLocalizedShortname
+            plan?.supportName = remotePlan.supportName
+            plan?.supportPriority = Int16(remotePlan.supportPriority)
 
             plansToKeep.append(plan!)
         }

@@ -188,22 +188,46 @@ extension NSNotification.Name {
         }
     }
 
-    func cacheUnlocalizedSitePlans() {
-        guard !WordPressComLanguageDatabase().deviceLanguage.slug.hasPrefix("en") else {
-            // Don't fetch if its already "en".
-            return
-        }
-
+    func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
         let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = accountService ?? AccountService(managedObjectContext: context)
         guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
 
-        let planService = PlanService(managedObjectContext: context)
+        let planService = planService ?? PlanService(managedObjectContext: context)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
         }, failure: { error in })
+    }
+
+    func createRequest(planService: PlanService? = nil) -> RequestUiConfiguration {
+
+        let requestConfig = RequestUiConfiguration()
+
+        // Set Zendesk ticket form to use
+        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
+
+        // Set form field values
+        var ticketFields = [CustomField]()
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
+        requestConfig.customFields = ticketFields
+
+        // Set tags
+        requestConfig.tags = ZendeskUtils.getTags()
+
+        // Set the ticket subject
+        requestConfig.subject = Constants.ticketSubject
+
+        return requestConfig
     }
 
     // MARK: - Device Registration
@@ -445,33 +469,7 @@ private extension ZendeskUtils {
         }
     }
 
-    func createRequest() -> RequestUiConfiguration {
 
-        let requestConfig = RequestUiConfiguration()
-
-        // Set Zendesk ticket form to use
-        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
-
-        // Set form field values
-        var ticketFields = [CustomField]()
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        requestConfig.customFields = ticketFields
-
-        // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
-
-        // Set the ticket subject
-        requestConfig.subject = Constants.ticketSubject
-
-        return requestConfig
-    }
 
     // MARK: - View
 
@@ -659,11 +657,7 @@ private extension ZendeskUtils {
             return [Constants.wpComTag]
         }
 
-        // Get all unique site plans
-        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
-        if tags.count == 0 {
-            tags = allBlogs.compactMap { $0.planTitle }.unique
-        }
+        var tags = [String]()
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
@@ -931,6 +925,71 @@ private extension ZendeskUtils {
         }
     }
 
+    // MARK: - Plans
+
+    /// Retrieves the highest priority plan, if it exists
+    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
+
+        let availablePlans = getAvailablePlansWithPriority(planService: planService)
+        if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
+            let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.nonLocalizedName) {
+                    return availablePlan.supportName
+                }
+            }
+        } else {
+            // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
+            // and compare the localized names
+            let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+            let plans = Set(blogService.blogsForAllAccounts().compactMap { $0.planTitle })
+
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.name) {
+                    return availablePlan.supportName
+                }
+            }
+        }
+        return ""
+    }
+
+    /// Obtains the available plans, sorted by priority
+    static func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
+        let planService = planService ?? PlanService(managedObjectContext: ContextManager.shared.mainContext)
+        return planService.allPlans().map {
+            SupportPlan(priority: $0.supportPriority,
+                        name: $0.shortname,
+                        nonLocalizedName: $0.nonLocalizedShortname,
+                        supportName: $0.supportName)
+
+        }
+        .sorted { $0.priority > $1.priority }
+    }
+
+    struct SupportPlan {
+        let priority: Int
+        let name: String
+        let nonLocalizedName: String
+        let supportName: String
+
+        // used to resolve discrepancies of unlocalized names between endpoints
+        let mappings = ["E-commerce": "eCommerce"]
+
+        init(priority: Int16,
+             name: String,
+             nonLocalizedName: String,
+             supportName: String) {
+
+            self.priority = Int(priority)
+            self.name = name
+            self.nonLocalizedName = mappings[nonLocalizedName] ?? nonLocalizedName
+            self.supportName = supportName
+        }
+    }
+
+
     // MARK: - Constants
 
     struct Constants {
@@ -962,7 +1021,7 @@ private extension ZendeskUtils {
         // Zendesk expects this as NSNumber. However, it is defined as Int64 to satisfy 32-bit devices (ex: iPhone 5).
         // Which means it has to be converted to NSNumber when sending to Zendesk.
         static let form: Int64 = 360000010286
-
+        static let plan: Int64 = 25175963
         static let appVersion: Int64 = 360000086866
         static let allBlogs: Int64 = 360000087183
         static let deviceFreeSpace: Int64 = 360000089123
