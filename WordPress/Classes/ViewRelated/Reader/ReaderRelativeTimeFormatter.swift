@@ -5,7 +5,7 @@ class ReaderRelativeTimeFormatter: NSObject {
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        formatter.timeZone = .none
+        formatter.timeStyle = .none
         return formatter
     }()
 
