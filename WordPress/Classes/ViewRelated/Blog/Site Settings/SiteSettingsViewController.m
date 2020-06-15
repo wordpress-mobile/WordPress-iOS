@@ -37,6 +37,11 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountCount,
 };
 
+NS_ENUM(NSInteger, SiteSettingsHomepage) {
+    SiteSettingsHomepageSettings = 0,
+    SiteSettingsHomepageCount,
+};
+
 NS_ENUM(NSInteger, SiteSettingsEditor) {
     SiteSettingsEditorSelector = 0,
     SiteSettingsEditorCount,
@@ -68,6 +73,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
+    SiteSettingsSectionHomepage,
     SiteSettingsSectionAccount,
     SiteSettingsSectionEditor,
     SiteSettingsSectionWriting,
@@ -181,6 +187,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
 
+    if ([Feature enabled:FeatureFlagHomepageSettings] && [self.blog supports:BlogFeatureHomepageSettings]) {
+        [sections addObject:@(SiteSettingsSectionHomepage)];
+    }
+
     if (!self.blog.account) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
@@ -235,6 +245,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             }
 
             return rowCount;
+        }
+        case SiteSettingsSectionHomepage:
+        {
+            return SiteSettingsHomepageCount;
         }
         case SiteSettingsSectionAccount:
         {
@@ -746,6 +760,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionGeneral:
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
 
+        case SiteSettingsSectionHomepage:
+            return self.homepageSettingsCell;
+
         case SiteSettingsSectionAccount:
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
 
@@ -799,6 +816,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (section) {
         case SiteSettingsSectionGeneral:
             headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
+            break;
+
+        case SiteSettingsSectionHomepage:
+            headingTitle = NSLocalizedString(@"Homepage", @"Title for the homepage section in site settings screen");
             break;
 
         case SiteSettingsSectionAccount:
@@ -1139,6 +1160,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionGeneral:
             [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
             break;
+
+        case SiteSettingsSectionHomepage:
+            [self showHomepageSettingsForBlog:self.blog];
 
         case SiteSettingsSectionAccount:
             [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];

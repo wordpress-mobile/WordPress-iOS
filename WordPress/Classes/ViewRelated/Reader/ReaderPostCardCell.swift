@@ -3,13 +3,20 @@ import Foundation
 import WordPressShared
 import Gridicons
 
+private struct Constants {
+    static let featuredMediaCornerRadius: CGFloat = 4
+    static let imageBorderWidth: CGFloat = 1
+    static let featuredMediaTopSpacing: CGFloat = 8
+    static let headerBottomSpacing: CGFloat = 8
+    static let summaryMaxNumberOfLines: NSInteger = 2
+}
+
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
@@ -24,11 +31,14 @@ import Gridicons
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
 
     // Header realated Views
+
+    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+    @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: UIButton!
+    @IBOutlet weak var bylineSeparatorLabel: UILabel!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -45,7 +55,6 @@ import Gridicons
 
     @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
-    @IBOutlet fileprivate weak var visitButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
@@ -57,12 +66,8 @@ import Gridicons
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
-    fileprivate let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(100.0)
     fileprivate var featuredImageDesiredWidth = CGFloat()
 
-    fileprivate let summaryMaxNumberOfLines = 3
-    fileprivate let avgWordsPerMinuteRead = 250
-    fileprivate let minimumMinutesToRead = 2
     fileprivate var currentLoadedCardImageURL: String?
     fileprivate var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
@@ -70,24 +75,7 @@ import Gridicons
     }
 
     // MARK: - Accessors
-    @objc open var hidesFollowButton = false
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
-
-
-    open override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        setHighlighted(selected, animated: animated)
-    }
-
-    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = self.isHighlighted
-        super.setHighlighted(highlighted, animated: animated)
-
-        if previouslyHighlighted == highlighted {
-            return
-        }
-        applyHighlightedEffect(highlighted, animated: animated)
-    }
 
     @objc open var headerBlogButtonIsEnabled: Bool {
         get {
@@ -137,27 +125,29 @@ import Gridicons
         interfaceVerticalSizingHelperView.isHidden = true
 
         setupMenuButton()
-        setupVisitButton()
-        setupCommentActionButton()
-        setupLikeActionButton()
 
         // Buttons must be set up before applying styles,
         // as this tints the images used in the buttons
         applyStyles()
 
         applyOpaqueBackgroundColors()
-        setupFeaturedImageView()
 
+        configureFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
-        insetFollowButtonIcon()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
         configureButtonTitles()
+
+        // Update colors
+        applyStyles()
+        setupMenuButton()
+        configureFeaturedImageView()
+        configureAvatarImageView()
     }
 
     open override func prepareForReuse() {
@@ -172,49 +162,24 @@ import Gridicons
         attributionView.delegate = self
     }
 
-    fileprivate func setupFeaturedImageView() {
-        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-    }
-
     fileprivate func setupSummaryLabel() {
-        summaryLabel.numberOfLines = summaryMaxNumberOfLines
+        summaryLabel.numberOfLines = Constants.summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .byTruncatingTail
     }
 
-    fileprivate func setupCommentActionButton() {
-        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
-        commentActionButton.setImage(image, for: UIControl.State())
-        commentActionButton.setImage(highlightImage, for: .highlighted)
-    }
-
-    fileprivate func setupLikeActionButton() {
-        let likeImage = UIImage(named: "icon-reader-like")
-        let likedImage = UIImage(named: "icon-reader-liked")
-
-        likeActionButton.setImage(likeImage, for: .normal)
-        likeActionButton.setImage(likedImage, for: .highlighted)
-        likeActionButton.setImage(likedImage, for: .selected)
-        likeActionButton.setImage(likedImage, for: [.highlighted, .selected])
-    }
-
-    fileprivate func setupVisitButton() {
-        let size = CGSize(width: 20, height: 20)
-        let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
-        let icon = UIImage.gridicon(.external, size: size)
-        let tintedIcon = icon.imageFlippedForRightToLeftLayoutDirection()
-        let highlightIcon = icon.imageFlippedForRightToLeftLayoutDirection()
-
-        visitButton.setTitle(title, for: UIControl.State())
-        visitButton.setImage(tintedIcon, for: .normal)
-        visitButton.setImage(highlightIcon, for: .highlighted)
-    }
-
     fileprivate func setupMenuButton() {
-        let size = CGSize(width: 20, height: 20)
-        let icon = UIImage.gridicon(.ellipsis, size: size)
-        let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
-        let highlightIcon = icon.imageWithTintColor(.neutral)
+        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
+            return
+        }
+
+        let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
+                                dark: .textSubtle)
+
+        let highlightColor = UIColor(light: .muriel(color: .gray, .shade10),
+                                     dark: .textQuaternary)
+
+        let tintedIcon = icon.imageWithTintColor(tintColor)
+        let highlightIcon = icon.imageWithTintColor(highlightColor)
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
@@ -222,7 +187,6 @@ import Gridicons
 
     fileprivate func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
-            visitButton,
             likeActionButton,
             commentActionButton,
             saveForLaterButton,
@@ -239,27 +203,27 @@ import Gridicons
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderedView.backgroundColor = .listForeground
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
 
-        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
-        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineSeparatorLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
-        WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
-        WPStyleGuide.applyReaderActionButtonStyle(visitButton)
-    }
 
+        // Action Buttons
+        WPStyleGuide.applyReaderCardSaveForLaterButtonStyle(saveForLaterButton)
+        WPStyleGuide.applyReaderCardReblogActionButtonStyle(reblogActionButton)
+        WPStyleGuide.applyReaderCardLikeButtonStyle(likeActionButton)
+        WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
+    }
 
     /**
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
         blogNameLabel.backgroundColor = .listForeground
+        blogHostNameLabel.backgroundColor = .listForeground
         bylineLabel.backgroundColor = .listForeground
         titleLabel.backgroundColor = .listForeground
         summaryLabel.backgroundColor = .listForeground
@@ -271,7 +235,7 @@ import Gridicons
         self.contentProvider = contentProvider
 
         configureHeader()
-        configureFollowButton()
+        configureAvatarImageView()
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
@@ -313,22 +277,25 @@ import Gridicons
             avatarImageView.isHidden = true
         }
 
-        var arr = [String]()
-        if let authorName = contentProvider.authorForDisplay() {
-            arr.append(authorName)
-        }
-        if let blogName = contentProvider.blogNameForDisplay() {
-            arr.append(blogName)
-        }
-        blogNameLabel.text = arr.joined(separator: ", ")
+        blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
+        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
 
-        let byline = datePublished()
-        bylineLabel.text = byline
+        let dateString: String = datePublished()
+        bylineSeparatorLabel.isHidden = dateString.isEmpty
+        bylineLabel.text = dateString
     }
 
-    fileprivate func configureFollowButton() {
-        followButton.isHidden = hidesFollowButton
-        followButton.isSelected = contentProvider?.isFollowing() ?? false
+    fileprivate func configureAvatarImageView() {
+        avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        avatarImageView.layer.borderWidth = Constants.imageBorderWidth
+        avatarImageView.layer.masksToBounds = true
+    }
+
+    private func configureFeaturedImageView() {
+        // Round the corners, and add a border
+        featuredImageView.layer.cornerRadius = Constants.featuredMediaCornerRadius
+        featuredImageView.layer.borderColor = WPStyleGuide.readerCardFeaturedMediaBorderColor().cgColor
+        featuredImageView.layer.borderWidth = Constants.imageBorderWidth
     }
 
     fileprivate func configureFeaturedImageIfNeeded() {
@@ -339,8 +306,12 @@ import Gridicons
             imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
+
+            contentStackView.setCustomSpacing(Constants.headerBottomSpacing, after: headerStackView)
             return
         }
+
+        contentStackView.setCustomSpacing(Constants.headerBottomSpacing + Constants.featuredMediaTopSpacing, after: headerStackView)
 
         featuredImageView.layoutIfNeeded()
         if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
@@ -359,7 +330,10 @@ import Gridicons
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
+
+        let featuredImageHeight = featuredImageView.frame.height
+
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredImageHeight)
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
@@ -417,7 +391,7 @@ import Gridicons
     fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControl.State())
         button.isSelected = false
-        button.isHidden = true
+        button.isEnabled = false
     }
 
     private func configureActionButtonsInsets() {
@@ -441,7 +415,6 @@ import Gridicons
         likeActionButton.tag = CardAction.like.rawValue
         likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
         likeActionButton.isSelected = contentProvider!.isLiked()
-        likeActionButton.isHidden = false
     }
 
     fileprivate var shouldShowLikeActionButton: Bool {
@@ -469,7 +442,7 @@ import Gridicons
         }
 
         commentActionButton.tag = CardAction.comment.rawValue
-        commentActionButton.isHidden = false
+        commentActionButton.isEnabled = true
     }
 
     fileprivate var shouldShowCommentActionButton: Bool {
@@ -493,14 +466,14 @@ import Gridicons
 
 
     fileprivate func configureSaveForLaterButton() {
-        saveForLaterButton.isHidden = false
+        saveForLaterButton.isEnabled = true
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.isSelected = postIsSavedForLater
     }
 
     fileprivate func configureReblogActionButton() {
         reblogActionButton.tag = CardAction.reblog.rawValue
-        reblogActionButton.isHidden = !shouldShowReblogActionButton
+        reblogActionButton.isEnabled = shouldShowReblogActionButton
     }
 
     fileprivate var shouldShowReblogActionButton: Bool {
@@ -540,32 +513,9 @@ import Gridicons
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
             WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
         }
-    }
 
-    /// Adds some space between the button and title.
-    /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
-    /// so we'll add/remove it from the image as needed.
-    fileprivate func insetFollowButtonIcon() {
-        var insets = followButton.imageEdgeInsets
-        insets.right = 2.0
-        followButton.imageEdgeInsets = insets
-        followButton.flipInsetsForRightToLeftLayoutDirection()
-    }
 
-    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
-        func updateBorder() {
-            self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().cgColor : WPStyleGuide.readerCardCellBorderColor().cgColor
-        }
-        guard animated else {
-            updateBorder()
-            return
-        }
-        UIView.animate(withDuration: 0.25,
-            delay: 0,
-            options: UIView.AnimationOptions(),
-            animations: updateBorder)
     }
-
 
     // MARK: -
 
@@ -578,26 +528,12 @@ import Gridicons
 
     // MARK: - Actions
 
-    @IBAction func didTapFollowButton(_ sender: UIButton) {
-        guard let provider = contentProvider else {
-            return
-        }
-        delegate?.readerCell(self, followActionForProvider: provider)
-    }
-
     @IBAction func didTapHeaderBlogButton(_ sender: UIButton) {
         notifyDelegateHeaderWasTapped()
     }
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
-    }
-
-    @IBAction func didTapVisitButton(_ sender: UIButton) {
-        guard let provider = contentProvider else {
-            return
-        }
-        delegate?.readerCell(self, visitActionForProvider: provider)
     }
 
     @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
@@ -659,8 +595,6 @@ extension ReaderPostCardCell: Accessible {
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
-        prepareVisitForVoiceOver()
-        prepareFollowButtonForVoiceOver()
         prepareReblogForVoiceOver()
     }
 
@@ -743,7 +677,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareLikeForVoiceOver() {
-        guard likeActionButton.isHidden == false else {
+        guard likeActionButton.isEnabled == true else {
             return
         }
 
@@ -798,27 +732,10 @@ extension ReaderPostCardCell: Accessible {
         menuButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
-    private func prepareVisitForVoiceOver() {
-        visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
-        let hintFormat = NSLocalizedString("Visit %@ in a web view", comment: "A call to action to visit the specified blog via a web view. Accessibility hint in Reader")
-        visitButton.accessibilityHint = String(format: hintFormat, blogName())
-        visitButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
     private func prepareReblogForVoiceOver() {
         reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
-    }
-
-    func prepareFollowButtonForVoiceOver() {
-        if hidesFollowButton {
-            return
-        }
-
-        followButton.accessibilityLabel = followLabel()
-        followButton.accessibilityHint = followHint()
-        followButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
     private func followLabel() -> String {
@@ -866,7 +783,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func datePublished() -> String {
-        return (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
+        return contentProvider?.dateForDisplay()?.readerDateForDisplay() ?? ""
     }
 }
 
@@ -894,11 +811,14 @@ extension ReaderPostCardCell {
         return menuButton
     }
 
-    func getVisitButtonForTesting() -> UIButton {
-        return visitButton
-    }
-
     func getReblogButtonForTesting() -> UIButton {
         return reblogActionButton
+    }
+}
+
+private extension Date {
+    func readerDateForDisplay() -> String {
+        let relativeFormatter = ReaderRelativeTimeFormatter()
+        return relativeFormatter.string(from: self)
     }
 }

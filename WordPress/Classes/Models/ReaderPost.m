@@ -291,6 +291,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.blogURL;
 }
 
+- (NSString *)siteHostNameForDisplay
+{
+    return self.blogURL.hostname;
+}
+
 - (NSString *)crossPostOriginSiteURLForDisplay
 {
     return self.crossPostMeta.siteURL;

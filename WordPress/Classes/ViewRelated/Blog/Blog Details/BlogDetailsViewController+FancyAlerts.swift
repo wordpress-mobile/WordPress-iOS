@@ -47,7 +47,6 @@ extension BlogDetailsViewController {
 
     private func showNoticeOrAlertAsNeeded() {
         guard let tourGuide = QuickStartTourGuide.find() else {
-            showNotificationPrimerAlert()
             return
         }
 
@@ -59,8 +58,6 @@ extension BlogDetailsViewController {
             tourGuide.didShowUpgradeToV2Notice(for: blog)
         } else if let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
             tourGuide.suggest(tourToSuggest, for: blog)
-        } else {
-            showNotificationPrimerAlert()
         }
     }
 
@@ -117,42 +114,6 @@ extension BlogDetailsViewController {
         let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section
-    }
-
-    private func showNotificationPrimerAlert() {
-        guard noPresentedViewControllers else {
-            return
-        }
-
-        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
-            return
-        }
-
-        let mainContext = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        guard accountService.defaultWordPressComAccount() != nil else {
-            return
-        }
-
-        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
-            guard enabled == .notDetermined else {
-                return
-            }
-
-            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
-
-            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
-                InteractiveNotificationsManager.shared.requestAuthorization {
-                    DispatchQueue.main.async {
-                        controller.dismiss(animated: true)
-                    }
-                }
-            }
-            alert.modalPresentationStyle = .custom
-            alert.transitioningDelegate = self
-            self?.tabBarController?.present(alert, animated: true)
-        }
     }
 
     private func shouldShowCreateButtonAnnouncement() -> Bool {
