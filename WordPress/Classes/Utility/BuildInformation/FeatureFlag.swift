@@ -6,6 +6,7 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case unifiedAuth
     case unifiedSiteAddress
+    case unifiedGoogle
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -26,9 +27,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedSiteAddress:
-            return BuildConfiguration.current == .localDeveloper
+            return false
+        case .unifiedGoogle:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -36,11 +39,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .newReaderNavigation:
             return true
         case .tenor:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .readerWebview:
             return false
         case .swiftCoreData:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .homepageSettings:
             return true
         }
@@ -69,6 +72,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth"
         case .unifiedSiteAddress:
             return "Unified Auth - Site Address"
+        case .unifiedGoogle:
+            return "Unified Auth - Google"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:

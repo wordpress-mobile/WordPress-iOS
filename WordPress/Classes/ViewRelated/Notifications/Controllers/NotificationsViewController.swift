@@ -170,6 +170,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         markWelcomeNotificationAsSeenIfNeeded()
 
+        if userDefaults.notificationsTabAccessCount < Constants.inlineTabAccessCount {
+            userDefaults.notificationsTabAccessCount += 1
+        }
+
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
@@ -1281,7 +1285,9 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull, UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+        guard inlinePromptView.alpha != WPAlphaFull,
+            userDefaults.notificationPrimerAlertWasDisplayed,
+            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
             return
         }
 
@@ -1637,11 +1643,12 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func showNotificationPrimerAlertIfNeeded() {
-        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+
+        guard !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.displayAlertDelay) {
                 self.showNotificationPrimerAlert()
         }
     }
@@ -1672,5 +1679,10 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private enum Constants {
+        static let inlineTabAccessCount = 6
+        static let displayAlertDelay = 0.2
     }
 }
