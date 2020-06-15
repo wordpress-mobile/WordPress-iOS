@@ -1153,7 +1153,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
-    post.content = remotePost.content;
     post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
     post.featuredImage = remotePost.featuredImage;
     post.feedID = remotePost.feedID;
