@@ -53,7 +53,6 @@ end
 def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.5.2'
-    pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
