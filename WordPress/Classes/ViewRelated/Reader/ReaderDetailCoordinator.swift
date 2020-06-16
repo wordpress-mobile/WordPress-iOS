@@ -55,6 +55,8 @@ class ReaderDetailCoordinator {
     /// Start the cordinator
     ///
     func start() {
+        view?.showLoading()
+
         if let post = post {
             renderPostAndBumpStats()
             view?.show(title: post.postTitle)
@@ -123,6 +125,17 @@ class ReaderDetailCoordinator {
         viewController?.present(imageViewController, animated: true)
     }
 
+    /// Open the postURL in a separated view controller
+    ///
+    func openInBrowser() {
+        guard let postURL = postURL else {
+            return
+        }
+
+        presentWebViewController(postURL)
+        viewController?.navigationController?.popViewController(animated: true)
+    }
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost.
@@ -138,7 +151,7 @@ class ReaderDetailCoordinator {
                             self?.renderPostAndBumpStats()
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
-            self?.view?.showError()
+            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
         })
     }
 
@@ -154,7 +167,7 @@ class ReaderDetailCoordinator {
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-            self?.view?.showError()
+            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
         })
     }
 

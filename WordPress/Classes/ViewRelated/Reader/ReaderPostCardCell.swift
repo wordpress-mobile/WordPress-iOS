@@ -145,7 +145,7 @@ private struct Constants {
 
         // Update colors
         applyStyles()
-
+        setupMenuButton()
         configureFeaturedImageView()
         configureAvatarImageView()
     }
@@ -172,8 +172,14 @@ private struct Constants {
             return
         }
 
-        let tintedIcon = icon.imageWithTintColor(.neutral(.shade50))
-        let highlightIcon = icon.imageWithTintColor(.neutral)
+        let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
+                                dark: .textSubtle)
+
+        let highlightColor = UIColor(light: .muriel(color: .gray, .shade10),
+                                     dark: .textQuaternary)
+
+        let tintedIcon = icon.imageWithTintColor(tintColor)
+        let highlightIcon = icon.imageWithTintColor(highlightColor)
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)

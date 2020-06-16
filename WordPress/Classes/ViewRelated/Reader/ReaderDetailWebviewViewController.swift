@@ -2,7 +2,9 @@ import UIKit
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
+    func showLoading()
     func showError()
+    func showErrorWithWebAction()
     func show(title: String?)
 }
 
@@ -25,6 +27,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
+    /// The loading view, which contains all the ghost views
+    @IBOutlet weak var loadingView: UIView!
+
     /// Attribution view for Discovery posts
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
 
@@ -33,6 +38,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
+
+    /// View used to show errors
+    private let noResultsViewController = NoResultsViewController.controller()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
@@ -49,6 +57,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureHeader()
         configureToolbar()
         configureScrollView()
+        configureNoResultsViewController()
         observeWebViewHeight()
         coordinator?.start()
     }
@@ -60,10 +69,34 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
     }
 
-    func showError() {
-        /// TODO: Show error
+    /// Show ghost cells indicating the content is loading
+    func showLoading() {
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+
+        loadingView.startGhostAnimation(style: style)
     }
 
+    /// Hide the ghost cells
+    func hideLoading() {
+        loadingView.stopGhostAnimation()
+        loadingView.isHidden = true
+    }
+
+    /// Shown an error
+    func showError() {
+        displayLoadingView(title: LoadingText.errorLoadingTitle)
+    }
+
+    /// Shown an error with a button to open the post on the browser
+    func showErrorWithWebAction() {
+        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+    }
+
+    /// Show a given title
+    ///
+    /// - Parameter title: a optional String containing the title
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         self.title = title ?? placeholder
@@ -163,6 +196,12 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
     }
 
+    /// Configure the NoResultsViewController
+    ///
+    private func configureNoResultsViewController() {
+        noResultsViewController.delegate = self
+    }
+
     /// Ask the coordinator to present the share sheet
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
@@ -257,6 +296,11 @@ extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelega
 // MARK: - Navigation Delegate
 
 extension ReaderDetailWebviewViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.webView.loadMedia()
+        hideLoading()
+    }
+
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url {
@@ -266,5 +310,46 @@ extension ReaderDetailWebviewViewController: WKNavigationDelegate {
         } else {
             decisionHandler(.allow)
         }
+    }
+}
+
+// MARK: - Error View Handling (NoResultsViewController)
+
+private extension ReaderDetailWebviewViewController {
+    func displayLoadingView(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title, accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+                                          accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func showLoadingView() {
+        hideLoadingView()
+        addChild(noResultsViewController)
+        view.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    func hideLoadingView() {
+        noResultsViewController.removeFromView()
+    }
+
+    struct LoadingText {
+        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
+    }
+
+}
+
+// MARK: - NoResultsViewControllerDelegate
+///
+extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        coordinator?.openInBrowser()
     }
 }
