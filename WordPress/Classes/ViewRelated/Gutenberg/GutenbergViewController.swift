@@ -599,6 +599,35 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
+    func showAlertForEmptyPostPublish() {
+
+        let title: String = (self.post is Page) ? EmptyPostActionSheet.titlePage : EmptyPostActionSheet.titlePost
+        let message: String = EmptyPostActionSheet.message
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+
+        }
+        alertController.addAction(dismissAction)
+
+        alertController.title = title
+        alertController.message = message
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = view.frame
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func editorHasContent(title: String, content: String) -> Bool {
+        let hasTitle = !title.isEmpty
+        var hasContent = !content.isEmpty
+        if let contentInfo = contentInfo {
+            let isEmpty = contentInfo.blockCount == 0
+            let isOneEmptyParagraph = (contentInfo.blockCount == 1 && contentInfo.paragraphCount == 1 && contentInfo.characterCount == 0)
+            hasContent = !(isEmpty || isOneEmptyParagraph)
+        }
+        return hasTitle || hasContent
+    }
+
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool, contentInfo: ContentInfo?) {
         if changed {
             self.html = html
@@ -611,7 +640,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             requestHTMLReason = nil // clear the reason
             switch reason {
             case .publish:
-                handlePublishButtonTap()
+                if editorHasContent(title: title, content: html) {
+                    handlePublishButtonTap()
+                } else {
+                    showAlertForEmptyPostPublish()
+                }
             case .close:
                 cancelEditing()
             case .more:
@@ -927,6 +960,13 @@ private extension GutenbergViewController {
 }
 
 private extension GutenbergViewController {
+
+    struct EmptyPostActionSheet {
+        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is show when trying to publish empty post")
+        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is show when trying to publish empty page")
+        static let message = NSLocalizedString("Please write some content before trying to publish.", comment: "Suggestion to write content before trying to publish post or page")
+    }
+
     struct MediaAttachmentActionSheet {
         static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
         static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
