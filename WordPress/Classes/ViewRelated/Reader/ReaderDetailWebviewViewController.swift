@@ -236,7 +236,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
 
         if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
+            navigationController.followScrollView(scrollView, delay: Constants.delay, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
             navigationController.shouldUpdateContentInset = false
             isFollowingScrollView = true
         }
@@ -321,6 +321,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
         static let bottomMargin: CGFloat = 16
         static let toolbarHeight: CGFloat = 50
+        static let delay: Double = 50
     }
 }
 
