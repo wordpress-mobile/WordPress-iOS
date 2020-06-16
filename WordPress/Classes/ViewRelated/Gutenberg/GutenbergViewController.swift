@@ -789,10 +789,7 @@ extension GutenbergViewController {
 
 // MARK: - GutenbergBridgeDataSource
 
-
-
 extension GutenbergViewController: GutenbergBridgeDataSource {
-
     var loadingView: UIView? {
         return ghostView
     }
