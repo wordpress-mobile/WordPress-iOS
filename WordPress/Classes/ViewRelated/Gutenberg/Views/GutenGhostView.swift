@@ -11,6 +11,23 @@ class GutenGhostView: UIView {
         commonInit()
     }
 
+    @IBOutlet var blockElementViews: [UIView]! {
+        didSet {
+            blockElementViews.forEach { (view) in
+                view.backgroundColor = .ghostBlockBackground
+            }
+        }
+    }
+
+
+    @IBOutlet var buttonsViews: [UIView]! {
+        didSet {
+            buttonsViews.forEach { (view) in
+                view.backgroundColor = .clear
+            }
+        }
+    }
+
     @IBOutlet weak private var inserterView: UIView! {
         didSet {
             inserterView.layer.cornerRadius = inserterView.frame.height / 2
@@ -27,10 +44,17 @@ class GutenGhostView: UIView {
         }
     }
 
+    @IBOutlet weak var toolbarBacgroundView: UIView! {
+        didSet {
+            toolbarBacgroundView.isGhostableDisabled = true
+            toolbarBacgroundView.backgroundColor = .ghostToolbarBackground
+        }
+    }
+
     func startAnimation() {
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
+                               beatEndColor: .beatEndColor)
         startGhostAnimation(style: style)
     }
 
@@ -49,5 +73,40 @@ class GutenGhostView: UIView {
         NSLayoutConstraint.activate(
             contentView.constrainToSuperViewEdges()
         )
+
+        backgroundColor = .background
+    }
+}
+
+private extension UIColor {
+    static var ghostToolbarBackground: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
+        }
+        return .clear
+    }
+
+    static var ghostBlockBackground: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor(light: .clear, dark: .systemGray5)
+        } else {
+            return .clear
+        }
+    }
+
+    static var beatEndColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor(light: .systemGray6, dark: .clear)
+        } else {
+            return .placeholderElementFaded
+        }
+    }
+
+    static var background: UIColor {
+        if #available(iOS 13.0, *) {
+            return .systemBackground
+        } else {
+            return .white
+        }
     }
 }
