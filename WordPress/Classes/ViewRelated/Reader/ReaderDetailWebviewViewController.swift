@@ -234,7 +234,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             UIAccessibility.isVoiceOverRunning {
             return
         }
-        
+
         if let navigationController = navigationController as? ScrollingNavigationController {
             navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
             isFollowingScrollView = true
