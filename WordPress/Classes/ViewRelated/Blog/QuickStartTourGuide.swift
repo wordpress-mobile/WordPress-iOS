@@ -9,6 +9,7 @@ open class QuickStartTourGuide: NSObject {
     private weak var recentlyTouredBlog: Blog?
     private let noticeTag: Notice.Tag = "QuickStartTour"
     static let notificationElementKey = "QuickStartElementKey"
+    static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
     @objc static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
@@ -177,7 +178,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerBack]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -197,11 +198,6 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         currentTourState = nextStep
-
-        if currentElement == .readerBack && navigationSettings.shouldSkipReaderBack() {
-            visited(.readerBack)
-            return
-        }
 
         showCurrentStep()
     }
@@ -344,9 +340,17 @@ private extension QuickStartTourGuide {
             return
         }
 
-        showStepNotice(waypoint.description)
+        if let state = currentTourState,
+            state.tour.showWaypointNotices {
+            showStepNotice(waypoint.description)
+        }
 
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: waypoint.element])
+        let userInfo: [String: Any] = [
+            QuickStartTourGuide.notificationElementKey: waypoint.element,
+            QuickStartTourGuide.notificationDescriptionKey: waypoint.description
+            ]
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: userInfo)
     }
 
     func showStepNotice(_ description: NSAttributedString) {

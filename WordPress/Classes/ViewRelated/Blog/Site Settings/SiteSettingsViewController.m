@@ -1182,6 +1182,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionAdvanced:
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
+            
+            // UIKit doesn't automatically manage cell selection when a modal presentation is triggered,
+            // which is the case for Start Over when there's no paid plan, so we deselect the cell manually.
+            if (indexPath.row == SiteSettingsAdvancedStartOver) {
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
             break;
     }
 }

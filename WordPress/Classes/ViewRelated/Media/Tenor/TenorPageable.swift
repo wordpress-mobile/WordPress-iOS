@@ -9,7 +9,16 @@ struct TenorPageable: Pageable {
     static let defaultPosition: String? = nil
 
     func next() -> Pageable? {
-        guard position != nil else {
+        guard let position = position,
+        let currentPosition = Int(position) else {
+            return nil
+        }
+
+        // If the last page is not full, there is no more to load (thus there is no next).
+        let totalPossibleResults = (currentPageIndex + 1) * itemsPerPage
+        let remainingPageSpace = totalPossibleResults - currentPosition
+
+        if remainingPageSpace < itemsPerPage {
             return nil
         }
 

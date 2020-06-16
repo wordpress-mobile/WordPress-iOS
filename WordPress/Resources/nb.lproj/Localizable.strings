@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@ kl %2$@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d innlegg.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d år";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dm";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "%s Settings";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-blokk. Tom";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "A description of the project and the works presented.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "A featured image is set. Tap to change it.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "En oversiktover nettsteder under denne kontoen.";
@@ -1043,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Sjekker kjøp...";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Choose Pages";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Choose Posts Page";
+
 /* Label for Publish date picker */
 "Choose a date" = "Velg en dato";
 
@@ -1061,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Velg fra min enhet";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "Velg fra enheten";
 
@@ -1073,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "1010 Poststed";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "Fjern alle innstillinger";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Classic Blog";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Tøm enhetens mediehurtiglager";
@@ -1194,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "Fullført";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "Fullfører registrering";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Konfigurer";
@@ -1652,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Å koble fra denne kontoen vil si at publiserte innlegg ikke lenger vil deles automatisk til %@";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "Oppdag nettsteder";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1759,6 +1777,12 @@
 
 /* No comment provided by engineer. */
 "Double tap to move the block up" = "Dobbelttrykk for å flytte blokken opp";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Dobbelttrykk for å gjenta siste endring";
@@ -2265,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "Get in Touch";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "Get in Touch!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "Get in touch!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
@@ -2440,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Hold til moderering";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Homepage";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Homepage Settings";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurra!\nNesten ferdig";
 
@@ -2545,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Sett inn medier";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Insert mention";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Sett inn valgte";
@@ -2713,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "La oss hjelpe";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "La oss bygge noe sammen.";
+"Let's build something together!" = "Let's build something together!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "La oss bygge noe sammen";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "La oss bygge noe sammen";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "Let’s build something together!";
 
 /* Like (verb)
    Like a post.
@@ -3091,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Mest populære tidspunkt";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Move %s Down";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Move %s Left";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Move %s Right";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Move %s Up";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Flytt bilde bakover";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Flytt bilde forover";
 
-/* No comment provided by engineer. */
-"Move block down" = "Flytt blokk ned";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Flytt blokk ned fra rad %1$s til rad %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Flytt blokken mot venstre";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Flytt blokken mot venstre fra posisjon %1$s til posisjon %2$s";
 
-/* No comment provided by engineer. */
-"Move block right" = "Flytt blokken mot høyre";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Flytt blokken mot høyre fra posisjon %1$s til posisjon %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Flytt blokk opp";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Flytt blokk opp fra rad %1$s til rad %2$s";
@@ -3319,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Ingen data ennå.";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "Ingen fulgte nettsteder";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Uffda!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Open Block Actions Menu";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Åpne enhetsinnstillinger";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Vennligst logg ut for du kobler til et annet wordpress.com-nettsted";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Please try again later.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Vennligst prøv å skrive inn dine innloggingsdetaljer igjen.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Innlegg";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Posts Page";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -4064,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Å fortsette vil fjerne alle WordPress.com-data fra enheten og slette eventuelle lokalt lagrede kladder. Du vil ikke miste noe som allerede er lagret på WordPress.com bloggen(e) din(e).";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Processing Account";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Prosjektnavn";
@@ -4270,6 +4311,9 @@ translators: sample content for \"Services\" page template */
    User action to remove media.
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Slett";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Remove %s";
 
 /* Remove Person Alert Title
    Remove User. Verb */
@@ -4592,6 +4636,9 @@ translators: sample content for \"Services\" page template */
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Søk etter gratis bilder du kan legge til i ditt mediebibliotek!";
 
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Search users...";
+
 /* Menus search bar placeholder text. */
 "Search..." = "Søk...";
 
@@ -4807,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "Viser en dialog for å endre kontakt e-post.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "Viser en meny for å endre nettstedsikon.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Viser alle følgere";
 
@@ -4864,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Fjern forslag til Siri-snarveier";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "Nettstedsikon";
 
 /* Title for the Language Picker View */
@@ -5052,6 +5095,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Domain Address field State */
 "State" = "Delstat";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Static Homepage";
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
@@ -5778,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "Prøv igjen";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Try a starter layout";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5875,6 +5924,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Kan ikke kaste innlegg i papirkurven når du er offline. Prøv igjen senere.";
+
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Unable to update homepage settings";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Kunne ikke oppdatere abonnementspriser. Det er et problem med denne bloggen.";
@@ -6090,9 +6142,6 @@ translators: sample content for \"Services\" page template */
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Bruk blokkredigering";
 
-/* Title for the no followed sites result screen */
-"Use the filter button to find posts on specific subjects." = "Use the filter button to find posts on specific subjects.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Bruk dette nettstedet";
 
@@ -6215,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "Synlighet";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "Besøk";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6226,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Besøk %@ for mer";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "Besøk %@ i et nettleservindu";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Besøk hjelpesenteret for å få svar på vanlige spørsmål, eller kontakte oss for mer hjelp.";
@@ -6505,6 +6548,9 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Når en kommentar inneholder noen av disse ordene i innholdet, navnet, URLen, eposten eller IPen vil det bli markert som spam. Du kan skrive inn deler av ord, så \"press\" vil matche \"WordPress\".";
 
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "When you follow sites, you’ll see their content here.";
+
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Når du gjør endringer i redigeringen vil du kunne se historikken her";
 
@@ -6671,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Du holder på å laste opp medier. Denne handlingen vil avbryte disse opplastingene.\n\nEr du sikker?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "Du følger ikke noen nettsteder ennå. Hvorfor ikke følge ett nå?";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Du kan alltid logge inn med en magisk lenke, som den du nettopp brukte, men du kan også sette opp et passord hvis du foretrekker det.";
@@ -6901,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "i \"Oppgrader\"";
+
+/* Relative time format */
+"just now" = "just now";
 
 /* Later today */
 "later today" = "senere i dag";

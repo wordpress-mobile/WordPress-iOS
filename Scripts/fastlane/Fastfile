@@ -466,9 +466,61 @@ import "./ScreenshotFastfile"
 
     zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
   end
+  
+  #####################################################################################
+  # register_new_device
+  # -----------------------------------------------------------------------------------
+  # This lane helps a developer register a new device in the App Store Portal
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane register_new_device
+  #
+  # Example:
+  # bundle exec fastlane register_new_device 
+  #####################################################################################
+  desc "Registers a Device in the developer console"
+  lane :register_new_device do | options |
+
+    bundle_identifiers = [
+      "org.wordpress",
+      "org.wordpress.WordPressShare",
+      "org.wordpress.WordPressDraftAction",
+      "org.wordpress.WordPressTodayWidget",
+      "org.wordpress.WordPressNotificationServiceExtension",
+      "org.wordpress.WordPressNotificationContentExtension",
+      "org.wordpress.WordPressAllTimeWidget",
+      "org.wordpress.WordPressThisWeekWidget"
+    ]
+
+    device_name = UI.input("Device Name: ") unless options[:device_name] != nil
+    device_id = UI.input("Device ID: ") unless options[:device_id] != nil
+    UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
+    bundle_identifiers.each { |identifier|
+      puts "\t#{identifier}"
+    }
+
+    # Register the user's device
+    register_device(
+      name: device_name,
+      udid: device_id,
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID")
+    )
+
+    # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
+    add_development_certificates_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: bundle_identifiers
+    )
+
+    # Add all devices to the provisioning profiles
+    add_all_devices_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: bundle_identifiers
+    )
+  end
 
 ########################################################################
-# Cnfigure Lanes
+# Configure Lanes
 ########################################################################
   #####################################################################################
   # update_certs_and_profiles
