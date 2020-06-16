@@ -115,7 +115,6 @@
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <FormatterKit/FormatterKit-umbrella.h>
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
@@ -125,3 +124,4 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPAnalytics.h>
 #import <WordPressUI/UIImage+Util.h>
+#import <React/RCTAnimatedImage.h>

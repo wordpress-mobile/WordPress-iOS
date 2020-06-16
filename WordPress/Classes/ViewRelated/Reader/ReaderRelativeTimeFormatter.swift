@@ -5,14 +5,14 @@ class ReaderRelativeTimeFormatter: NSObject {
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        formatter.timeZone = .none
+        formatter.timeStyle = .none
         return formatter
     }()
 
     /// Date formatter used for dates older than a week but earlier than a year
     private lazy var recentDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM d")
+        formatter.setLocalizedDateFormatFromTemplate("MMM dd")
         return formatter
     }()
 
