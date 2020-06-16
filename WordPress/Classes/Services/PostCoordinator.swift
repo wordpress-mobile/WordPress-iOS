@@ -321,6 +321,9 @@ class PostCoordinator: NSObject {
             let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
 
+            let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
+
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             aztecProcessors.append(videoPostUploadProcessor)
         } else if let remoteURL = URL(string: remoteURLStr) {
