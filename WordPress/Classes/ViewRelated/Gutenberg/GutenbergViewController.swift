@@ -137,6 +137,38 @@ class GutenbergViewController: UIViewController, PostEditor {
         })
     }
 
+    private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
+
+        let mediaEditor = WPMediaEditor(image)
+        mediaEditor.editingAlreadyPublishedImage = true
+
+        mediaEditor.edit(from: self,
+                         onFinishEditing: { [weak self] images, actions in
+                            guard let image = images.first?.editedImage else {
+                                // If the image wasn't edited, do nothing
+                                return
+                            }
+
+                            self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
+        })
+    }
+
+    private func confirmEditingGIF(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let alertController = UIAlertController(title: GIFAlertStrings.title,
+                                                message: GIFAlertStrings.message,
+                                                preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(GIFAlertStrings.cancel)
+
+        alertController.addActionWithTitle(GIFAlertStrings.edit, style: .destructive) { _ in
+            self.editMedia(with: mediaUrl, callback: callback)
+        }
+
+        present(alertController, animated: true)
+    }
+
     // MARK: - Set content
 
     func setTitle(_ title: String) {
@@ -168,6 +200,9 @@ class GutenbergViewController: UIViewController, PostEditor {
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             gutenbergImageLoader.post = post
             refreshInterface()
         }
@@ -504,20 +539,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
 
-        let mediaEditor = WPMediaEditor(image)
-        mediaEditor.editingAlreadyPublishedImage = true
+        guard !mediaUrl.isGif else {
+            confirmEditingGIF(with: mediaUrl, callback: callback)
+            return
+        }
 
-        mediaEditor.edit(from: self,
-                              onFinishEditing: { [weak self] images, actions in
-                                guard let image = images.first?.editedImage else {
-                                    // If the image wasn't edited, do nothing
-                                    return
-                                }
-
-                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
-        })
+        editMedia(with: mediaUrl, callback: callback)
     }
 
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {

@@ -39,11 +39,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .newReaderNavigation:
             return true
         case .tenor:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .readerWebview:
             return false
         case .swiftCoreData:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .homepageSettings:
             return true
         }

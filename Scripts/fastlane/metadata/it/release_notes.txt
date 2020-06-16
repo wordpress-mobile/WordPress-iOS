@@ -1,14 +1,9 @@
-Ecco quali sono le novità:
+Come al solito, sono presenti molti miglioramenti nell'editor a blocchi. L'icona del cestino che usi per rimuovere i blocchi ora è in un menu raggiungibile toccando il pulsante a ellissi nella barra degli strumenti del blocco. Abbiamo anche aggiunto il supporto per i colori di sovrapposizione nel blocco Copertina, il supporto per la sfumatura radiale nei blocchi Pulsante e Copertina, l'animazione di ingresso/uscita nella barra degli strumenti mobile e un tooltip per i pulsanti di selezione del modello di pagina. Ora la barra degli strumenti del blocco si riduce se il blocco è più stretto della barra degli strumenti.
 
-Revisione dell'organizzazione: abbiamo apportato alcune modifiche che ti permetteranno di trovare più rapidamente ciò di cui hai bisogno:
+Abbiamo anche eseguito molte correzioni, per un'esperienza con l'editor a blocchi più chiara.
+Il caricamento multimediale mostrerà un messaggio "riprova" quando non è presente alcuna connessione (anziché il congelamento), "annulla/ripristina" funzionano in modo più affidabile sia per i blocchi che per il testo, abbiamo corretto un problema di unione con blocchi Testo e abbiamo corretto l'allineamento dei pulsanti nei modelli di pagina.
 
-Desideri iniziare un nuovo articolo o una nuova pagina? Tocca il grande pulsante rosa, sempre visibile nella scheda Il mio sito.
-Desideri modificare il profilo? Guarda nell'angolo in altro a destra.
-Desideri trovare qualcosa da leggere? La scheda Reader ha un layout rinnovato per una ricerca e un filtro più intuitivi.
-Aggiornamenti all'editor a blocchi: È presente un nuovo blocco Citazione evidenziata, per evidenziare le citazioni con un maggiore enfasi visiva rispetto al blocco standard Citazione. I modelli della pagina sono stati aggiornati per poter utilizzare i blocchi più recenti e abbiamo risistemato le icone in alcuni blocchi nei quali non venivano visualizzate in modo del tutto corretto in modalità RTL.
+Abbiamo aggiunto una nuova impostazione che ti consente di modificare la tua homepage e la pagina degli articoli dalle impostazioni del sito.
 
-Il blocco Pulsante ha più opzioni del colore per sfondo e testo. È presente inoltre il supporto per la formattazione HTML di apice e pedice (anche nell'editor Classico).
+Infine, abbiamo risolto un problema con Gravatar che ti ha bloccato nella schermata di modifica delle foto quando hai provato a scattare una nuova foto e abbiamo apportato alcuni aggiornamenti dell'interfaccia utente del Reader.
 
-Annotazione dell'immagine: con la nuova funzionalità di "modifica dell'immagine" nell'editor, puoi disegnare direttamente sulle immagini.
-
-Correzione davvero eccezionale di un bug: a volte hai desiderato aggiungere un blocco Video e avviare il caricamento di un video e l'app si è arrestata in modo anomalo. Controproducente! Questo non accadrà mai più.
