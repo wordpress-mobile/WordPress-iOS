@@ -263,7 +263,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             UIAccessibility.isVoiceOverRunning {
             return
         }
-        
+
         if let navigationController = navigationController as? ScrollingNavigationController {
             navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
             isFollowingScrollView = true
@@ -469,7 +469,7 @@ extension ReaderDetailWebviewViewController: UIViewControllerRestoration {
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
         restorationClass = type(of: self)
-        
+
         return super.awakeAfter(using: aDecoder)
     }
 }
