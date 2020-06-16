@@ -104,6 +104,16 @@ import AutomatticTracks
         loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
     }
 
+    @objc(loadImageWithURL:fromReaderPost:preferredSize:placeholder:success:error:)
+    func loadImage(with url: URL, from readerPost: ReaderPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+
+        let host = MediaHost(with: readerPost, failure: { error in
+            CrashLogging.logError(error)
+        })
+
+        loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
+    }
+
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:

@@ -4,6 +4,16 @@ struct ActionSheetButton {
     let identifier: String
     let target: Any?
     let selector: Selector
+    let highlight: Bool
+
+    init(title: String, image: UIImage, identifier: String, target: Any?, selector: Selector, highlight: Bool = false) {
+        self.title = title
+        self.image = image
+        self.identifier = identifier
+        self.target = target
+        self.selector = selector
+        self.highlight = highlight
+    }
 }
 
 class ActionSheetViewController: UIViewController {
@@ -134,7 +144,22 @@ class ActionSheetViewController: UIViewController {
         button.accessibilityIdentifier = info.identifier
         button.translatesAutoresizingMaskIntoConstraints = false
         button.flipInsetsForRightToLeftLayoutDirection()
+
+        if info.highlight {
+            addSpotlight(to: button)
+        }
         return button
+    }
+
+    private func addSpotlight(to button: UIButton) {
+        let spotlight = QuickStartSpotlightView()
+        spotlight.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(spotlight)
+
+        NSLayoutConstraint.activate([
+            spotlight.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -Constants.Header.insets.right),
+            spotlight.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

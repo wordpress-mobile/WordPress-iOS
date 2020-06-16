@@ -543,8 +543,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
-
-    [self alertQuickStartThatWriteWasTapped];
 }
 
 - (void)showPostTabForBlog:(Blog *)blog

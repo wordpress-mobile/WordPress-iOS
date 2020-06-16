@@ -11,37 +11,13 @@ class QuickStartNavigationSettings: NSObject {
         case is BlogListViewController:
             tourGuide.visited(.noSuchElement)
             tourGuide.endCurrentTour()
-        case is ReaderMenuViewController:
-            tourGuide.visited(.readerBack)
-            removeReaderSpotlight()
-        case is ReaderSearchViewController, is ReaderStreamViewController, is ReaderSavedPostsViewController:
-            readerNav = navigationController
-            checkToSpotlightReader()
         default:
             break
         }
     }
-
-    func shouldSkipReaderBack() -> Bool {
-        guard let readerNav = readerNav else {
-            return false
-        }
-
-        return !readerNav.hasHorizontallyCompactView()
-    }
-
 }
 
 private extension QuickStartNavigationSettings {
-
-    func checkToSpotlightReader() {
-        guard let tourGuide = QuickStartTourGuide.find(),
-            tourGuide.isCurrentElement(.readerBack) else {
-            return
-        }
-
-        spotlightReaderBackButton()
-    }
 
     func spotlightReaderBackButton() {
         guard let readerNav = readerNav else {

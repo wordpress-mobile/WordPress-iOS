@@ -5,7 +5,6 @@
 + (NSString *)secret;
 + (NSString *)sentryDSN;
 + (NSString *)appCenterAppId;
-+ (NSString *)giphyAppId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginSchemeId;
 + (NSString *)googleLoginServerClientId;

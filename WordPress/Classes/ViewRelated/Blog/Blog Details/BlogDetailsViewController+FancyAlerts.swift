@@ -82,14 +82,20 @@ extension BlogDetailsViewController {
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
-        let detailFormatStr = NSLocalizedString("%1$d of %2$d completed", comment: "Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
+        let detailFormatStr = NSLocalizedString("%1$d of %2$d completed",
+                                                comment: "Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
 
-        let customizeRow = BlogDetailsRow(title: NSLocalizedString("Customize Your Site", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
+        let customizeTitle = NSLocalizedString("Customize Your Site",
+                                               comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+        let customizeHint = NSLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
+                                              comment: "A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button.")
+        let customizeRow = BlogDetailsRow(title: customizeTitle,
                                           identifier: QuickStartListTitleCell.reuseIdentifier,
                                           accessibilityIdentifier: "Customize Your Site Row",
+                                          accessibilityHint: customizeHint,
                                           image: .gridicon(.customize)) { [weak self] in
                                             self?.showQuickStartCustomize()
-        }
+                                           }
         customizeRow.quickStartIdentifier = .checklist
         customizeRow.showsSelectionState = false
          if let customizeDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.customizeListTours, for: blog) {
@@ -97,12 +103,17 @@ extension BlogDetailsViewController {
              customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
         }
 
-        let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
-                                        identifier: QuickStartListTitleCell.reuseIdentifier,
-                                        accessibilityIdentifier: "Grow Your Audience Row",
-                                        image: .gridicon(.multipleUsers)) { [weak self] in
-                                            self?.showQuickStartGrow()
-                                        }
+        let growTitle = NSLocalizedString("Grow Your Audience",
+                                          comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+        let growHint = NSLocalizedString("A series of steps to assist with growing your site's audience.",
+                                         comment: "A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button.")
+        let growRow = BlogDetailsRow(title: growTitle,
+                                     identifier: QuickStartListTitleCell.reuseIdentifier,
+                                     accessibilityIdentifier: "Grow Your Audience Row",
+                                     accessibilityHint: growHint,
+                                     image: .gridicon(.multipleUsers)) { [weak self] in
+                                        self?.showQuickStartGrow()
+                                     }
         growRow.quickStartIdentifier = .checklist
         growRow.showsSelectionState = false
          if let growDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.growListTours, for: blog) {

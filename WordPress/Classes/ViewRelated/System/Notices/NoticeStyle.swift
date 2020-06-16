@@ -79,7 +79,11 @@ public struct QuickStartNoticeStyle: NoticeStyle {
 }
 
 public struct ToolTipNoticeStyle: NoticeStyle {
-    public let attributedMessage: NSAttributedString? = nil
+    public let attributedMessage: NSAttributedString?
+
+    init(attributedMessage: NSAttributedString? = nil) {
+        self.attributedMessage = attributedMessage
+    }
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
     public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.body) }

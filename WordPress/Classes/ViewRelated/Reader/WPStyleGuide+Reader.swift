@@ -28,7 +28,8 @@ extension WPStyleGuide {
     // MARK: - Reader Card Styles
 
     @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
-        return .neutral(.shade90)
+        return UIColor(light: .muriel(color: .gray, .shade90),
+                       dark: .muriel(color: .gray, .shade0))
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
@@ -44,12 +45,16 @@ extension WPStyleGuide {
         return .neutral(.shade10)
     }
 
-    @objc public class func readerCardBlogIconBorderColor() -> UIColor {
-        return .neutral(.shade0)
+    public class func readerCardBlogIconBorderColor() -> UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor(light: .gray(.shade0), dark: .systemGray5)
+        } else {
+            return .neutral(.shade0)
+        }
     }
 
-    @objc public class func readerCardFeaturedMediaBorderColor() -> UIColor {
-        return .neutral(.shade0)
+    public class func readerCardFeaturedMediaBorderColor() -> UIColor {
+        return readerCardBlogIconBorderColor()
     }
 
     // MARK: - Card Attributed Text Attributes
@@ -74,7 +79,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.neutral(.shade40)
+            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
         ]
     }
 
@@ -87,14 +92,15 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: UIColor.neutral(.shade40)
+            .foregroundColor: UIColor(light: .gray(.shade40), dark: .systemGray)
         ]
     }
 
     /// Returns a the system serif font (New York) for iOS 13+ but defaults to noto for older devices
-    private class func serifFontForTextStyle(_ style: UIFont.TextStyle) -> UIFont {
+    private class func serifFontForTextStyle(_ style: UIFont.TextStyle,
+                                             fontWeight weight: UIFont.Weight = .regular) -> UIFont {
         guard #available(iOS 13, *),
-            let fontDescriptor = WPStyleGuide.fontForTextStyle(style).fontDescriptor.withDesign(.serif)
+            let fontDescriptor = WPStyleGuide.fontForTextStyle(style, fontWeight: weight).fontDescriptor.withDesign(.serif)
         else {
             return WPStyleGuide.notoFontForTextStyle(style)
         }
@@ -108,7 +114,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(Cards.titleTextStyle)
+            .font: serifFontForTextStyle(Cards.titleTextStyle, fontWeight: .semibold)
         ]
     }
 
@@ -208,23 +214,19 @@ extension WPStyleGuide {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
                                   dark: .muriel(color: .gray, .shade20))
-
     }
 
     @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
-        label.textColor = .neutral(.shade90)
+        label.textColor = UIColor(light: .gray(.shade90), dark: .text)
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
-                                  dark: .muriel(color: .gray, .shade20))
+        label.textColor = UIColor(light: .gray(.shade80), dark: .muriel(color: .gray, .shade0))
     }
 
-    @objc public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
-                                  dark: .muriel(color: .gray, .shade20))
+    public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
+        label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
-
 
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
@@ -269,10 +271,10 @@ extension WPStyleGuide {
     // MARK: - Button Styles and Text
     class func applyReaderStreamActionButtonStyle(_ button: UIButton) {
         let tintColor = UIColor(light: .muriel(color: .gray, .shade50),
-                                dark: .muriel(color: .gray, .shade10))
+                                dark: .textSubtle)
 
         let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
-                                    dark: .muriel(color: .gray, .shade60))
+                                    dark: .textQuaternary)
 
         return applyReaderActionButtonStyle(button,
                                             titleColor: tintColor,
@@ -280,7 +282,11 @@ extension WPStyleGuide {
                                             disabledColor: disabledColor)
     }
 
-    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon, disabledColor: UIColor = .neutral(.shade10)) {
+
+    class func applyReaderActionButtonStyle(_ button: UIButton,
+                                            titleColor: UIColor = .listIcon,
+                                            imageColor: UIColor = .listIcon,
+                                            disabledColor: UIColor = .neutral(.shade10)) {
         button.tintColor = imageColor
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
@@ -353,6 +359,7 @@ extension WPStyleGuide {
         button.setImage(selectedIcon, for: .selected)
         button.setImage(selectedIcon, for: .highlighted)
         button.setImage(selectedIcon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -373,6 +380,7 @@ extension WPStyleGuide {
         button.setImage(resizedSelectedIcon, for: .selected)
         button.setImage(resizedSelectedIcon, for: .highlighted)
         button.setImage(resizedSelectedIcon, for: [.highlighted, .selected])
+        button.setImage(resizedIcon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -386,6 +394,7 @@ extension WPStyleGuide {
         button.setImage(selectedIcon, for: .selected)
         button.setImage(selectedIcon, for: .highlighted)
         button.setImage(selectedIcon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -410,6 +419,10 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.reblog, size: size)
 
         button.setImage(icon, for: .normal)
+        button.setImage(icon, for: .selected)
+        button.setImage(icon, for: .highlighted)
+        button.setImage(icon, for: [.highlighted, .selected])
+        button.setImage(icon, for: .disabled)
 
         applyReaderStreamActionButtonStyle(button)
     }
@@ -530,7 +543,7 @@ extension WPStyleGuide {
         public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
         public static let titleTextStyle: UIFont.TextStyle = WPDeviceIdentification.isiPad() ? .title2 : .title3
         public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 0.0 : 0.0
-        public static let summaryTextStyle: UIFont.TextStyle = .footnote
+        public static let summaryTextStyle: UIFont.TextStyle = .subheadline
         public static let contentTextStyle: UIFont.TextStyle = .footnote
         public static let contentLineSpacing: CGFloat = 4
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline

@@ -5,6 +5,7 @@
 
 @class Media;
 @class AbstractPost;
+@class ReaderPost;
 
 NS_ASSUME_NONNULL_BEGIN
 @interface WPImageViewController : UIViewController
@@ -12,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) id<WPMediaAsset> mediaAsset;
 @property (nonatomic, assign) BOOL shouldDismissWithGestures;
 @property (nonatomic, weak) AbstractPost* post;
+@property (nonatomic, weak) ReaderPost* readerPost;
 
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
