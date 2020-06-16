@@ -115,7 +115,6 @@
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <FormatterKit/FormatterKit-umbrella.h>
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
