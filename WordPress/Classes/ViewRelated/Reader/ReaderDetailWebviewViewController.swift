@@ -237,6 +237,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
         if let navigationController = navigationController as? ScrollingNavigationController {
             navigationController.followScrollView(scrollView, delay: 50.0, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
+            navigationController.shouldUpdateContentInset = false
             isFollowingScrollView = true
         }
     }
@@ -248,6 +249,15 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
             navigationController.stopFollowingScrollView(showingNavbar: true)
             isFollowingScrollView = false
         }
+    }
+
+    /// Show the nav bar when scrolling to top
+    ///
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.showNavbar(animated: true, scrollToTop: true)
+        }
+        return true
     }
 
     /// Update scroll view insets to take into account if toolbar is visible or not
