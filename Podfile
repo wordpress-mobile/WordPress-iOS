@@ -387,27 +387,27 @@ end
 # Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = ['WordPressFlux']
-pre_install do |installer|
-    static = []
-    dynamic = []
-    installer.pod_targets.each do |pod|
+# shared_targets = ['WordPressFlux']
+# pre_install do |installer|
+#     static = []
+#     dynamic = []
+#     installer.pod_targets.each do |pod|
 
-        # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
-        # linking it resolves this.
-        if pod.name == "Sentry"
-          dynamic << pod
-          next
-        end
+#         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
+#         # linking it resolves this.
+#         if pod.name == "Sentry"
+#           dynamic << pod
+#           next
+#         end
 
-        # If this pod is a dependency of one of our shared targets, it must be linked dynamically
-        if pod.target_definitions.any? { |t| shared_targets.include? t.name }
-          dynamic << pod
-          next
-        end
-        static << pod
-		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
-    end
-    puts "Installing #{static.count} pods as static frameworks"
-    puts "Installing #{dynamic.count} pods as dynamic frameworks"
-end
+#         # If this pod is a dependency of one of our shared targets, it must be linked dynamically
+#         if pod.target_definitions.any? { |t| shared_targets.include? t.name }
+#           dynamic << pod
+#           next
+#         end
+#         static << pod
+# 		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
+#     end
+#     puts "Installing #{static.count} pods as static frameworks"
+#     puts "Installing #{dynamic.count} pods as dynamic frameworks"
+# end
