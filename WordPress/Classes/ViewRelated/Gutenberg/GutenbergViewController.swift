@@ -617,7 +617,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self.html = html
             self.postTitle = title
         }
-        if (initialContentInfo == nil) {
+        if initialContentInfo == nil {
             initialContentInfo = contentInfo
         }
         self.contentInfo = contentInfo
