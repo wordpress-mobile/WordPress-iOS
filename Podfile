@@ -185,7 +185,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    #pod 'WordPressAuthenticator', '~> 1.19.0-beta'
+    # pod 'WordPressAuthenticator', '~> 1.19.0-beta'
     # While in PR
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/283-site-address-iv'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
