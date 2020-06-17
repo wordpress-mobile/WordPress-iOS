@@ -111,7 +111,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureDiscoverAttribution(post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
-        webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
+        webView.loadHTMLString(post.contentForDisplay())
     }
 
     /// Show ghost cells indicating the content is loading

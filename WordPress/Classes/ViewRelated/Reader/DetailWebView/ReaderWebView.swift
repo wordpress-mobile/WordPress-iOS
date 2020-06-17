@@ -16,9 +16,21 @@ class ReaderWebView: WKWebView {
 
     /// Loads a HTML content into the webview and apply styles
     ///
-    @discardableResult
-    override func loadHTMLString(_ string: String, baseURL: URL?) -> WKNavigation? {
-        let content = """
+    func loadHTMLString(_ string: String) {
+        // If the user is offline, we remove the srcset from all images
+        // This is because only the image inside the src tag is previously saved
+        let additionalJavaScript = ReachabilityUtils.isInternetReachable() ? "" : "document.querySelectorAll('img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+
+        let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
+
+        super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
+    }
+
+    /// Given a HTML content, returns it formatted.
+    /// Ie.: Including tags, CSS, JS, etc.
+    ///
+    func formattedContent(_ content: String, additionalJavaScript: String = "") -> String {
+        return """
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
@@ -28,18 +40,17 @@ class ReaderWebView: WKWebView {
         \(cssStyles())
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
-        \(addPlaceholder(string))
+        \(content)
         </body>
         <script>
             document.addEventListener('DOMContentLoaded', function(event) {
+                \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
             })
         </script>
         </html>
         """
-
-        return super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
     }
 
     /// Tell the webview to load all media
