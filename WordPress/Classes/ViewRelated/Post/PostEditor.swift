@@ -111,6 +111,9 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     var autosaver: Autosaver { get set }
     /// true if the post is the result of a reblog
     var postIsReblogged: Bool { get set }
+
+    /// Returns the word counts of the original post and current state of the post in the editor.
+    func getContentWordMetrics() -> (UInt, UInt)?
 }
 
 extension PostEditor {

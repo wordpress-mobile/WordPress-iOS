@@ -80,6 +80,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         self?.mapUIContentToPostAndSave(immediate: true)
     }
 
+    func getContentWordMetrics() -> (UInt, UInt)? {
+        let initialWordMetrics = self.initialWordMetrics ?? 0
+        let numberOfWords = richTextView.wordCount
+        return (initialWordMetrics, numberOfWords)
+    }
+
     // MARK: - Styling Options
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
@@ -806,9 +812,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
+    fileprivate var initialWordMetrics: UInt?
+
     func setHTML(_ html: String) {
         editorView.setHTML(html)
-
+        if initialWordMetrics == nil {
+            initialWordMetrics = richTextView.wordCount
+        }
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }
