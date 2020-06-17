@@ -120,10 +120,14 @@ class CoreDataIterativeMigrator: NSObject {
             // Migrate the model to the next step
             DDLogWarn("⚠️ Attempting migration from \(modelNames[index]) to \(modelNames[index + 1])")
 
-            guard migrateStore(at: sourceStore, storeType: storeType, fromModel: modelFrom, toModel: modelTo, with: migrateWithModel) == true else {
+            do {
+                try migrateStore(at: sourceStore, storeType: storeType, fromModel: modelFrom, toModel: modelTo, with: migrateWithModel)
+            } catch {
                 let versionFrom = versionNameForModel(model: modelFrom)
                 let versionTo = versionNameForModel(model: modelTo)
-                throw error(with: .failedMigratingStore, description: "Failed migrating store from version \(versionFrom) to version \(versionTo).")
+                var description = "Failed migrating store from version \(versionFrom) to version \(versionTo)."
+                description = description + " Original Error: \(error)"
+                throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.failedMigratingStore, description: description)
             }
         }
     }
@@ -219,7 +223,7 @@ private extension CoreDataIterativeMigrator {
                              storeType: String,
                              fromModel: NSManagedObjectModel,
                              toModel: NSManagedObjectModel,
-                             with mappingModel: NSMappingModel) -> Bool {
+                             with mappingModel: NSMappingModel) throws {
         let tempDestinationURL = createTemporaryFolder(at: url)
 
         // Migrate from the source model to the target model using the mapping,
@@ -234,7 +238,7 @@ private extension CoreDataIterativeMigrator {
                                       destinationType: storeType,
                                       destinationOptions: nil)
         } catch {
-            return false
+            throw error
         }
 
         do {
@@ -242,10 +246,8 @@ private extension CoreDataIterativeMigrator {
             try copyMigratedOverOriginal(from: tempDestinationURL, to: url)
             try deleteBackupCopies(at: backupURL)
         } catch {
-            return false
+            throw error
         }
-
-        return true
     }
 
     static func metadataForPersistentStore(storeType: String, at url: URL) throws -> [String: Any]? {
