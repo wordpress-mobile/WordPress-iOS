@@ -5,6 +5,10 @@ import Foundation
 ///
 class OfflineReaderWebView: ReaderWebView {
     func saveForLater(_ post: ReaderPost, viewController: UIViewController) {
+        guard let contentForDisplay = post.contentForDisplay() else {
+            return
+        }
+
         navigationDelegate = self
 
         frame = CGRect(x: 0, y: 0, width: viewController.view.frame.width, height: viewController.view.frame.height)
@@ -13,7 +17,7 @@ class OfflineReaderWebView: ReaderWebView {
 
         viewController.view.addSubview(self)
 
-        load(post.contentForDisplay())
+        load(contentForDisplay)
     }
 
     private func load(_ string: String) {
