@@ -32,6 +32,14 @@ div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
 
+@media (max-width: 660px) {
+    .alignleft img,
+    .alignright img {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
 /* Safari overrides */
 
 figure {
