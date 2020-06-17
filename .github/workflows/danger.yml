@@ -1,5 +1,7 @@
 name: Run Checks with Danger
 on:
+  issues:
+    types: [milestoned, demilestoned]
   pull_request:
     # Because we have a rule that validates the PR labels, we want it to run
     # when the labels change, not only when a PR is opened/reopened or changes
@@ -14,6 +16,13 @@ jobs:
       # Till https://github.com/danger/danger-js/issues/1042 is fixed, we need
       # this workaround
       DANGER_GITHUB_API_BASE_URL: "https://api.github.com"
+    if:
+      # One of the Danger checks we run on PRs is for milestones, but the event
+      # that triggers it is for issues. PRs are special issues but, unlike
+      # labels, don't have a dedicated milestone event.   In order to run this
+      # workflow only for PRs, we need to check the context to see if this was
+      # triggered by a PR or a plain issue.
+      github.event.pull_request != null || github.event.issue.pull_request != null
     steps:
       - uses: actions/checkout@v2
 
