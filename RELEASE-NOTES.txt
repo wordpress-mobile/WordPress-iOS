@@ -1,4 +1,7 @@
 15.2
+----
+* [**] Block editor: Display content metrics information (blocks, words, characters count).
+
 -----
  
 15.1
