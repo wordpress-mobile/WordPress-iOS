@@ -270,6 +270,8 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var themeSupportQuery: Receipt? = nil
     private var themeSupportReceipt: Receipt? = nil
 
+    internal private(set) var contentInfo: ContentInfo?
+
     // MARK: - Initializers
     required init(
         post: AbstractPost,
@@ -600,12 +602,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
-    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
+    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool, contentInfo: ContentInfo?) {
         if changed {
             self.html = html
             self.postTitle = title
         }
-
+        self.contentInfo = contentInfo
         editorContentWasUpdated()
         mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
