@@ -100,6 +100,9 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
     /// The key used to encrypt log files
     let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey()
 
+    /// The Authorization token for the upload endpoint
+    var loggingAuthenticationToken: String = ApiCredentials.secret()
+
     /// The previous session log will be the most recent one, because they're split by day
     var previousSessionLogPath: URL? {
         return fetchLogFiles?().first
