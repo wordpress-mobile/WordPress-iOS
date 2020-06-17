@@ -1,14 +1,9 @@
-Neuheiten:
+Es gibt wie immer viele Verbesserungen im Block-Editor. Papierkorbsymbol zum Entfernen von Blöcken wird nun in einem Menü angezeigt, das durch Tippen auf das Dreipunktmenü in der Block-Toolbar erreicht werden kann. Support für Overlay-Farben im Cover-Block und radiale Farbverläufe in Button- und Cover-Blöcken hinzugefügt; Möglichkeit zum Starten/Verlassen der Animation in der unverankerten Toolbar und Tooltip für Auswahlbuttons für die Seitenvorlage hinzugefügt. Die Block-Toolbar wird nun minimiert, wenn der Block schmaler als die Toolbar ist.
 
-Überholung der Organisation: Wir haben ein paar Änderungen vorgenommen, damit du schneller findest, wonach du suchst:
+Außerdem wurden viele Korrekturen für ein besseres Erlebnis mit dem Block-Editor vorgenommen.
+Der Media Uploader zeigt die Nachricht „Erneut versuchen“ an, wenn keine Verbindung besteht (anstatt einzufrieren); Arbeit rückgängig machen/wiederholen ist für Blöcke und Text zuverlässiger; Problem beim Mergen von Text-Blöcken und bei der Button-Ausrichtung in Seitenvorlagen wurde behoben.
 
-Möchtest du einen neuen Beitrag oder eine neue Seite beginnen? Tippe auf den großen, rosa Button, der dir stets im Tab „Meine Websites“ angezeigt wird.
-Möchtest du dein Profil bearbeiten? Das geht jetzt ganz leicht oben rechts in der Ecke.
-Auf der Suche nach guter Lektüre? Der Tab „Reader“ hat einen neuen Look bekommen, sodass du nutzerfreundlich suchen und filtern kannst.
-* Updates im Block-Editor: Es gibt jetzt einen neuen Pullquote-Block, mit dem Zitate visuell besser hervorgehoben werden können, als im herkömmlichen Zitat-Block. Die Seitenvorlagen haben ebenfalls ein Update bekommen, um die neuesten Blocks voll und ganz nutzen zu können, und in ein paar Blocks haben wir die Icons korrigiert, die im RTL-Modus nicht richtig angezeigt wurden.
+Eine neue Einstellung wurde hinzugefügt, über die du deine Startseite und Beitragsseite über die Website-Einstellungen ändern kannst.
 
-Im Button-Block findest du jetzt eine größere Farbauswahl für Hintergrund und Text. Und ab sofort erhältst du Unterstützung für hoch- und tiefgestellte HTML-Formatierungen (auch im klassischen Editor).
+Ein Gravatar-Problem wurde behoben, wodurch du im Fotobearbeitungsbildschirm stecken geblieben bist, wenn du ein neues Fotos aufnehmen wolltest; im Reader wurden einige UI-Updates vorgenommen.
 
-Bildanmerkung: Mit der neuen Bildbearbeitungsfunktion im Editor kannst du nun direkt in die Bilder malen.
-
-Eine Fehlerbehebung war besonders toll: Manchmal ist die App abgestürzt, wenn du einen Video-Block hinzugefügt hast, und dann das Video hochladen wolltest. Sehr kontraproduktiv! Das wird dir in Zukunft nicht mehr passieren.
