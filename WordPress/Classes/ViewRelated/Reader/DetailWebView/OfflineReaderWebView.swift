@@ -4,9 +4,19 @@ import Foundation
 /// The mechanism is quite simple: open the post in a hidden webview so the images are cached
 ///
 class OfflineReaderWebView: ReaderWebView {
-    func saveForLater(_ string: String) {
+    func saveForLater(_ post: ReaderPost, viewController: UIViewController) {
         navigationDelegate = self
 
+        frame = CGRect(x: 0, y: 0, width: viewController.view.frame.width, height: viewController.view.frame.height)
+
+        isHidden = true
+
+        viewController.view.addSubview(self)
+
+        load(post.contentForDisplay())
+    }
+
+    private func load(_ string: String) {
         // Remove all srcset from the images, only the URL in the src tag will be cached
         let content = super.formattedContent(string, additionalJavaScript: """
             document.querySelectorAll('img').forEach((el) => {el.removeAttribute('srcset')})
