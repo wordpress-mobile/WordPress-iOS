@@ -83,8 +83,20 @@ class DebugMenuViewController: UITableViewController {
             }),
             ButtonRow(title: Strings.encryptedLogging, action: { _ in
                 self.navigationController?.pushViewController(EncryptedLogTableViewController(), animated: true)
-            })
+            }),
+            SwitchWithSubtitleRow(title: Strings.alwaysSendLogs, value: shouldAlwaysSendLogs) { isOn in
+                self.shouldAlwaysSendLogs = isOn
+            }
         ]
+    }
+
+    var shouldAlwaysSendLogs: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "force-crash-logging")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "force-crash-logging")
+        }
     }
 
     private func displayBlogPickerForQuickStart() {
@@ -121,6 +133,7 @@ class DebugMenuViewController: UITableViewController {
         static let quickStartRow = NSLocalizedString("Enable Quick Start for Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
         static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
         static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
+        static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
         static let crashLogging = NSLocalizedString("Crash Logging", comment: "Title of a section on the debug screen that shows a list of actions related to crash logging")
         static let encryptedLogging = NSLocalizedString("Encrypted Logs", comment: "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs")
     }
