@@ -12,6 +12,7 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
+#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -209,9 +210,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
         _readerNavigationController.navigationBar.translucent = NO;
 
