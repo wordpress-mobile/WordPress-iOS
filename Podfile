@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.9.0-beta.1'
+    pod 'WordPressShared', '1.9.0'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -34,18 +34,18 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.7.0'
+    pod 'WordPressUI', '~> 1.7.1'
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/bottom-sheet-pan-gesture'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'task/bottomsheet_child_handle_dismiss'
     # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '85b2a8cfb9d3c27194a14bdcb3c8391e13fbaa0f'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 5.0.0-beta.1'
+    pod 'WordPressKit', '4.11.0-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14313_remove_post_content_sanitization'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -53,7 +53,6 @@ end
 def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.5.2'
-    pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
@@ -168,6 +167,8 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
+    wordpress_kit
+    wordpress_shared
 
     # Production
     pod 'Automattic-Tracks-iOS', '~> 0.4.4'
@@ -184,7 +185,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.18.0-beta.9'
+    pod 'WordPressAuthenticator', '~> 1.18.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

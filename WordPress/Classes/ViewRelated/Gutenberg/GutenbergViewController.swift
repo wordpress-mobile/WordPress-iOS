@@ -200,6 +200,9 @@ class GutenbergViewController: UIViewController, PostEditor {
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+            tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             gutenbergImageLoader.post = post
             refreshInterface()
         }
@@ -266,6 +269,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     private var themeSupportQuery: Receipt? = nil
     private var themeSupportReceipt: Receipt? = nil
+
+    internal private(set) var contentInfo: ContentInfo?
 
     // MARK: - Initializers
     required init(
@@ -597,12 +602,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
-    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
+    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool, contentInfo: ContentInfo?) {
         if changed {
             self.html = html
             self.postTitle = title
         }
-
+        self.contentInfo = contentInfo
         editorContentWasUpdated()
         mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {

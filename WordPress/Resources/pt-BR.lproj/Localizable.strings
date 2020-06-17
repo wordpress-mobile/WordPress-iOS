@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-21 21:09:42+0000 */
+/* Translation-Revision-Date: 2020-06-04 17:19:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: pt_BR */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@, no %2$@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d posts.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d anos";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dmin";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li palavras, %2$li caracteres";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "Configurações de %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Bloco %s. Vazio.";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "Uma descrição do projeto e trabalhos apresentados.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "Uma imagem destacada está configurada. Toque para alterá-la.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Uma lista de sites dessa conta.";
@@ -1043,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Verificando compras...";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Escolher páginas";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Escolher a página de posts";
+
 /* Label for Publish date picker */
 "Choose a date" = "Escolha uma data";
 
@@ -1061,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Escolher em meu dispositivo";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Escolha entre uma página inicial que exiba seus posts mais recentes (blog clássico) ou uma página estática\/fixa.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "Escolher no dispositivo";
 
@@ -1073,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "Cidade, 01010-100";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "Limpar todas as configurações";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Blog clássico";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Liberar cache de arquivos do dispositivo";
@@ -1194,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "Operação concluída";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "Completando inscrição";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurar";
@@ -1652,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Ao desconectar esta conta, os posts publicados não serão mais compartilhados automaticamente no %@";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "Descobrir sites";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1759,6 +1777,12 @@
 
 /* No comment provided by engineer. */
 "Double tap to move the block up" = "Toque duas vezes para mover o bloco para cima";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Toque duas vezes para abrir a janela de ações com as opções disponíveis";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Toque duas vezes para abrir a janela inferior com as opções disponíveis";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Toque duas vezes para refazer a última alteração";
@@ -2265,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "Mantenha contato";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "Mantenha contato!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "Mantenha contato!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Seja notado: comente em posts que você leu.";
@@ -2440,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Aguardar moderação";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Página inicial";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Configurações da página inicial";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Eba!\nQuase pronto";
 
@@ -2545,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Adicionar mídia";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Inserir menção";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Inserir selecionada";
@@ -2713,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "Podemos ajudar você";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "Vamos construir algo junto.";
+"Let's build something together!" = "Vamos construir algo juntos!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "Vamos conversar 👋 Não hesite em entrar em contato usando as informações abaixo ou me envie uma mensagem usando o formulário de contato.";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "Vamos construir algo juntos";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "Vamos construir algo juntos";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "Vamos construir algo juntos!";
 
 /* Like (verb)
    Like a post.
@@ -3091,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Horário mais popular";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Mover %s para baixo";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Mover %s para a esquerda";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Mover %s para a direita";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Mover %s para cima";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Mover imagem para trás";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Mover imagem para frente";
 
-/* No comment provided by engineer. */
-"Move block down" = "Mover o bloco para baixo";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Mover o bloco abaixo da linha %1$s para a linha %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Mover o bloco para a esquerda";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Mover o bloco para a esquerda da posição %1$s para a posição %2$s";
 
-/* No comment provided by engineer. */
-"Move block right" = "Mover o bloco para a direita";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Mover o bloco para a direita da posição %1$s para a posição %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Mover o bloco para cima";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Mover o bloco acima da linha %1$s para a linha %2$s";
@@ -3319,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Nenhum dado ainda";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "Nenhum site seguido";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Opa!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Abrir menu de ações do bloco";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Abrir configurações do dispositivo";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Faça logout antes de se conectar a um site diferente do WordPress.com";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Tente novamente mais tarde.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Tente digitar os detalhes de login novamente.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Posts";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Página de posts";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -4064,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Continuar irá remover todos os dados WordPress.com deste serviço e excluirá qualquer rascunho localmente salvo. Você não perderá qualquer coisa já salva em seu(s) blog(s) WordPress.com.";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Finalizando o processamento da conta";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Título do projeto";
@@ -4270,6 +4311,9 @@ translators: sample content for \"Services\" page template */
    User action to remove media.
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Remover";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Remover %s";
 
 /* Remove Person Alert Title
    Remove User. Verb */
@@ -4592,6 +4636,9 @@ translators: sample content for \"Services\" page template */
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Pesquise para encontrar imagens gratuitas para adicionar à sua biblioteca de arquivos!";
 
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Pesquisar usuários...";
+
 /* Menus search bar placeholder text. */
 "Search..." = "Pesquisar...";
 
@@ -4807,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "Mostra uma mensagem para trocar o e-mail de contato.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "Mostra um menu para trocar o ícone do site.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Mostra todos os seguidores";
 
@@ -4864,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Limpar sugestões de atalhos da Siri";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "Ícone do site";
 
 /* Title for the Language Picker View */
@@ -5052,6 +5095,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Domain Address field State */
 "State" = "Estado";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Página inicial estática";
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
@@ -5778,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "Tente novamente";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Experimente começar com um modelo";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5875,6 +5924,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Não é possível enviar posts para a lixeira no modo off-line. Tente novamente mais tarde.";
+
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Não foi possível atualizar as configurações da página inicial";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Não foi possível atualizar o preço do plano. Houve um problema com o blog informado.";
@@ -6090,9 +6142,6 @@ translators: sample content for \"Services\" page template */
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar o editor de blocos";
 
-/* Title for the no followed sites result screen */
-"Use the filter button to find posts on specific subjects." = "Use o botão de filtro para encontrar posts de assuntos específicos.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Usar este site";
 
@@ -6215,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "Visibilidade";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "Acessar";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6226,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Visite %@ para mais";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "Visitar %@ no modo de visualização web";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Visite a Central de Ajuda para visualizar respostas a perguntas frequentes, ou entre em contato conosco para mais informações.";
@@ -6505,6 +6548,9 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Quando um comentário tiver uma destas palavras em seu conteúdo, nome, URL, e-mail ou IP, ele será marcado como spam. Você pode inserir partes de palavras, então \"press\" corresponderá a \"WordPress\".";
 
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "Ao seguir sites, você verá o conteúdo deles aqui.";
+
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Assim que você fizer alterações, você poderá ver o histórico aqui";
 
@@ -6671,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Você está fazendo upload de mídia no momento. Esta ação cancelará os uploads em andamento.\n\nTem certeza?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "Você ainda não está seguindo um site. Que tal começar a seguir um agora?";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Você sempre pode acessar com um endereço mágico como o que acabou de usar, mas também é possível definir uma senha se preferir.";
@@ -6901,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "em \"Upgrade\"";
+
+/* Relative time format */
+"just now" = "agora mesmo ";
 
 /* Later today */
 "later today" = "mais tarde hoje";

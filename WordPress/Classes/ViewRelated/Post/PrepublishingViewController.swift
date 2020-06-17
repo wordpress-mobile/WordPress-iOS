@@ -36,6 +36,8 @@ class PrepublishingViewController: UITableViewController {
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
+    private var didTapPublish = false
+
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
@@ -167,6 +169,7 @@ class PrepublishingViewController: UITableViewController {
 
         visbilitySelectorViewController.completion = { [weak self] option in
             self?.reloadData()
+            self?.updatePublishButtonLabel()
 
             WPAnalytics.track(.editorPostVisibilityChanged, properties: Constants.analyticsDefaultProperty)
 
@@ -242,6 +245,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     @objc func publish(_ sender: UIButton) {
+        didTapPublish = true
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
             self.completion(self.post)
@@ -307,5 +311,18 @@ class PrepublishingViewController: UITableViewController {
 extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
     func closeButtonTapped() {
         dismiss(animated: true)
+    }
+}
+
+extension PrepublishingViewController: PrepublishingDismissible {
+    func handleDismiss() {
+        guard
+            !didTapPublish,
+            post.status == .publishPrivate,
+            let originalStatus = post.original?.status else {
+            return
+        }
+
+        post.status = originalStatus
     }
 }

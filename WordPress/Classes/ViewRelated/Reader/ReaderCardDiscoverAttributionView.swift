@@ -115,7 +115,6 @@ private enum ReaderCardDiscoverAttribution: Int {
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
-        WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }
