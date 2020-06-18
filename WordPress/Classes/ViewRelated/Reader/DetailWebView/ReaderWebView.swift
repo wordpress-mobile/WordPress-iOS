@@ -34,7 +34,7 @@ class ReaderWebView: WKWebView {
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
-        <link rel="stylesheet" type="text/css" href="https://wordpress.com/calypso/reader-mobile.css">
+        <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
         <style>
         \(cssColors())
         \(cssStyles())
