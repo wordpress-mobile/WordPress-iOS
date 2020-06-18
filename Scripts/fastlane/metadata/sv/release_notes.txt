@@ -1,7 +1,9 @@
-Du har aldrig tidigare varit ett bättre läge att hantera din webbplats med hjälp av WordPress-appen – använd  medan du väntar i farstun på att en leverans ska komma, i vardagsrummet medan du sitter på föreskrivna två meters avstånd från din respektive, eller på toan när du lyckats ta en paus från barnen i några minuter. Möjligheterna är obegränsade, i synnerhet med tanke på alla nya funktioner som finns i blockredigeraren sedan version 14.8:
+Som vanligt har vi gjort många förbättringar i blockredigeraren. Knappen för att ta bort block ligger nu i en meny som du når genom att trycka på knappen med tre punkter i blockets verktygsfält. Vi har också lagt till stöd för överläggsfärger i omslagsblocket, stöd för radiella gradienter i blocken för knappar och omslag, animering in/ut av det flytande verktygsfältet och en inforuta för knapparna vid val av sidmall. Blockets verktygsfält minieras om blocket är smalare än verktygsfältet.
 
-Det nya knappblocket låter dig lägga till flera knappar i samma rad.
-Cover-blocket innehåller fler uppladdningsfunktioner för att kopiera bilder från din enhet till webbplatsen.
-Om dina bildfiler innehåller bildtexter kommer bildbeskrivningen att automatiskt förifyllas med dessa.
+Vi har rättat mycket för att skapa en renare upplevelse i blockredigeraren.
+Om förbindelse saknas visar uppladning av media meddelandet ”Försök igen” (i stället för att fastna), ångra/gör om fungerar mer tillförlitligt för både block och text, vi har rättat ett problem vid sammanslagning av textblock och knapparnas justering i sidmallar.
 
-Medan vi ändå höll på och arbetade med appen fixade vi några fel också – tomrum runt textblock som kunde försvinna, citatblock där textjusteringen inte fungerade helt, och knappar i sidmallar som inte visades på rätt sätt på webben. Dessutom har vi sett över layouten för inloggningsbekräftelse och registrering så att de fått ett renare utseende som passar bättre överens med resten av appen.
+En ny inställning låter dig välja startsida och inläggssida under webbplatsinställningarna.
+
+Slutligen har vi tagit hand om ett problem med Gravatar där man kunde fastna i fotoredigeringen när man försökte ta en ny bild samt gjort några uppdateringar i läsaren.
+

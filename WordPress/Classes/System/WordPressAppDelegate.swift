@@ -67,6 +67,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        if #available(iOS 13.0, *) {
+            // Overrides the current user interface appearance
+            AppAppearance.overrideAppearance()
+        }
+
+        // Start CrashLogging as soon as possible (in case a crash happens during startup)
+        CrashLogging.start(withDataProvider: crashLoggingProvider)
+
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -233,8 +241,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         addNotificationObservers()
 
         logger = WPLogger()
-
-        CrashLogging.start(withDataProvider: crashLoggingProvider)
 
         configureAppCenterSDK()
         configureAppRatingUtility()
@@ -457,7 +463,9 @@ extension WordPressAppDelegate {
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: url)
+        trackDeepLink(for: url) { url in
+            UniversalLinkRouter.shared.handle(url: url)
+        }
     }
 
     @objc func setupNetworkActivityIndicator() {
@@ -469,6 +477,31 @@ extension WordPressAppDelegate {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
         }
     }
+}
+
+// MARK: - Deep Link Handling
+
+extension WordPressAppDelegate {
+
+    private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
+        guard isIterableDeepLink(url) else {
+            completion(url)
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) {(_, response, error) in
+            if let url = response?.url {
+                completion(url)
+            }
+        }
+        task.resume()
+    }
+
+    private func isIterableDeepLink(_ url: URL) -> Bool {
+        return url.absoluteString.contains(WordPressAppDelegate.iterableDomain)
+    }
+
+    private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
 // MARK: - UIAppearance

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-04-21 08:56:05+0000 */
+/* Translation-Revision-Date: 2020-06-01 20:35:26+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: cs_CZ */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%@, %@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%@, at %@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%@. %d posts.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d roky";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dm";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%li words, %li characters";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "%s Settings";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s block. Empty";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "A description of the project and the works presented.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "A featured image is set. Tap to change it.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "A list of sites on this account.";
@@ -840,12 +852,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Zvýraznit";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Border Radius";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Border Settings";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Rozdělit vlákna komentářů do více stránek.";
 
@@ -861,14 +867,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Zaneprázdněný ";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "Button Link URL";
-
 /* Title for a list of different button styles. */
 "Button Style" = "Styl tlačítek";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "Button color settings are coming soon.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "By %@.";
@@ -1055,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupů...";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Choose Pages";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Choose Posts Page";
+
 /* Label for Publish date picker */
 "Choose a date" = "Choose a date";
 
@@ -1073,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Choose from My Device";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "Choose from device";
 
@@ -1085,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "City, 10100";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "Vymazat všechna nastavení";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Classic Blog";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Clear Device Media Cache";
@@ -1151,9 +1160,6 @@
 "Collect information" = "Sbírat informace";
 
 /* No comment provided by engineer. */
-"Color settings are coming soon." = "Color settings are coming soon.";
-
-/* No comment provided by engineer. */
 "Columns Settings" = "Columns Settings";
 
 /* Menu item label for linking a comic page. */
@@ -1209,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "Dokončeno";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "Completing Signup";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Nastavení";
@@ -1465,6 +1468,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "Create a post or page";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.";
 
@@ -1664,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojení tohoto účtu již nebudou publikované příspěvky automaticky sdíleny %@";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "Discover Sites";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1757,6 +1763,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "Double tap to edit this value";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Double tap to go to color settings";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Double tap to move the block down";
 
@@ -1770,10 +1779,13 @@
 "Double tap to move the block up" = "Double tap to move the block up";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Double tap to redo last change";
+"Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
 
 /* No comment provided by engineer. */
-"Double tap to remove the block" = "Double tap to remove the block";
+"Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
+
+/* No comment provided by engineer. */
+"Double tap to redo last change" = "Double tap to redo last change";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "Double tap to select";
@@ -2187,9 +2199,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Sledovat jiné weby";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "Follow our Blog";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2242,6 +2251,9 @@
 "Free" = "Zdarma";
 
 /* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Free GIF Library";
+
+/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Free Photo Library";
 
 /* Explanatory text for clearing device media cache. */
@@ -2277,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "Get in Touch";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "Get in Touch!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "Get in touch!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Get noticed: comment on posts you've read.";
@@ -2319,6 +2327,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google sign up failed.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "Got it!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Grabbing site URL";
@@ -2449,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Podržet pro moderaci";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Homepage";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Homepage Settings";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
 
@@ -2554,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Vložte média";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Insert mention";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Insert selected";
@@ -2692,20 +2714,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "Příjmení";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "Latest Blog Posts";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "Přehled posledních příspěvků";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Dozvědět se více";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Learn about the marketing and SEO tools in our paid plans.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Více informací";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2721,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "Pomůžeme";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "Let's build something together.";
+"Let's build something together!" = "Let's build something together!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "Let’s Build Something Together";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "Let’s build something together";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "Let’s build something together!";
 
 /* Like (verb)
    Like a post.
@@ -2938,8 +2959,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Hlavní navigace";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2980,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Spravovat weby";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "Manage followed sites and tags";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Spravovat web";
@@ -3094,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Most Popular Time";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Move %s Down";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Move %s Left";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Move %s Right";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Move %s Up";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Move Image Backward";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Move Image Forward";
 
-/* No comment provided by engineer. */
-"Move block down" = "Move block down";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Move block down from row %1$s to row %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Move block left";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Move block left from position %1$s to position %2$s";
 
-/* No comment provided by engineer. */
-"Move block right" = "Move block right";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Move block right from position %1$s to position %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "Move block up";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Move block up from row %1$s to row %2$s";
@@ -3322,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Zatím žádná data";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "No followed sites";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3484,6 +3510,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Now that Jetpack is installed, we just need to get you set up. This will only take a minute.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast.";
+
 /* Register Domain - Address information field Number */
 "Number" = "Číslo";
 
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Jejda!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Open Block Actions Menu";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Otevřít nastavení zařízení";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Please log out before connecting to a different wordpress.com site";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Please try again later.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Zadejte znovu prosím své přihlašovací údaje.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Příspěvky";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Posts Page";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -3981,6 +4019,9 @@ translators: sample content for \"Services\" page template */
 
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Powered by Giphy";
+
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Powered by Tenor";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4061,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Tento proces odstraní veškerá data WordPress.com z tohoto zařízení, a odstranit všechny lokálně uložené koncepty. Neztratíte nic uložili do svého blogu WordPress.com.";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Processing Account";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Project Name";
@@ -4162,11 +4206,6 @@ translators: sample content for \"Services\" page template */
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Ohodnoťte nás na App Store";
-
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "Přečtěte si více";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Číst dál";
@@ -4273,6 +4312,9 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Odstranit";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Remove %s";
+
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Odstranit @%@";
@@ -4306,9 +4348,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Remove annotations";
-
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "Remove block at row %s";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -4392,6 +4431,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "Reset Block";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Reset filter";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Změnit velikost a oříznutí";
 
@@ -4412,6 +4454,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Opakovat";
@@ -4586,11 +4629,15 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Search posts";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Search to find GIFs to add to your Media Library!";
 
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Search to find free photos to add to your Media Library!";
+
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Search users...";
 
 /* Menus search bar placeholder text. */
 "Search..." = "Hledání...";
@@ -4619,6 +4666,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Vybrat stát";
+
+/* No comment provided by engineer. */
+"Select a color" = "Select a color";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Vybrat soubory";
@@ -4804,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "Shows a dialog for changing the Contact Email.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "Shows a menu for changing the Site Icon.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Shows all followers";
 
@@ -4861,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Siri Reset Prompt";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "Site Icon";
 
 /* Title for the Language Picker View */
@@ -4880,6 +4926,9 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    Title for screen that show site title editor */
 "Site Title" = "Název webu";
+
+/* The accessibility label for the followed sites search field */
+"Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Úspěchy webu";
@@ -5047,6 +5096,9 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Domain Address field State */
 "State" = "Země";
 
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Static Homepage";
+
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5081,6 +5133,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategy";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Streamlined navigation";
+
 /* Section title of the default reader items. */
 "Streams" = "Streemy";
 
@@ -5098,9 +5153,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Odesláním ke kontrole...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "Odběratel";
 
 /* No comment provided by engineer. */
 "Success Message" = "Success Message";
@@ -5772,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "Opakovat";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Try a starter layout";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5870,6 +5925,9 @@ translators: sample content for \"Services\" page template */
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Unable to trash posts while offline. Please try again later.";
 
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Unable to update homepage settings";
+
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Unable to update plan prices. There is a problem with the supplied blog.";
 
@@ -5919,6 +5977,10 @@ translators: sample content for \"Services\" page template */
 
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Zrušení sledování";
+
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Unfollow %@";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Zrušení sledování tohoto webu";
@@ -6202,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "Viditelnost";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "Návštěva";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6213,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Navštivte %@ pro více informací";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "Visit %@ in a web view";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Navštivte centrum nápovědy a získejte odpovědi na vaše nejčastější otázky, nebo nás kontaktujte pro další pomoc.";
@@ -6444,6 +6500,9 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Welcome to WordPress";
 
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "Welcome to our new blog";
+
 /* A message title */
 "Welcome to the Reader" = "Vítejte ve čtečce";
 
@@ -6488,6 +6547,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokud komentář obsahuje jakékoliv z těchto slov ve svém obsahu, jméně, URL, e-mailu, nebo IP, bude označen jako spam. Můžete také zadat části slov, takže podmínce \"press\" bude odpovídat \"WordPress\".";
+
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "When you follow sites, you’ll see their content here.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Když provedete změny v editoru, zde uvidíte historii";
@@ -6655,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "V současné době se nahrávání média. Tato akce zruší probíhající nahravání.\n\nJste si jistý?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "Nyní nesledujete žádné weby. Začnete alespoň jeden sledovat?";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.";
@@ -6885,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "v \"aktualizaci\"";
+
+/* Relative time format */
+"just now" = "Právě teď";
 
 /* Later today */
 "later today" = "Dnes později";

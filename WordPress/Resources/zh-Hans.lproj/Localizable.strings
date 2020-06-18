@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-13 12:54:11+0000 */
+/* Translation-Revision-Date: 2020-06-10 12:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: zh_CN */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@，%2$@。";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@（位于 %2$@）";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d篇文章。";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d 年后";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dm";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$l 个字词，%2$l 个字符";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "%s Settings";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 区块。空白";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "对展示的项目和作品的描述。";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "已设置特色图片。轻点以更改该图片。";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "此帐户上的站点列表。";
@@ -840,12 +852,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "粗体";
 
-/* No comment provided by engineer. */
-"Border Radius" = "边框半径";
-
-/* No comment provided by engineer. */
-"Border Settings" = "边框设置";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "将评论线程划分到多个页面。";
 
@@ -861,14 +867,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "忙碌";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "按钮链接 URL";
-
 /* Title for a list of different button styles. */
 "Button Style" = "按钮风格";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "即将提供按钮颜色设置。";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "作者是 %@。";
@@ -1055,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在检查购买内容…";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "选择页面";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "选择文章页面";
+
 /* Label for Publish date picker */
 "Choose a date" = "选择日期";
 
@@ -1073,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "从我的设备中选择";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "选择显示您的近期文章（经典博客）的主页或固定\/静态页面。";
+
 /* No comment provided by engineer. */
 "Choose from device" = "从设备中选择";
 
@@ -1085,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "北京，100000";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "清除所有设置";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "经典博客";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "清除设备媒体缓存";
@@ -1151,9 +1160,6 @@
 "Collect information" = "收集信息";
 
 /* No comment provided by engineer. */
-"Color settings are coming soon." = "即将推出颜色设置。";
-
-/* No comment provided by engineer. */
 "Columns Settings" = "栏目设置";
 
 /* Menu item label for linking a comic page. */
@@ -1209,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "已完成";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "正在完成注册";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "配置";
@@ -1465,6 +1468,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "为您的业务、杂志或个人博客创建新站点；或连接现有的 WordPress 站点。";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "创建文章或页面";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "创建专属于您的自定义控制面板并选择查看哪些报告。重点关注您最关心的数据。";
 
@@ -1664,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "断开与此帐户的连接意味着已发布的文章将无法自动分享至 %@";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "发现站点";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1757,6 +1763,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "轻点两次以编辑此值";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "点击两下以进入颜色设置";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "轻点两次以向下移动区块";
 
@@ -1770,10 +1779,13 @@
 "Double tap to move the block up" = "轻点两次以向上移动区块";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "轻点两次以恢复上次的更改";
+"Double tap to open Action Sheet with available options" = "双击以打开带有可用选项的操作表页";
 
 /* No comment provided by engineer. */
-"Double tap to remove the block" = "轻点两次以删除区块";
+"Double tap to open Bottom Sheet with available options" = "双击以打开带有可用选项的底部表页";
+
+/* No comment provided by engineer. */
+"Double tap to redo last change" = "轻点两次以恢复上次的更改";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "轻点两次以选择";
@@ -2187,9 +2199,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "关注其他站点";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "关注我们的博客";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2242,6 +2251,9 @@
 "Free" = "免费";
 
 /* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "免费 GIF 图库";
+
+/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "免费照片库";
 
 /* Explanatory text for clearing device media cache. */
@@ -2277,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "联系我们";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "联系我们！";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "联系我们！";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "敬请注意：评论您已读过的文章。";
@@ -2319,6 +2327,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 注册失败。";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "知道了！";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "抓取站点 URL";
@@ -2449,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "保持审核状态";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "主页";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "主页设置";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
 
@@ -2554,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒体";
+
+/* No comment provided by engineer. */
+"Insert mention" = "插入提及";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "插入所选内容";
@@ -2692,20 +2714,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "姓氏";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "最新博文";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "了解更多";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "了解付费套餐中的营销和 SEO 工具。";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "了解更多";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2721,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "让我们助您一臂之力";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "让我们共同去创造。";
+"Let's build something together!" = "让我们一起创造精彩！";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "我们一起来讨论 👋 您可以随时通过以下联系信息联系我们，或者使用表单发送消息。";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "让我们共同去创造";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "让我们共同去创造";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "让我们一起创造精彩！";
 
 /* Like (verb)
    Like a post.
@@ -2938,8 +2959,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "主要导航";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2980,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "管理站点";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "管理已关注的站点和标签";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "管理站点";
@@ -3094,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "人气最高的时间";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "向下移动 %s";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "向左移动 %s";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "向右移动 %s";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "向上移动 %s";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "向后移动图片";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "向前移动图片";
 
-/* No comment provided by engineer. */
-"Move block down" = "向下移动区块";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "将区块从第 %1$s 行向下移动到第 %2$s 行";
-
-/* No comment provided by engineer. */
-"Move block left" = "向左移动区块";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "将区块从位置 %1$s 向左移动到位置 %2$s";
 
-/* No comment provided by engineer. */
-"Move block right" = "向右移动区块";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "将区块从位置 %1$s 向右移动到位置 %2$s";
-
-/* No comment provided by engineer. */
-"Move block up" = "向上移动区块";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "将区块从第 %1$s 行向上移动到第 %2$s 行";
@@ -3322,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "尚无数据";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "无关注的站点";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3484,6 +3510,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "安装 Jetpack 后，我们只需进行设置即可。这只需要一分钟时间。";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "现在，我们减少了选项卡数量并优化了其组织结构，还提供了文章发表快捷方式及更多新功能，让您可以快速找到所需功能。";
+
 /* Register Domain - Address information field Number */
 "Number" = "号码";
 
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "糟糕！";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "打开区块操作菜单";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open Device Settings";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "在连接到其他 wordpress.com 站点前请先注销";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "请稍后重试。";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "请重新输入你的登录信息。";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "文章";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "文章页面";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -3981,6 +4019,9 @@ translators: sample content for \"Services\" page template */
 
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "由 Giphy 提供支持";
+
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "由 Tenor 提供支持";
 
 /* Browse premium themes selection title */
 "Premium" = "付费";
@@ -4061,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "继续当前操作会将所有 WordPress.com 数据从此设备中移除，并删除本地保存的所有草稿。您不会丢失已保存在 WordPress.com 博客中的任何内容。";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "正在处理帐户";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "项目名称";
@@ -4162,11 +4206,6 @@ translators: sample content for \"Services\" page template */
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "在 App Store 中给我们评分";
-
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "阅读更多";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "在以下网站上阅读：";
@@ -4273,6 +4312,9 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "移除";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Remove %s";
+
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Remove @%@";
@@ -4306,9 +4348,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "删除注释";
-
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "删除第 %s 行的区块";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
@@ -4392,6 +4431,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "重置区块";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "重置过滤器";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "调整大小和裁剪";
 
@@ -4412,6 +4454,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "重试";
@@ -4586,11 +4629,15 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "搜索文章";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "搜索查找要添加到您的媒体库中的 GIF！";
 
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "搜索查找要添加到您的媒体库中的免费照片！";
+
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Search users...";
 
 /* Menus search bar placeholder text. */
 "Search..." = "搜索...";
@@ -4619,6 +4666,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "选择州\/省\/自治区\/直辖市";
+
+/* No comment provided by engineer. */
+"Select a color" = "选择一种颜色";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "选择媒体。";
@@ -4804,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "显示用于更改联系人电子邮件的对话框。";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "显示用于更改站点图标的菜单。";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "显示所有粉丝";
 
@@ -4861,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "清除 Siri 快捷键建议";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "站点图标";
 
 /* Title for the Language Picker View */
@@ -4880,6 +4926,9 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    Title for screen that show site title editor */
 "Site Title" = "站点标题";
+
+/* The accessibility label for the followed sites search field */
+"Site URL" = "站点地址";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "站点成就";
@@ -5047,6 +5096,9 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Domain Address field State */
 "State" = "州\/省\/自治区\/直辖市";
 
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Static Homepage";
+
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5081,6 +5133,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "战略";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "简化的导航";
+
 /* Section title of the default reader items. */
 "Streams" = "流";
 
@@ -5098,9 +5153,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "正在提交以供审核…";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "订阅";
 
 /* No comment provided by engineer. */
 "Success Message" = "成功消息";
@@ -5772,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "重试";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "试用初学者布局";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5870,6 +5925,9 @@ translators: sample content for \"Services\" page template */
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "离线时无法将文章放入回收站。请稍后重试。";
 
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Unable to update homepage settings";
+
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "无法更新套餐价格。提供的博客存在问题。";
 
@@ -5919,6 +5977,10 @@ translators: sample content for \"Services\" page template */
 
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "取消关注";
+
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "取消关注 %@";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "取消关注站点";
@@ -6202,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "可见性";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "访问";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6213,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "访问 %@ 以了解更多信息";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "在网页视图中访问“%@”";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "访问帮助中心了解常见问题的答案，或联系我们获取更多帮助。";
@@ -6444,6 +6500,9 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "欢迎来到 WordPress";
 
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "欢迎访问我们的新博客";
+
 /* A message title */
 "Welcome to the Reader" = "欢迎使用阅读器";
 
@@ -6488,6 +6547,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "如果评论的内容、名称、URL、电子邮件或 IP 中包含其中任意字词，则会被标为垃圾内容。您可以输入单词的一部分，例如“press”将与“WordPress”匹配。";
+
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "当您关注站点时，您将在此处看到它们的内容。";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "当您在编辑器中进行更改时，您可在此处查看历史记录";
@@ -6655,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "您目前正在上传媒体。此操作将会取消上传进程。\n\n确定吗？";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "您尚未关注任何站点。现在要关注站点吗？";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "通常情况下，您可以随时使用刚刚用过的免密登录链接登录。但如果您愿意，也可以设置密码。";
@@ -6885,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "在“升级”中";
+
+/* Relative time format */
+"just now" = "just now";
 
 /* Later today */
 "later today" = "稍后再说";

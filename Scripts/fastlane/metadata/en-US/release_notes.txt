@@ -1,7 +1,9 @@
-There’s never been a better time to use the WordPress app to manage your website — use it while hovering in the doorway of your house waiting for a curb-side delivery, in your living room while sitting six feet away from your roommate, or in the bathroom where you go to get a five minute break from your kids. The possibilities are endless, especially since v14.8 packs more features into the Block editor:
+As usual, there are lots of improvements in the block editor. Trash icon you use to remove blocks is now in a menu reachable by tapping the ellipsis button in the block toolbar. We also added support for overlay colors in the Cover block, support for radial gradients in Button and Cover blocks, enter/exit animation in the Floating Toolbar, and a tooltip for page template selection buttons. And now the block toolbar collapses if the block is narrower than the toolbar.
 
-With the new Buttons block, you can add multiple buttons in the same row.
-The Cover block includes more uploading options for getting pictures from your device to your site.
-If your image files have captions, the Image block will automatically pre-fill them for you.
+We also made lots of fixes, for a cleaner block editor experience.
+Media upload will display a “retry” message when there’s no connection (instead of freezing), undo/redo work more reliably for both blocks and text, we corrected a merging issue with text blocks, and we corrected the button alignment in page templates.
 
-While we were poking around, we fixed a few bugs — whitespace around Text blocks getting removed, Quote blocks that didn’t align properly, and buttons in page templates not displaying correctly on the web. And we gave the screens you see post-login and signup some polish so they look cleaner and feel more consistent within the app.
+We've added a new setting that allows you to change your homepage and posts page from site settings.
+
+Finally, we dealt with a Gravatar issue that got you stuck in the photo editing screen when you tried to take a new photo, and made some UI updates in the Reader.
+

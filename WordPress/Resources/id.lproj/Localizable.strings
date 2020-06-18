@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-13 10:54:10+0000 */
+/* Translation-Revision-Date: 2020-06-10 18:54:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: id */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@, di %2$@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d pos.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d tahun";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dm";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kata, %2$li karakter";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "Pengaturan %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Kosong";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "Deskripsi proyek dan pekerjaan yang ditampilkan.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "Gambar yang ditampilkan sudah siap. Ketuk untuk mengubahnya.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Daftar situs di akun ini.";
@@ -840,12 +852,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Tebal";
 
-/* No comment provided by engineer. */
-"Border Radius" = "Radius Batas";
-
-/* No comment provided by engineer. */
-"Border Settings" = "Pengaturan Border";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Pisahkan utas komentar menjadi beberapa halaman.";
 
@@ -861,14 +867,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Sibuk";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "URL Tautan Tombol";
-
 /* Title for a list of different button styles. */
 "Button Style" = "Gaya Tombol";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "Pengaturan warna tombol akan segera hadir.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Oleh %@.";
@@ -1055,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Memeriksa pembelian...";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Pilih Halaman";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Pilih Halaman Pos";
+
 /* Label for Publish date picker */
 "Choose a date" = "Pilih tanggal";
 
@@ -1073,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Pilih dari Perangkat Saya";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Pilih dari halaman beranda yang menampilkan pos terbaru Anda (blog klasik) atau halaman tetap\/statis.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "Pilih dari perangkat";
 
@@ -1085,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "Kota, 10100";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "Hapus Semua Pengaturan";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Blog Klasik";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Hapus Cache Media Perangkat";
@@ -1151,9 +1160,6 @@
 "Collect information" = "Kumpulkan informasi";
 
 /* No comment provided by engineer. */
-"Color settings are coming soon." = "Pengaturan warna akan segera hadir.";
-
-/* No comment provided by engineer. */
 "Columns Settings" = "Pengaturan Kolom";
 
 /* Menu item label for linking a comic page. */
@@ -1209,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "Selesai";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "Menyelesaikan Pendaftaran";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Konfigurasikan";
@@ -1465,6 +1468,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Buat situs baru untuk bisnis, majalah, atau blog personal Anda; atau hubungkan akun WordPress yang sudah ada.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "Buat pos atau halaman";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling Anda pedulikan.";
 
@@ -1664,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Memutuskan akun ini berarti pos yang diterbitkan tidak akan lagi otomatis dibagikan ke %@";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "Temukan Situs";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1757,6 +1763,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "Ketuk dua kali untuk menyunting nilai ini";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Ketuk dua kali untuk membuka pengaturan warna";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Ketuk dua kali untuk memindahkan blok ke bawah";
 
@@ -1770,10 +1779,13 @@
 "Double tap to move the block up" = "Ketuk dua kali untuk memindahkan blok ke atas";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
+"Double tap to open Action Sheet with available options" = "Ketuk dua kali untuk membuka Lembar Tindakan dengan opsi yang tersedia";
 
 /* No comment provided by engineer. */
-"Double tap to remove the block" = "Ketuk dua kali untuk menghapus blok";
+"Double tap to open Bottom Sheet with available options" = "Ketuk dua kali untuk membuka Lembar Bawah dengan opsi yang tersedia";
+
+/* No comment provided by engineer. */
+"Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "Ketuk dua kali untuk memilih";
@@ -2187,9 +2199,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Ikuti situs lain";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "Ikuti Blog kami";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2242,6 +2251,9 @@
 "Free" = "Gratis";
 
 /* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Pustaka GIF Gratis";
+
+/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Pustaka Foto Gratis";
 
 /* Explanatory text for clearing device media cache. */
@@ -2277,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "Hubungi Kami";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "Hubungi Kami!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "Hubungi kami!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dapatkan perhatian: komentari pos yang sudah Anda baca.";
@@ -2319,6 +2327,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Pendaftaran Google gagal.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "Berhasil!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Mendapatkan URL situs";
@@ -2449,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Tahan untuk Moderasi";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Beranda";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Pengaturan Beranda";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
 
@@ -2554,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Sisipkan media";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Sertakan penyebutan";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Penyisipan dipilih";
@@ -2692,20 +2714,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "Nama Belakang";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "Pos Blog Terbaru";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "Ringkasan Pos Terbaru";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Pelajari Lebih Lanjut";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Pelajari alat pemasaran dan SEO di paket berbayar kami.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Pelajari lebih lanjut";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2721,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "Mari Kami Bantu";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "Ayo buat sesuatu bersama.";
+"Let's build something together!" = "Ayo buat sesuatu bersama!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "Ayo bicara 👋 Jangan ragu untuk menghubungi kami melalui informasi kontak di bawah ini, atau kirimkan pesan menggunakan formulir.";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "Ayo Buat Sesuatu Bersama";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "Ayo buat sesuatu bersama";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "Ayo buat sesuatu bersama!";
 
 /* Like (verb)
    Like a post.
@@ -2938,8 +2959,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigasi Utama";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2980,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Kelola Situs";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "Kelola situs dan tag yang diikuti";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Kelola situs";
@@ -3094,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Waktu yang Paling Disukai";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Pindahkan %s ke Bawah";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Pindahkan %s ke Kiri";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Pindahkan %s ke Kanan";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Pindahkan %s ke Atas";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "Pindahkan Gambar ke Belakang";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Pindahkan Gambar ke Depan";
 
-/* No comment provided by engineer. */
-"Move block down" = "Turunkan blok";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Pindahkan balok ke bawah dari baris %1$s ke baris %2$s";
-
-/* No comment provided by engineer. */
-"Move block left" = "Geser blok ke kiri";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Geser blok ke kiri dari posisi %1$s ke posisi %2$s\"";
 
-/* No comment provided by engineer. */
-"Move block right" = "Geser blok ke kanan";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Geser blok ke kanan dari posisi %1$s ke posisi %2$s\"";
-
-/* No comment provided by engineer. */
-"Move block up" = "Naikkan blok";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Pindahkan balok ke atas dari baris %1$s ke baris %2$s";
@@ -3322,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Belum ada data";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "Tidak ada situs yang diikuti";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3484,6 +3510,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Sekarang Jetpack telah terinstal, kami hanya perlu Anda menyiapkannya. Ini hanya memerlukan waktu satu menit.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Karena sekarang tab tertata lebih baik, pintasan pos, dan lain-lain semakin sedikit, Anda kini dapat menemukan apa yang Anda cari dengan lebih cepat.";
+
 /* Register Domain - Address information field Number */
 "Number" = "Nomor";
 
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Maaf!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Buka Menu Tindakan Blokir";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Buka Pengaturan Perangkat";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Harap logout sebelum menyambungkan ke situs wordpress.com lain";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Silakan coba lagi nanti.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Silakan coba masukkan rincian login Anda kembali.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Tulisan-tulisan";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Halaman Pos";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -3981,6 +4019,9 @@ translators: sample content for \"Services\" page template */
 
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Didukung oleh Giphy";
+
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Didukung oleh Tenor";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4061,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Melanjutkan tindakan ini akan menghapus semua data WordPress.com dari perangkat ini, dan menghapus semua draf yang disimpan secara lokal. Anda tidak akan kehilangan apa pun yang sudah disimpan di blog WordPress.com.";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Memproses Akun";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Nama Proyek";
@@ -4162,11 +4206,6 @@ translators: sample content for \"Services\" page template */
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Beri nilai kami di App Store";
-
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "Baca Selengkapnya";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Baca di";
@@ -4273,6 +4312,9 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Singkirkan";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Hapus %s";
+
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Hapus @%@";
@@ -4306,9 +4348,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Hilangkan anotasi";
-
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "Hilangkan blok di baris %s";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hapus dari wawasan";
@@ -4392,6 +4431,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "Reset Blok";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Atur ulang penyaring";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ubah Ukuran & Potong";
 
@@ -4412,6 +4454,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Coba Lagi";
@@ -4586,11 +4629,15 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Cari pos";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
 
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
+
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Cari pengguna...";
 
 /* Menus search bar placeholder text. */
 "Search..." = "Pencarian...";
@@ -4619,6 +4666,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Pilih Provinsi";
+
+/* No comment provided by engineer. */
+"Select a color" = "Pilih warna";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Pilih media.";
@@ -4804,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "Menampilkan dialog untuk mengubah Email Kontak.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "Menampilkan menu untuk mengubah Ikon Situs.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Menampilkan semua pengikut";
 
@@ -4861,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Kosongkan Saran Pintasan Siri";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "Ikon Situs";
 
 /* Title for the Language Picker View */
@@ -4880,6 +4926,9 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    Title for screen that show site title editor */
 "Site Title" = "Judul Situs";
+
+/* The accessibility label for the followed sites search field */
+"Site URL" = "URL Situs";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Prestasi situs";
@@ -5047,6 +5096,9 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Domain Address field State */
 "State" = "Status";
 
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Beranda Statis";
+
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5081,6 +5133,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategi";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Navigasi yang disederhanakan";
+
 /* Section title of the default reader items. */
 "Streams" = "Stream";
 
@@ -5098,9 +5153,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Mengirim untuk Ditinjau...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "Berlangganan";
 
 /* No comment provided by engineer. */
 "Success Message" = "Pesan Berhasil";
@@ -5772,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "Coba Lagi";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Coba tampilan pengantar";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5870,6 +5925,9 @@ translators: sample content for \"Services\" page template */
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Tidak dapat membuang pos saat offline. Silakan coba lagi nanti.";
 
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Tidak dapat memperbarui pengaturan beranda";
+
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Tidak dapat memperbarui harga paket. Terdapat masalah dengan blog yang diberikan.";
 
@@ -5919,6 +5977,10 @@ translators: sample content for \"Services\" page template */
 
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Batal Mengikuti";
+
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Batal Mengikuti %@";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Batal Ikuti Situs";
@@ -6202,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "Penampakan";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "Kunjungi";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6213,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Kunjungi %@ untuk informasi selengkapnya";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "Kunjungi %@ dalam tampilan web";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Kunjungi Pusat Bantuan untuk mendapatkan jawaban atas pertanyaan umum, atau hubungi kami untuk mendapatkan bantuan lebih lanjut.";
@@ -6444,6 +6500,9 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Selamat Datang di WordPress";
 
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "Selamat datang di blog baru kami";
+
 /* A message title */
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
@@ -6488,6 +6547,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Ketika sebuah komentar memuat kata-kata ini di dalam konten, nama, URL, email, atau IP-nya, maka akan ditandai sebagai spam. Anda dapat memasukkan kata parsial, sehingga \"press\" akan cocok dengan \"WordPress\".";
+
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "Saat Anda mengikuti situs, Anda akan melihat kontennya di sini.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Saat Anda membuat perubahan di penyunting, Anda dapat melihat riwayatnya di sini";
@@ -6655,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Saat ini Anda sedang mengunggah media. Tindakan ini dapat membatalkan proses unggahan yang sedang berlangsung.\n\nApakah Anda yakin?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "Sekarang Anda tidak sedang mengikuti situs mana pun. Mengapa tidak mengikuti salah satu situs sekarang?";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Anda dapat login dengan tautan tanpa kata sandi kapan saja seperti yang Anda lakukan sebelumnya, tetapi Anda juga dapat menyiapkan kata sandi jika ingin.";
@@ -6885,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "di \"Upgrade\"";
+
+/* Relative time format */
+"just now" = "baru saja";
 
 /* Later today */
 "later today" = "belakangan hari ini";

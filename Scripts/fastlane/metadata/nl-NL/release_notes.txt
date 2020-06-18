@@ -1,7 +1,9 @@
-Er is nooit een beter moment geweest om de WordPress-app te gebruiken om je website te beheren. Gebruik deze terwijl je bij de voordeur wacht tot je bestelling aan de stoep wordt geleverd, in je huiskamer terwijl je op anderhalve meter afstand van je huisgenoot blijft of in de badkamer waar je vijf minuten pauze van je kinderen neemt. De mogelijkheden zijn eindeloos, vooral omdat v14.8 nu nog meer functies bevat voor de blokeditor:
+Er zijn, zoals gewoonlijk, verbeteringen aan de blokeditor aangebracht. Het prullenbakpictogram dat je gebruikt om blokken te verwijderen, staat nu in een menu dat geopend kan worden door op de drie puntjes in de blokwerkbalk te tikken. We hebben ook ondersteuning voor overlay-kleuren in het Omslagblok, ondersteuning voor radiale gradiënten in het Knop- en Omslagblok, het starten/afsluiten van animatie in de zwevende werkbalk en een tooltip voor selectieknoppen van paginasjablonen toegevoegd. De blokwerkbalk wordt nu ook ingeklapt als het blok smaller is dan de werkbalk.
 
-Met het nieuwe Knoppenblok kun je meerdere knoppen aan dezelfde rij toevoegen.
-Het Omslagblok bevat meer uploadopties om afbeeldingen vanaf je apparaat op je site te zetten.
-Als je afbeeldingsbestanden ondertitels bevatten, vult het Afbeeldingenblok ze automatisch voor je in.
+We hebben ook een groot aantal fixes doorgevoerd, voor een meer opgeruimde blokeditor-ervaring.
+Bij een media-upload wordt een melding 'opnieuw proberen' weergegeven wanneer er geen verbinding is (in plaats van dat de upload vastloopt), ongedaan maken/opnieuw uitvoeren werkt nu betrouwbaarder voor zowel blokken als tekst, we hebben een samenvoegprobleem met tekstblokken verholpen en de knopuitlijning in paginasjablonen gecorrigeerd.
 
-Terwijl we het een en ander aan het bekijken waren, hebben we een paar bugs verwijderd; lege ruimten rondom Tekstblokken werden verwijderd, Citaatblokken waren niet goed uitgelijnd en knoppen in paginasjablonen werden niet op de juiste manier weergegeven online. En we hebben de schermen die je ziet nadat je bent ingelogd en je hebt aangemeld vernieuwd, zodat ze er strakker uitzien en consistenter zijn met de rest van de app.
+We hebben een nieuwe instelling toegevoegd waarmee je je homepage en berichtpagina vanuit de site-instellingen kunt wijzigen.
+
+Tot slot hebben we een Gravatar-probleem opgelost waarmee je vastliep in het fotobewerkingsscherm als je probeerde een nieuwe foto te maken, en we hebben een aantal UI-updates doorgevoerd in de Reader.
+

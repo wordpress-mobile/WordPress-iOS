@@ -1,7 +1,9 @@
-Nunca ha habido un mejor momento para usar la aplicación de WordPress para gestionar tu web: úsala mientras estás por la puerta de tu casa esperando una entrega, en tu salón mientras estás sentado a dos metros de tu compañero de habitación o en el cuarto de baño donde vas a tener un descanso de cinco minutos de tus hijos. Las posibilidades son infinitas, sobre todo porque la versión 14.8 contiene más características en el editor de bloques:
+Como siempre, hay muchas mejoras en el editor de bloques. El icono de la papelera que usas para eliminar bloques, ahora está en un menú al que se accede tocando el botón de la elipse en la barra de herramientas de bloques. También hemos añadido compatibilidad para colores superpuestos en el bloque de cubierta, compatibilidad para gradientes radiales en los bloques de botón y cubierta, animación de entrada/salida en la barra de herramientas flotante y una información emergente para los botones de selección de la plantilla de página. Y la barra de herramientas del bloque, ahora se cierra si el bloque es más estrecho que la barra de herramientas.
 
-Con el nuevo bloque de botones, puedes añadir varios botones en la misma fila.
-El bloque cubierta incluye más opciones de subida para llevar las fotos de tu dispositivo a tu sitio.
-Si tus archivos de imagen tienen leyendas, el bloque imagen los rellenará automáticamente por ti.
+También hemos hecho muchas correcciones para una experiencia de edición de bloques más limpia.
+La carga de medios mostrará un mensaje para «reintentar» cuando no haya conexión (en lugar de congelarse), deshacer/rehacer el trabajo de forma más fiable, tanto para los bloques como para el texto, hemos corregido un problema de fusión con los bloques de texto y hemos corregido la alineación de los botones en las plantillas de página.
 
-Mientras estábamos hurgando, hemos corregido algunos fallos: se han eliminado los espacios en blanco en los bloques de texto, los bloques de citas que no se alineaban correctamente y los botones de las plantillas de páginas que no se mostraban correctamente en la web. Y hemos pulido las pantallas que se ven después del acceso y las del registro para que se vean más limpias y más consistentes dentro de la aplicación.
+Hemos añadido un nuevo ajuste que te permite cambiar tu página de inicio y la página de entradas desde los ajustes del sitio.
+
+Por último, nos hemos ocupado de un problema de Gravatar que te dejaba atascado en la pantalla de edición de fotos cuando intentabas hacer una nueva foto y hemos hecho algunas actualizaciones de la interfaz de usuario en el lector.
+

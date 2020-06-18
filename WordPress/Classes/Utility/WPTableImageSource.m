@@ -2,6 +2,7 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 @import WordPressUI;
 @import WordPressShared;

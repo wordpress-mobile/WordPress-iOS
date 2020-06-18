@@ -85,7 +85,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    @IBOutlet fileprivate weak var attributionViewContainer: UIView!
+    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
     private let textView: WPRichContentView = {
         let textView = WPRichContentView(frame: .zero, textContainer: nil)
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -857,6 +858,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func configureDiscoverAttribution() {
+        attributionView.displayAsLink = true
+        attributionViewContainer.addSubview(attributionView)
+        attributionViewContainer.pinSubviewToAllEdges(attributionView)
+        attributionView.translatesAutoresizingMaskIntoConstraints = false
+
         if post?.sourceAttributionStyle() == SourceAttributionStyle.none {
             attributionView.isHidden = true
         } else {

@@ -1,7 +1,9 @@
-Web sitenizi yönetmek için WordPress uygulamasını kullanmanın daha iyi bir zamanı olamazdı - evinizin kapısında, boş bir taraf teslimatı beklerken, oturma odanızda, oda arkadaşınızdan altı metre uzakta otururken veya çocuklarınıza beş dakikalık bir mola vermek için gideceğiniz banyo. Olasılıklar sonsuzdur, özellikle v14.8, blok düzenleyiciye daha fazla özellik eklediğinden:
+Her zamanki gibi, blok düzenleyicide bir sürü iyileştirme var. Blokları kaldırmak için kullandığınız çöp kutusu simgesi artık, blok araç çubuğundaki üç nokta düğmesine dokunarak ulaşabileceğiniz bir menüde. Ayrıca Kapak blokundaki katman renkleri için destek, Düğme ve Kapak bloklarındaki dairesel gradyanlar için destek, Kayan Araç Çubuğunda giriş/çıkış animasyonu ve sayfa şablonu seçim düğmeleri için araç ipucu ekledik. Ve artık blok, blok araç çubuğundan daha dar olduğunda araç çubuğu daralıyor.
 
-Yeni düğmeler bloğu ile aynı satıra birden fazla düğme ekleyebilirsiniz.
-Kapak bloğu, cihazınızdan sitenize resim çekmek için daha fazla yükleme seçeneği içerir.
-Resim dosyalarınızda altyazı varsa, görüntü bloğu sizin için otomatik olarak önceden doldurur.
+Daha toplu bir blok düzenleyici deneyimi için pek çok düzeltme de yaptık.
+Medya karşıya yüklerken bağlantı olmadığında donmak yerine bir “yeniden deneme” mesajı görüntülenecek, hem bloklar hem de metin için geri al / yinele daha güvenilir bir biçimde çalışacak, metin bloklarıyla ilgili bir birleştirme sorununu düzelttik ve sayfa şablonlarındaki düğme hizalamasını düzelttik.
 
-Etrafta dolaşırken birkaç hatayı düzelttik - Metin bloklarının kaldırıldığı boşluk, düzgün hizalanmayan alıntı blokları ve sayfa şablonlarındaki düğmeler web'de düzgün görüntülenmiyor. Ve giriş sonrası gördüğünüz ekranları verdik ve bazı lehçe kaydettik, böylece daha temiz görünüyorlar ve uygulama içinde daha tutarlı hissediyorlar.
+Site ayarlarından ana sayfanızı ve gönderiler sayfanızı değiştirmenize imkan veren yeni bir ayar ekledik.
+
+Son olarak, yeni bir fotoğraf çekmeye çalıştığınızda fotoğraf düzenleme ekranında sıkışmanıza neden olan bir Gravatar sorununu düzelttik ve Reader’da bazı kullanıcı arayüzü güncellemeleri yaptık.
+

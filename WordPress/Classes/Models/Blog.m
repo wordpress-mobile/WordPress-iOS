@@ -507,6 +507,8 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
+        case BlogFeatureHomepageSettings:
+            return [self supportsRestApi] && [self isAdmin];
     }
 }
 
@@ -795,6 +797,22 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
         optionValue = currentOption[@"value"];
     }];
     return optionValue;
+}
+
+- (void)setValue:(id)value forOption:(NSString *)name
+{
+    [self.managedObjectContext performBlockAndWait:^{
+        if ( self.options == nil || (self.options.count == 0) ) {
+            return;
+        }
+
+        NSMutableDictionary *mutableOptions = [self.options mutableCopy];
+
+        NSDictionary *valueDict = @{ @"value": value };
+        mutableOptions[name] = valueDict;
+
+        self.options = [NSDictionary dictionaryWithDictionary:mutableOptions];
+    }];
 }
 
 @end

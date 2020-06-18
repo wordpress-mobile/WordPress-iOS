@@ -170,12 +170,17 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         markWelcomeNotificationAsSeenIfNeeded()
 
+        if userDefaults.notificationsTabAccessCount < Constants.inlineTabAccessCount {
+            userDefaults.notificationsTabAccessCount += 1
+        }
+
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             self.showInlinePrompt()
         }
+        showNotificationPrimerAlertIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1280,7 +1285,9 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull else {
+        guard inlinePromptView.alpha != WPAlphaFull,
+            userDefaults.notificationPrimerAlertWasDisplayed,
+            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
             return
         }
 
@@ -1622,5 +1629,60 @@ private extension NotificationsViewController {
 
     enum InlinePrompt {
         static let section = "notifications"
+    }
+}
+
+// MARK: - Push Notifications Permission Alert
+extension NotificationsViewController: UIViewControllerTransitioningDelegate {
+
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard let fancyAlertController = presented as? FancyAlertViewController else {
+            return nil
+        }
+        return FancyAlertPresentationController(presentedViewController: fancyAlertController, presenting: presenting)
+    }
+
+    private func showNotificationPrimerAlertIfNeeded() {
+
+        guard !userDefaults.notificationPrimerAlertWasDisplayed else {
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.displayAlertDelay) {
+                self.showNotificationPrimerAlert()
+        }
+    }
+
+    private func showNotificationPrimerAlert() {
+
+        let mainContext = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: mainContext)
+
+        guard accountService.defaultWordPressComAccount() != nil else {
+            return
+        }
+        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
+            guard enabled == .notDetermined else {
+                return
+            }
+
+            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
+
+            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
+                InteractiveNotificationsManager.shared.requestAuthorization {
+                    DispatchQueue.main.async {
+                        controller.dismiss(animated: true)
+                    }
+                }
+            }
+            alert.modalPresentationStyle = .custom
+            alert.transitioningDelegate = self
+            self?.tabBarController?.present(alert, animated: true)
+        }
+    }
+
+    private enum Constants {
+        static let inlineTabAccessCount = 6
+        static let displayAlertDelay = 0.2
     }
 }

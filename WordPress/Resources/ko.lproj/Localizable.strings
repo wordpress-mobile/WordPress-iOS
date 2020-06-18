@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-05-07 04:41:49+0000 */
+/* Translation-Revision-Date: 2020-06-10 08:54:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ko_KR */
@@ -102,9 +102,6 @@
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
 
-/* Accessibility label for the site header. The first variable is the blog name, the second is the domain. */
-"%@, at %@" = "%1$@, %2$@";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d개의 글이 있습니다.";
 
@@ -157,6 +154,15 @@
 /* Age between dates over one year. */
 "%d years" = "%d 년";
 
+/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
+"%dd" = "%dd";
+
+/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
+"%dh" = "%dh";
+
+/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
+"%dm" = "%dm";
+
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$d픽셀";
 
@@ -180,6 +186,9 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 단어, %2$li 글자";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s Settings" = "%s Settings";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 블록. 비어 있음";
@@ -260,6 +269,9 @@
 
 /* translators: sample content for \"Portfolio\" page template */
 "A description of the project and the works presented." = "프로젝트와 작품에 대한 설명이 표시됩니다.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "A featured image is set. Tap to change it.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "이 계정의 사이트 목록";
@@ -840,12 +852,6 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "굵게";
 
-/* No comment provided by engineer. */
-"Border Radius" = "경계선 반경";
-
-/* No comment provided by engineer. */
-"Border Settings" = "경계선 설정";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "댓글 스레드를 여러 페이지로 나눕니다.";
 
@@ -861,14 +867,8 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "사용 중";
 
-/* No comment provided by engineer. */
-"Button Link URL" = "버튼 링크 URL";
-
 /* Title for a list of different button styles. */
 "Button Style" = "버튼 스타일";
-
-/* No comment provided by engineer. */
-"Button color settings are coming soon." = "조만간 버튼 색상 설정을 이용할 수 있습니다.";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "%@ 작성.";
@@ -1055,6 +1055,12 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "구매 확인 중…";
 
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Choose Pages";
+
+/* Title for selecting a new home page */
+"Choose Posts Page" = "Choose Posts Page";
+
 /* Label for Publish date picker */
 "Choose a date" = "날짜 선택";
 
@@ -1073,6 +1079,9 @@
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "내 기기에서 선택";
 
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page.";
+
 /* No comment provided by engineer. */
 "Choose from device" = "기기에서 선택";
 
@@ -1085,8 +1094,8 @@
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "City, 10100";
 
-/* No comment provided by engineer. */
-"Clear All Settings" = "모든 설정 지우기";
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Classic Blog";
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "기기 미디어 캐시 지우기";
@@ -1151,9 +1160,6 @@
 "Collect information" = "정보 수집";
 
 /* No comment provided by engineer. */
-"Color settings are coming soon." = "머잖아 색 설정을 이용하실 수 있습니다.";
-
-/* No comment provided by engineer. */
 "Columns Settings" = "열 설정";
 
 /* Menu item label for linking a comic page. */
@@ -1209,9 +1215,6 @@
 
 /* The action is completed */
 "Completed" = "완료";
-
-/* Shown while the app waits for the site creation process to complete. */
-"Completing Signup" = "가입 완료 중";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "환경설정";
@@ -1465,6 +1468,9 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "비즈니스, 잡지 또는 개인 블로그를 위한 새 사이트를 만들거나 기존 워드프레스 사이트에 연결하세요.";
 
+/* The tooltip title for the Floating Create Button */
+"Create a post or page" = "글 또는 페이지 만들기";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
 
@@ -1664,7 +1670,7 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "이 계정을 연결 해제한다는 것은 발행된 글이 더 이상 %@(으)로 자동 공유되지 않는다는 의미입니다.";
 
-/* Button title. Tapping takes the user to the Discover sites list. */
+/* Title for button on the no followed sites result screen */
 "Discover Sites" = "디스커버 사이트";
 
 /* Label for selecting the Blog Discussion Settings section
@@ -1757,6 +1763,9 @@
 /* translators: accessibility text */
 "Double tap to edit this value" = "이 값을 편집하려면 두 번 탭하세요.";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "두 번 탭하여 색상 설정으로 가기";
+
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "블록을 아래로 이동하려면 두 번 탭하세요.";
 
@@ -1770,10 +1779,13 @@
 "Double tap to move the block up" = "블록을 위로 이동하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
-"Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
+"Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
 
 /* No comment provided by engineer. */
-"Double tap to remove the block" = "블록을 제거하려면 두 번 탭하세요.";
+"Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
+
+/* No comment provided by engineer. */
+"Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
 "Double tap to select" = "선택하려면 두 번 탭하세요.";
@@ -2113,7 +2125,7 @@
 "Feature flags" = "기능 플래그";
 
 /* Header of section in Plugin Directory showing featured plugins */
-"Featured" = "특성";
+"Featured" = "대표";
 
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
@@ -2187,9 +2199,6 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "다른 사이트 팔로우";
 
-/* translators: sample content for \"Blog\" page template */
-"Follow our Blog" = "이 블로그 팔로우하기";
-
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
@@ -2242,6 +2251,9 @@
 "Free" = "무료";
 
 /* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "무료 GIF 라이브러리";
+
+/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "무료 사진 라이브러리";
 
 /* Explanatory text for clearing device media cache. */
@@ -2277,14 +2289,10 @@
 
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Contact\" page template
-translators: sample content for \"Services\" page template */
+translators: sample content for \"Portfolio\" page template
+translators: sample content for \"Services\" page template
+translators: sample content for \"Team\" page template */
 "Get in Touch" = "문의하기";
-
-/* translators: sample content for \"Team\" page template */
-"Get in Touch!" = "연락주세요!";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Get in touch!" = "연락주세요!";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "알림: 읽은 글에 댓글이 추가됐습니다.";
@@ -2319,6 +2327,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 가입에 실패했습니다.";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "알겠습니다!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "사이트 URL 확보";
@@ -2449,6 +2460,14 @@ translators: sample content for \"Services\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "중재를 위해 보관";
 
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen */
+"Homepage" = "Homepage";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Homepage Settings";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "만세!\n조금만 기다려 주세요";
 
@@ -2554,6 +2573,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "미디어 삽입";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Insert mention";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "선택한 미디어 삽입";
@@ -2692,20 +2714,21 @@ translators: sample content for \"Services\" page template */
    User's Last Name */
 "Last Name" = "성";
 
-/* translators: sample content for \"Blog\" page template */
-"Latest Blog Posts" = "최신 블로그 글";
-
 /* Insights latest post summary header */
 "Latest Post Summary" = "최신 글 요약";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Accessibility label for the Learn More button on Reader's News Card
+   Button providing More information in the News Card
+   Learn more
+   Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "더 알아보기";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "유료 요금제의 마케팅 및 SEO 도구에 대해 알아보세요.";
 
 /* A button title.
-   Link to cookie policy */
+   Link to cookie policy
+   Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "더 알아보기";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2721,16 +2744,14 @@ translators: sample content for \"Services\" page template */
 "Let Us Help" = "지원";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together." = "함께 만들어 보세요.";
+"Let's build something together!" = "함께 만들어 보세요!";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "상담하기. 👋 아래의 연락처 정보로 문의하거나 양식을 사용하여 메시지를 보내세요.";
 
-/* translators: sample content for \"Services\" page template */
-"Let’s Build Something Together" = "함께 만들어 보세요.";
-
-/* translators: sample content for \"About\" page template */
-"Let’s build something together" = "함께 만들어 보세요.";
+/* translators: sample content for \"About\" page template
+translators: sample content for \"Services\" page template */
+"Let’s build something together!" = "함께 만들어 보세요!";
 
 /* Like (verb)
    Like a post.
@@ -2938,8 +2959,10 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
 
-/* Button leading to a screen where users can manage their installed plugins
+/* Accessibility label for the settings button in the reader.
+   Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
+   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -2957,6 +2980,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "사이트 관리";
+
+/* Accessibility hint for the settings button in the reader. */
+"Manage followed sites and tags" = "다음 사이트와 태그 관리하기";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "사이트 관리";
@@ -3094,32 +3120,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "가장 인기 있는 시간";
 
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Down" = "Move %s Down";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Left" = "Move %s Left";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Right" = "Move %s Right";
+
+/* translators: %s: block title e.g: \"Paragraph\" */
+"Move %s Up" = "Move %s Up";
+
 /* No comment provided by engineer. */
 "Move Image Backward" = "이미지를 뒤로 이동";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "이미지를 앞으로 이동";
 
-/* No comment provided by engineer. */
-"Move block down" = "블록을 아래로 이동";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "블록을 아래로(%1$s 행에서 %2$s 행으로) 이동";
-
-/* No comment provided by engineer. */
-"Move block left" = "블록 왼쪽으로 움직이기";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "%1$s 위치에서 %2$s 위치로 블록을 왼쪽으로 움직입니다";
 
-/* No comment provided by engineer. */
-"Move block right" = "블록을 오른쪽으로 움직이기";
-
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "%1$s 위치에서 %2$s 위치로 블록을 오른쪽으로 움직입니다";
-
-/* No comment provided by engineer. */
-"Move block up" = "블록을 위로 이동";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "블록을 위로(%1$s 행에서 %2$s 행으로) 이동";
@@ -3322,7 +3348,7 @@ translators: sample content for \"Services\" page template */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "아직 데이터 없음";
 
-/* Title of a message explaining that the user is not currently following any blogs in their reader. */
+/* Title for the no followed sites result screen */
 "No followed sites" = "팔로우된 사이트 없음";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
@@ -3484,6 +3510,9 @@ translators: sample content for \"Services\" page template */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "젯팩 설치되었으므로 설정해야 합니다. 이 작업은 1분 정도 소요됩니다.";
 
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "이제 더 적고 더 관리하기 좋은 탭, 글 작성 바로가기, 등이 있어서, 필요한 것을 더 빨리 찾을 수 있습니다.";
+
 /* Register Domain - Address information field Number */
 "Number" = "번호";
 
@@ -3554,6 +3583,9 @@ translators: sample content for \"Services\" page template */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "이런!";
+
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Open Block Actions Menu";
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "장치 설정 열기";
@@ -3823,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "다른 워드프레스닷컴 사이트에 접속하기 전에 로그아웃하세요.";
 
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "나중에 다시 시도하세요.";
+
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "로그인 정보를 다시 입력 해 주세요.";
 
@@ -3965,6 +4000,9 @@ translators: sample content for \"Services\" page template */
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "글";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Posts Page";
+
 /* Add New Stats Card category title
    Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
@@ -3981,6 +4019,9 @@ translators: sample content for \"Services\" page template */
 
 /* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
 "Powered by Giphy" = "Giphy 제공";
+
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "테너가 제공합니다";
 
 /* Browse premium themes selection title */
 "Premium" = "프리미엄";
@@ -4061,6 +4102,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "계속하면 이 장치에서 모든 워드프레스닷컴 데이터가 제거되고 로컬로 저장된 임시글이 삭제됩니다. 워드프레스닷컴 블로그에 이미 저장된 내용은 손실되지 않습니다.";
+
+/* Shown while the app waits for the account process to complete. */
+"Processing Account" = "Processing Account";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "프로젝트 이름";
@@ -4162,11 +4206,6 @@ translators: sample content for \"Services\" page template */
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
-
-/* Accessibility label for the Read More button on Reader's News Card
-   Button providing More information in the News Card
-   Read more */
-"Read More" = "더 읽기";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "사이트 계속 읽기:";
@@ -4273,6 +4312,9 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "제거";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Remove %s" = "Remove %s";
+
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "@%@ 제거";
@@ -4306,9 +4348,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "주석 제거";
-
-/* translators: accessibility text. %s: current block position (number). */
-"Remove block at row %s" = "%s 행에서 블록 제거";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -4392,6 +4431,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Reset Block" = "블록 리셋";
 
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "필터 재설정하기";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "크기 조정 및 자르기";
 
@@ -4412,6 +4454,7 @@ translators: sample content for \"Services\" page template */
    Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "재실행";
@@ -4586,11 +4629,15 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "글 검색";
 
-/* Title for placeholder in Giphy picker */
+/* Title for placeholder in Giphy picker
+   Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "GIF를 검색하여 미디어 라이브러리에 추가하세요!";
 
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "무료 사진을 검색하여 미디어 라이브러리에 추가하세요!";
+
+/* Placeholder message when showing mentions search field */
+"Search users..." = "Search users...";
 
 /* Menus search bar placeholder text. */
 "Search..." = "검색...";
@@ -4619,6 +4666,9 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "주 선택";
+
+/* No comment provided by engineer. */
+"Select a color" = "색상 선택하기";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "미디어를 선택합니다.";
@@ -4804,9 +4854,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint describing what happens if the Contact Email button is tapped. */
 "Shows a dialog for changing the Contact Email." = "연락처 이메일을 변경하기 위한 대화 상자를 표시합니다.";
 
-/* Accessibility hint describing what happens if the Site Icon is tapped. */
-"Shows a menu for changing the Site Icon." = "사이트 아이콘을 변경하기 위한 메뉴를 표시합니다.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "팔로워를 모두 표시합니다.";
 
@@ -4861,8 +4908,7 @@ translators: sample content for \"Services\" page template */
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Siri 단축키 제안 지우기";
 
-/* Accessibility label for site icon button
-   Site Icon accessibility label. */
+/* Accessibility label for site icon button */
 "Site Icon" = "사이트 아이콘";
 
 /* Title for the Language Picker View */
@@ -4880,6 +4926,9 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    Title for screen that show site title editor */
 "Site Title" = "사이트 제목";
+
+/* The accessibility label for the followed sites search field */
+"Site URL" = "사이트 URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "사이트 작성 글";
@@ -5047,6 +5096,9 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Domain Address field State */
 "State" = "주";
 
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Static Homepage";
+
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
@@ -5081,6 +5133,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "전략";
 
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "간소화된 탐색";
+
 /* Section title of the default reader items. */
 "Streams" = "스트림";
 
@@ -5098,9 +5153,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "검토를 위해 제출 중...";
-
-/* translators: sample content for \"Blog\" page template */
-"Subscribe" = "구독";
 
 /* No comment provided by engineer. */
 "Success Message" = "성공 메시지";
@@ -5772,6 +5824,9 @@ translators: sample content for \"Services\" page template */
    Try Again. Action */
 "Try Again" = "재시도";
 
+/* No comment provided by engineer. */
+"Try a starter layout" = "Try a starter layout";
+
 /* Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -5870,6 +5925,9 @@ translators: sample content for \"Services\" page template */
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "오프라인 상태에서 글을 휴지통으로 이동할 수 없음 나중에 다시 시도하세요.";
 
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Unable to update homepage settings";
+
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "요금제 가격을 업데이트할 수 없습니다. 제공된 블로그에 문제가 있습니다.";
 
@@ -5919,6 +5977,10 @@ translators: sample content for \"Services\" page template */
 
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "팔로우 취소";
+
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "%@(을)를 팔로우 취소하기";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "사이트의 팔로우 취소";
@@ -6202,10 +6264,7 @@ translators: sample content for \"Services\" page template */
    Visibility label */
 "Visibility" = "가시성";
 
-/* An option to visit the site to which a specific post belongs
-   Verb. Button title.  Tap to visit a website.
-   Verb. Button title. Accessibility label in Reader
-   Visit */
+/* An option to visit the site to which a specific post belongs */
 "Visit" = "방문";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -6213,9 +6272,6 @@ translators: sample content for \"Services\" page template */
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "자세한 내용은 %@ 방문";
-
-/* A call to action to visit the specified blog via a web view. Accessibility hint in Reader */
-"Visit %@ in a web view" = "웹 보기에서 %@ 방문";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "도움말 센터에서 일반적인 질문에 대한 답변을 얻거나 문의하기를 통해 추가 지원을 받으세요.";
@@ -6444,6 +6500,9 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "워드프레스에 오신 것을 환영합니다";
 
+/* translators: sample content for \"Blog\" page template */
+"Welcome to our new blog" = "새로운 블로그에 오신 것을 환영합니다";
+
 /* A message title */
 "Welcome to the Reader" = "리더에 오신 것을 환영합니다.";
 
@@ -6488,6 +6547,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Discussion Blacklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "댓글의 내용이나 이름, URL, 이메일, IP에 아래 단어가 들어있으면 스팸으로 처리됩니다. 단어의 일부만 입력해도 됩니다. \"프레스\"라고 입력하면 \"워드프레스\"로 인식될 수 있습니다.";
+
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "When you follow sites, you’ll see their content here.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "편집기에서 수정한 사항은 여기서 기록을 볼 수 있습니다.";
@@ -6655,9 +6717,6 @@ translators: sample content for \"Services\" page template */
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "현재 미디어를 업로드 중입니다. 이 작업으로 진행 중인 업로드가 취소됩니다.\n\n계속하시겠습니까?";
-
-/* A suggestion to the user that they try following a site in their reader. */
-"You are not following any sites yet. Why not follow one now?" = "아직 팔로우하는 사이트가 없습니다. 지금 팔로우해 보세요!";
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "회원님이 방금 사용한 것과 같은 매직 링크로 항상 로그인할 수 있지만, 원하는 경우 비밀번호를 설정할 수도 있습니다.";
@@ -6885,6 +6944,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "\"업그레이드\"에서";
+
+/* Relative time format */
+"just now" = "just now";
 
 /* Later today */
 "later today" = "오늘 중";
