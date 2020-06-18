@@ -25,11 +25,11 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '6122de7ea7e59cff6f027fbb75d58b4785c64a12'
+    pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '6122de7ea7e59cff6f027fbb75d58b4785c64a12'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.2'
+    # pod 'WordPress-Editor-iOS', '~> 1.19.2'
 end
 
 def wordpress_ui
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4'
+    gutenberg :commit => '25d3b6015c7b6819af8efc7180995081a4e835c6'
 
     ## Third party libraries
     ## =====================
