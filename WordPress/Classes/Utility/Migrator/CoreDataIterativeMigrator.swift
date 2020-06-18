@@ -30,7 +30,7 @@ class CoreDataIterativeMigrator: NSObject {
 
         // Get the persistent store's metadata.  The metadata is used to
         // get information about the store's managed object model.
-        // If metadataForPersistentStore throws an error that error is propigated, not replaced by the throw
+        // If metadataForPersistentStore throws an error that error is propagated, not replaced by the throw
         // in the guard's else clause.  If metadataForPersistentStore returns nil then an error is thrown.
         guard let sourceMetadata = try metadataForPersistentStore(storeType: storeType, at: sourceStore) else {
             throw error(with: .failedRetrievingMetadata, description: "The source metadata was nil.")
@@ -252,7 +252,8 @@ private extension CoreDataIterativeMigrator {
 
     static func metadataForPersistentStore(storeType: String, at url: URL) throws -> [String: Any]? {
         do {
-            return try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: storeType, at: url, options: nil)
+            let metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: storeType, at: url, options: nil)
+            return metadata
         } catch {
             let originalDescription: String = (error as NSError).userInfo[NSLocalizedDescriptionKey] as? String ?? ""
             let description = "Failed to find source metadata for store: \(url). Original Description: \(originalDescription)"
