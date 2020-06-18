@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '62e708758c76a1d02fbc5036ee76c9d30eed9666'
+    gutenberg :commit => '031a963546be4a41125082ede53a470696aa96e9'
 
     ## Third party libraries
     ## =====================
@@ -163,6 +163,7 @@ target 'WordPress' do
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
+    pod 'AMScrollingNavbar', '5.6.0'
 
     ## Automattic libraries
     ## ====================
