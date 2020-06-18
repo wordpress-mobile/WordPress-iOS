@@ -39,5 +39,4 @@ jobs:
 
       - name: Danger
         run: |
-          yarn run danger ci \
-            --dangerfile Automattic/danger-settings/wordpress/ios.ts
+          yarn run danger ci
