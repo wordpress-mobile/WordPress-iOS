@@ -231,10 +231,6 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     private func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
-        // Make sure gutenberg is loaded before seding events to it.
-        guard gutenberg.isLoaded else {
-            return
-        }
         let mediaUploadID = media.gutenbergUploadID
         switch state {
         case .processing:

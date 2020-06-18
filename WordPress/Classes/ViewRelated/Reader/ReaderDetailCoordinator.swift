@@ -3,7 +3,7 @@ import Foundation
 class ReaderDetailCoordinator {
 
     /// Key for restoring the VC post
-    static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
+    static let restorablePostObjectURLKey: String = "RestorablePostObjectURLKey"
 
     /// A post to be displayed
     var post: ReaderPost? {
@@ -411,7 +411,7 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 extension ReaderDetailCoordinator {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                       coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObject(forKey: restorablePostObjectURLhKey) as? String else {
+        guard let path = coder.decodeObject(forKey: restorablePostObjectURLKey) as? String else {
             return nil
         }
 
@@ -431,7 +431,7 @@ extension ReaderDetailCoordinator {
 
     func encodeRestorableState(with coder: NSCoder) {
         if let post = post {
-            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
+            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLKey)
         }
     }
 }

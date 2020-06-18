@@ -5,6 +5,7 @@ import UIKit
 class ReaderWebView: WKWebView {
 
     /// HTML elements that will load only after the text has appeared
+    /// From: https://www.w3schools.com/tags/att_src.asp
     private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
     /// Make the webview transparent

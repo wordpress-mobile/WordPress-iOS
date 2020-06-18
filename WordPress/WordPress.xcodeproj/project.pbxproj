@@ -4672,6 +4672,7 @@
 		E684383D221F535900752258 /* LoadMoreCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCounter.swift; sourceTree = "<group>"; };
 		E684383F221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListExcessiveLoadMoreTests.swift; sourceTree = "<group>"; };
 		E68580F51E0D91470090EE63 /* WPHorizontalRuleAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPHorizontalRuleAttachment.swift; sourceTree = "<group>"; };
+		E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 97.xcdatamodel"; sourceTree = "<group>"; };
 		E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Helper.swift"; sourceTree = "<group>"; };
 		E699E530210BB719008ED8A7 /* WordPress 77.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 77.xcdatamodel"; sourceTree = "<group>"; };
 		E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+ReadableMargins.h"; sourceTree = "<group>"; };
@@ -11685,13 +11686,13 @@
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/content-functions.js",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/editor-style-overrides.css",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/inject-css.js",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/insert-block.js",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/local-storage-overrides.json",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/prevent-autosaves.js",
-				"${PODS_ROOT}/Gutenberg/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/content-functions.js",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/inject-css.js",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/insert-block.js",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
+				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
@@ -16856,6 +16857,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */,
 				3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */,
 				F1BBA95E243BEFC500E9E5E6 /* WordPress 95.xcdatamodel */,
 				32282CF82390B614003378A7 /* WordPress 94.xcdatamodel */,
@@ -16953,7 +16955,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */;
+			currentVersion = E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

@@ -5,6 +5,10 @@ import CoreData
 ///
 class CoreDataIterativeMigrator: NSObject {
 
+    private static func error(with code: IterativeMigratorErrorCodes, description: String) -> NSError {
+        return NSError(domain: "IterativeMigrator", code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: description])
+    }
+
     /// Migrates a store to a particular model using the list of models to do it iteratively, if required.
     ///
     /// - Parameters:
@@ -26,8 +30,10 @@ class CoreDataIterativeMigrator: NSObject {
 
         // Get the persistent store's metadata.  The metadata is used to
         // get information about the store's managed object model.
+        // If metadataForPersistentStore throws an error that error is propagated, not replaced by the throw
+        // in the guard's else clause.  If metadataForPersistentStore returns nil then an error is thrown.
         guard let sourceMetadata = try metadataForPersistentStore(storeType: storeType, at: sourceStore) else {
-            throw MigrationError.migrationFailed
+            throw error(with: .failedRetrievingMetadata, description: "The source metadata was nil.")
         }
 
         // Check whether the final model is already compatible with the store.
@@ -75,6 +81,15 @@ class CoreDataIterativeMigrator: NSObject {
             modelsToMigrate = modelsToMigrate.reversed()
         }
 
+        // Nested function for retrieving a model's version name.
+        // Used to give more context to errors.
+        func versionNameForModel(model: NSManagedObjectModel) -> String {
+            guard let index = objectModels.firstIndex(of: model) else {
+                return "Unknown"
+            }
+            return modelNames[index]
+        }
+
         // Migrate between each model. Count - 2 because of zero-based index and we want
         // to stop at the last pair (you can't migrate the last model to nothingness).
         let upperBound = modelsToMigrate.count - 2
@@ -82,17 +97,37 @@ class CoreDataIterativeMigrator: NSObject {
             let modelFrom = modelsToMigrate[index]
             let modelTo = modelsToMigrate[index + 1]
 
+            let migrateWithModel: NSMappingModel
             // Check whether a custom mapping model exists.
-            guard let migrateWithModel = NSMappingModel(from: nil, forSourceModel: modelFrom, destinationModel: modelTo) ??
-                (try? NSMappingModel.inferredMappingModel(forSourceModel: modelFrom, destinationModel: modelTo)) else {
-                    throw MigrationError.migrationFailed
+            if let customModel = NSMappingModel(from: nil, forSourceModel: modelFrom, destinationModel: modelTo) {
+                migrateWithModel = customModel
+            } else {
+                // No custom model, so use an inferred model.
+                do {
+                    let inferredModel = try NSMappingModel.inferredMappingModel(forSourceModel: modelFrom, destinationModel: modelTo)
+                    migrateWithModel = inferredModel
+                } catch {
+                    let versionFrom = versionNameForModel(model: modelFrom)
+                    let versionTo = versionNameForModel(model: modelTo)
+                    var description = "Mapping model could not be inferred, and no custom mapping model found."
+                    description = description + "Version From \(versionFrom), To \(versionTo)."
+                    description = description + " Original Error: \(error)"
+                    throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.failedOnCustomMappingModel, description: description)
+                }
+
             }
 
             // Migrate the model to the next step
             DDLogWarn("⚠️ Attempting migration from \(modelNames[index]) to \(modelNames[index + 1])")
 
-            guard migrateStore(at: sourceStore, storeType: storeType, fromModel: modelFrom, toModel: modelTo, with: migrateWithModel) == true else {
-                throw MigrationError.migrationFailed
+            do {
+                try migrateStore(at: sourceStore, storeType: storeType, fromModel: modelFrom, toModel: modelTo, with: migrateWithModel)
+            } catch {
+                let versionFrom = versionNameForModel(model: modelFrom)
+                let versionTo = versionNameForModel(model: modelTo)
+                var description = "Failed migrating store from version \(versionFrom) to version \(versionTo)."
+                description = description + " Original Error: \(error)"
+                throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.failedMigratingStore, description: description)
             }
         }
     }
@@ -188,7 +223,7 @@ private extension CoreDataIterativeMigrator {
                              storeType: String,
                              fromModel: NSManagedObjectModel,
                              toModel: NSManagedObjectModel,
-                             with mappingModel: NSMappingModel) -> Bool {
+                             with mappingModel: NSMappingModel) throws {
         let tempDestinationURL = createTemporaryFolder(at: url)
 
         // Migrate from the source model to the target model using the mapping,
@@ -203,7 +238,7 @@ private extension CoreDataIterativeMigrator {
                                       destinationType: storeType,
                                       destinationOptions: nil)
         } catch {
-            return false
+            throw error
         }
 
         do {
@@ -211,27 +246,26 @@ private extension CoreDataIterativeMigrator {
             try copyMigratedOverOriginal(from: tempDestinationURL, to: url)
             try deleteBackupCopies(at: backupURL)
         } catch {
-            return false
+            throw error
         }
-
-        return true
     }
 
     static func metadataForPersistentStore(storeType: String, at url: URL) throws -> [String: Any]? {
-
-        guard let sourceMetadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: storeType, at: url, options: nil) else {
-            let description = "Failed to find source metadata for store: \(url)"
-            throw NSError(domain: "IterativeMigrator", code: 102, userInfo: [NSLocalizedDescriptionKey: description])
+        do {
+            let metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: storeType, at: url, options: nil)
+            return metadata
+        } catch {
+            let originalDescription: String = (error as NSError).userInfo[NSLocalizedDescriptionKey] as? String ?? ""
+            let description = "Failed to find source metadata for store: \(url). Original Description: \(originalDescription)"
+            throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.noMetadataForStore, description: description)
         }
-
-        return sourceMetadata
     }
 
     static func model(for metadata: [String: Any]) throws -> NSManagedObjectModel? {
         let bundle = Bundle(for: ContextManager.self)
         guard let sourceModel = NSManagedObjectModel.mergedModel(from: [bundle], forStoreMetadata: metadata) else {
             let description = "Failed to find source model for metadata: \(metadata)"
-            throw NSError(domain: "IterativeMigrator", code: 100, userInfo: [NSLocalizedDescriptionKey: description])
+            throw error(with: .noSourceModelForMetadata, description: description)
         }
 
         return sourceModel
@@ -242,7 +276,7 @@ private extension CoreDataIterativeMigrator {
             guard let url = urlForModel(name: name, in: nil),
                 let model = NSManagedObjectModel(contentsOf: url) else {
                     let description = "No model found for \(name)"
-                    throw NSError(domain: "IterativeMigrator", code: 110, userInfo: [NSLocalizedDescriptionKey: description])
+                    throw error(with: .noModelFound, description: description)
             }
 
             return model
@@ -271,6 +305,12 @@ private extension CoreDataIterativeMigrator {
     }
 }
 
-enum MigrationError: Error {
-    case migrationFailed
+enum IterativeMigratorErrorCodes: Int {
+    case noSourceModelForMetadata = 100
+    case noMetadataForStore = 102
+    case noModelFound = 110
+
+    case failedRetrievingMetadata = 120
+    case failedOnCustomMappingModel = 130
+    case failedMigratingStore = 140
 }
