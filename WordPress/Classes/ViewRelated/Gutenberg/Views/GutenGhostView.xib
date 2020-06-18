@@ -11,7 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GutenGhostView" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="inserterView" destination="Eqp-4y-Hel" id="MEb-tR-oCx"/>
-                <outlet property="toolbarBacgroundView" destination="eg8-Yp-3Ni" id="ect-AR-6lu"/>
+                <outlet property="toolbarBackgroundView" destination="eg8-Yp-3Ni" id="5ua-1N-tAL"/>
                 <outlet property="toolbarTopBorderView" destination="Mdc-HJ-BN8" id="okS-yz-jtZ"/>
                 <outletCollection property="buttonsViews" destination="Eqp-4y-Hel" collectionClass="NSMutableArray" id="R42-Zo-VDm"/>
                 <outletCollection property="buttonsViews" destination="bQO-Lm-zZX" collectionClass="NSMutableArray" id="mol-hX-eDs"/>

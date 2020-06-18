@@ -53,10 +53,10 @@ class GutenGhostView: UIView {
         }
     }
 
-    @IBOutlet weak var toolbarBacgroundView: UIView! {
+    @IBOutlet weak var toolbarBackgroundView: UIView! {
         didSet {
-            toolbarBacgroundView.isGhostableDisabled = true
-            toolbarBacgroundView.backgroundColor = .ghostToolbarBackground
+            toolbarBackgroundView.isGhostableDisabled = true
+            toolbarBackgroundView.backgroundColor = .ghostToolbarBackground
         }
     }
 
