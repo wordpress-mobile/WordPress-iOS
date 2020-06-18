@@ -290,22 +290,6 @@ import WordPressShared
         isSyncing = false
     }
 
-
-    /// Presents the detail view controller for the specified post on the specified
-    /// blog. This is a convenience method for use with Notifications (for example).
-    ///
-    /// - Parameters:
-    ///     - postID: The ID of the post on the specified blog.
-    ///     - blogID: The ID of the blog.
-    ///
-    @objc func openPost(_ postID: NSNumber, onBlog blogID: NSNumber) {
-        showDetailViewController(viewControllerForPost(postID, siteID: blogID), sender: self)
-    }
-
-    fileprivate func viewControllerForPost(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
-        return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-    }
-
     /// Presents the post list for the specified topic.
     ///
     /// - Parameters:

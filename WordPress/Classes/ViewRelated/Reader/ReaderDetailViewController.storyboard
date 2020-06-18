@@ -11,7 +11,7 @@
         <!--Reader Detail Webview View Controller-->
         <scene sceneID="gjG-xz-jMc">
             <objects>
-                <viewController storyboardIdentifier="ReaderDetailWebviewViewController" id="Ene-ma-Cpi" customClass="ReaderDetailWebviewViewController" customModule="WordPress" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReaderDetailWebviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ene-ma-Cpi" customClass="ReaderDetailWebviewViewController" customModule="WordPress" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HkO-UB-8qv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
