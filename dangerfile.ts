@@ -11,6 +11,8 @@ if headRepoName != baseRepoName {
   console.log("\033[1;31mRunning from a forked repo. Danger won't be able to post comments on the main repo unless GitHub Actions are enabled on the fork, too.\033[0m")
   // I wonder if this sytax works too for colored output and/or reporting?
   console.log("##[warning]Running from a forked repo. Danger won't be able to post comments on the main repo unless GitHub Actions are enabled on the fork, too.\033[0m")
+  // If I use error, will the build fail?
+  console.log("##[error]Running from a forked repo. Danger won't be able to post comments on the main repo unless GitHub Actions are enabled on the fork, too.\033[0m")
 }
 
 // I'm not expecting this comment to be posted because the forked repo where
