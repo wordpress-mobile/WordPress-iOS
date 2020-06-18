@@ -1,4 +1,5 @@
 import UIKit
+import AMScrollingNavbar
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
@@ -10,7 +11,7 @@ protocol ReaderDetailView: class {
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Content scroll view
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: ReaderScrollView!
 
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
@@ -45,6 +46,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
+    /// If we're following the scrollview to hide/show nav and toolbar
+    private var isFollowingScrollView = false
+
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
@@ -60,6 +64,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         coordinator?.start()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        followScrollView()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        stopFollowingScrollView()
     }
 
     func render(_ post: ReaderPost) {
@@ -193,7 +209,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// Add content and scroll insets based on the toolbar height
     ///
     private func configureScrollView() {
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin + Constants.toolbarHeight, right: 0)
+        scrollView.navigationBar = navigationController?.navigationBar
+        scrollView.delegate = self
     }
 
     /// Configure the NoResultsViewController
@@ -206,6 +224,37 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
         coordinator?.share(fromView: sender)
+    }
+
+    /// Start following the scroll view to hide nav bar and toolbar
+    /// Only if VoiceOver is not active
+    ///
+    private func followScrollView() {
+        if isFollowingScrollView,
+            UIAccessibility.isVoiceOverRunning {
+            return
+        }
+
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.followScrollView(scrollView, delay: Constants.delay, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
+            navigationController.shouldUpdateContentInset = false
+            isFollowingScrollView = true
+        }
+    }
+
+    /// Stop following the scroll view to hide nav bar and toolbar
+    ///
+    private func stopFollowingScrollView() {
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.stopFollowingScrollView(showingNavbar: true)
+            isFollowingScrollView = false
+        }
+    }
+
+    /// Update scroll view insets to take into account if toolbar is visible or not
+    private func updateScrollInsets(toolbarVisible: Bool) {
+        let bottomInset: CGFloat = toolbarVisible ? Constants.toolbarHeight : 0
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
     }
 
     /// A View Controller that displays a Post content.
@@ -262,6 +311,8 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
         static let bottomMargin: CGFloat = 16
+        static let toolbarHeight: CGFloat = 50
+        static let delay: Double = 50
     }
 }
 
@@ -351,5 +402,34 @@ private extension ReaderDetailWebviewViewController {
 extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
+    }
+}
+
+// MARK: - Scroll View Delegate
+
+extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
+    // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
+            guard let navigationController = self.navigationController as? ScrollingNavigationController,
+                navigationController.state != .expanded else {
+                    return
+            }
+
+            stopFollowingScrollView()
+            updateScrollInsets(toolbarVisible: true)
+        } else {
+            followScrollView()
+            updateScrollInsets(toolbarVisible: false)
+        }
+    }
+
+    /// Show the nav bar when scrolling to top
+    ///
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.showNavbar(animated: true, scrollToTop: true)
+        }
+        return true
     }
 }
