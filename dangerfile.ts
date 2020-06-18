@@ -8,7 +8,7 @@ if headRepoName != baseRepoName {
   // - Add link to the docs
   // - Maybe there's a way to see if commenting is possible? Maybe this type of
   //   error could be printed only if the comment API returns a 403?
-  console.log("⚠️ Running from a forked repo. Danger won't be able to post comments on the main repo unless GitHub Actions are enabled on the fork, too.")
+  console.log("\033[1;31m⚠️ Running from a forked repo. Danger won't be able to post comments on the main repo unless GitHub Actions are enabled on the fork, too.\033[0m")
 }
 
 // I'm not expecting this comment to be posted because the forked repo where
