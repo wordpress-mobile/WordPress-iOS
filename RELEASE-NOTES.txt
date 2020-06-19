@@ -1,6 +1,7 @@
 15.2
 ----
 * [**] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
 
 -----
  
