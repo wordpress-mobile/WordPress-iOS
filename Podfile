@@ -76,7 +76,7 @@ def shared_with_extension_pods
 end
 
 def gutenberg(options)
-    options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    options[:git] = 'http://github.com/antonis/gutenberg-mobile/'
     local_gutenberg = ENV['LOCAL_GUTENBERG']
     if local_gutenberg
       options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4'
+    gutenberg :commit => '7e00608bf17155890be332f4cf5b20348516f47c'
 
     ## Third party libraries
     ## =====================
