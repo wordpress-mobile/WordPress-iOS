@@ -76,6 +76,25 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(viewMock.didCallShowErrorWithWebAction).to(beTrue())
     }
 
+    /// When an error happens, call the callback
+    ///
+    func testCallCallbackWhenAnErrorHappens() {
+        var didCallPostLoadFailureBlock = false
+        let serviceMock = ReaderPostServiceMock()
+        serviceMock.forceError = true
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postURL = URL(string: "https://wordpress.com/")
+        coordinator.postLoadFailureBlock = {
+            didCallPostLoadFailureBlock = true
+        }
+
+        coordinator.start()
+
+        expect(didCallPostLoadFailureBlock).to(beTrue())
+        expect(coordinator.postLoadFailureBlock).to(beNil())
+    }
+
     /// Inform the view to show post title after it is fetched
     ///
     func testShowTitleAfterPostIsFetched() {

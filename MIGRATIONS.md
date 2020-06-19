@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 97
+
+@aerych 2020-06-17
+
+- All stats entities were reviewed for consistency of Optional settings for strings and dates and default values for scalar numerical fields.
+- Categories entity updated to make numeric fields scalar and non-optional.
 
 ## WordPress 94
 
