@@ -211,11 +211,7 @@ class ReaderCoordinator: NSObject {
     }
 
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
-        let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
-                                                                                   siteID: feedID as NSNumber,
-                                                                                   isFeed: isFeed)
-
-        detailViewController.postLoadFailureBlock = { [weak self, failureBlock] in
+        let postLoadFailureBlock = { [weak self, failureBlock] in
             if FeatureFlag.newReaderNavigation.enabled {
                 self?.readerNavigationController.popToRootViewController(animated: false)
             } else {
@@ -223,6 +219,24 @@ class ReaderCoordinator: NSObject {
             }
             failureBlock?()
         }
+
+        var detailViewController: UIViewController
+        if FeatureFlag.readerWebview.enabled {
+            let readerDetailViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID as NSNumber,
+                                                                                       siteID: feedID as NSNumber,
+                                                                                       isFeed: isFeed)
+
+            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
+            detailViewController = readerDetailViewController
+        } else {
+            let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
+                                                                                       siteID: feedID as NSNumber,
+                                                                                       isFeed: isFeed)
+
+            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
+            detailViewController = readerDetailViewController
+        }
+
         guard !FeatureFlag.newReaderNavigation.enabled else {
             WPTabBarController.sharedInstance().navigateToReader(detailViewController)
             return
