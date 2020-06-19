@@ -129,7 +129,7 @@ class ReaderWebView: WKWebView {
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
         UIColor(light: .muriel(color: .gray, .shade40),
-            dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString()
+                dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString()
         return """
             :root {
               --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
