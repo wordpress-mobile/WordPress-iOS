@@ -9,11 +9,13 @@ struct ReaderCSS {
 
     private let twoDays: Int = 60 * 60 * 24 * 2
 
+    private let updatedKey = "ReaderCSSLastUpdated"
+
     /// Returns the Reader CSS appending a timestamp
     /// We force it to update every 2 days
     ///
     var address: String {
-        guard let lastUpdated = store.object(forKey: "ReaderCSSLastUpdated") as? Int else {
+        guard let lastUpdated = store.object(forKey: updatedKey) as? Int else {
             saveCurrentDate()
             return url(appendingTimestamp: now)
         }
@@ -32,7 +34,7 @@ struct ReaderCSS {
     }
 
     private func saveCurrentDate() {
-        store.set(now, forKey: "ReaderCSSLastUpdated")
+        store.set(now, forKey: updatedKey)
     }
 
     private func url(appendingTimestamp appending: Int) -> String {
