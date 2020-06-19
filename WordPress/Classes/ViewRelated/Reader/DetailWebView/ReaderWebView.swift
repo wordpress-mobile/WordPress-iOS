@@ -4,6 +4,10 @@ import UIKit
 ///
 class ReaderWebView: WKWebView {
 
+    /// HTML elements that will load only after the text has appeared
+    /// From: https://www.w3schools.com/tags/att_src.asp
+    private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -19,23 +23,54 @@ class ReaderWebView: WKWebView {
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
-        <link rel="stylesheet" type="text/css"
-              href="https://wordpress.com/calypso/fallback/async-load-blocks-reader-full-post.feb2901cfbd98579fa81.min.css">
+        <link rel="stylesheet" type="text/css" href="https://wordpress.com/calypso/reader-mobile.css">
         <style>
         \(cssColors())
         \(cssStyles())
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
-        \(string)
+        \(addPlaceholder(string))
+        </body>
         <script>
-            window.onload = () => {
-                document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
-            }
+            document.addEventListener('DOMContentLoaded', function(event) {
+                // Remove autoplay to avoid media autoplaying
+                document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
+            })
         </script>
-        </body></html>
+        </html>
         """
 
         return super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
+    }
+
+    /// Tell the webview to load all media
+    /// You want to use this method only after the webview has appearead (after a didFinish, for example)
+    func loadMedia() {
+        evaluateJavaScript("""
+            var elements = ["\(elements.joined(separator: "\",\""))"]
+
+            elements.forEach((element) => {
+                document.querySelectorAll(`${element}-placeholder`).forEach((el) => {
+                    var regex = new RegExp(`${element}-placeholder`, "g")
+                    el.outerHTML = el.outerHTML.replace(regex, element)
+                })
+            })
+
+            // Make all images tappable
+            document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+        """, completionHandler: nil)
+    }
+
+    /// Change all occurences of elements to change it's HTML tag to "element-placeholder"
+    /// Ie.: img -> img-placeholder
+    /// This will make the text to appear fast, so the user can start reading
+    ///
+    private func addPlaceholder(_ htmlContent: String) -> String {
+        var content = htmlContent
+
+        elements.forEach { content = content.replacingMatches(of: "<\($0)", with: "<\($0)-placeholder") }
+
+        return content
     }
 
     /// Returns the content of reader.css

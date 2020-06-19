@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'ed4a9634460d6fada4d886c85e3f36a73333ec33'
+    gutenberg :commit => '8d408243508eb17da6aba08fcb45dcc795770072'
 
     ## Third party libraries
     ## =====================
@@ -163,6 +163,7 @@ target 'WordPress' do
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
+    pod 'AMScrollingNavbar', '5.6.0'
 
     ## Automattic libraries
     ## ====================
@@ -185,7 +186,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.18.0'
+    pod 'WordPressAuthenticator', '~> 1.19.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
