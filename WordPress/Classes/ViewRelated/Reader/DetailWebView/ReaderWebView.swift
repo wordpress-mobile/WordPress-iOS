@@ -68,6 +68,14 @@ class ReaderWebView: WKWebView {
 
             // Make all images tappable
             document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+
+            // Only display images after they have fully loaded, to have a native feel
+            document.querySelectorAll('img').forEach((el) => {
+                var img = new Image();
+                img.addEventListener('load', () => { el.style.opacity = "1" }, false);
+                img.src = el.currentSrc;
+                el.src = img.src;
+            })
         """, completionHandler: nil)
     }
 

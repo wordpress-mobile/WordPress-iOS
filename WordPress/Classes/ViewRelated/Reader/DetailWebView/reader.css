@@ -32,6 +32,10 @@ div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
 
+img {
+    opacity: 0;
+}
+
 @media (max-width: 660px) {
     .alignleft img,
     .alignright img {
