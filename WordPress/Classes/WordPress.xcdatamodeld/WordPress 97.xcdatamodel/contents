@@ -213,9 +213,9 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="PostCategory">
-        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="-1" usesScalarValueType="NO"/>
+        <attribute name="categoryID" attributeType="Integer 32" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="categoryName" attributeType="String"/>
-        <attribute name="parentID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="parentID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="categories" inverseEntity="Blog" indexed="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Post" inverseName="categories" inverseEntity="Post" indexed="YES"/>
         <userInfo/>
@@ -780,7 +780,7 @@
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="328"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="855"/>
-        <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="120"/>
+        <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
         <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="343"/>
         <element name="CountryStatsRecordValue" positionX="321.078125" positionY="2037.06640625" width="128" height="88"/>
