@@ -39,4 +39,4 @@ jobs:
 
       - name: Danger
         run: |
-          yarn run danger ci
+          yarn run danger ci --use-github-checks
