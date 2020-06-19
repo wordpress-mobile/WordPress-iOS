@@ -22,9 +22,7 @@ class OfflineReaderWebView: ReaderWebView {
 
     private func load(_ string: String) {
         // Remove all srcset from the images, only the URL in the src tag will be cached
-        let content = super.formattedContent(string, additionalJavaScript: """
-            document.querySelectorAll('img').forEach((el) => {el.removeAttribute('srcset')})
-        """)
+        let content = super.formattedContent(string, additionalJavaScript: jsToRemoveSrcSet)
 
         super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
     }
