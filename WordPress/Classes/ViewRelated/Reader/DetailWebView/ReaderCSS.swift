@@ -15,18 +15,15 @@ struct ReaderCSS {
     /// We force it to update every 2 days
     ///
     var address: String {
-        guard let lastUpdated = store.object(forKey: updatedKey) as? Int else {
+        guard let lastUpdated = store.object(forKey: updatedKey) as? Int,
+                now - lastUpdated >= twoDays
+                && ReachabilityUtils.isInternetReachable()else {
             saveCurrentDate()
             return url(appendingTimestamp: now)
         }
 
         // If the last time we fetched the CSS was 2 days ago and the user is online, refresh it
-        if now - lastUpdated >= twoDays && ReachabilityUtils.isInternetReachable() {
-            saveCurrentDate()
-            return url(appendingTimestamp: now)
-        } else {
-            return url(appendingTimestamp: lastUpdated)
-        }
+        return url(appendingTimestamp: lastUpdated)
     }
 
     init(store: KeyValueDatabase = UserDefaults.standard) {
