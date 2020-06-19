@@ -37,6 +37,10 @@ import Foundation
     // App Settings
     case appSettingsAppearanceChanged
 
+    // Gutenberg Features
+    case gutenbergUnsupportedBlockWebViewShown
+    case gutenbergUnsupportedBlockWebViewClosed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -93,8 +97,12 @@ import Foundation
             return "editor_post_site_changed"
         case .appSettingsAppearanceChanged:
             return "app_settings_appearance_changed"
-        }
+        case .gutenbergUnsupportedBlockWebViewShown:
+            return "gutenberg_unsupported_block_webview_shown"
+        case .gutenbergUnsupportedBlockWebViewClosed:
+            return "gutenberg_unsupported_block_webview_closed"
     }
+}
 
     /**
      The default properties of the event

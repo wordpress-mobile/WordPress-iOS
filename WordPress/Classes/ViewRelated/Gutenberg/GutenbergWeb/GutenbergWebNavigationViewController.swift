@@ -41,10 +41,12 @@ class GutenbergWebNavigationController: UINavigationController {
 extension GutenbergWebNavigationController: GutenbergWebDelegate {
     func webController(controller: GutenbergWebSingleBlockViewController, didPressSave block: Block) {
         onSave?(block)
+        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewClosed, properties: ["action": "save"])
         dismiss(webController: controller)
     }
 
     func webControllerDidPressClose(controller: GutenbergWebSingleBlockViewController) {
+        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewClosed, properties: ["action": "dismiss"])
         dismiss(webController: controller)
     }
 
