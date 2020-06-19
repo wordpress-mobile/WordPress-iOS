@@ -8,6 +8,8 @@ class ReaderWebView: WKWebView {
     /// From: https://www.w3schools.com/tags/att_src.asp
     private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
+    let jsToRemoveSrcSet = "document.querySelectorAll('img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -20,7 +22,7 @@ class ReaderWebView: WKWebView {
     func loadHTMLString(_ string: String) {
         // If the user is offline, we remove the srcset from all images
         // This is because only the image inside the src tag is previously saved
-        let additionalJavaScript = ReachabilityUtils.isInternetReachable() ? "" : "document.querySelectorAll('img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+        let additionalJavaScript = ReachabilityUtils.isInternetReachable() ? "" : jsToRemoveSrcSet
 
         let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
 
