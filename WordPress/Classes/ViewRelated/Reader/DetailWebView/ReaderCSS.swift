@@ -17,7 +17,7 @@ struct ReaderCSS {
     var address: String {
         guard let lastUpdated = store.object(forKey: updatedKey) as? Int,
                 now - lastUpdated >= twoDays
-                && ReachabilityUtils.isInternetReachable()else {
+                && ReachabilityUtils.isInternetReachable() else {
             saveCurrentDate()
             return url(appendingTimestamp: now)
         }
