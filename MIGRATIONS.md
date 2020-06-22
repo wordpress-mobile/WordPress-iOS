@@ -14,7 +14,7 @@ data model as well as any custom migrations.
 
 @Gio2018 2020-06-12
 
-- Add fileds `supportPriority`, `supportName` and `nonLocalizedShortname` for Zendesk integration.
+- Add fileds `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
 
 ## WordPress 94
 
