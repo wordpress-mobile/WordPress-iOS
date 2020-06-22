@@ -36,6 +36,10 @@ img {
     opacity: 0;
 }
 
+iframe {
+    max-width: 100%;
+}
+
 @media (max-width: 660px) {
     .alignleft img,
     .alignright img {
