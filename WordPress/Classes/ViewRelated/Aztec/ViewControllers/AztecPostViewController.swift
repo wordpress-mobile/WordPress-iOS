@@ -811,7 +811,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
-        editorView.setHTML(html)        
+        editorView.setHTML(html)
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }

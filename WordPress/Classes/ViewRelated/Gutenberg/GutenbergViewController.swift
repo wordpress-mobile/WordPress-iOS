@@ -642,7 +642,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         defer {
             isFirstGutenbergLayout = false
         }
-        if isFirstGutenbergLayout {            
+        if isFirstGutenbergLayout {
             insertPrePopulatedMedia()
             if isOpenedDirectlyForPhotoPost {
                 showMediaSelectionOnStart()
