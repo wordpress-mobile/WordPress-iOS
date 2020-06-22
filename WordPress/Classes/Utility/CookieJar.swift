@@ -156,6 +156,10 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     }
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+        guard !cookies.isEmpty else {
+            return completion()
+        }
+
         var completionCount = 0
 
         func completionIncrement() {
