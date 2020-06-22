@@ -94,7 +94,9 @@ class AuthenticationService {
                     // so that the user sees a reasonable error situation on screen.
                     // We could opt to create a special screen but for now I'd rather users report
                     // the issue when it happens.
-                    failure(error)
+                    DispatchQueue.main.async {
+                        failure(error)
+                    }
                 }
         }
     }
@@ -141,6 +143,7 @@ class AuthenticationService {
         headers.forEach { (key, value) in
             request.setValue(value, forHTTPHeaderField: key)
         }
+        request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
