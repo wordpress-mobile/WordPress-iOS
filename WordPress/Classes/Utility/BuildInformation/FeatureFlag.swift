@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerWebview:
             return false
         case .swiftCoreData:
-            return true
+            return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
         }
