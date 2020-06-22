@@ -7,7 +7,11 @@ struct ReaderCSS {
 
     private let now: Int = Int(Date().timeIntervalSince1970)
 
-    private let twoDays: Int = 60 * 60 * 24 * 2
+    private let expirationDays: Int = 5
+
+    private var expirationDaysInMs: Int {
+        return expirationDays * 60 * 60 * 24
+    }
 
     private let updatedKey = "ReaderCSSLastUpdated"
 
@@ -16,7 +20,7 @@ struct ReaderCSS {
     ///
     var address: String {
         guard let lastUpdated = store.object(forKey: updatedKey) as? Int,
-                now - lastUpdated >= twoDays
+                now - lastUpdated >= expirationDaysInMs
                 && ReachabilityUtils.isInternetReachable() else {
             saveCurrentDate()
             return url(appendingTimestamp: now)
