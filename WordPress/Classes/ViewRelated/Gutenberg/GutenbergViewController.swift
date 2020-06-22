@@ -15,7 +15,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         case switchToAztec
         case switchBlog
         case autoSave
-        case initialLoad
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
@@ -236,12 +235,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         self?.requestHTML(for: .autoSave)
     }
 
-    func getContentWordMetrics() -> (UInt, UInt)? {
-        guard let currentMetrics = contentInfo, let originalMetrics = initialContentInfo else {
+    var wordCount: UInt? {
+        guard let currentMetrics = contentInfo else {
             return nil
         }
 
-        return (UInt(originalMetrics.wordCount), UInt(currentMetrics.wordCount))
+        return UInt(currentMetrics.wordCount)
     }
 
     /// Media Library Data Source
@@ -280,7 +279,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var themeSupportReceipt: Receipt? = nil
 
     internal private(set) var contentInfo: ContentInfo?
-    internal private(set) var initialContentInfo: ContentInfo?
 
     // MARK: - Initializers
     required init(
@@ -617,14 +615,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self.html = html
             self.postTitle = title
         }
-        if initialContentInfo == nil {
-            initialContentInfo = contentInfo
-        }
         self.contentInfo = contentInfo
-        if let reason = requestHTMLReason, reason == .initialLoad {
-            requestHTMLReason = nil
-            return
-        }
         editorContentWasUpdated()
         mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
@@ -643,8 +634,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 blogPickerWasPressed()
             case .autoSave:
                 break
-            case .initialLoad:
-            break
             }
         }
     }
@@ -653,8 +642,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         defer {
             isFirstGutenbergLayout = false
         }
-        if isFirstGutenbergLayout {
-            requestHTML(for: .initialLoad)
+        if isFirstGutenbergLayout {            
             insertPrePopulatedMedia()
             if isOpenedDirectlyForPhotoPost {
                 showMediaSelectionOnStart()
