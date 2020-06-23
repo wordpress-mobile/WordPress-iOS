@@ -10,6 +10,12 @@ data model as well as any custom migrations.
 - All stats entities were reviewed for consistency of Optional settings for strings and dates and default values for scalar numerical fields.
 - Categories entity updated to make numeric fields scalar and non-optional.
 
+## WordPress 96
+
+@Gio2018 2020-06-12
+
+- Add fileds `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
+
 ## WordPress 94
 
 @guarani 2019-11-28

@@ -37,7 +37,7 @@ class ReaderWebView: WKWebView {
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
-        <link rel="stylesheet" type="text/css" href="https://wordpress.com/calypso/reader-mobile.css">
+        <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
         <style>
         \(cssColors())
         \(cssStyles())
@@ -71,6 +71,14 @@ class ReaderWebView: WKWebView {
 
             // Make all images tappable
             document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+
+            // Only display images after they have fully loaded, to have a native feel
+            document.querySelectorAll('img').forEach((el) => {
+                var img = new Image();
+                img.addEventListener('load', () => { el.style.opacity = "1" }, false);
+                img.src = el.currentSrc;
+                el.src = img.src;
+            })
         """, completionHandler: nil)
     }
 
@@ -120,11 +128,15 @@ class ReaderWebView: WKWebView {
     @available(iOS 13, *)
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
+        UIColor(light: .muriel(color: .gray, .shade40),
+                dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString()
         return """
             :root {
               --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
+              --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
+              dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
               --main-link-color: #\(UIColor.primary.color(for: trait).hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "");
@@ -140,6 +152,7 @@ class ReaderWebView: WKWebView {
               --color-text: #\(UIColor.text.hexString() ?? "");
               --color-neutral-70: #\(UIColor.text.hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.hexString() ?? "");
+              --color-neutral-40: #\(UIColor(color: .muriel(color: .gray, .shade40)).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.hexString() ?? "");
               --main-link-color: #\(UIColor.primary.hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "");
