@@ -16,7 +16,7 @@ extension WPTabBarController {
             let newSpotlight = QuickStartSpotlightView()
             self?.view.addSubview(newSpotlight)
 
-            guard let tabButton = self?.getTabButton(at: 1) else {
+            guard let tabButton = self?.getTabButton(at: Int(WPTabType.reader.rawValue)) else {
                 return
             }
 
@@ -49,7 +49,7 @@ extension WPTabBarController {
     }
 
     private func getTabButton(at index: Int) -> UIView? {
-        var tabs = self.tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
+        var tabs = tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
         tabs.sort { $0.frame.origin.x < $1.frame.origin.x }
         return tabs[safe: index]
     }
