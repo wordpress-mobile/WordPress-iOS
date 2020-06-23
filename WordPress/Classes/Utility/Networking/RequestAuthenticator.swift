@@ -16,7 +16,7 @@ class RequestAuthenticator: NSObject {
 
     enum DotComAuthenticationType {
         case regular
-        case atomic(blogID: Int)
+        case privateAtomic(blogID: Int)
     }
 
     enum Credentials {
@@ -46,6 +46,7 @@ class RequestAuthenticator: NSObject {
         let authenticationType: DotComAuthenticationType
 
         if let blog = blog,
+            blog.isPrivate(),
             blog.isAtomic() {
 
             guard let blogID = blog.dotComID as? Int else {
@@ -53,7 +54,7 @@ class RequestAuthenticator: NSObject {
                 return nil
             }
 
-            authenticationType = .atomic(blogID: blogID)
+            authenticationType = .privateAtomic(blogID: blogID)
         } else {
             authenticationType = .regular
         }
@@ -120,7 +121,7 @@ class RequestAuthenticator: NSObject {
                 username: username,
                 authToken: authToken,
                 completion: completion)
-        case .atomic(let siteID):
+        case .privateAtomic(let siteID):
             requestForAtomicWPCom(
                 url: url,
                 cookieJar: cookieJar,
