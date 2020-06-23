@@ -86,14 +86,35 @@ extension ReaderTabItemsStore {
             return
         }
         state = .loading
-        service.fetchReaderMenu(success: { [weak self] in
-                                    self?.fetchTabBarItems()
-            },
-                                failure: { [weak self] error in
-                                    let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
-                                    DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
-                                    self?.fetchTabBarItems()
+
+        let dispatchGroup = DispatchGroup()
+
+        // Sync the reader menu
+        dispatchGroup.enter()
+        service.fetchReaderMenu(success: {
+            dispatchGroup.leave()
+        }, failure: { (error) in
+            let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+
+            dispatchGroup.leave()
         })
+
+        // Sync the followed sites
+        dispatchGroup.enter()
+        service.fetchFollowedSites(success: {
+            dispatchGroup.leave()
+        }, failure: { (error) in
+            let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+
+            dispatchGroup.leave()
+        })
+
+        // Wait for both the requests to finish
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.fetchTabBarItems()
+        }
     }
 
     private enum ReaderTopicsConstants {
