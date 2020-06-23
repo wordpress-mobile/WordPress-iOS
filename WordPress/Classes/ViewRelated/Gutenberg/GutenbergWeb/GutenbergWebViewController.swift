@@ -12,7 +12,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     private let progressView = WebProgressView()
 
     init(with post: AbstractPost, block: Block) throws {
-        authenticator = RequestAuthenticator(blog: post.blog)
+        authenticator = GutenbergRequestAuthenticator(blog: post.blog)
         let userId = "\(post.blog.userID ?? 1)"
 
         guard

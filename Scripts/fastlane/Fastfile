@@ -436,6 +436,38 @@ import "./ScreenshotFastfile"
   end
 
   #####################################################################################
+  # build_for_translation_review
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app with pending translations for reviewers  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_for_translation_review 
+  #
+  # Example:
+  # bundle exec fastlane build_for_translation_review 
+  #####################################################################################
+  desc "Builds and uploads for translation review"
+  lane :build_for_translation_review do | options |
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    sh("cd ../.. && ./Scripts/update-translations.rb review current")
+    sh("cd ../.. && ./Scripts/update-translations.rb review waiting")
+    sh("cd ../.. && ./Scripts/update-translations.rb review fuzzy")
+
+    ios_merge_translators_strings(strings_folder:"../WordPress/Resources/")
+    sh("cd ../.. && ./Scripts/extract-framework-translations.swift")
+
+    xcbuild(
+        workspace: "../WordPress.xcworkspace",
+        scheme: "WordPress",
+        configuration: "Debug",
+        xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
+    )
+
+    zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
+  end
+  
+  #####################################################################################
   # register_new_device
   # -----------------------------------------------------------------------------------
   # This lane helps a developer register a new device in the App Store Portal
