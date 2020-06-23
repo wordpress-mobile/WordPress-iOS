@@ -95,7 +95,7 @@ extension ReaderTabItemsStore {
             dispatchGroup.leave()
         }, failure: { (error) in
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
-            DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+            DDLogError("Error syncing menu: \(String(describing: actualError))")
 
             dispatchGroup.leave()
         })
@@ -106,7 +106,7 @@ extension ReaderTabItemsStore {
             dispatchGroup.leave()
         }, failure: { (error) in
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
-            DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
+            DDLogError("Could not sync sites: \(String(describing: actualError))")
 
             dispatchGroup.leave()
         })
@@ -122,7 +122,6 @@ extension ReaderTabItemsStore {
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
-        static let remoteFetchError = "Error syncing menu: "
         static let objectTypeError = NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil)
         static let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
     }
