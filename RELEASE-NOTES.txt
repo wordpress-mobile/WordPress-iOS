@@ -17,6 +17,7 @@
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 * [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
 * [**] Fixed a bug that prevented some logins via 'Continue with Apple'.
+* [**] Reader: Fixed a bug where tapping on the more menu may not present the menu
 
 15.0
 -----
