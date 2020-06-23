@@ -94,7 +94,7 @@ extension ReaderTabItemsStore {
         service.fetchReaderMenu(success: {
             dispatchGroup.leave()
         }, failure: { (error) in
-            let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
 
             dispatchGroup.leave()
@@ -105,7 +105,7 @@ extension ReaderTabItemsStore {
         service.fetchFollowedSites(success: {
             dispatchGroup.leave()
         }, failure: { (error) in
-            let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
 
             dispatchGroup.leave()
