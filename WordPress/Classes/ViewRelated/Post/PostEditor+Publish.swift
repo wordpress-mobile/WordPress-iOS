@@ -182,7 +182,7 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let wordCount = self.wordCount ?? 0
+        let wordCount = self.wordCount
         var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSource]
 
         properties[WPAppAnalyticsKeyPostType] = postTypeValue

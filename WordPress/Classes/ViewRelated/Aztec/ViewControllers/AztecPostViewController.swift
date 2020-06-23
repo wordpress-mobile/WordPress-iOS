@@ -80,7 +80,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         self?.mapUIContentToPostAndSave(immediate: true)
     }
 
-    var wordCount: UInt? {
+    var wordCount: UInt {
         return richTextView.wordCount
     }
 

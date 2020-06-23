@@ -235,9 +235,9 @@ class GutenbergViewController: UIViewController, PostEditor {
         self?.requestHTML(for: .autoSave)
     }
 
-    var wordCount: UInt? {
+    var wordCount: UInt {
         guard let currentMetrics = contentInfo else {
-            return nil
+            return 0
         }
 
         return UInt(currentMetrics.wordCount)

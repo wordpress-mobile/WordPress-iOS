@@ -113,7 +113,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     var postIsReblogged: Bool { get set }
 
     /// Returns the word counts of the content in the editor.
-    var wordCount: UInt? { get }
+    var wordCount: UInt { get }
 }
 
 extension PostEditor {
