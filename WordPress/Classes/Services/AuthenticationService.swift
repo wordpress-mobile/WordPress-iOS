@@ -94,9 +94,7 @@ class AuthenticationService {
                     // so that the user sees a reasonable error situation on screen.
                     // We could opt to create a special screen but for now I'd rather users report
                     // the issue when it happens.
-                    DispatchQueue.main.async {
-                        failure(error)
-                    }
+                    failure(error)
                 }
         }
     }
@@ -147,7 +145,9 @@ class AuthenticationService {
 
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
-                failure(error)
+                DispatchQueue.main.async {
+                    failure(error)
+                }
                 return
             }
 
@@ -162,7 +162,9 @@ class AuthenticationService {
             // and compare the session cookies.
             let responseCookies = self.cookies(from: response, loginURL: url)
             let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            success(cookies)
+            DispatchQueue.main.async {
+                success(cookies)
+            }
         }
 
         task.resume()
