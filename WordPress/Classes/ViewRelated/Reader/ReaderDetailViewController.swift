@@ -1254,7 +1254,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
         }
 
-        ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail) { [weak self] in
+        ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail, viewController: self) { [weak self] in
             self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
             self?.prepareActionButtonsForVoiceOver()
         }

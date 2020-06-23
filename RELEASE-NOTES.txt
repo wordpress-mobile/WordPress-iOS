@@ -1,9 +1,10 @@
 15.2
 ----
 * [**] Block editor: Display content metrics information (blocks, words, characters count).
+* [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
 
 -----
- 
+
 15.1
 -----
 * [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
@@ -13,10 +14,10 @@
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 * Block editor: [*] Support for breaking out of captions/citation authors by pressing enter on the following blocks: image, video, gallery, quote, and pullquote.
 * Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
-* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
+* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour.
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
 * [**] Quick Start: added VoiceOver support to the Next Steps section.
-* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 * [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
 * [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
