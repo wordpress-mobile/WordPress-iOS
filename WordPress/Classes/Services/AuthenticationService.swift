@@ -141,10 +141,13 @@ class AuthenticationService {
         headers.forEach { (key, value) in
             request.setValue(value, forHTTPHeaderField: key)
         }
+        request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
-                failure(error)
+                DispatchQueue.main.async {
+                    failure(error)
+                }
                 return
             }
 
@@ -159,7 +162,9 @@ class AuthenticationService {
             // and compare the session cookies.
             let responseCookies = self.cookies(from: response, loginURL: url)
             let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            success(cookies)
+            DispatchQueue.main.async {
+                success(cookies)
+            }
         }
 
         task.resume()
