@@ -883,7 +883,7 @@ extension WordPressAppDelegate {
         let maximumPointSize = WPStyleGuide.maxFontSize
 
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
-                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.bold)]
+                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.semibold)]
 
         WPStyleGuide.configureSearchBarTextAppearance()
 
