@@ -1227,7 +1227,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     if ([Feature enabled:FeatureFlagReaderWebview]) {
-        post.content = remotePost.content;
+        post.content = [RichContentFormatter removeForbiddenTags:remotePost.content];
     } else {
         post.content = [RichContentFormatter formatContentString:remotePost.content isPrivateSite:remotePost.isBlogPrivate];
     }
