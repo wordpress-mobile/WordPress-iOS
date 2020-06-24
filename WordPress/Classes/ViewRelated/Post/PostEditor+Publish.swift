@@ -188,12 +188,8 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let originalWordCount = post.original?.content?.wordCount() ?? 0
-        let wordCount = post.content?.wordCount() ?? 0
+        let wordCount = self.wordCount
         var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSource]
-        if post.hasRemote() {
-            properties["word_diff_count"] = originalWordCount
-        }
 
         properties[WPAppAnalyticsKeyPostType] = postTypeValue
 
