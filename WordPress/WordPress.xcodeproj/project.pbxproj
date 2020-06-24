@@ -305,6 +305,7 @@
 		1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
+		1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */; };
 		1E4F2E712458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */; };
 		1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
@@ -1063,6 +1064,7 @@
 		8B11B6682489C0A4000F1A0F /* ReaderScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B11B6672489C0A4000F1A0F /* ReaderScrollView.swift */; };
 		8B1CF00F2433902700578582 /* PasswordAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF00E2433902700578582 /* PasswordAlertController.swift */; };
 		8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */; };
+		8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */; };
 		8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
 		8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */; };
 		8B64B4B2247EC3A2009A1229 /* reader.css in Resources */ = {isa = PBXBuildFile; fileRef = 8B64B4B1247EC3A2009A1229 /* reader.css */; };
@@ -1093,6 +1095,7 @@
 		8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */; };
 		8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */; };
 		8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */; };
+		8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
 		8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */; };
@@ -2683,6 +2686,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebViewController.swift; sourceTree = "<group>"; };
+		1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRequestAuthenticator.swift; sourceTree = "<group>"; };
 		1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebNavigationViewController.swift; sourceTree = "<group>"; };
 		1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRollout.swift; sourceTree = "<group>"; };
 		2262D835FA89938EBF63EADF /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3523,6 +3527,7 @@
 		8B11B6672489C0A4000F1A0F /* ReaderScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderScrollView.swift; sourceTree = "<group>"; };
 		8B1CF00E2433902700578582 /* PasswordAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAlertController.swift; sourceTree = "<group>"; };
 		8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+TitleForVisibility.swift"; sourceTree = "<group>"; };
+		8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineReaderWebView.swift; sourceTree = "<group>"; };
 		8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
 		8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryStartupEvent.swift; sourceTree = "<group>"; };
 		8B64B4B1247EC3A2009A1229 /* reader.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = reader.css; sourceTree = "<group>"; };
@@ -3554,6 +3559,7 @@
 		8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReaderDetailViewController.storyboard; sourceTree = "<group>"; };
 		8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCoordinator.swift; sourceTree = "<group>"; };
 		8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCoordinatorTests.swift; sourceTree = "<group>"; };
+		8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSS.swift; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
 		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
@@ -4670,6 +4676,7 @@
 		E684383D221F535900752258 /* LoadMoreCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCounter.swift; sourceTree = "<group>"; };
 		E684383F221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListExcessiveLoadMoreTests.swift; sourceTree = "<group>"; };
 		E68580F51E0D91470090EE63 /* WPHorizontalRuleAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPHorizontalRuleAttachment.swift; sourceTree = "<group>"; };
+		E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 97.xcdatamodel"; sourceTree = "<group>"; };
 		E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Helper.swift"; sourceTree = "<group>"; };
 		E699E530210BB719008ED8A7 /* WordPress 77.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 77.xcdatamodel"; sourceTree = "<group>"; };
 		E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+ReadableMargins.h"; sourceTree = "<group>"; };
@@ -5540,6 +5547,7 @@
 			isa = PBXGroup;
 			children = (
 				F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */,
+				1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */,
 				1A433B1C2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift */,
 			);
 			path = Networking;
@@ -5554,7 +5562,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -7763,12 +7771,14 @@
 			children = (
 				8B64B4B1247EC3A2009A1229 /* reader.css */,
 				8BADF16424801BCE005AD038 /* ReaderWebView.swift */,
+				8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */,
 				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
 				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
 				8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */,
 				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
 				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
 				8B11B6672489C0A4000F1A0F /* ReaderScrollView.swift */,
+				8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */,
 			);
 			path = DetailWebView;
 			sourceTree = "<group>";
@@ -10905,7 +10915,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11682,13 +11692,13 @@
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/content-functions.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/inject-css.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/insert-block.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
@@ -12394,6 +12404,7 @@
 				B5C0CF3D204DA41000DB0362 /* NotificationReplyStore.swift in Sources */,
 				B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */,
 				E1389ADB1C59F7C200FB2466 /* PlanListViewController.swift in Sources */,
+				1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */,
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */,
 				E1B912891BB01288003C25B9 /* PeopleViewController.swift in Sources */,
@@ -12506,6 +12517,7 @@
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				F53FF3A323EA3E45001AD596 /* BlogDetailsViewController+Header.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
+				8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */,
 				9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */,
@@ -12743,6 +12755,7 @@
 				43D74AC820F8D17A004AD934 /* DomainSuggestionsButtonViewPresenter.swift in Sources */,
 				F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
+				8BDC4C39249BA5CA00DE0A2D /* ReaderCSS.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
@@ -16852,6 +16865,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */,
 				3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */,
 				F1BBA95E243BEFC500E9E5E6 /* WordPress 95.xcdatamodel */,
 				32282CF82390B614003378A7 /* WordPress 94.xcdatamodel */,
@@ -16949,7 +16963,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */;
+			currentVersion = E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

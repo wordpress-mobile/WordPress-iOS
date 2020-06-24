@@ -137,7 +137,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
         let saveAction = ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation)
 
-        saveAction.execute(with: post, context: context, origin: actionOrigin)
+        saveAction.execute(with: post, context: context, origin: actionOrigin, viewController: origin)
         saveForLaterAction = saveAction
     }
 

@@ -77,6 +77,7 @@ end
 
 def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    options[:submodules] = true
     local_gutenberg = ENV['LOCAL_GUTENBERG']
     if local_gutenberg
       options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
@@ -119,7 +120,8 @@ def gutenberg_dependencies(options)
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
-        'react-native-linear-gradient'
+        'react-native-linear-gradient',
+        'react-native-get-random-values'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -129,7 +131,7 @@ def gutenberg_dependencies(options)
     end
 
     for pod_name in dependencies do
-        pod pod_name, :podspec => "#{podspec_prefix}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+        pod pod_name, :podspec => "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
     end
 end
 
@@ -146,7 +148,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '1d28212398d430189292ae00f1831c3bceb162be'
+    gutenberg :commit => '41f12f65649bb86ffa3de2ebb0046a96065e18ee'
 
     ## Third party libraries
     ## =====================
@@ -186,7 +188,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.18.0'
+    pod 'WordPressAuthenticator', '~> 1.19.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
