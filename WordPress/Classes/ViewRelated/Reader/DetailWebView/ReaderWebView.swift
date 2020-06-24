@@ -8,6 +8,8 @@ class ReaderWebView: WKWebView {
     /// From: https://www.w3schools.com/tags/att_src.asp
     private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
+    let jsToRemoveSrcSet = "document.querySelectorAll('img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -17,30 +19,41 @@ class ReaderWebView: WKWebView {
 
     /// Loads a HTML content into the webview and apply styles
     ///
-    @discardableResult
-    override func loadHTMLString(_ string: String, baseURL: URL?) -> WKNavigation? {
-        let content = """
+    func loadHTMLString(_ string: String) {
+        // If the user is offline, we remove the srcset from all images
+        // This is because only the image inside the src tag is previously saved
+        let additionalJavaScript = ReachabilityUtils.isInternetReachable() ? "" : jsToRemoveSrcSet
+
+        let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
+
+        super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
+    }
+
+    /// Given a HTML content, returns it formatted.
+    /// Ie.: Including tags, CSS, JS, etc.
+    ///
+    func formattedContent(_ content: String, additionalJavaScript: String = "") -> String {
+        return """
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
         <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
-        <link rel="stylesheet" type="text/css" href="https://wordpress.com/calypso/reader-mobile.css">
+        <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
         <style>
         \(cssColors())
         \(cssStyles())
         </style>
         </head><body class="reader-full-post reader-full-post__story-content">
-        \(addPlaceholder(string))
+        \(content)
         </body>
         <script>
             document.addEventListener('DOMContentLoaded', function(event) {
+                \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
             })
         </script>
         </html>
         """
-
-        return super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
     }
 
     /// Tell the webview to load all media
@@ -58,6 +71,14 @@ class ReaderWebView: WKWebView {
 
             // Make all images tappable
             document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+
+            // Only display images after they have fully loaded, to have a native feel
+            document.querySelectorAll('img').forEach((el) => {
+                var img = new Image();
+                img.addEventListener('load', () => { el.style.opacity = "1" }, false);
+                img.src = el.currentSrc;
+                el.src = img.src;
+            })
         """, completionHandler: nil)
     }
 
@@ -107,11 +128,15 @@ class ReaderWebView: WKWebView {
     @available(iOS 13, *)
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
+        UIColor(light: .muriel(color: .gray, .shade40),
+                dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString()
         return """
             :root {
               --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
+              --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
+              dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
               --main-link-color: #\(UIColor.primary.color(for: trait).hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "");
@@ -127,6 +152,7 @@ class ReaderWebView: WKWebView {
               --color-text: #\(UIColor.text.hexString() ?? "");
               --color-neutral-70: #\(UIColor.text.hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.hexString() ?? "");
+              --color-neutral-40: #\(UIColor(color: .muriel(color: .gray, .shade40)).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.hexString() ?? "");
               --main-link-color: #\(UIColor.primary.hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "");
