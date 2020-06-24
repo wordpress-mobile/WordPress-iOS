@@ -144,7 +144,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        self.title = title ?? placeholder
+        let titleView = UILabel()
+        titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
+        navigationItem.titleView = titleView
     }
 
     deinit {

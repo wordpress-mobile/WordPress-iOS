@@ -235,6 +235,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         self?.requestHTML(for: .autoSave)
     }
 
+    var wordCount: UInt {
+        guard let currentMetrics = contentInfo else {
+            return 0
+        }
+
+        return UInt(currentMetrics.wordCount)
+    }
+
     /// Media Library Data Source
     ///
     lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
