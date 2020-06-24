@@ -973,8 +973,8 @@ private extension GutenbergViewController {
 private extension GutenbergViewController {
 
     struct EmptyPostActionSheet {
-        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is show when trying to publish empty post")
-        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is show when trying to publish empty page")
+        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is shown when trying to publish empty post")
+        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is shown when trying to publish empty page")
         static let message = NSLocalizedString("Please write some content before trying to publish.", comment: "Suggestion to write content before trying to publish post or page")
     }
 
