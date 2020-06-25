@@ -45,7 +45,7 @@ class BlogDetailHeaderView: UIView {
     @objc var blog: Blog? {
         didSet {
             refreshIconImage()
-
+            toggleSpotlightForSiteTitle()
             let blogName = blog?.settings?.name
             let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
             titleLabel.text = title
