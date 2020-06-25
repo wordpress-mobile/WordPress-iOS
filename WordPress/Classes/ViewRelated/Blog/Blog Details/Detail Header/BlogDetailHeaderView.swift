@@ -1,5 +1,6 @@
 @objc protocol BlogDetailHeaderViewDelegate: class {
     func siteIconTapped()
+    func siteTitleTapped()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
 }
@@ -8,8 +9,8 @@ class BlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: SpotlightableLabel = {
+        let label = SpotlightableLabel()
         label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -64,6 +65,10 @@ class BlogDetailHeaderView: UIView {
         }
 
         siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+    }
+
+    @objc func toggleSpotlightForSiteTitle() {
+        titleLabel.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
     }
 
     private enum Constants {
@@ -134,6 +139,7 @@ class BlogDetailHeaderView: UIView {
         ]
 
         NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
+        addTapToTitleLabel()
     }
 
     override init(frame: CGRect) {
@@ -142,5 +148,24 @@ class BlogDetailHeaderView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Set site title
+private extension BlogDetailHeaderView {
+
+    func addTapToTitleLabel() {
+        titleLabel.isUserInteractionEnabled = true
+
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(showSiteTitleSetting))
+        titleLabel.addGestureRecognizer(recognizer)
+    }
+
+    @objc func showSiteTitleSetting() {
+
+        QuickStartTourGuide.find()?.visited(.siteTitle)
+
+        titleLabel.shouldShowSpotlight = false
+        delegate?.siteTitleTapped()
     }
 }

@@ -697,7 +697,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionIndex];
 
         NSUInteger row = 0;
-        
+
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickStart:
@@ -992,9 +992,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     BlogDetailHeaderView *headerView = [self configureHeaderView];
     headerView.delegate = self;
-    
+
     self.headerView = headerView;
-    
+
     self.tableView.tableHeaderView = headerView;
 }
 
@@ -1009,6 +1009,44 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     [self showUpdateSiteIconAlert];
+}
+
+- (void)siteTitleTapped
+{
+    if (!self.blog.isAdmin) {
+        return;
+    }
+
+    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
+                                                                                               placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
+                                                                                                      hint:@""];
+    siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
+    siteTitleViewController.onValueChanged = ^(NSString *value) {
+        if (![value isEqualToString:self.blog.settings.name]){
+            self.blog.settings.name = value;
+            [self saveSettings];
+        }
+    };
+    [self.navigationController pushViewController:siteTitleViewController animated:YES];
+}
+
+- (void)saveSettings
+{
+    if (!self.blog.settings.hasChanges) {
+        return;
+    }
+
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog success:^{
+        [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
+
+        [blogService syncBlog:self.blog
+                      success:nil failure:nil];
+
+    } failure:^(NSError *error) {
+        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        DDLogError(@"Error while trying to update BlogSettings: %@", error);
+    }];
 }
 
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
@@ -1142,6 +1180,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)refreshSiteIcon {
     [self.headerView refreshIconImage];
+}
+
+- (void)toggleSpotlightForSiteTitle
+{
+    [self.headerView toggleSpotlightForSiteTitle];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media

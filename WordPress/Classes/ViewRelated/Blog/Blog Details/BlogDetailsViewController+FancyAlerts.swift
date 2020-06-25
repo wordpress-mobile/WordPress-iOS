@@ -9,6 +9,7 @@ extension BlogDetailsViewController {
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
+            self?.toggleSpotlightForSiteTitle()
             self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
