@@ -11,4 +11,7 @@ public class Plan: NSManagedObject {
     @NSManaged public var summary: String
     @NSManaged public var features: String
     @NSManaged public var icon: String
+    @NSManaged public var supportPriority: Int16
+    @NSManaged public var supportName: String
+    @NSManaged public var nonLocalizedShortname: String
 }

@@ -12,13 +12,12 @@ extension GutenbergViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        //TODO: Comment in when bridge is ready
-        /*if mode == .richText {
+        if mode == .richText, let contentInfo = contentInfo {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-            let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
+            let textCounterTitle = String(format: NSLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
 
             alert.title = textCounterTitle
-        }*/
+        }
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
