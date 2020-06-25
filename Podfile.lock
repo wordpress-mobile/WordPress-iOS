@@ -484,7 +484,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `4baaa7a`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `08f1ab1`)
   - WordPressKit (= 4.11.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.9.0)
@@ -620,7 +620,7 @@ EXTERNAL SOURCES:
     :commit: 74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: 4baaa7a
+    :commit: 08f1ab1
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
@@ -636,7 +636,7 @@ CHECKOUT OPTIONS:
     :commit: 74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: 4baaa7a
+    :commit: 08f1ab1
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -728,6 +728,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 593090a15ae4b25d604c10f7f4bba1c306c5c140
+PODFILE CHECKSUM: e84ceedd4d8ebb21a974fc833e24280f3a4a7729
 
 COCOAPODS: 1.8.4
