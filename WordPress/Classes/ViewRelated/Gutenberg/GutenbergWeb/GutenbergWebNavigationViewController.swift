@@ -2,17 +2,24 @@ import Gutenberg
 
 class GutenbergWebNavigationController: UINavigationController {
     private let gutenbergWebController: GutenbergWebViewController
+    private let blockName: String
 
     var onSave: ((Block) -> Void)?
 
     init(with post: AbstractPost, block: Block) throws {
         gutenbergWebController = try GutenbergWebViewController(with: post, block: block)
+        blockName = block.name
         super.init(rootViewController: gutenbergWebController)
         gutenbergWebController.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewShown, properties: ["block": blockName])
     }
 
     /// Due to a bug on iOS 13, presenting a DocumentController on a modally presented controller will result on a crash.
@@ -36,17 +43,21 @@ class GutenbergWebNavigationController: UINavigationController {
         viewControllerToPresent.popoverPresentationController?.sourceView = gutenbergWebController.view
         viewControllerToPresent.popoverPresentationController?.sourceRect = gutenbergWebController.view.frame
     }
+
+    private func trackWebViewClosed(action: String) {
+        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewClosed, properties: ["action": action])
+    }
 }
 
 extension GutenbergWebNavigationController: GutenbergWebDelegate {
     func webController(controller: GutenbergWebSingleBlockViewController, didPressSave block: Block) {
         onSave?(block)
-        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewClosed, properties: ["action": "save"])
+        trackWebViewClosed(action: "save")
         dismiss(webController: controller)
     }
 
     func webControllerDidPressClose(controller: GutenbergWebSingleBlockViewController) {
-        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewClosed, properties: ["action": "dismiss"])
+        trackWebViewClosed(action: "dismiss")
         dismiss(webController: controller)
     }
 

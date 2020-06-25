@@ -38,11 +38,6 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         startObservingWebView()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WPAnalytics.track(.gutenbergUnsupportedBlockWebViewShown)
-    }
-
     deinit {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
