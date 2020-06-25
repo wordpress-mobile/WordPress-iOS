@@ -58,4 +58,3 @@ class SpotlightableLabel: UILabel, Spotlightable {
         static let leftOffset: CGFloat = -10
     }
 }
-
