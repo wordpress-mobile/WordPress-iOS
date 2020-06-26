@@ -569,6 +569,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showPlugins];
             }
             break;
+        case BlogDetailsSubsectionSettings:
+        {
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showSettings];
+            break;
+        }
     }
 }
 
@@ -603,6 +612,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPlugins:
             return [NSIndexPath indexPathForRow:2 inSection:section];
+        case BlogDetailsSubsectionSettings:
+            return [self.blog supports:BlogFeaturePluginManagement] ? [NSIndexPath indexPathForRow:3 inSection:section] : [NSIndexPath indexPathForRow:2 inSection:section];
     }
 }
 
@@ -1146,7 +1157,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)toggleSpotlightForSiteTitle
 {
-    [self.headerView toggleSpotlightForSiteTitle];
+//    [self.headerView toggleSpotlightForSiteTitle];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media

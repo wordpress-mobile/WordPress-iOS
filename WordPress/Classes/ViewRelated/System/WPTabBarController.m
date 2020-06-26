@@ -742,6 +742,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)switchMySitesTabToSiteSettingsForBlog:(Blog *)blog
+{
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionSettings];
+    }
+}
+
 - (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
 {
     [self showTabForIndex:WPTabMySites];
