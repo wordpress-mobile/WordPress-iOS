@@ -166,7 +166,7 @@ private class Row {
 
         var offset = isRightToLeft ? width - centerX : centerX
 
-        for attribute in layoutAttributes {
+        layoutAttributes.forEach { attribute in
             let itemWidth = attribute.frame.width + itemSpacing
 
             if isRightToLeft {
@@ -187,6 +187,6 @@ private class Row {
             return width + attribute.frame.width
         })
 
-        return width + itemSpacing * CGFloat(layoutAttributes.count-1)
+        return width + itemSpacing * CGFloat(layoutAttributes.count - 1)
     }
 }
