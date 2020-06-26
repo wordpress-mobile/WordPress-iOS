@@ -341,9 +341,9 @@ extension UIColor {
 
         return .white
     }
-    
+
     // MARK: - Others
-    
+
     static var preformattedBackground: UIColor {
         if #available(iOS 13, *) {
             return .systemGray6
