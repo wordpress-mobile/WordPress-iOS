@@ -1527,18 +1527,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showSettings
 {
-    [self showSettingsHighlightingIndexPath:nil];
-}
-
-- (void)showSettingsHighlightingIndexPath:(NSIndexPath *)indexPath
-{
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-
-    if (indexPath) {
-        [controller highlightIndexPath:indexPath];
-    }
-
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
