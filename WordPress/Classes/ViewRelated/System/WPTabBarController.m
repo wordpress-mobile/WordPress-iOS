@@ -12,6 +12,7 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
+#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -209,9 +210,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
         _readerNavigationController.navigationBar.translucent = NO;
 
@@ -602,20 +603,33 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     UIViewController *topDetailVC;
 
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        topDetailVC = (ReaderDetailViewController *)self.readerNavigationController.topViewController;
+        topDetailVC = (UIViewController *)self.readerNavigationController.topViewController;
     } else {
-        topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
+        topDetailVC = (UIViewController *)self.readerSplitViewController.topDetailViewController;
     }
 
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-         // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
+    UIViewController *readerPostDetailVC;
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        if ([topDetailVC isKindOfClass:[ReaderDetailWebviewViewController class]]) {
+            ReaderDetailWebviewViewController *readerDetailVC = (ReaderDetailWebviewViewController *)topDetailVC;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            }
         }
+        readerPostDetailVC = [ReaderDetailWebviewViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+    } else {
+        if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
+            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            }
+        }
+        readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
     }
-    ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
 
     if (topDetailVC && [Feature enabled:FeatureFlagNewReaderNavigation]) {
         [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];

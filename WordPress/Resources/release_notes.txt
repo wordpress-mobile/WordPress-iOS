@@ -1,9 +1,12 @@
-As usual, there are lots of improvements in the block editor. Trash icon you use to remove blocks is now in a menu reachable by tapping the ellipsis button in the block toolbar. We also added support for overlay colors in the Cover block, support for radial gradients in Button and Cover blocks, enter/exit animation in the Floating Toolbar, and a tooltip for page template selection buttons. And now the block toolbar collapses if the block is narrower than the toolbar.
+It’s a fact: GIFs make the internet better. You now have access to a library of free GIFs, via Tenor, to add to any post or page using an Image block. You’ll even see the animation right in the editor as you’re creating!
 
-We also made lots of fixes, for a cleaner block editor experience.
-Media upload will display a “retry” message when there’s no connection (instead of freezing), undo/redo work more reliably for both blocks and text, we corrected a merging issue with text blocks, and we corrected the button alignment in page templates.
+The Block editor has another batch of improvements:
+– Support for theme-defined colors and gradients in the Cover block,
+– Ability to upload videos to Cover blocks, even if the editor is closed.
+– And our favorite update: improvement to caption and citation handling. Press enter after adding a caption in an Image, Video, Gallery, Quote, or Pullquote block, and you’ll automatically find yourself in a new block.
 
-We've added a new setting that allows you to change your homepage and posts page from site settings.
+Along with those updates, you can now choose which pages to use as your homepage and posts page right from the Pages list, and there’s app-level toggle for choosing between light or dark appearance.
 
-Finally, we dealt with a Gravatar issue that got you stuck in the photo editing screen when you tried to take a new photo, and made some UI updates in the Reader.
+We know that the Latest Post date was being calculated incorrectly on the Insights page. That’s fixed!
 
+A few issues with Quick Start tours were making them slightly less quick. We fixed up some flow issues in the “Grow Your Audience” and “Publish a Post” tours, and squashed a bug that stopped VoiceOver users from getting updates about completed Quick Start tasks. (And VoiceOver users: the Next Steps section now supports VoiceOver, too.)

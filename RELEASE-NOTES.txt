@@ -1,3 +1,12 @@
+15.2
+----
+* [*] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
+* [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
+* [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
+
+-----
+
 15.1
 -----
 * [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
@@ -7,11 +16,13 @@
 * [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
 * Block editor: [*] Support for breaking out of captions/citation authors by pressing enter on the following blocks: image, video, gallery, quote, and pullquote.
 * Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
-* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour. 
+* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour.
 * [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
-* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture 
+* [**] Quick Start: added VoiceOver support to the Next Steps section.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 * [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
+* [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
 
 15.0
 ----
@@ -27,11 +38,11 @@
 * [**] Block Editor: Add support for changing overlay color settings in Cover block
 * [**] Block Editor: Add enter/exit animation in FloatingToolbar
 * [**] Block Editor: Block toolbar can now collapse when the block width is smaller than the toolbar content
-* [**] Block Editor: Creating undo levels less frequently
 * [**] Block Editor: Tooltip for page template selection buttons
 * [*] Block Editor: Fix merging of text blocks when text had active formatting (bold, italic, strike, link)
 * [*] Block Editor: Fix button alignment in page templates and make strings consistent
 * [*] Block Editor: Add support for displaying radial gradients in Buttons and Cover blocks
+* [*] Block Editor: Fix a bug where it was not possible to add a second image after previewing a post
 * [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
 * My Site: Add support for setting the Homepage and Posts Page for a site.
 

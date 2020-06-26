@@ -1153,7 +1153,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
-    post.content = remotePost.content;
     post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
     post.featuredImage = remotePost.featuredImage;
     post.feedID = remotePost.feedID;
@@ -1225,6 +1224,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
     } else {
         post.sourceAttribution = nil;
+    }
+
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        post.content = [RichContentFormatter removeForbiddenTags:remotePost.content];
+    } else {
+        post.content = [RichContentFormatter formatContentString:remotePost.content isPrivateSite:remotePost.isBlogPrivate];
     }
 
     // assign the topic last.
