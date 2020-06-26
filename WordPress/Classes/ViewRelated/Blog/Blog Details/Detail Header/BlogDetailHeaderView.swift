@@ -13,6 +13,7 @@ class BlogDetailHeaderView: UIView {
         let button = SpotlightableButton(type: .custom)
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.setTitleColor(.text, for: .normal)
         button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
         return button
