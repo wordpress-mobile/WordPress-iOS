@@ -47,9 +47,16 @@ extension BlogDetailsViewController {
 
     private func saveSiteTitleSettings(_ title: String) {
         // We'll only save for admin users, and if the title has actually changed
-        guard blog.isAdmin,
-            title != blog.settings?.name,
+        guard title != blog.settings?.name,
             let context = blog.managedObjectContext else {
+            return
+        }
+
+        guard blog.isAdmin else {
+            let notice = Notice(title: SiteTitleStrings.notAnAdminHint,
+                                message: nil,
+                                feedbackType: .warning)
+            ActionDispatcher.global.dispatch(NoticeAction.post(notice))
             return
         }
 
