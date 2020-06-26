@@ -50,9 +50,7 @@ class BlogDetailHeaderView: UIView {
         didSet {
             refreshIconImage()
             toggleSpotlightForSiteTitle()
-            let blogName = blog?.settings?.name
-            let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
-            titleButton.setTitle(title, for: .normal)
+            refreshSiteTitle()
             subtitleLabel.text = blog?.displayURL as String?
 
             siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
@@ -68,6 +66,12 @@ class BlogDetailHeaderView: UIView {
         }
 
         siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+    }
+
+    func refreshSiteTitle() {
+        let blogName = blog?.settings?.name
+        let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
+        titleButton.setTitle(title, for: .normal)
     }
 
     @objc func toggleSpotlightForSiteTitle() {
