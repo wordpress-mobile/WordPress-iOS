@@ -65,7 +65,6 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
                     frame.origin.x = isRTL ? (maxContentWidth - frame.width) : 0
                     currentRow += 1
                 }
-
                 frame.origin.y = currentRow * (cellHeight + itemSpacing) + contentInsets.top
             }
 
@@ -97,8 +96,8 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
             let collectionView = collectionView,
             let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
             delegate.responds(to: #selector(delegate.collectionView(_:layout:sizeForItemAt:)))
-            else {
-                return CGSize(width: itemSize.width, height: cellHeight)
+        else {
+            return CGSize(width: itemSize.width, height: cellHeight)
         }
 
         let size = delegate.collectionView!(collectionView, layout: self, sizeForItemAt: indexPath)
@@ -106,6 +105,10 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        if collectionView?.traitCollection.horizontalSizeClass == .regular {
+            return centeredLayoutAttributesForElements(in: rect)
+        }
+
         var layoutAttributes = [UICollectionViewLayoutAttributes]()
 
         for attribute in self.layoutAttributes {
@@ -117,8 +120,85 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return layoutAttributes
     }
 
+    private func centeredLayoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        var rows = [Row]()
+        var rowY: CGFloat = CGFloat.greatestFiniteMagnitude
+
+        // Create an array of "rows" based on the y positions
+        for attribute in layoutAttributes {
+            if attribute.frame.intersects(rect) == false {
+                continue
+            }
+
+            let minY = attribute.frame.minY
+
+            if rowY != minY {
+                rowY = minY
+
+                rows.append(Row(itemSpacing: itemSpacing, layoutDirection: layoutDirection))
+            }
+
+            rows.last?.add(attribute: attribute)
+        }
+
+        return rows.flatMap { (row: Row) -> [UICollectionViewLayoutAttributes] in
+            return row.centeredLayoutAttributesIn(width: maxContentWidth)
+        }
+    }
+
     override open func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return layoutAttributes[indexPath.row]
     }
+}
 
+// MARK: - Row Centering Helper Class
+private class Row {
+    var layoutAttributes = [UICollectionViewLayoutAttributes]()
+    let itemSpacing: CGFloat
+    let layoutDirection: UIUserInterfaceLayoutDirection
+
+    init(itemSpacing: CGFloat, layoutDirection: UIUserInterfaceLayoutDirection) {
+        self.itemSpacing = itemSpacing
+        self.layoutDirection = layoutDirection
+    }
+
+    /// Add a new attribute to the row
+    /// - Parameter attribute: layout attribute to be added
+    public func add(attribute: UICollectionViewLayoutAttributes) {
+        layoutAttributes.append(attribute)
+    }
+
+    /// Calculates a new X position for each item in this row based on a new x offset
+    /// - Parameter width: The total width of the container view to center in
+    /// - Returns: The new centered layout attributes
+    public func centeredLayoutAttributesIn(width: CGFloat) -> [UICollectionViewLayoutAttributes] {
+        let centerX = (width - rowWidth) * 0.5
+
+        let isRTL = layoutDirection == .rightToLeft
+        var offset = isRTL ? width - centerX : centerX
+
+        for attribute in layoutAttributes {
+            let itemWidth = attribute.frame.width + itemSpacing
+
+            if isRTL {
+                attribute.frame.origin.x = offset - attribute.frame.width
+                offset -= itemWidth
+
+            } else {
+                attribute.frame.origin.x = offset
+                offset += itemWidth
+            }
+        }
+
+        return layoutAttributes
+    }
+
+    /// Calculate the total row width including spacing
+    private var rowWidth: CGFloat {
+        let width = layoutAttributes.reduce(0, { width, attribute -> CGFloat in
+            return width + attribute.frame.width
+        })
+
+        return width + itemSpacing * CGFloat(layoutAttributes.count-1)
+    }
 }
