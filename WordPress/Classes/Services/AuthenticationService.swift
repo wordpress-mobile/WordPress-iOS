@@ -141,6 +141,7 @@ class AuthenticationService {
         headers.forEach { (key, value) in
             request.setValue(value, forHTTPHeaderField: key)
         }
+        request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
