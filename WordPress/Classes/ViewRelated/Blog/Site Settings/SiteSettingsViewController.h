@@ -12,6 +12,4 @@
 
 - (void)saveSettings;
 
-- (void)highlightIndexPath:(NSIndexPath *)indexPath;
-
 @end

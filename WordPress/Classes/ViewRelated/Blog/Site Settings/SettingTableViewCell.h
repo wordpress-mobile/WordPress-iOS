@@ -6,6 +6,4 @@
 
 @property (nonatomic, copy) NSString *textValue;
 
-@property (nonatomic) BOOL showHighlight;
-
 @end

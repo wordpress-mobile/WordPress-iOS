@@ -126,8 +126,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-
-@property (nonatomic, strong) NSIndexPath *highlightIndexPath;
 @end
 
 @implementation SiteSettingsViewController
@@ -185,13 +183,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.tableView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    [self deselectHighlightedRow];
-}
-
 - (NSArray *)tableSections
 {
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
@@ -227,10 +218,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return sections;
 }
 
-- (void)highlightIndexPath:(NSIndexPath *)indexPath
-{
-    self.highlightIndexPath = indexPath;
-}
 
 #pragma mark - UITableViewDataSource
 
@@ -768,48 +755,41 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-
     NSInteger settingsSection = [self.tableSections[indexPath.section] integerValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
-            cell = [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
+
         case SiteSettingsSectionHomepage:
-            cell = self.homepageSettingsCell;
-            break;
+            return self.homepageSettingsCell;
+
         case SiteSettingsSectionAccount:
-            cell = [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
+
         case SiteSettingsSectionEditor:
-            cell = [self tableView:tableView cellForEditorSettingsAtRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForEditorSettingsAtRow:indexPath.row];
+
         case SiteSettingsSectionWriting:
-            cell = [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
+
         case SiteSettingsSectionMedia:
-            cell = [self tableView:tableView cellForMediaSettingsAtRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForMediaSettingsAtRow:indexPath.row];
+
         case SiteSettingsSectionDiscussion:
-            cell = self.discussionSettingsCell;
-            break;
+            return self.discussionSettingsCell;
+
         case SiteSettingsSectionTraffic:
-            cell = self.ampSettingCell;
-            break;
+            return self.ampSettingCell;
+
         case SiteSettingsSectionJetpackSettings:
-            cell = [self tableView:tableView cellForJetpackSettingsAtRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForJetpackSettingsAtRow:indexPath.row];
+
         case SiteSettingsSectionAdvanced:
-            cell = [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
-            break;
+            return [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
     }
 
-    if ([cell isKindOfClass:[SettingTableViewCell class]]) {
-        BOOL shouldShowHighlight = self.highlightIndexPath == indexPath;
-        [(SettingTableViewCell *)cell setShowHighlight:shouldShowHighlight];
-    }
-
-    return cell;
+    NSAssert(false, @"Missing section handler");
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -819,18 +799,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return MediaQuotaCell.height;
         default:
             return UITableViewAutomaticDimension;
-    }
-}
-
-- (void)deselectHighlightedRow
-{
-    NSIndexPath *indexPath = self.highlightIndexPath;
-
-    self.highlightIndexPath = nil;
-
-    if (indexPath) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath]
-                                          withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -1187,10 +1155,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.highlightIndexPath == indexPath) {
-        [self deselectHighlightedRow];
-    }
-
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
