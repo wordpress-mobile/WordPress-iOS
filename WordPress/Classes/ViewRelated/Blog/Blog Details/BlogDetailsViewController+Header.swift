@@ -24,5 +24,13 @@ extension BlogDetailsViewController {
     }
 
     @objc func blogDetailHeaderViewTitleTapped() {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let title = NSLocalizedString("Change site title", comment: "Menu option allowing the user to change their site's title")
+        controller.addAction(UIAlertAction(title: title, style: .default, handler: { [weak self] action in
+        }))
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancels out of a menu"))
+
+        present(controller, animated: true)
     }
 }

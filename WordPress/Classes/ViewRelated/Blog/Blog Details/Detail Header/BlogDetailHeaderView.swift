@@ -9,8 +9,8 @@ class BlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
-    private let titleButton: UIButton = {
-        let button = UIButton(type: .custom)
+    private let titleButton: SpotlightableButton = {
+        let button = SpotlightableButton(type: .custom)
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitleColor(.text, for: .normal)
@@ -70,7 +70,7 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc func toggleSpotlightForSiteTitle() {
-//        titleLabel.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
     }
 
     private enum Constants {
@@ -152,17 +152,9 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc private func titleButtonTapped() {
-        delegate?.blogDetailHeaderViewTitleTapped()
-    }
-}
-
-// MARK: - Set site title
-private extension BlogDetailHeaderView {
-
-    @objc func showSiteTitleSetting() {
-
         QuickStartTourGuide.find()?.visited(.siteTitle)
+        titleButton.shouldShowSpotlight = false
 
-//        titleButton.shouldShowSpotlight = false
+        delegate?.blogDetailHeaderViewTitleTapped()
     }
 }

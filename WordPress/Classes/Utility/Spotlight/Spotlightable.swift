@@ -4,23 +4,9 @@ protocol Spotlightable: UIView {
     var shouldShowSpotlight: Bool { get set }
 }
 
-class SpotlightableLabel: UILabel, Spotlightable {
+class SpotlightableButton: UIButton, Spotlightable {
 
     var spotlight: QuickStartSpotlightView?
-
-    init(_ showSpotlight: Bool = false) {
-
-        super.init(frame: .zero)
-        guard showSpotlight else {
-            return
-        }
-
-        setupSpotlight()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     var shouldShowSpotlight: Bool {
         get {

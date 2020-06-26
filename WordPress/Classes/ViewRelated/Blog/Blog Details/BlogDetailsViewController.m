@@ -1157,7 +1157,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)toggleSpotlightForSiteTitle
 {
-//    [self.headerView toggleSpotlightForSiteTitle];
+    [self.headerView toggleSpotlightForSiteTitle];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
