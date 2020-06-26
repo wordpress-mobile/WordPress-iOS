@@ -487,7 +487,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/182-styled_nav_bar`)
+  - WordPressAuthenticator (~> 1.19.0-beta)
   - WordPressKit (= 4.11.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.9.0)
@@ -537,6 +537,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -626,9 +627,6 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.31.0
-  WordPressAuthenticator:
-    :branch: feature/182-styled_nav_bar
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.31.0/third-party-podspecs/Yoga.podspec.json
 
@@ -644,9 +642,6 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.31.0
-  WordPressAuthenticator:
-    :commit: 585f9e588e3bf36c1fefebb2e57df012181fad52
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -738,6 +733,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 46df7cda325d0c0d7d909d060a51b3192d13e441
+PODFILE CHECKSUM: a36ed61cc0fa2d76bdc10176da4968e2cc9a87ce
 
 COCOAPODS: 1.8.4
