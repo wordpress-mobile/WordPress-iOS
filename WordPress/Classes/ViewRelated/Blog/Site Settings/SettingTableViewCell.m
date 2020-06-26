@@ -36,4 +36,21 @@
     return self.detailTextLabel.text;
 }
 
+- (void)setShowHighlight:(BOOL)showHighlight
+{
+    if (self.accessoryType != UITableViewCellAccessoryDisclosureIndicator) {
+        return;
+    }
+
+    if (showHighlight) {
+        if (![self.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
+            QuickStartSpotlightView *spotlight = [QuickStartSpotlightView new];
+            self.accessoryView = spotlight;
+            [spotlight fadeInWithAnimation];
+        }
+    } else {
+        self.accessoryView = nil;
+    }
+}
+
 @end
