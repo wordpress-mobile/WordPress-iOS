@@ -17,7 +17,7 @@ extension BlogDetailsSubsection {
             return .publish
         case .themes, .customize:
             return .personalize
-        case .sharing, .people, .plugins, .settings:
+        case .sharing, .people, .plugins:
             return .configure
         @unknown default:
             fatalError()
