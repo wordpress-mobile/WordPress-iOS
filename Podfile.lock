@@ -487,7 +487,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.19.0-beta)
   - WordPressKit (= 4.11.0-beta.1)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.9.0)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `issue/newyork-serif-font`)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
@@ -537,7 +537,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -620,6 +619,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :branch: issue/newyork-serif-font
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -633,6 +635,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 74f2bb2c58b1fcd9a10125b78673318d5ef8d0a4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :commit: c70526c2e6b2e1fe32b50462e3c17770733b6916
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -723,6 +728,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 9f4a86c80ce6c489fdb920100c833d8788aefc10
+PODFILE CHECKSUM: 9d4fcbc9c37e981fa2a8eec01e755bde80bec0a5
 
 COCOAPODS: 1.8.4
