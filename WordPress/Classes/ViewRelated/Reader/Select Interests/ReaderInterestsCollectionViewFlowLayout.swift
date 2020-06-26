@@ -105,20 +105,14 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
             return centeredLayoutAttributesForElements(in: rect)
         }
 
-        var layoutAttributes = [UICollectionViewLayoutAttributes]()
-
-        for attribute in self.layoutAttributes {
-            if attribute.frame.intersects(rect) {
-                layoutAttributes.append(attribute)
-            }
+        return self.layoutAttributes.filter {
+            return $0.frame.intersects(rect)
         }
-
-        return layoutAttributes
     }
 
     private func centeredLayoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var rows = [Row]()
-        var rowY: CGFloat = CGFloat.greatestFiniteMagnitude
+        var rowY: CGFloat = .greatestFiniteMagnitude
 
         // Create an array of "rows" based on the y positions
         for attribute in layoutAttributes {
