@@ -5,8 +5,10 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     @IBInspectable public var cellHeight: CGFloat = 40
 
     private var layoutAttributes: [UICollectionViewLayoutAttributes] = []
-    private var layoutDirection: UIUserInterfaceLayoutDirection {
-        return collectionView?.effectiveUserInterfaceLayoutDirection ?? .leftToRight
+
+    private var isRightToLeft: Bool {
+        let layoutDirection: UIUserInterfaceLayoutDirection  = collectionView?.effectiveUserInterfaceLayoutDirection ?? .leftToRight
+        return layoutDirection == .rightToLeft
     }
 
     // The content width minus the content insets used when calculating rows, and centering
@@ -33,7 +35,6 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
 
         let contentInsets = collectionView.contentInset
-        let isRTL = layoutDirection == .rightToLeft
 
         // The current row used to calculate the y position and the total content height
         var currentRow: CGFloat = 0
@@ -50,19 +51,15 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
             var frame: CGRect = CGRect(origin: .zero, size: itemSize)
 
             if item == 0 {
-                let minX: CGFloat = isRTL ? maxContentWidth - frame.width : 0
+                let minX: CGFloat = isRightToLeft ? maxContentWidth - frame.width : 0
                 frame.origin = CGPoint(x: minX, y: contentInsets.top)
             } else {
-                if isRTL {
-                    frame.origin.x = previousFrame.minX - itemSpacing - frame.width
-                } else {
-                    frame.origin.x = previousFrame.maxX + itemSpacing
-                }
+                frame.origin.x = isRightToLeft ? previousFrame.minX - itemSpacing - frame.width : previousFrame.maxX + itemSpacing
 
                 // If the new X position will go off screen move it to the next row
-                let needsNewRow = isRTL ? frame.origin.x < 0 : frame.maxX > maxContentWidth
+                let needsNewRow = isRightToLeft ? frame.origin.x < 0 : frame.maxX > maxContentWidth
                 if needsNewRow {
-                    frame.origin.x = isRTL ? (maxContentWidth - frame.width) : 0
+                    frame.origin.x = isRightToLeft ? (maxContentWidth - frame.width) : 0
                     currentRow += 1
                 }
                 frame.origin.y = currentRow * (cellHeight + itemSpacing) + contentInsets.top
@@ -135,7 +132,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
             if rowY != minY {
                 rowY = minY
 
-                rows.append(Row(itemSpacing: itemSpacing, layoutDirection: layoutDirection))
+                rows.append(Row(itemSpacing: itemSpacing, isRightToLeft: isRightToLeft))
             }
 
             rows.last?.add(attribute: attribute)
@@ -155,11 +152,11 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 private class Row {
     var layoutAttributes = [UICollectionViewLayoutAttributes]()
     let itemSpacing: CGFloat
-    let layoutDirection: UIUserInterfaceLayoutDirection
+    let isRightToLeft: Bool
 
-    init(itemSpacing: CGFloat, layoutDirection: UIUserInterfaceLayoutDirection) {
+    init(itemSpacing: CGFloat, isRightToLeft: Bool) {
         self.itemSpacing = itemSpacing
-        self.layoutDirection = layoutDirection
+        self.isRightToLeft = isRightToLeft
     }
 
     /// Add a new attribute to the row
@@ -174,16 +171,14 @@ private class Row {
     public func centeredLayoutAttributesIn(width: CGFloat) -> [UICollectionViewLayoutAttributes] {
         let centerX = (width - rowWidth) * 0.5
 
-        let isRTL = layoutDirection == .rightToLeft
-        var offset = isRTL ? width - centerX : centerX
+        var offset = isRightToLeft ? width - centerX : centerX
 
         for attribute in layoutAttributes {
             let itemWidth = attribute.frame.width + itemSpacing
 
-            if isRTL {
+            if isRightToLeft {
                 attribute.frame.origin.x = offset - attribute.frame.width
                 offset -= itemWidth
-
             } else {
                 attribute.frame.origin.x = offset
                 offset += itemWidth
