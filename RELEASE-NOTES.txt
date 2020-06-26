@@ -1,7 +1,6 @@
 15.2
 ----
 * [*] Block editor: Display content metrics information (blocks, words, characters count).
-* [**] Block editor: Display content metrics information (blocks, words, characters count).
 * [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
 * [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
 * [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
