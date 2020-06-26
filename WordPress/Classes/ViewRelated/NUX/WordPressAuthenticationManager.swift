@@ -67,8 +67,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarBadgeColor: .accent(.shade20),
                                                 navBarBackgroundColor: .appBar,
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted,
-                                                statusBarStyle: .lightContent)
+                                                prologueTitleColor: .textInverted)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
                                                               textColor: .text,
