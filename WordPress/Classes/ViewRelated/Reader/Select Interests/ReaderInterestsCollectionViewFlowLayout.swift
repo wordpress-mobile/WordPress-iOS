@@ -1,10 +1,13 @@
 import UIKit
 
 class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    @IBInspectable public var itemSpacing : CGFloat = 6
-    @IBInspectable public var cellHeight : CGFloat = 40
+    @IBInspectable public var itemSpacing: CGFloat = 6
+    @IBInspectable public var cellHeight: CGFloat = 40
 
     private var layoutAttributes: [UICollectionViewLayoutAttributes] = []
+    private var layoutDirection: UIUserInterfaceLayoutDirection {
+        return collectionView?.effectiveUserInterfaceLayoutDirection ?? .leftToRight
+    }
 
     // The content width minus the content insets used when calculating rows, and centering
     private var maxContentWidth: CGFloat {
@@ -20,7 +23,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     /// The calculated content size for the view
     private var contentSize: CGSize = .zero
 
-    override open var collectionViewContentSize : CGSize {
+    override open var collectionViewContentSize: CGSize {
         return contentSize
     }
 
@@ -30,6 +33,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
 
         let contentInsets = collectionView.contentInset
+        let isRTL = layoutDirection == .rightToLeft
 
         // The current row used to calculate the y position and the total content height
         var currentRow: CGFloat = 0
@@ -46,14 +50,19 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
             var frame: CGRect = CGRect(origin: .zero, size: itemSize)
 
             if item == 0 {
-                frame.origin = CGPoint(x: 0, y: contentInsets.top)
+                let minX: CGFloat = isRTL ? maxContentWidth - frame.width : 0
+                frame.origin = CGPoint(x: minX, y: contentInsets.top)
             } else {
-                                    frame.origin.x = previousFrame.maxX + itemSpacing
-
+                if isRTL {
+                    frame.origin.x = previousFrame.minX - itemSpacing - frame.width
+                } else {
+                    frame.origin.x = previousFrame.maxX + itemSpacing
+                }
 
                 // If the new X position will go off screen move it to the next row
-                if frame.maxX > maxContentWidth {
-                    frame.origin.x = 0
+                let needsNewRow = isRTL ? frame.origin.x < 0 : frame.maxX > maxContentWidth
+                if needsNewRow {
+                    frame.origin.x = isRTL ? (maxContentWidth - frame.width) : 0
                     currentRow += 1
                 }
 
