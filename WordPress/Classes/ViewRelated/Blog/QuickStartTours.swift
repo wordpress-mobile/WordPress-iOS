@@ -239,7 +239,8 @@ struct QuickStartSiteTitleTour: QuickStartTour {
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString(WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? "Site Title", comment: "The item to select during a guided tour.")
+let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
+let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
         return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
     }()
 
