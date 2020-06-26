@@ -92,12 +92,11 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         guard
             let collectionView = collectionView,
             let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-            delegate.responds(to: #selector(delegate.collectionView(_:layout:sizeForItemAt:)))
+            let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath)
         else {
             return CGSize(width: itemSize.width, height: cellHeight)
         }
 
-        let size = delegate.collectionView!(collectionView, layout: self, sizeForItemAt: indexPath)
         return CGSize(width: size.width, height: cellHeight)
     }
 
