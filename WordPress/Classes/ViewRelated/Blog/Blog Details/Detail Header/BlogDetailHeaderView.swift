@@ -2,17 +2,20 @@
     func siteIconTapped()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
+    func blogDetailHeaderViewTitleTapped()
 }
 
 class BlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
-    private let titleLabel: SpotlightableLabel = {
-        let label = SpotlightableLabel()
-        label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
-        label.adjustsFontForContentSizeCategory = true
-        return label
+    private let titleButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.setTitleColor(.text, for: .normal)
+        button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
+        return button
     }()
 
     private let subtitleLabel: UILabel = {
@@ -48,7 +51,7 @@ class BlogDetailHeaderView: UIView {
             toggleSpotlightForSiteTitle()
             let blogName = blog?.settings?.name
             let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
-            titleLabel.text = title
+            titleButton.setTitle(title, for: .normal)
             subtitleLabel.text = blog?.displayURL as String?
 
             siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
@@ -67,7 +70,7 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc func toggleSpotlightForSiteTitle() {
-        titleLabel.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+//        titleLabel.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
     }
 
     private enum Constants {
@@ -98,7 +101,7 @@ class BlogDetailHeaderView: UIView {
 
         let stackView = UIStackView(arrangedSubviews: [
             siteIconView,
-            titleLabel,
+            titleButton,
             subtitleLabel,
         ])
 
@@ -112,7 +115,7 @@ class BlogDetailHeaderView: UIView {
         addSubview(buttonsStackView)
 
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
-        stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
+        stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleButton)
 
         /// Constraints for constrained widths (iPad portrait)
         let minimumPaddingSideConstraints = [
@@ -138,7 +141,6 @@ class BlogDetailHeaderView: UIView {
         ]
 
         NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
-        addTapToTitleLabel()
     }
 
     override init(frame: CGRect) {
@@ -148,22 +150,19 @@ class BlogDetailHeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    @objc private func titleButtonTapped() {
+        delegate?.blogDetailHeaderViewTitleTapped()
+    }
 }
 
 // MARK: - Set site title
 private extension BlogDetailHeaderView {
 
-    func addTapToTitleLabel() {
-        titleLabel.isUserInteractionEnabled = true
-
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(showSiteTitleSetting))
-        titleLabel.addGestureRecognizer(recognizer)
-    }
-
     @objc func showSiteTitleSetting() {
 
         QuickStartTourGuide.find()?.visited(.siteTitle)
 
-        titleLabel.shouldShowSpotlight = false
+//        titleButton.shouldShowSpotlight = false
     }
 }

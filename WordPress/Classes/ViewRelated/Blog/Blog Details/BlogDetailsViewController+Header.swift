@@ -22,4 +22,7 @@ extension BlogDetailsViewController {
         ])
         return headerView
     }
+
+    @objc func blogDetailHeaderViewTitleTapped() {
+    }
 }
