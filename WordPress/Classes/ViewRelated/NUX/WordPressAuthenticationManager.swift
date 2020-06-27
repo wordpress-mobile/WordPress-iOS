@@ -25,8 +25,8 @@ class WordPressAuthenticationManager: NSObject {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: "",
-                                                                wpcomSecret: "",
+        let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
+                                                                wpcomSecret: ApiCredentials.secret(),
                                                                 wpcomScheme: WPComScheme,
                                                                 wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
                                                                 wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,

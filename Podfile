@@ -139,7 +139,7 @@ end
 ## WordPress iOS
 ## =============
 ##
-target 'WordPress' do
+target 'BeauVoyage' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -156,8 +156,6 @@ target 'WordPress' do
     ##
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
@@ -202,7 +200,7 @@ target 'WordPress' do
     aztec
     wordpress_ui
 
-    target 'WordPressTest' do
+    target 'BeauVoyageTest' do
         inherit! :search_paths
 
         shared_test_pods
@@ -223,7 +221,7 @@ target 'WordPress' do
         require 'commonmarker'
 
         acknowledgements = 'Acknowledgments'
-        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
+        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-BeauVoyage/Pods-BeauVoyage-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
                          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -260,7 +258,7 @@ target 'WordPress' do
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+        File.write("#{project_root}/Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html", styled_html)
     end
 end
 
@@ -268,7 +266,7 @@ end
 ## Share Extension
 ## ===============
 ##
-target 'WordPressShareExtension' do
+target 'BeauVoyageShareExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_extension_pods
@@ -283,7 +281,7 @@ end
 ## DraftAction Extension
 ## =====================
 ##
-target 'WordPressDraftActionExtension' do
+target 'BeauVoyageDraftActionExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_extension_pods
@@ -298,7 +296,7 @@ end
 ## Today Widget
 ## ============
 ##
-target 'WordPressTodayWidget' do
+target 'BeauVoyageTodayWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -310,7 +308,7 @@ end
 ## All Time Widget
 ## ============
 ##
-target 'WordPressAllTimeWidget' do
+target 'BeauVoyageAllTimeWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -322,7 +320,7 @@ end
 ## This Week Widget
 ## ============
 ##
-target 'WordPressThisWeekWidget' do
+target 'BeauVoyageThisWeekWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -334,7 +332,7 @@ end
 ## Notification Content Extension
 ## ==============================
 ##
-target 'WordPressNotificationContentExtension' do
+target 'BeauVoyageNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_kit
@@ -347,7 +345,7 @@ end
 ## Notification Service Extension
 ## ==============================
 ##
-target 'WordPressNotificationServiceExtension' do
+target 'BeauVoyageNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_kit
@@ -370,7 +368,7 @@ end
 ## Screenshot Generation
 ## ===================
 ##
-target 'WordPressScreenshotGeneration' do
+target 'BeauVoyageScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_mocks
@@ -380,7 +378,7 @@ end
 ## UI Tests
 ## ===================
 ##
-target 'WordPressUITests' do
+target 'BeauVoyageUITests' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_mocks
