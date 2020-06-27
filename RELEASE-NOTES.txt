@@ -3,6 +3,8 @@
 * [*] Block editor: Display content metrics information (blocks, words, characters count).
 * [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
 * [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
+* [**] A site's title can now be changed by tapping on the title in the site detail screen.
+* [**] Added a new Quick Start task to set a title for a new site. 
 * [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
 
 -----
