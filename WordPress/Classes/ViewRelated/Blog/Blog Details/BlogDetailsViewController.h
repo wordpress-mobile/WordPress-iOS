@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @class Blog;
+@class BlogDetailHeaderView;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryDomainCredit,
@@ -128,6 +129,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
+@property (nonatomic, strong, readonly) BlogDetailHeaderView * _Nonnull headerView;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
@@ -138,7 +140,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
-- (void)showStatsFromSource:(BlogDetailsNavigationSource)sourc;;
+- (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)refreshSiteIcon;
 - (void)toggleSpotlightForSiteTitle;
 
