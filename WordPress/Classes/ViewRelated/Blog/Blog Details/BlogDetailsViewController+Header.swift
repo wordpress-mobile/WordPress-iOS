@@ -24,11 +24,8 @@ extension BlogDetailsViewController {
         return headerView
     }
 
-    @objc func blogDetailHeaderViewTitleTapped() {
-        showSiteTitleSettings()
-    }
-
-    private func showSiteTitleSettings() {
+    @objc
+    func showSiteTitleSettings() {
         let hint = blog.isAdmin ? SiteTitleStrings.siteTitleHint : SiteTitleStrings.notAnAdminHint
 
         let controller = SettingsTextViewController(text: blog.settings?.name ?? "",

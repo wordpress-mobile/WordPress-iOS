@@ -1031,6 +1031,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return YES;
 }
 
+- (void)siteTitleTapped
+{
+    [self showSiteTitleSettings];
+}
+
 #pragma mark Site Icon Update Management
 
 - (void)showUpdateSiteIconAlert

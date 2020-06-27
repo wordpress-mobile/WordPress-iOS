@@ -1,8 +1,8 @@
-@objc protocol BlogDetailHeaderViewDelegate: class {
+@objc protocol BlogDetailHeaderViewDelegate {
     func siteIconTapped()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
-    func blogDetailHeaderViewTitleTapped()
+    func siteTitleTapped()
 }
 
 class BlogDetailHeaderView: UIView {
@@ -160,6 +160,6 @@ class BlogDetailHeaderView: UIView {
         QuickStartTourGuide.find()?.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
-        delegate?.blogDetailHeaderViewTitleTapped()
+        delegate?.siteTitleTapped()
     }
 }
