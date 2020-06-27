@@ -76,7 +76,7 @@ extension BlogDetailsViewController {
             self?.headerView.refreshSiteTitle()
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
-            
+
             let notice = Notice(title: SiteTitleStrings.settingsSaveErrorTitle,
                                 message: SiteTitleStrings.settingsSaveErrorMessage,
                                 feedbackType: .error)
