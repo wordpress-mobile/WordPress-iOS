@@ -80,6 +80,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         self?.mapUIContentToPostAndSave(immediate: true)
     }
 
+    var wordCount: UInt {
+        return richTextView.wordCount
+    }
+
     // MARK: - Styling Options
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
@@ -808,7 +812,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func setHTML(_ html: String) {
         editorView.setHTML(html)
-
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }

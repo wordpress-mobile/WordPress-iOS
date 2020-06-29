@@ -258,6 +258,7 @@ open class QuickStartTourGuide: NSObject {
 
     static let customizeListTours: [QuickStartTour] = [
         QuickStartCreateTour(),
+        QuickStartSiteTitleTour(),
         QuickStartSiteIconTour(),
         QuickStartThemeTour(),
         QuickStartCustomizeTour(),
