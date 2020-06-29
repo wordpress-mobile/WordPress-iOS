@@ -344,6 +344,7 @@
 		32C765BA23F715E4000A7F11 /* PostSignUpInterstitialCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1A6CE23F7083500AB8CA9 /* PostSignUpInterstitialCoordinator.swift */; };
 		32C765BB23F7170C000A7F11 /* PostSignUpInterstitialCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1A6D323F7111800AB8CA9 /* PostSignUpInterstitialCoordinatorTests.swift */; };
 		32CA6EC02390C61F00B51347 /* PostListEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */; };
+		32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E1BFD924A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
@@ -354,6 +355,7 @@
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F29EB7224042276005313DE /* MeViewController+UIViewControllerRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
+		3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
 		3F43603323F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */; };
@@ -2742,6 +2744,7 @@
 		32A29A16236BC8BC009488C2 /* WordPress 93.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 93.xcdatamodel"; sourceTree = "<group>"; };
 		32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationRotatingMessageViewTests.swift; sourceTree = "<group>"; };
 		32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListEditorPresenter.swift; sourceTree = "<group>"; };
+		32E1BFD924A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderInterestsCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		32F1A6CE23F7083500AB8CA9 /* PostSignUpInterstitialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSignUpInterstitialCoordinator.swift; sourceTree = "<group>"; };
 		32F1A6D323F7111800AB8CA9 /* PostSignUpInterstitialCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSignUpInterstitialCoordinatorTests.swift; sourceTree = "<group>"; };
 		33D5016BDA00B45DFCAF3818 /* Pods-WordPressNotificationServiceExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -2760,6 +2763,7 @@
 		3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 96.xcdatamodel"; sourceTree = "<group>"; };
 		3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeViewController+UIViewControllerRestoration.swift"; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
+		3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotlightable.swift; sourceTree = "<group>"; };
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603023F31E09001DEE70 /* MeScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+BlogDetailsFactory.swift"; sourceTree = "<group>"; };
@@ -5562,7 +5566,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -5854,6 +5858,14 @@
 				325D3B3C23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		32E1BFD824A66801007A08F0 /* Select Interests */ = {
+			isa = PBXGroup;
+			children = (
+				32E1BFD924A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift */,
+			);
+			path = "Select Interests";
 			sourceTree = "<group>";
 		};
 		32F1A6D123F710A300AB8CA9 /* NUX */ = {
@@ -7146,6 +7158,7 @@
 			children = (
 				74729CA52056FE6000D1394D /* SearchableItemConvertable.swift */,
 				740516882087B73400252FD0 /* SearchableActivityConvertable.swift */,
+				3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -9583,6 +9596,7 @@
 		CCB3A03814C8DD5100D43C3F /* Reader */ = {
 			isa = PBXGroup;
 			children = (
+				32E1BFD824A66801007A08F0 /* Select Interests */,
 				F5A738C1244DF92300EDE065 /* Manage */,
 				F597768C243E1E140062BAD1 /* Filter */,
 				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
@@ -10915,7 +10929,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11688,23 +11702,23 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/1PasswordExtension/OnePasswordExtensionResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Automattic-Tracks-iOS/DataModel.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/content-functions.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/inject-css.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/insert-block.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
-				"${PODS_ROOT}/Gutenberg/react-native-gutenberg-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WPMediaPicker/WPMediaPicker.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
@@ -11717,6 +11731,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/OnePasswordExtensionResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DataModel.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
@@ -11733,7 +11748,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WPMediaPicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
@@ -12315,6 +12329,7 @@
 				D82253DF2199418B0014D0E2 /* WebAddressWizardContent.swift in Sources */,
 				400A2C782217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				D853723C21952DC90076F461 /* SiteSegmentsStep.swift in Sources */,
+				32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
 				FF70A3221FD5840500BC270D /* PHAsset+Metadata.swift in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */,
@@ -12514,6 +12529,7 @@
 				400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
+				3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				F53FF3A323EA3E45001AD596 /* BlogDetailsViewController+Header.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
