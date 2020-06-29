@@ -17,7 +17,13 @@ final class ReaderSaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)? = nil) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, viewController: UIViewController?, completion: (() -> Void)? = nil) {
+        /// Preload the post
+        if let viewController = viewController, !post.isSavedForLater, FeatureFlag.readerWebview.enabled {
+            let offlineReaderWebView = OfflineReaderWebView()
+            offlineReaderWebView.saveForLater(post, viewController: viewController)
+        }
+
         trackSaveAction(for: post, origin: origin)
         toggleSavedForLater(post, context: context, origin: origin, completion: completion)
     }
@@ -55,6 +61,10 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
+                                guard !FeatureFlag.newReaderNavigation.enabled else {
+                                    WPTabBarController.sharedInstance().switchToSavedPosts()
+                                    return
+                                }
                                 self.showAll()
         })
 

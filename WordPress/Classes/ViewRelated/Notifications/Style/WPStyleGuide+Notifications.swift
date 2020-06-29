@@ -10,7 +10,7 @@ extension WPStyleGuide {
         //
 
         // NoteTableViewHeader
-        public static let sectionHeaderBackgroundColor = UIColor.listBackground
+        public static let sectionHeaderBackgroundColor = UIColor.ungroupedListBackground
 
         public static var sectionHeaderRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: sectionHeaderParagraph,
@@ -25,8 +25,8 @@ extension WPStyleGuide {
         public static let noticonUnreadColor        = UIColor.primary
         public static let noticonUnmoderatedColor   = UIColor.warning
 
-        public static let noteBackgroundReadColor   = UIColor.listForeground
-        public static let noteBackgroundUnreadColor = UIColor.listForegroundUnread
+        public static let noteBackgroundReadColor   = UIColor.ungroupedListBackground
+        public static let noteBackgroundUnreadColor = UIColor.ungroupedListUnread
 
         public static let noteSeparatorColor        = blockSeparatorColor
 
@@ -65,6 +65,13 @@ extension WPStyleGuide {
             return [.paragraphStyle: snippetParagraph,
                     .font: subjectRegularFont,
                     .foregroundColor: snippetColor ]
+        }
+
+        public static var headerDetailsRegularStyle: [NSAttributedString.Key: Any] {
+            return  [.paragraphStyle: snippetHeaderParagraph,
+                     .font: headerDetailsRegularFont,
+                     .foregroundColor: headerDetailsColor
+            ]
         }
 
         // MARK: - Styles used by NotificationDetailsViewController
@@ -306,6 +313,9 @@ extension WPStyleGuide {
         )
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
+        )
+        fileprivate static let snippetHeaderParagraph   = NSMutableParagraphStyle(
+            minLineHeight: snippetLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural

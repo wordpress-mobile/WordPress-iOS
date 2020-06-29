@@ -1,6 +1,90 @@
+15.2
+----
+* [*] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
+* [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
+* [**] A site's title can now be changed by tapping on the title in the site detail screen.
+* [**] Added a new Quick Start task to set a title for a new site. 
+* [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
+
+-----
+
+15.1
+-----
+* [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
+* [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
+* [**] Block editor: Adds support for theme colors and gradients.
+* [*] App Settings: Added an app-level toggle for light or dark appearance.
+* [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
+* Block editor: [*] Support for breaking out of captions/citation authors by pressing enter on the following blocks: image, video, gallery, quote, and pullquote.
+* Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
+* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour.
+* [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [**] Quick Start: added VoiceOver support to the Next Steps section.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
+* [***] Free GIFs can now be added to the media library, posts, and pages.
+* [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
+* [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
+
+15.0
+-----
+* [**] Block editor: Fix media upload progress when there's no connection.
+* [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
+* Reader: Updated card design
+* [internal] Logging in via 'Continue with Google' has changes that can cause regressions. See https://git.io/Jf2LF for full testing details.
+* [***] Block Editor: New block: Verse
+* [***] Block Editor: Trash icon that is used to remove blocks is moved to the new menu reachable via ellipsis button in the block toolbar
+* [**] Block Editor: Add support for changing overlay color settings in Cover block
+* [**] Block Editor: Add enter/exit animation in FloatingToolbar
+* [**] Block Editor: Block toolbar can now collapse when the block width is smaller than the toolbar content
+* [**] Block Editor: Tooltip for page template selection buttons
+* [*] Block Editor: Fix merging of text blocks when text had active formatting (bold, italic, strike, link)
+* [*] Block Editor: Fix button alignment in page templates and make strings consistent
+* [*] Block Editor: Add support for displaying radial gradients in Buttons and Cover blocks
+* [*] Block Editor: Fix a bug where it was not possible to add a second image after previewing a post
+* [internal] Signing up via 'Continue with Google' has changes that can cause regressions. See https://git.io/JfwjX for full testing details.
+* My Site: Add support for setting the Homepage and Posts Page for a site.
+
+14.9
+-----
+* Streamlined navigation: now there are fewer and better organized tabs, posting shortcuts and more, so you can find what you need fast.
+* My Site: the "Add Posts and Pages" features has been moved. There is a new "Floating Action Button" in "My Site" that lets you create a new post or page without having to navigate to another screen.
+* My Site: the "Me" section has been moved. There is a new button on the top right of "My Site" that lets you access the "Me" section from there.
+* Reader: revamped UI with a tab bar that lets you quickly switch between sections, and filtering and settings panes to easily access and manage your favorite content.
+* [internal] the "Change Username" on the Signup Epilogue screen has navigation changes that can cause regressions. See https://git.io/JfGnv for testing details.
+* [internal] the "3 button view" (WP.com email, Google, SIWA, Site Address) presented after pressing the "Log In" button has navigation changes that can cause regressions. See https://git.io/JfZUV for testing details.
+* [**] Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
+* [**] Block editor: Support for the pullquote block.
+* [**] Block editor: Fix the icons and buttons in Gallery, Paragraph, List and MediaText block on RTL mode.
+* [**] Block editor: Update page templates to use new blocks.
+* [**] Block editor: Fix a crash when uploading new videos on a video block.
+* [**] Block Editor: Add support for changing background and text color in Buttons block
+* [internal] the "enter your password" screen has navigation changes that can cause regressions. See https://git.io/Jfl1C for full testing details.
+* Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
+* [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
+* [*] Fixed a bug on the editors where changing a featured image didn't trigger that the post/page changed.
+
+14.8.1
+-----
+* Fix adding and removing of featured images to posts.
+
 14.8
 -----
- 
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
+* Block editor: Prefill caption for image blocks when available on the Media library
+* Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
+* Block editor: Fix bug where whitespaces at start of text blocks were being removed
+* Block editor: Add support for upload options in Cover block
+* Block editor: Floating toolbar, previously located above nested blocks, is now placed at the bottom of the screen
+* Block editor: Fix the icons in FloatingToolbar on RTL mode
+* Block editor: Fix Quote block so it visually reflects selected alignment
+* Block editor: Fix bug where buttons in page templates were not rendering correctly on web
+* Block editor: Remove Subscription Button from the Blog template since it didn't have an initial functionality and it is hard to configure for users.
+* [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
+* Updated UI for Login and Signup epilogues.
+* Fixes delayed split view resizing while rotating your device.
+
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
@@ -19,9 +103,9 @@
 * Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
 * You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
 
-* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
-* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
- 
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites.
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
+
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.

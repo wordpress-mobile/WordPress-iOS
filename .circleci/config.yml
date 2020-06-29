@@ -6,6 +6,14 @@ orbs:
   git: wordpress-mobile/git@1.0
   slack: circleci/slack@3.4.2
 
+parameters:
+  translation_review_build:
+    type: boolean
+    default: false
+  translation_review_lang_id:
+    type: string
+    default: all-lang
+
 commands:
   fix-path:
     steps:
@@ -154,15 +162,66 @@ jobs:
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
-
       - run:
           name: Build
           working_directory: Scripts
-          command: "bundle exec fastlane build_and_upload_release skip_confirm:true"
+          command: |
+            APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
+            echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
+            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
+            bundle exec fastlane build_and_upload_release skip_confirm:true
           no_output_timeout: 60m
+      - slack/status:
+          include_job_number_field: false
+          include_project_field: false
+          include_visit_job_action: false
+          webhook: '${SLACK_BUILD_WEBHOOK}'
+          failure_message: '${SLACK_FAILURE_MESSAGE}'
+          success_message: '${SLACK_SUCCESS_MESSAGE}'
+  translation-review-build:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run: 
+          name: Install other tools
+          command: |
+            brew unlink python@2
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: | 
+            bundle exec fastlane build_for_translation_review
+
+            VERSION_NAME="all-land-build-${CIRCLE_BUILD_NUM}"
+            echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
+
+            mkdir -p ../Artifacts
+            mv /var/tmp/Debug-iphonesimulator/WordPress.zip "../Artifacts/WordPress-${VERSION_NAME}.zip"
+          no_output_timeout: 60m
+      - run: 
+          name: Upload APP
+          command: |
+            curl --http1.1 https://${APPET_TOKEN}@api.appetize.io/v1/apps/${APPET_APPID} -F "file=@Artifacts/WordPress-${VERSION_NAME}.zip" -F "platform=ios"
+      - store_artifacts:
+          path: Artifacts
+          destination: Artifacts
 
 workflows:
   wordpress_ios:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Build Tests
       - Unit Tests:
@@ -206,6 +265,7 @@ workflows:
           device: iPad Air \\(3rd generation\\)
           requires: [ "Optional Tests" ]
   Installable Build:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Hold:
           type: approval
@@ -218,11 +278,16 @@ workflows:
             branches:
               ignore: /pull\/[0-9]+/
   Release Build:
+    unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Release Build: 
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/ 
+              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
+  Translation Review Build:
+    when: << pipeline.parameters.translation_review_build >>
+    jobs:
+      - translation-review-build
 

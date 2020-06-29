@@ -1,0 +1,58 @@
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Regular'), url('NotoSerif-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Bold'), url('NotoSerif-Bold.ttf') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype'); font-style: italic; }
+@font-face { font-family: 'Noto Serif'; src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype'); font-weight: bold; font-style: italic; }
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  -webkit-text-size-adjust: none !important; font: -apple-system-body !important; font-family: 'Noto Serif', serif !important; font-weight: 400 !important; padding: 0; margin: 0; background-color: transparent;
+}
+
+a { text-decoration: none; color: var(--main-link-color); }
+
+pre { overflow-x: scroll; background-color: var(--color-neutral-0); padding: 1em; }
+
+p, div, li { line-height: 1.6em; font-size: 100%; }
+
+h1, h2, h3, h4, h5, h6 { line-height: 1.6em; }
+
+hr {
+  border: 1px solid var(--color-neutral-0);
+}
+
+table {
+  width: 100%
+}
+
+div.feedflare { display: none; }
+
+.sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
+
+img {
+    opacity: 0;
+}
+
+iframe {
+    max-width: 100%;
+}
+
+@media (max-width: 660px) {
+    .alignleft img,
+    .alignright img {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+/* Safari overrides */
+
+figure {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}

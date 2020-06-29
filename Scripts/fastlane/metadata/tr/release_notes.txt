@@ -1,11 +1,9 @@
-Site Oluşturma, bazı ara adımlar kaldırılarak kolaylaştırıldı. İstediğiniz site türünü seçin, bir alan adı girin ve işiniz bitti.
+Her zamanki gibi, blok düzenleyicide bir sürü iyileştirme var. Blokları kaldırmak için kullandığınız çöp kutusu simgesi artık, blok araç çubuğundaki üç nokta düğmesine dokunarak ulaşabileceğiniz bir menüde. Ayrıca Kapak blokundaki katman renkleri için destek, Düğme ve Kapak bloklarındaki dairesel gradyanlar için destek, Kayan Araç Çubuğunda giriş/çıkış animasyonu ve sayfa şablonu seçim düğmeleri için araç ipucu ekledik. Ve artık blok, blok araç çubuğundan daha dar olduğunda araç çubuğu daralıyor.
 
-Blok düzenleyicide daha fazla iyileştirme yapıldı: Kapak bloğu artık kullanılabilir; Başlık bloğunda hizalama seçenekleri vardır; ve bir açılır araç çubuğu Başlık, Paragraf, Resim, MediaText blokları için hizalamayı kolaylaştırır. Ve seçilmemiş bloklar üzerindeki karartma efektini kaldırdık.
+Daha toplu bir blok düzenleyici deneyimi için pek çok düzeltme de yaptık.
+Medya karşıya yüklerken bağlantı olmadığında donmak yerine bir “yeniden deneme” mesajı görüntülenecek, hem bloklar hem de metin için geri al / yinele daha güvenilir bir biçimde çalışacak, metin bloklarıyla ilgili bir birleştirme sorununu düzelttik ve sayfa şablonlarındaki düğme hizalamasını düzelttik.
 
-Bildirimler ekranının düzeni, bazı cep telefonu modellerinin gövdesi altında metnin kaybolmasına neden oldu. Bu düzeltildi!
+Site ayarlarından ana sayfanızı ve gönderiler sayfanızı değiştirmenize imkan veren yeni bir ayar ekledik.
 
-Bazen bir yorumda bir kişiyi @ belirtmeye çalışırsınız ve uygulama adları önerir, ancak bir tane seçmenize izin vermez - bu da düzeltildi. Ayrıca, Site Sayfaları ekranına erişmeye çalıştığınızda veya blog yayınlarınıza ulaşmak için iPad'lerde Hızlı İşlem düğmelerini kullandığınızda uygulamanın kilitlenmesine neden olan diğer birkaç sorunu da hallettik. Sayfalardan ve yayınlardan bahsetmişken, iOS 13 çalıştıran iPad'ler için önizlemeler artık daha büyük.
+Son olarak, yeni bir fotoğraf çekmeye çalıştığınızda fotoğraf düzenleme ekranında sıkışmanıza neden olan bir Gravatar sorununu düzelttik ve Reader’da bazı kullanıcı arayüzü güncellemeleri yaptık.
 
-Karanlık modumuzu kahvemizi sevdiğimiz gibi seviyoruz: gerçekten karanlık ve içinde yüzen herhangi bir hata olmadan. Aydınlık ve karanlık modlarında bazı aksaklıklar vardı ve bazen birinden diğerine geçtiğinizde işler garip bir şekilde davrandı. Şu anda bu hatalardan çok daha azı var.
-
-Hepiniz güvende olun.

@@ -226,6 +226,37 @@ import WordPressShared
         return false
     }
 
+    // convenience method that returns the topic type
+    class func topicType(_ topic: ReaderAbstractTopic?) -> ReaderTopicType {
+        guard let topic = topic else {
+            return .noTopic
+        }
+        if topicIsDiscover(topic) {
+            return .discover
+        }
+        if topicIsFollowing(topic) {
+            return .following
+        }
+        if topicIsLiked(topic) {
+            return .likes
+        }
+        if isTopicList(topic) {
+            return .list
+        }
+        if isTopicSearchTopic(topic) {
+            return .search
+        }
+        if isTopicSite(topic) {
+            return .site
+        }
+        if isTopicTag(topic) {
+            return .tag
+        }
+        if topic is ReaderTeamTopic {
+            return .team
+        }
+        return .noTopic
+    }
 
     // MARK: Logged in helper
 
@@ -236,45 +267,70 @@ import WordPressShared
 
 /// Reader tab items
 extension ReaderHelpers {
-    /// Display title for topics that do not use the default title
-    class func displayTitle(for topic: ReaderAbstractTopic) -> String {
-        if topicIsFollowing(topic) {
-            return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
-        } else if topicIsLiked(topic) {
-            return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
-        }
-        return topic.title
-    }
+
+    static let defaultSavedItemPosition = 3
+
     /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
+
+        guard !items.isEmpty else {
+                   return items
+               }
+
         var mutableItems = items
         mutableItems.sort {
-            guard let leftTopic = $0.topic, let rightTopic = $1.topic else {
+            guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
                 return true
             }
             // first item: Following
             if topicIsFollowing(leftTopic) {
                 return true
-            } else if topicIsFollowing(rightTopic) {
+            }
+            if topicIsFollowing(rightTopic) {
                 return false
+            }
             // second item: Discover
-            } else if topicIsDiscover(leftTopic) {
+            if topicIsDiscover(leftTopic) {
                 return true
-            } else if topicIsDiscover(rightTopic) {
+            }
+            if topicIsDiscover(rightTopic) {
                 return false
+            }
             // third item: Likes
-            } else if topicIsLiked(leftTopic) {
+            if topicIsLiked(leftTopic) {
                 return true
-            } else if topicIsLiked(rightTopic) {
+            }
+            if topicIsLiked(rightTopic) {
                 return false
             // any other items: sort them alphabetically, grouped by topic type
-            } else if leftTopic.type == rightTopic.type {
+            }
+            if leftTopic.type == rightTopic.type {
                 return leftTopic.title < rightTopic.title
             }
             return true
         }
+
         // fourth item: Saved. It's manually inserted after the sorting
-        mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: 3)
+        let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
+        mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
+        // in case of log in with a self hosted site, prepend a 'dummy' Following tab
+        if !isLoggedIn() {
+            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: 0)
+        }
         return mutableItems
     }
+}
+
+
+/// Typed topic type
+enum ReaderTopicType {
+    case discover
+    case following
+    case likes
+    case list
+    case search
+    case site
+    case tag
+    case team
+    case noTopic
 }

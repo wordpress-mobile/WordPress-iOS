@@ -82,14 +82,23 @@ ALL_LANGS={
 }
 
 langs = {}
+strings_filter = ""
+strings_file_ext = ""
 if ARGV.count > 0
-  for key in ARGV
-    unless local = ALL_LANGS[key]
-      puts "Unknown language #{key}"
-      exit 1
+  if (ARGV[0] == "review") then
+    langs = ALL_LANGS
+
+    strings_filter = "filters[status]=#{ARGV[1]}\&"
+    strings_file_ext = "_#{ARGV[1]}"
+  else
+    for key in ARGV
+      unless local = ALL_LANGS[key]
+        puts "Unknown language #{key}"
+        exit 1
+      end
+      langs[key] = local
     end
-    langs[key] = local
-  end
+  end 
 else
   langs = ALL_LANGS
 end
@@ -98,21 +107,23 @@ langs.each do |code,local|
   lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
   puts "Updating #{code}"
   system "mkdir -p #{lang_dir}"
-  system "if [ -e #{lang_dir}/Localizable.strings ]; then cp #{lang_dir}/Localizable.strings #{lang_dir}/Localizable.strings.bak; fi"
 
-  url = "https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?format=strings"
-  destination = "#{lang_dir}/Localizable.strings"
+  # Download for production
+  system "if [ -e #{lang_dir}/Localizable#{strings_file_ext}.strings ]; then cp #{lang_dir}/Localizable#{strings_file_ext}.strings #{lang_dir}/Localizable#{strings_file_ext}.strings.bak; fi"
 
-  system "curl -fLso #{destination} #{url}" or begin
+  url = "https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?#{strings_filter}format=strings"
+  destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
+
+  system "curl -fLso #{destination} \"#{url}\"" or begin
     puts "Error downloading #{code}"
   end
 
   if File.size(destination).to_f == 0
-      abort("\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m")
+    abort("\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m")
   end
 
-  system "./Scripts/fix-translation #{lang_dir}/Localizable.strings"
-  system "plutil -lint #{lang_dir}/Localizable.strings" and system "rm #{lang_dir}/Localizable.strings.bak"
-  system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable.strings"
+  system "./Scripts/fix-translation #{lang_dir}/Localizable#{strings_file_ext}.strings"
+  system "plutil -lint #{lang_dir}/Localizable#{strings_file_ext}.strings" and system "rm #{lang_dir}/Localizable#{strings_file_ext}.strings.bak"
+  system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable#{strings_file_ext}.strings"
 end
-system "Scripts/extract-framework-translations.swift"
+system "Scripts/extract-framework-translations.swift" if strings_filter.empty? 

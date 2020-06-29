@@ -1,5 +1,4 @@
 private var spotlightView: QuickStartSpotlightView?
-private let spotlightViewOffset: CGFloat = -5.0
 private var quickStartObserver: NSObject?
 
 extension WPTabBarController {
@@ -10,29 +9,30 @@ extension WPTabBarController {
 
             guard let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
-                [.newpost, .readerTab].contains(element),
-                let tabBar = self?.tabBar else {
+                [.readerTab].contains(element) else {
                     return
             }
 
             let newSpotlight = QuickStartSpotlightView()
-            tabBar.addSubview(newSpotlight)
+            self?.view.addSubview(newSpotlight)
 
-            let x: CGFloat
-            if element == .newpost {
-                x = tabBar.bounds.size.width / 2.0
-            } else {
-                x = tabBar.bounds.size.width * 0.40 - newSpotlight.frame.size.width
+            guard let tabButton = self?.getTabButton(at: Int(WPTabType.reader.rawValue)) else {
+                return
             }
-            newSpotlight.frame = CGRect(x: x, y: spotlightViewOffset, width: newSpotlight.frame.width, height: newSpotlight.frame.height)
+
+            newSpotlight.translatesAutoresizingMaskIntoConstraints = false
+
+            let newSpotlightCenterX = newSpotlight.centerXAnchor.constraint(equalTo: tabButton.centerXAnchor, constant: Constants.spotlightXOffset)
+            let newSpotlightCenterY = newSpotlight.centerYAnchor.constraint(equalTo: tabButton.centerYAnchor, constant: Constants.spotlightYOffset)
+            let newSpotlightWidth = newSpotlight.widthAnchor.constraint(equalToConstant: Constants.spotlightDiameter)
+            let newSpotlightHeight = newSpotlight.heightAnchor.constraint(equalToConstant: Constants.spotlightDiameter)
+
+            NSLayoutConstraint.activate([newSpotlightCenterX, newSpotlightCenterY, newSpotlightWidth, newSpotlightHeight])
+
             spotlightView = newSpotlight
         }
 
         quickStartObserver = observer as? NSObject
-    }
-
-    @objc func alertQuickStartThatWriteWasTapped() {
-        tourGuide.visited(.newpost)
     }
 
     @objc func alertQuickStartThatReaderWasTapped() {
@@ -46,5 +46,17 @@ extension WPTabBarController {
     @objc func stopWatchingQuickTours() {
         NotificationCenter.default.removeObserver(quickStartObserver as Any)
         quickStartObserver = nil
+    }
+
+    private func getTabButton(at index: Int) -> UIView? {
+        var tabs = tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
+        tabs.sort { $0.frame.origin.x < $1.frame.origin.x }
+        return tabs[safe: index]
+    }
+
+    private enum Constants {
+        static let spotlightDiameter: CGFloat = 40
+        static let spotlightXOffset: CGFloat = 20
+        static let spotlightYOffset: CGFloat = -10
     }
 }

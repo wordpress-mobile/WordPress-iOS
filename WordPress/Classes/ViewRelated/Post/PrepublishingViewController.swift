@@ -31,10 +31,12 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
-        PrepublishingOption(id: .schedule, title: Constants.publishLabel),
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
+        PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
+
+    private var didTapPublish = false
 
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
@@ -147,9 +149,7 @@ class PrepublishingViewController: UITableViewController {
         let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
-            if !tags.isEmpty {
-                WPAnalytics.track(.editorPostTagsAdded, properties: Constants.analyticsDefaultProperty)
-            }
+            WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
             self?.post.tags = tags
             self?.reloadData()
@@ -169,6 +169,7 @@ class PrepublishingViewController: UITableViewController {
 
         visbilitySelectorViewController.completion = { [weak self] option in
             self?.reloadData()
+            self?.updatePublishButtonLabel()
 
             WPAnalytics.track(.editorPostVisibilityChanged, properties: Constants.analyticsDefaultProperty)
 
@@ -186,8 +187,9 @@ class PrepublishingViewController: UITableViewController {
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
-        cell.textLabel?.text = post.hasFuturePublishDate() ? Constants.scheduledLabel : Constants.publishLabel
+        cell.textLabel?.text = post.shouldPublishImmediately() ? Constants.publishDateLabel : Constants.scheduledLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
+        post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
@@ -197,7 +199,7 @@ class PrepublishingViewController: UITableViewController {
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
-                WPAnalytics.track(.editorPostScheduled, properties: Constants.analyticsDefaultProperty)
+                WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
                 self?.publishSettingsViewModel.setDate(date)
                 self?.reloadData()
                 self?.updatePublishButtonLabel()
@@ -243,6 +245,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     @objc func publish(_ sender: UIButton) {
+        didTapPublish = true
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
             self.completion(self.post)
@@ -298,7 +301,7 @@ class PrepublishingViewController: UITableViewController {
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
-        static let publishLabel = NSLocalizedString("Publish", comment: "Label for Publish")
+        static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
         static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
         static let headerHeight: CGFloat = 70
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
@@ -308,5 +311,18 @@ class PrepublishingViewController: UITableViewController {
 extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
     func closeButtonTapped() {
         dismiss(animated: true)
+    }
+}
+
+extension PrepublishingViewController: PrepublishingDismissible {
+    func handleDismiss() {
+        guard
+            !didTapPublish,
+            post.status == .publishPrivate,
+            let originalStatus = post.original?.status else {
+            return
+        }
+
+        post.status = originalStatus
     }
 }

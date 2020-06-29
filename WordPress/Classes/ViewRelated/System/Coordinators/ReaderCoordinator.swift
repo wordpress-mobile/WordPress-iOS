@@ -40,6 +40,10 @@ class ReaderCoordinator: NSObject {
     }
 
     func showDiscover() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().switchToDiscover()
+            return
+        }
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover,
@@ -47,6 +51,10 @@ class ReaderCoordinator: NSObject {
     }
 
     func showSearch() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().navigateToReaderSearch()
+            return
+        }
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .search,
@@ -54,12 +62,25 @@ class ReaderCoordinator: NSObject {
     }
 
     func showA8CTeam() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
+                guard (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cTeamSlug else {
+                    return false
+                }
+                return true
+            })
+            return
+        }
         prepareToNavigate()
 
         readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: isNavigatingFromSource)
     }
 
     func showMyLikes() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().switchToMyLikes()
+            return
+        }
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .likes,
@@ -67,6 +88,10 @@ class ReaderCoordinator: NSObject {
     }
 
     func showManageFollowing() {
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance()?.switchToFollowedSites()
+            return
+        }
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: false)
@@ -85,6 +110,11 @@ class ReaderCoordinator: NSObject {
             return
         }
 
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance()?.switchToTopic(where: { $0 == topic })
+            return
+        }
+
         if !isNavigatingFromSource {
             prepareToNavigate()
         }
@@ -98,12 +128,19 @@ class ReaderCoordinator: NSObject {
     }
 
     func showTag(named tagName: String) {
-        if !isNavigatingFromSource {
+        if !isNavigatingFromSource, !FeatureFlag.newReaderNavigation.enabled {
             prepareToNavigate()
         }
 
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            getTagTopic(tagSlug: slug) { result in
+                guard let topic = try? result.get() else { return }
+                WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
+            }
+            return
+        }
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
         controller.streamLoadFailureBlock = failureBlock
 
@@ -111,7 +148,35 @@ class ReaderCoordinator: NSObject {
         readerMenuViewController.deselectSelectedRow(animated: false)
     }
 
+    private func getTagTopic(tagSlug: String, completion: @escaping (Result<ReaderTagTopic, Error>) -> Void) {
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.tagTopicForTag(withSlug: tagSlug,
+            success: { objectID in
+
+                guard let objectID = objectID,
+                    let topic = try? ContextManager.sharedInstance().mainContext.existingObject(with: objectID) as? ReaderTagTopic else {
+                    DDLogError("Reader: Error retriving tag topic - invalid tag slug")
+                    return
+                }
+                completion(.success(topic))
+            },
+            failure: { error in
+                let defaultError = NSError(domain: "readerTagTopicError", code: -1, userInfo: nil)
+                DDLogError("Reader: Error retriving tag topic - " + (error?.localizedDescription ?? "unknown failure reason"))
+                completion(.failure(error ?? defaultError))
+            })
+    }
+
     func showStream(with siteID: Int, isFeed: Bool) {
+
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { result in
+                guard let topic = try? result.get() else { return }
+                WPTabBarController.sharedInstance()?.navigateToReaderSite(topic)
+            }
+            return
+        }
+
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
         controller.streamLoadFailureBlock = failureBlock
 
@@ -125,14 +190,56 @@ class ReaderCoordinator: NSObject {
         }
     }
 
-    func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
-        let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
-                                                                                   siteID: feedID as NSNumber,
-                                                                                   isFeed: isFeed)
+    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (Result<ReaderSiteTopic, Error>) -> Void) {
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.siteTopicForSite(withID: siteID,
+        isFeed: isFeed,
+        success: { objectID, isFollowing in
 
-        detailViewController.postLoadFailureBlock = { [weak self, failureBlock] in
-            self?.topNavigationController?.popViewController(animated: false)
+            guard let objectID = objectID,
+                let topic = try? ContextManager.sharedInstance().mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
+                DDLogError("Reader: Error retriving site topic - invalid Site Id")
+                return
+            }
+            completion(.success(topic))
+        },
+        failure: { error in
+            let defaultError = NSError(domain: "readerSiteTopicError", code: -1, userInfo: nil)
+            DDLogError("Reader: Error retriving site topic - " + (error?.localizedDescription ?? "unknown failure reason"))
+            completion(.failure(error ?? defaultError))
+        })
+    }
+
+    func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
+        let postLoadFailureBlock = { [weak self, failureBlock] in
+            if FeatureFlag.newReaderNavigation.enabled {
+                self?.readerNavigationController.popToRootViewController(animated: false)
+            } else {
+                self?.topNavigationController?.popViewController(animated: false)
+            }
             failureBlock?()
+        }
+
+        var detailViewController: UIViewController
+        if FeatureFlag.readerWebview.enabled {
+            let readerDetailViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID as NSNumber,
+                                                                                       siteID: feedID as NSNumber,
+                                                                                       isFeed: isFeed)
+
+            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
+            detailViewController = readerDetailViewController
+        } else {
+            let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
+                                                                                       siteID: feedID as NSNumber,
+                                                                                       isFeed: isFeed)
+
+            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
+            detailViewController = readerDetailViewController
+        }
+
+        guard !FeatureFlag.newReaderNavigation.enabled else {
+            WPTabBarController.sharedInstance().navigateToReader(detailViewController)
+            return
         }
 
         if isNavigatingFromSource {

@@ -9,7 +9,7 @@ final class NewsCardTests: XCTestCase {
         static let content = "😳😳"
         static let url = URL(string: "http://wordpress.com")!
         static let version = Decimal(floatLiteral: 10.7)
-        static let readMore = NSLocalizedString("Read More", comment: "Read more")
+        static let readMore = NSLocalizedString("Learn More", comment: "Learn more")
         static let dismiss = NSLocalizedString("Dismiss", comment: "Dismiss")
     }
 
@@ -36,7 +36,7 @@ final class NewsCardTests: XCTestCase {
         }
 
         func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
-            let newsItem = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.url, version: Constants.version)
+            let newsItem = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.url, imageName: "", version: Constants.version)
             let result: Result<NewsItem, Error> = .success(newsItem)
 
             completion(result)

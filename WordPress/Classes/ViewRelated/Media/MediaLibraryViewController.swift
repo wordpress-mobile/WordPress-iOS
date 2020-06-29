@@ -664,19 +664,19 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
     }
 }
 
-// MARK: Giphy Picker Delegate
+// MARK: Tenor Picker Delegate
 
-extension MediaLibraryViewController: GiphyPickerDelegate {
-    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
+extension MediaLibraryViewController: TenorPickerDelegate {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
         guard assets.count > 0 else {
             return
         }
 
         let mediaCoordinator = MediaCoordinator.shared
-        assets.forEach { giphyMedia in
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.giphy), selectionMethod: .fullScreenPicker)
-            mediaCoordinator.addMedia(from: giphyMedia, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.giphyUploaded)
+        assets.forEach { tenorMedia in
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.tenor), selectionMethod: .fullScreenPicker)
+            mediaCoordinator.addMedia(from: tenorMedia, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.tenorUploaded)
         }
     }
 }

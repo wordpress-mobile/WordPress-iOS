@@ -39,8 +39,9 @@ class NotificationService: UNNotificationServiceExtension {
             let notificationType = notificationContent.type,
             let notificationKind = NotificationKind(rawValue: notificationType),
             token != nil else {
-            tracks.trackNotificationMalformed(properties: ["have_token": (token != nil) as AnyObject,
-                                                           "content": request.content])
+
+            let hasToken = token != nil
+            tracks.trackNotificationMalformed(hasToken: hasToken, notificationBody: request.content.body)
             contentHandler(request.content)
 
             return

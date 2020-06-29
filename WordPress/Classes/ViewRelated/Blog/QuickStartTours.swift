@@ -5,6 +5,7 @@ protocol QuickStartTour {
 
     var key: String { get }
     var title: String { get }
+    var titleMarkedCompleted: String { get } // assists VoiceOver users
     var analyticsKey: String { get }
     var description: String { get }
     var icon: UIImage { get }
@@ -12,12 +13,19 @@ protocol QuickStartTour {
     var suggestionYesText: String { get }
     var waypoints: [WayPoint] { get }
     var accessibilityHintText: String { get }
+    var showWaypointNotices: Bool { get }
 }
 
 extension QuickStartTour {
     var waypoints: [WayPoint] {
         get {
             return []
+        }
+    }
+
+    var showWaypointNotices: Bool {
+        get {
+            return true
         }
     }
 }
@@ -31,14 +39,15 @@ struct QuickStartChecklistTour: QuickStartTour {
     let key = "quick-start-checklist-tour"
     let analyticsKey = "view_list"
     let title = NSLocalizedString("Continue with site setup", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Continue with site setup", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Time to finish setting up your site! Our checklist walks you through the next steps.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to see your checklist", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("Quick Start", comment: "The menu item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to see your checklist", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Quick Start", comment: "The menu item to select during a guided tour.")
         return [(element: .checklist, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.listCheckmark)))]
     }()
 
@@ -49,6 +58,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let key = "quick-start-create-tour"
     let analyticsKey = "create_site"
     let title = NSLocalizedString("Create your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Create your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Get your site up and running", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
@@ -65,6 +75,7 @@ struct QuickStartUpgradeToV2Tour: QuickStartTour {
     let key = "quick-start-upgrade-to-v2"
     let analyticsKey = "upgrade_to_v2"
     let title = ""
+    let titleMarkedCompleted = ""
     let description = ""
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow
@@ -79,14 +90,15 @@ struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let analyticsKey = "view_site"
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: View your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.external)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to preview", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("View Site", comment: "The menu item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to preview", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("View Site", comment: "The menu item to select during a guided tour.")
         return [(element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.house)))]
     }()
 
@@ -97,14 +109,15 @@ struct QuickStartThemeTour: QuickStartTour {
     let key = "quick-start-theme-tour"
     let analyticsKey = "browse_themes"
     let title = NSLocalizedString("Choose a theme", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Choose a theme", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Browse all our themes to find your perfect fit.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.themes)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to discover new themes", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("Themes", comment: "The menu item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to discover new themes", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Themes", comment: "The menu item to select during a guided tour.")
         return [(element: .themes, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.themes)))]
     }()
 
@@ -115,18 +128,19 @@ struct QuickStartCustomizeTour: QuickStartTour {
     let key = "quick-start-customize-tour"
     let analyticsKey = "customize_site"
     let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Customize your site", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.customize)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step1DescriptionTarget = NSLocalizedString("Themes", comment: "The menu item to tap during a guided tour.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionTarget = NSLocalizedString("Themes", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .themes, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.themes)))
 
-        let step2DescriptionBase = NSLocalizedString("Tap %@ to start personalising your site", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step2DescriptionTarget = NSLocalizedString("Customize", comment: "The menu item to tap during a guided tour.")
+        let step2DescriptionBase = NSLocalizedString("Select %@ to start personalising your site", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DescriptionTarget = NSLocalizedString("Customize", comment: "The menu item to select during a guided tour.")
         let step2: WayPoint = (element: .customize, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.themes)))
 
         return [step1, step2]
@@ -139,18 +153,19 @@ struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
     let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Enable post sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.share)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step1DescriptionTarget = NSLocalizedString("Sharing", comment: "The menu item to tap during a guided tour.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionTarget = NSLocalizedString("Sharing", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.share)))
 
-        let step2DescriptionBase = NSLocalizedString("Tap the %@ to add your social media accounts", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step2DescriptionTarget = NSLocalizedString("connections", comment: "The menu item to tap during a guided tour.")
+        let step2DescriptionBase = NSLocalizedString("Select the %@ to add your social media accounts", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DescriptionTarget = NSLocalizedString("connections", comment: "The menu item to select during a guided tour.")
         let step2: WayPoint = (element: .connections, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: nil))
 
         return [step1, step2]
@@ -163,13 +178,15 @@ struct QuickStartPublishTour: QuickStartTour {
     let key = "quick-start-publish-tour"
     let analyticsKey = "publish_post"
     let title = NSLocalizedString("Publish a post", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Publish a post", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("It's time! Draft and publish your very first post.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.create)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let showWaypointNotices = false
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionBase = NSLocalizedString("Select %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
     }()
 
@@ -180,25 +197,22 @@ struct QuickStartFollowTour: QuickStartTour {
     let key = "quick-start-follow-tour"
     let analyticsKey = "follow_site"
     let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Follow other sites", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.readerFollow)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to tap during a guided tour.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
-        let step2DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step2DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to tap during a guided tour.")
-        let step2: WayPoint = (element: .readerBack, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.chevronLeft)))
+        let step2DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
+        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
 
-        let step3DescriptionBase = NSLocalizedString("Tap %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let step3DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to tap during a guided tour.")
-        let step3: WayPoint = (element: .readerSearch, description: step3DescriptionBase.highlighting(phrase: step3DescriptionTarget, icon: .gridicon(.search)))
-
-        return [step1, step2, step3]
+        return [step1, step2]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of following other sites.", comment: "This value is used to set the accessibility hint text for following the sites of other users.")
@@ -212,18 +226,40 @@ struct QuickStartFollowTour: QuickStartTour {
     }
 }
 
+struct QuickStartSiteTitleTour: QuickStartTour {
+    let key = "quick-start-site-title-tour"
+    let analyticsKey = "site_title"
+    let title = NSLocalizedString("Set your site title", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Set your site title", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Give your site a name that reflects its personality and topic. First impressions count!",
+                                        comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.pencil)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
+        let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
+        return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
+    }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
+}
+
 struct QuickStartSiteIconTour: QuickStartTour {
     let key = "quick-start-site-icon-tour"
     let analyticsKey = "site_icon"
     let title = NSLocalizedString("Upload a site icon", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Upload a site icon", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("Your Site Icon", comment: "The item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Your Site Icon", comment: "The item to select during a guided tour.")
         return [(element: .siteIcon, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
     }()
 
@@ -234,16 +270,17 @@ struct QuickStartNewPageTour: QuickStartTour {
     let key = "quick-start-new-page-tour"
     let analyticsKey = "new_page"
     let title = NSLocalizedString("Create a new page", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Create a new page", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Add a page for key content — an “About” page is a great start.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let pagesStepDesc = NSLocalizedString("Tap %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let pagesStepTarget = NSLocalizedString("Site Pages", comment: "The item to tap during a guided tour.")
+        let pagesStepDesc = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let pagesStepTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
 
-        let newStepDesc = NSLocalizedString("Tap %@ to create a new page.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let newStepDesc = NSLocalizedString("Select %@ to create a new page.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
 
         return [
             (element: .pages, description: pagesStepDesc.highlighting(phrase: pagesStepTarget, icon: nil)),
@@ -258,14 +295,15 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let key = "quick-start-check-stats-tour"
     let analyticsKey = "check_stats"
     let title = NSLocalizedString("Check your site stats", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Check your site stats", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Keep up to date on your site’s performance.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.statsAlt)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("Stats", comment: "The item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Stats", comment: "The item to select during a guided tour.")
         return [(element: .stats, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.stats)))]
     }()
 
@@ -276,14 +314,15 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let key = "quick-start-explore-plans-tour"
     let analyticsKey = "explore_plans"
     let title = NSLocalizedString("Explore plans", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Explore plans", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Learn about the marketing and SEO tools in our paid plans.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.plans)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Tap %@ to see your current plan and other available plans.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
-        let descriptionTarget = NSLocalizedString("Plan", comment: "The item to tap during a guided tour.")
+        let descriptionBase = NSLocalizedString("Select %@ to see your current plan and other available plans.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Plan", comment: "The item to select during a guided tour.")
         return [(element: .plans, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.plans)))]
     }()
 
@@ -296,6 +335,7 @@ struct QuickStartCongratulationsTour: QuickStartTour {
     let key = "quick-start-congratulations-tour"
     let analyticsKey = "congratulations"
     let title = congratsTitle
+    let titleMarkedCompleted = ""  // Not applicable for this tour type
     let description = congratsDescription
     let icon = UIImage.gridicon(.plus)
     let suggestionNoText = Strings.notNow

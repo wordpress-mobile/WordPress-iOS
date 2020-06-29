@@ -1,11 +1,8 @@
-Certaines étapes de la création de site ont été supprimées afin de rendre le processus plus fluide. Choisissez simplement le type de site qui vous convient et saisissez un nom de domaine. C’est tout !
+Comme d’habitude, il y a beaucoup d’améliorations dans l’éditeur de bloc. L’icône de la corbeille que vous utilisez pour supprimer des blocs se trouve maintenant dans un menu accessible en appuyant sur le bouton de la barre d’outils des blocs. Nous avons également ajouté la prise en charge des couleurs de superposition dans le bloc Couverture, la prise en charge des dégradés radiaux dans les blocs Bouton et Couverture, l’animation entrée-sortie dans la barre d’outils flottante, et une info-bulle pour les boutons de sélection des modèles de page. Et maintenant, la barre d’outils des blocs se réduit si le bloc est plus étroit que la barre d’outils.
 
-L’éditeur de blocs a été encore amélioré : Le bloc de couverture est désormais disponible, des options d’alignement sont proposées dans le bloc de titre et une barre d’outils déroulante facilite l’alignement des blocs de titre, de paragraphe, d’image ainsi que de multimédia et texte. Nous avons également supprimé l’effet d’assombrissement sur les blocs désélectionnés.
+Nous avons aussi fait beaucoup de corrections, pour une expérience plus propre de l’éditeur de blocs.
+Le téléchargement de médias affichera le message « réessayez » lorsqu’il n’y a pas de connexion (au lieu de se figer), le travail d’annulation/rétablissement est plus fiable pour les blocs et le texte, nous avons corrigé un problème de fusion avec les blocs de texte, et nous avons corrigé l’alignement des boutons dans les modèles de page.
 
-Sur certains modèles de téléphones portables, en raison de la disposition de l’écran Notifications, le texte se retrouvait masqué par la coque du téléphone. Le problème a été résolu.
+Nous avons ajouté un nouveau paramètre qui vous permet de modifier votre page d’accueil et votre page de messages à partir des paramètres du site.
 
-Parfois, lorsque vous tentiez d’ajouter une @-mention pour identifier quelqu’un dans un commentaire, l’application suggérait des noms, mais il n’était pas possible de les sélectionner. Ce problème a également été résolu. Nous avons également résolu d’autres petits problèmes qui provoquaient le plantage de l’application lors des tentatives d’accès aux articles de votre blog via l’écran Pages du site ou l’utilisation des boutons d’action rapide sur les iPads. Et puisque nous parlons de pages et d’articles, les aperçus sont désormais plus grands sur les iPads exécutant iOS 13.
-
-Pour nous, le mode sombre, c’est comme le bon café, il doit être bien noir et uniforme. Les modes sombre et clair se comportaient parfois bizarrement lorsque vous passiez de l’un à l’autre, c’est désormais beaucoup plus rare.
-
-Prenez tous soin de vous.
+Enfin, nous avons traité un problème de Gravatar qui vous bloquait dans l’écran de retouche photo lorsque vous essayiez de prendre une nouvelle photo, et nous avons fait quelques mises à jour de l’interface utilisateur dans le Lecteur.

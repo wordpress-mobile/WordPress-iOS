@@ -2,6 +2,7 @@
 #import "PostCategory.h"
 #import "Blog.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -154,10 +155,11 @@ NS_ASSUME_NONNULL_BEGIN
                            }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
                            newCategory.categoryID = receivedCategory.categoryID;
+                           BOOL needsSync = NO;
                            if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
                                // filters might change the content
-                               [self syncCategoriesForBlog:blog success:nil failure:nil];
+                               needsSync = YES;
                                newCategory.categoryName = remoteCategory.name;
                                newCategory.parentID = remoteCategory.parentID;
                            } else {
@@ -167,10 +169,14 @@ NS_ASSUME_NONNULL_BEGIN
                            if (newCategory.parentID == nil) {
                                newCategory.parentID = @0;
                            }
-                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                           if (success) {
-                               success(newCategory);
-                           }
+                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                               if (success) {
+                                   success(newCategory);
+                               }
+                               if (needsSync) {
+                                   [self syncCategoriesForBlog:blog success:nil failure:nil];
+                               }
+                           }];
                        }];
                    } failure:failure];
 }
@@ -186,7 +192,6 @@ NS_ASSUME_NONNULL_BEGIN
         NSSet *blogCategories = [blog.categories copy];
         for (PostCategory *category in blogCategories) {
             if ([toDelete containsObject:category.categoryID]) {
-                category.blog = nil;
                 [self.managedObjectContext deleteObject:category];
             }
         }
@@ -206,11 +211,11 @@ NS_ASSUME_NONNULL_BEGIN
         [categories addObject:category];
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-    if (completion) {
-        completion(categories);
-    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        if (completion) {
+            completion(categories);
+        }
+    }];
 }
 
 - (nullable Blog *)blogWithObjectID:(nullable NSManagedObjectID *)objectID

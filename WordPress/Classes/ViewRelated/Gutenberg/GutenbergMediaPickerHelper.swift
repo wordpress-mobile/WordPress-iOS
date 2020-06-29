@@ -16,7 +16,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate let post: AbstractPost
     fileprivate unowned let context: UIViewController
-    fileprivate unowned var navigationPicker: WPNavigationMediaPickerViewController?
+    fileprivate weak var navigationPicker: WPNavigationMediaPickerViewController?
     fileprivate let noResultsView = NoResultsViewController.controller()
 
     /// Media Library Data Source
@@ -76,6 +76,7 @@ class GutenbergMediaPickerHelper: NSObject {
         mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
+        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
     }
@@ -103,6 +104,7 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
         cameraPicker.options.filter = filter
+        cameraPicker.options.allowMultipleSelection = false
         cameraPicker.showCapture()
     }
 }

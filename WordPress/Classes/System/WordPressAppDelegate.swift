@@ -35,12 +35,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
+    private var mainContext: NSManagedObjectContext {
+        return ContextManager.shared.mainContext
+    }
+
     private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
-        // This is intentionally a `lazy var` to prevent `PostCoordinator.shared` (below) from
-        // triggering an initialization of `ContextManager.shared.mainContext` during the
-        // initialization of this class. This is so any track events in `mainContext`
-        // (e.g. by `NullBlogPropertySanitizer`) will be recorded properly.
 
         // It's not great that we're using singletons here.  This change is a good opportunity to
         // revisit if we can make the coordinators children to another owning object.
@@ -67,6 +67,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        if #available(iOS 13.0, *) {
+            // Overrides the current user interface appearance
+            AppAppearance.overrideAppearance()
+        }
+
+        // Start CrashLogging as soon as possible (in case a crash happens during startup)
+        CrashLogging.start(withDataProvider: crashLoggingProvider)
+
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -78,7 +86,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
+        AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
 
@@ -234,8 +242,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         logger = WPLogger()
 
-        CrashLogging.start(withDataProvider: crashLoggingProvider)
-
         configureAppCenterSDK()
         configureAppRatingUtility()
         configureAnalytics()
@@ -280,9 +286,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        let context = ContextManager.shared.mainContext
-        context.perform {
-            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        mainContext.perform { [weak self] in
+            guard let self = self else {
+                return
+            }
+            AccountService(managedObjectContext: self.mainContext).mergeDuplicatesIfNecessary()
         }
     }
 
@@ -366,8 +374,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func configureAnalytics() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         analytics = WPAppAnalytics(accountService: accountService,
                                    lastVisibleScreenBlock: { [weak self] in
@@ -456,7 +463,9 @@ extension WordPressAppDelegate {
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: url)
+        trackDeepLink(for: url) { url in
+            UniversalLinkRouter.shared.handle(url: url)
+        }
     }
 
     @objc func setupNetworkActivityIndicator() {
@@ -468,6 +477,31 @@ extension WordPressAppDelegate {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
         }
     }
+}
+
+// MARK: - Deep Link Handling
+
+extension WordPressAppDelegate {
+
+    private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
+        guard isIterableDeepLink(url) else {
+            completion(url)
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) {(_, response, error) in
+            if let url = response?.url {
+                completion(url)
+            }
+        }
+        task.resume()
+    }
+
+    private func isIterableDeepLink(_ url: URL) -> Bool {
+        return url.absoluteString.contains(WordPressAppDelegate.iterableDomain)
+    }
+
+    private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
 // MARK: - UIAppearance
@@ -602,8 +636,6 @@ extension WordPressAppDelegate {
 
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
-        let context = ContextManager.sharedInstance().mainContext
-
         let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
 
         DDLogInfo("===========================================================================")
@@ -631,7 +663,7 @@ extension WordPressAppDelegate {
         DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
         DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
 
-        AccountHelper.logBlogsAndAccounts(context: context)
+        AccountHelper.logBlogsAndAccounts(context: mainContext)
         DDLogInfo("===========================================================================")
     }
 
@@ -740,8 +772,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
@@ -759,8 +790,7 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
             ShareExtensionService.configureShareExtensionToken(authToken)
@@ -780,8 +810,7 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
 
         if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
             NotificationSupportService.insertContentExtensionToken(authToken)
@@ -854,7 +883,7 @@ extension WordPressAppDelegate {
         let maximumPointSize = WPStyleGuide.maxFontSize
 
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
-                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.bold)]
+                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.semibold)]
 
         WPStyleGuide.configureSearchBarTextAppearance()
 

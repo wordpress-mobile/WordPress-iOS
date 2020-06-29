@@ -64,7 +64,9 @@ import AutomatticTracks
     ///   - size: The preferred size of the image to load.
     ///
     func loadImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
-        if url.isGif {
+        if url.isFileURL {
+            downloadImage(from: url)
+        } else if url.isGif {
             loadGif(with: url, from: host, preferredSize: size)
         } else {
             imageView.clean()
@@ -96,6 +98,16 @@ import AutomatticTracks
     func loadImage(with url: URL, from post: AbstractPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         let host = MediaHost(with: post, failure: { error in
+            CrashLogging.logError(error)
+        })
+
+        loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
+    }
+
+    @objc(loadImageWithURL:fromReaderPost:preferredSize:placeholder:success:error:)
+    func loadImage(with url: URL, from readerPost: ReaderPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+
+        let host = MediaHost(with: readerPost, failure: { error in
             CrashLogging.logError(error)
         })
 

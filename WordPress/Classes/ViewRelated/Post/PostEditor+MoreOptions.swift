@@ -65,6 +65,16 @@ extension PostEditor where Self: UIViewController {
     }
 
     func displayPreview() {
+        guard !isUploadingMedia else {
+            displayMediaIsUploadingAlert()
+            return
+        }
+
+        guard post.remoteStatus != .pushing else {
+            displayPostIsUploadingAlert()
+            return
+        }
+
         savePostBeforePreview() { [weak self] previewURLString, error in
             guard let self = self else {
                 return

@@ -5,7 +5,6 @@
 + (NSString *)secret;
 + (NSString *)sentryDSN;
 + (NSString *)appCenterAppId;
-+ (NSString *)giphyAppId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginSchemeId;
 + (NSString *)googleLoginServerClientId;
@@ -13,4 +12,5 @@
 + (NSString *)zendeskAppId;
 + (NSString *)zendeskUrl;
 + (NSString *)zendeskClientId;
++ (NSString *)tenorApiKey;
 @end

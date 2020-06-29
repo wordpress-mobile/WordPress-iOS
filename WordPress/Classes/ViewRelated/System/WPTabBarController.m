@@ -12,6 +12,7 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
+#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -61,15 +62,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
-@property (nonatomic, strong) ReaderTabViewController *readerTabViewController;
+@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 @property (nonatomic, strong) UIImage *meTabBarImage;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
-
-@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
 
 @end
 
@@ -204,10 +203,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListViewController.selectedBlog = blogToOpen;
     }
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:_blogListNavigationController.view trailingAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.bottomAnchor];
-    }
-
     return _blogListNavigationController;
 }
 
@@ -215,9 +210,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerTabViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
         _readerNavigationController.navigationBar.translucent = NO;
 
@@ -234,7 +229,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (ReaderMenuViewController *)readerMenuViewController
 {
-    if (!_readerMenuViewController) {
+    if (!_readerMenuViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerMenuViewController = [ReaderMenuViewController controller];
     }
 
@@ -364,7 +359,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (UISplitViewController *)readerSplitViewController
 {
-    if (!_readerSplitViewController) {
+    if (!_readerSplitViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;
@@ -387,12 +382,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return _readerSplitViewController;
 }
 
-- (ReaderTabViewController *)readerTabViewController
+- (ReaderTabViewModel *)readerTabViewModel
 {
-    if (!_readerTabViewController) {
-        _readerTabViewController = [self makeReaderTabViewController];
+    if (!_readerTabViewModel) {
+        _readerTabViewModel = [self makeReaderTabViewModel];
     }
-    return _readerTabViewController;
+    return _readerTabViewModel;
 }
 
 - (UISplitViewController *)meSplitViewController
@@ -464,23 +459,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
                                                readerSplitViewController:self.readerSplitViewController
                                                 readerMenuViewController:self.readerMenuViewController];
-}
-
-- (CreateButtonCoordinator *)createButtonCoordinator
-{
-    if (!_createButtonCoordinator) {
-        __weak __typeof(self) weakSelf = self;
-        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [weakSelf showPostTab];
-        } newPage:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            Blog *blog = [weakSelf currentOrLastBlog];
-            [weakSelf showPageEditorForBlog:blog];
-        }];
-    }
-    
-    return _createButtonCoordinator;
 }
 
 #pragma mark - Navigation Helpers
@@ -565,8 +543,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
-
-    [self alertQuickStartThatWriteWasTapped];
 }
 
 - (void)showPostTabForBlog:(Blog *)blog
@@ -624,19 +600,41 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
     [self showReaderTab];
+    UIViewController *topDetailVC;
 
-    UIViewController *topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-             // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
-        }
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        topDetailVC = (UIViewController *)self.readerNavigationController.topViewController;
+    } else {
+        topDetailVC = (UIViewController *)self.readerSplitViewController.topDetailViewController;
     }
 
-    if (topDetailVC && topDetailVC.navigationController) {
-        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+    UIViewController *readerPostDetailVC;
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        if ([topDetailVC isKindOfClass:[ReaderDetailWebviewViewController class]]) {
+            ReaderDetailWebviewViewController *readerDetailVC = (ReaderDetailWebviewViewController *)topDetailVC;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            }
+        }
+        readerPostDetailVC = [ReaderDetailWebviewViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+    } else {
+        if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
+            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            }
+        }
+        readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+    }
+
+    if (topDetailVC && [Feature enabled:FeatureFlagNewReaderNavigation]) {
+        [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
+
+    } else if (topDetailVC && topDetailVC.navigationController) {
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
 }
@@ -763,12 +761,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchReaderTabToSavedPosts
 {
-    [self showReaderTab];
-
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        [self.readerTabViewController navigateToSavedPosts];
+        [self switchToSavedPosts];
     } else {
-
+        [self showReaderTab];
         // Unfortunately animations aren't disabled properly for this
         // transition unless we dispatch_async.
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -923,7 +919,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
-    self.readerTabViewController = nil;
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        self.readerNavigationController = nil;
+    }
 }
 
 - (void)signinDidFinish:(NSNotification *)notification
@@ -1050,12 +1048,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self updateWriteButtonAppearance];
-}
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

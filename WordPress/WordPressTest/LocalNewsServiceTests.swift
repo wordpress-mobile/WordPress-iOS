@@ -5,6 +5,7 @@ final class LocalNewsServiceTests: XCTestCase {
     private struct Constants {
         static let title = "This is an awesome new feature!"
         static let content = "This is long form content. Here we explain why this feature is awesome"
+        static let imageName = "test-image-name"
         static let url = URL(string: "https://wordpress.com")!
     }
 
@@ -30,6 +31,9 @@ final class LocalNewsServiceTests: XCTestCase {
                 XCTFail()
             case .success(let newsItem):
                 XCTAssertEqual(newsItem.title, Constants.title)
+                XCTAssertEqual(newsItem.content, Constants.content)
+                XCTAssertEqual(newsItem.imageName, Constants.imageName)
+                XCTAssertEqual(newsItem.extendedInfoURL, Constants.url)
             }
         })
     }

@@ -37,7 +37,10 @@ class WordPressAuthenticationManager: NSObject {
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
-                                                                enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled)
+                                                                enableSignupWithGoogle: true,
+                                                                enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
+                                                                enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
+                                                                enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -62,12 +65,22 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
+                                                navBarBackgroundColor: .appBar,
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted,
-                                                statusBarStyle: .lightContent)
+                                                prologueTitleColor: .textInverted)
+
+        let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
+                                                              textColor: .text,
+                                                              textButtonColor: .brand,
+                                                              textButtonHighlightColor: .brand,
+                                                              viewControllerBackgroundColor: .basicBackground,
+                                                              navBarBackgroundColor: .basicBackground,
+                                                              navButtonTextColor: .barButtonItemTitle,
+                                                              largeTitleTextColor: .text)
 
         WordPressAuthenticator.initialize(configuration: configuration,
-                                          style: style)
+                                          style: style,
+                                          unifiedStyle: unifiedStyle)
     }
 }
 

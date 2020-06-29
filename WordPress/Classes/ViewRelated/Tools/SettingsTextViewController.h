@@ -77,6 +77,10 @@ typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
 ///
 @property (nonatomic, assign) SettingsTextModes mode;
 
+/// If YES, Cancel and Save buttons will be added to the navigation bar.
+///
+@property (nonatomic, assign) BOOL displaysNavigationButtons;
+
 /// Required initializer.
 ///
 /// Parameters:

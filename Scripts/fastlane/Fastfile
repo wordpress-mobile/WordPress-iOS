@@ -57,7 +57,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   # code_freeze
   # -----------------------------------------------------------------------------------
-  # This lane executes the steps planned on code freeze
+  # This lane executes the initial steps planned on code freeze
   # -----------------------------------------------------------------------------------
   # Usage:
   # bundle exec fastlane code_freeze [skip_confirm:<skip confirm>]
@@ -76,10 +76,28 @@ import "./ScreenshotFastfile"
     ios_update_release_notes(new_version: new_version)
     setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
+    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
+    ios_check_beta_deps(podfile:"#{ENV["PROJECT_ROOT_FOLDER"]}Podfile")
+  end
 
+
+  #####################################################################################
+  # complete_code_freeze
+  # -----------------------------------------------------------------------------------
+  # This lane executes the initial steps planned on code freeze
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane complete_code_freeze [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane complete_code_freeze
+  # bundle exec fastlane complete_code_freeze skip_confirm:true
+  #####################################################################################
+  desc "Creates a new release branch from the current develop"
+  lane :complete_code_freeze do | options |
+    ios_completecodefreeze_prechecks(options)
     ios_localize_project()
     ios_tag_build()
-    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
   #####################################################################################
@@ -417,8 +435,92 @@ import "./ScreenshotFastfile"
     end
   end
 
+  #####################################################################################
+  # build_for_translation_review
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app with pending translations for reviewers  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_for_translation_review 
+  #
+  # Example:
+  # bundle exec fastlane build_for_translation_review 
+  #####################################################################################
+  desc "Builds and uploads for translation review"
+  lane :build_for_translation_review do | options |
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    sh("cd ../.. && ./Scripts/update-translations.rb review current")
+    sh("cd ../.. && ./Scripts/update-translations.rb review waiting")
+    sh("cd ../.. && ./Scripts/update-translations.rb review fuzzy")
+
+    ios_merge_translators_strings(strings_folder:"../WordPress/Resources/")
+    sh("cd ../.. && ./Scripts/extract-framework-translations.swift")
+
+    xcbuild(
+        workspace: "../WordPress.xcworkspace",
+        scheme: "WordPress",
+        configuration: "Debug",
+        xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
+    )
+
+    zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
+  end
+  
+  #####################################################################################
+  # register_new_device
+  # -----------------------------------------------------------------------------------
+  # This lane helps a developer register a new device in the App Store Portal
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane register_new_device
+  #
+  # Example:
+  # bundle exec fastlane register_new_device 
+  #####################################################################################
+  desc "Registers a Device in the developer console"
+  lane :register_new_device do | options |
+
+    bundle_identifiers = [
+      "org.wordpress",
+      "org.wordpress.WordPressShare",
+      "org.wordpress.WordPressDraftAction",
+      "org.wordpress.WordPressTodayWidget",
+      "org.wordpress.WordPressNotificationServiceExtension",
+      "org.wordpress.WordPressNotificationContentExtension",
+      "org.wordpress.WordPressAllTimeWidget",
+      "org.wordpress.WordPressThisWeekWidget"
+    ]
+
+    device_name = UI.input("Device Name: ") unless options[:device_name] != nil
+    device_id = UI.input("Device ID: ") unless options[:device_id] != nil
+    UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
+    bundle_identifiers.each { |identifier|
+      puts "\t#{identifier}"
+    }
+
+    # Register the user's device
+    register_device(
+      name: device_name,
+      udid: device_id,
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID")
+    )
+
+    # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
+    add_development_certificates_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: bundle_identifiers
+    )
+
+    # Add all devices to the provisioning profiles
+    add_all_devices_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: bundle_identifiers
+    )
+  end
+
 ########################################################################
-# Cnfigure Lanes
+# Configure Lanes
 ########################################################################
   #####################################################################################
   # update_certs_and_profiles

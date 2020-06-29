@@ -224,6 +224,22 @@ extension UIColor {
         return muriel(color: .gray, .shade0)
     }
 
+    static var ungroupedListBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemBackground
+        }
+
+        return .white
+    }
+
+    static var ungroupedListUnread: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor(light: .primary(.shade0), dark: muriel(color: .gray, .shade80))
+        }
+
+        return .primary(.shade0)
+    }
+
     /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
         if #available(iOS 13, *) {
@@ -324,6 +340,16 @@ extension UIColor {
         }
 
         return .white
+    }
+
+    // MARK: - Others
+
+    static var preformattedBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray6
+        } else {
+            return UIColor.black.withAlphaComponent(0.05)
+        }
     }
 }
 

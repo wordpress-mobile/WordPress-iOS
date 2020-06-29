@@ -687,6 +687,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
+                                     attributedTitle:nil
                                    noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
@@ -1175,11 +1176,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (!self.allowsPushingPostDetails) {
         return;
     }
-    
-    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
-    controller.shouldHideComments = YES;
-    [self.navigationController pushFullscreenViewController:controller animated:YES];
+
+    if ([Feature enabled:FeatureFlagReaderWebview]) {
+        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        ReaderDetailWebviewViewController *controller = [ReaderDetailWebviewViewController controllerWithPost:self.post];
+        controller.shouldHideComments = YES;
+        [self.navigationController pushFullscreenViewController:controller animated:YES];
+    } else {
+        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
+        controller.shouldHideComments = YES;
+        [self.navigationController pushFullscreenViewController:controller animated:YES];
+    }
 }
 
 
