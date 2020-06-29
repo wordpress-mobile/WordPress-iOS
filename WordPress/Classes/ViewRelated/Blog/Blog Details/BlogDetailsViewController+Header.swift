@@ -4,15 +4,16 @@ import WordPressFlux
 extension BlogDetailsViewController {
     @objc func configureHeaderView() -> BlogDetailHeaderView {
         let headerView = BlogDetailHeaderView(items: [
-            ActionRow.Item(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
+            ActionRow.Item(image: .gridicon(.statsAlt), title: NSLocalizedString("Journeys", comment: "Links to Journeys screen")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showStats(from: .button)
+//                self?.showStats(from: .button)
+                self?.showJourneys(from: .button)
             },
-            ActionRow.Item(image: .gridicon(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
+            ActionRow.Item(image: .gridicon(.pages), title: NSLocalizedString("Itinerary", comment: "Links to Itinerary screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showPageList(from: .button)
+                self?.showItinerary(from: .button)
             },
-            ActionRow.Item(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
+            ActionRow.Item(image: .gridicon(.posts), title: NSLocalizedString("Stories", comment: "Noun. Title. Links to the blog's Stories screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showPostList(from: .button)
             },

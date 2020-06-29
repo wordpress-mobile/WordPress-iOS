@@ -27,7 +27,9 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
-    BlogDetailsSubsectionPlugins
+    BlogDetailsSubsectionPlugins,
+    BlogDetailsSubsectionJourneys,
+    BlogDetailsSubsectionItinerary,
 };
 
 
@@ -139,6 +141,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
+- (void)showItineraryFromSource:(BlogDetailsNavigationSource)source;
+- (void)showJourneysFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)refreshSiteIcon;

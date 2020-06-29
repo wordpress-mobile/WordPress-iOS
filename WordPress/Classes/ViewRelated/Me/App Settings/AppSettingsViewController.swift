@@ -159,8 +159,6 @@ class AppSettingsViewController: UITableViewController {
         return { [weak self] row in
             let values = [MediaSettings.VideoResolution.size640x480,
                           MediaSettings.VideoResolution.size1280x720,
-                          MediaSettings.VideoResolution.size1920x1080,
-                          MediaSettings.VideoResolution.size3840x2160,
                           MediaSettings.VideoResolution.sizeOriginal]
 
             let titles = values.map({ (settings: MediaSettings.VideoResolution) -> String in
@@ -188,55 +186,6 @@ class AppSettingsViewController: UITableViewController {
 
             self?.navigationController?.pushViewController(viewController!, animated: true)
         }
-    }
-
-    @objc func mediaRemoveLocationChanged() -> (Bool) -> Void {
-        return { value in
-            MediaSettings().removeLocationSetting = value
-            WPAnalytics.track(.appSettingsMediaRemoveLocationChanged, withProperties: ["enabled": value as AnyObject])
-        }
-    }
-
-    @available(iOS 13.0, *)
-    func pushAppearanceSettings() -> ImmuTableAction {
-        return { [weak self] row in
-            let values = UIUserInterfaceStyle.allStyles
-
-            let rawValues = values.map({ $0.rawValue })
-            let titles = values.map({ $0.appearanceDescription })
-
-            let currentStyle = AppAppearance.current
-
-            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: AppAppearance.default.rawValue,
-                                                  SettingsSelectionCurrentValueKey: currentStyle.rawValue,
-                                                  SettingsSelectionTitleKey: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
-                                                  SettingsSelectionTitlesKey: titles,
-                                                  SettingsSelectionValuesKey: rawValues] as [String: Any]
-
-            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
-
-            viewController?.onItemSelected = { [weak self] (style: Any!) -> () in
-                guard let style = style as? Int,
-                    let newStyle = UIUserInterfaceStyle(rawValue: style) else {
-                        return
-                }
-
-                self?.overrideAppAppearance(with: newStyle)
-            }
-
-            self?.navigationController?.pushViewController(viewController!, animated: true)
-        }
-    }
-
-    @available(iOS 13.0, *)
-    private func overrideAppAppearance(with style: UIUserInterfaceStyle) {
-        let transitionView: UIView = WordPressAppDelegate.shared?.window ?? view
-        UIView.transition(with: transitionView,
-                          duration: 0.3,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            AppAppearance.overrideAppearance(with: style)
-        })
     }
 
     func pushDebugMenu() -> ImmuTableAction {
@@ -397,12 +346,6 @@ private extension AppSettingsViewController {
     func privacyTableSection() -> ImmuTableSection {
         let privacyHeader = NSLocalizedString("Privacy", comment: "Privacy settings section header")
 
-        let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
-            value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
-        )
-
         let privacySettings = NavigationItemRow(
             title: NSLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
             action: openPrivacySettings()
@@ -427,7 +370,6 @@ private extension AppSettingsViewController {
             tableRows.append(siriClearCacheRow)
         }
 
-        tableRows.append(mediaRemoveLocation)
         let removeLocationFooterText = NSLocalizedString("Removes location metadata from photos before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded media.")
 
         return ImmuTableSection(
@@ -446,35 +388,20 @@ private extension AppSettingsViewController {
             action: pushDebugMenu()
         )
 
-        let iconRow = NavigationItemRow(
-            title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
-            action: pushAppIconSwitcher()
-        )
-
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
         )
 
         let aboutRow = NavigationItemRow(
-            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            title: NSLocalizedString("About beauVoyage for iOS", comment: "Link to About screen for WordPress for iOS"),
             action: pushAbout()
         )
 
-        var rows: [ImmuTableRow] = [settingsRow, aboutRow]
-        if #available(iOS 10.3, *),
-            UIApplication.shared.supportsAlternateIcons {
-                rows.insert(iconRow, at: 0)
-        }
+        var rows = [settingsRow, aboutRow]
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
-        }
-
-        if #available(iOS 13.0, *) {
-            let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
-
-            rows.insert(appearanceRow, at: 0)
         }
 
         return ImmuTableSection(

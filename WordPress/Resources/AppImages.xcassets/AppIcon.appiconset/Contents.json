@@ -13,55 +13,55 @@
       "size" : "20x20"
     },
     {
-      "filename" : "app-icon-29pt.png",
+      "filename" : "Icon-App-29x29@1x.png",
       "idiom" : "iphone",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "app-icon-29pt@2x.png",
+      "filename" : "Icon-App-29x29@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "app-icon-29pt@3x.png",
+      "filename" : "Icon-App-29x29@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "app-icon-40pt@2x.png",
+      "filename" : "Icon-App-40x40@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "app-icon-40pt@3x.png",
+      "filename" : "Icon-App-40x40@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "Icon-App-118.png",
+      "filename" : "Icon-App-50x50@1x-1.png",
       "idiom" : "iphone",
       "scale" : "1x",
       "size" : "57x57"
     },
     {
-      "filename" : "Icon-App-114.png",
+      "filename" : "Icon-App-50x50@2x-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "57x57"
     },
     {
-      "filename" : "app-icon-60pt@2x.png",
+      "filename" : "Icon-App-60x60@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "app-icon-60pt@3x.png",
+      "filename" : "Icon-App-60x60@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
@@ -79,73 +79,73 @@
       "size" : "20x20"
     },
     {
-      "filename" : "ipad-app-icon-29pt.png",
+      "filename" : "Icon-App-29x29@1x-1.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "ipad-app-icon-29pt@2x.png",
+      "filename" : "Icon-App-29x29@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "app-icon-40pt.png",
+      "filename" : "Icon-App-40x40@1x.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "40x40"
     },
     {
-      "filename" : "ipad-app-icon-40pt@2x.png",
+      "filename" : "Icon-App-40x40@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Icon-App-119.png",
+      "filename" : "Icon-App-50x50@1x.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "50x50"
     },
     {
-      "filename" : "Icon-App-116.png",
+      "filename" : "Icon-App-50x50@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "50x50"
     },
     {
-      "filename" : "Icon-App-117.png",
+      "filename" : "Icon-App-76x76@1x-1.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "72x72"
     },
     {
-      "filename" : "Icon-App-115.png",
+      "filename" : "Icon-App-76x76@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "72x72"
     },
     {
-      "filename" : "app-icon-76pt.png",
+      "filename" : "Icon-App-76x76@1x.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "76x76"
     },
     {
-      "filename" : "app-icon-76pt@2x.png",
+      "filename" : "Icon-App-76x76@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "app-icon-167.png",
+      "filename" : "Icon-App-83.5x83.5@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "app-icon-1024.png",
+      "filename" : "bV logo.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

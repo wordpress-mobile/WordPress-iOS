@@ -40,6 +40,14 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Stats
 
+    func showJourneys(for blog: Blog) {
+        
+    }
+
+    func showItinerary(for blog: Blog) {
+        
+    }
+
     func showStats(for blog: Blog) {
         showBlogDetails(for: blog, then: .stats)
     }

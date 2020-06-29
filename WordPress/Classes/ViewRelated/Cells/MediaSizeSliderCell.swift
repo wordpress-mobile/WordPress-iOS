@@ -150,7 +150,7 @@ struct ImageSizeModel: MediaSizeModel {
 
     static var `default`: ImageSizeModel {
         get {
-            return ImageSizeModel(value: 1500, minValue: 300, maxValue: 3000, step: 100)
+            return ImageSizeModel(value: 1500, minValue: 300, maxValue: 2500, step: 100)
         }
     }
 }

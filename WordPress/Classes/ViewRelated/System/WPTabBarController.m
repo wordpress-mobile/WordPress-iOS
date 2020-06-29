@@ -188,7 +188,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
 
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
     _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;

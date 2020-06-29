@@ -17,8 +17,6 @@ extern NSString *const WPAutomatticCCPAPrivacyNoticeURL;
 extern NSString *const WPAutomatticCookiesURL;
 extern NSString *const WPAutomatticAppsBlogURL;
 extern NSString *const WPGithubMainURL;
-extern NSString *const WPTwitterWordPressHandle;
-extern NSString *const WPTwitterWordPressMobileURL;
 extern NSString *const WPComReferrerURL;
 extern NSString *const AutomatticDomain;
 extern NSString *const WPComDomain;

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,12 +20,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="FfR-yo-4a1">
-                                <rect key="frame" x="182" y="422" width="50" height="52"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beauVoyageLaunch" translatesAutoresizingMaskIntoConstraints="NO" id="FfR-yo-4a1">
+                                <rect key="frame" x="107" y="348" width="200" height="200"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="0fc-2L-7Ow"/>
+                                    <constraint firstAttribute="width" constant="200" id="E8G-RG-S3d"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" name="WordPressBlue50"/>
+                        <color key="backgroundColor" name="Blue0"/>
                         <constraints>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="T0u-ej-Kyp"/>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="a6p-Lx-MaV"/>
@@ -40,9 +42,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-wp" width="50" height="52"/>
-        <namedColor name="WordPressBlue50">
-            <color red="0.0" green="0.37647058823529411" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="beauVoyageLaunch" width="512" height="512"/>
+        <namedColor name="Blue0">
+            <color red="0.93725490196078431" green="0.95294117647058818" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
