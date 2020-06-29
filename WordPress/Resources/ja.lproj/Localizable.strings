@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-06-11 08:54:12+0000 */
+/* Translation-Revision-Date: 2020-06-25 13:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ja_JP */
@@ -21,7 +21,7 @@
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
 "%1$@ on %2$@: %3$@" = "%1$@ (%2$@): %3$@";
 
-/* Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d が完了";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
@@ -275,6 +275,12 @@
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "このアカウントのサイトのリストです。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
+"A series of steps showing you how to add a theme, site icon and more." = "テーマやサイトアイコンなどを追加する方法の手順。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
+"A series of steps to assist with growing your site's audience." = "訪問者を増やすための手順。";
 
 /* translators: sample content for \"Team\" page template */
 "A short bio with personal history, key achievements, or an interesting fact." = "個人的経歴、主な業績、興味深い事実を織り込んだ簡単な自己紹介。";
@@ -620,6 +626,9 @@
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "アプリ設定";
 
+/* The title of the app appearance settings screen */
+"Appearance" = "外観";
+
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed." = "Apple の認証に失敗しました。";
 
@@ -927,6 +936,7 @@
    Cancels an Action
    Cancels an alert.
    Dismiss the post action sheet
+   Editing GIF alert cancel action button.
    Label for a cancel button
    Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
@@ -1216,6 +1226,42 @@
 /* The action is completed */
 "Completed" = "完了";
 
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site stats" = "完了 : サイトの統計情報を確認";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a theme" = "完了 : テーマを選択";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Continue with site setup" = "完了 : サイトの設定を続ける";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create a new page" = "完了 : 新しいページを作成";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create your site" = "完了 : サイトを作成";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Customize your site" = "完了 : サイトをカスタマイズ";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Enable post sharing" = "完了 : 投稿の共有を有効化";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Explore plans" = "完了 : プランを詳しく見る";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Follow other sites" = "完了 : 他のサイトをフォロー";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Publish a post" = "完了 : 投稿を公開";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload a site icon" = "完了 : サイトアイコンをアップロード";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: View your site" = "完了 : サイトを確認";
+
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "設定";
 
@@ -1324,6 +1370,8 @@
 "Content…" = "コンテンツ...";
 
 /* Action title to dismiss domain credit redemption success screen
+   Apply changes localy to single block edition in the web block editor
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title */
 "Continue" = "次へ";
 
@@ -1430,6 +1478,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "国コード";
 
+/* Label for switch to turn on/off sending crashes info */
+"Crash reports" = "クラッシュレポート";
+
 /* Accessibility label for create floating action button */
 "Create" = "作成";
 
@@ -1511,7 +1562,7 @@
 "Currently restoring your site" = "現在サイトを復元中です";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "カスタマイズ";
 
@@ -1536,6 +1587,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "「いいね」、コメント、フォローなどのサイト設定をカスタマイズ。";
+
+/* Title for the app appearance setting for dark mode */
+"Dark" = "ダーク";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "ダッシュボード";
@@ -1822,6 +1876,7 @@
 "East" = "東";
 
 /* Edit the post.
+   Editing GIF alert default action button.
    Edits a Comment
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -1833,6 +1888,9 @@
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "%@ を編集";
+
+/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
+"Edit %@ block" = "%@ ブロックを編集";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "ブラックリストの単語を編集";
@@ -1852,6 +1910,9 @@
 "Edit Post" = "投稿の編集";
 
 /* No comment provided by engineer. */
+"Edit block in web browser" = "Web ブラウザーでブロックを編集";
+
+/* No comment provided by engineer. */
 "Edit media" = "メディアを編集";
 
 /* Explanation for the option to enable the block editor */
@@ -1862,6 +1923,9 @@
 
 /* No comment provided by engineer. */
 "Edit video" = "動画を編集";
+
+/* Editing GIF alert message. */
+"Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
 
 /* Title for the editor settings section */
 "Editor" = "編集者";
@@ -2306,9 +2370,6 @@ translators: sample content for \"Team\" page template */
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "アカウント情報を取得中";
 
-/* One of the options when selecting More in the Post Editor's format bar */
-"Giphy" = "Giphy";
-
 /* Cancel */
 "Give Up" = "諦める";
 
@@ -2461,12 +2522,16 @@ translators: sample content for \"Team\" page template */
 "Hold for Moderation" = "承認待ち";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen */
+   Title for the homepage section in site settings screen
+   Title of the Homepage Badge */
 "Homepage" = "ホームページ";
 
 /* Label for Homepage Settings site settings section
    Title for the Homepage Settings screen */
 "Homepage Settings" = "ホームページ設定";
+
+/* Message informing the user that their static homepage page was set successfully */
+"Homepage successfully updated" = "ホームページを更新しました";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "おめでとうございます。\nもうすぐ完成です。";
@@ -2752,6 +2817,9 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Services\" page template */
 "Let’s build something together!" = "一緒につくりあげましょう。";
+
+/* Title for the app appearance setting for light mode */
+"Light" = "ライト";
 
 /* Like (verb)
    Like a post.
@@ -3779,7 +3847,7 @@ translators: sample content for \"Services\" page template */
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "ユーザー名を選択";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Plan" = "プラン";
 
 /* Action title. Noun. Links to a blog's Plans screen.
@@ -4008,6 +4076,12 @@ translators: sample content for \"Services\" page template */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "投稿とページ";
 
+/* Title of the Posts Page Badge */
+"Posts page" = "投稿ページ";
+
+/* Message informing the user that their static homepage for posts was set successfully */
+"Posts page successfully updated" = "投稿ページが正常に更新されました";
+
 /* Posts per Page Title */
 "Posts per Page" = "ページ毎の投稿数";
 
@@ -4016,9 +4090,6 @@ translators: sample content for \"Services\" page template */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "ここに表示したい投稿。";
-
-/* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
-"Powered by Giphy" = "Powered by Giphy";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
@@ -4072,6 +4143,9 @@ translators: sample content for \"Services\" page template */
 /* Link to privacy settings page
    Privacy Settings Title */
 "Privacy Settings" = "プライバシー設定";
+
+/* Link to the CCPA privacy notice for residents of California. */
+"Privacy notice for California users" = "カリフォルニア州のユーザーへのプライバシー通知";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4201,7 +4275,7 @@ translators: sample content for \"Services\" page template */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "iOS 設定でプッシュ通知がオフになっています。「通知を許可」でオンに戻します。";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "Quick Start" = "クイックスタート";
 
 /* Prompts the user to rate us on the store */
@@ -4220,7 +4294,7 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "購読ブログ";
 
@@ -4600,7 +4674,7 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for the search bar
    Search
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the Reader's search feature
    Title of the reader's Search menu item. */
 "Search" = "検索";
@@ -4629,8 +4703,7 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "投稿を検索";
 
-/* Title for placeholder in Giphy picker
-   Title for placeholder in Tenor picker */
+/* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "GIF を検索して、メディアライブラリに追加してください。";
 
 /* Title for placeholder in Free Photos */
@@ -4658,6 +4731,42 @@ translators: sample content for \"Services\" page template */
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "選択";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue" = "%@ を選択して続ける";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue." = "%@ を選択して続ける。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new page." = "%@ を選択して新しいページを作成する。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new post" = "%@ を選択して新しい投稿を作成する";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to discover new themes" = "%@ を選択して新しいテーマを発見する";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to look for sites with similar interests" = "%@ を選択して同じ興味を持つサイトを探す";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to preview" = "%@ を選択してプレビュー";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see how your site is performing." = "%@ を選択してサイトのパフォーマンスを確認する。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your checklist" = "%@ を選択してチェックリストを確認する";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current plan and other available plans." = "%@ を選択して現在のプランとその他の利用可能なプランを確認する。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to start personalising your site" = "%@ を選択してサイトのカスタマイズを始める";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to upload a new one." = "%@ を選択して新しくアップロードする。";
+
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "国名を選択";
 
@@ -4675,6 +4784,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "段落スタイルを選択";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ to add your social media accounts" = "%@ を選択してソーシャルメディアアカウントを追加する";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "認証したいアカウントを選択してください。投稿は選択されたアカウントに自動的に共有されますのでご注意ください。";
@@ -4746,6 +4858,12 @@ translators: sample content for \"Services\" page template */
    Navigation title displayed on the navigation bar */
 "Set Parent" = "親の設定";
 
+/* Label for a button that sets the selected page as the site's Homepage */
+"Set as Homepage" = "ホームページに設定する";
+
+/* Label for a button that sets the selected page as the site's Posts page */
+"Set as Posts Page" = "投稿ページとして設定";
+
 /* The Jetpack view button title for the success state */
 "Set up" = "セットアップ";
 
@@ -4792,7 +4910,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for the Sharing section in post Settings. Should be the same as WP core.
    Noun. Title. Links to a blog's sharing options.
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共有";
 
@@ -4915,7 +5033,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "サイトの言語";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to tap during a guided tour.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "サイトのページ";
 
@@ -5103,7 +5221,7 @@ translators: sample content for \"Services\" page template */
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
-   The item to tap during a guided tour. */
+   The item to select during a guided tour. */
 "Stats" = "統計情報";
 
 /* The loading view title displayed when an error occurred */
@@ -5223,6 +5341,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "デフォルトのフォントサイズに変更する";
 
+/* Title for the app appearance setting (light / dark mode) that uses the system default value */
+"System default" = "システムの初期設定";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Table showing %@";
 
@@ -5274,42 +5395,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Take a Video" = "動画を撮る";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue" = "続行するには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue." = "続行するには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new page." = "新しいページを作成するには、「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new post" = "新規投稿を作成するには、「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to discover new themes" = "新しいテーマを探すには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to look for sites with similar interests" = "興味や関心が似ているサイトを探すには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to preview" = "プレビューするには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see how your site is performing." = "サイトのパフォーマンスを表示するには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your checklist" = "チェックリストを表示するには、「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your current plan and other available plans." = "現在のプランと、その他の利用可能なプランを表示するには「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to start personalising your site" = "サイトのカスタマイズを始めるには、「%@」をタップします。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to upload a new one." = "新たにアップロードするには「%@」をタップします。";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "ブックマークアイコンをタップし、投稿をブックマークリストに保存します。";
 
@@ -5318,9 +5403,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "タップしてヘルプを表示";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap the %@ to add your social media accounts" = "ソーシャルメディアアカウントを追加するには、「%@」をタップします。";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "アップロードをキャンセルするにはタップしてください。";
@@ -5510,16 +5592,13 @@ translators: sample content for \"Services\" page template */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "有効化したテーマ";
 
-/* The menu item to tap during a guided tour.
+/* The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "テーマ";
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "通知設定を読み込む際に問題が発生しました";
-
-/* An error message. */
-"There has been an error while trying to reach your site." = "サイトにアクセスしようとした際にエラーが発生しました。";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "コメントを編集する際に予期しないエラーが発生しました。";
@@ -5541,6 +5620,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "コメントのアップデート中に予期しないエラーが発生しました。";
+
+/* Generic error alert message */
+"There has been an unexpected error." = "予期しないエラーが発生しました。";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "%@ へのメールアドレス変更が保留中です。メール受信ボックスに認証用リンクが届いているか確認してください。";
@@ -5732,6 +5814,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、Jetpack プラグインをインストールする必要があります。";
+
+/* Informational text for Report Crashes setting */
+"To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "自動クラッシュレポートを有効化して、アプリのパフォーマンス向上とたまに発生するバグの修正にご協力ください。";
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "プラグインをインストールするには、カスタムドメインをサイトに関連付ける必要があります。";
@@ -6224,7 +6309,7 @@ translators: sample content for \"Services\" page template */
 "View Post" = "投稿を表示";
 
 /* Action title. Opens the user's site in an in-app browser
-   The menu item to tap during a guided tour. */
+   The menu item to select during a guided tour. */
 "View Site" = "サイトを表示";
 
 /* Displays More Rows */
@@ -6302,6 +6387,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Team\" page template */
 "Want to work with us?" = "求人情報";
 
+/* Editing GIF alert title. */
+"Warning" = "警告";
+
 /* No comment provided by engineer. */
 "Warning Message" = "警告メッセージ";
 
@@ -6313,6 +6401,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "データの読み込みに問題が発生しています";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "リリースごとにブロックを追加できるよう努めています。 その間は、デバイスの Web ブラウザーを使用してこのブロックを編集できます。";
 
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "リリースごとにブロックを追加できるよう努めています。それまでは、Web でこの投稿を編集できます。";
@@ -6475,6 +6566,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
 "We'll submit your post for review when your device is back online." = "デバイスが再びオンラインになると、レビュー投稿が送信されます。";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "このメールアドレスは新しい WordPress.com アカウントの作成に使用します。";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "最終設定を実行しています。しばらくお待ちください。";
@@ -6819,7 +6913,7 @@ translators: sample content for \"Services\" page template */
 /* Header title for your domains section of Domains. */
 "Your Domains" = "独自ドメイン";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Your Site Icon" = "サイトアイコン";
 
 /* Displayed in the Notification Settings View */
@@ -6912,7 +7006,7 @@ translators: sample content for \"Services\" page template */
 /* Used when displaying author of a plugin. */
 "by %@" = "作成者: %@";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "connections" = "連携";
 
 /* subhead shown to users when they complete all Quick Start items */

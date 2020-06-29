@@ -1,9 +1,12 @@
-Her zamanki gibi, blok düzenleyicide bir sürü iyileştirme var. Blokları kaldırmak için kullandığınız çöp kutusu simgesi artık, blok araç çubuğundaki üç nokta düğmesine dokunarak ulaşabileceğiniz bir menüde. Ayrıca Kapak blokundaki katman renkleri için destek, Düğme ve Kapak bloklarındaki dairesel gradyanlar için destek, Kayan Araç Çubuğunda giriş/çıkış animasyonu ve sayfa şablonu seçim düğmeleri için araç ipucu ekledik. Ve artık blok, blok araç çubuğundan daha dar olduğunda araç çubuğu daralıyor.
+Bu bir gerçek: GIF'ler interneti daha iyi hale getiriyor. Artık bir görüntü bloğu kullanarak herhangi bir yazıya veya sayfaya eklemek için Tenor aracılığıyla ücretsiz GIF kitaplığına erişebilirsiniz. Animasyonu oluştururken doğrudan düzenleyicide bile göreceksiniz!
 
-Daha toplu bir blok düzenleyici deneyimi için pek çok düzeltme de yaptık.
-Medya karşıya yüklerken bağlantı olmadığında donmak yerine bir “yeniden deneme” mesajı görüntülenecek, hem bloklar hem de metin için geri al / yinele daha güvenilir bir biçimde çalışacak, metin bloklarıyla ilgili bir birleştirme sorununu düzelttik ve sayfa şablonlarındaki düğme hizalamasını düzelttik.
+Blok düzenleyicide başka bir iyileştirme toplu işlemi var:
+- Kapak bloğunda tema tanımlı renkler ve degradeler için destek,
+- Editör kapalı olsa bile Kapak bloklarına video yükleme yeteneği.
+- Ve bizim en sevdiğimiz güncelleme: altyazı ve alıntı işleme iyileştirme. Bir görse, video, galeri, alıntı veya tanıtım bloğuna başlık ekledikten sonra enter tuşuna bastığınızda kendinizi otomatik olarak yeni bir blokta bulacaksınız.
 
-Site ayarlarından ana sayfanızı ve gönderiler sayfanızı değiştirmenize imkan veren yeni bir ayar ekledik.
+Bu güncellemelerin yanı sıra, doğrudan Sayfalar listesinden ana sayfanız ve yazılar sayfanız olarak hangi sayfaların kullanılacağını seçebilirsiniz ve açık veya koyu görünüm arasında seçim yapmak için uygulama düzeyinde geçiş vardır.
 
-Son olarak, yeni bir fotoğraf çekmeye çalıştığınızda fotoğraf düzenleme ekranında sıkışmanıza neden olan bir Gravatar sorununu düzelttik ve Reader’da bazı kullanıcı arayüzü güncellemeleri yaptık.
+Son gönderim tarihinin Analizler sayfasında yanlış hesaplandığını biliyoruz. Bu düzeltildi!
 
+Hızlı başlangıç ​​turlarıyla ilgili birkaç sorun onları biraz daha az hızlı hale getiriyordu. "Kitlenizi büyütün" ve "Bir yazı yayınlayın" turlarında bazı akış sorunlarını düzelttik ve VoiceOver kullanıcılarının tamamlanmış hızlı başlangıç ​​görevleri hakkında güncelleme almasını engelleyen bir hatayı düzelttik. (Ve VoiceOver kullanıcıları: Sonraki adımlar bölümü artık VoiceOver'ı da destekliyor.)

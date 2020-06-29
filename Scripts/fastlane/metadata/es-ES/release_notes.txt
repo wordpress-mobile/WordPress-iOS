@@ -1,9 +1,12 @@
-Como siempre, hay muchas mejoras en el editor de bloques. El icono de la papelera que usas para eliminar bloques, ahora está en un menú al que se accede tocando el botón de la elipse en la barra de herramientas de bloques. También hemos añadido compatibilidad para colores superpuestos en el bloque de cubierta, compatibilidad para gradientes radiales en los bloques de botón y cubierta, animación de entrada/salida en la barra de herramientas flotante y una información emergente para los botones de selección de la plantilla de página. Y la barra de herramientas del bloque, ahora se cierra si el bloque es más estrecho que la barra de herramientas.
+Es un hecho: Los GIFs hacen una Internet mejor. Ahora tienes acceso a una biblioteca de GIFs gratuitos, desde Tenor, para añadir a cualquier entrada o página usando un bloque de imagen. ¡Verás incluso la animación a la derecha del editor, mientras creas!
 
-También hemos hecho muchas correcciones para una experiencia de edición de bloques más limpia.
-La carga de medios mostrará un mensaje para «reintentar» cuando no haya conexión (en lugar de congelarse), deshacer/rehacer el trabajo de forma más fiable, tanto para los bloques como para el texto, hemos corregido un problema de fusión con los bloques de texto y hemos corregido la alineación de los botones en las plantillas de página.
+El editor de bloques tiene otro montón de mejoras:
+– Compatibilidad con los colores y gradientes definidos y por el tema del bloque de fondo,
+– Posibilidad de subir vídeos a los bloques de fondo, aunque esté cerrado el editor.
+– Y nuestra actualización favorita: mejora en la gestión de leyendas y citas. Pulsa intro después de añadir una leyenda en una imagen, vídeo, galería, cita o bloque de cita, y descubrirás que estás automáticamente en otro bloque.
 
-Hemos añadido un nuevo ajuste que te permite cambiar tu página de inicio y la página de entradas desde los ajustes del sitio.
+Además de estas actualizaciones, ahora puedes elegir qué páginas usar como página de inicio y página de entradas desde la lista de páginas, y hay un conmutador en la aplicación para elegir entre el aspecto claro u oscuro.
 
-Por último, nos hemos ocupado de un problema de Gravatar que te dejaba atascado en la pantalla de edición de fotos cuando intentabas hacer una nueva foto y hemos hecho algunas actualizaciones de la interfaz de usuario en el lector.
+Sabemos que la fecha de las últimas entradas se estaba calculando incorrectamente en la página de estadísticas. ¡Eso ya está corregido!
 
+Unos pocos problemas con las visitas guiadas de inicio las hacía menos rápidas. Hemos corregido algunos problemas de flujo en las visitas de «Haz crecer tu audiencia» y «Publica una entrada»,  y se ha arreglado un fallo que evitaba que los usuarios de VoiceOver obtuviesen actualizaciones sobre las tareas del inicio rápido. (Y para los usuarios de VoiceOver: la sección de nuevos pasos ahora también es compatible con VoiceOver.)
