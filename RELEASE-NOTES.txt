@@ -24,6 +24,8 @@
 * [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 * [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
+* [**] Fixed a bug that prevented some logins via 'Continue with Apple'.
+* [**] Reader: Fixed a bug where tapping on the more menu may not present the menu
 * [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
 
 15.0

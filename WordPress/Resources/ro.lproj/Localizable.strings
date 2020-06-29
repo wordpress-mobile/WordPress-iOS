@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-06-02 06:30:24+0000 */
+/* Translation-Revision-Date: 2020-06-17 11:03:31+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: ro */
@@ -21,7 +21,7 @@
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
 "%1$@ on %2$@: %3$@" = "%1$@ pe %2$@: %3$@";
 
-/* Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d din %2$d finalizate";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
@@ -275,6 +275,12 @@
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "O listă de situri asociate cu acest cont.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
+"A series of steps showing you how to add a theme, site icon and more." = "O serie de pași care îți arată cum să adaugi o temă, un icon de sit și altele.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
+"A series of steps to assist with growing your site's audience." = "O serie de pași care te ajută să aduci mai mulți vizitatori pe sit.";
 
 /* translators: sample content for \"Team\" page template */
 "A short bio with personal history, key achievements, or an interesting fact." = "O biografie scurtă, ca un istoric personal, realizări importante sau fapte interesante.";
@@ -620,6 +626,9 @@
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "Setări aplicație";
 
+/* The title of the app appearance settings screen */
+"Appearance" = "Apariție";
+
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed." = "Autentificarea Apple a eșuat.";
 
@@ -927,6 +936,7 @@
    Cancels an Action
    Cancels an alert.
    Dismiss the post action sheet
+   Editing GIF alert cancel action button.
    Label for a cancel button
    Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
@@ -1216,6 +1226,42 @@
 /* The action is completed */
 "Completed" = "Terminat";
 
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site stats" = "Finalizat: vezi statisticile sitului";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a theme" = "Finalizat: alege o temă";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Continue with site setup" = "Finalizat: continuă ci inițializarea sitului";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create a new page" = "Finalizat: creează o pagină nouă";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create your site" = "Finalizat: creează-ți situl";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Customize your site" = "Finalizat: personalizează-ți situl";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Enable post sharing" = "Finalizat: activează partajarea articolelor";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Explore plans" = "Finalizat: explorează planurile";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Follow other sites" = "Finalizat: urmărește alte situri";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Publish a post" = "Finalizat: publică un articol";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload a site icon" = "Finalizat: încarcă un icon sit";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: View your site" = "Finalizat: vezi situl";
+
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurare";
 
@@ -1324,6 +1370,8 @@
 "Content…" = "Conținut...";
 
 /* Action title to dismiss domain credit redemption success screen
+   Apply changes localy to single block edition in the web block editor
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title */
 "Continue" = "Continuă";
 
@@ -1430,6 +1478,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Cod de țară";
 
+/* Label for switch to turn on/off sending crashes info */
+"Crash reports" = "Rapoarte erori fatale";
+
 /* Accessibility label for create floating action button */
 "Create" = "Creează";
 
@@ -1511,7 +1562,7 @@
 "Currently restoring your site" = "Acum îți restaurăm situl";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Personalizare";
 
@@ -1536,6 +1587,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personalizează-ți situl pentru Aprecieri, Comentarii, Urmăritori și altele.";
+
+/* Title for the app appearance setting for dark mode */
+"Dark" = "Întunecată";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Panou de control";
@@ -1822,6 +1876,7 @@
 "East" = "Est";
 
 /* Edit the post.
+   Editing GIF alert default action button.
    Edits a Comment
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -1833,6 +1888,9 @@
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "Editează %@";
+
+/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
+"Edit %@ block" = "Editează blocul %@";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "Editare cuvânt listă neagră (Blacklist)";
@@ -1852,6 +1910,9 @@
 "Edit Post" = "Editează articolul";
 
 /* No comment provided by engineer. */
+"Edit block in web browser" = "Editează blocul în navigatorul web";
+
+/* No comment provided by engineer. */
 "Edit media" = "Editează media";
 
 /* Explanation for the option to enable the block editor */
@@ -1865,6 +1926,9 @@
 
 /* No comment provided by engineer. */
 "Edit video" = "Editează videoul";
+
+/* Editing GIF alert message. */
+"Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
 
 /* Title for the editor settings section */
 "Editor" = "Editor";
@@ -2309,9 +2373,6 @@ translators: sample content for \"Team\" page template */
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Preiau informațiile contului";
 
-/* One of the options when selecting More in the Post Editor's format bar */
-"Giphy" = "Giphy";
-
 /* Cancel */
 "Give Up" = "Renunț";
 
@@ -2464,12 +2525,16 @@ translators: sample content for \"Team\" page template */
 "Hold for Moderation" = "Reșine pentru moderare";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen */
+   Title for the homepage section in site settings screen
+   Title of the Homepage Badge */
 "Homepage" = "Prima pagină";
 
 /* Label for Homepage Settings site settings section
    Title for the Homepage Settings screen */
 "Homepage Settings" = "Setări prima pagină";
+
+/* Message informing the user that their static homepage page was set successfully */
+"Homepage successfully updated" = "Prima pagină a fost actualizată cu succes";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Ura!\nAproape gata";
@@ -2755,6 +2820,9 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Services\" page template */
 "Let’s build something together!" = "Hai să construim ceva împreună!";
+
+/* Title for the app appearance setting for light mode */
+"Light" = "Luminoasă";
 
 /* Like (verb)
    Like a post.
@@ -3782,7 +3850,7 @@ translators: sample content for \"Services\" page template */
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Alege numele de utilizator";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Plan" = "Plan";
 
 /* Action title. Noun. Links to a blog's Plans screen.
@@ -4011,6 +4079,12 @@ translators: sample content for \"Services\" page template */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Articole și pagini";
 
+/* Title of the Posts Page Badge */
+"Posts page" = "Pagină articole";
+
+/* Message informing the user that their static homepage for posts was set successfully */
+"Posts page successfully updated" = "Pagina articole a fost actualizată cu succes";
+
 /* Posts per Page Title */
 "Posts per Page" = "Articole per pagină";
 
@@ -4019,9 +4093,6 @@ translators: sample content for \"Services\" page template */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Articolele pe care le-ai apreciat vor apărea aici.";
-
-/* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
-"Powered by Giphy" = "Propulsat de Giphy";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Propulsat de Tenor";
@@ -4075,6 +4146,9 @@ translators: sample content for \"Services\" page template */
 /* Link to privacy settings page
    Privacy Settings Title */
 "Privacy Settings" = "Setări confidențialitate";
+
+/* Link to the CCPA privacy notice for residents of California. */
+"Privacy notice for California users" = "Notificări de confidențialitate pentru utilizatorii din California";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4204,7 +4278,7 @@ translators: sample content for \"Services\" page template */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Notificările imediate au fost dezactivate în setările iOS. Comută pe „Permite notificări” pentru a le activa din nou.";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "Quick Start" = "Inițiere rapidă";
 
 /* Prompts the user to rate us on the store */
@@ -4223,7 +4297,7 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Cititor";
 
@@ -4603,7 +4677,7 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for the search bar
    Search
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the Reader's search feature
    Title of the reader's Search menu item. */
 "Search" = "Caută";
@@ -4632,8 +4706,7 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Caută articole";
 
-/* Title for placeholder in Giphy picker
-   Title for placeholder in Tenor picker */
+/* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Caută pentru a găsi imagini GIF pe care să le adaugi în biblioteca ta Media!";
 
 /* Title for placeholder in Free Photos */
@@ -4661,6 +4734,42 @@ translators: sample content for \"Services\" page template */
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Selectează";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue" = "Selectează %@ pentru a continua";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue." = "Selectează %@ pentru a continua.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new page." = "Selectează %@ pentru a crea o pagină nouă.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new post" = "Selectează %@ pentru a crea un articol nou";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to discover new themes" = "Selectează %@ pentru a descoperi teme noi";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to look for sites with similar interests" = "Selectează %@ pentru a căuta situri cu preocupări similare";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to preview" = "Selectează %@ pentru previzualizare";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see how your site is performing." = "Selectează %@ pentru a vedea cum funcționează situl tău.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your checklist" = "Selectează %@ pentru a vedea lista de verificări";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current plan and other available plans." = "Selectează %@ pentru a vedea planul actual și alte planuri disponibile.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to start personalising your site" = "Selectează %@ pentru a începe personalizarea sitului tău";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to upload a new one." = "Selectează %@ pentru a încărca unul nou.";
+
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selectează țara";
 
@@ -4678,6 +4787,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Selectează stil paragraf";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ to add your social media accounts" = "Selectează %@ pentru a-ți adăuga conturile din media socială";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Selectează contul pe care vrei să-l autorizezi. Reține că articolele tale vor fi automat partajate pe contul respectiv.";
@@ -4749,6 +4861,12 @@ translators: sample content for \"Services\" page template */
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Setează părinte";
 
+/* Label for a button that sets the selected page as the site's Homepage */
+"Set as Homepage" = "Setează ca prima pagină";
+
+/* Label for a button that sets the selected page as the site's Posts page */
+"Set as Posts Page" = "Setează ca pagină articole";
+
 /* The Jetpack view button title for the success state */
 "Set up" = "Inițializare";
 
@@ -4795,7 +4913,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for the Sharing section in post Settings. Should be the same as WP core.
    Noun. Title. Links to a blog's sharing options.
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partajare";
 
@@ -4918,7 +5036,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Limbă sit";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to tap during a guided tour.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Pagini sit";
 
@@ -5106,7 +5224,7 @@ translators: sample content for \"Services\" page template */
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
-   The item to tap during a guided tour. */
+   The item to select during a guided tour. */
 "Stats" = "Statistici";
 
 /* The loading view title displayed when an error occurred */
@@ -5226,6 +5344,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Comută la dimensiune font implicită";
 
+/* Title for the app appearance setting (light / dark mode) that uses the system default value */
+"System default" = "Defecțiune în sistem";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel arătând %@";
 
@@ -5277,42 +5398,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Take a Video" = "Fă un video";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue" = "Atinge %@ pentru a continua";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue." = "Atinge %@ pentru a continua.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new page." = "Atinge %@ pentru a crea o pagină nouă.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new post" = "Atinge %@ pentru a crea un articol nou";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to discover new themes" = "Atinge %@ pentru a descoperi teme noi";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to look for sites with similar interests" = "Atinge %@ pentru a căuta situri cu preocupări similare";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to preview" = "Atinge %@ pentru a previzualiza";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see how your site is performing." = "Atinge %@ pentru a vedea cum funcționează situl tău.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your checklist" = "Atinge %@ pentru a-ți vedea lista de verificări";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your current plan and other available plans." = "Atinge %@ pentru a vedea planul actual și alte planuri disponibile.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to start personalising your site" = "Atinge %@ pentru a începe personalizarea sitului tău";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to upload a new one." = "Atinge %@ pentru a încărca unul nou.";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Atinge [bookmark-outline] pentru a salva un articol în lista ta.";
 
@@ -5321,9 +5406,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Atinge aici pentru a afișa ajutorul";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap the %@ to add your social media accounts" = "Atinge %@ pentru a-ți adăuga conturile din media socială";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
@@ -5513,16 +5595,13 @@ translators: sample content for \"Services\" page template */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Temă activată";
 
-/* The menu item to tap during a guided tour.
+/* The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Teme";
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "A apărut o problemă în timpul încărcării setărilor pentru notificări";
-
-/* An error message. */
-"There has been an error while trying to reach your site." = "A apărut o eroare în timp ce încercăm să ajung pe situl tău.";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "A fost o eroare neașteptată în timpul editării comentariului tău";
@@ -5544,6 +5623,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "A apărut o eroare neașteptată în timpul actualizării comentariului tău";
+
+/* Generic error alert message */
+"There has been an unexpected error." = "A apărut o eroare neașteptată.";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Există o modificare în așteptare la un email primit la %@. Te rog verifică-ți emailurile primite pentru o legătură de confirmare.";
@@ -5735,6 +5817,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Pentru a primi notificări utile pe telefon de la situl tău WordPress, va trebui să instalezi modulul Jetpack.";
+
+/* Informational text for Report Crashes setting */
+"To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "Pentru a ne ajuta să îmbunătățim performanțele aplicației și să corectăm erorile ocazionale, activează rapoartele automate de erori fatale.";
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "Pentru a instala module, trebuie să ai un domeniu personalizat asociat cu situl tău.";
@@ -6227,7 +6312,7 @@ translators: sample content for \"Services\" page template */
 "View Post" = "Vezi articolul";
 
 /* Action title. Opens the user's site in an in-app browser
-   The menu item to tap during a guided tour. */
+   The menu item to select during a guided tour. */
 "View Site" = "Vezi sit";
 
 /* Displays More Rows */
@@ -6305,6 +6390,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Team\" page template */
 "Want to work with us?" = "Vrei să lucrezi cu noi?";
 
+/* Editing GIF alert title. */
+"Warning" = "Avertizare";
+
 /* No comment provided by engineer. */
 "Warning Message" = "Mesaj de avertizare";
 
@@ -6316,6 +6404,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Avem probleme cu încărcarea datelor";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "Lucrăm cu sârguință pentru a adăuga mai multe blocuri la fiecare lansare a unei versiuni noi. Între timp, poți edita acest bloc folosind navigatorul dispozitivului tău.";
 
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "Lucrăm cu sârguință pentru a adăuga mai multe blocuri la fiecare lansare a unei versiuni noi. Între timp, poți edita acest articol pe web.";
@@ -6478,6 +6569,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
 "We'll submit your post for review when your device is back online." = "Îți vom trimite articolul pentru verificare când dispozitivul tău va fi din nou online.";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Vom folosi această adresă de email pentru a-ți crea noul cont WordPress.com.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Facem inițializarea finală — aproape gata...";
@@ -6822,7 +6916,7 @@ translators: sample content for \"Services\" page template */
 /* Header title for your domains section of Domains. */
 "Your Domains" = "Domeniile tale";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Your Site Icon" = "Iconul sitului tău";
 
 /* Displayed in the Notification Settings View */
@@ -6915,7 +7009,7 @@ translators: sample content for \"Services\" page template */
 /* Used when displaying author of a plugin. */
 "by %@" = "de %@";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "connections" = "conexiuni";
 
 /* subhead shown to users when they complete all Quick Start items */
