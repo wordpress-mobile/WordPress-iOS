@@ -47,6 +47,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
+@property (nonatomic, strong) BlogListViewController *journeyViewController;
+@property (nonatomic, strong) BlogListViewController *itineraryViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
@@ -54,6 +56,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
 @property (nonatomic, strong) UINavigationController *blogListNavigationController;
+@property (nonatomic, strong) UINavigationController *journeyNavigationController;
+@property (nonatomic, strong) UINavigationController *itineraryNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -204,6 +208,62 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
     
     return _blogListNavigationController;
+}
+
+- (UINavigationController *)journeyNavigationController
+{
+    if (_journeyNavigationController) {
+        return _journeyNavigationController;
+    }
+
+    self.journeyViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    _journeyNavigationController = [[UINavigationController alloc] initWithRootViewController:self.journeyViewController];
+    _journeyNavigationController.navigationBar.translucent = NO;
+
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
+    _journeyNavigationController.tabBarItem.image = mySitesTabBarImage;
+    _journeyNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
+    _journeyNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    _journeyNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
+    _journeyNavigationController.tabBarItem.accessibilityIdentifier = @"journeysTabButton";
+    _journeyNavigationController.tabBarItem.title = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+    if (blogToOpen) {
+        _journeyViewController.selectedBlog = blogToOpen;
+    }
+
+    return _journeyNavigationController;
+}
+
+- (UINavigationController *)itineraryNavigationController
+{
+    if (_itineraryNavigationController) {
+        return _itineraryNavigationController;
+    }
+
+    self.itineraryViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    _itineraryNavigationController = [[UINavigationController alloc] initWithRootViewController:self.itineraryViewController];
+    _itineraryNavigationController.navigationBar.translucent = NO;
+
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
+    _itineraryNavigationController.tabBarItem.image = mySitesTabBarImage;
+    _itineraryNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
+    _itineraryNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    _itineraryNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Itinerary", @"The accessibility value of the my site tab.");
+    _itineraryNavigationController.tabBarItem.accessibilityIdentifier = @"itineraryTabButton";
+    _itineraryNavigationController.tabBarItem.title = NSLocalizedString(@"Itinerary", @"The accessibility value of the my site tab.");
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+    if (blogToOpen) {
+        _itineraryViewController.selectedBlog = blogToOpen;
+    }
+
+    return _itineraryNavigationController;
 }
 
 - (UINavigationController *)readerNavigationController
@@ -421,6 +481,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)reloadSplitViewControllers
 {
+    _journeyViewController = nil;
+    _journeyNavigationController = nil;
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
     _readerNavigationController = nil;
@@ -469,12 +531,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
         allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                              self.journeyNavigationController,
+                                                              self.itineraryNavigationController,
         self.readerNavigationController,
         self.newPostViewController,
         self.meSplitViewController,
         self.notificationsSplitViewController]];
     } else {
         allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                              self.journeyNavigationController,
+                                                              self.itineraryNavigationController,
         self.readerSplitViewController,
         self.newPostViewController,
         self.meSplitViewController,
