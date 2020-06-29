@@ -1,18 +1,22 @@
-@objc protocol BlogDetailHeaderViewDelegate: class {
+@objc protocol BlogDetailHeaderViewDelegate {
     func siteIconTapped()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
+    func siteTitleTapped()
 }
 
 class BlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
-        label.adjustsFontForContentSizeCategory = true
-        return label
+    private let titleButton: SpotlightableButton = {
+        let button = SpotlightableButton(type: .custom)
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.setTitleColor(.text, for: .normal)
+        button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
+        return button
     }()
 
     private let subtitleLabel: UILabel = {
@@ -45,10 +49,8 @@ class BlogDetailHeaderView: UIView {
     @objc var blog: Blog? {
         didSet {
             refreshIconImage()
-
-            let blogName = blog?.settings?.name
-            let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
-            titleLabel.text = title
+            toggleSpotlightForSiteTitle()
+            refreshSiteTitle()
             subtitleLabel.text = blog?.displayURL as String?
 
             siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
@@ -64,6 +66,16 @@ class BlogDetailHeaderView: UIView {
         }
 
         siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+    }
+
+    func refreshSiteTitle() {
+        let blogName = blog?.settings?.name
+        let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
+        titleButton.setTitle(title, for: .normal)
+    }
+
+    @objc func toggleSpotlightForSiteTitle() {
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
     }
 
     private enum Constants {
@@ -94,7 +106,7 @@ class BlogDetailHeaderView: UIView {
 
         let stackView = UIStackView(arrangedSubviews: [
             siteIconView,
-            titleLabel,
+            titleButton,
             subtitleLabel,
         ])
 
@@ -108,7 +120,7 @@ class BlogDetailHeaderView: UIView {
         addSubview(buttonsStackView)
 
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
-        stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
+        stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleButton)
 
         /// Constraints for constrained widths (iPad portrait)
         let minimumPaddingSideConstraints = [
@@ -142,5 +154,12 @@ class BlogDetailHeaderView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc private func titleButtonTapped() {
+        QuickStartTourGuide.find()?.visited(.siteTitle)
+        titleButton.shouldShowSpotlight = false
+
+        delegate?.siteTitleTapped()
     }
 }

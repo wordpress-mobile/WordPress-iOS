@@ -110,6 +110,16 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         reloadGradientColors()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
+                reloadGradientColors()
+            }
+        }
+    }
+
     private func configureSiteImage() {
         let placeholder = UIImage(named: "post-blavatar-placeholder")
         blavatarImageView.image = placeholder

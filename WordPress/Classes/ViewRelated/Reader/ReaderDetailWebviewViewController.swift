@@ -52,6 +52,35 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
+    /// Hide the comments button in the toolbar
+    @objc var shouldHideComments: Bool = false {
+        didSet {
+            toolbar.shouldHideComments = shouldHideComments
+        }
+    }
+
+    /// The post being shown
+    @objc var post: ReaderPost? {
+        return coordinator?.post
+    }
+
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? {
+        didSet {
+            coordinator?.postLoadFailureBlock = postLoadFailureBlock
+        }
+    }
+
+    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentPreferredStatusBarStyle
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -82,7 +111,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureDiscoverAttribution(post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
-        webView.loadHTMLString(post.contentForDisplay(), baseURL: nil)
+        webView.loadHTMLString(post.contentForDisplay())
     }
 
     /// Show ghost cells indicating the content is loading
@@ -115,7 +144,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        self.title = title ?? placeholder
+        let titleView = UILabel()
+        titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
+        navigationItem.titleView = titleView
     }
 
     deinit {
@@ -433,3 +464,35 @@ extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
         return true
     }
 }
+
+// MARK: - State Restoration
+
+extension ReaderDetailWebviewViewController: UIViewControllerRestoration {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                                      coder: NSCoder) -> UIViewController? {
+        return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
+    }
+
+
+    open override func encodeRestorableState(with coder: NSCoder) {
+        coordinator?.encodeRestorableState(with: coder)
+
+        super.encodeRestorableState(with: coder)
+    }
+
+    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+        restorationClass = type(of: self)
+
+        return super.awakeAfter(using: aDecoder)
+    }
+}
+
+// MARK: - PrefersFullscreenDisplay (iPad)
+
+// Expand this view controller to full screen if possible
+extension ReaderDetailWebviewViewController: PrefersFullscreenDisplay {}
+
+// MARK: - DefinesVariableStatusBarStyle (iPad)
+
+// Let's the split view know this vc changes the status bar style.
+extension ReaderDetailWebviewViewController: DefinesVariableStatusBarStyle {}
