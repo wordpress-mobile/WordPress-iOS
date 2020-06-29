@@ -49,7 +49,6 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementSharing = 8,
     QuickStartTourElementConnections = 9,
     QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderBack = 11,
     QuickStartTourElementReaderSearch = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
@@ -86,6 +85,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nonnull) NSString *identifier;
 @property (nonatomic, strong, nullable) NSString *accessibilityIdentifier;
+@property (nonatomic, strong, nullable) NSString *accessibilityHint;
 @property (nonatomic, strong, nonnull) UIImage *image;
 @property (nonatomic, strong, nonnull) UIColor *imageColor;
 @property (nonatomic, strong, nullable) UIView *accessoryView;
@@ -98,10 +98,18 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic) QuickStartTitleState quickStartTitleState;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
-                   identifier:(NSString * __nonnull)identifier
-      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
-                        image:(UIImage * __nonnull)image
-                     callback:(void(^_Nullable)(void))callback;
+                            identifier:(NSString * __nonnull)identifier
+               accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                                 image:(UIImage * __nonnull)image
+                              callback:(void(^_Nullable)(void))callback;
+
+- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
+                            identifier:(NSString * __nonnull)identifier
+               accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                     accessibilityHint:(NSString *__nullable)accessibilityHint
+                                 image:(UIImage * __nonnull)image
+                              callback:(void(^_Nullable)(void))callback;
+
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                                  image:(UIImage * __nonnull)image

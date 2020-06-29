@@ -2,6 +2,7 @@ import UIKit
 import WPMediaPicker
 import Gutenberg
 import Aztec
+import WordPressFlux
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -136,6 +137,38 @@ class GutenbergViewController: UIViewController, PostEditor {
         })
     }
 
+    private func editMedia(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
+
+        let mediaEditor = WPMediaEditor(image)
+        mediaEditor.editingAlreadyPublishedImage = true
+
+        mediaEditor.edit(from: self,
+                         onFinishEditing: { [weak self] images, actions in
+                            guard let image = images.first?.editedImage else {
+                                // If the image wasn't edited, do nothing
+                                return
+                            }
+
+                            self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
+        })
+    }
+
+    private func confirmEditingGIF(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let alertController = UIAlertController(title: GIFAlertStrings.title,
+                                                message: GIFAlertStrings.message,
+                                                preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(GIFAlertStrings.cancel)
+
+        alertController.addActionWithTitle(GIFAlertStrings.edit, style: .destructive) { _ in
+            self.editMedia(with: mediaUrl, callback: callback)
+        }
+
+        present(alertController, animated: true)
+    }
+
     // MARK: - Set content
 
     func setTitle(_ title: String) {
@@ -234,6 +267,9 @@ class GutenbergViewController: UIViewController, PostEditor {
         return gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
     }()
 
+    private var themeSupportQuery: Receipt? = nil
+    private var themeSupportReceipt: Receipt? = nil
+
     // MARK: - Initializers
     required init(
         post: AbstractPost,
@@ -280,6 +316,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
+        fetchEditorTheme()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -502,20 +539,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
 
-        let mediaEditor = WPMediaEditor(image)
-        mediaEditor.editingAlreadyPublishedImage = true
+        guard !mediaUrl.isGif else {
+            confirmEditingGIF(with: mediaUrl, callback: callback)
+            return
+        }
 
-        mediaEditor.edit(from: self,
-                              onFinishEditing: { [weak self] images, actions in
-                                guard let image = images.first?.editedImage else {
-                                    // If the image wasn't edited, do nothing
-                                    return
-                                }
-
-                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
-        })
+        editMedia(with: mediaUrl, callback: callback)
     }
 
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
@@ -609,6 +639,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
+            refreshEditorTheme()
         }
     }
 
@@ -660,6 +691,30 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.present(controller, animated: true)
     }
 
+    func gutenbergDidRequestUnsupportedBlockFallback(for block: Block) {
+        do {
+            let controller = try GutenbergWebNavigationController(with: post, block: block)
+            showGutenbergWeb(controller)
+        } catch {
+            DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
+            return showUnsupportedBlockUnexpectedErrorAlert()
+        }
+    }
+
+    func showGutenbergWeb(_ controller: GutenbergWebNavigationController) {
+        controller.onSave = { [weak self] newBlock in
+            self?.gutenberg.replace(block: newBlock)
+        }
+        present(controller, animated: true)
+    }
+
+    func showUnsupportedBlockUnexpectedErrorAlert() {
+        WPError.showAlert(
+            withTitle: NSLocalizedString("Error", comment: "Generic error alert title"),
+            message: NSLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
+            withSupportButton: false
+        )
+    }
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
@@ -879,5 +934,32 @@ private extension GutenbergViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+    }
+}
+
+// Editor Theme Support
+extension GutenbergViewController {
+
+    // GutenbergBridgeDataSource
+    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
+        return StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport
+    }
+
+    private func fetchEditorTheme() {
+        let themeSupportStore = StoreContainer.shared.editorTheme
+        themeSupportQuery = themeSupportStore.query(EditorThemeQuery(blog: post.blog))
+        themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
+            DispatchQueue.main.async {
+                if let strongSelf = self, let themeSupport = state.editorTheme(forBlog: strongSelf.post.blog)?.themeSupport {
+                    strongSelf.gutenberg.updateTheme(themeSupport)
+                }
+            }
+        }
+    }
+
+    private func refreshEditorTheme() {
+        if let themeSupport = StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport {
+            gutenberg.updateTheme(themeSupport)
+        }
     }
 }

@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.16'
+    pod 'WordPressShared', '1.9.0'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.9.0'
+    pod 'WordPressKit', '4.10.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/homepage-settings'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14224-add-zendesk-plan-field'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -147,7 +147,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => '1.29.1'
+    gutenberg :tag => 'v1.30.0'
 
     ## Third party libraries
     ## =====================
@@ -168,7 +168,9 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
-
+    wordpress_kit
+    wordpress_shared
+    
     # Production
     pod 'Automattic-Tracks-iOS', '~> 0.4.4'
     # While in PR
@@ -184,8 +186,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-
-    pod 'WordPressAuthenticator', '~> 1.17.0'
+    pod 'WordPressAuthenticator', '~> 1.18.1'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

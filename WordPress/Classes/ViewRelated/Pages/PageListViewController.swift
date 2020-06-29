@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressFlux
 
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
@@ -45,6 +46,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    lazy var homepageSettingsService = {
+        return HomepageSettingsService(blog: blog, context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
+    }()
 
     // MARK: - GUI
 
@@ -168,6 +172,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
+    fileprivate func beginRefreshingManually() {
+        guard let refreshControl = refreshControl else {
+            return
+        }
+
+        refreshControl.beginRefreshing()
+        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentOffset.y - refreshControl.frame.size.height), animated: true)
+    }
 
     // MARK: - Sync Methods
 
@@ -608,6 +620,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
 
                 addSetParentAction(to: alertController, for: page, at: indexPath)
+                addSetHomepageAction(to: alertController, for: page, at: indexPath)
+                addSetPostsPageAction(to: alertController, for: page, at: indexPath)
 
                 alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -736,6 +750,85 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    private func addSetHomepageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
+        let objectID = page.objectID
+
+        /// This button is enabled if
+        /// - Page is not trashed
+        /// - The site's homepage type is .page
+        /// - The page isn't currently the homepage
+        //
+        guard page.status != .trash,
+            let homepageType = blog.homepageType,
+            homepageType == .page,
+            let page = pageForObjectID(objectID),
+            page.isSiteHomepage == false else {
+            return
+        }
+
+        let setHomepageButtonTitle = NSLocalizedString("Set as Homepage", comment: "Label for a button that sets the selected page as the site's Homepage")
+        controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
+            if let pageID = page.postID?.intValue {
+                self?.beginRefreshingManually()
+                self?.homepageSettingsService?.setHomepageType(.page,
+                                                               homePageID: pageID, success: {
+                                                                self?.refreshAndReload()
+                                                                self?.handleHomepageSettingsSuccess()
+                }, failure: { error in
+                    self?.refreshControl?.endRefreshing()
+                    self?.handleHomepageSettingsFailure()
+                })
+            }
+        })
+    }
+
+    private func addSetPostsPageAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
+        let objectID = page.objectID
+
+        /// This button is enabled if
+        /// - Page is not trashed
+        /// - The site's homepage type is .page
+        /// - The page isn't currently the posts page
+        //
+        guard page.status != .trash,
+            let homepageType = blog.homepageType,
+            homepageType == .page,
+            let page = pageForObjectID(objectID),
+            page.isSitePostsPage == false else {
+            return
+        }
+
+        let setPostsPageButtonTitle = NSLocalizedString("Set as Posts Page", comment: "Label for a button that sets the selected page as the site's Posts page")
+        controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
+            if let pageID = page.postID?.intValue {
+                self?.beginRefreshingManually()
+                self?.homepageSettingsService?.setHomepageType(.page,
+                                                               withPostsPageID: pageID, success: {
+                                                                self?.refreshAndReload()
+                                                                self?.handleHomepagePostsPageSettingsSuccess()
+                }, failure: { error in
+                    self?.refreshControl?.endRefreshing()
+                    self?.handleHomepageSettingsFailure()
+                })
+            }
+        })
+    }
+
+    private func handleHomepageSettingsSuccess() {
+        let notice = Notice(title: HomepageSettingsText.updateHomepageSuccessTitle, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+    }
+
+    private func handleHomepagePostsPageSettingsSuccess() {
+        let notice = Notice(title: HomepageSettingsText.updatePostsPageSuccessTitle, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+    }
+
+    private func handleHomepageSettingsFailure() {
+        let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+    }
+
     // MARK: - UISearchControllerDelegate
 
     override func willPresentSearchController(_ searchController: UISearchController) {
@@ -777,6 +870,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func noConnectionMessage() -> String {
         return NSLocalizedString("No internet connection. Some pages may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Pages without an internet connection.")
+    }
+
+    struct HomepageSettingsText {
+        static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
+        static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
+        static let updateHomepageSuccessTitle = NSLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
+        static let updatePostsPageSuccessTitle = NSLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
     }
 }
 
