@@ -341,6 +341,16 @@ extension UIColor {
 
         return .white
     }
+
+    // MARK: - Others
+
+    static var preformattedBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray6
+        } else {
+            return UIColor.black.withAlphaComponent(0.05)
+        }
+    }
 }
 
 extension UIColor {
