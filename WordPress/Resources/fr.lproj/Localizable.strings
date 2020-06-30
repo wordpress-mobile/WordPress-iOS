@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-06-09 07:11:20+0000 */
+/* Translation-Revision-Date: 2020-06-24 06:15:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: fr */
@@ -21,7 +21,7 @@
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
 "%1$@ on %2$@: %3$@" = "%1$@ à propos de %2$@ : %3$@";
 
-/* Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d sur %2$d terminée";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
@@ -275,6 +275,12 @@
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Un liste de sites de ce compte";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
+"A series of steps showing you how to add a theme, site icon and more." = "Une série d’étapes vous affichant comment ajouter un thème, une icône de site et plus encore.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
+"A series of steps to assist with growing your site's audience." = "Une série d’étapes pour vous guider à faire grandir l’audience de votre site.";
 
 /* translators: sample content for \"Team\" page template */
 "A short bio with personal history, key achievements, or an interesting fact." = "Une courte bio avec votre histoire personnelle, vos principales réalisations ou d’autres choses intéressantes.";
@@ -620,6 +626,9 @@
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "Réglages de l’application";
 
+/* The title of the app appearance settings screen */
+"Appearance" = "Apparence";
+
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed." = "L’authentification à Apple a échoué.";
 
@@ -927,6 +936,7 @@
    Cancels an Action
    Cancels an alert.
    Dismiss the post action sheet
+   Editing GIF alert cancel action button.
    Label for a cancel button
    Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
@@ -1216,6 +1226,42 @@
 /* The action is completed */
 "Completed" = "Terminé";
 
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site stats" = "Terminé : vérifiez vos statistiques";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a theme" = "Terminé : choisissez votre thème";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Continue with site setup" = "Terminé : continuez vers les réglages du site";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create a new page" = "Terminé : créez une nouvelle page";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create your site" = "Terminé : créez votre site";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Customize your site" = "Terminé : personnalisez votre site";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Enable post sharing" = "Terminé : activez le partage d’article";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Explore plans" = "Terminé : explorez les offres";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Follow other sites" = "Terminé : Suivez d’autres sites";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Publish a post" = "Terminé : publiez un article";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload a site icon" = "Terminé : Téléversez une icône de site";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: View your site" = "Terminé : affichez votre site";
+
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurer";
 
@@ -1324,6 +1370,8 @@
 "Content…" = "Contenu…";
 
 /* Action title to dismiss domain credit redemption success screen
+   Apply changes localy to single block edition in the web block editor
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title */
 "Continue" = "Continuez";
 
@@ -1430,6 +1478,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Code du pays";
 
+/* Label for switch to turn on/off sending crashes info */
+"Crash reports" = "Rapports d’incident";
+
 /* Accessibility label for create floating action button */
 "Create" = "Créer";
 
@@ -1511,7 +1562,7 @@
 "Currently restoring your site" = "Restauration de votre site en cours";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Personnaliser";
 
@@ -1536,6 +1587,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personnaliser les réglages de votre site concernant les « J'aime », commentaires, abonnements et plus encore.";
+
+/* Title for the app appearance setting for dark mode */
+"Dark" = "Sombre";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Tableau de bord";
@@ -1822,6 +1876,7 @@
 "East" = "Est";
 
 /* Edit the post.
+   Editing GIF alert default action button.
    Edits a Comment
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -1833,6 +1888,9 @@
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "Modifier %@";
+
+/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
+"Edit %@ block" = "Modifier le block %@";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "Modifier le mot clé de liste noire";
@@ -1852,6 +1910,9 @@
 "Edit Post" = "Modifier l'article";
 
 /* No comment provided by engineer. */
+"Edit block in web browser" = "Modifier le block dans le navigateur web";
+
+/* No comment provided by engineer. */
 "Edit media" = "Modifier le média";
 
 /* Explanation for the option to enable the block editor */
@@ -1862,6 +1923,9 @@
 
 /* No comment provided by engineer. */
 "Edit video" = "Modifier la vidéo";
+
+/* Editing GIF alert message. */
+"Editing this GIF will remove its animation." = "La modification de ce GIF supprimera son animation.";
 
 /* Title for the editor settings section */
 "Editor" = "Éditeur";
@@ -1916,7 +1980,7 @@
 "Enable" = "Activer";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Activer le tour rapide pour le site";
+"Enable Quick Start for Site" = "Activer le démarrage rapide pour le site";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Autoriser l’accès au micro pour enregistrer le son dans vos vidéos.";
@@ -2306,9 +2370,6 @@ translators: sample content for \"Team\" page template */
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Obtention des informations du compte";
 
-/* One of the options when selecting More in the Post Editor's format bar */
-"Giphy" = "Giphy";
-
 /* Cancel */
 "Give Up" = "Abandonner";
 
@@ -2461,12 +2522,16 @@ translators: sample content for \"Team\" page template */
 "Hold for Moderation" = "Retenir pour modération";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen */
+   Title for the homepage section in site settings screen
+   Title of the Homepage Badge */
 "Homepage" = "Page d’accueil";
 
 /* Label for Homepage Settings site settings section
    Title for the Homepage Settings screen */
 "Homepage Settings" = "Réglages de la page d’accueil";
+
+/* Message informing the user that their static homepage page was set successfully */
+"Homepage successfully updated" = "Page d’accueil mise à jour avec succès";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hourra !\nC’est presque fini.";
@@ -2752,6 +2817,9 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Services\" page template */
 "Let’s build something together!" = "Construisons quelque chose ensemble !";
+
+/* Title for the app appearance setting for light mode */
+"Light" = "Clair";
 
 /* Like (verb)
    Like a post.
@@ -3779,7 +3847,7 @@ translators: sample content for \"Services\" page template */
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Sélectionner un identifiant";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Plan" = "Offre";
 
 /* Action title. Noun. Links to a blog's Plans screen.
@@ -4008,6 +4076,12 @@ translators: sample content for \"Services\" page template */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Articles et pages";
 
+/* Title of the Posts Page Badge */
+"Posts page" = "Page des articles";
+
+/* Message informing the user that their static homepage for posts was set successfully */
+"Posts page successfully updated" = "Page des articles mise à jour avec succès";
+
 /* Posts per Page Title */
 "Posts per Page" = "Articles par page";
 
@@ -4016,9 +4090,6 @@ translators: sample content for \"Services\" page template */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "Les articles que vous aimez apparaîtront ici.";
-
-/* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
-"Powered by Giphy" = "Propulsé par Giphy";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Propulsé par Tenor";
@@ -4072,6 +4143,9 @@ translators: sample content for \"Services\" page template */
 /* Link to privacy settings page
    Privacy Settings Title */
 "Privacy Settings" = "Réglages de confidentialité";
+
+/* Link to the CCPA privacy notice for residents of California. */
+"Privacy notice for California users" = "Avis de confidentialité pour les utilisateurs californiens";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4201,7 +4275,7 @@ translators: sample content for \"Services\" page template */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Les notifications Push ont été désactivées dans les paramètres iOS. Sélectionnez « Autoriser les notifications » pour les réactiver.";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "Quick Start" = "Démarrage rapide";
 
 /* Prompts the user to rate us on the store */
@@ -4220,7 +4294,7 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Lecteur";
 
@@ -4600,7 +4674,7 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for the search bar
    Search
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the Reader's search feature
    Title of the reader's Search menu item. */
 "Search" = "Recherche";
@@ -4629,8 +4703,7 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Rechercher des publications";
 
-/* Title for placeholder in Giphy picker
-   Title for placeholder in Tenor picker */
+/* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Chercher des images GIF gratuites pour les ajouter à votre bibliothèque de médias !";
 
 /* Title for placeholder in Free Photos */
@@ -4658,6 +4731,42 @@ translators: sample content for \"Services\" page template */
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Sélectionner";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue" = "Sélectionnez %@ pour continuer";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue." = "Sélectionnez %@ pour continuer.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new page." = "Sélectionnez %@ pour créer une nouvelle page.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new post" = "Sélectionnez %@ pour créer un nouvel article";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to discover new themes" = "Sélectionnez %@ pour découvrir de nouveaux thèmes";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to look for sites with similar interests" = "Sélectionnez %@ pour regarder des sites avec des intérêts similaires";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to preview" = "Sélectionnez %@ pour l’aperçu";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see how your site is performing." = "Sélectionnez %@ pour voir comment votre site se comporte.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your checklist" = "Sélectionnez %@ pour voir votre check-list";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current plan and other available plans." = "Sélectionnez %@ pour voir votre plan actuel et les autres plans disponibles.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to start personalising your site" = "Sélectionnez %@ pour commencer à personnaliser votre site";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to upload a new one." = "Sélectionnez %@ pour en téléverser un nouveau.";
+
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Choisir le pays";
 
@@ -4675,6 +4784,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Sélectionner le style de paragraphe";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ to add your social media accounts" = "Sélectionnez le %@ pour ajouter vos comptes de réseaux sociaux";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Choisissez le compte que vous souhaitez autoriser. Notez que vos articles seront automatiquement partagés avec le compte sélectionné.";
@@ -4746,6 +4858,12 @@ translators: sample content for \"Services\" page template */
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Configurer le parent";
 
+/* Label for a button that sets the selected page as the site's Homepage */
+"Set as Homepage" = "Définir comme page d’accueil";
+
+/* Label for a button that sets the selected page as the site's Posts page */
+"Set as Posts Page" = "Définir comme page des articles";
+
 /* The Jetpack view button title for the success state */
 "Set up" = "Configurer";
 
@@ -4792,7 +4910,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for the Sharing section in post Settings. Should be the same as WP core.
    Noun. Title. Links to a blog's sharing options.
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partage";
 
@@ -4915,7 +5033,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Langue du site";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to tap during a guided tour.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Pages du site";
 
@@ -5103,7 +5221,7 @@ translators: sample content for \"Services\" page template */
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
-   The item to tap during a guided tour. */
+   The item to select during a guided tour. */
 "Stats" = "Statistiques";
 
 /* The loading view title displayed when an error occurred */
@@ -5223,6 +5341,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Basculez sur la taille de police par défaut";
 
+/* Title for the app appearance setting (light / dark mode) that uses the system default value */
+"System default" = "Réglage système";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Le tableau affiche%@";
 
@@ -5274,42 +5395,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Take a Video" = "Prendre une vidéo";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue" = "Touchez %@ pour continuer";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue." = "Touchez %@ pour continuer.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new page." = "Touchez %@ pour créer une nouvelle page.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new post" = "Touchez %@ pour créer un nouvel article";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to discover new themes" = "Touchez %@ pour découvrir de nouveaux thèmes";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to look for sites with similar interests" = "Touchez %@ pour regarder des sites avec des intérêts similaires";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to preview" = "Touchez %@ pour l’aperçu";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see how your site is performing." = "Touchez %@ pour voir comment votre site se comporte.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your checklist" = "Touchez %@ pour voir votre check-list";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your current plan and other available plans." = "Touchez %@ pour voir votre plan actuel et les autres plans disponibles.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to start personalising your site" = "Touchez %@ pour commencer à personnaliser votre site";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to upload a new one." = "Touchez %@ pour en téléverser un nouveau.";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Touchez [bookmark-outline] pour enregistrer un article dans votre liste.";
 
@@ -5318,9 +5403,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toucher ici pour voir l’aide";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap the %@ to add your social media accounts" = "Touchez le %@ pour ajouter vos comptes de réseaux sociaux";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Touchez pour annuler le téléversement.";
@@ -5510,16 +5592,13 @@ translators: sample content for \"Services\" page template */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thème activé";
 
-/* The menu item to tap during a guided tour.
+/* The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Thèmes";
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "Un problème est survenu pendant le chargement de vos paramètres de notification";
-
-/* An error message. */
-"There has been an error while trying to reach your site." = "Une erreur s'est produite lors de l'accès à votre site.";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Une erreur inattendue est survenue lors de la modification de votre commentaire";
@@ -5541,6 +5620,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "Une erreur inattendue est survenue lors de la mise à jour de votre commentaire";
+
+/* Generic error alert message */
+"There has been an unexpected error." = "Une erreur inattendue est survenue.";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Une modification de votre e-mail est en attente sur %@. Vérifiez que vous avez reçu le lien de confirmation dans votre boîte de messagerie.";
@@ -5732,6 +5814,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Pour obtenir des notifications utiles sur votre téléphone à partir de votre site WordPress, vous devez installer l'extension Jetpack.";
+
+/* Informational text for Report Crashes setting */
+"To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "Aidez-nous à améliorer les performances de l’application et à résoudre les bugs occasionnels en activant les rapports d’incident automatiques.";
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "Pour installer des extensions, un nom de domaine personnalisé doit être associé à votre site.";
@@ -6224,7 +6309,7 @@ translators: sample content for \"Services\" page template */
 "View Post" = "Voir l’article";
 
 /* Action title. Opens the user's site in an in-app browser
-   The menu item to tap during a guided tour. */
+   The menu item to select during a guided tour. */
 "View Site" = "Voir le site";
 
 /* Displays More Rows */
@@ -6302,6 +6387,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Team\" page template */
 "Want to work with us?" = "Vous voulez travailler avec nous ?";
 
+/* Editing GIF alert title. */
+"Warning" = "Avertissement";
+
 /* No comment provided by engineer. */
 "Warning Message" = "Message d’avertissement";
 
@@ -6313,6 +6401,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Nous avons des difficultés à charger les données";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "Nous travaillons dur pour ajouter des blocs supplémentaires à chaque nouvelle version. En attendant, vous pouvez également modifier cet article sur le web.";
 
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "Nous travaillons dur pour ajouter plus de blocs à chaque version. dans le même temps, vous pouvez aussi modifier cet article sur le web.";
@@ -6475,6 +6566,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
 "We'll submit your post for review when your device is back online." = "Nous enverrons votre article pour vérification quand votre appareil sera de nouveau en ligne. ";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Nous utiliserons cette adresse e-mail pour créer votre nouveau compte WordPress.com.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Nous faisons les derniers réglages. Bientôt fini…";
@@ -6819,7 +6913,7 @@ translators: sample content for \"Services\" page template */
 /* Header title for your domains section of Domains. */
 "Your Domains" = "Vos domaines";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Your Site Icon" = "Votre icône de site";
 
 /* Displayed in the Notification Settings View */
@@ -6912,7 +7006,7 @@ translators: sample content for \"Services\" page template */
 /* Used when displaying author of a plugin. */
 "by %@" = "par %@";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "connections" = "connexions";
 
 /* subhead shown to users when they complete all Quick Start items */

@@ -1,7 +1,11 @@
 15.2
 ----
-* [**] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
 * [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
+* [**] A site's title can now be changed by tapping on the title in the site detail screen.
+* [**] Added a new Quick Start task to set a title for a new site. 
+* [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
 
 -----
 
@@ -20,9 +24,14 @@
 * [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
 * [***] Free GIFs can now be added to the media library, posts, and pages.
 * [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
+* [**] Fixed a bug that prevented some logins via 'Continue with Apple'.
+* [**] Reader: Fixed a bug where tapping on the more menu may not present the menu
 * [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
 
 15.0
+----
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
 * [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
@@ -66,8 +75,6 @@
 
 14.8
 -----
-* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
-
 * Block editor: Prefill caption for image blocks when available on the Media library
 * Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
 * Block editor: Fix bug where whitespaces at start of text blocks were being removed
