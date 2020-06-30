@@ -27,6 +27,12 @@ class ReaderSelectInterestsViewController: UIViewController {
         applyStyles()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let layout = collectionView.collectionViewLayout as! ReaderInterestsCollectionViewFlowLayout
+        layout.invalidateLayout()
+    }
 
     // MARK: - Private Methods
     private func configureCollectionView() {
