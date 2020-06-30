@@ -1,9 +1,12 @@
-Come al solito, sono presenti molti miglioramenti nell'editor a blocchi. L'icona del cestino che usi per rimuovere i blocchi ora è in un menu raggiungibile toccando il pulsante a ellissi nella barra degli strumenti del blocco. Abbiamo anche aggiunto il supporto per i colori di sovrapposizione nel blocco Copertina, il supporto per la sfumatura radiale nei blocchi Pulsante e Copertina, l'animazione di ingresso/uscita nella barra degli strumenti mobile e un tooltip per i pulsanti di selezione del modello di pagina. Ora la barra degli strumenti del blocco si riduce se il blocco è più stretto della barra degli strumenti.
+È un dato di fatto: le GIF rendono Internet migliore. Ora hai accesso a una libreria di GIF gratuite, tramite Tenor, da aggiungere a qualsiasi articolo o pagina usando il blocco Immagine. Vedrai anche l'animazione direttamente nell'editor mentre stai creando!
 
-Abbiamo anche eseguito molte correzioni, per un'esperienza con l'editor a blocchi più chiara.
-Il caricamento multimediale mostrerà un messaggio "riprova" quando non è presente alcuna connessione (anziché il congelamento), "annulla/ripristina" funzionano in modo più affidabile sia per i blocchi che per il testo, abbiamo corretto un problema di unione con blocchi Testo e abbiamo corretto l'allineamento dei pulsanti nei modelli di pagina.
+L'editor a blocchi ha un'altra serie di miglioramenti:
+- Supporto per colori e sfumature definiti del tema nel blocco Copertina.
+- Possibilità di caricare video sui blocchi Copertina, anche se l'editor è chiuso.
+- Il nostro aggiornamento preferito: miglioramento della gestione di didascalie e citazioni. Premi il tasto per l'inserimento dopo aver aggiunto una didascalia in un blocco Immagine, Video, Galleria, Citazione o Citazione evidenziata e ti ritroverai automaticamente in un nuovo blocco.
 
-Abbiamo aggiunto una nuova impostazione che ti consente di modificare la tua homepage e la pagina degli articoli dalle impostazioni del sito.
+Insieme a tali aggiornamenti, ora puoi scegliere quali pagine utilizzare come homepage e pagina degli articoli direttamente dall'elenco Pagine ed è presente un interruttore a livello di app per scegliere tra un aspetto chiaro o scuro.
 
-Infine, abbiamo risolto un problema con Gravatar che ti ha bloccato nella schermata di modifica delle foto quando hai provato a scattare una nuova foto e abbiamo apportato alcuni aggiornamenti dell'interfaccia utente del Reader.
+Sappiamo che la data Ultimo articolo è stata calcolata in modo non corretto nella pagina Panoramica. Il problema è stato risolto.
 
+Alcuni problemi riscontrati con i tour per l'Avvio rapido che ne stavano rallentando leggermente la velocità. Abbiamo risolto alcuni problemi di flusso nei tour "Aumenta il tuo pubblico" e "Pubblica un articolo" ed eliminato un bug che impediva agli utenti di VoiceOver di ottenere aggiornamenti sulle attività di Avvio rapido completate. Premi il tasto per l'inserimento dopo aver aggiunto una didascalia in un blocco Immagine, Video, Galleria, Citazione o Citazione evidenziata e ti ritroverai automaticamente in un nuovo blocco.

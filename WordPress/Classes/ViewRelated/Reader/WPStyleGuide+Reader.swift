@@ -96,25 +96,13 @@ extension WPStyleGuide {
         ]
     }
 
-    /// Returns a the system serif font (New York) for iOS 13+ but defaults to noto for older devices
-    private class func serifFontForTextStyle(_ style: UIFont.TextStyle,
-                                             fontWeight weight: UIFont.Weight = .regular) -> UIFont {
-        guard #available(iOS 13, *),
-            let fontDescriptor = WPStyleGuide.fontForTextStyle(style, fontWeight: weight).fontDescriptor.withDesign(.serif)
-        else {
-            return WPStyleGuide.notoFontForTextStyle(style)
-        }
-
-        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
-    }
-
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(Cards.titleTextStyle, fontWeight: .semibold)
+            .font: WPStyleGuide.serifFontForTextStyle(Cards.titleTextStyle, fontWeight: .semibold)
         ]
     }
 
@@ -159,7 +147,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(.title3),
+            .font: WPStyleGuide.serifFontForTextStyle(.title3),
 
         ]
     }

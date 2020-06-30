@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-06-10 12:54:11+0000 */
+/* Translation-Revision-Date: 2020-06-25 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha */
 /* Language: zh_CN */
@@ -21,7 +21,7 @@
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
 "%1$@ on %2$@: %3$@" = "%1$@（位于 %2$@）：%3$@";
 
-/* Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
@@ -275,6 +275,12 @@
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "此帐户上的站点列表。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
+"A series of steps showing you how to add a theme, site icon and more." = "向您展示如何添加主题、站点图标等的一系列步骤。";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
+"A series of steps to assist with growing your site's audience." = "帮助您增加站点受众的一系列步骤。";
 
 /* translators: sample content for \"Team\" page template */
 "A short bio with personal history, key achievements, or an interesting fact." = "简短的个人简介，包括个人经历、主要成就或有趣的体验。";
@@ -620,6 +626,9 @@
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "应用程序设置";
 
+/* The title of the app appearance settings screen */
+"Appearance" = "外观";
+
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed." = "Apple 验证失败。";
 
@@ -927,6 +936,7 @@
    Cancels an Action
    Cancels an alert.
    Dismiss the post action sheet
+   Editing GIF alert cancel action button.
    Label for a cancel button
    Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post.
    Menus cancel button for deleting a menu.
@@ -1216,6 +1226,42 @@
 /* The action is completed */
 "Completed" = "已完成";
 
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site stats" = "已完成：查看站点统计信息";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a theme" = "已完成：选择主题";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Continue with site setup" = "已完成：继续设置站点";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create a new page" = "已完成：创建新页面";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Create your site" = "已完成：创建您的站点";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Customize your site" = "已完成：定制您的站点";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Enable post sharing" = "已完成：启用文章共享";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Explore plans" = "已完成：了解套餐";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Follow other sites" = "已完成：关注其他站点";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Publish a post" = "已完成：发布文章";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Upload a site icon" = "已完成：上传站点图标";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: View your site" = "已完成：查看您的站点";
+
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "配置";
 
@@ -1324,6 +1370,8 @@
 "Content…" = "内容…";
 
 /* Action title to dismiss domain credit redemption success screen
+   Apply changes localy to single block edition in the web block editor
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title */
 "Continue" = "继续";
 
@@ -1430,6 +1478,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "国家\/地区代码";
 
+/* Label for switch to turn on/off sending crashes info */
+"Crash reports" = "崩溃报告";
+
 /* Accessibility label for create floating action button */
 "Create" = "创建";
 
@@ -1511,7 +1562,7 @@
 "Currently restoring your site" = "目前正在恢复您的站点";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "定制";
 
@@ -1536,6 +1587,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "针对赞、评论、关注等项目自定义您的站点设置。";
+
+/* Title for the app appearance setting for dark mode */
+"Dark" = "深色";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "控制面板";
@@ -1822,6 +1876,7 @@
 "East" = "东";
 
 /* Edit the post.
+   Editing GIF alert default action button.
    Edits a Comment
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -1833,6 +1888,9 @@
 
 /* Button that displays the media editor to the user */
 "Edit %@" = "Edit %@";
+
+/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
+"Edit %@ block" = "编辑“%@”区块";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "编辑黑名单密钥";
@@ -1852,6 +1910,9 @@
 "Edit Post" = "编辑文章";
 
 /* No comment provided by engineer. */
+"Edit block in web browser" = "在 Web 浏览器中编辑区块";
+
+/* No comment provided by engineer. */
 "Edit media" = "Edit media";
 
 /* Explanation for the option to enable the block editor */
@@ -1862,6 +1923,9 @@
 
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
+
+/* Editing GIF alert message. */
+"Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
 
 /* Title for the editor settings section */
 "Editor" = "编辑器";
@@ -2306,9 +2370,6 @@ translators: sample content for \"Team\" page template */
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "获取账户信息";
 
-/* One of the options when selecting More in the Post Editor's format bar */
-"Giphy" = "Giphy";
-
 /* Cancel */
 "Give Up" = "放弃";
 
@@ -2461,12 +2522,16 @@ translators: sample content for \"Team\" page template */
 "Hold for Moderation" = "保持审核状态";
 
 /* Title for setting which shows the current page assigned as a site's homepage
-   Title for the homepage section in site settings screen */
+   Title for the homepage section in site settings screen
+   Title of the Homepage Badge */
 "Homepage" = "主页";
 
 /* Label for Homepage Settings site settings section
    Title for the Homepage Settings screen */
 "Homepage Settings" = "主页设置";
+
+/* Message informing the user that their static homepage page was set successfully */
+"Homepage successfully updated" = "已成功更新主页";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
@@ -2752,6 +2817,9 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template
 translators: sample content for \"Services\" page template */
 "Let’s build something together!" = "让我们一起创造精彩！";
+
+/* Title for the app appearance setting for light mode */
+"Light" = "明亮";
 
 /* Like (verb)
    Like a post.
@@ -3779,7 +3847,7 @@ translators: sample content for \"Services\" page template */
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "选择用户名";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Plan" = "套餐";
 
 /* Action title. Noun. Links to a blog's Plans screen.
@@ -4008,6 +4076,12 @@ translators: sample content for \"Services\" page template */
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "文章和页面";
 
+/* Title of the Posts Page Badge */
+"Posts page" = "文章页面";
+
+/* Message informing the user that their static homepage for posts was set successfully */
+"Posts page successfully updated" = "已成功更新文章页面";
+
 /* Posts per Page Title */
 "Posts per Page" = "篇文章\/页";
 
@@ -4016,9 +4090,6 @@ translators: sample content for \"Services\" page template */
 
 /* A message explaining the Posts I Like feature in the reader */
 "Posts that you like will appear here." = "您喜欢的文章将在此处显示。";
-
-/* Subtitle for placeholder in Giphy picker. `The company name 'Giphy' should always be written as it is. */
-"Powered by Giphy" = "由 Giphy 提供支持";
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "由 Tenor 提供支持";
@@ -4072,6 +4143,9 @@ translators: sample content for \"Services\" page template */
 /* Link to privacy settings page
    Privacy Settings Title */
 "Privacy Settings" = "隐私设置";
+
+/* Link to the CCPA privacy notice for residents of California. */
+"Privacy notice for California users" = "面向加州用户的隐私声明";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4201,7 +4275,7 @@ translators: sample content for \"Services\" page template */
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "推送通知功能已在 iOS 设置中关闭。切换“允许接收通知”以开启此功能。";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "Quick Start" = "快速启动";
 
 /* Prompts the user to rate us on the store */
@@ -4220,7 +4294,7 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "读者";
 
@@ -4600,7 +4674,7 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for the search bar
    Search
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title of the Reader's search feature
    Title of the reader's Search menu item. */
 "Search" = "搜索";
@@ -4629,8 +4703,7 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when the search controller will be presented */
 "Search posts" = "搜索文章";
 
-/* Title for placeholder in Giphy picker
-   Title for placeholder in Tenor picker */
+/* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "搜索查找要添加到您的媒体库中的 GIF！";
 
 /* Title for placeholder in Free Photos */
@@ -4658,6 +4731,42 @@ translators: sample content for \"Services\" page template */
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "选择";
 
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue" = "选择“%@”以继续";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue." = "选择“%@”以继续。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new page." = "选择“%@”，创建一个新页面。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to create a new post" = "选择“%@”，撰写一篇新文章";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to discover new themes" = "选择“%@”，发现新的主题";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to look for sites with similar interests" = "选择“%@”，查找具有类似兴趣的站点";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to preview" = "选择“%@”以预览";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see how your site is performing." = "选择“%@”，查看您站点的效果。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your checklist" = "选择“%@”，查看您的清单";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to see your current plan and other available plans." = "选择“%@”，查看您的当前套餐和其他可用套餐。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to start personalising your site" = "选择“%@”，开始个性化您的站点";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to upload a new one." = "选择“%@”，上传一个新的。";
+
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "选择国家\/地区";
 
@@ -4675,6 +4784,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "选择段落样式";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体帐户";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "选择您要授权的帐户。请注意，您的文章将会自动分享至已选帐户。";
@@ -4746,6 +4858,12 @@ translators: sample content for \"Services\" page template */
    Navigation title displayed on the navigation bar */
 "Set Parent" = "设置父项";
 
+/* Label for a button that sets the selected page as the site's Homepage */
+"Set as Homepage" = "设为主页";
+
+/* Label for a button that sets the selected page as the site's Posts page */
+"Set as Posts Page" = "设为文章页面";
+
 /* The Jetpack view button title for the success state */
 "Set up" = "设置";
 
@@ -4792,7 +4910,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for the Sharing section in post Settings. Should be the same as WP core.
    Noun. Title. Links to a blog's sharing options.
-   The menu item to tap during a guided tour.
+   The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共享";
 
@@ -4915,7 +5033,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "站点语言";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to tap during a guided tour.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "站点页面";
 
@@ -5103,7 +5221,7 @@ translators: sample content for \"Services\" page template */
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title
-   The item to tap during a guided tour. */
+   The item to select during a guided tour. */
 "Stats" = "统计信息";
 
 /* The loading view title displayed when an error occurred */
@@ -5223,6 +5341,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "切换为默认字体大小";
 
+/* Title for the app appearance setting (light / dark mode) that uses the system default value */
+"System default" = "系统默认";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "显示 %@ 的表格";
 
@@ -5274,42 +5395,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Take a Video" = "拍摄视频";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue" = "轻点“%@”以继续";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to continue." = "点击“%@”以继续。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new page." = "点击“%@”创建一个新页面。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to create a new post" = "轻点“%@”，撰写一篇新文章";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to discover new themes" = "轻点“%@”，发现新的主题";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to look for sites with similar interests" = "轻点“%@”，查找类似站点";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to preview" = "轻点“%@”进行预览";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see how your site is performing." = "点击“%@”查看您站点的效果。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your checklist" = "轻点“%@”，查看您的清单";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to see your current plan and other available plans." = "点击“%@”查看您的当前套餐和其他可选套餐。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to start personalising your site" = "轻点“%@”，开始打造您的个性化站点";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap %@ to upload a new one." = "点击“%@”上传一个新项目。";
-
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "轻点“[bookmark-outline]”以将文章保存到您的列表中。";
 
@@ -5318,9 +5403,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to tap. */
-"Tap the %@ to add your social media accounts" = "轻点“%@”，添加您的社交媒体帐户";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "点按即可取消上传。";
@@ -5510,16 +5592,13 @@ translators: sample content for \"Services\" page template */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "主题已激活";
 
-/* The menu item to tap during a guided tour.
+/* The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "主题";
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "加载“通知设置”时出现问题";
-
-/* An error message. */
-"There has been an error while trying to reach your site." = "尝试连接您的站点时出错。";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";
@@ -5541,6 +5620,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "更新您的评论时出现意外错误";
+
+/* Generic error alert message */
+"There has been an unexpected error." = "发生意外错误。";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "发送至 %@ 的电子邮件中存在待审核更改。请查看收件箱，检查是否有确认链接。";
@@ -5732,6 +5814,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.";
+
+/* Informational text for Report Crashes setting */
+"To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "为帮助我们提升应用程序的性能并修复偶发性错误，请启用自动发送崩溃报告功能。";
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "要安装插件，您需要拥有一个与您的站点相关联的自定义域。";
@@ -6224,7 +6309,7 @@ translators: sample content for \"Services\" page template */
 "View Post" = "View Post";
 
 /* Action title. Opens the user's site in an in-app browser
-   The menu item to tap during a guided tour. */
+   The menu item to select during a guided tour. */
 "View Site" = "查看站点";
 
 /* Displays More Rows */
@@ -6302,6 +6387,9 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"Team\" page template */
 "Want to work with us?" = "想与我们合作？";
 
+/* Editing GIF alert title. */
+"Warning" = "警告";
+
 /* No comment provided by engineer. */
 "Warning Message" = "Warning Message";
 
@@ -6313,6 +6401,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "加载数据时出现问题";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "我们正在努力在每个版本中添加更多区块。 与此同时，您还可以使用设备的 Web 浏览器编辑此区块。";
 
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "我们正在努力在每个版本中添加更多区块。同时，您还可以在网站上编辑这篇文章。";
@@ -6475,6 +6566,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
 "We'll submit your post for review when your device is back online." = "We'll submit your post for review when your device is back online.";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "我们将使用此电子邮件地址创建您的新 WordPress.com 帐户。";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "我们正在进行最后的设置 - 马上就要完成了…";
@@ -6819,7 +6913,7 @@ translators: sample content for \"Services\" page template */
 /* Header title for your domains section of Domains. */
 "Your Domains" = "您的域";
 
-/* The item to tap during a guided tour. */
+/* The item to select during a guided tour. */
 "Your Site Icon" = "您的站点图标";
 
 /* Displayed in the Notification Settings View */
@@ -6912,7 +7006,7 @@ translators: sample content for \"Services\" page template */
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
 
-/* The menu item to tap during a guided tour. */
+/* The menu item to select during a guided tour. */
 "connections" = "连接";
 
 /* subhead shown to users when they complete all Quick Start items */
