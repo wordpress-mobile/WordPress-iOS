@@ -220,7 +220,8 @@ class ReaderDetailCoordinator {
     /// Show a menu with options forthe current post's site
     ///
     private func showMenu(_ anchorView: UIView) {
-        guard let post = post else {
+        guard let post = post,
+            let context = post.managedObjectContext else {
             return
         }
 
@@ -229,10 +230,10 @@ class ReaderDetailCoordinator {
             return
         }
 
-        if let topic = topicService.findSiteTopic(withSiteID: post.siteID) {
-            ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: anchorView, inViewController: viewController)
-            return
-        }
+        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
+        let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
+
+        ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
     }
 
     /// Show a list with posts contianing this tag

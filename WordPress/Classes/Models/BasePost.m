@@ -107,7 +107,8 @@
 
 - (BOOL)isContentEmpty
 {
-    return  self.content ? self.content.isEmpty : YES;
+    BOOL isContentAnEmptyGBParagraph = [self.content isEqualToString:@"<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"];
+    return  self.content ? (self.content.isEmpty || isContentAnEmptyGBParagraph) : YES;
 }
 
 @end

@@ -1339,13 +1339,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        let service = ReaderTopicService(managedObjectContext: context)
-        if let topic = service.findSiteTopic(withSiteID: post.siteID) {
-            ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
-            return
-        }
-    }
+        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
+        let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
 
+        ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: menuButton, inViewController: self)
+    }
 
     @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
         guard gesture.state == .ended, let post = post else {
