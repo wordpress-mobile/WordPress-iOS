@@ -97,7 +97,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
 
-        let attributes: [NSAttributedString.Key : Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.cellLabelTitleFont
         ]
 

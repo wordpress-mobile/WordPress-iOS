@@ -2,7 +2,7 @@ import Foundation
 
 class ReaderInterest {
     var isSelected: Bool = false
-    
+
     let title: String
     let slug: String
 
