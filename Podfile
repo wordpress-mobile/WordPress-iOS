@@ -121,7 +121,8 @@ def gutenberg_dependencies(options)
         'ReactNativeDarkMode',
         'react-native-slider',
         'react-native-linear-gradient',
-        'react-native-get-random-values'
+        'react-native-get-random-values',
+        'react-native-blur'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -148,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '444e024adfb4f453fb93eaff4cc54d698d303d1a'
+    gutenberg :commit => '1d54a9fa3d79e95658557a825e1e08a9600fc842'
 
     ## Third party libraries
     ## =====================
