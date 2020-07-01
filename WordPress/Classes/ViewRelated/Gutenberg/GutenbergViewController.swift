@@ -870,12 +870,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergCapabilities() -> [String: Bool]? {
         return [
             "mentions": post.blog.isAccessibleThroughWPCom(),
-            "unsupportedBlockEditor": !disableUnsupportedBlockEditor,
+            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
         ]
     }
 
-    private var disableUnsupportedBlockEditor: Bool {
-        return post.blog.jetpack?.isConnected ?? false
+    private var isUnsupportedBlockEditorEnabled: Bool {
+        return !(post.blog.jetpack?.isConnected ?? false)
     }
 }
 
