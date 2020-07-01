@@ -10,6 +10,13 @@ class ReaderSelectInterestsViewController: UIViewController {
         static let cellHeight: CGFloat = 40
     }
 
+    private struct Strings {
+        static let title: String = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
+        static let subtitle: String = NSLocalizedString("Choose your interests", comment: "Reader select interests subtitle label text")
+        static let nextButtonDisabled: String = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
+        static let nextButtonEnabled: String = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
+    }
+
     // MARK: - IBOutlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
@@ -23,6 +30,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureI18N()
         configureCollectionView()
         applyStyles()
     }
@@ -58,6 +66,14 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         buttonContainerView.backgroundColor = ReaderInterestsStyleGuide.buttonContainerViewBackgroundColor
     }
+
+    private func configureI18N() {
+        titleLabel.text = Strings.title
+        subTitleLabel.text = Strings.subtitle
+        nextButton.setTitle(Strings.nextButtonDisabled, for: .disabled)
+        nextButton.setTitle(Strings.nextButtonEnabled, for: .normal)
+    }
+
 }
 
 // MARK: - UICollectionViewDataSource
