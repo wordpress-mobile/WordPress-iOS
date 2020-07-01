@@ -869,7 +869,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [String: Bool]? {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom()
+            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled
         ]
     }
 }
