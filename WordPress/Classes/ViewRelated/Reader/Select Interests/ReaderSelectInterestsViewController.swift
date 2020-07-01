@@ -107,10 +107,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
         interest.isSelected = !interest.isSelected
 
         UIView.animate(withDuration: 0) {
-//            collectionView.performBatchUpdates({
-                collectionView.reloadItems(at: [indexPath])
-//            })
-
+            collectionView.reloadItems(at: [indexPath])
         }
     }
 }
@@ -131,5 +128,4 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
 
         return size
     }
-
 }
