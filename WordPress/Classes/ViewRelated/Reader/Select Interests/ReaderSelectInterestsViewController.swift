@@ -30,7 +30,10 @@ class ReaderSelectInterestsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        let layout = collectionView.collectionViewLayout as! ReaderInterestsCollectionViewFlowLayout
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
         layout.invalidateLayout()
     }
 
@@ -64,7 +67,11 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: ReaderInterestsCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier, for: indexPath) as! ReaderInterestsCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
+                                                          for: indexPath) as? ReaderInterestsCollectionViewCell else {
+            fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
+        }
+
         let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
