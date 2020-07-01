@@ -31,6 +31,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergSettings()
     }()
 
+    let ghostView = GutenGhostView()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -332,6 +334,8 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
+        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
+        ghostView.startAnimation()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -827,6 +831,10 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+    var loadingView: UIView? {
+        return ghostView
+    }
+
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }
