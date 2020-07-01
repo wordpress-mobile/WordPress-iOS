@@ -779,9 +779,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+    func gutenbergDidRequestMention(mention: String, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         DispatchQueue.main.async(execute: { [weak self] in
-            self?.mentionShow(callback: callback)
+            self?.mentionShow(searchTerm: mention, callback: callback)
         })
     }
 
@@ -797,14 +797,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
 extension GutenbergViewController {
 
-    private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+    private func mentionShow(searchTerm: String, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         guard let siteID = post.blog.dotComID else {
             callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
             return
         }
 
         previousFirstResponder = view.findFirstResponder()
-        let mentionsController = GutenbergMentionsViewController(siteID: siteID)
+        let mentionsController = GutenbergMentionsViewController(siteID: siteID, initialSearchTerm: searchTerm)
         mentionsController.onCompletion = { (result) in
             callback(result)
             mentionsController.view.removeFromSuperview()

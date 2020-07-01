@@ -23,7 +23,7 @@ public class GutenbergMentionsViewController: UIViewController {
     public lazy var searchView: UITextField = {
         let textField = UITextField(frame: CGRect.zero)
         textField.placeholder = NSLocalizedString("Search users...", comment: "Placeholder message when showing mentions search field")
-        textField.text = Self.mentionTriggerText
+        textField.text = self.initialSearchTerm
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
@@ -36,7 +36,7 @@ public class GutenbergMentionsViewController: UIViewController {
         suggestionsView.animateWithKeyboard = false
         suggestionsView.enabled = true
         suggestionsView.showLoading = true
-        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
+        suggestionsView.showSuggestions(forWord: self.initialSearchTerm)
         suggestionsView.suggestionsDelegate = self
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
         suggestionsView.siteID = siteID
@@ -45,10 +45,12 @@ public class GutenbergMentionsViewController: UIViewController {
     }()
 
     private let siteID: NSNumber
+    private let initialSearchTerm: String
     public var onCompletion: ((Result<String, NSError>) -> Void)?
 
-    public init(siteID: NSNumber) {
+    public init(siteID: NSNumber, initialSearchTerm: String = "") {
         self.siteID = siteID
+        self.initialSearchTerm = initialSearchTerm.isEmpty ? Self.mentionTriggerText : initialSearchTerm.trim()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -100,7 +102,7 @@ public class GutenbergMentionsViewController: UIViewController {
     }
 
     override public func viewDidAppear(_ animated: Bool) {
-        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
+        suggestionsView.showSuggestions(forWord: self.initialSearchTerm)
     }
 }
 
