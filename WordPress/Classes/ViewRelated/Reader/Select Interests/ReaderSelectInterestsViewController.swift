@@ -94,7 +94,6 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
                                                       isSelected: interest.isSelected)
 
         cell.layer.cornerRadius = Constants.cellCornerRadius
-
         cell.label.text = interest.title
 
         return cell
@@ -107,10 +106,11 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
         let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
         interest.isSelected = !interest.isSelected
 
-        UIView.animate(withDuration: 0.2) {
-            collectionView.performBatchUpdates({
+        UIView.animate(withDuration: 0) {
+//            collectionView.performBatchUpdates({
                 collectionView.reloadItems(at: [indexPath])
-            })
+//            })
+
         }
     }
 }
