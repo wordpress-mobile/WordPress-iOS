@@ -869,8 +869,13 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [String: Bool]? {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom()
+            "mentions": post.blog.isAccessibleThroughWPCom(),
+            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
         ]
+    }
+
+    private var isUnsupportedBlockEditorEnabled: Bool {
+        return !(post.blog.jetpack?.isConnected ?? false)
     }
 }
 
