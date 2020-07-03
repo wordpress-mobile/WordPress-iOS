@@ -32,6 +32,9 @@
 * [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
 
 15.0
+----
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
 * [*] Fix a bug where taking a photo for your user gravatar got you blocked in the crop screen.
@@ -75,8 +78,6 @@
 
 14.8
 -----
-* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
-
 * Block editor: Prefill caption for image blocks when available on the Media library
 * Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
 * Block editor: Fix bug where whitespaces at start of text blocks were being removed
