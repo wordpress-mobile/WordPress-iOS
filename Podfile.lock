@@ -437,7 +437,7 @@ DEPENDENCIES:
   - AppCenter/Distribute (= 2.5.1)
   - Automattic-Tracks-iOS (~> 0.4.4)
   - Charts (~> 3.2.2)
-  - CocoaLumberjack (= 3.5.2)
+  - CocoaLumberjack (~> 3.0)
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/FBReactNativeSpec.podspec.json`)
@@ -739,6 +739,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 559c936b75c02417586787741bb739b948426098
+PODFILE CHECKSUM: e2b8bb3867624fbf7306b59efaaae3515f7ca383
 
 COCOAPODS: 1.8.4
