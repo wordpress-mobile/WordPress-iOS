@@ -84,7 +84,6 @@ class EncryptedLogTableViewController: UITableViewController {
 
     @objc
     private func addEncryptedLog() {
-
         do {
             /// For now, just enqueue any file – doesn't have to be the log
             let data = try Data(contentsOf: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")!)
@@ -93,7 +92,6 @@ class EncryptedLogTableViewController: UITableViewController {
             try data.write(to: url)
 
             try CrashLogging.eventLogging?.enqueueLogForUpload(log: LogFile(url: url))
-            self.updateData()
         }
         catch let err {
             let alert = UIAlertController(title: "Unable to create log", message: err.localizedDescription, preferredStyle: .actionSheet)
