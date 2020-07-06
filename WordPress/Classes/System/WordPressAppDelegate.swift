@@ -74,8 +74,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         let dataSource = EventLoggingDataProvider.fromDDFileLogger(logger.fileLogger)
-        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider)
-
+        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
         CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
 
         // Configure WPCom API overrides
