@@ -141,7 +141,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id, tenor_key, encrypted_log_key)
+def print_class(client, secret, sentry, appcenter, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id, tenor_key, encrypted_log_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
