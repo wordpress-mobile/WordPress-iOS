@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.9.1-beta.1'
+    pod 'WordPressShared', '1.9.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.11.0-beta.1'
+    pod 'WordPressKit', '4.12.0-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14313_remove_post_content_sanitization'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -52,7 +52,7 @@ end
 
 def shared_with_all_pods
     wordpress_shared
-    pod 'CocoaLumberjack', '3.5.2'
+    pod 'CocoaLumberjack', '~> 3.0'
     pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '2b2c7574dc3bcf26c25a2646bdb2142d907df860'
+    gutenberg :commit => 'b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0'
 
     ## Third party libraries
     ## =====================

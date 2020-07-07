@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable {
     case readerWebview
     case swiftCoreData
     case homepageSettings
+    case readerImprovementsPhase2
     case gutenbergMentions
 
     /// Returns a boolean indicating if the feature is enabled
@@ -47,6 +48,8 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
+        case .readerImprovementsPhase2:
+            return false
         case .gutenbergMentions:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
@@ -91,6 +94,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
+        case .readerImprovementsPhase2:
+            return "Reader Improvements Phase 2"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         }
