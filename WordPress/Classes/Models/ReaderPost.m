@@ -65,7 +65,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 @synthesize rendered;
 
-+ (instancetype)initWithRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext {
++ (instancetype)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost
+                                     forTopic:(ReaderAbstractTopic *)topic
+                                      context:(NSManagedObjectContext *) managedObjectContext
+{
     NSError *error;
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;

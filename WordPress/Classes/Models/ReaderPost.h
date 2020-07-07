@@ -67,7 +67,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 // When true indicates a post should not be deleted/cleaned-up as its currently being used.
 @property (nonatomic) BOOL inUse;
 
-+ (instancetype)initWithRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
++ (instancetype)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;

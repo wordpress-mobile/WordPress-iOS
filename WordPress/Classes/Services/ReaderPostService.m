@@ -1121,7 +1121,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  */
 - (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic
 {
-    return [ReaderPost initWithRemotePost:remotePost forTopic:topic context:self.managedObjectContext];
+    return [ReaderPost createOrReplaceFromRemotePost:remotePost forTopic:topic context:self.managedObjectContext];
 }
 
 @end
