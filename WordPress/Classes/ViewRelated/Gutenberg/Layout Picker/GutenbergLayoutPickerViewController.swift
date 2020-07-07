@@ -10,23 +10,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
 
     override func viewDidLoad() {
-
-        let seperator: UIColor
-        if #available(iOS 13.0, *) {
-            seperator =  UIColor.separator
-        } else {
-            seperator =  UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
-        }
-
-        headerView.layer.borderColor = seperator.cgColor
-        headerView.layer.borderWidth = 0.5
-
-        footerView.layer.borderColor = seperator.cgColor
-        footerView.layer.borderWidth = 0.5
-
-        createBlankPageBtn.layer.borderColor = seperator.cgColor
-        createBlankPageBtn.layer.borderWidth = 0.5
-        createBlankPageBtn.layer.cornerRadius = 8
+        formatBorders()
 
         var tableFooterFrame = footerView.frame
         tableFooterFrame.origin.x = 0
@@ -55,8 +39,30 @@ class GutenbergLayoutPickerViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                formatBorders()
+            }
+        }
+    }
+
     @IBAction func closeModal(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+
+    private func formatBorders() {
+        let seperator: UIColor
+        if #available(iOS 13.0, *) {
+            seperator =  UIColor.separator
+        } else {
+            seperator =  UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
+        }
+
+        createBlankPageBtn.layer.borderColor = seperator.cgColor
+        createBlankPageBtn.layer.borderWidth = 1
+        createBlankPageBtn.layer.cornerRadius = 8
     }
 }
 
