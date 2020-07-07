@@ -79,6 +79,24 @@ class ReaderWebView: WKWebView {
                 img.src = el.currentSrc;
                 el.src = img.src;
             })
+
+            // Load all embeds
+            const embedsToLookFor = {
+                'blockquote[class^="instagram-"]': 'https://www.instagram.com/embed.js',
+                'blockquote[class^="twitter-"], a[class^="twitter-"]': 'https://platform.twitter.com/widgets.js',
+                'fb\\\\:post, [class^=fb-]': 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2',
+                '[class^=tumblr-]': 'https://assets.tumblr.com/post.js',
+                '.embed-reddit': 'https://embed.redditmedia.com/widgets/platform.js',
+            };
+
+            Object.keys(embedsToLookFor).forEach((key) => {
+              if (document.querySelectorAll(key).length > 0) {
+                var s = document.createElement( 'script' );
+                s.setAttribute( 'src', embedsToLookFor[key] );
+                document.body.appendChild( s );
+              }
+            })
+
         """, completionHandler: nil)
     }
 
