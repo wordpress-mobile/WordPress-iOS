@@ -1,9 +1,12 @@
-Er zijn, zoals gewoonlijk, verbeteringen aan de blokeditor aangebracht. Het prullenbakpictogram dat je gebruikt om blokken te verwijderen, staat nu in een menu dat geopend kan worden door op de drie puntjes in de blokwerkbalk te tikken. We hebben ook ondersteuning voor overlay-kleuren in het Omslagblok, ondersteuning voor radiale gradiënten in het Knop- en Omslagblok, het starten/afsluiten van animatie in de zwevende werkbalk en een tooltip voor selectieknoppen van paginasjablonen toegevoegd. De blokwerkbalk wordt nu ook ingeklapt als het blok smaller is dan de werkbalk.
+Het is een feit: GIF's leiden tot een beter internet. Je hebt nu toegang tot een bibliotheek met gratis GIF's via Tenor om aan elk bericht of elke pagina toe te voegen door middel van een Afbeeldingblok. Je ziet de animatie zelfs rechtstreeks in de editor terwijl je deze aanmaakt!
 
-We hebben ook een groot aantal fixes doorgevoerd, voor een meer opgeruimde blokeditor-ervaring.
-Bij een media-upload wordt een melding 'opnieuw proberen' weergegeven wanneer er geen verbinding is (in plaats van dat de upload vastloopt), ongedaan maken/opnieuw uitvoeren werkt nu betrouwbaarder voor zowel blokken als tekst, we hebben een samenvoegprobleem met tekstblokken verholpen en de knopuitlijning in paginasjablonen gecorrigeerd.
+De blokeditor heeft nog een aantal verbeteringen gekregen:
+– Ondersteuning voor thema-gebaseerde kleuren en gradiënten in het Omslagblok,
+– De mogelijkheid om video's te uploaden naar Omslagblokken, zelfs als de editor gesloten is.
+– En onze favoriete update: verbeteringen in het gebruik van bijschriften en citaten. Door op enter te drukken na het toevoegen van een bijschrift aan een Afbeelding-, Video-, Galerij-, Citaat- of Pullquote-blok wordt er automatisch een nieuw blok aangemaakt.
 
-We hebben een nieuwe instelling toegevoegd waarmee je je homepage en berichtpagina vanuit de site-instellingen kunt wijzigen.
+Naast deze updates kun je nu direct vanuit de lijst Pagina's kiezen welke pagina's je wilt gebruiken als je homepage en berichtenpagina, en er is een schakelaar toegevoegd waarmee je kunt kiezen uit lichte of donkere weergave.
 
-Tot slot hebben we een Gravatar-probleem opgelost waarmee je vastliep in het fotobewerkingsscherm als je probeerde een nieuwe foto te maken, en we hebben een aantal UI-updates doorgevoerd in de Reader.
+We weten dat de datum van Nieuwste bericht verkeerd werd berekend op de pagina Inzichten. Dat is nu opgelost!
 
+Een paar problemen met de Snelstart-rondleidingen maakten ze iets langzamer. We hebben een paar problemen opgelost bij het doorlopen van de rondleidingen 'Je bezoekersaantallen verhogen' en 'Een bericht publiceren' en hebben een bug verwijderd die voorkwam dat VoiceOver-gebruikers updates ontvingen over voltooide Snelstart-taken. (En VoiceOver-gebruikers: het gedeelte Volgende stappen ondersteunt nu ook VoiceOver.)

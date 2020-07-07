@@ -210,7 +210,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -697,7 +697,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionIndex];
 
         NSUInteger row = 0;
-        
+
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickStart:
@@ -992,9 +992,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     BlogDetailHeaderView *headerView = [self configureHeaderView];
     headerView.delegate = self;
-    
+
     self.headerView = headerView;
-    
+
     self.tableView.tableHeaderView = headerView;
 }
 
@@ -1029,6 +1029,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     return YES;
+}
+
+- (void)siteTitleTapped
+{
+    [self showSiteTitleSettings];
 }
 
 #pragma mark Site Icon Update Management
@@ -1142,6 +1147,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)refreshSiteIcon {
     [self.headerView refreshIconImage];
+}
+
+- (void)toggleSpotlightForSiteTitle
+{
+    [self.headerView toggleSpotlightForSiteTitle];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media

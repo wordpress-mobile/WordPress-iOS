@@ -1,9 +1,12 @@
-Es gibt wie immer viele Verbesserungen im Block-Editor. Papierkorbsymbol zum Entfernen von Blöcken wird nun in einem Menü angezeigt, das durch Tippen auf das Dreipunktmenü in der Block-Toolbar erreicht werden kann. Support für Overlay-Farben im Cover-Block und radiale Farbverläufe in Button- und Cover-Blöcken hinzugefügt; Möglichkeit zum Starten/Verlassen der Animation in der unverankerten Toolbar und Tooltip für Auswahlbuttons für die Seitenvorlage hinzugefügt. Die Block-Toolbar wird nun minimiert, wenn der Block schmaler als die Toolbar ist.
+Es ist einfach so: GIFs machen das Internet besser. Du hast jetzt über Tenor Zugriff auf eine Bibliothek mit kostenlosen GIFs, die du jedem Beitrag oder jeder Seite mithilfe eines Bild-Blocks hinzufügen kannst. Die Animation wird sogar beim Erstellen direkt im Editor angezeigt.
 
-Außerdem wurden viele Korrekturen für ein besseres Erlebnis mit dem Block-Editor vorgenommen.
-Der Media Uploader zeigt die Nachricht „Erneut versuchen“ an, wenn keine Verbindung besteht (anstatt einzufrieren); Arbeit rückgängig machen/wiederholen ist für Blöcke und Text zuverlässiger; Problem beim Mergen von Text-Blöcken und bei der Button-Ausrichtung in Seitenvorlagen wurde behoben.
+Der Block-Editor weist eine weitere Reihe von Verbesserungen auf:
+– Unterstützung für Theme-definierte Farben und Farbverläufe im Cover-Block
+– Die Möglichkeit, Videos zu Cover-Blocks hochzuladen, auch wenn der Editor geschlossen ist
+– Und unsere wichtigste Aktualisierung: verbesserte Verarbeitung von Beschriftungen und Zitaten Wenn du nach dem Hinzufügen von Beschriftungen in Bild-, Video-, Galerie-, Zitat- und Pullquote-Blöcken die Eingabetaste drückst, wird der Cursor automatisch in einem neuen Block positioniert.
 
-Eine neue Einstellung wurde hinzugefügt, über die du deine Startseite und Beitragsseite über die Website-Einstellungen ändern kannst.
+Zusätzlich zu diesen Aktualisierungen kannst du jetzt direkt in der Seiten-Liste auswählen, welche Seiten du als deine Startseiten und Beitragsseite verwenden möchtest. Und es gibt einen Schalter auf App-Ebene, um zwischen hellem und dunklem Design zu wählen.
 
-Ein Gravatar-Problem wurde behoben, wodurch du im Fotobearbeitungsbildschirm stecken geblieben bist, wenn du ein neues Fotos aufnehmen wolltest; im Reader wurden einige UI-Updates vorgenommen.
+Wir wissen, dass das Datum der letzten Beiträge auf der Einsichten-Seite falsch berechnet wurde. Dies wurde nun behoben!
 
+Ein paar Probleme bei Schnellstart-Touren haben dazu geführt, dass diese etwas langsamer waren. Wir haben einige Vorgangsprobleme in den Touren „Zielgruppe vergrößern“ und „Einen Beitrag veröffentlichen“ behoben und einen Fehler korrigiert, der dafür sorgte, dass VoiceOver-Kunden keine Updates zu abgeschlossenen Schnellstart-Aufgaben erhielten. (Und für alle VoiceOver-Benutzer: VoiceOver wird jetzt auch vom Abschnitt „Nächste Schritte“ unterstützt.)
