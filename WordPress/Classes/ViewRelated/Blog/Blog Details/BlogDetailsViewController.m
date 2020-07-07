@@ -1619,6 +1619,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:navController animated:YES completion:nil];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
+    self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
