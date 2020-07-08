@@ -75,6 +75,15 @@ class GutenbergLayoutPickerViewController: UIViewController {
             button?.layer.cornerRadius = 8
         }
 
+        if #available(iOS 13.0, *) {
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        }
     }
 }
 
