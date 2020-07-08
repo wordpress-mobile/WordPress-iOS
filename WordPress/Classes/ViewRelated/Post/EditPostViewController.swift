@@ -18,6 +18,8 @@ class EditPostViewController: UIViewController {
     /// is editing a reblogged post
     var postIsReblogged = false
 
+    @objc public var isBVOrder = false
+
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
@@ -107,6 +109,9 @@ class EditPostViewController: UIViewController {
             showEditor()
             hasShownEditor = true
         }
+        if isBVOrder {
+//            showEditor()
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -134,6 +139,7 @@ class EditPostViewController: UIViewController {
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })
+
         editor.postIsReblogged = postIsReblogged
         showEditor(editor)
     }
@@ -169,6 +175,9 @@ class EditPostViewController: UIViewController {
             if let insertedMedia = self.insertedMedia {
                 editor.prepopulateMediaItems(insertedMedia)
             }
+        }
+        if isBVOrder {
+            editor.displayPostSettings(isBVOrder: true)
         }
     }
 

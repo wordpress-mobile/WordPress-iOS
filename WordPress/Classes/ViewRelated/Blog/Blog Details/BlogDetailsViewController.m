@@ -15,6 +15,7 @@
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
+#import "PostCategoriesViewController.h"
 
 @import Gridicons;
 
@@ -1579,7 +1580,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showJourneysFromSource:(BlogDetailsNavigationSource)source
 {
-
+    PostCategoriesViewController* controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog currentSelection: [NSArray new] selectionMode: CategoriesSelectionModeJourneys];
+    if (self.splitViewController.isCollapsed) {
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        [self showDetailViewController:controller sender:self];
+    }
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source

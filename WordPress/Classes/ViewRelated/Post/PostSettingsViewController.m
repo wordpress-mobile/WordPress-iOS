@@ -105,6 +105,9 @@ FeaturedImageViewControllerDelegate>
 
 @implementation PostSettingsViewController
 
+BOOL featureImageShowed = NO;
+BOOL categoryShowed = NO;
+
 #pragma mark - Initialization and dealloc
 
 - (void)dealloc
@@ -179,12 +182,15 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController setToolbarHidden:YES];
     
     [self reloadData];
+    if (self.isBVOrder && !featureImageShowed) {
+        featureImageShowed = YES;
+        [self showFeaturedImageSelector];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
     [self.apost.managedObjectContext performBlock:^{
         [self.apost.managedObjectContext save:nil];
     }];
@@ -1405,6 +1411,10 @@ FeaturedImageViewControllerDelegate>
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
                           withRowAnimation:UITableViewRowAnimationFade];
+    if (self.isBVOrder && featureImageShowed && !categoryShowed) {
+        categoryShowed = YES;
+        [self showCategoriesSelection];
+    }
 }
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {

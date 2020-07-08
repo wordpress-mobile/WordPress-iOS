@@ -9,6 +9,7 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
+#import "PostCategoriesViewController.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
@@ -47,7 +48,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) BlogListViewController *journeyViewController;
+@property (nonatomic, strong) PostCategoriesViewController *journeyViewController;
 @property (nonatomic, strong) BlogListViewController *itineraryViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
@@ -216,7 +217,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         return _journeyNavigationController;
     }
 
-    self.journeyViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+
+    self.journeyViewController = [[PostCategoriesViewController alloc] initWithBlog:blogToOpen currentSelection: [NSArray new] selectionMode: CategoriesSelectionModeJourneys];
     _journeyNavigationController = [[UINavigationController alloc] initWithRootViewController:self.journeyViewController];
     _journeyNavigationController.navigationBar.translucent = NO;
 
@@ -227,13 +232,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _journeyNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
     _journeyNavigationController.tabBarItem.accessibilityIdentifier = @"journeysTabButton";
     _journeyNavigationController.tabBarItem.title = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
-    if (blogToOpen) {
-        _journeyViewController.selectedBlog = blogToOpen;
-    }
 
     return _journeyNavigationController;
 }
@@ -657,6 +655,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
+    editor.isBVOrder = YES;
     
     NSString *tapSource = [Feature enabled:FeatureFlagFloatingCreateButton] ? @"create_button" : @"tab_bar";
     [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];

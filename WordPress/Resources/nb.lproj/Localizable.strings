@@ -3787,6 +3787,8 @@ translators: sample content for \"Services\" page template */
    Title for selecting parent category of a category */
 "Parent Category" = "Foreldrekategori";
 
+"Journeys" = "Journeys";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.

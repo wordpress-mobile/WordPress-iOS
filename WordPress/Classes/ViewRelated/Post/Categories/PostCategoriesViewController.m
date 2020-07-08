@@ -7,6 +7,8 @@
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
+#import "WordPressAuthenticator.h"
+#import <SafariServices/SafariServices.h>
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;
@@ -66,6 +68,9 @@ static const CGFloat CategoryCellIndentation = 16.0;
     switch (self.selectionMode) {
         case (CategoriesSelectionModeParent): {
             self.title = NSLocalizedString(@"Parent Category", @"Title for selecting parent category of a category");
+        } break;
+        case (CategoriesSelectionModeJourneys): {
+            self.title = NSLocalizedString(@"Journeys", @"Title for selecting parent category of a category");
         } break;
         case (CategoriesSelectionModePost): {
             self.title = NSLocalizedString(@"Post Categories", @"Title for selecting categories for a post");
@@ -260,6 +265,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     NSIndexPath *currentSelectedIndexPath = [tableView indexPathForSelectedRow];
 
     [tableView deselectRowAtIndexPath:currentSelectedIndexPath animated:YES];
@@ -296,6 +302,12 @@ static const CGFloat CategoryCellIndentation = 16.0;
             if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
                 [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
             }
+        } break;
+        case (CategoriesSelectionModeJourneys): {
+            NSString* urlString = [NSString stringWithFormat:@"%@/%@?webview=1", self.blog.url, category.categoryName];
+            NSURL* url = [[NSURL alloc] initWithString: [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
+            [self presentViewController:svc animated:YES completion:nil];
         } break;
         case (CategoriesSelectionModeBlogDefault): {
             if ([self.selectedCategories containsObject:category]){

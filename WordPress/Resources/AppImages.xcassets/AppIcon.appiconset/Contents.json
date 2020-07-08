@@ -43,13 +43,13 @@
       "size" : "40x40"
     },
     {
-      "filename" : "Icon-App-50x50@1x-1.png",
+      "filename" : "Icon-App-60x60@2x-3.png",
       "idiom" : "iphone",
       "scale" : "1x",
       "size" : "57x57"
     },
     {
-      "filename" : "Icon-App-50x50@2x-1.png",
+      "filename" : "Icon-App-60x60@3x-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "57x57"
@@ -103,13 +103,13 @@
       "size" : "40x40"
     },
     {
-      "filename" : "Icon-App-50x50@1x.png",
+      "filename" : "Icon-App-60x60@2x-1.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "50x50"
     },
     {
-      "filename" : "Icon-App-50x50@2x.png",
+      "filename" : "Icon-App-60x60@2x-2.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "50x50"
@@ -145,7 +145,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "bV logo.png",
+      "filename" : "iTunesArtwork@2x.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
