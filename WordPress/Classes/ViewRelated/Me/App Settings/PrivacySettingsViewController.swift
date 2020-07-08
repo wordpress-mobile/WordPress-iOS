@@ -145,7 +145,7 @@ class PrivacySettingsViewController: UITableViewController {
     func openCCPANotice() -> ImmuTableAction {
         return { [weak self] _ in
             self?.tableView.deselectSelectedRowWithAnimation(true)
-            self?.displayWebView(WPAutomatticCCPAPrivacyNoticeURL)
+//            self?.displayWebView(WPAutomatticCCPAPrivacyNoticeURL)
         }
     }
 

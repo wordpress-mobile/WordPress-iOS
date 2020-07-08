@@ -11,16 +11,6 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - AppCenter (2.5.1):
-    - AppCenter/Analytics (= 2.5.1)
-    - AppCenter/Crashes (= 2.5.1)
-  - AppCenter/Analytics (2.5.1):
-    - AppCenter/Core
-  - AppCenter/Core (2.5.1)
-  - AppCenter/Crashes (2.5.1):
-    - AppCenter/Core
-  - AppCenter/Distribute (2.5.1):
-    - AppCenter/Core
   - Automattic-Tracks-iOS (0.4.4):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
@@ -385,7 +375,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.2)
   - WordPress-Editor-iOS (1.19.2):
     - WordPress-Aztec-iOS (= 1.19.2)
-  - WordPressAuthenticator (1.20.0-beta.2):
+  - WordPressAuthenticator (1.20.0-beta.3):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -433,8 +423,6 @@ DEPENDENCIES:
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AMScrollingNavbar (= 5.6.0)
-  - AppCenter (= 2.5.1)
-  - AppCenter/Distribute (= 2.5.1)
   - Automattic-Tracks-iOS (~> 0.4.4)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
@@ -490,10 +478,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
-  - WordPressAuthenticator (~> 1.20.0-beta)
-  - WordPressKit (= 4.12.0-beta.1)
+  - WordPressAuthenticator (from `https://github.com/beaubateau/WordPressAuthenticator-iOS`, branch `feature/apply-beau-login`)
+  - WordPressKit (~> 4.0-beta.0)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.9.1)
+  - WordPressShared (~> 1.9-beta)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/Yoga.podspec.json`)
@@ -508,7 +496,6 @@ SPEC REPOS:
     - AlamofireNetworkActivityIndicator
     - AMScrollingNavbar
     - AppAuth
-    - AppCenter
     - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
@@ -540,7 +527,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -632,6 +618,9 @@ EXTERNAL SOURCES:
     :commit: b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+  WordPressAuthenticator:
+    :branch: feature/apply-beau-login
+    :git: https://github.com/beaubateau/WordPressAuthenticator-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/Yoga.podspec.json
 
@@ -647,6 +636,9 @@ CHECKOUT OPTIONS:
     :commit: b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+  WordPressAuthenticator:
+    :commit: e987739c9344e4fb8d5d38ba60f7ee710679c20f
+    :git: https://github.com/beaubateau/WordPressAuthenticator-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -655,7 +647,6 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
   Automattic-Tracks-iOS: dbe6301bebdc1e444972475bae19299491702cef
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
@@ -722,7 +713,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: d01bf0c5e150ae6a046f06ba63b7cc2762061c0b
   WordPress-Editor-iOS: 5b726489e5ae07b7281a2862d69aba2d5c83f140
-  WordPressAuthenticator: c684c36637c5fec5bc90cd08706bf1630cb75045
+  WordPressAuthenticator: 02cb261da08b4610f5720067983eb19fb167f14c
   WordPressKit: c10ba341c1490cbb30a52a10a1750e8f56a15fb9
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 423779c24b1f8f2ee06d1068d30c7d2ea51ca813
@@ -739,6 +730,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 414ab2a9a546d62fed0d5bd90e1d352a9d85ac62
+PODFILE CHECKSUM: 14a8dc4e68c8aad0a4bc62ded97007a1d7621805
 
 COCOAPODS: 1.8.4
