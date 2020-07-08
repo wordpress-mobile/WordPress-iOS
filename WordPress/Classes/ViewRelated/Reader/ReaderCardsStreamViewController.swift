@@ -1,10 +1,17 @@
 import Foundation
 
 class ReaderCardsStreamViewController: ReaderStreamViewController {
-    class func controller() -> ReaderCardsStreamViewController {
-        let controller = ReaderCardsStreamViewController()
-        return controller
+    // MARK: - TableView Related
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
+            return cell(for: cardPost, at: indexPath)
+        } else {
+            return UITableViewCell()
+        }
     }
+
+    // MARK: - TableViewHandler
 
     override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
@@ -16,11 +23,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return NSPredicate(format: "post == NULL OR post != null")
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
-            return cell(for: cardPost, at: indexPath)
-        } else {
-            return UITableViewCell()
-        }
+    // MARK: - Init Methods
+
+    class func controller() -> ReaderCardsStreamViewController {
+        let controller = ReaderCardsStreamViewController()
+        return controller
     }
 }
