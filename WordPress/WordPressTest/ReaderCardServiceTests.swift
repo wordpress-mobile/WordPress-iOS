@@ -78,7 +78,7 @@ class ReaderCardServiceTests: XCTestCase {
 class WordPressComMockRestApi: WordPressComRestApi {
     var succeed = false
 
-    override func GET(_ URLString: String, parameters: [String : AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
+    override func GET(_ URLString: String, parameters: [String: AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
         guard
             let fileURL: URL = Bundle.main.url(forResource: "reader-cards-success.json", withExtension: nil),
             let data: Data = try? Data(contentsOf: fileURL),
