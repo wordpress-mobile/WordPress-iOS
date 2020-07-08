@@ -43,6 +43,8 @@ class ReaderInterestsDataSource {
 
     private var topicService: ReaderTopicService
 
+    /// Creates a new instance of the data source
+    /// - Parameter topicService: An Optional `ReaderTopicService` to use. If this is `nil` one will be created on the main context
     init(topicService: ReaderTopicService? = nil) {
         guard let topicService = topicService else {
             let context = ContextManager.sharedInstance().mainContext
@@ -54,6 +56,7 @@ class ReaderInterestsDataSource {
         self.topicService = topicService
     }
 
+    /// Fetches the interests from the topic service
     public func reload() {
         topicService.fetchInterests(success: { interests in
             self.interests = interests.map({ ReaderInterestViewModel(interest: $0)})
@@ -64,10 +67,15 @@ class ReaderInterestsDataSource {
         }
     }
 
+    /// Toggles the selected state for the item at the specified row
+    /// - Parameter row: The row of the interest you want to toggle
     public func toggleSelected(for row: Int) {
         interests[row].toggleSelected()
     }
 
+    /// Returns a reader interest for the specified row
+    /// - Parameter row: The index of the item you want to return
+    /// - Returns: A reader interest model
     public func interest(for row: Int) -> ReaderInterestViewModel {
         return interests[row]
     }
