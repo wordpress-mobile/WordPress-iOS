@@ -28,7 +28,7 @@ class MockInterestsService: ReaderInterestsService {
     func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void, failure: @escaping (Error) -> Void) {
         guard self.success else {
             fetchFailureExpectation?.fulfill()
-            
+
             failure(failureError)
             return
         }
@@ -64,7 +64,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         let dataSource = ReaderInterestsDataSource(service: service)
 
         let successExpectation = expectation(description: "Fetching of interests succeeds")
-        
+
         service.success = true
         service.fetchSuccessExpectation = successExpectation
 
