@@ -45,7 +45,7 @@ class ReaderCardService {
 
 // RI2: The Cards API is not ready yet, that's why we're mocking it here
 class WordPressComMockrestApi: WordPressComRestApi {
-    override func GET(_ URLString: String, parameters: [String : AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
+    override func GET(_ URLString: String, parameters: [String: AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
         guard
             let fileURL: URL = Bundle.main.url(forResource: "reader-cards-success.json", withExtension: nil),
             let data: Data = try? Data(contentsOf: fileURL),
