@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Light Navigation Controller-->
         <scene sceneID="SGh-Er-MmG">
             <objects>
-                <navigationController modalPresentationStyle="pageSheet" id="aWE-F8-w6T" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="pageSheet" id="aWE-F8-w6T" customClass="LightNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fJE-kp-n4d">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
@@ -92,7 +92,7 @@
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fgx-ig-LXQ">
                                         <rect key="frame" x="371" y="13" width="30" height="30"/>
-                                        <color key="backgroundColor" systemColor="quaternarySystemFillColor" red="0.4549019608" green="0.4549019608" blue="0.50196078430000002" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Fgx-ig-LXQ" secondAttribute="height" multiplier="1:1" id="6NN-8A-QlB"/>
                                             <constraint firstAttribute="width" constant="30" id="PiJ-zS-cIi"/>
@@ -171,32 +171,34 @@
                                             <constraint firstAttribute="height" constant="0.5" id="FyD-HZ-iYi"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zm3-8S-slr">
-                                        <rect key="frame" x="20" y="16" width="374" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="gS8-vY-WED">
+                                        <rect key="frame" x="20" y="16.5" width="374" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zm3-8S-slr">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <state key="normal" title="Create Blank Page">
+                                                    <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="ZBS-tX-GwE"/>
+                                            <constraint firstAttribute="height" constant="44" id="5en-Io-MIm"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <state key="normal" title="Create Blank Page">
-                                            <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="rf9-AO-nzb" kind="show" id="Wn4-RR-phn"/>
-                                        </connections>
-                                    </button>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="23P-EU-wmp" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" id="GNM-KC-RD1"/>
-                                    <constraint firstAttribute="trailing" secondItem="zm3-8S-slr" secondAttribute="trailing" constant="20" id="Hdk-pm-QGj"/>
                                     <constraint firstAttribute="trailing" secondItem="23P-EU-wmp" secondAttribute="trailing" id="NhP-tv-4D3"/>
-                                    <constraint firstItem="zm3-8S-slr" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" constant="16" id="Vjb-9t-Bh6"/>
+                                    <constraint firstAttribute="trailing" secondItem="gS8-vY-WED" secondAttribute="trailing" constant="20" id="O9C-a2-exM"/>
                                     <constraint firstAttribute="height" constant="110" id="Wa8-ct-PRF"/>
                                     <constraint firstAttribute="bottom" secondItem="23P-EU-wmp" secondAttribute="bottom" id="YJo-ib-KjJ"/>
-                                    <constraint firstItem="zm3-8S-slr" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" constant="20" id="Yro-tz-mnM"/>
+                                    <constraint firstItem="gS8-vY-WED" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" constant="20" id="e5c-pu-cOm"/>
                                     <constraint firstItem="23P-EU-wmp" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" id="mZs-uU-veX"/>
                                     <constraint firstItem="4d5-b5-WY5" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" id="trb-MF-1tH"/>
+                                    <constraint firstItem="gS8-vY-WED" firstAttribute="top" secondItem="4d5-b5-WY5" secondAttribute="bottom" constant="16" id="yS5-gX-gi9"/>
                                     <constraint firstAttribute="trailing" secondItem="4d5-b5-WY5" secondAttribute="trailing" id="ycn-K0-U6M"/>
                                     <constraint firstItem="4d5-b5-WY5" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" id="yqZ-0P-CpH"/>
                                 </constraints>
@@ -235,23 +237,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tb5-bl-pjs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="15.942028985507248" y="-236.38392857142856"/>
-        </scene>
-        <!--Preview-->
-        <scene sceneID="DYT-Tp-bLJ">
-            <objects>
-                <viewController id="rf9-AO-nzb" customClass="GutenbergPreviewViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OjD-ZT-EOm">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="IyI-Xd-Iez"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Preview" id="JEG-2c-Hpg"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kXI-OT-P1f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="890" y="-236"/>
         </scene>
     </scenes>
     <resources>

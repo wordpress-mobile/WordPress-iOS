@@ -4,13 +4,15 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var titleView: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var footerView: UIView!
-    @IBOutlet weak var createBlankPageBtn: UIButton!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var categoryBar: UICollectionView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var createBlankPageBtn: UIButton!
 
     let minTitleFontSize: CGFloat = 22
     let maxTitleFontSize: CGFloat = 34
@@ -21,7 +23,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        formatBorders()
+        styleButtons()
         maxHeaderHeight = headerHeightConstraint.constant
 
         let tableFooterFrame = footerView.frame
@@ -50,7 +52,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                formatBorders()
+                styleButtons()
             }
         }
     }
@@ -59,17 +61,20 @@ class GutenbergLayoutPickerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    private func formatBorders() {
+    private func styleButtons() {
         let seperator: UIColor
         if #available(iOS 13.0, *) {
-            seperator =  UIColor.separator
+            seperator = UIColor.separator
         } else {
-            seperator =  UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
+            seperator = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
         }
 
-        createBlankPageBtn.layer.borderColor = seperator.cgColor
-        createBlankPageBtn.layer.borderWidth = 1
-        createBlankPageBtn.layer.cornerRadius = 8
+        [createBlankPageBtn].forEach { (button) in
+            button?.layer.borderColor = seperator.cgColor
+            button?.layer.borderWidth = 1
+            button?.layer.cornerRadius = 8
+        }
+
     }
 }
 
