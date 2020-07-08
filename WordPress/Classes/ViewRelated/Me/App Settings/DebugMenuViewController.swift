@@ -84,9 +84,9 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.encryptedLogging, action: { _ in
                 self.navigationController?.pushViewController(EncryptedLogTableViewController(), animated: true)
             }),
-            SwitchWithSubtitleRow(title: Strings.alwaysSendLogs, value: shouldAlwaysSendLogs, subtitle: "") { isOn in
+            SwitchWithSubtitleRow(title: Strings.alwaysSendLogs, value: shouldAlwaysSendLogs, onChange: { isOn in
                 self.shouldAlwaysSendLogs = isOn
-            }
+            }),
         ]
     }
 
