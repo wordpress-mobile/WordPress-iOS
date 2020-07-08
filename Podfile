@@ -178,7 +178,7 @@ target 'WordPress' do
 
     #pod 'Automattic-Tracks-iOS', '~> 0.4.4'
     # While in PR
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/encrypted-logging-master'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
     # Local Development
     #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 

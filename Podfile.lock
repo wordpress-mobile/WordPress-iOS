@@ -435,7 +435,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `feature/encrypted-logging-master`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `add/more-logging`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - Down (~> 0.6.6)
@@ -557,7 +557,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
-    :branch: feature/encrypted-logging-master
+    :branch: add/more-logging
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FBLazyVector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/FBLazyVector.podspec.json
@@ -639,7 +639,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
-    :commit: 01b9b4e9aab70ed4c0a71c6e66cccfb0f2e0e02c
+    :commit: bc801da5fe60fedf982ba612926f81dfcba0c0e0
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
@@ -744,6 +744,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 1f3198669761b605aad0c74b949a953bea901710
+PODFILE CHECKSUM: 04a79ac18869d044da42f22dd03c2bbd072f8ae8
 
 COCOAPODS: 1.8.4
