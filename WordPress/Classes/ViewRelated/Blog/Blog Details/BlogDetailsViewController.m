@@ -1457,7 +1457,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
 
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
@@ -1466,6 +1465,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         sectionCount++;
     }
+    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
 }
 
 - (void)showComments
