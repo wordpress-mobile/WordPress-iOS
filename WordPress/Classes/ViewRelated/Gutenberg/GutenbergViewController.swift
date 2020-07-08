@@ -875,7 +875,13 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
-        return !(post.blog.jetpack?.isConnected ?? false)
+        // The Unsupported Block Editor is made for
+        // 1. All WP.com sites (Atomic or non-Atomic)
+        // 2. Self-hosted sites that are not authenticated via Jetpack
+        return
+            post.blog.isAtomic() ||
+            post.blog.isAutomatedTransfer() ||
+            !(post.blog.jetpack?.isConnected ?? false)
     }
 }
 
