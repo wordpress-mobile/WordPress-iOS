@@ -41,6 +41,10 @@ class ReaderInterestsDataSource {
         }
     }
 
+    var selectedInterests: [ReaderInterestViewModel] {
+        return interests.filter({ $0.isSelected })
+    }
+
     private var topicService: ReaderTopicService
 
     /// Creates a new instance of the data source
