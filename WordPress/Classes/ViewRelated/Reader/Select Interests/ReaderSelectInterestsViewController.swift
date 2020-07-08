@@ -23,16 +23,20 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonContainerView: UIView!
     @IBOutlet weak var nextButton: FancyButton!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
-    // MARK: - Mock Data Source
-    private let fakeDataSource = InterestsDataSource(fileName: "interests.json")
+    // MARK: - Data
+    private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        dataSource.delegate = self
+
         configureI18N()
         configureCollectionView()
         applyStyles()
+        refreshData()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -74,12 +78,24 @@ class ReaderSelectInterestsViewController: UIViewController {
         nextButton.setTitle(Strings.nextButtonEnabled, for: .normal)
     }
 
+    // MARK: - Private: Data
+    private func refreshData() {
+        activityIndicatorView.startAnimating()
+
+        dataSource.reload()
+    }
+
+    private func reloadData() {
+        activityIndicatorView.stopAnimating()
+
+        collectionView.reloadData()
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fakeDataSource.count
+        return dataSource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,7 +104,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
-        let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
+        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
                                                       isSelected: interest.isSelected)
@@ -103,9 +119,8 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
-        interest.isSelected = !interest.isSelected
-
+        dataSource.toggleSelected(for: indexPath.row)
+        
         UIView.animate(withDuration: 0) {
             collectionView.reloadItems(at: [indexPath])
         }
@@ -115,7 +130,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewFlowLayout
 extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let interest: ReaderInterest = fakeDataSource.interest(for: indexPath.row)
+        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.cellLabelTitleFont
@@ -127,5 +142,12 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
         size.width += (Constants.interestsLabelMargin * 2)
 
         return size
+    }
+}
+
+// MARK: - ReaderInterestsDataDelegate
+extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
+    func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource) {
+        reloadData()
     }
 }
