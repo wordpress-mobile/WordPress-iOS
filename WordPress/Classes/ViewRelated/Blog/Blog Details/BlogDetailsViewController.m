@@ -1232,6 +1232,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
         row.accessoryView = [QuickStartSpotlightView new];
+    } else {
+        row.accessoryView = nil;
     }
 
     [self configureCell:cell atIndexPath:indexPath];
