@@ -491,7 +491,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.2)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `3408be6`)
-  - WordPressKit (= 4.11.0)
+  - WordPressKit (= 4.12.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.9.1)
   - WordPressUI (~> 1.7.1)
@@ -728,7 +728,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: d01bf0c5e150ae6a046f06ba63b7cc2762061c0b
   WordPress-Editor-iOS: 5b726489e5ae07b7281a2862d69aba2d5c83f140
   WordPressAuthenticator: 02cb261da08b4610f5720067983eb19fb167f14c
-  WordPressKit: 67f8bf4e86961f46052c2e124016956019c0ffed
+  WordPressKit: c10ba341c1490cbb30a52a10a1750e8f56a15fb9
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 423779c24b1f8f2ee06d1068d30c7d2ea51ca813
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
@@ -744,6 +744,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: cebe6d5cb3daa2e0da8ef311c9551bf91d22fcd2
+PODFILE CHECKSUM: 7abbcd811534adc2e6040a938c99af01210e5098
 
 COCOAPODS: 1.8.4
