@@ -15,6 +15,7 @@ enum FeatureFlag: Int, CaseIterable {
     case swiftCoreData
     case homepageSettings
     case gutenbergModalLayoutPicker
+    case gutenbergSnappyLayoutPicker // Added for design feedback this should be removed before merging the PR
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -49,6 +50,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .gutenbergModalLayoutPicker:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .gutenbergSnappyLayoutPicker:
+            return false
         }
     }
 }
@@ -93,6 +96,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Homepage Settings"
         case .gutenbergModalLayoutPicker:
             return "Gutenberg Modal Layout Picker"
+        case .gutenbergSnappyLayoutPicker:
+            return "Make Modal Layout Picker \"Snappy\" on Collapse"
         }
     }
 
