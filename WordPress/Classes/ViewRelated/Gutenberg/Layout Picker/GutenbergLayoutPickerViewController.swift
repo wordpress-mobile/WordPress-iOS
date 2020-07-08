@@ -4,24 +4,31 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var categoryBar: UICollectionView!
+    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
+
+    let minTitleFontSize: CGFloat = 22
+    let maxTitleFontSize: CGFloat = 34
+    var maxHeaderHeight: CGFloat = 285
+    var minHeaderHeight: CGFloat {
+        return (navigationController?.navigationBar.frame.height ?? 56) + categoryBar.frame.height + 9
+    }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         formatBorders()
+        maxHeaderHeight = headerHeightConstraint.constant
 
-        var tableFooterFrame = footerView.frame
-        tableFooterFrame.origin.x = 0
-        tableFooterFrame.origin.y = 0
-        tableFooterFrame.size.height -= UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44
-        let tableFooterView = UIView(frame: tableFooterFrame)
-        tableView.tableFooterView = tableFooterView
+        let tableFooterFrame = footerView.frame
+        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        tableView.contentInset = UIEdgeInsets(top: headerHeightConstraint.constant, left: 0, bottom: bottomInset, right: 0)
 
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-
-        super.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +75,31 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset.y
+        let newHeaderViewHeight = headerHeightConstraint.constant - scrollOffset
+
+        if newHeaderViewHeight > maxHeaderHeight {
+            headerHeightConstraint.constant = maxHeaderHeight
+            titleView.font = titleViewFont(withSize: maxTitleFontSize)
+        } else if newHeaderViewHeight < minHeaderHeight {
+            headerHeightConstraint.constant = minHeaderHeight
+            titleView.font = titleViewFont(withSize: minTitleFontSize)
+        } else {
+            headerHeightConstraint.constant = newHeaderViewHeight
+
+            // Resets the scroll offset to account for the shift in the header size. which provides a more "smooth" collapse of the header.
+            // Removing this line can provide more of a "snap" to the collapsed position while still animating.
+            scrollView.contentOffset.y = 0
+
+            let pointSize =  maxTitleFontSize * newHeaderViewHeight/maxHeaderHeight
+            titleView.font = titleViewFont(withSize: max(minTitleFontSize, pointSize))
+        }
+    }
+
+    private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
+        return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
+    }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
