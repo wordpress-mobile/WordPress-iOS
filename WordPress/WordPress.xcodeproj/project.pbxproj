@@ -341,6 +341,7 @@
 		3236F77224ABB6C90088E8F3 /* InterestsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F77124ABB6C90088E8F3 /* InterestsDataSource.swift */; };
 		3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F77324ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift */; };
 		3236F77624ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3236F77424ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib */; };
+		3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */; };
 		323F8F3023A22C4C000BA49C /* SiteCreationRotatingMessageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */; };
 		323F8F3123A22C8F000BA49C /* SiteCreationRotatingMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221278523A0BD27002CA183 /* SiteCreationRotatingMessageView.swift */; };
 		324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */; };
@@ -2760,6 +2761,7 @@
 		3236F77124ABB6C90088E8F3 /* InterestsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterestsDataSource.swift; sourceTree = "<group>"; };
 		3236F77324ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderInterestsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3236F77424ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderInterestsCollectionViewCell.xib; sourceTree = "<group>"; };
+		3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTopicService+Interests.swift"; sourceTree = "<group>"; };
 		324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+FollowedSites.swift"; sourceTree = "<group>"; };
 		3249615023F20111004C7733 /* PostSignUpInterstitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSignUpInterstitialViewController.swift; sourceTree = "<group>"; };
 		3249615123F20111004C7733 /* PostSignUpInterstitialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostSignUpInterstitialViewController.xib; sourceTree = "<group>"; };
@@ -8036,6 +8038,7 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
+				3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */,
 				9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */,
 				E102B78F1E714F24007928E8 /* RecentSitesService.swift */,
 				E1D28E921F2F6EB500A5DAFD /* RoleService.swift */,
@@ -12279,6 +12282,7 @@
 				FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */,
 				405BFB20223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataClass.swift in Sources */,
 				F126FE0220A33BDB0010EB6E /* DocumentUploadProcessor.swift in Sources */,
+				3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */,
 				9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */,
 				8236EB4B20248FF1007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */,
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,

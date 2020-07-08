@@ -385,7 +385,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.2)
   - WordPress-Editor-iOS (1.19.2):
     - WordPress-Aztec-iOS (= 1.19.2)
-  - WordPressAuthenticator (1.19.0):
+  - WordPressAuthenticator (1.20.0-beta.1):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -395,7 +395,7 @@ PODS:
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (= 2.2.5)
     - WordPressKit (~> 4.0-beta.0)
-    - WordPressShared (~> 1.0-beta.0)
+    - WordPressShared (~> 1.9-beta)
     - WordPressUI (~> 1.7.0)
   - WordPressKit (4.12.0-beta.2):
     - Alamofire (~> 4.8.0)
@@ -405,7 +405,7 @@ PODS:
     - WordPressShared (~> 1.9)
     - wpxmlrpc (= 0.8.5)
   - WordPressMocks (0.0.8)
-  - WordPressShared (1.9.1-beta.1):
+  - WordPressShared (1.9.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.7.1)
@@ -437,7 +437,7 @@ DEPENDENCIES:
   - AppCenter/Distribute (= 2.5.1)
   - Automattic-Tracks-iOS (~> 0.4.4)
   - Charts (~> 3.2.2)
-  - CocoaLumberjack (= 3.5.2)
+  - CocoaLumberjack (~> 3.0)
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/FBReactNativeSpec.podspec.json`)
@@ -493,7 +493,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.19.0)
   - WordPressKit (= 4.12.0-beta.2)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.9.1-beta.1)
+  - WordPressShared (= 1.9.1)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0/third-party-podspecs/Yoga.podspec.json`)
@@ -725,7 +725,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: bdabe18e108929acbee76f2ac7253d540638977c
   WordPressKit: 8515f2f8bfbccbeaff2250aa6abdd10e10ffee35
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
-  WordPressShared: db6e92cb22cdce4426515a4f20ecfdff91e60f4a
+  WordPressShared: 423779c24b1f8f2ee06d1068d30c7d2ea51ca813
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: 754bc043ea42abc2eae8a07e5680c777c112666a
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
