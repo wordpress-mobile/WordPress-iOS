@@ -14,6 +14,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
 
+    var completion: PageCoordinator.TemplateSelectionCompletion? = nil
     let minTitleFontSize: CGFloat = 22
     let maxTitleFontSize: CGFloat = 34
     var maxHeaderHeight: CGFloat = 285
@@ -59,6 +60,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBAction func closeModal(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func createBlankPage(_ sender: Any) {
+        createPage(nil)
+    }
+
+    private func createPage(_ template: String?) {
+        guard let completion = completion else {
+            dismiss(animated: true, completion: nil)
+            return
+        }
+
+        dismiss(animated: true) {
+            completion(template)
+        }
     }
 
     private func styleButtons() {

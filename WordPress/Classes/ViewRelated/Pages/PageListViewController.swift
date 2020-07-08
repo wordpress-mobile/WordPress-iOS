@@ -444,16 +444,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
 
-        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] in
-            self?.createPage()
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] template in
+            self?.createPage(template)
         }
     }
 
-    func createPage(content: String? = nil) {
+    func createPage(_ template: String? = nil) {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
-        page.content = content
+        page.content = template
 
         self.showEditor(post: page)
 

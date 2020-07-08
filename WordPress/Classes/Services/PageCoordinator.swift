@@ -1,22 +1,25 @@
 import Foundation
 
 class PageCoordinator {
+    typealias TemplateSelectionCompletion = (String?) -> Void
 
-    static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion:(()->Void)) {
+    static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion: @escaping TemplateSelectionCompletion) {
         if Feature.enabled(.gutenbergModalLayoutPicker) && blog.isGutenbergEnabled {
             showLayoutPicker(from: controller, completion)
         } else {
-            completion()
+            completion(nil)
         }
     }
 
-    private static func showLayoutPicker(from controller: UIViewController, _ completion:(()->Void)) {
+    private static func showLayoutPicker(from controller: UIViewController, _ completion: @escaping TemplateSelectionCompletion) {
         let storyboard = UIStoryboard(name: "LayoutPickerStoryboard", bundle: Bundle.main)
-        guard let rootView = storyboard.instantiateInitialViewController() else {
-            completion()
+        guard let navigationController = storyboard.instantiateInitialViewController() as? UINavigationController,
+            let rootView = navigationController.topViewController as? GutenbergLayoutPickerViewController  else {
+            completion(nil)
             return
         }
-        rootView.modalPresentationStyle = .pageSheet
-        controller.present(rootView, animated: true, completion: nil)
+        rootView.completion = completion
+        navigationController.modalPresentationStyle = .pageSheet
+        controller.present(navigationController, animated: true, completion: nil)
     }
 }

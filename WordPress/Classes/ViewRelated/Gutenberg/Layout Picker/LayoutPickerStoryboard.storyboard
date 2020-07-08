@@ -181,6 +181,9 @@
                                                 <state key="normal" title="Create Blank Page">
                                                     <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="createBlankPage:" destination="6uO-HR-ECX" eventType="touchUpInside" id="p28-fq-nCl"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
