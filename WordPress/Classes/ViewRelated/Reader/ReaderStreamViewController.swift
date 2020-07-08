@@ -192,8 +192,7 @@ import WordPressFlux
             return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
         }
 
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
+        let controller = ReaderStreamViewController()
         controller.readerTopic = topic
         controller.checkNewsCardAvailability(topic: topic)
         return controller
@@ -210,8 +209,7 @@ import WordPressFlux
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithSiteID(_ siteID: NSNumber, isFeed: Bool) -> ReaderStreamViewController {
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
+        let controller = ReaderStreamViewController()
         controller.isFeed = isFeed
         controller.siteID = siteID
 
@@ -1003,12 +1001,17 @@ import WordPressFlux
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
+            } else if self?.isNewDiscover() == true {
+                ReaderCardService().fetch(success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
             }
         }
     }
 
+    private func isNewDiscover() -> Bool {
+        return readerTopic?.title == "Discover" && FeatureFlag.readerImprovementsPhase2.enabled
+    }
 
     private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
@@ -1151,8 +1154,7 @@ import WordPressFlux
     // MARK: - Helpers for TableViewHandler
 
 
-    private func predicateForFetchRequest() -> NSPredicate {
-
+    func predicateForFetchRequest() -> NSPredicate {
         // If readerTopic is nil return a predicate that is valid, but still
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
@@ -1178,8 +1180,8 @@ import WordPressFlux
     }
 
 
-    private func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
+    func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
+        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
 
@@ -1463,11 +1465,15 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content as? [ReaderPost] else {
+        var post: ReaderPost
+
+        if let posts = content.content as? [ReaderPost] {
+            post = posts[indexPath.row]
+        } else if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
+            post = cardPost
+        } else {
             return UITableViewCell()
         }
-
-        let post = posts[indexPath.row]
 
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
