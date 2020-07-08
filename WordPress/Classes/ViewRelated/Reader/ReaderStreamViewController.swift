@@ -85,7 +85,7 @@ import WordPressFlux
     private var didBumpStats = false
 
     /// Content management
-    private let content = ReaderTableContent()
+    let content = ReaderTableContent()
     /// Configuration of table view and registration of cells
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
@@ -1465,16 +1465,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var post: ReaderPost
-
-        if let posts = content.content as? [ReaderPost] {
-            post = posts[indexPath.row]
-        } else if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
-            post = cardPost
-        } else {
+        guard let posts = content.content as? [ReaderPost] else {
             return UITableViewCell()
         }
 
+        let post = posts[indexPath.row]
+
+        return cell(for: post, at: indexPath)
+    }
+
+    func cell(for post: ReaderPost, at indexPath: IndexPath) -> UITableViewCell {
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
             cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)

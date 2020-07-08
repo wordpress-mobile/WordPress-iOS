@@ -15,4 +15,12 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func predicateForFetchRequest() -> NSPredicate {
         return NSPredicate(format: "post == NULL OR post != null")
     }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
+            return cell(for: cardPost, at: indexPath)
+        } else {
+            return UITableViewCell()
+        }
+    }
 }
