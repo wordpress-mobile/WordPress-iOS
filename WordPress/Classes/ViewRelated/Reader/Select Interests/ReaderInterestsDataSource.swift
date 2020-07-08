@@ -28,6 +28,11 @@ protocol ReaderInterestsDataDelegate: AnyObject {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource)
 }
 
+protocol ReaderInterestsService: AnyObject {
+    func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void,
+                        failure: @escaping (Error) -> Void)
+}
+
 // MARK: - ReaderInterestsDataSource
 class ReaderInterestsDataSource {
     var delegate: ReaderInterestsDataDelegate?
@@ -45,24 +50,24 @@ class ReaderInterestsDataSource {
         return interests.filter({ $0.isSelected })
     }
 
-    private var topicService: ReaderTopicService
+    private var interestsService: ReaderInterestsService
 
     /// Creates a new instance of the data source
     /// - Parameter topicService: An Optional `ReaderTopicService` to use. If this is `nil` one will be created on the main context
-    init(topicService: ReaderTopicService? = nil) {
-        guard let topicService = topicService else {
+    init(service: ReaderInterestsService? = nil) {
+        guard let service = service else {
             let context = ContextManager.sharedInstance().mainContext
-            self.topicService = ReaderTopicService(managedObjectContext: context)
+            self.interestsService = ReaderTopicService(managedObjectContext: context)
 
             return
         }
 
-        self.topicService = topicService
+        self.interestsService = service
     }
 
     /// Fetches the interests from the topic service
     public func reload() {
-        topicService.fetchInterests(success: { interests in
+        interestsService.fetchInterests(success: { interests in
             self.interests = interests.map({ ReaderInterestViewModel(interest: $0)})
         }) { (error: Error) in
             DDLogError("Error: Could not retrieve reader interests: \(String(describing: error))")

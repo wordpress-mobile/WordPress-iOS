@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-extension ReaderTopicService {
+extension ReaderTopicService: ReaderInterestsService {
     public func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void,
                                failure: @escaping (Error) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
