@@ -339,6 +339,7 @@
 		3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F77324ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift */; };
 		3236F77624ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3236F77424ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib */; };
 		3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */; };
+		3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F7A024B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift */; };
 		323F8F3023A22C4C000BA49C /* SiteCreationRotatingMessageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */; };
 		323F8F3123A22C8F000BA49C /* SiteCreationRotatingMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221278523A0BD27002CA183 /* SiteCreationRotatingMessageView.swift */; };
 		324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */; };
@@ -2749,6 +2750,7 @@
 		3236F77324ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderInterestsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3236F77424ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderInterestsCollectionViewCell.xib; sourceTree = "<group>"; };
 		3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTopicService+Interests.swift"; sourceTree = "<group>"; };
+		3236F7A024B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderInterestsDataSourceTests.swift; sourceTree = "<group>"; };
 		324780E0247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+FollowedSites.swift"; sourceTree = "<group>"; };
 		3249615023F20111004C7733 /* PostSignUpInterstitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSignUpInterstitialViewController.swift; sourceTree = "<group>"; };
 		3249615123F20111004C7733 /* PostSignUpInterstitialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostSignUpInterstitialViewController.xib; sourceTree = "<group>"; };
@@ -5859,6 +5861,14 @@
 				3F29EB6D24042093005313DE /* My Profile */,
 			);
 			path = Me;
+			sourceTree = "<group>";
+		};
+		3236F79F24B61B780088E8F3 /* Select Interests */ = {
+			isa = PBXGroup;
+			children = (
+				3236F7A024B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift */,
+			);
+			name = "Select Interests";
 			sourceTree = "<group>";
 		};
 		3249615523F2013B004C7733 /* Post Signup Interstitial */ = {
@@ -10271,6 +10281,7 @@
 		E6B9B8AB1B94EA710001B92F /* Reader */ = {
 			isa = PBXGroup;
 			children = (
+				3236F79F24B61B780088E8F3 /* Select Interests */,
 				327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */,
 				3F8CB103239E025F007627BF /* ReaderDetailViewControllerTests.swift */,
 				8BDA5A6C247C2F8400AB124C /* ReaderDetailWebviewViewControllerTests.swift */,
@@ -13766,6 +13777,7 @@
 				9813512E22F0FC2700F7425D /* FileDownloadsStatsRecordValueTests.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
+				3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */,
 				327B48C5247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift in Sources */,
 				40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
