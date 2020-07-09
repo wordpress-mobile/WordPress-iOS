@@ -1145,13 +1145,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
 }
 
-- (void)refreshSiteIcon {
+- (void)refreshSiteIcon
+{
     [self.headerView refreshIconImage];
 }
 
 - (void)toggleSpotlightForSiteTitle
 {
-    [self.headerView toggleSpotlightForSiteTitle];
+    [self.headerView toggleSpotlightOnSiteTitle];
+}
+
+- (void)toggleSpotlightOnHeaderView
+{
+    [self.headerView toggleSpotlightOnSiteTitle];
+    [self.headerView toggleSpotlightOnSiteIcon];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
@@ -1618,9 +1625,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
-    [self presentViewController:navController animated:YES completion:nil];
-
     [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
+
+    [self presentViewController:navController
+                       animated:YES
+                     completion:^(void) {
+        [self toggleSpotlightOnHeaderView];
+    }];
+
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 

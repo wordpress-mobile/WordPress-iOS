@@ -49,7 +49,7 @@ class BlogDetailHeaderView: UIView {
     @objc var blog: Blog? {
         didSet {
             refreshIconImage()
-            toggleSpotlightForSiteTitle()
+            toggleSpotlightOnSiteTitle()
             refreshSiteTitle()
             subtitleLabel.text = blog?.displayURL as String?
 
@@ -65,7 +65,7 @@ class BlogDetailHeaderView: UIView {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
 
-        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        toggleSpotlightOnSiteIcon()
     }
 
     func refreshSiteTitle() {
@@ -74,8 +74,12 @@ class BlogDetailHeaderView: UIView {
         titleButton.setTitle(title, for: .normal)
     }
 
-    @objc func toggleSpotlightForSiteTitle() {
+    @objc func toggleSpotlightOnSiteTitle() {
         titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+    }
+
+    @objc func toggleSpotlightOnSiteIcon() {
+        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
     private enum Constants {
