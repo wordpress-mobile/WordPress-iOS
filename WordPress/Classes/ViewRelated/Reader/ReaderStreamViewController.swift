@@ -1531,14 +1531,18 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         guard let posts = content.content as? [ReaderPost] else {
             return
         }
-        // Bump the render tracker if necessary.
+
         let post = posts[indexPath.row]
+        bumpRenderTracker(post)
+    }
+
+    func bumpRenderTracker(_ post: ReaderPost) {
+        // Bump the render tracker if necessary.
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {

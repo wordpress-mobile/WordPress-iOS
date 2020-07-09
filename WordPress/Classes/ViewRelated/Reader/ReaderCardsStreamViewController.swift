@@ -17,6 +17,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
+
+        if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {
+            bumpRenderTracker(post)
+        }
+    }
+
     // MARK: - TableViewHandler
 
     override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
