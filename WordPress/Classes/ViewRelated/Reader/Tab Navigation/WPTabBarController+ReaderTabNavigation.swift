@@ -26,7 +26,7 @@ extension WPTabBarController {
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
 
         if content.topicType == .discover, FeatureFlag.readerImprovementsPhase2.enabled {
-            return ReaderCardsStreamViewController.controller()
+            return ReaderCardsStreamViewController()
         } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {

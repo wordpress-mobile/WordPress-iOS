@@ -22,11 +22,4 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func predicateForFetchRequest() -> NSPredicate {
         return NSPredicate(format: "post == NULL OR post != null")
     }
-
-    // MARK: - Init Methods
-
-    class func controller() -> ReaderCardsStreamViewController {
-        let controller = ReaderCardsStreamViewController()
-        return controller
-    }
 }
