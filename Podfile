@@ -29,7 +29,7 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.2'
+    pod 'WordPress-Editor-iOS', '~> 1.19.3'
 end
 
 def wordpress_ui
@@ -189,7 +189,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.20.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.20.0-beta.3'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
