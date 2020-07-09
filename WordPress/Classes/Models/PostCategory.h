@@ -9,6 +9,7 @@ extern const NSInteger PostCategoryUncategorized;
 
 @property (nonatomic, strong) NSNumber *categoryID;
 @property (nonatomic, strong) NSString *categoryName;
+@property (nonatomic, strong) NSString *slug;
 @property (nonatomic, strong) NSNumber *parentID;
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) Blog *blog;

@@ -1018,6 +1018,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             category.categoryID = remoteCategory.categoryID;
             category.categoryName = remoteCategory.name;
             category.parentID = remoteCategory.parentID;
+            category.slug = remoteCategory.slug;
         }
         [categories addObject:category];
     }

@@ -304,7 +304,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
             }
         } break;
         case (CategoriesSelectionModeJourneys): {
-            NSString* urlString = [NSString stringWithFormat:@"%@/%@?webview=1", self.blog.url, category.categoryName];
+            NSString* urlString = [NSString stringWithFormat:@"%@/%@?webview=1", self.blog.url, category.slug];
             NSURL* url = [[NSURL alloc] initWithString: [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
             SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
             [self presentViewController:svc animated:YES completion:nil];

@@ -4085,6 +4085,7 @@
 		BED4D8321FF11E3800A11345 /* LoginFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFlow.swift; sourceTree = "<group>"; };
 		BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecEditorScreen.swift; sourceTree = "<group>"; };
 		BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPublishEpilogueScreen.swift; sourceTree = "<group>"; };
+		C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 98.xcdatamodel"; sourceTree = "<group>"; };
 		C20FB4E324AA72F8006E39F1 /* beauVoyage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beauVoyage.png; sourceTree = "<group>"; };
 		C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BVCreatePostCoordinator.swift; sourceTree = "<group>"; };
 		C293D1262490672B00251B32 /* acknowledgements.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html"; sourceTree = "<group>"; };
@@ -15591,6 +15592,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */,
 				E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */,
 				3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */,
 				F1BBA95E243BEFC500E9E5E6 /* WordPress 95.xcdatamodel */,
@@ -15689,7 +15691,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */;
+			currentVersion = C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

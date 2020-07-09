@@ -11,6 +11,7 @@ const NSInteger PostCategoryUncategorized = 1;
 @dynamic parentID;
 @dynamic posts;
 @dynamic blog;
+@dynamic slug;
 
 + (NSString *)entityName
 {
