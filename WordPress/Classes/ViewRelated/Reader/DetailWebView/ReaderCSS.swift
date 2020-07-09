@@ -19,7 +19,7 @@ struct ReaderCSS {
     static let updatedKey = "ReaderCSSLastUpdated"
 
     /// Returns the Reader CSS appending a timestamp
-    /// We force it to update every 2 days
+    /// We force it to update based on the `expirationDays` property
     ///
     var address: String {
         guard let lastUpdated = store.object(forKey: type(of: self).updatedKey) as? Int,
