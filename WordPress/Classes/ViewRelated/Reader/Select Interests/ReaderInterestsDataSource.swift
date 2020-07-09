@@ -35,7 +35,7 @@ protocol ReaderInterestsService: AnyObject {
 
 // MARK: - ReaderInterestsDataSource
 class ReaderInterestsDataSource {
-    var delegate: ReaderInterestsDataDelegate?
+    weak var delegate: ReaderInterestsDataDelegate?
 
     private(set) var count: Int = 0
 
