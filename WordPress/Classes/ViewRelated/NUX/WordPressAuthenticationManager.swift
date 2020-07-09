@@ -70,6 +70,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 prologueTitleColor: .textInverted)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
+                                                              errorColor: .error,
                                                               textColor: .text,
                                                               textButtonColor: .brand,
                                                               textButtonHighlightColor: .brand,
