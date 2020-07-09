@@ -77,12 +77,6 @@ class ReaderInterestsDataSource {
         }
     }
 
-    /// Toggles the selected state for the item at the specified row
-    /// - Parameter row: The row of the interest you want to toggle
-    public func toggleSelected(for row: Int) {
-        interests[row].toggleSelected()
-    }
-
     /// Returns a reader interest for the specified row
     /// - Parameter row: The index of the item you want to return
     /// - Returns: A reader interest model

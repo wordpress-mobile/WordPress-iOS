@@ -119,7 +119,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataSource.toggleSelected(for: indexPath.row)
+        dataSource.interest(for: indexPath.row).toggleSelected()
 
         UIView.animate(withDuration: 0) {
             collectionView.reloadItems(at: [indexPath])

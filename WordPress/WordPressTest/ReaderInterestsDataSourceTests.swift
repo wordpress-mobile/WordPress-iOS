@@ -39,7 +39,6 @@ class MockInterestsService: ReaderInterestsService {
 
         success(interests)
         fetchSuccessExpectation?.fulfill()
-
     }
 }
 
@@ -136,11 +135,11 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         wait(for: [successExpectation], timeout: 4)
 
         // Toggle on
-        dataSource.toggleSelected(for: 0)
+        dataSource.interest(for: 0).toggleSelected()
         XCTAssertEqual(dataSource.interest(for: 0).isSelected, true)
 
         // Toggle off
-        dataSource.toggleSelected(for: 0)
+        dataSource.interest(for: 0).toggleSelected()
         XCTAssertEqual(dataSource.interest(for: 0).isSelected, false)
     }
 
@@ -157,7 +156,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         wait(for: [successExpectation], timeout: 4)
 
         // Toggle on
-        dataSource.toggleSelected(for: 0)
+        dataSource.interest(for: 0).toggleSelected()
 
         XCTAssertEqual(dataSource.count, dataSource.selectedInterests.count)
     }
