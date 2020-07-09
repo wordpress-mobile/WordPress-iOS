@@ -11,6 +11,12 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {
+            didSelectPost(post, at: indexPath)
+        }
+    }
+
     // MARK: - TableViewHandler
 
     override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {

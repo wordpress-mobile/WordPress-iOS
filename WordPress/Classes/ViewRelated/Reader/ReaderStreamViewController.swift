@@ -1547,6 +1547,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let apost = posts[indexPath.row]
+        didSelectPost(apost, at: indexPath)
+    }
+
+    func didSelectPost(_ apost: ReaderPost, at indexPath: IndexPath) {
         guard let post = postInMainContext(apost) else {
             return
         }
