@@ -71,7 +71,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
         wait(for: [successExpectation], timeout: 4)
 
-        XCTAssertEqual(dataSource.interests.count, 1)
+        XCTAssertEqual(dataSource.count, 1)
     }
 
     func testFetchInterestsFails() {
@@ -87,7 +87,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
         wait(for: [failureExpectation], timeout: 4)
 
-        XCTAssertEqual(dataSource.interests.count, 0)
+        XCTAssertEqual(dataSource.count, 0)
     }
 
     func testInterestsDataSourceDelegateIsCalled() {
