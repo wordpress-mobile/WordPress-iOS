@@ -76,8 +76,8 @@ class WordPressAuthenticationManager: NSObject {
                                                               textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
                                                               navBarBackgroundColor: .basicBackground,
-                                                              navButtonTextColor: .barButtonItemTitle,
-                                                              largeTitleTextColor: .text)
+                                                              navButtonTextColor: .brand,
+                                                              navTitleTextColor: .text)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
