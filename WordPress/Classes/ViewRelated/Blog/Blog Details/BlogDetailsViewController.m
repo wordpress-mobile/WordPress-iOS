@@ -1625,7 +1625,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
-    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
 
     [self presentViewController:navController
                        animated:YES
@@ -1633,6 +1632,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self toggleSpotlightOnHeaderView];
     }];
 
+    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
