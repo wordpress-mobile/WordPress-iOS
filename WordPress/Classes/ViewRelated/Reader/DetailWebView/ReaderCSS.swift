@@ -29,7 +29,6 @@ struct ReaderCSS {
             return url(appendingTimestamp: now)
         }
 
-        // If the last time we fetched the CSS was 2 days ago and the user is online, refresh it
         return url(appendingTimestamp: lastUpdated)
     }
 
