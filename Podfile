@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.11.0'
+    pod 'WordPressKit', '4.12.0-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/14313_remove_post_content_sanitization'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -52,7 +52,7 @@ end
 
 def shared_with_all_pods
     wordpress_shared
-    pod 'CocoaLumberjack', '3.5.2'
+    pod 'CocoaLumberjack', '~> 3.0'
     pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
@@ -121,7 +121,8 @@ def gutenberg_dependencies(options)
         'ReactNativeDarkMode',
         'react-native-slider',
         'react-native-linear-gradient',
-        'react-native-get-random-values'
+        'react-native-get-random-values',
+        'react-native-blur'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -148,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.31.1'
+    gutenberg :commit => 'aa59dbf65aa670134892db07738071e2a19baba2'
 
     ## Third party libraries
     ## =====================
@@ -188,7 +189,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.19.1'
+    pod 'WordPressAuthenticator', '~> 1.20.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
