@@ -48,7 +48,7 @@ class ReaderInterestsDataSource {
     }
 
     var selectedInterests: [ReaderInterestViewModel] {
-        return interests.filter({ $0.isSelected })
+        return interests.filter { $0.isSelected }
     }
 
     private var interestsService: ReaderInterestsService
@@ -68,12 +68,12 @@ class ReaderInterestsDataSource {
 
     /// Fetches the interests from the topic service
     public func reload() {
-        interestsService.fetchInterests(success: { interests in
-            self.interests = interests.map({ ReaderInterestViewModel(interest: $0)})
-        }) { (error: Error) in
+        interestsService.fetchInterests(success: { [weak self] interests in
+            self?.interests = interests.map { ReaderInterestViewModel(interest: $0)}
+        }) { [weak self] (error: Error) in
             DDLogError("Error: Could not retrieve reader interests: \(String(describing: error))")
 
-            self.interests = []
+            self?.interests = []
         }
     }
 
