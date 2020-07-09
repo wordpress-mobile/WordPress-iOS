@@ -76,6 +76,15 @@ extension ReaderTabViewModel {
             return
         }
         selectedIndex = index
+        let content = tabItems[index].content
+
+        let selectedContent: ReaderContent
+        if let filter = selectedFilter {
+            selectedContent = tabItems[index].shouldHideButtonsView ? content : ReaderContent(topic: filter)
+        } else {
+            selectedContent = content
+        }
+        setContent?(selectedContent)
     }
 
     /// switch to the tab whose topic matches the given predicate
