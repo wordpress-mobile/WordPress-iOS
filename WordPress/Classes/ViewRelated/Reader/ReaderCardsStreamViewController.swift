@@ -22,4 +22,18 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func predicateForFetchRequest() -> NSPredicate {
         return NSPredicate(format: "post == NULL OR post != null")
     }
+
+    /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
+    /// for a existing topic.
+    ///
+    /// - Parameters:
+    ///     - topic: Any subclass of ReaderAbstractTopic
+    ///
+    /// - Returns: An instance of the controller
+    ///
+    class func controller(topic: ReaderAbstractTopic) -> ReaderCardsStreamViewController {
+        let controller = ReaderCardsStreamViewController()
+        controller.readerTopic = topic
+        return controller
+    }
 }
