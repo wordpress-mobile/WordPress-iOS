@@ -109,9 +109,6 @@ class EditPostViewController: UIViewController {
             showEditor()
             hasShownEditor = true
         }
-        if isBVOrder {
-//            showEditor()
-        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

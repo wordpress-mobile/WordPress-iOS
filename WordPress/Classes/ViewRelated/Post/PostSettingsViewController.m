@@ -124,6 +124,8 @@ BOOL categoryShowed = NO;
     if (self) {
         self.apost = aPost;
     }
+    featureImageShowed = NO;
+    categoryShowed = NO;
     return self;
 }
 
@@ -1264,9 +1266,15 @@ BOOL categoryShowed = NO;
 
 - (void)showCategoriesSelection
 {
+    CategoriesSelectionMode mode;
+    if(self.isBVOrder) {
+        mode = CategoriesSelectionModeBeauVoyageAddPost;
+    } else {
+        mode = CategoriesSelectionModePost;
+    }
     PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
                                                                                  currentSelection:[self.post.categories allObjects]
-                                                                                    selectionMode:CategoriesSelectionModePost];
+                                                                                    selectionMode:mode];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }

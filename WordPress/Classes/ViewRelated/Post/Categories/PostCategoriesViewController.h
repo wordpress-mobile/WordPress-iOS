@@ -5,6 +5,7 @@ typedef enum {
     CategoriesSelectionModePost = 0,
     CategoriesSelectionModeParent,
     CategoriesSelectionModeJourneys,
+    CategoriesSelectionModeBeauVoyageAddPost,
     CategoriesSelectionModeBlogDefault
 } CategoriesSelectionMode;
 
