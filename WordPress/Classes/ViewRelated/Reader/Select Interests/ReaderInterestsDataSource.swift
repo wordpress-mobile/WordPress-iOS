@@ -38,7 +38,8 @@ class ReaderInterestsDataSource {
     var delegate: ReaderInterestsDataDelegate?
 
     private(set) var count: Int = 0
-    private(set) var interests: [ReaderInterestViewModel] = [] {
+
+    private var interests: [ReaderInterestViewModel] = [] {
         didSet {
             count = interests.count
 
