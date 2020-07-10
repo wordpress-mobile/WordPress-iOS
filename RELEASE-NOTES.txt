@@ -1,7 +1,7 @@
 15.3
 -----
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
-* [***] Block Editor: Users can now individually edit unsupported blocks found in posts or pages. Not available on self-hosted sites.
+* [***] Block Editor: Users can now individually edit unsupported blocks found in posts or pages. Not available on selfhosted sites or sites defaulting to classic editor.
 * [*] Block Editor: Improved editor loading experience with Ghost Effect.
  
 15.2
