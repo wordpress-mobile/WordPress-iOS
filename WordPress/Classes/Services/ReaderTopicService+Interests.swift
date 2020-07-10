@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-extension ReaderTopicService {
+extension ReaderTopicService: ReaderInterestsService {
     public func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void,
                                failure: @escaping (Error) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
@@ -16,12 +16,9 @@ extension ReaderTopicService {
     private func apiRequest() -> WordPressComRestApi {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
 
-        if let api = defaultAccount?.wordPressComRestApi, api.hasCredentials() {
-            return api
-        }
-
-        return WordPressComRestApi.defaultApi(oAuthToken: nil,
+        return WordPressComRestApi.defaultApi(oAuthToken: token,
                                               userAgent: WPUserAgent.wordPress(),
                                               localeKey: WordPressComRestApi.LocaleKeyV2)
     }

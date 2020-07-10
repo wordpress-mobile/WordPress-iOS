@@ -256,6 +256,20 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(presentedViewController).to(beAKindOf(WebKitViewController.self))
     }
 
+    /// Tell the view to scroll when URL is a hash link
+    ///
+    func testScrollWhenUrlIsHash() {
+        let post: ReaderPost = ReaderPostBuilder().build()
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.post = post
+
+        coordinator.handle(URL(string: "#hash")!)
+
+        expect(viewMock.didCallScrollToWith).to(equal("hash"))
+    }
+
 }
 
 private class ReaderPostServiceMock: ReaderPostService {
@@ -304,6 +318,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallPresentWith: UIViewController?
     var didCallShowLoading = false
     var didCallShowErrorWithWebAction = false
+    var didCallScrollToWith: String?
 
     private var _navigationController: UINavigationController?
     override var navigationController: UINavigationController? {
@@ -334,6 +349,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func showLoading() {
         didCallShowLoading = true
+    }
+
+    func scroll(to: String) {
+        didCallScrollToWith = to
     }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
