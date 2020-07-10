@@ -117,7 +117,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             titleView.font = titleViewFont(withSize: minTitleFontSize)
         } else {
             headerHeightConstraint.constant = newHeaderViewHeight
-            if !Feature.enabled(.gutenbergSnappyLayoutPicker) {
+            if !FeatureFlag.gutenbergSnappyLayoutPicker.enabled {
                 // Resets the scroll offset to account for the shift in the header size. which provides a more "smooth" collapse of the header.
                 // Removing this line can provide more of a "snap" to the collapsed position while still animating.
                 scrollView.contentOffset.y = 0
