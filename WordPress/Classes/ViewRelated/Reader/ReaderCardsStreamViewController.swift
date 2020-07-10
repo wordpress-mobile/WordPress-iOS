@@ -1,6 +1,8 @@
 import Foundation
 
 class ReaderCardsStreamViewController: ReaderStreamViewController {
+    private var currentPage = 1
+
     lazy var cardsService: ReaderCardService = {
         return ReaderCardService()
     }()
@@ -32,13 +34,23 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sync
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
-        cardsService.fetch(success: success, failure: failure)
+        cardsService.fetch(page: 1, success: success, failure: failure)
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         footerView.showSpinner(true)
 
-        print("Load page ?")
+        currentPage += 1
+
+        cardsService.fetch(page: currentPage, success: { _, hasMore in
+            success?(hasMore)
+        }, failure: { error in
+            guard let error = error else {
+                return
+            }
+
+            failure?(error as NSError)
+        })
     }
 
     // MARK: - TableViewHandler
