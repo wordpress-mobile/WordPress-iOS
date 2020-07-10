@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-25 08:54:11+0000 */
+/* Translation-Revision-Date: 2020-07-09 10:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "無法要求連結";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "無法發表空白的頁面";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "無法發表空白的文章";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "已完成：發表文章";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "完成：設定你的網站標題";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "已完成：上傳網站圖示";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "透過 %@ 聯絡我們";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "內容結構\n區塊：%1$li、文字：%2$li、字元：%3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "內容…";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "自訂";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "自訂漸層色彩";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "按兩下以選擇版面形式";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "按兩下以選擇";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "按兩下以切換設定";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "更新Jetpack設定發生錯誤";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "更新網站標題時發生錯誤";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "更新加速網站設定時發生錯誤";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "尋找並關注你感興趣的網站，在這些網站發表文章時獲得最新資訊。";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "尋找你的網站位址";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "正在尋找您的位置…";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "讓你的網站上線運作";
 
+/* View title for initial auth views. */
+"Getting Started" = "開始使用";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "取得帳號資訊";
 
 /* Cancel */
 "Give Up" = "放棄";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往關注";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "擷取網站 URL";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "漸層色彩類型";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "太棒了！\n我們樂於聆聽使用者的開心反饋\n😁";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "引導你完成檢視網站統計資料的流程。";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "引導你完成設定網站標題的流程。";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "引導你完成網站設定流程。";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "登入";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "瀏覽";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "瀏覽至自訂顏色選擇器";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "瀏覽至上一個內容表";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要幫助嗎？";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "在瀏覽器中開啟";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "在瀏覽器中開啟連結";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "在新視窗或分頁中開啟連結";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "播放影片";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "請先新增一些內容，再嘗試發表。";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "請檢查你的網際網路連線並再試一次。";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "請先登出再連結至另一個 WordPress.com 網站";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "請稍後再試一次";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "請稍後再試一次。";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "重設篩選條件";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "重設密碼";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "重新調整大小與裁切";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "選取 %@ 以查看你目前的方案和其他可用方案。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "請選擇 %@ 以設定新標題。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "選取 %@ 開始打造個人化網站";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "設定 Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "設定你的網站標題";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "設定佈景主題";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "側邊欄標題外掛程式";
 
+/* View title during the sign up process. */
+"Sign Up" = "註冊";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "註冊";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "網站重新導向";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "網站標題";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "網站時區 (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "已成功變更網站標題";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "看來網際網路連線狀態為離線。";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "只有具有管理員角色的使用者才能變更網站標題。";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "網站標題會顯示在網頁瀏覽器的標題列中，且會顯示在大部分佈景主題的頁首中。";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "網址缺少有效的主機。";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "正在上傳媒體…";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "正在上傳文章";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "正在上傳文章...";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "密碼必須至少包含 6 個字元。若要提升密碼強度，可使用大小寫字母、數字，以及 ! \" ? $ % ^ & ) 等符號。";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "目前正在上傳你的文章。 請等待此作業完成。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "我們會將你的文章、網頁與設定透過電子郵件傳送至 %@。";

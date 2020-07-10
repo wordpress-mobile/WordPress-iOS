@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-17 11:03:31+0000 */
+/* Translation-Revision-Date: 2020-07-09 06:37:57+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "Nu poți solicita legătură";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Nu pot publica o pagină goală";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Nu pot publica un articol gol";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "Finalizat: publică un articol";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Finalizat: setează titlul sitului";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Finalizat: încarcă un icon sit";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Contactează-ne la %@";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Structură conținut\nBlocuri: %1$li; cuvinte: %2$li; caractere: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "Conținut...";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Personalizare";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Personalizează gradientul";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Atinge de două ori pentru a selecta aranjamentul";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Atinge de două ori pentru a selecta opțiunea";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Atinge de două ori pentru a comuta setarea";
 
@@ -2111,6 +2129,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Eroare la actualizarea setărilor Jetpack";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Eroare la actualizarea titlului sitului";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Eroare la actualizarea setărilor de accelerare a sitului";
 
@@ -2248,6 +2269,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Găsește situri care spun ce te interesează și urmărește-le a obține actualizări când publică.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Găsește adresa sitului";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Găsirea locației tale...";
 
@@ -2370,14 +2394,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Obții un sit care funcționează și rulează";
 
+/* View title for initial auth views. */
+"Getting Started" = "Începe";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Preiau informațiile contului";
 
 /* Cancel */
 "Give Up" = "Renunț";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Dă-i sitului un nume care să-i reflecte personalitatea și subiectul (tema). Prima impresie este foarte importantă!";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Du-te înapoi";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Du-te la urmărire";
@@ -2397,6 +2430,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Preiau URL-ul sitului";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Tip de gradient";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Excelent!\n Ne place să primim vești de la utilizatori mulțumiți \n😁";
@@ -2434,6 +2470,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Te îndrumă în procesul de examinare a statisticilor pentru situl tău.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Te îndrumă în procesul de setare a unui titlu pentru situl tău.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Te îndrumă în procesul de inițializare a sitului tău.";
@@ -2986,7 +3025,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Autentificare";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3231,7 +3271,7 @@ translators: sample content for \"Services\" page template */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert. */
-"Move to Trash" = "Mută la gunoi";
+"Move to Trash" = "Aruncă la gunoi";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Mută în sus";
@@ -3283,6 +3323,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Navighează în sus";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Navighează la selectorul de culoare personalizat";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Navighează pentru a personaliza gradientul";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navighează la foaia anterioară cu conținut";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Ai nevoie de ajutor?";
@@ -3682,6 +3731,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Deschide în navigator";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Deschide legătura într-un navigator";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Deschide legătură într-o fereastră\/filă nouă";
 
@@ -3860,6 +3912,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "Rulează videoul";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Te rog adaugă ceva conținut înainte de a încerca să publici.";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Te rog verifică-ți conexiunea internet și încearcă din nou.";
 
@@ -3925,6 +3980,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Te rog dezautentifică-te înainte de a conecta la un alt sit WordPress.com";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Te rog încearcă din nou mai târziu";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Te rog încearcă din nou mai târziu.";
@@ -4511,6 +4569,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Resetează filtrul";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Resetează-ți parola";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionare și decupare";
 
@@ -4765,6 +4826,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Selectează %@ pentru a vedea planul actual și alte planuri disponibile.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Selectează %@ pentru a seta un titlu nou.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Selectează %@ pentru a începe personalizarea sitului tău";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4872,6 +4936,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Inițializează Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Setează titlul sitului";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Inițializez tema";
@@ -5008,6 +5075,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Conectare titlu bară laterală";
 
+/* View title during the sign up process. */
+"Sign Up" = "Înregistrare";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Înregistrare";
 
@@ -5043,8 +5113,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirecționare sit";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Titlu sit";
 
@@ -5074,6 +5146,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Fus orar sit (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Titlul sitului a fost modificat cu succes";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5506,6 +5581,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Conexiunea la internet pare să fie oprită.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "Titlul sitului poate fi modificat numai de un utilizator cu rolul de administrator.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titlul sitului este afișat în bara de titluri a unui navigator web și, pentru majoritatea temelor, este afișat în antet.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-ului îi lipsește o gazdă validă.";
@@ -6211,6 +6292,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Încarc media...";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Încarc articolul";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Încarc articolul...";
@@ -6939,6 +7023,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Parola ar trebui să aibă cel puțin șase caractere. Pentru a o face mai puternică, folosește majuscule și minuscule, cifre și simboluri, cum ar fi ! \" ? $ % ^ &amp; ).";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Articolul tău este încărcat acum. Te rog așteaptă până se finalizează încărcarea.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Articolele, paginile și setările ți se vor trimite prin email la %@.";
