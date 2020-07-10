@@ -258,7 +258,9 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
+        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment {
+            view?.scroll(to: hash)
+        } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
