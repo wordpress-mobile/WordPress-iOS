@@ -27,21 +27,13 @@ class ReaderCardService {
                                     self?.clean()
                                 }
 
-                                cards.enumerated() .forEach { index, remoteCard in
+                                cards.enumerated().forEach { index, remoteCard in
                                     guard remoteCard.type != .unknown else {
                                         return
                                     }
 
-                                    let card = ReaderCard(context: syncContext)
-
-                                    switch remoteCard.type {
-                                    case .post:
-                                        card.post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: syncContext)
-                                    default:
-                                        break
-                                    }
-
-                                    card.sortRank = Double((page * Constants.paginationMultiplier) + index)
+                                    let card = ReaderCard.init(context: syncContext, from: remoteCard)
+                                    card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
                                 }
                             }
 
