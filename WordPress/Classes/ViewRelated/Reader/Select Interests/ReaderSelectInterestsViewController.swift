@@ -50,7 +50,14 @@ class ReaderSelectInterestsViewController: UIViewController {
         layout.invalidateLayout()
     }
 
-    // MARK: - Private Methods
+    // MARK: - IBAction's
+    @IBAction func goNext(_ sender: Any) {
+        saveSelectedInterests()
+        
+        dismiss(animated: true)
+    }
+
+    // MARK: - Private: Configuration
     private func configureCollectionView() {
         let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
@@ -90,6 +97,10 @@ class ReaderSelectInterestsViewController: UIViewController {
         activityIndicatorView.stopAnimating()
 
         collectionView.reloadData()
+    }
+
+    private func saveSelectedInterests() {
+        // TODO
     }
 
     // MARK: - Private: UI Helpers

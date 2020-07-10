@@ -73,6 +73,9 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="goNext:" destination="-1" eventType="touchUpInside" id="yJS-tM-wui"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
