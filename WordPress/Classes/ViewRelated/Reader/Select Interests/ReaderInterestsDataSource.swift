@@ -69,7 +69,7 @@ class ReaderInterestsDataSource {
     /// Fetches the interests from the topic service
     public func reload() {
         interestsService.fetchInterests(success: { [weak self] interests in
-            self?.interests = interests.map { ReaderInterestViewModel(interest: $0)}
+            self?.interests = interests.map { ReaderInterestViewModel(interest: $0) }
         }) { [weak self] (error: Error) in
             DDLogError("Error: Could not retrieve reader interests: \(String(describing: error))")
 
