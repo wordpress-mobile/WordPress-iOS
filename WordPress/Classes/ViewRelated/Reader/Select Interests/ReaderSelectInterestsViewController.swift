@@ -51,7 +51,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     // MARK: - IBAction's
-    @IBAction func goNext(_ sender: Any) {
+    @IBAction func nextButtonTapped(_ sender: Any) {
         saveSelectedInterests()
 
         dismiss(animated: true)
