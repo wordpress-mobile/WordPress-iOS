@@ -325,6 +325,14 @@ import WordPressFlux
         super.viewWillAppear(animated)
 
         syncIfAppropriate()
+
+        // TODO: Remove this
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                let controller = ReaderSelectInterestsViewController()
+                self.navigationController?.present(controller, animated: true)
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
