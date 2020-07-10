@@ -167,7 +167,7 @@ open class QuickStartTourGuide: NSObject {
         return testElement == currentElement
     }
 
-    func shouldSpotlight(_ element: QuickStartTourElement) -> Bool {
+    @objc func shouldSpotlight(_ element: QuickStartTourElement) -> Bool {
         return currentElement() == element
     }
 

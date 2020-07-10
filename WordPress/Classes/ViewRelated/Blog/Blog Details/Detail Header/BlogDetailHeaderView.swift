@@ -57,6 +57,10 @@ class BlogDetailHeaderView: UIView {
         }
     }
 
+    @objc var isShowingSpotlight: Bool {
+        titleButton.shouldShowSpotlight || siteIconView.spotlightIsShown
+    }
+
     @objc func refreshIconImage() {
         if let blog = blog,
             blog.hasIcon == true {
