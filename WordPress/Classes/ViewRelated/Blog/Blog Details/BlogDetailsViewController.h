@@ -143,5 +143,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)refreshSiteIcon;
 - (void)toggleSpotlightForSiteTitle;
+- (void)toggleSpotlightOnHeaderView;
 
 @end
