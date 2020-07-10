@@ -26,8 +26,7 @@ class ReaderCardServiceTests: XCTestCase {
     /// Save 9 cards in the database
     /// The API returns 10, but one of them is unknown and shouldn't be saved
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skip_testSaveCards() {
+    func testSaveCards() {
         let expectation = self.expectation(description: "9 reader cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -44,8 +43,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     /// From the 9 cards saved, 8 should have posts
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skip_testSaveCardsWithPosts() {
+    func testSaveCardsWithPosts() {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -62,8 +60,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     /// Calls the failure block when the request fails
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skip_testFailure() {
+    func testFailure() {
         let expectation = self.expectation(description: "Failure callback should be called")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -79,8 +76,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     /// When fetching the first page, clean all the cards
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skip_testFirstPageClean() {
+    func testFirstPageClean() {
         let expectation = self.expectation(description: "Only 9 cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
