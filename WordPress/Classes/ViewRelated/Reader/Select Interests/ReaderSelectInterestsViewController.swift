@@ -53,7 +53,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func goNext(_ sender: Any) {
         saveSelectedInterests()
-        
+
         dismiss(animated: true)
     }
 
