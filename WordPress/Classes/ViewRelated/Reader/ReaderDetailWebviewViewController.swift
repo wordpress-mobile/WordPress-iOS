@@ -7,6 +7,7 @@ protocol ReaderDetailView: class {
     func showError()
     func showErrorWithWebAction()
     func show(title: String?)
+    func scroll(to: String)
 }
 
 class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
@@ -147,6 +148,18 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         let titleView = UILabel()
         titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
         navigationItem.titleView = titleView
+    }
+
+    /// Scroll the content to a given #hash
+    ///
+    func scroll(to hash: String) {
+        webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [unowned self] height, _ in
+            guard let height = height as? CGFloat else {
+                return
+            }
+
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
+        })
     }
 
     deinit {
