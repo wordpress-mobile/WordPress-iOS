@@ -36,6 +36,7 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureI18N()
         configureCollectionView()
         applyStyles()
+        updateNextButtonState()
         refreshData()
     }
 
@@ -90,6 +91,11 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         collectionView.reloadData()
     }
+
+    // MARK: - Private: UI Helpers
+    private func updateNextButtonState() {
+        nextButton.isEnabled = dataSource.selectedInterests.count > 0
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -120,6 +126,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource.interest(for: indexPath.row).toggleSelected()
+        updateNextButtonState()
 
         UIView.animate(withDuration: 0) {
             collectionView.reloadItems(at: [indexPath])
