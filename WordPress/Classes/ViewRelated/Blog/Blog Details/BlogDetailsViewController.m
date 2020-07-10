@@ -1232,6 +1232,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
         row.accessoryView = [QuickStartSpotlightView new];
+    } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
+        row.accessoryView = nil;
     }
 
     [self configureCell:cell atIndexPath:indexPath];
@@ -1619,6 +1621,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:navController animated:YES completion:nil];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
+    self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
 - (void)showViewAdmin
