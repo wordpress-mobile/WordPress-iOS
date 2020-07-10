@@ -3,6 +3,9 @@ import Foundation
 class ReaderCardService {
     private let service: ReaderPostServiceRemote
     private let coreDataStack: CoreDataStack
+    private lazy var syncContext: NSManagedObjectContext = {
+        return coreDataStack.newDerivedContext()
+    }()
 
     init(service: ReaderPostServiceRemote = ReaderPostServiceRemote(wordPressComRestApi: WordPressComMockrestApi()),
          coreDataStack: CoreDataStack = ContextManager.shared) {
@@ -10,13 +13,21 @@ class ReaderCardService {
         self.coreDataStack = coreDataStack
     }
 
-    func fetch(success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
+    func fetch(page: Int = 1, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
         service.fetchCards(for: ["foo", "bar"],
-                           success: { [unowned self] cards in
-                            let syncContext = self.coreDataStack.newDerivedContext()
+                           success: { [weak self] cards in
 
-                            syncContext.perform {
-                                cards.forEach { remoteCard in
+                            guard let syncContext = self?.syncContext else {
+                                return
+                            }
+
+                            self?.syncContext.perform {
+
+                                if page == 1 {
+                                    self?.clean()
+                                }
+
+                                cards.enumerated() .forEach { index, remoteCard in
                                     guard remoteCard.type != .unknown else {
                                         return
                                     }
@@ -30,16 +41,35 @@ class ReaderCardService {
                                         break
                                     }
 
-                                    card.sortRank = Date().timeIntervalSince1970
+                                    card.sortRank = Double((page * Constants.paginationMultiplier) + index)
                                 }
                             }
 
-                            self.coreDataStack.save(syncContext) {
+                            self?.coreDataStack.save(syncContext) {
                                 success(cards.count, true)
                             }
         }, failure: { error in
             failure(error)
         })
+    }
+
+    private func clean() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
+        fetchRequest.returnsObjectsAsFaults = false
+
+        do {
+            let results = try syncContext.fetch(fetchRequest)
+            for object in results {
+                guard let objectData = object as? NSManagedObject else { continue }
+                syncContext.delete(objectData)
+            }
+        } catch let error {
+            print("Clean card error:", error)
+        }
+    }
+
+    private enum Constants {
+        static let paginationMultiplier = 100
     }
 }
 
