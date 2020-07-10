@@ -94,7 +94,6 @@ extension ReaderTabItemsStore {
             self?.fetchTabBarItemsAndFollowedSites()
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError("Error syncing menu: \(String(describing: actualError))")
-
         })
     }
 
