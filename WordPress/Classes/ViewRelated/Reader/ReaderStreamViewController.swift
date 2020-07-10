@@ -85,7 +85,7 @@ import WordPressFlux
     private var didBumpStats = false
 
     /// Content management
-    private let content = ReaderTableContent()
+    let content = ReaderTableContent()
     /// Configuration of table view and registration of cells
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
@@ -192,8 +192,7 @@ import WordPressFlux
             return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
         }
 
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
+        let controller = ReaderStreamViewController()
         controller.readerTopic = topic
         controller.checkNewsCardAvailability(topic: topic)
         return controller
@@ -210,8 +209,7 @@ import WordPressFlux
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithSiteID(_ siteID: NSNumber, isFeed: Bool) -> ReaderStreamViewController {
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
+        let controller = ReaderStreamViewController()
         controller.isFeed = isFeed
         controller.siteID = siteID
 
@@ -1011,12 +1009,17 @@ import WordPressFlux
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
+            } else if self?.isNewDiscover() == true {
+                ReaderCardService().fetch(success: successBlock, failure: failureBlock)
             } else {
                 service.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
             }
         }
     }
 
+    private func isNewDiscover() -> Bool {
+        return readerTopic?.title == "Discover" && FeatureFlag.readerImprovementsPhase2.enabled
+    }
 
     private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
@@ -1159,8 +1162,7 @@ import WordPressFlux
     // MARK: - Helpers for TableViewHandler
 
 
-    private func predicateForFetchRequest() -> NSPredicate {
-
+    func predicateForFetchRequest() -> NSPredicate {
         // If readerTopic is nil return a predicate that is valid, but still
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
@@ -1186,8 +1188,8 @@ import WordPressFlux
     }
 
 
-    private func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
+    func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
+        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
 
@@ -1477,6 +1479,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let post = posts[indexPath.row]
 
+        return cell(for: post, at: indexPath)
+    }
+
+    func cell(for post: ReaderPost, at indexPath: IndexPath) -> UITableViewCell {
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
             cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
@@ -1533,14 +1539,18 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         guard let posts = content.content as? [ReaderPost] else {
             return
         }
-        // Bump the render tracker if necessary.
+
         let post = posts[indexPath.row]
+        bumpRenderTracker(post)
+    }
+
+    func bumpRenderTracker(_ post: ReaderPost) {
+        // Bump the render tracker if necessary.
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
@@ -1549,6 +1559,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let apost = posts[indexPath.row]
+        didSelectPost(apost, at: indexPath)
+    }
+
+    func didSelectPost(_ apost: ReaderPost, at indexPath: IndexPath) {
         guard let post = postInMainContext(apost) else {
             return
         }

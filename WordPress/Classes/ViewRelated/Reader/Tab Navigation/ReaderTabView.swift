@@ -195,6 +195,7 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+        addContentToContainerView()
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
