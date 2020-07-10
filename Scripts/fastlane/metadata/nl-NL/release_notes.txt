@@ -1,12 +1,7 @@
-Het is een feit: GIF's leiden tot een beter internet. Je hebt nu toegang tot een bibliotheek met gratis GIF's via Tenor om aan elk bericht of elke pagina toe te voegen door middel van een Afbeeldingblok. Je ziet de animatie zelfs rechtstreeks in de editor terwijl je deze aanmaakt!
+Nee, je geest speelt geen grapjes met je - de Reader ziet er veel gemakkelijker uit voor de ogen. Dat komt omdat we veel verbeteringen hebben aangebracht in hoe de dingen eruitzien wanneer je een bericht leest. Deze oplossingen bevatten veel kleine dingen zoals spatiëring, positionering en grootte, die allemaal een veel aangenamere ervaring opleveren. Bovendien verdwijnen de navigatiebalk en de toolbar en verschijnen ze zo soepel dat het net magie is! Bent je het er niet mee eens dat we nu allemaal een beetje magie in ons leven nodig hebben?
 
-De blokeditor heeft nog een aantal verbeteringen gekregen:
-– Ondersteuning voor thema-gebaseerde kleuren en gradiënten in het Omslagblok,
-– De mogelijkheid om video's te uploaden naar Omslagblokken, zelfs als de editor gesloten is.
-– En onze favoriete update: verbeteringen in het gebruik van bijschriften en citaten. Door op enter te drukken na het toevoegen van een bijschrift aan een Afbeelding-, Video-, Galerij-, Citaat- of Pullquote-blok wordt er automatisch een nieuw blok aangemaakt.
+We weten dat het moeilijk kan zijn om een ​​titel voor je site te bedenken en dat mensen besluiteloos en wispelturig kunnen zijn. Daarom hebben we ervoor gezorgd dat de titel van je site nu kan worden gewijzigd door op de titel op de site te tikken detailscherm. En als je onlangs een briljante naam hebt bedacht voor een nieuwe site, is er nu een nieuwe Quick Start taak om een ​​titel in te stellen voor alle nieuwe sites die je wilt starten.
 
-Naast deze updates kun je nu direct vanuit de lijst Pagina's kiezen welke pagina's je wilt gebruiken als je homepage en berichtenpagina, en er is een schakelaar toegevoegd waarmee je kunt kiezen uit lichte of donkere weergave.
+Als je oog voor kleur hebt, hebben we ondersteuning toegevoegd in de block-editor voor het aanpassen van het verlooptype en de hoek in knop- en cover-blokken. En als je bijhoudt hoeveel blokken je gebruikt en hoeveel je typt, geven we nu metrische informatie weer voor het aantal blokken, woorden en tekens.
 
-We weten dat de datum van Nieuwste bericht verkeerd werd berekend op de pagina Inzichten. Dat is nu opgelost!
-
-Een paar problemen met de Snelstart-rondleidingen maakten ze iets langzamer. We hebben een paar problemen opgelost bij het doorlopen van de rondleidingen 'Je bezoekersaantallen verhogen' en 'Een bericht publiceren' en hebben een bug verwijderd die voorkwam dat VoiceOver-gebruikers updates ontvingen over voltooide Snelstart-taken. (En VoiceOver-gebruikers: het gedeelte Volgende stappen ondersteunt nu ook VoiceOver.)
+En last but not least hebben we een vervelende crash verholpen die het gevolg was van het te snel navigeren naar de block-editor na uitloggen en direct weer inloggen. Nu kan je je vrij voelen om in/uit te loggen met afbreken!
