@@ -59,7 +59,15 @@ extension GutenbergViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        if #available(iOS 14.0, *),
+            let button = navigationBarManager.moreBarButtonItem.customView {
+            // Required to work around an issue present in iOS 14 beta 2
+            // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+            alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)
+            alert.popoverPresentationController?.sourceView = navigationController?.navigationBar
+        } else {
+            alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        }
 
         present(alert, animated: true)
     }
