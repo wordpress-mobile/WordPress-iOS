@@ -32,7 +32,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
-CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
 CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
