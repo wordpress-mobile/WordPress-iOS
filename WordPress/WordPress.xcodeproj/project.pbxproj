@@ -2165,6 +2165,8 @@
 		F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E6312A243BC83E0088229D /* FilterSheetViewController.swift */; };
 		F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		F5EF481823ABCAE0004C3532 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
+		F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F913BB0D24B3C58B00C19032 /* EventLoggingDelegate.swift */; };
+		F913BB1024B3C5CE00C19032 /* EventLoggingDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F913BB0F24B3C5CE00C19032 /* EventLoggingDataProvider.swift */; };
 		F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */; };
 		F93735F122D534FE00A3C312 /* LoggingURLRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93735F022D534FE00A3C312 /* LoggingURLRedactor.swift */; };
 		F93735F822D53C3B00A3C312 /* LoggingURLRedactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93735F722D53C3B00A3C312 /* LoggingURLRedactorTests.swift */; };
@@ -2173,6 +2175,7 @@
 		F97DA42123D67BBB0050E791 /* MediaScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97DA41F23D67B820050E791 /* MediaScreen.swift */; };
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		F9941D1822A805F600788F33 /* UIImage+XCAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */; };
+		F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */; };
 		F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		F9C47A6C238C7D6A00AAD9ED /* MySitesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */; };
 		F9C47A6D238C7D7500AAD9ED /* MySiteScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707162006B774004FB5A4 /* MySiteScreen.swift */; };
@@ -4843,12 +4846,15 @@
 		F5E63128243BC8190088229D /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 		F5E6312A243BC83E0088229D /* FilterSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetViewController.swift; sourceTree = "<group>"; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F913BB0D24B3C58B00C19032 /* EventLoggingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLoggingDelegate.swift; sourceTree = "<group>"; };
+		F913BB0F24B3C5CE00C19032 /* EventLoggingDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLoggingDataProvider.swift; sourceTree = "<group>"; };
 		F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLoggingProvider.swift; sourceTree = "<group>"; };
 		F93735F022D534FE00A3C312 /* LoggingURLRedactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactor.swift; sourceTree = "<group>"; };
 		F93735F722D53C3B00A3C312 /* LoggingURLRedactorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactorTests.swift; sourceTree = "<group>"; };
 		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
 		F97DA41F23D67B820050E791 /* MediaScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaScreen.swift; sourceTree = "<group>"; };
 		F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+XCAssetTests.swift"; sourceTree = "<group>"; };
+		F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedLogTableViewController.swift; sourceTree = "<group>"; };
 		F9C47A8B238C801600AAD9ED /* PostsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsScreen.swift; sourceTree = "<group>"; };
 		F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
@@ -6047,6 +6053,7 @@
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
 				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
+				F9B862C82478170A008B093C /* EncryptedLogTableViewController.swift */,
 			);
 			path = "App Settings";
 			sourceTree = "<group>";
@@ -6537,6 +6544,8 @@
 			isa = PBXGroup;
 			children = (
 				F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */,
+				F913BB0F24B3C5CE00C19032 /* EventLoggingDataProvider.swift */,
+				F913BB0D24B3C58B00C19032 /* EventLoggingDelegate.swift */,
 				938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */,
 				59DD94321AC479ED0032DD6B /* WPLogger.h */,
 				59DD94331AC479ED0032DD6B /* WPLogger.m */,
@@ -12154,6 +12163,7 @@
 				E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */,
 				822D60B11F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift in Sources */,
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
+				F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */,
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
@@ -12263,6 +12273,7 @@
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
 				086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */,
 				9F3EFCA3208E308A00268758 /* UIViewController+Notice.swift in Sources */,
+				F913BB1024B3C5CE00C19032 /* EventLoggingDataProvider.swift in Sources */,
 				8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */,
 				59E1D46F1CEF77B500126697 /* Page+CoreDataProperties.swift in Sources */,
 				40F50B7D22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataClass.swift in Sources */,
@@ -12406,6 +12417,7 @@
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
+				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				988F073523D0CE8800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,

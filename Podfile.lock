@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.4.4):
+  - Automattic-Tracks-iOS (0.5.0):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 4)
@@ -381,7 +381,7 @@ PODS:
   - Sodium (0.8.0)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
-  - UIDeviceIdentifier (1.4.0)
+  - UIDeviceIdentifier (1.5.0)
   - WordPress-Aztec-iOS (1.19.2)
   - WordPress-Editor-iOS (1.19.2):
     - WordPress-Aztec-iOS (= 1.19.2)
@@ -435,7 +435,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.4.4)
+  - Automattic-Tracks-iOS (~> 0.5.0)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - Down (~> 0.6.6)
@@ -656,7 +656,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: dbe6301bebdc1e444972475bae19299491702cef
+  Automattic-Tracks-iOS: 89ccce073a4461831ec8aad2e6100bb77fb9d5d2
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -719,7 +719,7 @@ SPEC CHECKSUMS:
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
+  UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: d01bf0c5e150ae6a046f06ba63b7cc2762061c0b
   WordPress-Editor-iOS: 5b726489e5ae07b7281a2862d69aba2d5c83f140
   WordPressAuthenticator: f3e52bbbe3c8d2b363b09e6aa6b36a927967e3f0
@@ -739,6 +739,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: d11ddd06f1af9fe4a0e078f825b744812ba2acb0
+PODFILE CHECKSUM: 7c310cfad38b17dc21353b5b017a4acd11cc3f90
 
 COCOAPODS: 1.8.4
