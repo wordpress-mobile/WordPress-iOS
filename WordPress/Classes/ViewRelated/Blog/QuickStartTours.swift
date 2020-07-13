@@ -226,6 +226,27 @@ struct QuickStartFollowTour: QuickStartTour {
     }
 }
 
+struct QuickStartSiteTitleTour: QuickStartTour {
+    let key = "quick-start-site-title-tour"
+    let analyticsKey = "site_title"
+    let title = NSLocalizedString("Set your site title", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Set your site title", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Give your site a name that reflects its personality and topic. First impressions count!",
+                                        comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.pencil)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
+        let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
+        return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
+    }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
+}
+
 struct QuickStartSiteIconTour: QuickStartTour {
     let key = "quick-start-site-icon-tour"
     let analyticsKey = "site_icon"

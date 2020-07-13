@@ -7,3 +7,6 @@ WordPress para iOS es un proyecto de código abierto, lo que significa que tú t
 WordPress para iOS es compatible con sitios de WordPress.com y sitios WordPress.org autoalojadas que tengan WordPress 4.0 o superior.
 
 ¿Necesitas ayuda con la aplicación? Entra en el foro de ayuda https://ios.forums.wordpress.org/ o déjanos un tweet en @WordPressiOS.
+
+Ve el aviso de privacidad para usuarios de California en https://automattic.com/privacy/#california-consumer-privacy-act-ccpa
+

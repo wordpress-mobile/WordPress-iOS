@@ -2,11 +2,25 @@ import Foundation
 
 class ReaderDetailCoordinator {
 
+    /// Key for restoring the VC post
+    static let restorablePostObjectURLKey: String = "RestorablePostObjectURLKey"
+
     /// A post to be displayed
-    var post: ReaderPost?
+    var post: ReaderPost? {
+        didSet {
+            postInUse(true)
+            indexReaderPostInSpotlight()
+        }
+    }
 
     /// A post URL to be loaded and be displayed
     var postURL: URL?
+
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? = nil
+
+    /// Core Data stack manager
+    private let coreDataStack: CoreDataStack
 
     /// Reader Post Service
     private let service: ReaderPostService
@@ -40,11 +54,13 @@ class ReaderDetailCoordinator {
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
-    init(service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
+        self.coreDataStack = coreDataStack
         self.service = service
         self.topicService = topicService
         self.sharingController = sharingController
@@ -52,9 +68,15 @@ class ReaderDetailCoordinator {
         self.view = view
     }
 
+    deinit {
+        postInUse(false)
+    }
+
     /// Start the cordinator
     ///
     func start() {
+        view?.showLoading()
+
         if let post = post {
             renderPostAndBumpStats()
             view?.show(title: post.postTitle)
@@ -123,6 +145,17 @@ class ReaderDetailCoordinator {
         viewController?.present(imageViewController, animated: true)
     }
 
+    /// Open the postURL in a separated view controller
+    ///
+    func openInBrowser() {
+        guard let postURL = postURL else {
+            return
+        }
+
+        presentWebViewController(postURL)
+        viewController?.navigationController?.popViewController(animated: true)
+    }
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost.
@@ -138,7 +171,8 @@ class ReaderDetailCoordinator {
                             self?.renderPostAndBumpStats()
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
-            self?.view?.showError()
+            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+            self?.reportPostLoadFailure()
         })
     }
 
@@ -154,7 +188,8 @@ class ReaderDetailCoordinator {
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-            self?.view?.showError()
+            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+            self?.reportPostLoadFailure()
         })
     }
 
@@ -281,6 +316,33 @@ class ReaderDetailCoordinator {
         viewController?.present(navController, animated: true)
     }
 
+    /// Report to the callback that the post failed to load
+    private func reportPostLoadFailure() {
+        postLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        postLoadFailureBlock = nil
+    }
+
+    /// Change post's inUse property and saves the context
+    private func postInUse(_ inUse: Bool) {
+        guard let context = post?.managedObjectContext else {
+            return
+        }
+
+        post?.inUse = inUse
+        coreDataStack.save(context)
+    }
+
+    /// Index the post in Spotlight
+    private func indexReaderPostInSpotlight() {
+        guard let post = post else {
+            return
+        }
+
+        SearchManager.shared.indexItem(post)
+    }
+
     // MARK: - Analytics
 
     /// Bump WP App Analytics
@@ -342,5 +404,35 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
+    }
+}
+
+// MARK: - State Restoration
+
+extension ReaderDetailCoordinator {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                                      coder: NSCoder) -> UIViewController? {
+        guard let path = coder.decodeObject(forKey: restorablePostObjectURLKey) as? String else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let url = URL(string: path),
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
+            return nil
+        }
+
+        guard let post = (try? context.existingObject(with: objectID)) as? ReaderPost else {
+            return nil
+        }
+
+        return ReaderDetailWebviewViewController.controllerWithPost(post)
+    }
+
+
+    func encodeRestorableState(with coder: NSCoder) {
+        if let post = post {
+            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLKey)
+        }
     }
 }

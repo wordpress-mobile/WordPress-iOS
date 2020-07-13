@@ -87,34 +87,29 @@ extension ReaderTabItemsStore {
         }
         state = .loading
 
-        let dispatchGroup = DispatchGroup()
-
         // Sync the reader menu
-        dispatchGroup.enter()
-        service.fetchReaderMenu(success: {
-            dispatchGroup.leave()
-        }, failure: { (error) in
+        service.fetchReaderMenu(success: { [weak self] in
+            self?.fetchTabBarItemsAndFollowedSites()
+        }, failure: { [weak self] (error) in
+            self?.fetchTabBarItemsAndFollowedSites()
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError("Error syncing menu: \(String(describing: actualError))")
-
-            dispatchGroup.leave()
         })
+    }
 
-        // Sync the followed sites
-        dispatchGroup.enter()
+    private func fetchTabBarItemsAndFollowedSites() {
+        DispatchQueue.main.async {
+            self.fetchFollowedSites()
+        }
+        fetchTabBarItems()
+    }
+
+    private func fetchFollowedSites() {
         service.fetchFollowedSites(success: {
-            dispatchGroup.leave()
         }, failure: { (error) in
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError("Could not sync sites: \(String(describing: actualError))")
-
-            dispatchGroup.leave()
         })
-
-        // Wait for both the requests to finish
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.fetchTabBarItems()
-        }
     }
 
     private enum ReaderTopicsConstants {

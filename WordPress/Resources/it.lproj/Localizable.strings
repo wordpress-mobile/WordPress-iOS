@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-25 14:54:11+0000 */
+/* Translation-Revision-Date: 2020-07-09 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "Può non essere necessario il collegamento";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Non è possibile pubblicare una pagina vuota";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Non è possibile pubblicare un articolo vuoto";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "Completato: pubblica un articolo";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Completato: imposta il titolo del sito";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Completato: carica un'icona del sito";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Contattaci all'indirizzo %@";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struttura del contenuto\nBlocchi: %1$li, parole: %2$li, caratteri%3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "Contenuto...";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Personalizza";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Personalizza gradiente";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Tocca due volte per selezionare il layout";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Tocca due volte per selezionare l'opzione";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Tocca due volte per attivare\/disattivare l'impostazione";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Errore aggiornando le impostazioni di Jetpack";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Errore durante il caricamento del titolo del sito";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Errore durante l'aggiornamento delle impostazioni del sito relative alla velocità";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Trova i siti che ti dicono qualcosa e seguili per ottenere aggiornamenti sui contenuti che pubblicano.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Trova l'indirizzo per il tuo sito";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Ricerca posizione in corso...";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Configura il sito ed eseguilo";
 
+/* View title for initial auth views. */
+"Getting Started" = "Per iniziare";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Recupero informazioni account";
 
 /* Cancel */
 "Give Up" = "Rinuncia";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Dai al tuo sito un nome che rifletta la tua personalità e l'argomento. La prima impressione conta.";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Vai al seguente";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Presa dell'URL del sito";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Tipo di gradiente";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Grandioso!\nCi piace farti felice \n😁";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Ti guida nel processo di controllo delle statistiche del tuo sito.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Ti guida nel processo di impostazione di un titolo per il tuo sito.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Ti guida nel processo di configurazione del tuo sito.";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Accedi";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Naviga su";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Naviga al selezionatore del colore personalizzato";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Naviga alla personalizzazione del gradiente";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Naviga al foglio dei contenuti precedente";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hai bisogno di aiuto?";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Apri nel browser";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Apri il link in un browser.";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Apri il link in una nuova finestra\/scheda";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "Riproduci il video";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Aggiungi alcuni contenuti prima di provare a pubblicare.";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Controlla la connessione a Internet e riprova.";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Disconnettiti prima di connetterti a un sito WordPress.com differente";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Riprova più tardi.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Riprova più tardi.";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Ripristina il filtro";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Reimposta la password";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ridimensiona & Ritaglia";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Seleziona %@ per vedere il piano attuale e gli altri piani disponibili.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Seleziona %@ per impostare un nuovo titolo.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Seleziona %@ per iniziare a personalizzare il tuo sito";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configura Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Imposta il titolo del sito";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Impostazione del tema";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Plugin del titolo sulla barra laterale";
 
+/* View title during the sign up process. */
+"Sign Up" = "Registrati";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Registrazione";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirect del sito";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Titolo del Sito";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Fuso orario del sito (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Titolo del sito modificato correttamente";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "La connessione Internet appare mancante.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "Il titolo del sito può essere modificato solamente da un utente con il ruolo di amministratore.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Il titolo del sito viene visualizzato nella barra del titolo di un browser web e nell'intestazione nella maggior parte dei temi.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "L'host dell'URL non è valido.";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Caricamento in corso…";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Caricamento dell'articolo";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Caricamento del post...";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "La password deve contenere almeno sei caratteri. Per renderla più efficace, usa lettere maiuscole e minuscole, numeri e simboli come ! \" ? $ % ^ & ).";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "L'articolo è attualmente in fase di caricamento. Attendi il termine dell'operazione.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "I tuoi articoli, pagine e impostazioni ti saranno inviati via email a %@.";
