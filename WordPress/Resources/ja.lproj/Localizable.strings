@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-25 13:54:10+0000 */
+/* Translation-Revision-Date: 2020-07-10 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "リンクをリクエストできません";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "空のページは公開できません。";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "空の投稿はできません。";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "完了 : 投稿を公開";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "完了 : サイトのタイトルを設定";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "完了 : サイトアイコンをアップロード";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "%@ までお問い合わせください";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "コンテンツの構造\nブロック数 : %1$li、単語数 : %2$li、文字数 : %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "コンテンツ...";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "カスタマイズ";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Customize Gradient";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "ダブルタップしてレイアウトを選択";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Double tap to select the option";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "設定を切り替えるにはダブルタップします。";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Jetpack 設定更新中のエラー";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "サイトのタイトルの更新中にエラーが発生しました";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "サイトの高速化設定の更新中にエラーが発生しました";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "興味のあるサイトを見つけ、更新が公開されたら取得できるようフォローしましょう。";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "サイトアドレスを検索";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "位置情報を検出中…";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "サイトを設定して稼働させる";
 
+/* View title for initial auth views. */
+"Getting Started" = "スタートガイド";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "アカウント情報を取得中";
 
 /* Cancel */
 "Give Up" = "諦める";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "サイトにその特徴とトピックがわかるような名前を付けてください。 第一印象が大事です。";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "次に移動";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "サイト URL を取得";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "グラデーションタイプ";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "よかったです !\nユーザーの皆さんに喜んでもらえるのが何よりです。\n😁";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "サイトの統計情報を確認するプロセスを紹介します。";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "サイトのタイトルを設定するプロセスを紹介します。";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "サイトを設定するプロセスを紹介します。";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "ログイン";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "上に移動";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "カスタムカラーピッカーへ移動";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "グラデーションのカスタマイズへ移動";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "前のコンテンツシートへ移動";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "お困りですか ?";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "ブラウザーで開く";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "リンクをブラウザーで開く";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "リンクを新ウィンドウまたはタブで開く";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "動画を再生";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "投稿する前にいくつかコンテンツを追加してください。";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "ネットワーク接続を確認して、もう一度お試しください。";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "別の wordpress.com サイトに接続する前にログアウトしてください";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "後ほど、もう一度お試しください";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "後ほど、もう一度お試しください。";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "フィルターをリセット";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Reset your password";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "サイズ変更・切り抜き";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "%@ を選択して現在のプランとその他の利用可能なプランを確認する。";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "新しいタイトルを設定するには %@ を選択してください。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "%@ を選択してサイトのカスタマイズを始める";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack のセットアップ";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "サイトのタイトルを設定";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "テーマを設定する";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "サイドバータイトルプラグイン";
 
+/* View title during the sign up process. */
+"Sign Up" = "登録";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "登録";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "サイト転送";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "サイトのタイトル";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "サイトのタイムゾーン (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "サイトのタイトルを変更しました";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "インターネットに接続していないようです。";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "サイトのタイトルを変更できるのは管理者の役割を持つユーザーだけです。";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "サイトのタイトルは、Web ブラウザーのタイトルバーに表示され、ほとんどのテーマのヘッダーに表示されます。";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "この URL には有効なホストがありません。";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "メディアをアップロード中…";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Uploading post";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "投稿をアップロード中…";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "パスワードは6文字以上にする必要があります。さらに強力なパスワードを作成するには、大文字小文字、数字、! \" ? $ % ^ & ) などの記号を使用してください。";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "現在投稿をアップロードしています。 完了するまで、しばらくお待ちください。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
