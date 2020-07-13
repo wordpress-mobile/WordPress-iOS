@@ -509,7 +509,7 @@
     <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="interests" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderInterest" inverseName="card" inverseEntity="ReaderInterest" syncable="YES"/>
-        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" syncable="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -575,6 +575,7 @@
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="post" inverseEntity="ReaderCard" syncable="YES"/>
         <relationship name="crossPostMeta" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderCrossPostMeta" inverseName="post" inverseEntity="ReaderCrossPostMeta" syncable="YES"/>
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
@@ -825,8 +826,9 @@
         <element name="ReaderCrossPostMeta" positionX="-1292.6171875" positionY="353.91796875" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="-1651.8125" positionY="578.61328125" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="-1092.98828125" positionY="814.5703125" width="128" height="45"/>
+        <element name="ReaderInterest" positionX="-1638" positionY="-459" width="128" height="88"/>
         <element name="ReaderListTopic" positionX="-1500.2890625" positionY="932.5703125" width="128" height="135"/>
-        <element name="ReaderPost" positionX="-1102" positionY="72.3046875" width="128" height="688"/>
+        <element name="ReaderPost" positionX="-1102" positionY="72.3046875" width="128" height="703"/>
         <element name="ReaderSearchSuggestion" positionX="-1292.68359375" positionY="211.44921875" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="-1657.08984375" positionY="930.36328125" width="128" height="45"/>
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>
@@ -854,6 +856,5 @@
         <element name="TopViewedPostStatsRecordValue" positionX="-638.76953125" positionY="1639.93359375" width="128" height="133"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
-        <element name="ReaderInterest" positionX="-1638" positionY="-459" width="128" height="88"/>
     </elements>
 </model>
