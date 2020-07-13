@@ -23,7 +23,7 @@ class ReaderCardService {
 
                             self?.syncContext.perform {
 
-                                if page == 1 {
+                                if page == Constants.firstPage {
                                     self?.clean()
                                 }
 
@@ -32,7 +32,9 @@ class ReaderCardService {
                                         return
                                     }
 
-                                    let card = ReaderCard.init(context: syncContext, from: remoteCard)
+                                    let card = ReaderCard(context: syncContext, from: remoteCard)
+
+                                    // To keep the API order
                                     card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
                                 }
                             }
@@ -62,6 +64,7 @@ class ReaderCardService {
 
     private enum Constants {
         static let paginationMultiplier = 100
+        static let firstPage = 1
     }
 }
 
