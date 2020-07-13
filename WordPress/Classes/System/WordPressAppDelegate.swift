@@ -23,7 +23,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return WPCrashLoggingProvider()
     }()
 
-    @objc var logger: WPLogger?
+    @objc let logger = WPLogger()
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
 
@@ -73,7 +73,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        CrashLogging.start(withDataProvider: crashLoggingProvider)
+        let dataSource = EventLoggingDataProvider.fromDDFileLogger(logger.fileLogger)
+        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
+        CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
 
         // Configure WPCom API overrides
         configureWordPressComApi()
@@ -239,8 +241,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
         // Local notifications
         addNotificationObservers()
-
-        logger = WPLogger()
 
         configureAppCenterSDK()
         configureAppRatingUtility()

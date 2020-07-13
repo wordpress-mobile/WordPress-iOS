@@ -127,6 +127,15 @@ extension UIColor {
         return .neutral(.shade10)
     }
 
+    /// Quaternary background
+    static var quaternaryBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .quaternarySystemFill
+        }
+
+        return .neutral(.shade5)
+    }
+
     /// Default text color: high contrast
     static var text: UIColor {
         if #available(iOS 13, *) {
