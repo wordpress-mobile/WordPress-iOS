@@ -347,6 +347,18 @@ import WordPressFlux
         }
     }
 
+    override func becomeFirstResponder() -> Bool {
+        return true
+    }
+
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            if motion == .motionShake {
+                interestsCoordinator._debugResetHasSeen()
+            }
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
