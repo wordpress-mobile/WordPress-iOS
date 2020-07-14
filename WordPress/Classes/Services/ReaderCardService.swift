@@ -24,7 +24,7 @@ class ReaderCardService {
                             self?.syncContext.perform {
 
                                 if page == Constants.firstPage {
-                                    self?.clean()
+                                    self?.removeAllCards()
                                 }
 
                                 cards.enumerated().forEach { index, remoteCard in
@@ -47,7 +47,7 @@ class ReaderCardService {
         })
     }
 
-    private func clean() {
+    private func removeAllCards() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
