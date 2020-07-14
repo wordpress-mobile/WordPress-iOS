@@ -28,10 +28,6 @@ class ReaderCardService {
                                 }
 
                                 cards.enumerated().forEach { index, remoteCard in
-                                    guard remoteCard.type != .unknown else {
-                                        return
-                                    }
-
                                     let card = ReaderCard(context: syncContext, from: remoteCard)
 
                                     // To keep the API order
