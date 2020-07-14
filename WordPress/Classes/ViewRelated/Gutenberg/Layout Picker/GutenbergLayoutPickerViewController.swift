@@ -4,8 +4,10 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
-//    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var categoryBar: UICollectionView!
+    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -23,11 +25,28 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         styleButtons()
+        maxHeaderHeight = headerHeightConstraint.constant
 
-//        let tableFooterFrame = footerView.frame
-//        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
-//        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        let tableFooterFrame = footerView.frame
+        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        tableView.contentInset = UIEdgeInsets(top: headerHeightConstraint.constant, left: 0, bottom: bottomInset, right: 0)
+
+        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+        super.viewWillAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = false
+        super.viewDidDisappear(animated)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        navigationController?.isNavigationBarHidden = false
+        super.prepare(for: segue, sender: sender)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -72,15 +91,39 @@ class GutenbergLayoutPickerViewController: UIViewController {
             button?.layer.cornerRadius = 8
         }
 
-//        if #available(iOS 13.0, *) {
-//            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-//                if traitCollection.userInterfaceStyle == .dark {
-//                    return UIColor.systemFill
-//                } else {
-//                    return UIColor.quaternarySystemFill
-//                }
-//            }
-//        }
+        if #available(iOS 13.0, *) {
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        }
+    }
+}
+
+extension GutenbergLayoutPickerViewController: UITableViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset.y
+        let newHeaderViewHeight = headerHeightConstraint.constant - scrollOffset
+
+        if newHeaderViewHeight > maxHeaderHeight {
+            headerHeightConstraint.constant = maxHeaderHeight
+            titleView.font = titleViewFont(withSize: maxTitleFontSize)
+        } else if newHeaderViewHeight < minHeaderHeight {
+            headerHeightConstraint.constant = minHeaderHeight
+            titleView.font = titleViewFont(withSize: minTitleFontSize)
+        } else {
+            headerHeightConstraint.constant = newHeaderViewHeight
+            // Resets the scroll offset to account for the shift in the header size. which provides a more "smooth" collapse of the header.
+            // Removing this line can provide more of a "snap" to the collapsed position while still animating.
+            scrollView.contentOffset.y = 0
+
+            let pointSize =  maxTitleFontSize * newHeaderViewHeight/maxHeaderHeight
+            titleView.font = titleViewFont(withSize: max(minTitleFontSize, pointSize))
+        }
     }
 
     private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
@@ -92,6 +135,10 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 318
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

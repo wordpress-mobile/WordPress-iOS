@@ -83,7 +83,6 @@ extension WPStyleGuide {
             appearance.backgroundColor = .systemBackground
             appearance.shadowColor = separatorColor
             navigationBarAppearanceProxy.standardAppearance = appearance
-            navigationBarAppearanceProxy.scrollEdgeAppearance = navigationBarAppearanceProxy.standardAppearance
         }
 
         let tintColor = UIColor(light: .brand, dark: .white)
