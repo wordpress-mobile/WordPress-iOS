@@ -1,7 +1,9 @@
 import UIKit
 import Gridicons
+import Gutenberg
 
 class GutenbergLayoutPickerViewController: UIViewController {
+    let categoryRowCellReuseIdentifier = "CategoryRowCell"
 
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var closeButton: UIButton!
@@ -21,9 +23,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
     var minHeaderHeight: CGFloat {
         return (navigationController?.navigationBar.frame.height ?? 56) + categoryBar.frame.height + 9
     }
+    var layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(LayoutPickerCategoryTableViewCell.nib, forCellReuseIdentifier: categoryRowCellReuseIdentifier)
         styleButtons()
         maxHeaderHeight = headerHeightConstraint.constant
 
@@ -136,15 +140,14 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 318
+        return layouts.categories.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        let cell = tableView.dequeueReusableCell(withIdentifier: categoryRowCellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
+        let category = layouts.categories[indexPath.row]
+        cell.category = category
+        cell.layouts = layouts.layouts(forCategory: category.slug)
         return cell
     }
 }
