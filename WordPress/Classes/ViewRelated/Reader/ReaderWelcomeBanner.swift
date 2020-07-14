@@ -13,13 +13,13 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
 
     /// Present the Welcome banner just one time
     class func presentIfNeeded(in tableView: UITableView) {
-        guard !UserDefaults.standard.bool(forKey: Self.bannerPresentedKey) else {
+        guard !UserDefaults.standard.bool(forKey: ReaderWelcomeBanner.bannerPresentedKey) else {
             return
         }
 
-        let view: Self = .loadFromNib()
+        let view: ReaderWelcomeBanner = .loadFromNib()
         tableView.tableHeaderView = view
-        UserDefaults.standard.set(true, forKey: Self.bannerPresentedKey)
+        UserDefaults.standard.set(true, forKey: ReaderWelcomeBanner.bannerPresentedKey)
     }
 
     private func applyStyles() {
