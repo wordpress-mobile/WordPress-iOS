@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.12.0-beta.3'
+    pod 'WordPressKit', '4.12.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'aa59dbf65aa670134892db07738071e2a19baba2'
+    gutenberg :tag => 'v1.32.0'
 
     ## Third party libraries
     ## =====================
@@ -175,9 +175,12 @@ target 'WordPress' do
     wordpress_shared
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.4'
+
+    pod 'Automattic-Tracks-iOS', '~> 0.5.0'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
+    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
+    # Local Development
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
     pod 'NSURL+IDN', '~> 0.4'
 
@@ -189,7 +192,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    #pod 'WordPressAuthenticator', '~> 1.20.0-beta'
+    # pod 'WordPressAuthenticator', '~> 1.21.0-beta'
     # While in PR
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/315-help_button_color'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

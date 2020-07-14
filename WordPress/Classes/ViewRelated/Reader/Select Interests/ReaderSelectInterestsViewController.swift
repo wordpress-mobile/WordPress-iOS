@@ -36,6 +36,7 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureI18N()
         configureCollectionView()
         applyStyles()
+        updateNextButtonState()
         refreshData()
     }
 
@@ -49,7 +50,14 @@ class ReaderSelectInterestsViewController: UIViewController {
         layout.invalidateLayout()
     }
 
-    // MARK: - Private Methods
+    // MARK: - IBAction's
+    @IBAction func nextButtonTapped(_ sender: Any) {
+        saveSelectedInterests()
+
+        dismiss(animated: true)
+    }
+
+    // MARK: - Private: Configuration
     private func configureCollectionView() {
         let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
@@ -90,6 +98,15 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         collectionView.reloadData()
     }
+
+    private func saveSelectedInterests() {
+        // TODO
+    }
+
+    // MARK: - Private: UI Helpers
+    private func updateNextButtonState() {
+        nextButton.isEnabled = dataSource.selectedInterests.count > 0
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -120,6 +137,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource.interest(for: indexPath.row).toggleSelected()
+        updateNextButtonState()
 
         UIView.animate(withDuration: 0) {
             collectionView.reloadItems(at: [indexPath])

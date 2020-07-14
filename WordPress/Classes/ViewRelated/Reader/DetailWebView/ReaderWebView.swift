@@ -8,7 +8,7 @@ class ReaderWebView: WKWebView {
     /// From: https://www.w3schools.com/tags/att_src.asp
     private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
-    let jsToRemoveSrcSet = "document.querySelectorAll('img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
+    let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
     /// Make the webview transparent
     ///
