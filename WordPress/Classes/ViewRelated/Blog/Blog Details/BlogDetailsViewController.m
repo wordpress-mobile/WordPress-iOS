@@ -1595,6 +1595,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    viewController.onWebkitViewControllerClose = ^(void) {
+        [self startAlertTimer];
+    };
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
