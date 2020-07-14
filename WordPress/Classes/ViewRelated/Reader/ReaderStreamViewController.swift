@@ -323,16 +323,26 @@ import WordPressFlux
         }
     }
 
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         syncIfAppropriate()
 
+        debugCheckIfNeedToDisplaySelectInterests()
+
+    }
+    private var interestsCoordinator = ReaderSelectInterestsCoordinator()
+
+    private func debugCheckIfNeedToDisplaySelectInterests() {
         // TODO: Remove this
         if FeatureFlag.readerImprovementsPhase2.enabled {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-                let controller = ReaderSelectInterestsViewController()
-                self.navigationController?.present(controller, animated: true)
+            interestsCoordinator.shouldDisplay { (shouldDisplay) in
+                if shouldDisplay {
+                    let controller = ReaderSelectInterestsViewController()
+                    self.navigationController?.present(controller, animated: true)
+                }
+                self.interestsCoordinator.markAsSeen()
             }
         }
     }
