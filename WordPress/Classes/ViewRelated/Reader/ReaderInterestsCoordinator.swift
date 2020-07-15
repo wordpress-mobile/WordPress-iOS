@@ -53,11 +53,7 @@ class ReaderSelectInterestsCoordinator {
     /// Returns nil if we can not get the default WP.com account
     private var userDefaultsKey: String? {
         get {
-            guard let userId = self.userId else {
-                return nil
-            }
-
-            return String(format: Constants.userDefaultsKeyFormat, userId)
+            return String(format: Constants.userDefaultsKeyFormat, userId ?? 0)
         }
     }
 
