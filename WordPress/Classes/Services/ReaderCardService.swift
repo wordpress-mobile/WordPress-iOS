@@ -21,7 +21,7 @@ class ReaderCardService {
                                 return
                             }
 
-                            self?.syncContext.perform {
+                            syncContext.perform {
 
                                 if page == Constants.firstPage {
                                     self?.removeAllCards()
