@@ -70,13 +70,14 @@ class WordPressAuthenticationManager: NSObject {
                                                 prologueTitleColor: .textInverted)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
+                                                              errorColor: .error,
                                                               textColor: .text,
                                                               textButtonColor: .brand,
                                                               textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
                                                               navBarBackgroundColor: .basicBackground,
-                                                              navButtonTextColor: .barButtonItemTitle,
-                                                              largeTitleTextColor: .text)
+                                                              navButtonTextColor: .brand,
+                                                              navTitleTextColor: .text)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
