@@ -44,7 +44,7 @@ class ReaderSelectInterestsCoordinator {
         guard let interests = interests else {
             return false
         }
-        
+
         let hasSeen = hasSeenBefore()
         DDLogDebug("Reader Improvements: Count: \(interests.count), has seen before? \(hasSeen)")
         return !hasSeen && interests.count <= 0
