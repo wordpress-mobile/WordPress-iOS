@@ -5,7 +5,7 @@ class ReaderSelectInterestsCoordinator {
         static let userDefaultsKeyFormat = "Reader.SelectInterests.hasSeenBefore.%@"
     }
 
-    private var interestsService: ReaderFollowedInterestsService
+    private let interestsService: ReaderFollowedInterestsService
     private let store: KeyValueDatabase
     private let userId: NSNumber?
 
@@ -41,12 +41,13 @@ class ReaderSelectInterestsCoordinator {
     }
 
     private func shouldDisplaySelectInterests(with interests: [ReaderTagTopic]?) -> Bool {
-        guard !hasSeenBefore(), let interests = interests else {
+        guard let interests = interests else {
             return false
         }
-
-        DDLogDebug("Reader Improvements: Should display: w/ interests count: \(interests.count)")
-        return interests.count <= 0
+        
+        let hasSeen = hasSeenBefore()
+        DDLogDebug("Reader Improvements: Count: \(interests.count), has seen before? \(hasSeen)")
+        return !hasSeen && interests.count <= 0
     }
 
     // MARK: - View Tracking
