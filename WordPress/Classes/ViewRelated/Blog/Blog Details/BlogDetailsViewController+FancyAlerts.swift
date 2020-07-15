@@ -4,6 +4,9 @@ private var alertWorkItem: DispatchWorkItem?
 private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
+
+    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
+
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
@@ -16,6 +19,19 @@ extension BlogDetailsViewController {
             if let index = QuickStartTourGuide.find()?.currentElementInt(),
                 let element = QuickStartTourElement(rawValue: index) {
                 self?.scroll(to: element)
+            }
+
+            if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+                switch info {
+                case .noSuchElement:
+                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                case .siteIcon, .siteTitle:
+                    // handles the padding in case the element is not in the table view
+                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                default:
+                    break
+                }
+
             }
         }
     }
@@ -77,7 +93,9 @@ extension BlogDetailsViewController {
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true, completion: nil)
+        present(navigationViewController, animated: true) { [weak self] in
+            self?.toggleSpotlightOnHeaderView()
+        }
 
         QuickStartTourGuide.find()?.visited(.checklist)
     }

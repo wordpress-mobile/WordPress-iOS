@@ -1,12 +1,7 @@
-Bu bir gerçek: GIF'ler interneti daha iyi hale getiriyor. Artık bir görüntü bloğu kullanarak herhangi bir yazıya veya sayfaya eklemek için Tenor aracılığıyla ücretsiz GIF kitaplığına erişebilirsiniz. Animasyonu oluştururken doğrudan düzenleyicide bile göreceksiniz!
+Hayır, zihniniz size oyun oynamıyor - Okuyucu gözlerde çok daha kolay görünür. Çünkü bir yayını okurken nasıl görüneceğiyle ilgili birçok düzeltme yaptık. Bu düzeltmeler arasında aralıklandırma, yerleşim ve boyutlandırma gibi pek çok küçük ayrıntı bulunuyor ve bunların tümü çok daha hoş bir deneyim yaratıyor. Ayrıca, gezinme çubuğu ile araç çubuğu tıpkı bir sihir gibi çok düzgün bir şekilde kaybolup yeniden görünüyor. Sizce de şu an hepimizin hayatında biraz sihire ihtiyaç yok mu?
 
-Blok düzenleyicide başka bir iyileştirme toplu işlemi var:
-- Kapak bloğunda tema tanımlı renkler ve degradeler için destek,
-- Editör kapalı olsa bile Kapak bloklarına video yükleme yeteneği.
-- Ve bizim en sevdiğimiz güncelleme: altyazı ve alıntı işleme iyileştirme. Bir görse, video, galeri, alıntı veya tanıtım bloğuna başlık ekledikten sonra enter tuşuna bastığınızda kendinizi otomatik olarak yeni bir blokta bulacaksınız.
+Siteniz için bir başlık bulmanın zor olabileceğini ve insanların kararsız çekebileceğini biliyoruz, bu yüzden de sitenizin başlığını artık site ayrıntı ekranından başlığa dokunarak değiştirilebilmenizi sağladık. Yeni bir site için son günlerde çarpıcı bir ad bulduysanız, artık başlatmak istediğiniz yeni siteler için başlık ayarlamanıza olanak veren yeni bir Hızlı Başlangıç görevi var.
 
-Bu güncellemelerin yanı sıra, doğrudan Sayfalar listesinden ana sayfanız ve yazılar sayfanız olarak hangi sayfaların kullanılacağını seçebilirsiniz ve açık veya koyu görünüm arasında seçim yapmak için uygulama düzeyinde geçiş vardır.
+Renklere dikkat ediyorsanız, Düğme ve Kapak bloklarındaki gradyan türünü ve açısını özelleştirmeniz için Blok düzenleyicisine destek ekledik. Kaç blok kullandığınızı ve ne kadar yazdığınızı takip ediyorsanız, artık blok, kelime ve karakter sayıları için ölçüm bilgilerini görüntülüyoruz.
 
-Son gönderim tarihinin Analizler sayfasında yanlış hesaplandığını biliyoruz. Bu düzeltildi!
-
-Hızlı başlangıç ​​turlarıyla ilgili birkaç sorun onları biraz daha az hızlı hale getiriyordu. "Kitlenizi büyütün" ve "Bir yazı yayınlayın" turlarında bazı akış sorunlarını düzelttik ve VoiceOver kullanıcılarının tamamlanmış hızlı başlangıç ​​görevleri hakkında güncelleme almasını engelleyen bir hatayı düzelttik. (Ve VoiceOver kullanıcıları: Sonraki adımlar bölümü artık VoiceOver'ı da destekliyor.)
+Son olarak ve en önemlisi de, oturumu kapattıktan ve tekrar giriş yaptıktan hemen sonra Blok düzenleyiciye çok hızlı bir şekilde gitmekten kaynaklanan sinir bozucu bir kilitlenme sorunu düzeltildi. Artık istediğiniz gibi giriş ve çıkış yapabilirsiniz.

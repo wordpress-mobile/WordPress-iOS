@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReaderSelectInterestsViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicatorView" destination="a7r-YY-Vl7" id="IQc-pB-zlX"/>
                 <outlet property="buttonContainerView" destination="X4F-fc-WqY" id="TtA-Ul-l6R"/>
                 <outlet property="collectionView" destination="fUq-vV-Pah" id="ueF-52-q8k"/>
                 <outlet property="nextButton" destination="5kh-rf-B5P" id="pMz-bN-ncz"/>
@@ -72,6 +73,9 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="OYJ-EI-lUA"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -83,13 +87,18 @@
                         <constraint firstItem="5kh-rf-B5P" firstAttribute="leading" secondItem="X4F-fc-WqY" secondAttribute="leading" constant="20" id="zV4-Ir-MFf"/>
                     </constraints>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a7r-YY-Vl7">
+                    <rect key="frame" x="197" y="410" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
+                <constraint firstItem="a7r-YY-Vl7" firstAttribute="centerX" secondItem="2ka-fB-oWM" secondAttribute="centerX" id="22Y-PR-zvD"/>
                 <constraint firstItem="2ka-fB-oWM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="IP0-p9-Enf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2ka-fB-oWM" secondAttribute="trailing" id="O6R-Ud-5bg"/>
                 <constraint firstItem="2ka-fB-oWM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Pvc-kD-Ozf"/>
                 <constraint firstItem="X4F-fc-WqY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="VQH-7v-APj"/>
+                <constraint firstItem="a7r-YY-Vl7" firstAttribute="centerY" secondItem="2ka-fB-oWM" secondAttribute="centerY" id="YL1-0t-G5U"/>
                 <constraint firstItem="X4F-fc-WqY" firstAttribute="top" secondItem="2ka-fB-oWM" secondAttribute="bottom" id="Zxn-Tx-1xX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="X4F-fc-WqY" secondAttribute="trailing" id="t47-iQ-NNe"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="X4F-fc-WqY" secondAttribute="bottom" id="tsz-xv-qD4"/>
