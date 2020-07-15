@@ -426,6 +426,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [self createUserActivity];
     [self startAlertTimer];
+
+    if ([BlogDetailsViewController shouldScrollToViewSite] == YES) {
+        [self scrollToElement:QuickStartTourElementViewSite];
+        BlogDetailsViewController.shouldScrollToViewSite = NO;
+    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
