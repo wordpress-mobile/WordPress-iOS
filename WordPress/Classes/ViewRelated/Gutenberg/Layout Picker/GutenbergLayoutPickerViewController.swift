@@ -4,7 +4,9 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var categoryBar: UICollectionView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
@@ -19,7 +21,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     let maxTitleFontSize: CGFloat = 34
     var maxHeaderHeight: CGFloat = 285
     var minHeaderHeight: CGFloat {
-        return (navigationController?.navigationBar.frame.height ?? 56) + categoryBar.frame.height + 9
+        return headerBar.frame.height + 20 + categoryBar.frame.height + 9
     }
 
     override func viewDidLoad() {
@@ -33,6 +35,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
 
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        largeTitleView.font = titleViewFont(withSize: maxTitleFontSize)
+        titleView.font = titleViewFont(withSize: minTitleFontSize)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +106,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
             }
         }
     }
+
+    private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
+        return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
+    }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
@@ -112,19 +120,13 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 
         if newHeaderViewHeight > maxHeaderHeight {
             headerHeightConstraint.constant = maxHeaderHeight
-            titleView.font = titleViewFont(withSize: maxTitleFontSize)
         } else if newHeaderViewHeight < minHeaderHeight {
             headerHeightConstraint.constant = minHeaderHeight
-            titleView.font = titleViewFont(withSize: minTitleFontSize)
         } else {
             headerHeightConstraint.constant = newHeaderViewHeight
-            let pointSize =  maxTitleFontSize * newHeaderViewHeight/maxHeaderHeight
-            titleView.font = titleViewFont(withSize: max(minTitleFontSize, pointSize))
         }
-    }
 
-    private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
-        return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
+        titleView.isHidden = largeTitleView.frame.maxY > headerBar.frame.height
     }
 }
 
