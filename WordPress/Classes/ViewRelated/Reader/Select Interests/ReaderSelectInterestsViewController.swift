@@ -33,6 +33,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Data
     private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
+    private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +61,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBAction func nextButtonTapped(_ sender: Any) {
         saveSelectedInterests()
 
-        dismiss(animated: true)
+//        dismiss(animated: true)
     }
 
     // MARK: - Private: Configuration
@@ -110,7 +111,14 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private func saveSelectedInterests() {
-        // TODO
+        startLoading()
+
+        let selectedInterests = dataSource.selectedInterests.map { $0.slug }
+
+        coordinator.saveInterests(interests: selectedInterests) { [weak self] success in
+            self?.stopLoading()
+            self?.dismiss(animated: true)
+        }
     }
 
     // MARK: - Private: UI Helpers
