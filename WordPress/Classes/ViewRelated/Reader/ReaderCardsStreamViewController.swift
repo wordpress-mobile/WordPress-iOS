@@ -39,6 +39,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sync
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+        currentPage = 1
         cardsService.fetch(page: 1, success: success, failure: failure)
     }
 

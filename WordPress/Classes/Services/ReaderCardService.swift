@@ -21,17 +21,13 @@ class ReaderCardService {
                                 return
                             }
 
-                            self?.syncContext.perform {
+                            syncContext.perform {
 
                                 if page == Constants.firstPage {
-                                    self?.clean()
+                                    self?.removeAllCards()
                                 }
 
                                 cards.enumerated().forEach { index, remoteCard in
-                                    guard remoteCard.type != .unknown else {
-                                        return
-                                    }
-
                                     let card = ReaderCard(context: syncContext, from: remoteCard)
 
                                     // To keep the API order
@@ -47,7 +43,7 @@ class ReaderCardService {
         })
     }
 
-    private func clean() {
+    private func removeAllCards() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
