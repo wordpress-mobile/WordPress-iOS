@@ -75,6 +75,7 @@ class ReaderSelectInterestsCoordinator {
         store.set(true, forKey: key)
     }
 
+    //TODO: RI Remove this
     func _debugResetHasSeen() {
         guard let key = userDefaultsKey else {
             return

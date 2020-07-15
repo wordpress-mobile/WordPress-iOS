@@ -21,6 +21,8 @@ import WordPressFlux
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
+    private var interestsCoordinator = ReaderSelectInterestsCoordinator()
+
     // MARK: - Properties
 
     /// Called if the stream or tag fails to load
@@ -332,7 +334,6 @@ import WordPressFlux
         debugCheckIfNeedToDisplaySelectInterests()
 
     }
-    private var interestsCoordinator = ReaderSelectInterestsCoordinator()
 
     private func debugCheckIfNeedToDisplaySelectInterests() {
         // TODO: Remove this
