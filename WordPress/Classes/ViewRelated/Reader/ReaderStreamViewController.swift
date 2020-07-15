@@ -54,7 +54,15 @@ import WordPressFlux
         }
     }
 
-    private lazy var footerView: PostListFooterView = {
+    lazy var syncContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().newDerivedContext()
+    }()
+
+    lazy var service: ReaderPostService = {
+        return ReaderPostService(managedObjectContext: syncContext)
+    }()
+
+    private(set) lazy var footerView: PostListFooterView = {
         return tableConfiguration.footer()
     }()
 
@@ -968,18 +976,14 @@ import WordPressFlux
         syncHelper?.syncContentWithUserInteraction(true)
     }
 
-
     private func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             DDLogError("Error: Reader tried to sync items when the topic was nil.")
             return
         }
 
-        let syncContext = ContextManager.sharedInstance().newDerivedContext()
-        let service =  ReaderPostService(managedObjectContext: syncContext)
-
         syncContext.perform { [weak self] in
-            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+            guard let topicInContext = (try? self?.syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1007,13 +1011,15 @@ import WordPressFlux
                 }
             }
 
-            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
-            } else if self?.isNewDiscover() == true {
-                ReaderCardService().fetch(success: successBlock, failure: failureBlock)
-            } else {
-                service.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
-            }
+            self?.fetch(for: topicInContext, success: successBlock, failure: failureBlock)
+        }
+    }
+
+    func fetch(for topic: ReaderAbstractTopic, success: @escaping ((_ count: Int, _ hasMore: Bool) -> Void), failure: @escaping ((_ error: Error?) -> Void)) {
+        if ReaderHelpers.isTopicSearchTopic(topic) {
+            service.fetchPosts(for: topic, atOffset: 0, deletingEarlier: false, success: success, failure: failure)
+        } else {
+            service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
         }
     }
 
@@ -1041,12 +1047,10 @@ import WordPressFlux
         // Reload the gap cell so it will start animating.
         tableView.reloadRows(at: [indexPath], with: .none)
 
-        let syncContext = ContextManager.sharedInstance().newDerivedContext()
-        let service =  ReaderPostService(managedObjectContext: syncContext)
         let sortDate = post.sortDate
 
         syncContext.perform { [weak self] in
-            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+            guard let topicInContext = (try? self?.syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1076,37 +1080,24 @@ import WordPressFlux
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
-                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                self?.service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
             } else {
-                service.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                self?.service.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
             }
         }
     }
 
 
-    private func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
             return
         }
 
-        guard
-            let posts = content.content,
-            let post = posts.last as? ReaderPost,
-            let sortDate = post.sortDate
-        else {
-            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
-            return
-        }
-
         footerView.showSpinner(true)
 
-        let earlierThan = sortDate
-        let syncContext = ContextManager.sharedInstance().newDerivedContext()
-        let service =  ReaderPostService(managedObjectContext: syncContext)
-        let offset = content.contentCount
-        syncContext.perform {
-            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+        syncContext.perform { [weak self] in
+            guard let topicInContext = (try? self?.syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1127,11 +1118,7 @@ import WordPressFlux
                 })
             }
 
-            if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPosts(for: topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
-            } else {
-                service.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
-            }
+            self?.fetchMore(for: topicInContext, success: successBlock, failure: failureBlock)
         }
 
         if let properties = topicPropertyForStats() {
@@ -1139,6 +1126,24 @@ import WordPressFlux
         }
     }
 
+    func fetchMore(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+        guard
+            let posts = content.content,
+            let post = posts.last as? ReaderPost,
+            let sortDate = post.sortDate
+        else {
+            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
+            return
+        }
+
+        if ReaderHelpers.isTopicSearchTopic(topic) {
+            let offset = UInt(content.contentCount)
+            service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
+        } else {
+            let earlierThan = sortDate
+            service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)
+        }
+    }
 
     private func cleanupAfterSync(refresh: Bool = true) {
         syncIsFillingGap = false

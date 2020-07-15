@@ -9,5 +9,6 @@ extension ReaderCard {
 
     @NSManaged public var sortRank: Double
     @NSManaged public var post: ReaderPost?
+    @NSManaged public var interests: Set<ReaderInterest>?
 
 }

@@ -1,6 +1,12 @@
 import Foundation
 
 class ReaderCardsStreamViewController: ReaderStreamViewController {
+    private var currentPage = 1
+
+    lazy var cardsService: ReaderCardService = {
+        return ReaderCardService()
+    }()
+
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -23,6 +29,29 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {
             bumpRenderTracker(post)
         }
+    }
+
+    // MARK: - Sync
+
+    override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+        currentPage = 1
+        cardsService.fetch(page: 1, success: success, failure: failure)
+    }
+
+    override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+        footerView.showSpinner(true)
+
+        currentPage += 1
+
+        cardsService.fetch(page: currentPage, success: { _, hasMore in
+            success?(hasMore)
+        }, failure: { error in
+            guard let error = error else {
+                return
+            }
+
+            failure?(error as NSError)
+        })
     }
 
     // MARK: - TableViewHandler

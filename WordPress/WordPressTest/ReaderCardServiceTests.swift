@@ -26,8 +26,7 @@ class ReaderCardServiceTests: XCTestCase {
     /// Save 9 cards in the database
     /// The API returns 10, but one of them is unknown and shouldn't be saved
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skipped_testSaveCards() {
+    func testSaveCards() {
         let expectation = self.expectation(description: "9 reader cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -44,8 +43,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     /// From the 9 cards saved, 8 should have posts
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skipped_testSaveCardsWithPosts() {
+    func testSaveCardsWithPosts() {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -62,8 +60,7 @@ class ReaderCardServiceTests: XCTestCase {
 
     /// Calls the failure block when the request fails
     ///
-    /// The test is current skipped because the Core Data Model changes haven't been submitted yet.
-    func skipped_testFailure() {
+    func testFailure() {
         let expectation = self.expectation(description: "Failure callback should be called")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
@@ -73,6 +70,26 @@ class ReaderCardServiceTests: XCTestCase {
             expect(error).toNot(beNil())
             expectation.fulfill()
         })
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    /// When fetching the first page, clean all the cards
+    ///
+    func testFirstPageClean() {
+        let expectation = self.expectation(description: "Only 9 cards should be returned")
+
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        apiMock.succeed = true
+
+        service.fetch(page: 2, success: { _, _ in
+            // Fetch again, this time the 1st page
+            service.fetch(page: 1, success: { _, _ in
+                let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
+                expect(cards?.count).to(equal(9))
+                expectation.fulfill()
+            }, failure: { _ in })
+        }, failure: {_ in })
 
         waitForExpectations(timeout: 5, handler: nil)
     }
