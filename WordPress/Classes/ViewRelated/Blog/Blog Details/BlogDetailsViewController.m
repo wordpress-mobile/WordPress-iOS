@@ -1060,7 +1060,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                handler:nil];
+                                                handler:^(UIAlertAction *action) {
+                                                    [self startAlertTimer];
+                                                }];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
@@ -1130,6 +1132,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
         weakSelf.siteIconPickerPresenter = nil;
+        [weakSelf startAlertTimer];
     };
     self.siteIconPickerPresenter.onIconSelection = ^() {
         weakSelf.headerView.updatingIcon = YES;
