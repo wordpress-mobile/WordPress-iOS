@@ -28,6 +28,15 @@ class ReaderSelectInterestsCoordinator {
         }()
     }
 
+    // MARK: - Saving
+    public func saveInterests(interests: [String], completion: @escaping (Bool) -> Void) {
+        self.interestsService.followInterests(slugs: interests, success: { _ in
+            completion(true)
+        }) { error in
+            completion(false)
+        }
+    }
+
     // MARK: - Display Logic
 
     /// Determines whether or not the select interests view should be displayed
@@ -40,6 +49,10 @@ class ReaderSelectInterestsCoordinator {
     }
 
     private func shouldDisplaySelectInterests(with interests: [ReaderTagTopic]?) -> Bool {
+        #if DEBUG
+        return true
+        #endif
+
         guard let interests = interests else {
             return false
         }

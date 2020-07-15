@@ -11,6 +11,10 @@ protocol ReaderFollowedInterestsService: AnyObject {
     /// Fetches the users followed interests from the network, then returns the sync'd interests
     /// - Parameter completion: Called after a fetch, will return nil if the user has no interests or an error occurred
     func fetchFollowedInterestsRemotely(completion: @escaping ([ReaderTagTopic]?) -> Void)
+
+    func followInterests(slugs: [String],
+                         success: @escaping ([ReaderTagTopic]?) -> Void,
+                         failure: @escaping (Error) -> Void)
 }
 
 // MARK: - CoreData Fetching
@@ -33,7 +37,27 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         }
     }
 
-    // MARK: - Private: Helpers
+    func followInterests(slugs: [String],
+                         success: @escaping ([ReaderTagTopic]?) -> Void,
+                         failure: @escaping (Error) -> Void) {
+        let topicService = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
+        topicService.followInterests(withSlugs: slugs, success: { [weak self] in
+            self?.fetchFollowedInterestsRemotely(completion: success)
+        }) { error in
+            failure(error)
+        }
+    }
+
+    private func apiRequest() -> WordPressComRestApi {
+        let accountService = AccountService(managedObjectContext: managedObjectContext)
+        let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
+
+        return WordPressComRestApi.defaultApi(oAuthToken: token,
+                                              userAgent: WPUserAgent.wordPress())
+    }
+
+    // MARK: - Private: Fetching Helpers
     private func followedInterestsFetchRequest() -> NSFetchRequest<ReaderTagTopic> {
         let entityName = "ReaderTagTopic"
         let predicate = NSPredicate(format: "following = YES")
