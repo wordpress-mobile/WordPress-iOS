@@ -15,14 +15,13 @@ class ReaderSelectInterestsCoordinator {
     ///   - userId: The logged in user account, this makes sure the tracking is a per-user basis
     init(service: ReaderFollowedInterestsService? = nil,
          store: KeyValueDatabase = UserDefaults.standard,
-         userId: NSNumber? = nil) {
+         userId: NSNumber? = nil,
+         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 
-        let defaultContext = ContextManager.sharedInstance().mainContext
-
-        self.interestsService = service ?? ReaderTopicService(managedObjectContext: defaultContext)
+        self.interestsService = service ?? ReaderTopicService(managedObjectContext: context)
         self.store = store
         self.userId = userId ?? {
-            let acctServ = AccountService(managedObjectContext: defaultContext)
+            let acctServ = AccountService(managedObjectContext: context)
             let account = acctServ.defaultWordPressComAccount()
 
             return account?.userID
