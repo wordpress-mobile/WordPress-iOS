@@ -338,7 +338,7 @@ import WordPressFlux
     private func debugCheckIfNeedToDisplaySelectInterests() {
         // TODO: Remove this
         if FeatureFlag.readerImprovementsPhase2.enabled {
-            interestsCoordinator.shouldDisplay { (shouldDisplay) in
+            interestsCoordinator.shouldDisplay { shouldDisplay in
                 if shouldDisplay {
                     let controller = ReaderSelectInterestsViewController()
                     self.navigationController?.present(controller, animated: true)
