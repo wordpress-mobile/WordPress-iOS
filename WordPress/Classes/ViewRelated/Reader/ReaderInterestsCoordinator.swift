@@ -45,9 +45,7 @@ class ReaderSelectInterestsCoordinator {
             return false
         }
 
-        let hasSeen = hasSeenBefore()
-        DDLogDebug("Reader Improvements: Count: \(interests.count), has seen before? \(hasSeen)")
-        return !hasSeen && interests.count <= 0
+        return !hasSeenBefore() && interests.count <= 0
     }
 
     // MARK: - View Tracking
