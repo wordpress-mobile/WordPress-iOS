@@ -2,6 +2,7 @@ import Foundation
 
 class ReaderWelcomeBanner: UIView, NibLoadable {
     @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var iPadDotsView: UIView!
 
     static var bannerPresentedKey = "welcomeBannerPresented"
 
@@ -9,6 +10,7 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
         super.awakeFromNib()
         applyStyles()
         configureWelcomeLabel()
+        configureDotsForiPad()
     }
 
     /// Present the Welcome banner just one time
@@ -30,5 +32,9 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
 
     private func configureWelcomeLabel() {
         welcomeLabel.text = NSLocalizedString("Welcome to Reader. Discover millions of blogs at your fingertips.", comment: "Welcome message shown under Discover in the Reader just the 1st time the user sees it")
+    }
+
+    private func configureDotsForiPad() {
+        iPadDotsView.isHidden = !UIDevice.isPad()
     }
 }
