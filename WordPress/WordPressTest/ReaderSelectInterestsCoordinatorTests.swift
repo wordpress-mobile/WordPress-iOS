@@ -90,7 +90,7 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
 }
 
 class ReaderSelectInterestsCoordinatorTests: XCTestCase {
-    func testShouldDisplay() {
+    func testShouldDisplayReturnsTrue() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: false)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
@@ -108,7 +108,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testShouldNotDisplayIfUserHasFollowedInterests() {
+    func testShouldDisplayReturnsFalseIfUserHasFollowedInterests() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: true)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
@@ -128,7 +128,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testShouldNotDisplayIfUserHasSeenBefore() {
+    func testShouldDisplayReturnsFalseIfUserHasSeenBefore() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: true)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
