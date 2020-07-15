@@ -47,4 +47,11 @@ class ReaderInterestsStyleGuide {
         button.disabledBorderColor = disabledBackgroundColor
         button.disabledBackgroundColor = disabledBackgroundColor
     }
+
+    // MARK: - Loading
+    public class func applyLabelLabelStyles(label: UILabel) {
+        label.font = WPStyleGuide.fontForTextStyle(.body)
+        label.textColor = .textSubtle
+    }
+
 }
