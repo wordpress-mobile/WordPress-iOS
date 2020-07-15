@@ -73,11 +73,10 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
     }
 
     // MARK: - Private: Helpers
-    private func followedInterestsFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        let entityName = ReaderTagTopic.classNameWithoutNamespaces()
+    private func followedInterestsFetchRequest() -> NSFetchRequest<ReaderTagTopic> {
+        let entityName = "ReaderTagTopic"
         let predicate = NSPredicate(format: "following = YES")
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let fetchRequest = NSFetchRequest<ReaderTagTopic>(entityName: entityName)
         fetchRequest.predicate = predicate
 
         return fetchRequest
@@ -86,11 +85,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
     private func followedInterests() -> [ReaderTagTopic]? {
         let fetchRequest = followedInterestsFetchRequest()
         do {
-            guard let interests = try managedObjectContext.fetch(fetchRequest) as? [ReaderTagTopic] else {
-                return nil
-            }
-
-            return interests
+            return try managedObjectContext.fetch(fetchRequest)
         } catch {
             DDLogError("Could not fetch followed interests: \(String(describing: error))")
 
