@@ -17,7 +17,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var createBlankPageBtn: UIButton!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    let minTitleFontSize: CGFloat = 22
+    let minTitleFontSize: CGFloat = 17
     let maxTitleFontSize: CGFloat = 34
     var maxHeaderHeight: CGFloat = 285
     var minHeaderHeight: CGFloat {
