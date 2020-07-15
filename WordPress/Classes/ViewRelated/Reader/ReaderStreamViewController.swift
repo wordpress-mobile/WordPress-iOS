@@ -316,6 +316,28 @@ import WordPressFlux
 
         didSetupView = true
 
+        let ghostableTableView = UITableView()
+        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(ghostableTableView)
+        NSLayoutConstraint.activate([
+            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1),
+            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1),
+            ghostableTableView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
+        ])
+
+        ghostableTableView.separatorStyle = .none
+
+        let postCardTextCellNib = UINib(nibName: "ReaderPostCardCell", bundle: Bundle.main)
+        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: "ReaderPostCardCell")
+
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "ReaderPostCardCell", rowsPerSection: [1])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+
         guard !shouldDisplayNoTopicController else {
             return
         }

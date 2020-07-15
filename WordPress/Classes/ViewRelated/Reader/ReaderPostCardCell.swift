@@ -136,6 +136,10 @@ private struct Constants {
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
+
+        borderedView.isGhostableDisabled = true
+        attributionView.isHidden = true
+        menuButton.layer.opacity = 0
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
