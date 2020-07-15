@@ -14,7 +14,7 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
     }
 
     /// Present the Welcome banner just one time
-    class func presentIfNeeded(in tableView: UITableView) {
+    class func displayIfNeeded(in tableView: UITableView) {
         guard !UserDefaults.standard.bool(forKey: ReaderWelcomeBanner.bannerPresentedKey) else {
             return
         }
