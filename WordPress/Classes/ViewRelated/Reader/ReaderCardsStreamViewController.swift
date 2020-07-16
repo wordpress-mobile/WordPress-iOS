@@ -7,6 +7,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ReaderWelcomeBanner.displayIfNeeded(in: tableView)
+    }
+
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -26,7 +26,7 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    private var tableView: UITableView! {
+    var tableView: UITableView! {
         return tableViewController.tableView
     }
 
