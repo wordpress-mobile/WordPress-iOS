@@ -21,12 +21,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
 
     public func fetchFollowedInterestsRemotely(completion: @escaping ([ReaderTagTopic]?) -> Void) {
         fetchReaderMenu(success: { [weak self] in
-            guard let `self` = self else {
-                completion(nil)
-                return
-            }
-
-            self.fetchFollowedInterestsLocally(completion: completion)
+            self?.fetchFollowedInterestsLocally(completion: completion)
         }) { error in
             DDLogError("Could not fetch remotely followed interests: \(String(describing: error))")
             completion(nil)
