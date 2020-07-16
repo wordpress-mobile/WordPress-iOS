@@ -63,9 +63,4 @@ class ReaderSelectInterestsCoordinator {
     func markAsSeen() {
         store.set(true, forKey: userDefaultsKey)
     }
-
-    //TODO: RI Remove this
-    func _debugResetHasSeen() {
-        store.set(false, forKey: userDefaultsKey)
-    }
 }

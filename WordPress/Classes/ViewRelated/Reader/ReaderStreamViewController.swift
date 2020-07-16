@@ -331,12 +331,11 @@ import WordPressFlux
 
         syncIfAppropriate()
 
-        debugCheckIfNeedToDisplaySelectInterests()
-
+        testCheckIfNeedToDisplaySelectInterests()
     }
 
-    private func debugCheckIfNeedToDisplaySelectInterests() {
-        // TODO: Remove this
+    // TODO: Remove this for a real implementation, this is just for testing right now
+    private func testCheckIfNeedToDisplaySelectInterests() {
         if FeatureFlag.readerImprovementsPhase2.enabled {
             interestsCoordinator.shouldDisplay { shouldDisplay in
                 if shouldDisplay {
@@ -344,18 +343,6 @@ import WordPressFlux
                     self.navigationController?.present(controller, animated: true)
                 }
                 self.interestsCoordinator.markAsSeen()
-            }
-        }
-    }
-
-    override func becomeFirstResponder() -> Bool {
-        return true
-    }
-
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        if FeatureFlag.readerImprovementsPhase2.enabled {
-            if motion == .motionShake {
-                interestsCoordinator._debugResetHasSeen()
             }
         }
     }
