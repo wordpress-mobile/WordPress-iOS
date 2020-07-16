@@ -4,7 +4,8 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
-//    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var headerHeight: NSLayoutConstraint!
     @IBOutlet weak var categoryBar: UICollectionView!
 
     @IBOutlet weak var tableView: UITableView!
@@ -15,19 +16,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
     let minTitleFontSize: CGFloat = 22
     let maxTitleFontSize: CGFloat = 34
-    var maxHeaderHeight: CGFloat = 285
+    var maxHeaderHeight: CGFloat = 161
     var minHeaderHeight: CGFloat {
-        return (navigationController?.navigationBar.frame.height ?? 56) + categoryBar.frame.height + 9
+        return 4 + categoryBar.frame.height + 9
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         styleButtons()
 
-//        let tableFooterFrame = footerView.frame
-//        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
-//        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        let tableFooterFrame = footerView.frame
+        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+
+        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -72,19 +75,34 @@ class GutenbergLayoutPickerViewController: UIViewController {
             button?.layer.cornerRadius = 8
         }
 
-//        if #available(iOS 13.0, *) {
-//            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-//                if traitCollection.userInterfaceStyle == .dark {
-//                    return UIColor.systemFill
-//                } else {
-//                    return UIColor.quaternarySystemFill
-//                }
-//            }
-//        }
+        if #available(iOS 13.0, *) {
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        }
     }
 
     private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
         return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
+    }
+}
+
+extension GutenbergLayoutPickerViewController: UITableViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let newHeaderViewHeight = maxHeaderHeight - scrollView.contentOffset.y
+
+        if newHeaderViewHeight > maxHeaderHeight {
+            headerHeight.constant = maxHeaderHeight
+        } else if newHeaderViewHeight < minHeaderHeight {
+            headerHeight.constant = minHeaderHeight
+        } else {
+            headerHeight.constant = newHeaderViewHeight
+        }
     }
 }
 

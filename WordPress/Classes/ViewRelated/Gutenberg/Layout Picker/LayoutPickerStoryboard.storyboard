@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aWE-F8-w6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aWE-F8-w6T">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -37,63 +37,62 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="318" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eiU-pw-Xq6">
                                 <rect key="frame" x="0.0" y="56" width="414" height="786"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="DTZ-MR-Eqm" customClass="UITableViewHeaderFooterView">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="161"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
-                                            <rect key="frame" x="39.5" y="12" width="335" height="61"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="335" id="30x-PK-vbo"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa">
-                                            <rect key="frame" x="0.0" y="93" width="414" height="44"/>
-                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="Zmw-89-cy2"/>
-                                            </constraints>
-                                            <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IPj-9L-w95">
-                                                <size key="itemSize" width="105" height="44"/>
-                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            </collectionViewFlowLayout>
-                                            <cells/>
-                                        </collectionView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ff-7z-VN8" userLabel="Seperator">
-                                            <rect key="frame" x="0.0" y="160.5" width="414" height="0.5"/>
-                                            <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="Gkn-GA-ugR"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="fhN-6z-taa" secondAttribute="trailing" id="3Zj-xu-kOK"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fhN-6z-taa" secondAttribute="bottom" constant="9" id="3wZ-NV-ETZ"/>
-                                        <constraint firstItem="4ff-7z-VN8" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="Ckj-L2-I9f"/>
-                                        <constraint firstAttribute="bottom" secondItem="4ff-7z-VN8" secondAttribute="bottom" id="GwS-lS-4cI"/>
-                                        <constraint firstItem="yqC-YH-PXy" firstAttribute="centerX" secondItem="DTZ-MR-Eqm" secondAttribute="centerX" id="NW7-GP-Ix1"/>
-                                        <constraint firstItem="fhN-6z-taa" firstAttribute="top" secondItem="yqC-YH-PXy" secondAttribute="bottom" priority="750" constant="20" id="TWT-Wj-G1p"/>
-                                        <constraint firstItem="fhN-6z-taa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yqC-YH-PXy" secondAttribute="bottom" id="dDg-8x-dpU"/>
-                                        <constraint firstAttribute="trailing" secondItem="4ff-7z-VN8" secondAttribute="trailing" id="lHV-hQ-Tyq"/>
-                                        <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
-                                        <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP"/>
-                                        <constraint firstAttribute="height" constant="161" id="yrU-yj-SJL"/>
-                                    </constraints>
-                                    <viewLayoutGuide key="safeArea" id="nvL-2Q-gAb"/>
-                                </view>
                                 <sections/>
                                 <connections>
                                     <outlet property="dataSource" destination="6uO-HR-ECX" id="hZQ-OP-mJV"/>
                                     <outlet property="delegate" destination="6uO-HR-ECX" id="gWb-yc-zee"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DTZ-MR-Eqm">
+                                <rect key="frame" x="0.0" y="56" width="414" height="161"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
+                                        <rect key="frame" x="39.5" y="12" width="335" height="61"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="335" id="30x-PK-vbo"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa">
+                                        <rect key="frame" x="0.0" y="93" width="414" height="44"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Zmw-89-cy2"/>
+                                        </constraints>
+                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IPj-9L-w95">
+                                            <size key="itemSize" width="105" height="44"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells/>
+                                    </collectionView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ff-7z-VN8" userLabel="Seperator">
+                                        <rect key="frame" x="0.0" y="160.5" width="414" height="0.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="0.5" id="Gkn-GA-ugR"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fhN-6z-taa" secondAttribute="trailing" id="3Zj-xu-kOK"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fhN-6z-taa" secondAttribute="bottom" constant="9" id="3wZ-NV-ETZ"/>
+                                    <constraint firstItem="4ff-7z-VN8" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="Ckj-L2-I9f"/>
+                                    <constraint firstAttribute="bottom" secondItem="4ff-7z-VN8" secondAttribute="bottom" id="GwS-lS-4cI"/>
+                                    <constraint firstItem="yqC-YH-PXy" firstAttribute="centerX" secondItem="DTZ-MR-Eqm" secondAttribute="centerX" id="NW7-GP-Ix1"/>
+                                    <constraint firstItem="fhN-6z-taa" firstAttribute="top" secondItem="yqC-YH-PXy" secondAttribute="bottom" constant="20" id="TWT-Wj-G1p"/>
+                                    <constraint firstItem="fhN-6z-taa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DTZ-MR-Eqm" secondAttribute="top" constant="4" id="dVp-aN-dR9"/>
+                                    <constraint firstAttribute="trailing" secondItem="4ff-7z-VN8" secondAttribute="trailing" id="lHV-hQ-Tyq"/>
+                                    <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
+                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP"/>
+                                    <constraint firstAttribute="height" constant="161" id="yrU-yj-SJL"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="nvL-2Q-gAb"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Hj-mT-YmE">
                                 <rect key="frame" x="0.0" y="732" width="414" height="110"/>
                                 <subviews>
@@ -156,7 +155,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="DTZ-MR-Eqm" firstAttribute="trailing" secondItem="ad1-6E-LbB" secondAttribute="trailing" id="3RV-7r-4Mm"/>
+                            <constraint firstItem="DTZ-MR-Eqm" firstAttribute="leading" secondItem="ad1-6E-LbB" secondAttribute="leading" id="8Yj-JW-DiF"/>
                             <constraint firstItem="eiU-pw-Xq6" firstAttribute="top" secondItem="ad1-6E-LbB" secondAttribute="top" id="C7k-c0-Mgd"/>
+                            <constraint firstItem="DTZ-MR-Eqm" firstAttribute="top" secondItem="ad1-6E-LbB" secondAttribute="top" id="I6F-YB-Z6I"/>
                             <constraint firstItem="2Hj-mT-YmE" firstAttribute="trailing" secondItem="ad1-6E-LbB" secondAttribute="trailing" id="JLC-Iz-eF0"/>
                             <constraint firstItem="eiU-pw-Xq6" firstAttribute="trailing" secondItem="ad1-6E-LbB" secondAttribute="trailing" id="e1a-xF-B0G"/>
                             <constraint firstAttribute="bottom" secondItem="2Hj-mT-YmE" secondAttribute="bottom" id="gu4-Iy-a0x"/>
@@ -168,12 +170,30 @@
                     </view>
                     <navigationItem key="navigationItem" title="Choose a Layout" id="hnp-yV-O4V">
                         <barButtonItem key="backBarButtonItem" title="Back" id="eBE-Je-oWu"/>
+                        <barButtonItem key="rightBarButtonItem" id="Eex-7E-o3y">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dfO-pv-dZs">
+                                <rect key="frame" x="360" y="11" width="34" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="quaternarySystemFillColor" red="0.4549019608" green="0.4549019608" blue="0.50196078430000002" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="17"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="closeModal:" destination="6uO-HR-ECX" eventType="touchUpInside" id="H82-GC-e6c"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="categoryBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
+                        <outlet property="closeButton" destination="dfO-pv-dZs" id="oSD-IJ-mAr"/>
                         <outlet property="createBlankPageBtn" destination="zm3-8S-slr" id="KLr-3l-vzg"/>
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
+                        <outlet property="headerHeight" destination="yrU-yj-SJL" id="E4n-a9-Xs1"/>
                         <outlet property="headerView" destination="DTZ-MR-Eqm" id="pgP-hd-zPq"/>
                         <outlet property="tableView" destination="eiU-pw-Xq6" id="blQ-fQ-0HC"/>
                     </connections>
