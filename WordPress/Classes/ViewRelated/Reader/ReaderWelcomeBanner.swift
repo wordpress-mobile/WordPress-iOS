@@ -2,7 +2,7 @@ import Foundation
 
 class ReaderWelcomeBanner: UIView, NibLoadable {
     @IBOutlet weak var welcomeLabel: UILabel!
-    @IBOutlet weak var iPadDotsView: UIView!
+    @IBOutlet weak var extraDotsView: UIView!
 
     static var bannerPresentedKey = "welcomeBannerPresented"
 
@@ -10,7 +10,12 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
         super.awakeFromNib()
         applyStyles()
         configureWelcomeLabel()
-        configureDotsForiPad()
+        showExtraDotsIfNeeded()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        showExtraDotsIfNeeded()
     }
 
     /// Present the Welcome banner just one time
@@ -35,7 +40,7 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
         welcomeLabel.text = NSLocalizedString("Welcome to Reader. Discover millions of blogs at your fingertips.", comment: "Welcome message shown under Discover in the Reader just the 1st time the user sees it")
     }
 
-    private func configureDotsForiPad() {
-        iPadDotsView.isHidden = !UIDevice.isPad()
+    private func showExtraDotsIfNeeded() {
+        extraDotsView.isHidden = (traitCollection.horizontalSizeClass == .compact)
     }
 }
