@@ -67,7 +67,8 @@ extension RegisterDomainDetailsViewModel {
 
             typealias ValidationStateChangedHandler = ((EditableKeyValueRow, ValidationRule) -> Void)
             typealias ValueChangeHandler = ((EditableKeyValueRow) -> Void)
-
+            typealias ValueSanitizerBlock = (_ value: String?) -> String?
+            
             enum EditingStyle: Int {
                 case inline
                 case multipleChoice
@@ -99,13 +100,15 @@ extension RegisterDomainDetailsViewModel {
                 }
             }
             var valueChangeHandler: ValueChangeHandler?
+            var valueSanitizer: ValueSanitizerBlock?
 
             init(key: String,
                  jsonKey: String,
                  value: String?,
                  placeholder: String?,
                  editingStyle: EditingStyle,
-                 validationRules: [ValidationRule] = []) {
+                 validationRules: [ValidationRule] = [],
+                 valueSanitizer: ValueSanitizerBlock? = nil) {
 
                 self.key = key
                 self.jsonKey = jsonKey
@@ -113,6 +116,7 @@ extension RegisterDomainDetailsViewModel {
                 self.placeholder = placeholder
                 self.editingStyle = editingStyle
                 self.validationRules = validationRules
+                self.valueSanitizer = valueSanitizer
             }
 
             private func registerForValidationStateChangedEvent() {

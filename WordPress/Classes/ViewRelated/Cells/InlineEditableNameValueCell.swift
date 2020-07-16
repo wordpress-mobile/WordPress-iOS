@@ -12,7 +12,8 @@ import WordPressAuthenticator
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
-
+    typealias ValueSanitizerBlock = (_ value: String?) -> String?
+    
     fileprivate enum Const {
         enum Color {
             static let nameText = UIColor.text
@@ -29,7 +30,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var valueTextField: LoginTextField!
     weak var delegate: InlineEditableNameValueCellDelegate?
-
+    var valueSanitizer: ValueSanitizerBlock?
+    
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
             let textFieldEnabled = accessoryType == .none
@@ -70,19 +72,24 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textFieldDidChange(textField: UITextField) {
         textField.text = textField.text?.replacingOccurrences(of: Const.Text.space, with: Const.Text.nonBreakingSpace)
-
-        let text = sanitizedText(for: textField)
+        
+        let text = replaceNonBreakingSpaceWithSpace(for: textField)
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: text)
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
-        let text = sanitizedText(for: textField)
+        if let valueSanitizer = valueSanitizer {
+            textField.text = valueSanitizer(textField.text)
+        }
+        
+        let text = replaceNonBreakingSpaceWithSpace(for: textField)
 
         textField.text = text
+        
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: text)
     }
 
-    private func sanitizedText(for textField: UITextField) -> String {
+    private func replaceNonBreakingSpaceWithSpace(for textField: UITextField) -> String {
         return textField.text?.replacingOccurrences(of: Const.Text.nonBreakingSpace, with: Const.Text.space) ?? ""
     }
 
@@ -104,6 +111,7 @@ extension InlineEditableNameValueCell {
         var placeholder: String?
         var valueColor: UIColor?
         var accessoryType: UITableViewCell.AccessoryType?
+        var valueSanitizer: ValueSanitizerBlock?
     }
 
     func update(with model: Model) {
@@ -112,5 +120,6 @@ extension InlineEditableNameValueCell {
         valueTextField.placeholder = model.placeholder
         valueTextField.textColor = model.valueColor ?? Const.Color.valueText
         accessoryType = model.accessoryType ?? .none
+        valueSanitizer = model.valueSanitizer
     }
 }
