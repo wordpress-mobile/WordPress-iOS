@@ -2,12 +2,18 @@ import Foundation
 
 class ReaderSelectInterestsCoordinator {
     private struct Constants {
-        static let userDefaultsKeyFormat = "Reader.SelectInterests.hasSeenBefore.%@"
+        static let userDefaultsKeyFormat: String = "Reader.SelectInterests.hasSeenBefore.%@"
+        static let loggedOutUserKey: String = "logged-out"
     }
 
     private let interestsService: ReaderFollowedInterestsService
     private let store: KeyValueDatabase
     private let userId: NSNumber?
+
+    /// Generates the user defaults key for the current user
+    private var userDefaultsKey: String {
+        return String(format: Constants.userDefaultsKeyFormat, userId ?? Constants.loggedOutUserKey)
+    }
 
     /// Creates a new instance of the coordinator
     /// - Parameter service: An Optional `ReaderFollowedInterestsService` to use. If this is `nil` one will be created on the main context
@@ -61,40 +67,13 @@ class ReaderSelectInterestsCoordinator {
     }
 
     // MARK: - View Tracking
-
-    /// Generates the user defaults key for the logged in user
-    /// Returns nil if we can not get the default WP.com account
-    private var userDefaultsKey: String? {
-        get {
-            return String(format: Constants.userDefaultsKeyFormat, userId ?? 0)
-        }
-    }
-
     /// Determines whether the select interests view has been seen before
     func hasSeenBefore() -> Bool {
-        guard let key = userDefaultsKey else {
-            return false
-        }
-
-        return store.bool(forKey: key)
+        return store.bool(forKey: userDefaultsKey)
     }
 
     /// Marks the view as seen for the user
     func markAsSeen() {
-        guard let key = userDefaultsKey else {
-            return
-        }
-
-        store.set(true, forKey: key)
-    }
-
-    //TODO: RI Remove this
-    func _debugResetHasSeen() {
-        guard let key = userDefaultsKey else {
-            return
-        }
-
-        DDLogDebug("Resetting hasSeenBefore: \(key)")
-        store.set(false, forKey: key)
+        store.set(true, forKey: userDefaultsKey)
     }
 }
