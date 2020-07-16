@@ -27,7 +27,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
             }
 
             self.fetchFollowedInterestsLocally(completion: completion)
-        }) { (error) in
+        }) { error in
             DDLogError("Could not fetch remotely followed interests: \(String(describing: error))")
             completion(nil)
         }
