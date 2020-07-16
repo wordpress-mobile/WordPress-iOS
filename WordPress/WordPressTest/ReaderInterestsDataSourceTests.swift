@@ -18,7 +18,7 @@ class MockInterestsService: ReaderInterestsService {
         let payload = Data("""
         {
             "title": "\(title)",
-            "slug-en": "\(slug)"
+            "slug": "\(slug)"
         }
         """.utf8)
 
