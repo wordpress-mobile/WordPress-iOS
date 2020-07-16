@@ -867,10 +867,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ].compactMap { $0 }
     }
 
-    func gutenbergCapabilities() -> [String: Bool]? {
+    func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
-            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
+            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
         ]
     }
 
