@@ -18,7 +18,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     let maxTitleFontSize: CGFloat = 34
     var maxHeaderHeight: CGFloat = 161
     var minHeaderHeight: CGFloat {
-        return 4 + categoryBar.frame.height + 9
+        return 9 + categoryBar.frame.height + 9
     }
 
     override func viewDidLoad() {
@@ -31,6 +31,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
 
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -48,6 +53,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBAction func createBlankPage(_ sender: Any) {
         createPage(nil)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        navigationController?.navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
+        super.prepare(for: segue, sender: sender)
     }
 
     private func createPage(_ template: String?) {

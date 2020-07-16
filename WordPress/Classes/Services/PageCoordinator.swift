@@ -15,10 +15,24 @@ class PageCoordinator {
         let storyboard = UIStoryboard(name: "LayoutPickerStoryboard", bundle: Bundle.main)
         guard let navigationController = storyboard.instantiateInitialViewController() as? UINavigationController,
             let rootView = navigationController.topViewController as? GutenbergLayoutPickerViewController  else {
-            completion(nil)
-            return
+                completion(nil)
+                return
         }
         rootView.completion = completion
+
+        let font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
+        let tintColor = UIColor(light: .black, dark: .white)
+
+        navigationController.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.font: font.withSize(34),
+            NSAttributedString.Key.foregroundColor: tintColor
+        ]
+
+        navigationController.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: font.withSize(17),
+            NSAttributedString.Key.foregroundColor: tintColor
+        ]
+
         navigationController.modalPresentationStyle = .pageSheet
         controller.present(navigationController, animated: true, completion: nil)
     }
