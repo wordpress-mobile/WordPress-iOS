@@ -83,7 +83,7 @@ extension RegisterDomainDetailsViewModel {
         let toLatinASCII = StringTransform(rawValue: "Latin-ASCII") // See http://userguide.icu-project.org/transforms/general for more options.
         return value?.applyingTransform(toLatinASCII, reverse: false)
     }
-    
+
     // MARK: - Rows
 
     static var contactInformationRows: [RowType] {

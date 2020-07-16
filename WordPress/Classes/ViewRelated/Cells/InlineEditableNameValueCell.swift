@@ -13,7 +13,7 @@ import WordPressAuthenticator
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     typealias ValueSanitizerBlock = (_ value: String?) -> String?
-    
+
     fileprivate enum Const {
         enum Color {
             static let nameText = UIColor.text
@@ -31,7 +31,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     @IBOutlet weak var valueTextField: LoginTextField!
     weak var delegate: InlineEditableNameValueCellDelegate?
     var valueSanitizer: ValueSanitizerBlock?
-    
+
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
             let textFieldEnabled = accessoryType == .none
@@ -72,7 +72,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textFieldDidChange(textField: UITextField) {
         textField.text = textField.text?.replacingOccurrences(of: Const.Text.space, with: Const.Text.nonBreakingSpace)
-        
+
         let text = replaceNonBreakingSpaceWithSpace(for: textField)
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: text)
     }
@@ -81,11 +81,11 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         if let valueSanitizer = valueSanitizer {
             textField.text = valueSanitizer(textField.text)
         }
-        
+
         let text = replaceNonBreakingSpaceWithSpace(for: textField)
 
         textField.text = text
-        
+
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: text)
     }
 

@@ -68,7 +68,7 @@ extension RegisterDomainDetailsViewModel {
             typealias ValidationStateChangedHandler = ((EditableKeyValueRow, ValidationRule) -> Void)
             typealias ValueChangeHandler = ((EditableKeyValueRow) -> Void)
             typealias ValueSanitizerBlock = (_ value: String?) -> String?
-            
+
             enum EditingStyle: Int {
                 case inline
                 case multipleChoice

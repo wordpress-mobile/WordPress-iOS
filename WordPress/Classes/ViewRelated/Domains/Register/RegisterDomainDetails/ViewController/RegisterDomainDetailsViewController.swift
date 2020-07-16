@@ -213,7 +213,7 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
                 viewModel.enableAddAddressRow()
         }
     }
-    
+
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldEditingDidEnd text: String) {
         inlineEditableNameValueCell(cell, valueTextFieldDidChange: text)
     }
