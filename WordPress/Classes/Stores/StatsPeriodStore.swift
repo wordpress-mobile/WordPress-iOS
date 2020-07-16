@@ -1062,12 +1062,8 @@ private extension StatsPeriodStore {
     func cancelQueries() {
         operationQueue.cancelAllOperations()
 
-        statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+        statsServiceRemote?.wordPressComRestApi.cancelTasks()
         setAllFetchingStatus(.idle)
-
-        // `invalidateAndCancelTasks` invalidates the SessionManager,
-        // so we need to recreate it to run queries.
-        initializeStatsRemote()
     }
 
     func shouldFetchOverview() -> Bool {
