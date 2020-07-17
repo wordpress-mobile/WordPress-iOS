@@ -40,6 +40,7 @@ extension RegisterDomainDetailsViewModel {
         }
         var validationBlock: RowValidationBlock?
         var errorMessage: String?
+        var serverSideErrorMessage: String?
         var context: Context
         var validationStateChanged: ValidationStateChangedHandler?
 
@@ -140,8 +141,8 @@ extension RegisterDomainDetailsViewModel {
 
             func validationErrors(forContext context: ValidationRule.Context) -> [String] {
                 return validationRules
-                    .filter { return $0.context == context && !$0.isValid }
-                    .compactMap { $0.errorMessage }
+                    .filter { return $0.context == context && !$0.isValid && $0.errorMessage != nil }
+                    .compactMap { "\($0.errorMessage ?? ""). \($0.serverSideErrorMessage ?? "")" }
             }
 
             func isValid(inContext context: ValidationRule.Context) -> Bool {
