@@ -180,8 +180,14 @@ extension ReaderTagTopic {
 
     static var tagsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTagTopic")
-        fetchRequest.predicate = NSPredicate(format: "following == %@ AND showInMenu == YES AND type == 'tag'",
-                                             NSNumber(value: ReaderHelpers.isLoggedIn()))
+        // Only show following tags, even if the user is logged out
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            fetchRequest.predicate = NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "following == %@ AND showInMenu == YES AND type == 'tag'",
+                                                 NSNumber(value: ReaderHelpers.isLoggedIn()))
+        }
+
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))]
         return fetchRequest
     }

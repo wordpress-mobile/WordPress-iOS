@@ -22,7 +22,14 @@ class FilterSheetView: UIView {
     }()
 
     private lazy var emptyView: EmptyActionView = {
-        return EmptyActionView(tappedButton: tappedEmptyAddButton)
+        let view = EmptyActionView(tappedButton: tappedEmptyAddButton)
+
+        // Hide the button if the user is not logged in
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            view.button.isHidden = !ReaderHelpers.isLoggedIn()
+        }
+
+        return view
     }()
 
     private lazy var ghostableTableView: UITableView = {
