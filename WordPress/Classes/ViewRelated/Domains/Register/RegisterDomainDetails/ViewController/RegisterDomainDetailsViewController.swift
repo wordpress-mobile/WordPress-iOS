@@ -207,7 +207,7 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
         viewModel.updateValue(text, at: indexPath)
 
         if sectionType == .address,
-            viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine,
+            viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine1,
             indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount,
             text.isEmpty == false {
                 viewModel.enableAddAddressRow()

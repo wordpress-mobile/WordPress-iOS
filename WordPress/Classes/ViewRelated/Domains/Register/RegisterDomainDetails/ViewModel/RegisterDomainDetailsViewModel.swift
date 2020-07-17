@@ -612,8 +612,10 @@ extension ValidateDomainContactInformationResponse.Messages {
 
     func serverSideErrorMessage(addressField: AddressField) -> String? {
         switch addressField {
-        case .addressLine:
-            return address1?.first ?? address2?.first
+        case .addressLine1:
+            return address1?.first
+        case .addressLine2:
+            return address2?.first
         case .city:
             return city?.first
         case .postalCode:

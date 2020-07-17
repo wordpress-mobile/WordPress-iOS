@@ -158,7 +158,7 @@ extension RegisterDomainDetailsViewModel {
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
-            validationRules: optional ? [] : [nonEmptyRule, serverSideRule(with: Localized.Address.addressLine)]
+            validationRules: optional ? [serverSideRule(with: Localized.Address.addressLine)] : [nonEmptyRule, serverSideRule(with: Localized.Address.addressLine)]
             ))
     }
 
