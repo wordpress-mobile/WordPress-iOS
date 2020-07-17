@@ -24,7 +24,9 @@ import WordPressFlux
     // MARK: - Properties
 
     // Select Interests
-    private var interestsCoordinator = ReaderSelectInterestsCoordinator()
+    private lazy var interestsCoordinator: ReaderSelectInterestsCoordinator = {
+        ReaderSelectInterestsCoordinator()
+    }
     private var selectInterestsViewController: ReaderSelectInterestsViewController?
 
     /// Called if the stream or tag fails to load

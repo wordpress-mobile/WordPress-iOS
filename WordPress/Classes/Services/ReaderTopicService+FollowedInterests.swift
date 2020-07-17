@@ -14,7 +14,7 @@ protocol ReaderFollowedInterestsService: AnyObject {
 
 
     /// Follow the provided interests
-    /// If the user is not logged into a WP.com account, the interests will be saved locally.
+    /// If the user is not logged into a WP.com account, the interests will only be saved locally.
     func followInterests(_ interests: [RemoteReaderInterest],
                          success: @escaping ([ReaderTagTopic]?) -> Void,
                          failure: @escaping (Error) -> Void,
