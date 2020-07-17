@@ -34,7 +34,6 @@ extension WPStyleGuide {
             appearance.backgroundColor = .appBar
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationAppearance.standardAppearance = appearance
-            navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }
 
         // Makes bar buttons visible in "Other Apps" media source picker.
