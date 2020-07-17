@@ -434,15 +434,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         __weak __typeof(self) weakSelf = self;
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTabWithCompletion:^(void) {
-                [self startAlertTimer];
+            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
+                [weakSelf startAlertTimer];
             }];
         } newPage:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            
-            WPTabBarController *controller = (WPTabBarController *)self.tabBarController;
-            Blog *blog = [controller currentOrLastBlog];
-            [controller showPageEditorForBlog:blog];
+            [weakSelf dismissViewControllerAnimated:true completion:^{
+                WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
+                Blog *blog = [controller currentOrLastBlog];
+                [controller showPageEditorForBlog:blog];
+            }];
         }];
     }
     
