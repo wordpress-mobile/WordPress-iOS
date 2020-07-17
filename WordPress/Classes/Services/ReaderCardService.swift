@@ -3,44 +3,56 @@ import Foundation
 class ReaderCardService {
     private let service: ReaderPostServiceRemote
     private let coreDataStack: CoreDataStack
+    private let followedInterestsService: ReaderFollowedInterestsService
     private lazy var syncContext: NSManagedObjectContext = {
         return coreDataStack.newDerivedContext()
     }()
 
     init(service: ReaderPostServiceRemote = ReaderPostServiceRemote(wordPressComRestApi: WordPressComMockrestApi()),
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: CoreDataStack = ContextManager.shared,
+         followedInterestsService: ReaderFollowedInterestsService? = nil) {
         self.service = service
         self.coreDataStack = coreDataStack
+        self.followedInterestsService = followedInterestsService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
     func fetch(page: Int = 1, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
-        service.fetchCards(for: ["foo", "bar"],
-                           success: { [weak self] cards in
+        followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
+            guard let interests = topics, !interests.isEmpty else {
+                failure(Errors.noInterests)
+                return
+            }
 
-                            guard let syncContext = self?.syncContext else {
-                                return
-                            }
+            let slugs = interests.map { $0.slug }
+            self.service.fetchCards(for: slugs,
+                               success: { [weak self] cards in
 
-                            syncContext.perform {
-
-                                if page == Constants.firstPage {
-                                    self?.removeAllCards()
+                                guard let syncContext = self?.syncContext else {
+                                    return
                                 }
 
-                                cards.enumerated().forEach { index, remoteCard in
-                                    let card = ReaderCard(context: syncContext, from: remoteCard)
+                                syncContext.perform {
 
-                                    // To keep the API order
-                                    card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
+                                    if page == Constants.firstPage {
+                                        self?.removeAllCards()
+                                    }
+
+                                    cards.enumerated().forEach { index, remoteCard in
+                                        let card = ReaderCard(context: syncContext, from: remoteCard)
+
+                                        // To keep the API order
+                                        card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
+                                    }
                                 }
-                            }
 
-                            self?.coreDataStack.save(syncContext) {
-                                success(cards.count, true)
-                            }
-        }, failure: { error in
-            failure(error)
-        })
+                                self?.coreDataStack.save(syncContext) {
+                                    success(cards.count, true)
+                                }
+            }, failure: { error in
+                failure(error)
+            })
+
+        }
     }
 
     private func removeAllCards() {
@@ -56,6 +68,10 @@ class ReaderCardService {
         } catch let error {
             print("Clean card error:", error)
         }
+    }
+
+    enum Errors: Error {
+        case noInterests
     }
 
     private enum Constants {
