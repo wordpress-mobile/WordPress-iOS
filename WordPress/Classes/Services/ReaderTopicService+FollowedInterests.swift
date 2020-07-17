@@ -40,13 +40,13 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
                          success: @escaping ([ReaderTagTopic]?) -> Void,
                          failure: @escaping (Error) -> Void,
                          isLoggedIn: Bool) {
-        // Check if the user is logged in
+        // If the user is not logged in, save the interests locally
         guard isLoggedIn else {
             followInterestsLocally(interests, success: success, failure: failure)
             return
         }
 
-        //If they're not, attempt to save the interests on the server
+        // If the user is logged in, attempt to save the interests on the server
         let slugs = interests.map { $0.slug }
 
         let topicService = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
