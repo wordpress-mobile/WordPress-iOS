@@ -186,6 +186,8 @@ import WordPressFlux
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
 
+    let ghostableTableView = UITableView()
+
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
     ///
@@ -315,28 +317,6 @@ import WordPressFlux
         WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         didSetupView = true
-
-        let ghostableTableView = UITableView()
-        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(ghostableTableView)
-        NSLayoutConstraint.activate([
-            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1),
-            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1),
-            ghostableTableView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-        ])
-
-        ghostableTableView.separatorStyle = .none
-
-        let postCardTextCellNib = UINib(nibName: "ReaderPostCardCell", bundle: Bundle.main)
-        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: "ReaderPostCardCell")
-
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "ReaderPostCardCell", rowsPerSection: [1])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        ghostableTableView.removeGhostContent()
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
 
         guard !shouldDisplayNoTopicController else {
             return
@@ -1683,11 +1663,13 @@ private extension ReaderStreamViewController {
     func displayLoadingStream() {
         configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
+        showGhost()
     }
 
     func displayLoadingStreamFailed() {
         configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
         displayResultsStatus()
+        hideGhost()
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1698,6 +1680,7 @@ private extension ReaderStreamViewController {
         tableView.tableHeaderView?.isHidden = true
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
+        showGhost()
     }
 
     func displayNoResultsView() {
@@ -1743,6 +1726,7 @@ private extension ReaderStreamViewController {
     func displayNoConnectionView() {
         configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
         displayResultsStatus()
+        hideGhost()
     }
 
     /// Removes the no followed sites view controller if it exists
@@ -1784,12 +1768,14 @@ private extension ReaderStreamViewController {
         resultsStatusView.didMove(toParent: tableViewController)
         resultsStatusView.updateView()
         footerView.isHidden = true
+        hideGhost()
     }
 
     func hideResultsStatus() {
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
+        hideGhost()
     }
 
     func buttonTitleForTopic(_ topic: ReaderAbstractTopic) -> String? {
