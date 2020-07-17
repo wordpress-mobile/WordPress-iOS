@@ -18,7 +18,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     let maxTitleFontSize: CGFloat = 34
     var maxHeaderHeight: CGFloat = 161
     var minHeaderHeight: CGFloat {
-        return 9 + categoryBar.frame.height + 9
+        return categoryBar.frame.height + 9
     }
 
     override func viewDidLoad() {
@@ -29,13 +29,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
-
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        styleNavigationBar()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -56,18 +55,32 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        navigationController?.navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
+        restoreNavigationBarStyle()
         super.prepare(for: segue, sender: sender)
     }
 
     private func createPage(_ template: String?) {
-        guard let completion = completion else {
-            dismiss(animated: true, completion: nil)
-            return
-        }
-
         dismiss(animated: true) {
-            completion(template)
+            self.completion?(template)
+        }
+    }
+
+    private func styleNavigationBar() {
+
+        if #available(iOS 13.0, *) {
+            navigationController?.navigationBar.standardAppearance.shadowColor = UIColor.clear
+            navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = UIColor.clear
+        } else {
+            navigationController?.navigationBar.shadowImage = UIImage()
+        }
+    }
+
+    private func restoreNavigationBarStyle() {
+        if #available(iOS 13.0, *) {
+            navigationController?.navigationBar.standardAppearance.shadowColor = UIColor.systemGray4
+            navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = UIColor.systemGray4
+        } else {
+            navigationController?.navigationBar.shadowImage = UIImage(color: .lightGray)
         }
     }
 
