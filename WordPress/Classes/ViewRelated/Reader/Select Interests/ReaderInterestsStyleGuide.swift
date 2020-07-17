@@ -35,15 +35,18 @@ class ReaderInterestsStyleGuide {
 
     public class func applyNextButtonStyle(button: FancyButton) {
         let disabledBackgroundColor: UIColor
+        let titleColor: UIColor
 
         if #available(iOS 13.0, *) {
             // System Gray 4 on Dark mode is the same color as tertiarySystemBackground
             disabledBackgroundColor = UIColor(light: .systemGray4, dark: .systemGray3)
+            titleColor = .textTertiary
         } else {
-            disabledBackgroundColor = .lightGray
+            disabledBackgroundColor = .tertiaryBackground
+            titleColor = .text
         }
 
-        button.disabledTitleColor = .textTertiary
+        button.disabledTitleColor = titleColor
         button.disabledBorderColor = disabledBackgroundColor
         button.disabledBackgroundColor = disabledBackgroundColor
     }
