@@ -33,8 +33,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = true
         super.viewWillAppear(animated)
-        styleNavigationBar()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -55,7 +55,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        restoreNavigationBarStyle()
+        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = false
         super.prepare(for: segue, sender: sender)
     }
 
@@ -65,31 +65,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    private func styleNavigationBar() {
-
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.standardAppearance.shadowColor = UIColor.clear
-            navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = UIColor.clear
-        } else {
-            navigationController?.navigationBar.shadowImage = UIImage()
-        }
-    }
-
-    private func restoreNavigationBarStyle() {
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.standardAppearance.shadowColor = UIColor.systemGray4
-            navigationController?.navigationBar.scrollEdgeAppearance?.shadowColor = UIColor.systemGray4
-        } else {
-            navigationController?.navigationBar.shadowImage = UIImage(color: .lightGray)
-        }
-    }
-
     private func styleButtons() {
         let seperator: UIColor
         if #available(iOS 13.0, *) {
             seperator = UIColor.separator
         } else {
-            seperator = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
+            seperator = UIColor.lightGray
         }
 
         [createBlankPageBtn].forEach { (button) in
@@ -107,10 +88,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
                 }
             }
         }
-    }
-
-    private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
-        return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
     }
 }
 

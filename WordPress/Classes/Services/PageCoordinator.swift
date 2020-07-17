@@ -20,19 +20,6 @@ class PageCoordinator {
         }
         rootView.completion = completion
 
-        let font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
-        let tintColor = UIColor(light: .black, dark: .white)
-
-        navigationController.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.font: font.withSize(34),
-            NSAttributedString.Key.foregroundColor: tintColor
-        ]
-
-        navigationController.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: font.withSize(17),
-            NSAttributedString.Key.foregroundColor: tintColor
-        ]
-
         navigationController.modalPresentationStyle = .pageSheet
         controller.present(navigationController, animated: true, completion: nil)
     }

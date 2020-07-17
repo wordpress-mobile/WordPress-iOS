@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Light Navigation Controller-->
+        <!--Gutenberg Light Navigation Controller-->
         <scene sceneID="SGh-Er-MmG">
             <objects>
-                <navigationController modalPresentationStyle="pageSheet" id="aWE-F8-w6T" customClass="LightNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="pageSheet" id="aWE-F8-w6T" customClass="GutenbergLightNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="fJE-kp-n4d">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="108"/>
