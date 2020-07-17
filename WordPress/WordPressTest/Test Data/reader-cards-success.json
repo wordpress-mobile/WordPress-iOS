@@ -8,11 +8,11 @@
 			"type": "interests_you_may_like",
 			"data": [{
 					"title": "Activism",
-					"slug-en": "activism"
+					"slug": "activism"
 				},
 				{
 					"title": "Advice",
-					"slug-en": "advice"
+					"slug": "advice"
 				}
 			]
 		},
