@@ -218,7 +218,7 @@ import "./ScreenshotFastfile"
   # Example:
   # bundle exec fastlane finalize_hotfix_release skip_confirm:true  
   #####################################################################################
-  desc "Creates a new hotfix branch from the given tag"
+  desc "Performs the final checks and tags the hotfix in the current branch"
   lane :finalize_hotfix_release do | options |
     ios_finalize_prechecks(options)
     ios_tag_build()
