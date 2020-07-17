@@ -14,7 +14,7 @@ class MockInterestsService: ReaderInterestsService {
 
     private let failureError = NSError(domain: "org.wordpress.reader-tests", code: 1, userInfo: nil)
 
-    private func mock(title: String, slug: String) -> RemoteReaderInterest {
+    public class func mock(title: String, slug: String) -> RemoteReaderInterest {
         let payload = Data("""
         {
             "title": "\(title)",
@@ -34,7 +34,7 @@ class MockInterestsService: ReaderInterestsService {
         }
 
         let interests = [
-            mock(title: Constants.testTitle, slug: Constants.testSlug)
+            Self.mock(title: Constants.testTitle, slug: Constants.testSlug)
         ]
 
         success(interests)

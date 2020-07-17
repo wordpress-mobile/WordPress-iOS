@@ -78,11 +78,46 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
 
         XCTAssertFalse(coordinator.hasSeenBefore())
     }
+
+    func testSaveInterestsTriggersSuccess() {
+        let store = EphemeralKeyValueDatabase()
+        let service = MockFollowedInterestsService(populateItems: false)
+        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: nil)
+
+        let successExpectation = expectation(description: "Saving of interests callback returns true")
+
+        let interest = MockInterestsService.mock(title: "title", slug: "slug")
+        coordinator.saveInterests(interests: [interest]) { success in
+            successExpectation.fulfill()
+            XCTAssertTrue(success)
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
+    func testSaveInterestsTriggersFailure() {
+        let store = EphemeralKeyValueDatabase()
+        let service = MockFollowedInterestsService(populateItems: false)
+        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: nil)
+
+        service.success = false
+
+        let failureExpectation = expectation(description: "Saving of interests callback returns false")
+
+        let interest = MockInterestsService.mock(title: "title", slug: "slug")
+        coordinator.saveInterests(interests: [interest]) { success in
+            failureExpectation.fulfill()
+            XCTAssertFalse(success)
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
 }
 
 
 // MARK: - MockFollowedInterestsService
 class MockFollowedInterestsService: ReaderFollowedInterestsService {
+
     var success = true
     var fetchSuccessExpectation: XCTestExpectation?
     var fetchFailureExpectation: XCTestExpectation?
@@ -124,6 +159,43 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
         self.fetchFollowedInterestsLocally(completion: completion)
     }
 
+    func followInterests(_ interests: [RemoteReaderInterest],
+                         success: @escaping ([ReaderTagTopic]?) -> Void,
+                         failure: @escaping (Error) -> Void,
+                         isLoggedIn: Bool) {
+        guard self.success else {
+            fetchFailureExpectation?.fulfill()
+
+            failure(failureError)
+            return
+        }
+
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
+
+        interests.forEach { remoteInterest in
+            let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
+            topic.tagID = isLoggedIn ? 1 : ReaderTagTopic.loggedOutTagID
+            topic.type = ReaderTagTopic.TopicType
+            topic.path = "/tag/interest"
+            topic.following = true
+            topic.showInMenu = true
+            topic.title = remoteInterest.title
+            topic.slug = remoteInterest.slug
+        }
+
+        do {
+            try context.save()
+        } catch let error as NSError {
+            XCTAssertNil(error, "Error adding interest")
+        }
+
+        success(followedInterests())
+        fetchSuccessExpectation?.fulfill()
+    }
+
     // MARK: - Private: Helpers
     private func populateTestItems() {
         guard let context = context else {
@@ -136,6 +208,7 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
         interest.title = "interest"
         interest.type = ReaderTagTopic.TopicType
         interest.following = true
+        interest.showInMenu = true
 
         do {
             try context.save()
@@ -144,9 +217,10 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
         }
     }
 
+
     private func followedInterestsFetchRequest() -> NSFetchRequest<ReaderTagTopic> {
         let entityName = "ReaderTagTopic"
-        let predicate = NSPredicate(format: "following = YES")
+        let predicate = NSPredicate(format: "following = YES AND showInMenu = YES")
         let fetchRequest = NSFetchRequest<ReaderTagTopic>(entityName: entityName)
         fetchRequest.predicate = predicate
 
