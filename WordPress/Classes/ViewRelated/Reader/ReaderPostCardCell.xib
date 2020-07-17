@@ -20,24 +20,31 @@
                         <rect key="frame" x="-1" y="8" width="322" height="476"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Jf-BY-VHz">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Jf-BY-VHz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vth-Nl-tJe">
-                                <rect key="frame" x="16" y="332.66666666666669" width="44" height="32"/>
+                                <rect key="frame" x="16" y="332.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grC-7j-rBx">
-                                <rect key="frame" x="97.333333333333329" y="332.66666666666669" width="43.999999999999986" height="32"/>
+                                <rect key="frame" x="103.33333333333333" y="332.66666666666669" width="31.999999999999986" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfA-lS-oeX">
-                                <rect key="frame" x="178.66666666666666" y="332.66666666666669" width="44" height="32"/>
+                                <rect key="frame" x="184.66666666666666" y="332.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="74d-A6-ibb">
-                                <rect key="frame" x="260" y="332.66666666666669" width="44" height="32"/>
+                                <rect key="frame" x="272" y="332.66666666666669" width="32" height="32"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RWd-ZJ-3Hc">
+                                <rect key="frame" x="16" y="72" width="288" height="162"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="RWd-ZJ-3Hc" secondAttribute="height" multiplier="16:9" id="8w8-CX-ecY"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -272,34 +279,37 @@
                 </subviews>
                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstItem="Vth-Nl-tJe" firstAttribute="centerX" secondItem="YRe-Q4-Aq4" secondAttribute="centerX" id="00F-OQ-JLV"/>
                     <constraint firstItem="74d-A6-ibb" firstAttribute="height" secondItem="z4x-8W-5Dc" secondAttribute="height" id="0q9-XB-nJA"/>
                     <constraint firstItem="BfA-lS-oeX" firstAttribute="height" secondItem="3W2-KV-isX" secondAttribute="height" id="0s0-sO-pfv"/>
+                    <constraint firstItem="Vth-Nl-tJe" firstAttribute="width" secondItem="YRe-Q4-Aq4" secondAttribute="height" id="3hV-vf-EaN"/>
+                    <constraint firstItem="74d-A6-ibb" firstAttribute="trailing" secondItem="z4x-8W-5Dc" secondAttribute="trailing" id="4hh-DB-IWr"/>
+                    <constraint firstItem="Vth-Nl-tJe" firstAttribute="leading" secondItem="YRe-Q4-Aq4" secondAttribute="leading" id="5aj-R5-ISk"/>
                     <constraint firstItem="grC-7j-rBx" firstAttribute="centerY" secondItem="Mch-Ja-RJu" secondAttribute="centerY" id="5oE-4p-gqh"/>
                     <constraint firstItem="BfA-lS-oeX" firstAttribute="centerX" secondItem="3W2-KV-isX" secondAttribute="centerX" id="7BH-wg-6NQ"/>
                     <constraint firstItem="74d-A6-ibb" firstAttribute="centerY" secondItem="z4x-8W-5Dc" secondAttribute="centerY" id="9Xj-zo-fVp"/>
                     <constraint firstItem="9Jf-BY-VHz" firstAttribute="centerX" secondItem="519-Nh-f7o" secondAttribute="centerX" id="A5e-rx-Vqc"/>
+                    <constraint firstItem="RWd-ZJ-3Hc" firstAttribute="centerX" secondItem="D4Q-6L-ZIL" secondAttribute="centerX" id="A7m-a4-fdG"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" id="DRR-5z-mcq"/>
-                    <constraint firstItem="BfA-lS-oeX" firstAttribute="width" secondItem="3W2-KV-isX" secondAttribute="width" id="EMj-4q-PBv"/>
+                    <constraint firstItem="BfA-lS-oeX" firstAttribute="width" secondItem="3W2-KV-isX" secondAttribute="height" id="EMj-4q-PBv"/>
                     <constraint firstAttribute="bottom" secondItem="k3b-5o-H9u" secondAttribute="bottom" id="Ffl-rl-aPr"/>
                     <constraint firstItem="9Jf-BY-VHz" firstAttribute="width" secondItem="519-Nh-f7o" secondAttribute="width" id="IAz-O5-G5x"/>
-                    <constraint firstItem="Vth-Nl-tJe" firstAttribute="width" secondItem="YRe-Q4-Aq4" secondAttribute="width" id="LCM-vn-HkG"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="top" secondItem="519-Nh-f7o" secondAttribute="top" constant="8" id="NBd-Wp-lBC"/>
                     <constraint firstItem="9Jf-BY-VHz" firstAttribute="centerY" secondItem="519-Nh-f7o" secondAttribute="centerY" id="PSJ-p4-3NZ"/>
                     <constraint firstItem="Vth-Nl-tJe" firstAttribute="height" secondItem="YRe-Q4-Aq4" secondAttribute="height" id="PX5-cS-xoT"/>
+                    <constraint firstItem="RWd-ZJ-3Hc" firstAttribute="height" secondItem="D4Q-6L-ZIL" secondAttribute="height" id="QNw-FM-sqv"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="top" secondItem="k3b-5o-H9u" secondAttribute="top" id="RwA-AG-OfQ"/>
                     <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" id="SQx-7T-hZ3"/>
                     <constraint firstItem="Vth-Nl-tJe" firstAttribute="centerY" secondItem="YRe-Q4-Aq4" secondAttribute="centerY" id="Vnk-9N-j9w"/>
+                    <constraint firstItem="74d-A6-ibb" firstAttribute="width" secondItem="z4x-8W-5Dc" secondAttribute="height" id="VzA-rX-Dd4"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="xwk-ft-EDo" secondAttribute="leading" id="Y8E-6u-aiv"/>
-                    <constraint firstItem="grC-7j-rBx" firstAttribute="width" secondItem="Mch-Ja-RJu" secondAttribute="width" id="f5N-Cf-Nho"/>
+                    <constraint firstItem="grC-7j-rBx" firstAttribute="width" secondItem="Mch-Ja-RJu" secondAttribute="height" id="f5N-Cf-Nho"/>
                     <constraint firstItem="grC-7j-rBx" firstAttribute="height" secondItem="Mch-Ja-RJu" secondAttribute="height" id="fDI-az-HWu"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" constant="-1" id="gD7-ug-WFu"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="leading" secondItem="519-Nh-f7o" secondAttribute="leading" id="krG-RG-KFw"/>
                     <constraint firstItem="9Jf-BY-VHz" firstAttribute="height" secondItem="519-Nh-f7o" secondAttribute="height" id="lTf-rN-Pc5"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="k3b-5o-H9u" secondAttribute="leading" constant="-1" id="lbK-St-20e"/>
+                    <constraint firstItem="RWd-ZJ-3Hc" firstAttribute="centerY" secondItem="D4Q-6L-ZIL" secondAttribute="centerY" id="nef-PY-yZz"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="xwk-ft-EDo" secondAttribute="bottom" id="of6-De-80c"/>
-                    <constraint firstItem="74d-A6-ibb" firstAttribute="centerX" secondItem="z4x-8W-5Dc" secondAttribute="centerX" id="r0r-7E-yyO"/>
-                    <constraint firstItem="74d-A6-ibb" firstAttribute="width" secondItem="z4x-8W-5Dc" secondAttribute="width" id="tYF-ru-5JX"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="xwk-ft-EDo" secondAttribute="top" id="up0-8u-OYB"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="Pv6-I0-BNp" secondAttribute="trailing" id="vVS-qW-Hfu"/>
                     <constraint firstItem="BfA-lS-oeX" firstAttribute="centerY" secondItem="3W2-KV-isX" secondAttribute="centerY" id="vhc-lN-EiN"/>
@@ -319,6 +329,7 @@
                 <outlet property="commentActionButton" destination="3W2-KV-isX" id="hpZ-8G-U5a"/>
                 <outlet property="contentStackView" destination="k3b-5o-H9u" id="B82-c0-vlU"/>
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
+                <outlet property="ghostPlaceholderView" destination="9Jf-BY-VHz" id="NRJ-D8-aWX"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
                 <outlet property="headerStackView" destination="xwk-ft-EDo" id="mVV-0H-yAh"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
