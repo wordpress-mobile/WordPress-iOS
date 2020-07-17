@@ -21,4 +21,16 @@ import Foundation
     @objc var wasAddedWhileLoggedOut: Bool {
         return tagID == Self.loggedOutTagID
     }
+
+    /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
+    convenience init?(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) {
+        self.init(context: context)
+
+        title = remoteInterest.title
+        slug = remoteInterest.slug
+        tagID = Self.loggedOutTagID
+        type = Self.TopicType
+        following = true
+        showInMenu = true
+    }
 }

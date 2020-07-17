@@ -65,14 +65,11 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
 
         interests.forEach { interest in
-            let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: managedObjectContext) as! ReaderTagTopic
-            topic.tagID = ReaderTagTopic.loggedOutTagID
-            topic.type = ReaderTagTopic.TopicType
+            guard let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext) else {
+                return;
+            }
+
             topic.path = service.pathForTopic(slug: interest.slug)
-            topic.following = true
-            topic.showInMenu = true
-            topic.title = interest.title
-            topic.slug = interest.slug
         }
 
         ContextManager.sharedInstance().save(managedObjectContext, withCompletionBlock: { [weak self] in
