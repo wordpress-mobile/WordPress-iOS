@@ -17,7 +17,8 @@ protocol ReaderFollowedInterestsService: AnyObject {
     /// If the user is not logged into a WP.com account, the interests will be saved locally.
     func followInterests(_ interests: [RemoteReaderInterest],
                          success: @escaping ([ReaderTagTopic]?) -> Void,
-                         failure: @escaping (Error) -> Void)
+                         failure: @escaping (Error) -> Void,
+                         isLoggedIn: Bool)
 }
 
 // MARK: - CoreData Fetching
@@ -37,9 +38,10 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
 
     func followInterests(_ interests: [RemoteReaderInterest],
                          success: @escaping ([ReaderTagTopic]?) -> Void,
-                         failure: @escaping (Error) -> Void) {
+                         failure: @escaping (Error) -> Void,
+                         isLoggedIn: Bool) {
         // Check if the user is logged in
-        guard ReaderHelpers.isLoggedIn() else {
+        guard isLoggedIn else {
             followInterestsLocally(interests, success: success, failure: failure)
             return
         }

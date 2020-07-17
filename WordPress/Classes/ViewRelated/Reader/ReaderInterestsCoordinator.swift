@@ -36,11 +36,15 @@ class ReaderSelectInterestsCoordinator {
 
     // MARK: - Saving
     public func saveInterests(interests: [RemoteReaderInterest], completion: @escaping (Bool) -> Void) {
+        let isLoggedIn = userId != nil ? true : false
+
         self.interestsService.followInterests(interests, success: { _ in
             completion(true)
-        }) { error in
+
+        }, failure: { _ in
             completion(false)
-        }
+
+        }, isLoggedIn: isLoggedIn)
     }
 
     // MARK: - Display Logic
@@ -55,10 +59,6 @@ class ReaderSelectInterestsCoordinator {
     }
 
     private func shouldDisplaySelectInterests(with interests: [ReaderTagTopic]?) -> Bool {
-        #if DEBUG
-        return true
-        #endif
-
         guard let interests = interests else {
             return false
         }
