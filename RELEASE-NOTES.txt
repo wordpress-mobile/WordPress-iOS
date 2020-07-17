@@ -1,6 +1,7 @@
 15.4
 -----
- 
+* [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below. 
+
 15.3
 -----
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
