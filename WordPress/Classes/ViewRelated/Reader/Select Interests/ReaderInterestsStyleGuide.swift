@@ -49,9 +49,12 @@ class ReaderInterestsStyleGuide {
     }
 
     // MARK: - Loading
-    public class func applyLabelLabelStyles(label: UILabel) {
+    public class func applyLoadingLabelStyles(label: UILabel) {
         label.font = WPStyleGuide.fontForTextStyle(.body)
         label.textColor = .textSubtle
     }
 
+    public class func applyActivityIndicatorStyles(indicator: UIActivityIndicatorView) {
+        indicator.color = UIColor(light: .black, dark: .white)
+    }
 }

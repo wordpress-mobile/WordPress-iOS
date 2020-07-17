@@ -85,7 +85,9 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         buttonContainerView.backgroundColor = ReaderInterestsStyleGuide.buttonContainerViewBackgroundColor
 
-        styleGuide.applyLabelLabelStyles(label: loadingLabel)
+        styleGuide.applyLoadingLabelStyles(label: loadingLabel)
+        styleGuide.applyActivityIndicatorStyles(indicator: activityIndicatorView)
+
     }
 
     private func configureI18N() {
@@ -99,8 +101,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Private: Data
     private func refreshData() {
-        activityIndicatorView.startAnimating()
-        startLoading(hideLabel: false)
+        startLoading(hideLabel: true)
 
         dataSource.reload()
     }
@@ -117,6 +118,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         coordinator.saveInterests(interests: selectedInterests) { [weak self] success in
             self?.stopLoading()
+            
             self?.dismiss(animated: true)
         }
     }
@@ -131,6 +133,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         loadingView.alpha = 0
         loadingView.isHidden = false
+
         activityIndicatorView.startAnimating()
 
         UIView.animate(withDuration: Constants.animationDuration) {
