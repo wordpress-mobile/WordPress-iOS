@@ -9,9 +9,16 @@ import Foundation
         return "tag"
     }
 
+    // MARK: - Logged Out Helpers
+
+    /// The tagID used if an interest was added locally and not sync'd with the server
+    class var loggedOutTagID: NSNumber {
+        return NSNotFound as NSNumber
+    }
+
     /// If an interest was added while the user is not logged into a WP.com account
     /// The tagID will be 0
     @objc var wasAddedWhileLoggedOut: Bool {
-        return tagID == 0
+        return tagID == Self.loggedOutTagID
     }
 }
