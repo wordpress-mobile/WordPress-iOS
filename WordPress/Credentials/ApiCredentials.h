@@ -13,4 +13,5 @@
 + (NSString *)zendeskUrl;
 + (NSString *)zendeskClientId;
 + (NSString *)tenorApiKey;
++ (NSString *)encryptedLogKey;
 @end

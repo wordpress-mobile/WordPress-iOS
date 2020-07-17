@@ -9,7 +9,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ReaderWelcomeBanner.presentIfNeeded(in: tableView)
+        ReaderWelcomeBanner.displayIfNeeded(in: tableView)
     }
 
     // MARK: - TableView Related

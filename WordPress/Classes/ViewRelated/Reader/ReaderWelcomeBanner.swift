@@ -2,6 +2,7 @@ import Foundation
 
 class ReaderWelcomeBanner: UIView, NibLoadable {
     @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var extraDotsView: UIView!
 
     static var bannerPresentedKey = "welcomeBannerPresented"
 
@@ -9,17 +10,24 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
         super.awakeFromNib()
         applyStyles()
         configureWelcomeLabel()
+        showExtraDotsIfNeeded()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        showExtraDotsIfNeeded()
     }
 
     /// Present the Welcome banner just one time
-    class func presentIfNeeded(in tableView: UITableView) {
-        guard !UserDefaults.standard.bool(forKey: ReaderWelcomeBanner.bannerPresentedKey) else {
+    class func displayIfNeeded(in tableView: UITableView,
+                               database: KeyValueDatabase = UserDefaults.standard) {
+        guard !database.bool(forKey: ReaderWelcomeBanner.bannerPresentedKey) else {
             return
         }
 
         let view: ReaderWelcomeBanner = .loadFromNib()
         tableView.tableHeaderView = view
-        UserDefaults.standard.set(true, forKey: ReaderWelcomeBanner.bannerPresentedKey)
+        database.set(true, forKey: ReaderWelcomeBanner.bannerPresentedKey)
     }
 
     private func applyStyles() {
@@ -30,5 +38,9 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
 
     private func configureWelcomeLabel() {
         welcomeLabel.text = NSLocalizedString("Welcome to Reader. Discover millions of blogs at your fingertips.", comment: "Welcome message shown under Discover in the Reader just the 1st time the user sees it")
+    }
+
+    private func showExtraDotsIfNeeded() {
+        extraDotsView.isHidden = (traitCollection.horizontalSizeClass == .compact)
     }
 }
