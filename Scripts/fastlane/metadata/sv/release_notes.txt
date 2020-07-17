@@ -1,12 +1,7 @@
-Det är ingen tvekan: GIF-bilder gör Internet bättre. Nu får du tillgång till ett bibliotek med kostnadsfria GIF-bilder via Tenor som du snabbt kan lägga till i ett inlägg eller en sida med ett bild-block. Du kan till och med se animeringen direkt i redigeraren medan du skapar!
+Nej, du ser inte i syne. Vår läsare blivit betydligt ögonvänligare. Vi har nämligen korrigerat utseendet på många saker när du läser ett inlägg. Det är en massa småsaker, såsom storleken på mellanrum, placering och storlek för olika objekt. Allt sammantaget ger det hela en trevligare upplevelse. Dessutom visas och döljs navigeringslisten så smidigt att det nästan känns magiskt! Visst behöver vi alla lite magi i vår tillvaro just nu!
 
-Blockredigeraren har en ny batch med förbättringar:
-– Stöd för temadefinierade färger och toningar i Omslagsblocket,
-– Möjlighet att ladda upp videor till Omslagsblocken, även när redigeringsprogrammet är stängt.
-– Och vår absoluta favorituppdatering: förbättringar i hantering av bildtexter och citat. Tryck Retur efter att du lagt till en bildtext i ett Bild-, Video-, Galleri- eller Citat-block så kommer du automatiskt till ett nytt block.
+Vi vet att det kan vara svårt att hitta på en rubrik för webbplatsen och att det ibland kan vara riktigt svårt att bestämma sig. Därför har vi nu gjort det möjligt att ändra webbplatsens rubrik genom att trycka på rubriken i sidan med informationen om webbplatsen. Om du just har kommit på den perfekta rubriken för en ny webbplats finns det nu en snabbstartsåtgärd där du kan ange rubriken för alla nya webbplatser du skulle vilja starta.
 
-Tillsammans med de uppdateringarna kan du nu välja vilka sidor du vill använda som din startsida och inläggssida direkt från Sidor-listan. Det finns även ett reglage på appnivå för att välja mellan ljust eller mörkt utseende.
+Om du är duktigt på färgsättning så finns det nu stöd i blockredigeraren för anpassning av gradienttyper och -vinklar i blocken för knappar och omslag. Om du håller koll på hur många block du använder och hur mycket text du skriver så visar vi nu räknare med uppgifter om antalet block, ord och tecken.
 
-Vi vet att datum för senaste inlägg beräknades felaktigt på Insikter-sidan. Det har vi fixat!
-
-Några problem med Snabbstartsguiderna gjorde att de inte var riktigt så snabba som de borde. Vi åtgärdade några flödesproblem med guiderna "Väx din målgrupp" och "Publicera ett inlägg" och fixade en bugg som förhindrade VoiceOver-användare från att få uppdateringar om slutförda Snabbstartsuppgifter. (VoiceOver-användare: avsnittet Nästa steg stöder nu även VoiceOver.)
+Sist, men inte minst, har vi nu rättat en irriterande programkrasch som kunde inträffa om man gick till blockredigeraren direkt efter att man loggat ut och sedan omedelbart loggat in igen. Nu kan du logga in och ut hur mycket du vill utan några problem!

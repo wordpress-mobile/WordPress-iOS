@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-17 09:17:11+0000 */
+/* Translation-Revision-Date: 2020-07-05 11:45:42+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "S’Kërkohet Dot Lidhje";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Can't publish an empty page";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Can't publish an empty post";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "E plotësuar: Botoni një postim";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Completed: Set your site title";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "E plotësuar: Ngarkoni një ikonë sajti";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Lidhuni me ne te %@";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Content Structure\nBlocks: %li, Words: %li, Characters: %li";
 
 /* No comment provided by engineer. */
 "Content…" = "Lëndë…";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Përshtateni";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Customize Gradient";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Prekeni dy herë që të përzgjidhet skemë";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Double tap to select the option";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Prekeni dyfish që të aktivizohet\/çaktivizohet rregullimi";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Gabim në përditësim rregullimesh Jetpack-u";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Error updating site title";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Gabim në përditësim rregullimesh përshpejtimi sajti";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Gjeni sajte që janë afër jush, dhe ndiqini ata që të merrni të rejat kur botojnë të tilla.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Find your site address";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Po gjendet vendndodhja juaj…";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Krijojeni dhe vëreni në punë sajtin tuaj";
 
+/* View title for initial auth views. */
+"Getting Started" = "Getting Started";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Po merren të dhëna llogarie";
 
 /* Cancel */
 "Give Up" = "Lëre Fare";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Shko mbrapsht";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Shko Te Vijuesja";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Marrje URL-je sajti";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Gradient Type";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Bukur!\n Na pëlqejnë fort lajmet prej përdoruesish të lumtur \n😁";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Ju udhëheq përmes procesit të shqyrtimit të statistikave për sajtin tuaj.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Guides you through the process of setting a title for your site.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Ju udhëheq përmes procesit të ujdisjes së sajtit tuaj.";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Hyni";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Ngjituni";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Navigates to custom color picker";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Navigates to customize the gradient";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navigates to the previous content sheet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Ju Duhet Ndihmë?";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Hape në shfletues";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Open link in a browser";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Hape lidhjen në dritare\/skedë të re";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "Luaje videon";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Please add some content before trying to publish.";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Ju lutemi, kontrolloni lidhjen tuaj në internet dhe riprovoni.";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Ju lutemi, përpara se të lidheni te një sajt tjetër wordpress.com, dilni nga llogaria";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Please try again later";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Ju lutemi, riprovoni më vonë.";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Zeroje filtrin";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Reset your password";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ripërmasojeni & Qetheni";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Përzgjidhni %@ që të shihni planin tuaj të tanishëm dhe të tjerë plane të mundshëm.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Select %@ to set a new title.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Përzgjidhni %@ që të filloni personalizimin e sajtit tuaj";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Rregulloni Jetpack-un";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Set your site title";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Ujdisje teme";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Shtojcë titulli anështylle";
 
+/* View title during the sign up process. */
+"Sign Up" = "Sign Up";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Regjistrohuni";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Ridrejtim Sajti";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Titull Sajti";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zonë kohore e sajtit (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Site title changed successfully";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Lidhja Internet duket se është jashtë linje.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "The Site Title can only be changed by a user with the administrator role.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-së i mungon një strehë e vlefshme.";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Po ngarkohet media…";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Uploading post";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Po ngarkohet postimi…";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Fjalëkalimi juaj duhet të jetë të paktën gjashtë shenja i gjatë. Për ta bërë më të fortë, përdorni shkronja me të mëdha dhe me të vogla, numra, dhe simbole të tillë si ! \" ? $ % ^ & ).";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Your post is currently being uploaded. Please wait until this completes.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";

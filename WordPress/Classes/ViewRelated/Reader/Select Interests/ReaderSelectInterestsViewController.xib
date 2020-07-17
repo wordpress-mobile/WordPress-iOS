@@ -73,6 +73,9 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="OYJ-EI-lUA"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -84,7 +87,7 @@
                         <constraint firstItem="5kh-rf-B5P" firstAttribute="leading" secondItem="X4F-fc-WqY" secondAttribute="leading" constant="20" id="zV4-Ir-MFf"/>
                     </constraints>
                 </view>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="a7r-YY-Vl7">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a7r-YY-Vl7">
                     <rect key="frame" x="197" y="410" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>

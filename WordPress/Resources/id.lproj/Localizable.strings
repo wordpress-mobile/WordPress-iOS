@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-26 08:54:10+0000 */
+/* Translation-Revision-Date: 2020-07-09 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "Tidak Dapat Meminta Tautan";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Tidak dapat memublikasikan halaman kosong";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Tidak dapat menerbitkan pos kosong";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "Selesai: Publikasikan pos";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Selesai: Buat judul situs Anda";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Selesai: Unggah ikon situs";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Hubungi kami di %@";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktur Konten\nBlok: %1$li, Kata: %2$li, Karakter: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "Konten…";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Sesuaikan";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Sesuaikan Gradasi";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Ketuk dua kali untuk memilih tata letak";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Ketuk dua kali untuk memilih pilihan";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Ketuk dua kali untuk mengaktifkan\/menonaktifkan pengaturan";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Error saat memperbarui pengaturan Jetpack";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Error saat memperbarui judul situs";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Terjadi error saat memperbarui pengaturan percepatan situs";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Temukan situs yang menarik dan ikuti untuk mendapatkan pemberitahuan saat mereka memublikasikan sesuatu.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Temukan alamat situs Anda";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Mencari lokasi Anda...";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Jalankan situs Anda";
 
+/* View title for initial auth views. */
+"Getting Started" = "Memulai";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Mencari informasi akun";
 
 /* Cancel */
 "Give Up" = "Menyerah";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Berikan nama situs yang mencerminkan karakteristik dan topik situs Anda. Kesan pertama sangat berarti!";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Buka yang Diikuti";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Mendapatkan URL situs";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Jenis Gradasi";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Memandu Anda melalui proses peninjauan statistik untuk situs Anda.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Memandu Anda melalui proses pembuatan judul untuk situs Anda.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Memandu Anda melalui proses penyiapan situs Anda.";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Masuk";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Arahkan ke Atas";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Navigasikan ke pemilih warna kustom";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Navigasikan untuk menyesuaikan gradasi";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navigasikan ke lembar konten sebelumnya";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Butuh Bantuan?";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Buka di perambah";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Buka tautan di perambah";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Buka tautan di jendela\/tab baru";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "Putar Video";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Silakan tambahkan konten sebelum menerbitkan.";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Harap periksa koneksi internet Anda dan coba lagi.";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Harap logout sebelum menyambungkan ke situs wordpress.com lain";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Nanti silakan dicoba lagi";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Silakan coba lagi nanti.";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Atur ulang penyaring";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Reset kata sandi";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ubah Ukuran & Potong";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Pilih %@ untuk melihat paket Anda saat ini dan paket lain yang tersedia.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Pilih %@ untuk membuat judul baru.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Pilih %@ untuk memulai personalisasi situs Anda";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Siapkan Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Buat judul situs Anda";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Menyiapkan tema";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Plugin judul bilah sisi";
 
+/* View title during the sign up process. */
+"Sign Up" = "Mendaftar";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Mendaftar";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Pengalihan Situs";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Judul Situs";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Atur zona waktu (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Judul situs berhasil diubah";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Sepertinya koneksi Internet-nya terputus.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "Judul Situs hanya dapat diubah oleh pengguna yang berperan sebagai administrator.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Judul Situs ditampilkan di bilah judul perambah web dan ditampilkan pada header sebagian besar tema.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL tidak menemukan host yang valid.";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Mengunggah media...";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Mengunggah pos";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Mengunggah pos...";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Kata sandi Anda setidaknya harus berisi enam karakter. Agar lebih kuat, gunakan huruf besar dan kecil, angka, dan simbol seperti ! \" ? $ % ^ & ).";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Pos Anda sedang diunggah. Harap tunggu hingga selesai.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Pos, laman, dan pengaturan Anda akan dikirim melalui alamat email %@.";

@@ -1,12 +1,7 @@
-Fakta: GIF membuat internet menjadi lebih baik. Kini Anda dapat mengakses pustaka GIF gratis, melalui Tenor, untuk menambahkannya ke pos atau halaman apapun menggunakan blok Gambar. Anda bahkan akan langsung melihat animasinya di editor saat Anda membuatnya!
+Tidak, pikiran Anda tidak sedang menipu Anda, halaman Pembaca memang terlihat lebih bersahabat. Hal itu karena kami membuat banyak perbaikan pada tampilan yang Anda lihat saat membaca pos. Perbaikannya termasuk banyak hal kecil seperti pengaturan spasi, posisi, dan ukuran, yang menghasilkan pengalaman yang lebih menyenangkan. Selain itu, bar navigasi dan bilah peralatan menghilang dan muncul dengan mulus seperti keajaiban! Tidakkah Anda setuju bahwa kita memerlukan sedikit keajaiban dalam hidup saat ini?
 
-Editor Blok memiliki serangkaian peningkatan lainnya:
-– Dukungan untuk warna dan gradien berdasarkan tema di blok Sampul,
-– Kemampuan untuk mengunggah video ke blok Sampul, bahkan jika editornya ditutup.
-– Dan pembaruan favorit kami: peningkatan kontrol keterangan dan kutipan. Tekan tombol enter setelah menambahkan keterangan di blok Gambar, Video, Galeri, Kutipan, atau Kutipan Besar dan Anda akan secara otomatis berada di blok baru.
+Kami tahu bahwa memikirkan judul untuk situs Anda adalah hal yang sulit dan manusia dapat menjadi bimbang dan berubah-ubah, oleh sebab itu kami membuat judul situs Anda kini dapat diubah dengan mengetuk judul pada layar detail situs. Dan jika Anda baru saja terpikirkan nama brilian untuk situs baru Anda, sekarang terdapat tugas Quick Start untuk mengatur judul untuk situs baru apa pun yang Anda ingin mulai.
 
-Bersamaan dengan pembaruan tersebut, kini Anda dapat memilih halaman untuk digunakan sebagai halaman beranda dan halaman pos langsung dari daftar Halaman dan terdapat tombol pengalih di tingkat aplikasi untuk memilih tampilan gelap atau terang.
+Jika Anda memiliki selera warna, kami telah menambahkan dukungan di penyunting Blok untuk menyesuaikan tipe gradien dan sudut pandang di blok Tombol dan Sampul. Dan jika Anda ingin memastikan berapa banyak blok yang Anda gunakan dan berapa banyak kata yang Anda ketik, saat ini kami menampilkan informasi metrik untuk mengetahui jumlah blok, kata, dan karakter.
 
-Kami mengetahui bahwa terdapat kesalahan penghitungan tanggal Pos Terbaru di halaman Wawasan. Sudah kami perbaiki!
-
-Beberapa masalah dalam tur Mulai Cepat membuatnya menjadi sedikit kurang cepat. Kami memperbaiki beberapa masalah alur di tur "Tingkatkan Audiens Anda" dan "Publikasikan Pos" dan memperbaiki bug yang menyebabkan pengguna VoiceOver tidak mendapatkan pembaruan tentang tugas Mulai Cepat yang sudah selesai. (Dan pengguna VoiceOver: bagian Langkah Berikutnya sekarang mendukung VoiceOver.)
+Terakhir, kami memperbaiki crash menyebalkan yang bersumber dari navigasi ke penyunting Blok yang terlalu cepat akibat logout dan langsung login kembali. Sekarang Anda bisa login dan logout dengan bebas!

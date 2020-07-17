@@ -8,3 +8,4 @@ WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites run
 
 Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.
 
+View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
