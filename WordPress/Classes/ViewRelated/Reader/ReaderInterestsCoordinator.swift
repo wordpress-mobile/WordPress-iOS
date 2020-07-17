@@ -35,8 +35,8 @@ class ReaderSelectInterestsCoordinator {
     }
 
     // MARK: - Saving
-    public func saveInterests(interests: [String], completion: @escaping (Bool) -> Void) {
-        self.interestsService.followInterests(slugs: interests, success: { _ in
+    public func saveInterests(interests: [RemoteReaderInterest], completion: @escaping (Bool) -> Void) {
+        self.interestsService.followInterests(interests, success: { _ in
             completion(true)
         }) { error in
             completion(false)

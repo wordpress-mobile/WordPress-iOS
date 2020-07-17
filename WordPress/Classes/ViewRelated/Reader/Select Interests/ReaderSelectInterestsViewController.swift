@@ -114,7 +114,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     private func saveSelectedInterests() {
         startLoading()
 
-        let selectedInterests = dataSource.selectedInterests.map { $0.slug }
+        let selectedInterests = dataSource.selectedInterests.map { $0.interest }
 
         coordinator.saveInterests(interests: selectedInterests) { [weak self] success in
             self?.stopLoading()
