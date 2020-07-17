@@ -1844,7 +1844,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
         }
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
 
-        displaySelectInterestsIfNeeded()
+        displaySelectInterestsIfNeeded(content)
     }
 }
 
@@ -1873,11 +1873,10 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 
 // MARK: - Select Interests Display
 private extension ReaderStreamViewController {
-    func displaySelectInterestsIfNeeded() {
+    func displaySelectInterestsIfNeeded(_ content: ReaderContent) {
         guard
             FeatureFlag.readerImprovementsPhase2.enabled,
-            let topic = readerTopic,
-            ReaderHelpers.topicIsDiscover(topic)
+            content.topicType == .discover
         else {
             // Hide the view if we're not on the discover tab, and it exists
             self.selectInterestsViewController?.remove()
