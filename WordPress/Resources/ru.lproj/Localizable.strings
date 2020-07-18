@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-16 19:46:24+0000 */
+/* Translation-Revision-Date: 2020-07-04 10:06:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -905,6 +905,12 @@
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "Не удаётся запросить ссылку.";
 
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Нельзя опубликовать пустую страницу";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Нельзя опубликовать пустую запись";
+
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
@@ -1257,6 +1263,9 @@
 "Completed: Publish a post" = "Готово: публикация записи";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Готово: задать название сайта";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Готово: загрузка значка сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1365,6 +1374,9 @@
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Свяжитесь с нами, написав на %@";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Структура содержимого\nБлоки: %1$li, Слова: %2$li, Символы: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "Содержимое...";
@@ -1565,6 +1577,9 @@
    The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Настроить";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Настройка градиента";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1853,6 +1868,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Нажмите дважды для выбора макета";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Нажмите дважды для выбора";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Нажмите дважды для переключения настройки";
 
@@ -2108,6 +2126,9 @@
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Ошибка при обновлении настроек Jetpack";
 
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Ошибка обновления названия сайта";
+
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Ошибка обновления настроек ускорения сайта";
 
@@ -2245,6 +2266,9 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Найдите сайты общающиеся с вами и подпишитесь на них, чтобы получать уведомления о новых публикациях.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Найдите адрес вашего сайта";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Поиск вашего местоположения...";
 
@@ -2367,14 +2391,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Запустите ваш сайт";
 
+/* View title for initial auth views. */
+"Getting Started" = "Приступаем!";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Получение информации об учетной записи";
 
 /* Cancel */
 "Give Up" = "Не отправлять";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Первое впечатление важно! Назовите свой сайт так, как это отразит его индивидуальность и содержание.";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Назад";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Перейти к подписанным сайтам";
@@ -2394,6 +2427,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Получение URL сайта";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Тип градиента";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Отлично!\nОбожаем отзывы счастливых пользователей\n 😁";
@@ -2431,6 +2467,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Гид по процессу просмотра статистики сайта.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Гид по процессу установки названия вашего сайта.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Гид по процессу настройки сайта.";
@@ -2983,7 +3022,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Войти";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,6 +3320,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Перейти наверх";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Переход к выбору пользовательского цвета";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Переход к настройкам градиента";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Переход на предыдущий экран содержимого";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Нужна помощь?";
@@ -3679,6 +3728,9 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Открыть в браузере";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Открыть ссылку в браузере";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Открыть ссылку в новом окне (на новой вкладке)";
 
@@ -3857,6 +3909,9 @@ translators: sample content for \"Services\" page template */
 /* User action to play a video on the editor. */
 "Play video" = "Воспроизвести видео";
 
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Пожалуйста добавьте что-нибудь в содержимое перед публикацией.";
+
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Проверьте подключение к Интернету и повторите попытку.";
 
@@ -3922,6 +3977,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Пожалуйста, выйдите перед тем, как подключиться к другому сайту wordpress.com";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Попробуйте позже";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Повторите попытку позже.";
@@ -4508,6 +4566,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Очистить фильтр";
 
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Сбросить пароль";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Изменить размер и обрезать";
 
@@ -4762,6 +4823,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Выберите %@ для просмотра вашего текущего тарифа и других доступных тарифов.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Выберите %@ для установки нового названия.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Выберите %@ для начала персонализации вашего сайта";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4869,6 +4933,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Установить Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Задайте название сайта";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Настройка темы";
@@ -5005,6 +5072,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Плагин заголовка боковой панели";
 
+/* View title during the sign up process. */
+"Sign Up" = "Регистрация";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Регистрация";
 
@@ -5040,8 +5110,10 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Перенаправление сайта";
 
-/* Label for site title blog setting
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Заголовок сайта";
 
@@ -5071,6 +5143,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Часовой пояс сайта (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Название сайта изменено";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5503,6 +5578,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Похоже, что нет связи с Интернетом.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "Название сайта может быть изменено только администратором.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Название сайта отображается в заголовке браузера и отображается большинством тем в заголовке сайта.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "В URL-адресе отсутствует допустимый хост.";
@@ -6208,6 +6289,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Загружаем файлы...";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Загрузка записи";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Загрузка записи...";
@@ -6936,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Ваш пароль должен быть не менее 6 символов, для усиления безопасности используйте разный регистр букв, цифры и  символы типа ! \" ? $ % ^ & ).";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Выполняется загрузка записи. Подождите завершения.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Ваши записи, страницы и настройки будут отправлены вам по электронной почте %@.";

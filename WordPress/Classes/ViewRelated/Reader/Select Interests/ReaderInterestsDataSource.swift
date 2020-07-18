@@ -28,11 +28,6 @@ protocol ReaderInterestsDataDelegate: AnyObject {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource)
 }
 
-protocol ReaderInterestsService: AnyObject {
-    func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void,
-                        failure: @escaping (Error) -> Void)
-}
-
 // MARK: - ReaderInterestsDataSource
 class ReaderInterestsDataSource {
     weak var delegate: ReaderInterestsDataDelegate?

@@ -29,7 +29,7 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.2'
+    pod 'WordPress-Editor-iOS', '~> 1.19.3'
 end
 
 def wordpress_ui
@@ -37,13 +37,13 @@ def wordpress_ui
     pod 'WordPressUI', '~> 1.7.1'
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
-    ## while PR is in review:
+    ## while PR is in review: 
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'task/bottomsheet_child_handle_dismiss'
     # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '85b2a8cfb9d3c27194a14bdcb3c8391e13fbaa0f'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.12.0-beta.3'
+    pod 'WordPressKit', '4.12.1-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.32.0'
+    gutenberg :commit => '7443b1a7f8739149e82a504992afddd59446154d'
 
     ## Third party libraries
     ## =====================
@@ -175,9 +175,12 @@ target 'WordPress' do
     wordpress_shared
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.4'
+
+    pod 'Automattic-Tracks-iOS', '~> 0.5.0'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
+    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
+    # Local Development
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
     pod 'NSURL+IDN', '~> 0.4'
 
@@ -189,7 +192,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.20.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.21.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

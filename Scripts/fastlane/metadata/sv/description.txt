@@ -7,3 +7,5 @@ WordPress för iOS är ett öppen källkodsprojekt, vilket innebär att även du
 WordPress för iOS stöder WordPress.com och webbplatser på egen server med programvaran WordPress.org version 4.0 eller senare.
 
 Behöver du hjälp med appen? Välkommen till forumen på https://ios.forums.wordpress.org/ eller twittra till oss på @WordPressiOS.
+
+Integritetsinformation för användare i Kalifornien: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
