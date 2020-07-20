@@ -21,6 +21,8 @@ import WordPressFlux
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
+    private var interestsCoordinator = ReaderSelectInterestsCoordinator()
+
     // MARK: - Properties
 
     /// Called if the stream or tag fails to load
@@ -323,10 +325,26 @@ import WordPressFlux
         }
     }
 
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         syncIfAppropriate()
+
+        testCheckIfNeedToDisplaySelectInterests()
+    }
+
+    // TODO: Remove this for a real implementation, this is just for testing right now
+    private func testCheckIfNeedToDisplaySelectInterests() {
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            interestsCoordinator.shouldDisplay { shouldDisplay in
+                if shouldDisplay {
+                    let controller = ReaderSelectInterestsViewController()
+                    self.navigationController?.present(controller, animated: true)
+                }
+                self.interestsCoordinator.markAsSeen()
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

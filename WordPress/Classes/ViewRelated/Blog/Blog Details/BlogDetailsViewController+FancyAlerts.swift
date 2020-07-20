@@ -4,6 +4,9 @@ private var alertWorkItem: DispatchWorkItem?
 private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
+
+    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
+
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
@@ -17,6 +20,19 @@ extension BlogDetailsViewController {
                 let element = QuickStartTourElement(rawValue: index) {
                 self?.scroll(to: element)
             }
+
+            if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+                switch info {
+                case .noSuchElement:
+                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                case .siteIcon, .siteTitle:
+                    // handles the padding in case the element is not in the table view
+                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                default:
+                    break
+                }
+
+            }
         }
     }
 
@@ -25,11 +41,18 @@ extension BlogDetailsViewController {
     }
 
     @objc func startAlertTimer() {
+        guard shouldStartAlertTimer else {
+            return
+        }
         let newWorkItem = DispatchWorkItem { [weak self] in
             self?.showNoticeOrAlertAsNeeded()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
         alertWorkItem = newWorkItem
+    }
+    // do not start alert timer if the themes modal is still being presented
+    private var shouldStartAlertTimer: Bool {
+        !((self.presentedViewController as? UINavigationController)?.visibleViewController is WebKitViewController)
     }
 
     @objc func stopAlertTimer() {
@@ -77,7 +100,9 @@ extension BlogDetailsViewController {
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true, completion: nil)
+        present(navigationViewController, animated: true) { [weak self] in
+            self?.toggleSpotlightOnHeaderView()
+        }
 
         QuickStartTourGuide.find()?.visited(.checklist)
     }

@@ -7,3 +7,5 @@ WordPress для iOS  - проект с открытым исходным код
 WordPress для iOS поддерживает как WordPress.com так и свои сайты с WordPress 4.0 или новее.
 
 Нужна помощь с приложением? Посетите форум - https://ios.forums.wordpress.org/ или напишите в Twitter на @WordPressiOS.
+
+Заметка о конфиденциальности для резидентов штата Калифорния: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
