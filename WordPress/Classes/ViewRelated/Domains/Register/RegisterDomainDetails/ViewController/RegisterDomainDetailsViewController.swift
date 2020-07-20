@@ -214,6 +214,10 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
         }
     }
 
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldEditingDidEnd text: String) {
+        inlineEditableNameValueCell(cell, valueTextFieldDidChange: text)
+    }
+
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldShouldReturn textField: UITextField) -> Bool {
         guard let indexPath = tableView.indexPath(for: cell) else {
                 return false
