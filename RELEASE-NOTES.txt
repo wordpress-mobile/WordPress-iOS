@@ -1,6 +1,9 @@
 15.4
 -----
- 
+ * [***] Block Editor: Media editing support in Media & Text block.
+ * [***] Block Editor: New block: Social Icons
+ * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
+
 15.3
 -----
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
