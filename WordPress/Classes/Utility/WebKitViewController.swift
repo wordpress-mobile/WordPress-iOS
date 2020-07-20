@@ -87,6 +87,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
+    private var onClose: (() -> Void)?
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
@@ -104,6 +105,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = configuration.navigationDelegate
         linkBehavior = configuration.linkBehavior
         opensNewInSafari = configuration.opensNewInSafari
+        onClose = configuration.onClose
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -380,7 +382,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     // MARK: User Actions
 
     @objc func close() {
-        dismiss(animated: true)
+        dismiss(animated: true, completion: onClose)
     }
 
     @objc func share() {

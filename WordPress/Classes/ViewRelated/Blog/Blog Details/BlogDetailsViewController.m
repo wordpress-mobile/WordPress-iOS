@@ -434,7 +434,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         __weak __typeof(self) weakSelf = self;
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTab];
+            [((WPTabBarController *)self.tabBarController) showPostTabWithCompletion:^(void) {
+                [self startAlertTimer];
+            }];
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             
@@ -1598,6 +1600,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    viewController.onWebkitViewControllerClose = ^(void) {
+        [self startAlertTimer];
+    };
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];

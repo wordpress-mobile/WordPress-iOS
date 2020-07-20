@@ -344,6 +344,17 @@ class GutenbergViewController: UIViewController, PostEditor {
         editorContentWasUpdated()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Required to work around an issue present in iOS 14 beta 2
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+        if #available(iOS 14.0, *),
+            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+            dismiss(animated: true)
+        }
+    }
+
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
@@ -867,10 +878,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ].compactMap { $0 }
     }
 
-    func gutenbergCapabilities() -> [String: Bool]? {
+    func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
-            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
+            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
         ]
     }
 
