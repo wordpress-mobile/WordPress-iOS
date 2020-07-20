@@ -574,6 +574,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         })
 
         optionsTablePresenter.dismiss()
+
+        // Required to work around an issue present in iOS 14 beta 2
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+        if #available(iOS 14.0, *),
+            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+            dismiss(animated: true)
+        }
     }
 
     override func willMove(toParent parent: UIViewController?) {
@@ -588,7 +595,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController.delegate = self
         configureMediaProgressView(in: navigationController.navigationBar)
     }
-
 
     // MARK: - Title and Title placeholder position methods
 
@@ -1266,6 +1272,7 @@ private extension AztecPostViewController {
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
             alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)
             alert.popoverPresentationController?.sourceView = navigationController?.navigationBar
+            alert.view.accessibilityIdentifier = MoreSheetAlert.accessibilityIdentifier
         } else {
             alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
         }
@@ -3390,6 +3397,7 @@ extension AztecPostViewController {
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 
     struct MediaAttachmentActionSheet {
