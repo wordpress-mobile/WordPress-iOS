@@ -46,11 +46,8 @@
                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DTZ-MR-Eqm">
                                 <rect key="frame" x="0.0" y="56" width="414" height="161"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
-                                        <rect key="frame" x="39.5" y="12" width="335" height="61"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="335" id="30x-PK-vbo"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
+                                        <rect key="frame" x="20" y="12" width="334" height="61"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -79,12 +76,13 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstItem="yqC-YH-PXy" firstAttribute="leading" secondItem="nvL-2Q-gAb" secondAttribute="leading" constant="20" id="0zM-Mh-VJa"/>
                                     <constraint firstAttribute="trailing" secondItem="fhN-6z-taa" secondAttribute="trailing" id="3Zj-xu-kOK"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fhN-6z-taa" secondAttribute="bottom" constant="9" id="3wZ-NV-ETZ"/>
                                     <constraint firstItem="4ff-7z-VN8" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="Ckj-L2-I9f"/>
                                     <constraint firstAttribute="bottom" secondItem="4ff-7z-VN8" secondAttribute="bottom" id="GwS-lS-4cI"/>
-                                    <constraint firstItem="yqC-YH-PXy" firstAttribute="centerX" secondItem="DTZ-MR-Eqm" secondAttribute="centerX" id="NW7-GP-Ix1"/>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="top" secondItem="yqC-YH-PXy" secondAttribute="bottom" constant="20" id="TWT-Wj-G1p"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yqC-YH-PXy" secondAttribute="trailing" constant="60" id="cUO-dK-Hif"/>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DTZ-MR-Eqm" secondAttribute="top" id="dVp-aN-dR9"/>
                                     <constraint firstAttribute="trailing" secondItem="4ff-7z-VN8" secondAttribute="trailing" id="lHV-hQ-Tyq"/>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
