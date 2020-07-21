@@ -221,7 +221,8 @@ target 'WordPress' do
         puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
         it could be removed once PR with that functionality will be merged into RN'
         %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
-
+        puts 'Patching RCTScrollView to override delaysContentTouches property'
+        %x(patch "#{project_root}/Pods/React-Core/React/Views/ScrollView/RCTScrollView.m" < "#{project_root}/patches/RN-RCTScrollView.patch")
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
 
