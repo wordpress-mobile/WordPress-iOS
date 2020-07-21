@@ -1,7 +1,8 @@
 extension FancyAlertViewController {
     private struct Strings {
-        static let titleText = NSLocalizedString("Stay in the loop", comment: "Title of alert preparing users to grant permission for us to send them push notifications.")
-        static let bodyText = NSLocalizedString("We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?", comment: "Body text of alert preparing users to grant permission for us to send them push notifications.")
+        static let firstAlertTitleText = NSLocalizedString("Stay in the loop", comment: "Title of the first alert preparing users to grant permission for us to send them push notifications.")
+        static let firstAlertBodyText = NSLocalizedString("We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?", comment: "Body text of the first alert preparing users to grant permission for us to send them push notifications.")
+        static let secondAlertTitleText = NSLocalizedString("Find out faster with push notifications", comment: "Title of the second alert preparing users to grant permission for us to send them push notifications.")
         static let allowButtonText = NSLocalizedString("Allow notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
         static let notNowText = NSLocalizedString("Not now", comment: "Not now button title shown in alert preparing users to grant permission for us to send them push notifications.")
     }
@@ -15,15 +16,17 @@ extension FancyAlertViewController {
     ///
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
-    @objc static func makeNotificationPrimerAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
+    static func makeNotificationAlertController(titleText: String?, bodyText: String?, approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let publishButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             approveAction(controller)
+            // TODO: Analytics must be differentiated between first and second alert
             WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
 
         let dismissButton = ButtonConfig(Strings.notNowText) { controller, _ in
             defer {
+                // TODO: Analytics must be differentiated between first and second alert
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
             }
             controller.dismiss(animated: true)
@@ -31,8 +34,8 @@ extension FancyAlertViewController {
 
         let image = UIImage(named: "wp-illustration-stay-in-the-loop")
 
-        let config = FancyAlertViewController.Config(titleText: Strings.titleText,
-                                                     bodyText: Strings.bodyText,
+        let config = FancyAlertViewController.Config(titleText: titleText,
+                                                     bodyText: bodyText,
                                                      headerImage: image,
                                                      dividerPosition: .bottom,
                                                      defaultButton: publishButton,
@@ -44,6 +47,14 @@ extension FancyAlertViewController {
 
         let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
         return controller
+    }
+
+    static func makeNotificationPrimerAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
+        return makeNotificationAlertController(titleText: Strings.firstAlertTitleText, bodyText: Strings.firstAlertBodyText, approveAction: approveAction)
+    }
+
+    static func makeNotificationSecondAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
+        return makeNotificationAlertController(titleText: Strings.secondAlertTitleText, bodyText: nil, approveAction: approveAction)
     }
 }
 

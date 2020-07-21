@@ -77,6 +77,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     internal var jetpackLoginViewController: JetpackLoginViewController? = nil
 
+    /// Timestamp of the most recent note before updates
+    /// Used to count notifications to show the second notifications prompt
+    ///
+    private var timestampBeforeUpdatesForSecondAlert: String?
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -181,6 +186,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             self.showInlinePrompt()
         }
         showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1094,6 +1100,22 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return Notification.classNameWithoutNamespaces()
     }
 
+    private var shouldCountNotificationsForSecondAlert: Bool {
+        userDefaults.notificationPrimerInlineWasAcknowledged &&
+            userDefaults.secondNotificationsAlertCount != Constants.secondNotificationsAlertDisabled
+    }
+
+    func tableViewWillChangeContent(_ tableView: UITableView) {
+        guard shouldCountNotificationsForSecondAlert,
+            let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let timestamp = note.timestamp else {
+
+            return
+        }
+
+        timestampBeforeUpdatesForSecondAlert = timestamp
+    }
+
     func tableViewDidChangeContent(_ tableView: UITableView) {
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
@@ -1117,6 +1139,28 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         } else {
             selectFirstNotificationIfAppropriate()
         }
+        // count new notifications for second alert
+        userDefaults.secondNotificationsAlertCount += newNotificationsForSecondAlert()
+
+        if isViewOnScreen() {
+            showSecondNotificationsAlertIfNeeded()
+        }
+        timestampBeforeUpdatesForSecondAlert = nil
+    }
+    // counts the new notifications for the second alert, if the inline prompt has been dismissed
+    private func newNotificationsForSecondAlert() -> Int {
+        guard shouldCountNotificationsForSecondAlert,
+            let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
+            let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+
+            return 0
+        }
+        for notification in notifications.enumerated() {
+            if let timestamp = notification.element.timestamp, timestamp <= previousTimestamp {
+                return notification.offset
+            }
+        }
+        return 0
     }
 
     private static func accessibilityHint(for note: Notification) -> String? {
@@ -1665,6 +1709,28 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
     private func showNotificationPrimerAlert() {
 
+        let alertController = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
+            InteractiveNotificationsManager.shared.requestAuthorization {
+                DispatchQueue.main.async {
+                    controller.dismiss(animated: true)
+                }
+            }
+        }
+        showNotificationAlert(alertController)
+    }
+
+    private func showSecondNotificationAlert() {
+        let alertController = FancyAlertViewController.makeNotificationSecondAlertController { (controller) in
+            InteractiveNotificationsManager.shared.requestAuthorization {
+                DispatchQueue.main.async {
+                    controller.dismiss(animated: true)
+                }
+            }
+        }
+        showNotificationAlert(alertController)
+    }
+
+    private func showNotificationAlert(_ alertController: FancyAlertViewController) {
         let mainContext = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: mainContext)
 
@@ -1678,21 +1744,25 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
             UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
 
-            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
-                InteractiveNotificationsManager.shared.requestAuthorization {
-                    DispatchQueue.main.async {
-                        controller.dismiss(animated: true)
-                    }
-                }
-            }
+            let alert = alertController
             alert.modalPresentationStyle = .custom
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
     }
 
+    private func showSecondNotificationsAlertIfNeeded() {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertTreshold else {
+            return
+        }
+        showSecondNotificationAlert()
+        userDefaults.secondNotificationsAlertCount = Constants.secondNotificationsAlertDisabled
+    }
+
     private enum Constants {
         static let inlineTabAccessCount = 6
         static let displayAlertDelay = 0.2
+        static let secondNotificationsAlertTreshold = 10
+        static let secondNotificationsAlertDisabled = -1
     }
 }
