@@ -1,12 +1,7 @@
-Es un hecho: Los GIFs hacen una Internet mejor. Ahora tienes acceso a una biblioteca de GIFs gratuitos, desde Tenor, para añadir a cualquier entrada o página usando un bloque de imagen. ¡Verás incluso la animación a la derecha del editor, mientras creas!
+No, tu mente no te está confundiendo — el lector es mucho más sencillo. Es debid a que hemos hecho un montón de correcciones en cómo se ven las cosas cuando estás leyendo una entrada. Entre estas correcciones se incluyen un montón de pequeñas cosas, como el espaciado, el posicionamiento, el tamaño, y todo ello supone una experiencia mucho más placentera. Además, ¡la barra de navegación y la barra de herramientas desaparecen y reaparecen tan suavemente que parece magia! ¿No estás de acuerdo en que precisamente ahora todos necesitamos un poco de magia en nuestras vidas?
 
-El editor de bloques tiene otro montón de mejoras:
-– Compatibilidad con los colores y gradientes definidos y por el tema del bloque de fondo,
-– Posibilidad de subir vídeos a los bloques de fondo, aunque esté cerrado el editor.
-– Y nuestra actualización favorita: mejora en la gestión de leyendas y citas. Pulsa intro después de añadir una leyenda en una imagen, vídeo, galería, cita o bloque de cita, y descubrirás que estás automáticamente en otro bloque.
+Sabemos que encontrar título para tu sitio puede ser difícil, y que los humanos suelen ser indecisos e inconstantes, es por eso que hemos hecho que el título de tu sitio ahora se pueda cambiar tocando en la pantalla de detalles del título del sitio. Y si acabas de descubrir un nombre brillante para un sitio nuevo, ahora tienes una tarea de inicio rápido para configurar un título para cualquier nuevo sitio que quieras empezar.
 
-Además de estas actualizaciones, ahora puedes elegir qué páginas usar como página de inicio y página de entradas desde la lista de páginas, y hay un conmutador en la aplicación para elegir entre el aspecto claro u oscuro.
+Si tienes buena vista para los colores, hemos añadido compatibilidad en el editor de bloques con la personalización del tipo de gradiente y el ángulo en los bloques de botones y fondo. Y si sueles revisar cuántos bloques usas y cuánto tecleas, ahora mostramos información métrica de los bloques, palabras y caracteres.
 
-Sabemos que la fecha de las últimas entradas se estaba calculando incorrectamente en la página de estadísticas. ¡Eso ya está corregido!
-
-Unos pocos problemas con las visitas guiadas de inicio las hacía menos rápidas. Hemos corregido algunos problemas de flujo en las visitas de «Haz crecer tu audiencia» y «Publica una entrada»,  y se ha arreglado un fallo que evitaba que los usuarios de VoiceOver obtuviesen actualizaciones sobre las tareas del inicio rápido. (Y para los usuarios de VoiceOver: la sección de nuevos pasos ahora también es compatible con VoiceOver.)
+Lo último y no menos importante, es que hemos corregido un molesto fallo que surgía al navegar demasiado rápido al editor de bloques tras desconectarse y acceder de nuevo. ¡Ahora puedes sentirte libre de conectarte y desconectarte sin sentirte abandonado!

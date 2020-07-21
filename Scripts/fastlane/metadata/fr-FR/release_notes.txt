@@ -1,12 +1,7 @@
-C’est un fait : Les GIF rendent l’internet plus fun. Vous avez maintenant accès à une bibliothèque de GIF gratuites, via Tenor, pour ajouter un bloc image à n’importe quel article ou page.
+Non, votre esprit ne vous joue pas des tours. Le Lecteur est beaucoup plus agréable à regarder. Cela s’explique par les nombreuses corrections apportées à l’affichage lors de la lecture d’un article. Ces corrections incluent beaucoup de petites choses comme l’espacement, le positionnement et le dimensionnement, qui ensemble rendent l’apparence plus agréable. De plus, la barre de navigation et la barre d’outils disparaissent et réapparaissent si facilement que ça en est magique ! Nous avons tous besoin d’un peu de magie dans nos vies ces derniers temps, vous n’êtes pas d’accord ?
 
-L’éditeur de bloc a un autre lots d’améliorations :
-– support des couleurs et dégradés définis par le thème dans le bloc Bannière,
-– possibilité de téléverser des vidéos au bloc Bannière, même si l’éditeur est fermé.
-– et notre mise à jour favorite : amélioration de la manipulation des légendes et citations. Pressez Entrée après avoir ajouté une légende dans une image, vidéo, galerie, citation ou citation en exergue et vous vous retrouverez automatiquement dans un nouveau bloc.
+Nous savons que trouver un nom à votre site peut être difficile et que les humains peuvent être indécis et changeants, c’est pourquoi nous avons fait en sorte que le titre du site puisse être modifié en appuyant dessus sur l’écran de détails du site. Si vous avez trouvé un super nom pour un nouveau site, il existe désormais une nouvelle tâche Démarrage rapide qui permet de définir un titre pour tous les nouveaux sites que vous voulez lancer.
 
-En plus de ces mises à jour, vous pouvez maintenant choisir les pages à utiliser comme page d’accueil et comme page de messages directement à partir de la liste des pages, et il y a un commutateur au niveau de l’application pour choisir entre l'apparence claire ou sombre.
+Si vous aimez la couleur, nous avons ajouté une assistance dans l’éditeur de blocs pour personnaliser le type de dégradé et l’angle dans les blocs Bouton et Bannière. Si vous conservez une trace du nombre de blocs que vous utilisez et de la quantité de mots que vous tapez, nous affichons désormais des informations de mesure pour le nombre de blocs, de mots et de caractères.
 
-Nous savons que la date du dernier courrier était mal calculée sur la page Thématiques. C’est réglé !
-
-Quelques problèmes avec les guides de démarrage rapide les rendaient un peu moins rapides. Nous avons corrigé quelques problèmes de flux dans les guides « Faites grandir votre audience » et « Publier un article » et dégagé un bug qui empêchait les utilisateurs de VoiceOver d’obtenir les mises à jour sur les tâches de démarrage rapide terminées. (Et pour les utilisateurs de VoiceOver : la section Prochaines étapes prend maintenant en charge VoiceOver)
+Enfin et surtout, nous avons corrigé un incident embêtant qui était provoqué par une navigation trop rapide vers l’éditeur de blocs après une déconnexion suivie d’une reconnexion immédiate. Vous pouvez maintenant vous connecter et vous déconnecter en toute décontraction !
