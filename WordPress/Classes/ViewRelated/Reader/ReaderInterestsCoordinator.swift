@@ -36,9 +36,9 @@ class ReaderSelectInterestsCoordinator {
 
     // MARK: - Saving
     public func saveInterests(interests: [RemoteReaderInterest], completion: @escaping (Bool) -> Void) {
-        let isLoggedIn = userId != nil ? true : false
+        let isLoggedIn = userId != nil
 
-        self.interestsService.followInterests(interests, success: { _ in
+        interestsService.followInterests(interests, success: { _ in
             completion(true)
 
         }, failure: { _ in

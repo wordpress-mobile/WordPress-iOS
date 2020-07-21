@@ -1877,17 +1877,15 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 // MARK: - Select Interests Display
 private extension ReaderStreamViewController {
     func displaySelectInterestsIfNeeded(_ content: ReaderContent) {
-        guard
-            FeatureFlag.readerImprovementsPhase2.enabled,
-            content.topicType == .discover
-        else {
-            // Hide the view if we're not on the discover tab, and it exists
-            self.selectInterestsViewController?.remove()
+        guard FeatureFlag.readerImprovementsPhase2.enabled,
+            content.topicType == .discover else {
+            // Removes the view if we're not on the discover tab, and it exists
+            selectInterestsViewController?.remove()
             return
         }
 
         if self.selectInterestsViewController != nil {
-            self.showSelectInterestsViewIfNeeded()
+            showSelectInterestsViewIfNeeded()
             return
         }
 
@@ -1901,11 +1899,11 @@ private extension ReaderStreamViewController {
     }
 
     func showSelectInterestsViewIfNeeded() {
-        guard let controller = self.selectInterestsViewController else {
+        guard let controller = selectInterestsViewController else {
             return
         }
 
-        UIView.animate(withDuration: 0) {
+        UIView.animate(withDuration: 0.2) {
             controller.view.frame = self.view.bounds
             self.add(controller, asChildOf: self)
         }

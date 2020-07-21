@@ -40,20 +40,19 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
                          success: @escaping ([ReaderTagTopic]?) -> Void,
                          failure: @escaping (Error) -> Void,
                          isLoggedIn: Bool) {
-        // If the user is not logged in, save the interests locally
-        guard isLoggedIn else {
-            followInterestsLocally(interests, success: success, failure: failure)
-            return
-        }
-
         // If the user is logged in, attempt to save the interests on the server
-        let slugs = interests.map { $0.slug }
-
-        let topicService = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
-        topicService.followInterests(withSlugs: slugs, success: { [weak self] in
-            self?.fetchFollowedInterestsRemotely(completion: success)
-        }) { error in
-            failure(error)
+        // If the user is not logged in, save the interests locally
+        if isLoggedIn {
+            let slugs = interests.map { $0.slug }
+            
+            let topicService = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
+            topicService.followInterests(withSlugs: slugs, success: { [weak self] in
+                self?.fetchFollowedInterestsRemotely(completion: success)
+            }) { error in
+                failure(error)
+            }
+        } else {
+           followInterestsLocally(interests, success: success, failure: failure)
         }
     }
 
