@@ -84,12 +84,14 @@ ALL_LANGS={
 langs = {}
 strings_filter = ""
 strings_file_ext = ""
+download_url = "https://translate.wordpress.org/projects/apps/ios/dev"
 if ARGV.count > 0
   if (ARGV[0] == "review") then
     langs = ALL_LANGS
 
     strings_filter = "filters[status]=#{ARGV[1]}\&"
     strings_file_ext = "_#{ARGV[1]}"
+    download_url = "https://translate.wordpress.com/projects/wporg/apps/ios/"
   else
     for key in ARGV
       unless local = ALL_LANGS[key]
@@ -111,7 +113,7 @@ langs.each do |code,local|
   # Download for production
   system "if [ -e #{lang_dir}/Localizable#{strings_file_ext}.strings ]; then cp #{lang_dir}/Localizable#{strings_file_ext}.strings #{lang_dir}/Localizable#{strings_file_ext}.strings.bak; fi"
 
-  url = "https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?#{strings_filter}format=strings"
+  url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
   destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
 
   system "curl -fLso #{destination} \"#{url}\"" or begin
