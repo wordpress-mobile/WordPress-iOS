@@ -81,13 +81,32 @@ ALL_LANGS={
   'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
 }
 
+REVIEW_LANGS={
+  'ar' => 'ar',         # Arabic
+  'de' => 'de',         # German
+  'es' => 'es',         # Spanish
+  'fr' => 'fr',         # French
+  'he' => 'he',         # Hebrew
+  'id' => 'id',         # Indonesian
+  'it' => 'it',         # Italian
+  'ja' => 'ja',         # Japanese
+  'ko' => 'ko',         # Korean
+  'nl' => 'nl',         # Dutch
+  'pt-br' => 'pt-BR',   # Portuguese (Brazil)
+  'ru' => 'ru',         # Russian
+  'sv' => 'sv',         # Swedish
+  'tr' => 'tr',         # Turkish
+  'zh-cn' => 'zh-Hans', # Chinese (China)
+  'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
+}
+
 langs = {}
 strings_filter = ""
 strings_file_ext = ""
 download_url = "https://translate.wordpress.org/projects/apps/ios/dev"
 if ARGV.count > 0
   if (ARGV[0] == "review") then
-    langs = ALL_LANGS
+    langs = REVIEW_LANGS
 
     strings_filter = "filters[status]=#{ARGV[1]}\&"
     strings_file_ext = "_#{ARGV[1]}"
