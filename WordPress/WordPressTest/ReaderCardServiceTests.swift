@@ -15,6 +15,7 @@ class ReaderCardServiceTests: XCTestCase {
         coreDataStack = TestContextManager()
         apiMock = WordPressComMockRestApi()
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
+        createInterests()
     }
 
     override func tearDown() {
@@ -22,6 +23,37 @@ class ReaderCardServiceTests: XCTestCase {
         ContextManager.overrideSharedInstance(nil)
     }
 
+    /// Call the cards API with the saved slugs
+    ///
+    func testCallApiWithTheSavedSlugs() {
+        let expectation = self.expectation(description: "Call the API with pug and cat slugs")
+
+        apiMock.succeed = true
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        service.fetch(success: { _, _ in
+        expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
+            expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=cat"))
+            expectation.fulfill()
+        }, failure: { _ in })
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    /// Returns an error if the user don't follow any Interest
+    ///
+    func testReturnErrorWhenNotFollowingAnyInterest() {
+        let expectation = self.expectation(description: "Error when now following interests")
+        apiMock.succeed = true
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+
+        clearInterests()
+        service.fetch(success: { _, _ in }, failure: { error in
+            expect(error).toNot(beNil())
+            expectation.fulfill()
+        })
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 
     /// Save 9 cards in the database
     /// The API returns 10, but one of them is unknown and shouldn't be saved
@@ -93,12 +125,47 @@ class ReaderCardServiceTests: XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
+
+    /// Save 2 Interests in the database
+    private func createInterests() {
+        let pugTopic = ReaderTagTopic(context: coreDataStack.mainContext)
+        pugTopic.slug = "pug"
+        pugTopic.isRecommended = false
+        pugTopic.tagID = 1
+        pugTopic.inUse = false
+        pugTopic.following = true
+        pugTopic.path = ""
+        pugTopic.showInMenu = false
+        pugTopic.title = "Pug"
+        pugTopic.type = "pug"
+
+        let catTopic = ReaderTagTopic(context: coreDataStack.mainContext)
+        catTopic.slug = "cat"
+        catTopic.isRecommended = false
+        catTopic.tagID = 2
+        catTopic.inUse = false
+        catTopic.following = true
+        catTopic.path = ""
+        catTopic.showInMenu = false
+        catTopic.title = "Cat"
+        catTopic.type = "cat"
+
+        coreDataStack.save(coreDataStack.mainContext)
+    }
+
+    /// Remove all saved interests
+    private func clearInterests() {
+        let interests = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())) as? [NSManagedObject]
+        interests?.forEach { coreDataStack.mainContext.delete($0) }
+    }
 }
 
 class WordPressComMockRestApi: WordPressComRestApi {
     var succeed = false
+    var GETCalledWithURL: String?
 
     override func GET(_ URLString: String, parameters: [String: AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
+        GETCalledWithURL = URLString
         guard
             let fileURL: URL = Bundle.main.url(forResource: "reader-cards-success.json", withExtension: nil),
             let data: Data = try? Data(contentsOf: fileURL),
