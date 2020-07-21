@@ -127,9 +127,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
         let scrollOffset = scrollView.contentOffset.y
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
-        if newHeaderViewHeight > maxHeaderHeight {
-            headerHeightConstraint.constant = maxHeaderHeight
-        } else if newHeaderViewHeight < minHeaderHeight {
+        if newHeaderViewHeight < minHeaderHeight {
             headerHeightConstraint.constant = minHeaderHeight
         } else {
             headerHeightConstraint.constant = newHeaderViewHeight
@@ -151,8 +149,12 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
-        scrollView.contentOffset.y = maxHeaderHeight - height
-        headerHeightConstraint.constant = height
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+            scrollView.contentOffset.y = self.maxHeaderHeight - height
+            self.headerHeightConstraint.constant = height
+            self.headerView.layoutIfNeeded()
+        }, completion: nil)
+
         titleView.isHidden = (height >= maxHeaderHeight)
     }
 }
