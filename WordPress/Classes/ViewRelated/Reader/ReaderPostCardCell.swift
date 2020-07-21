@@ -63,6 +63,9 @@ private struct Constants {
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
+    // Ghost cells placeholders
+    @IBOutlet weak var ghostPlaceholderView: UIView!
+
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
@@ -820,5 +823,18 @@ private extension Date {
     func readerDateForDisplay() -> String {
         let relativeFormatter = ReaderRelativeTimeFormatter()
         return relativeFormatter.string(from: self)
+    }
+}
+
+extension ReaderPostCardCell: GhostableView {
+    public func ghostAnimationWillStart() {
+        borderedView.isGhostableDisabled = true
+        attributionView.isHidden = true
+        menuButton.layer.opacity = 0
+        commentActionButton.setTitle("", for: .normal)
+        likeActionButton.setTitle("", for: .normal)
+        headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
+        featuredImageView.layer.borderWidth = 0
+        ghostPlaceholderView.isHidden = false
     }
 }
