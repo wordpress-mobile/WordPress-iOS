@@ -3,6 +3,8 @@ import Foundation
 class ReaderCardsStreamViewController: ReaderStreamViewController {
     private var currentPage = 1
 
+    private let readerCardTopicsIdentifier = "ReaderTopicsCell"
+
     lazy var cardsService: ReaderCardService = {
         return ReaderCardService()
     }()
@@ -10,6 +12,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
+        tableView.register(ReaderTopicsCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
     // MARK: - TableView Related
@@ -17,6 +20,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
             return cell(for: cardPost, at: indexPath)
+        } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests {
+            let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCell
+            cell.interests = Array(interests)
+            return cell
         } else {
             return UITableViewCell()
         }
