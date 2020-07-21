@@ -1903,7 +1903,8 @@ private extension ReaderStreamViewController {
             return
         }
 
-        UIView.animate(withDuration: 0.2) {
+        // Using duration zero to prevent the screen from blinking
+        UIView.animate(withDuration: 0) {
             controller.view.frame = self.view.bounds
             self.add(controller, asChildOf: self)
         }
