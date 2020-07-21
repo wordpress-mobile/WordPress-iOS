@@ -20,10 +20,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
     let minTitleFontSize: CGFloat = 17
     let maxTitleFontSize: CGFloat = 34
-    var maxHeaderHeight: CGFloat = 285
-    var midHeaderHeight: CGFloat = 212
+    var maxHeaderHeight: CGFloat = 260
+    var midHeaderHeight: CGFloat = 215
     var minHeaderHeight: CGFloat {
-        return headerBar.frame.height + 20 + categoryBar.frame.height + 9
+        return headerBar.frame.height + categoryBar.frame.height + 9
     }
 
     override func viewDidLoad() {
@@ -35,14 +35,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
         let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
 
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
-        tableView.tableHeaderView?.backgroundColor = UIColor.orange
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
 
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         largeTitleView.font = titleViewFont(withSize: maxTitleFontSize)
         titleView.font = titleViewFont(withSize: minTitleFontSize)
 
-        midHeaderHeight = maxHeaderHeight - promptView.frame.minY
+        //        midHeaderHeight = maxHeaderHeight - promptView.frame.minY
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -143,30 +142,18 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
         let scrollComparisonPoint = headerBar.frame.maxY
 
         if largeTitleView.frame.midY > scrollComparisonPoint {
-            snapToMaxHeight(scrollView)
+            snapToHeight(scrollView, height: maxHeaderHeight)
         } else if promptView.frame.midY > scrollComparisonPoint {
-            snapToMidHeight(scrollView)
+            snapToHeight(scrollView, height: midHeaderHeight)
         } else if headerHeightConstraint.constant != minHeaderHeight {
-            snapToMinHeight(scrollView)
+            snapToHeight(scrollView, height: minHeaderHeight)
         }
     }
 
-    private func snapToMaxHeight(_ scrollView: UIScrollView) {
-        scrollView.contentOffset.y = 0
-        headerHeightConstraint.constant = maxHeaderHeight
-        titleView.isHidden = true
-    }
-
-    private func snapToMidHeight(_ scrollView: UIScrollView) {
-        scrollView.contentOffset.y = maxHeaderHeight - midHeaderHeight
-        headerHeightConstraint.constant = midHeaderHeight
-        titleView.isHidden = false
-    }
-
-    private func snapToMinHeight(_ scrollView: UIScrollView) {
-        scrollView.contentOffset.y = maxHeaderHeight - minHeaderHeight
-        headerHeightConstraint.constant = minHeaderHeight
-        titleView.isHidden = false
+    private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
+        scrollView.contentOffset.y = maxHeaderHeight - height
+        headerHeightConstraint.constant = height
+        titleView.isHidden = (height >= maxHeaderHeight)
     }
 }
 
