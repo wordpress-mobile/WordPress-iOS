@@ -188,6 +188,8 @@ import WordPressFlux
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
 
+    let ghostableTableView = UITableView()
+
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
     ///
@@ -1671,11 +1673,13 @@ private extension ReaderStreamViewController {
     func displayLoadingStream() {
         configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
+        showGhost()
     }
 
     func displayLoadingStreamFailed() {
         configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
         displayResultsStatus()
+        hideGhost()
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1686,6 +1690,7 @@ private extension ReaderStreamViewController {
         tableView.tableHeaderView?.isHidden = true
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
+        showGhost()
     }
 
     func displayNoResultsView() {
@@ -1731,6 +1736,7 @@ private extension ReaderStreamViewController {
     func displayNoConnectionView() {
         configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
         displayResultsStatus()
+        hideGhost()
     }
 
     /// Removes the no followed sites view controller if it exists
@@ -1772,12 +1778,14 @@ private extension ReaderStreamViewController {
         resultsStatusView.didMove(toParent: tableViewController)
         resultsStatusView.updateView()
         footerView.isHidden = true
+        hideGhost()
     }
 
     func hideResultsStatus() {
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
+        hideGhost()
     }
 
     func buttonTitleForTopic(_ topic: ReaderAbstractTopic) -> String? {
