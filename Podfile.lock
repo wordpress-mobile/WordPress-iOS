@@ -397,7 +397,7 @@ PODS:
     - WordPressKit (~> 4.0-beta.0)
     - WordPressShared (~> 1.9-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.13.0-beta.1):
+  - WordPressKit (4.13.0-beta.2):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
