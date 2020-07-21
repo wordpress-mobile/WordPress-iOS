@@ -44,7 +44,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         // If the user is not logged in, save the interests locally
         if isLoggedIn {
             let slugs = interests.map { $0.slug }
-            
+
             let topicService = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
             topicService.followInterests(withSlugs: slugs, success: { [weak self] in
                 self?.fetchFollowedInterestsRemotely(completion: success)
