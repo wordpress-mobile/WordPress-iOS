@@ -32,33 +32,14 @@ class GutenbergLightNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
-        let tintColor = UIColor(light: .black, dark: .white)
-
-        let titleTextAttributes = [
-            NSAttributedString.Key.font: font.withSize(17),
-            NSAttributedString.Key.foregroundColor: tintColor
-        ]
-
-        let largeTitleTextAttributes = [
-            NSAttributedString.Key.font: font.withSize(34),
-            NSAttributedString.Key.foregroundColor: tintColor
-        ]
-
         if #available(iOS 13.0, *) {
-
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = .systemBackground
             appearance.shadowColor = separatorColor
-            appearance.titleTextAttributes = titleTextAttributes
-            appearance.largeTitleTextAttributes = largeTitleTextAttributes
-
             navigationBar.scrollEdgeAppearance = appearance
             navigationBar.standardAppearance = appearance
         } else {
             navigationBar.backgroundColor = .white
-            navigationBar.titleTextAttributes = titleTextAttributes
-            navigationBar.largeTitleTextAttributes = largeTitleTextAttributes
         }
 
         navigationBar.barStyle = .default

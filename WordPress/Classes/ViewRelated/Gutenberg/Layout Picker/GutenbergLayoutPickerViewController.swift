@@ -5,44 +5,41 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var categoryBar: UICollectionView!
-    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
+    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleToSubtitleSpacing: NSLayoutConstraint!
+    @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
+    @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    private var maxHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of headerHeightConstraint.constant
-    private var midHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of largeTitleView position and maxHeaderHeight
-    private var minHeaderHeight: CGFloat {
-        return categoryBar.frame.height + 9
+
+    private var maxHeaderHeight: CGFloat {
+        return largeTitleView.frame.height +
+        midHeaderHeight
     }
-    private var titleIsHidden: Bool = true {
-        didSet {
-            if oldValue != titleIsHidden {
-                title = titleIsHidden ? nil : largeTitleView.text
-                navigationController?.navigationBar.layoutIfNeeded() // Prevents an animation issue where the title "flies" in from the left on quick scroll
-            }
-        }
+    private var midHeaderHeight: CGFloat {
+        return titleToSubtitleSpacing.constant +
+            promptView.frame.height +
+            subtitleToCategoryBarSpacing.constant +
+            categoryBar.frame.height +
+            maxHeaderBottomSpacing.constant
+    }
+    private var minHeaderHeight: CGFloat {
+        return categoryBar.frame.height + minHeaderBottomSpacing.constant
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        maxHeaderHeight = headerHeightConstraint.constant
-        midHeaderHeight = maxHeaderHeight - largeTitleView.frame.maxY
-
-        styleButtons()
-
-        let tableFooterFrame = footerView.frame
-        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
-
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
-
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-        largeTitleView.font = titleViewFont(withSize: largeTitleView.font.pointSize)
+        styleButtons()
+        layoutHeader()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -62,10 +59,23 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
                 styleButtons()
             }
+        }
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            styleButtons()
+            layoutHeader()
+        }
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animateAlongsideTransition(in: nil, animation: nil) { (_) in
+            self.scrollViewDidEndDragging(self.tableView, willDecelerate: false)
         }
     }
 
@@ -97,6 +107,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
 
         [createBlankPageBtn].forEach { (button) in
+            button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
             button?.layer.borderColor = seperator.cgColor
             button?.layer.borderWidth = 1
             button?.layer.cornerRadius = 8
@@ -113,8 +124,19 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    private func titleViewFont(withSize pointSize: CGFloat) -> UIFont? {
-        return WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(pointSize)
+    private func layoutHeader() {
+        largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
+        largeTitleView.sizeToFit()
+        titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
+        titleView.sizeToFit()
+
+        let tableFooterFrame = footerView.frame
+        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        scrollViewDidEndDragging(tableView, willDecelerate: false)
+        headerHeightConstraint.constant = maxHeaderHeight // Reset the header to accomodate dynamic text
     }
 }
 
@@ -130,7 +152,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
 
-        titleIsHidden = largeTitleView.frame.maxY > 0
+        titleView.isHidden = largeTitleView.frame.maxY > 0
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -144,13 +166,15 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
+        scrollView.contentOffset.y = maxHeaderHeight - height
+        headerHeightConstraint.constant = height
+
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-            scrollView.contentOffset.y = self.maxHeaderHeight - height
-            self.headerHeightConstraint.constant = height
+            self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
 
-        titleIsHidden = (height >= maxHeaderHeight)
+        titleView.isHidden = (height >= maxHeaderHeight)
     }
 }
 
