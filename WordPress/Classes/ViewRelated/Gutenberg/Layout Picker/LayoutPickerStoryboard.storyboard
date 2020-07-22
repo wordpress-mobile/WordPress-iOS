@@ -175,7 +175,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="hnp-yV-O4V">
                         <barButtonItem key="backBarButtonItem" title="Back" id="eBE-Je-oWu"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="y9q-Mg-b6a">
+                        <barButtonItem key="rightBarButtonItem" id="y9q-Mg-b6a">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Fgx-ig-LXQ">
                                 <rect key="frame" x="364" y="13" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

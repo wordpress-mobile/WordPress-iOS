@@ -14,14 +14,17 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var createBlankPageBtn: UIButton!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    var maxHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of headerHeightConstraint.constant
-    var midHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of largeTitleView position and maxHeaderHeight
-    var minHeaderHeight: CGFloat {
+    private var maxHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of headerHeightConstraint.constant
+    private var midHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of largeTitleView position and maxHeaderHeight
+    private var minHeaderHeight: CGFloat {
         return categoryBar.frame.height + 9
     }
-    var titleIsHidden: Bool = true {
+    private var titleIsHidden: Bool = true {
         didSet {
-            title = titleIsHidden ? nil : largeTitleView.text
+            if oldValue != titleIsHidden {
+                title = titleIsHidden ? nil : largeTitleView.text
+                navigationController?.navigationBar.layoutIfNeeded() // Prevents an animation issue where the title "flies" in from the left on quick scroll
+            }
         }
     }
 
