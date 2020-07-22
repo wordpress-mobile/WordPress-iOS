@@ -493,7 +493,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.21.0-beta)
   - WordPressKit (= 4.13.0-beta.2)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `issue/remove_news_events`)
+  - WordPressShared (= 1.9.2-beta.1)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7443b1a7f8739149e82a504992afddd59446154d/third-party-podspecs/Yoga.podspec.json`)
@@ -543,6 +543,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -631,9 +632,6 @@ EXTERNAL SOURCES:
     :commit: 7443b1a7f8739149e82a504992afddd59446154d
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressShared:
-    :branch: issue/remove_news_events
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7443b1a7f8739149e82a504992afddd59446154d/third-party-podspecs/Yoga.podspec.json
 
@@ -649,9 +647,6 @@ CHECKOUT OPTIONS:
     :commit: 7443b1a7f8739149e82a504992afddd59446154d
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressShared:
-    :commit: 226425ddd1cc35bfdd6099adde3b44a69edfa559
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -744,6 +739,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: c9ad3406c02c1c64cd7955639254a8c1daeffcd0
+PODFILE CHECKSUM: 92922e83ed5876d7d30c3c6cdc0eb57041437b68
 
 COCOAPODS: 1.8.4
