@@ -229,7 +229,7 @@ extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
             hideLoadingView()
             reloadData()
         } else {
-            displayLoadingViewWithWebAction(title: "lalalalala")
+            displayLoadingViewWithWebAction(title: "")
         }
     }
 }
