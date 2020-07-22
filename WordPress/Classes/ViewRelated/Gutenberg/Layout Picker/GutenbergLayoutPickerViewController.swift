@@ -4,32 +4,33 @@ import Gridicons
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var categoryBar: UICollectionView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
-
     @IBOutlet weak var tableView: UITableView!
-
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    let minTitleFontSize: CGFloat = 17
-    let maxTitleFontSize: CGFloat = 34
-    var maxHeaderHeight: CGFloat = 260
-    var midHeaderHeight: CGFloat = 215
+    var maxHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of headerHeightConstraint.constant
+    var midHeaderHeight: CGFloat! // This is set as part of viewDidLoad based on the initial value of largeTitleView position and maxHeaderHeight
     var minHeaderHeight: CGFloat {
-        return headerBar.frame.height + categoryBar.frame.height + 9
+        return categoryBar.frame.height + 9
+    }
+    var titleIsHidden: Bool = true {
+        didSet {
+            title = titleIsHidden ? nil : largeTitleView.text
+        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        styleButtons()
         maxHeaderHeight = headerHeightConstraint.constant
+        midHeaderHeight = maxHeaderHeight - largeTitleView.frame.maxY
+
+        styleButtons()
 
         let tableFooterFrame = footerView.frame
         let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
@@ -38,28 +39,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
 
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-        largeTitleView.font = titleViewFont(withSize: maxTitleFontSize)
-        titleView.font = titleViewFont(withSize: minTitleFontSize)
-
-        //        midHeaderHeight = maxHeaderHeight - promptView.frame.minY
+        largeTitleView.font = titleViewFont(withSize: largeTitleView.font.pointSize)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
+        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = true
         super.viewWillAppear(animated)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = false
+        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = false
         super.viewDidDisappear(animated)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        navigationController?.isNavigationBarHidden = false
+        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = false
         super.prepare(for: segue, sender: sender)
     }
 
@@ -94,9 +88,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
     private func styleButtons() {
         let seperator: UIColor
         if #available(iOS 13.0, *) {
-            seperator = UIColor.separator
+            seperator = .separator
         } else {
-            seperator = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.29)
+            seperator = .lightGray
         }
 
         [createBlankPageBtn].forEach { (button) in
@@ -133,15 +127,13 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
 
-        titleView.isHidden = largeTitleView.frame.maxY > headerBar.frame.height
+        titleIsHidden = largeTitleView.frame.maxY > 0
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let scrollComparisonPoint = headerBar.frame.maxY
-
-        if largeTitleView.frame.midY > scrollComparisonPoint {
+        if largeTitleView.frame.midY > 0 {
             snapToHeight(scrollView, height: maxHeaderHeight)
-        } else if promptView.frame.midY > scrollComparisonPoint {
+        } else if promptView.frame.midY > 0 {
             snapToHeight(scrollView, height: midHeaderHeight)
         } else if headerHeightConstraint.constant != minHeaderHeight {
             snapToHeight(scrollView, height: minHeaderHeight)
@@ -155,18 +147,18 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             self.headerView.layoutIfNeeded()
         }, completion: nil)
 
-        titleView.isHidden = (height >= maxHeaderHeight)
+        titleIsHidden = (height >= maxHeaderHeight)
     }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 20 // This is a random number chossen for testing
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 318
+        return 318 // This is an estimated number for the height of the eventual cells. Being used for testing right now.
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
