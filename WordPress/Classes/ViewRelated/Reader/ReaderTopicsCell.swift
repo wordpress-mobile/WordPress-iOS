@@ -7,7 +7,11 @@ class ReaderTopicsCell: UITableViewCell {
 
     private let tableView = TopicsTableView()
 
-    private var interests: [ReaderInterest] = []
+    private var interests: [ReaderInterest] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     private let cellIdentifier = "TopicCell"
 
@@ -30,6 +34,10 @@ class ReaderTopicsCell: UITableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         refreshHorizontalConstraints()
+    }
+
+    func configure(_ interests: [ReaderInterest]) {
+        self.interests = interests
     }
 
     private func setupTableView() {
@@ -59,7 +67,6 @@ class ReaderTopicsCell: UITableViewCell {
         tableView.isScrollEnabled = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.reloadData()
     }
 
     private func applyStyles() {

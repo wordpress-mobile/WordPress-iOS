@@ -22,7 +22,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return cell(for: cardPost, at: indexPath)
         } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests {
             let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCell
-            cell.interests = Array(interests)
+            cell.configure(Array(interests))
             return cell
         } else {
             return UITableViewCell()
