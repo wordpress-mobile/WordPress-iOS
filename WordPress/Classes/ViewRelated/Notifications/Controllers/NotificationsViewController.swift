@@ -1751,7 +1751,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func showSecondNotificationsAlertIfNeeded() {
-        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertTreshold else {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
             return
         }
         showSecondNotificationAlert()
