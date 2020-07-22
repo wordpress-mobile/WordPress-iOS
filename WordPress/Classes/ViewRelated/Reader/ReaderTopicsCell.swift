@@ -1,7 +1,9 @@
 import UIKit
 
+/// A cell that displays topics the user might like
+///
 class ReaderTopicsCell: UITableViewCell {
-    let tableView = OwnTableView()
+    private let tableView = TopicsTableView()
 
     var interests: [ReaderInterest] = []
 
@@ -95,14 +97,14 @@ extension ReaderTopicsCell: UITableViewDelegate {
     }
 }
 
-class OwnTableView: UITableView {
+private class TopicsTableView: UITableView {
     override var intrinsicContentSize: CGSize {
         self.layoutIfNeeded()
         return self.contentSize
     }
 
     override var contentSize: CGSize {
-        didSet{
+        didSet {
             self.invalidateIntrinsicContentSize()
         }
     }
