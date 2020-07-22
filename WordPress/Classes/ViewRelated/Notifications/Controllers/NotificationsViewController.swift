@@ -1109,8 +1109,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         guard shouldCountNotificationsForSecondAlert,
             let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
             let timestamp = note.timestamp else {
-
-            return
+                timestampBeforeUpdatesForSecondAlert = nil
+                return
         }
 
         timestampBeforeUpdatesForSecondAlert = timestamp
@@ -1140,17 +1140,21 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             selectFirstNotificationIfAppropriate()
         }
         // count new notifications for second alert
-        userDefaults.secondNotificationsAlertCount += newNotificationsForSecondAlert()
+        guard shouldCountNotificationsForSecondAlert else {
+            return
+        }
+
+        userDefaults.secondNotificationsAlertCount += newNotificationsForSecondAlert
 
         if isViewOnScreen() {
             showSecondNotificationsAlertIfNeeded()
         }
-        timestampBeforeUpdatesForSecondAlert = nil
     }
-    // counts the new notifications for the second alert, if the inline prompt has been dismissed
-    private func newNotificationsForSecondAlert() -> Int {
-        guard shouldCountNotificationsForSecondAlert,
-            let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
+
+    // counts the new notifications for the second alert
+    private var newNotificationsForSecondAlert: Int {
+
+        guard let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
             let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
 
             return 0
@@ -1707,26 +1711,21 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         }
     }
 
-    private func showNotificationPrimerAlert() {
-
-        let alertController = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
-            InteractiveNotificationsManager.shared.requestAuthorization {
-                DispatchQueue.main.async {
-                    controller.dismiss(animated: true)
-                }
+    private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
+        InteractiveNotificationsManager.shared.requestAuthorization {
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
             }
         }
+    }
+
+    private func showNotificationPrimerAlert() {
+        let alertController = FancyAlertViewController.makeNotificationPrimerAlertController(approveAction: notificationAlertApproveAction(_:))
         showNotificationAlert(alertController)
     }
 
     private func showSecondNotificationAlert() {
-        let alertController = FancyAlertViewController.makeNotificationSecondAlertController { (controller) in
-            InteractiveNotificationsManager.shared.requestAuthorization {
-                DispatchQueue.main.async {
-                    controller.dismiss(animated: true)
-                }
-            }
-        }
+        let alertController = FancyAlertViewController.makeNotificationSecondAlertController(approveAction: notificationAlertApproveAction(_:))
         showNotificationAlert(alertController)
     }
 
