@@ -5,12 +5,15 @@ import UIKit
 class ReaderTopicsCell: UITableViewCell {
     private let tableView = TopicsTableView()
 
-    var interests: [ReaderInterest] = []
+    private var interests: [ReaderInterest] = []
 
-    private let cellIdentifier = "MyCell"
+    private let cellIdentifier = "TopicCell"
 
-    var compactConstraints: [NSLayoutConstraint] = []
-    var regularConstraints: [NSLayoutConstraint] = []
+    /// Constraints to be activated in compact horizontal size class
+    private var compactConstraints: [NSLayoutConstraint] = []
+
+    /// Constraints to be activated in regular horizontal size class
+    private var regularConstraints: [NSLayoutConstraint] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
