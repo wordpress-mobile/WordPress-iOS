@@ -3,6 +3,8 @@ import UIKit
 /// A cell that displays topics the user might like
 ///
 class ReaderTopicsCell: UITableViewCell {
+    private let containerView = UIView()
+
     private let tableView = TopicsTableView()
 
     private var interests: [ReaderInterest] = []
@@ -17,34 +19,8 @@ class ReaderTopicsCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        let containerView = UIView()
-        addSubview(containerView)
-        containerView.backgroundColor = .listForeground
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(containerView, insets: UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0))
-        containerView.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
-        regularConstraints = [
-            tableView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
-        ]
-        compactConstraints = [
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ]
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isScrollEnabled = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.reloadData()
-        tableView.backgroundColor = .none
-        tableView.separatorColor = .placeholderElement
-        backgroundColor = .none
-        refreshHorizontalConstraints()
+        setupTableView()
+        applyStyles()
     }
 
     required init?(coder: NSCoder) {
@@ -56,11 +32,57 @@ class ReaderTopicsCell: UITableViewCell {
         refreshHorizontalConstraints()
     }
 
+    private func setupTableView() {
+        addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewToAllEdges(containerView, insets: Constants.containerInsets)
+        containerView.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        // Constraints for regular horizontal size class
+        regularConstraints = [
+            tableView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
+        ]
+
+        // Constraints for compact horizontal size class
+        compactConstraints = [
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        ]
+
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.isScrollEnabled = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.reloadData()
+    }
+
+    private func applyStyles() {
+        containerView.backgroundColor = .listForeground
+
+        tableView.backgroundColor = .none
+        tableView.separatorColor = .placeholderElement
+
+        backgroundColor = .none
+
+        refreshHorizontalConstraints()
+    }
+
+    // Activate and deactivate constraints based on horizontal size class
     private func refreshHorizontalConstraints() {
         let isCompact = (traitCollection.horizontalSizeClass == .compact)
 
         compactConstraints.forEach { $0.isActive = isCompact }
         regularConstraints.forEach { $0.isActive = !isCompact }
+    }
+
+    private enum Constants {
+        static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
 }
 
