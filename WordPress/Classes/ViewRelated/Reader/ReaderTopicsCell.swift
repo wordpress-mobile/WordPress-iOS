@@ -7,6 +7,9 @@ class ReaderTopicsCell: UITableViewCell {
 
     private let cellIdentifier = "MyCell"
 
+    var compactConstraints: [NSLayoutConstraint] = []
+    var regularConstraints: [NSLayoutConstraint] = []
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let containerView = UIView()
@@ -18,10 +21,16 @@ class ReaderTopicsCell: UITableViewCell {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+        regularConstraints = [
             tableView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
-        ])
+        ]
+        compactConstraints = [
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        ]
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.isScrollEnabled = false
         tableView.dataSource = self
@@ -30,10 +39,23 @@ class ReaderTopicsCell: UITableViewCell {
         tableView.backgroundColor = .none
         tableView.separatorColor = .placeholderElement
         backgroundColor = .none
+        refreshHorizontalConstraints()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        refreshHorizontalConstraints()
+    }
+
+    private func refreshHorizontalConstraints() {
+        let isCompact = (traitCollection.horizontalSizeClass == .compact)
+
+        compactConstraints.forEach { $0.isActive = isCompact }
+        regularConstraints.forEach { $0.isActive = !isCompact }
     }
 }
 
