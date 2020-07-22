@@ -427,9 +427,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self createUserActivity];
     [self startAlertTimer];
 
-    if ([BlogDetailsViewController shouldScrollToViewSite] == YES) {
+    if (self.shouldScrollToViewSite == YES) {
         [self scrollToElement:QuickStartTourElementViewSite];
-        BlogDetailsViewController.shouldScrollToViewSite = NO;
+        self.shouldScrollToViewSite = NO;
     }
 }
 
