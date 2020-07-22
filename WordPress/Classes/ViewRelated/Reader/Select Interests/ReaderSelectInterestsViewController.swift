@@ -17,6 +17,8 @@ class ReaderSelectInterestsViewController: UIViewController {
         static let nextButtonDisabled: String = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
         static let nextButtonEnabled: String = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
         static let loading: String = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
+        static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
+        static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
     }
 
     // MARK: - IBOutlets
@@ -35,6 +37,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
     private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
 
+    private let noResultsViewController = NoResultsViewController.controller()
+
     var didSaveInterests: (() -> Void)? = nil
 
     override func viewDidLoad() {
@@ -44,6 +48,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         configureI18N()
         configureCollectionView()
+        configureNoResultsViewController()
         applyStyles()
         updateNextButtonState()
         refreshData()
@@ -75,6 +80,10 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         layout.itemSpacing = Constants.cellSpacing
         layout.cellHeight = Constants.cellHeight
+    }
+
+    private func configureNoResultsViewController() {
+        noResultsViewController.delegate = self
     }
 
     private func applyStyles() {
@@ -117,7 +126,12 @@ class ReaderSelectInterestsViewController: UIViewController {
         let selectedInterests = dataSource.selectedInterests.map { $0.interest }
 
         coordinator.saveInterests(interests: selectedInterests) { [weak self] success in
-            //TODO: Add error handling
+            guard success else {
+                self?.stopLoading()
+                self?.displayNotice(title: Strings.tryAgainNoticeTitle)
+                return
+            }
+
             self?.stopLoading()
             self?.didSaveInterests?()
         }
@@ -211,6 +225,38 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
 // MARK: - ReaderInterestsDataDelegate
 extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource) {
-        reloadData()
+        if dataSource.count > 0 {
+            hideLoadingView()
+            reloadData()
+        } else {
+            displayLoadingViewWithWebAction(title: "lalalalala")
+        }
+    }
+}
+
+// MARK: - NoResultsViewController
+extension ReaderSelectInterestsViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        refreshData()
+    }
+}
+
+extension ReaderSelectInterestsViewController {
+    func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: Strings.tryAgainButtonTitle,
+                                          accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func showLoadingView() {
+        hideLoadingView()
+        addChild(noResultsViewController)
+        view.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    func hideLoadingView() {
+        noResultsViewController.removeFromView()
     }
 }
