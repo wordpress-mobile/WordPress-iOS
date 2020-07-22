@@ -95,8 +95,6 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
-    let news = ReaderNewsCard()
-
     /// Used for fetching content.
     private lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -197,7 +195,6 @@ import WordPressFlux
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
-        controller.checkNewsCardAvailability(topic: topic)
         return controller
     }
 
@@ -518,7 +515,7 @@ import WordPressFlux
             return
         }
 
-        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let header = headerForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -1290,44 +1287,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
         } else if let topic = readerTopic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
             showManageSites()
         }
-    }
-}
-
-extension ReaderStreamViewController: NewsManagerDelegate {
-    func didDismissNews() {
-        refreshTableHeaderIfNeeded()
-    }
-
-    func didSelectReadMore(_ url: URL) {
-        let readerLinkRouter = UniversalLinkRouter.shared
-        if readerLinkRouter.canHandle(url: url) {
-            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
-        } else if url.isWordPressDotComPost {
-            presentReaderDetailViewControllerWithURL(url)
-        } else {
-            presentWebViewControllerWithURL(url)
-        }
-    }
-
-    private func presentWebViewControllerWithURL(_ url: URL) {
-        let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticateWithDefaultAccount()
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true)
-    }
-
-    private func presentReaderDetailViewControllerWithURL(_ url: URL) {
-        var viewController: UIViewController
-
-        if FeatureFlag.readerWebview.enabled {
-            viewController = ReaderDetailWebviewViewController.controllerWithPostURL(url)
-        } else {
-            viewController = ReaderDetailViewController.controllerWithPostURL(url)
-        }
-
-        navigationController?.pushFullscreenViewController(viewController, animated: true)
     }
 }
 
