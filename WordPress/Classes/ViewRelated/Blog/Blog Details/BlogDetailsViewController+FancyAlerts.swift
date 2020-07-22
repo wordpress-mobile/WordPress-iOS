@@ -41,11 +41,18 @@ extension BlogDetailsViewController {
     }
 
     @objc func startAlertTimer() {
+        guard shouldStartAlertTimer else {
+            return
+        }
         let newWorkItem = DispatchWorkItem { [weak self] in
             self?.showNoticeOrAlertAsNeeded()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
         alertWorkItem = newWorkItem
+    }
+    // do not start alert timer if the themes modal is still being presented
+    private var shouldStartAlertTimer: Bool {
+        !((self.presentedViewController as? UINavigationController)?.visibleViewController is WebKitViewController)
     }
 
     @objc func stopAlertTimer() {
