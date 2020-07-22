@@ -21,6 +21,7 @@ class EditPostViewController: UIViewController {
     @objc public var isBVOrder = false
 
     private let loadAutosaveRevision: Bool
+    private let type: String
 
     @objc fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
@@ -48,16 +49,16 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor with the provided post
     ///
     /// - Parameter post: post to edit
-    @objc convenience init(post: Post, loadAutosaveRevision: Bool = false) {
-        self.init(post: post, blog: post.blog, loadAutosaveRevision: loadAutosaveRevision)
+    @objc convenience init(post: Post, type: String, loadAutosaveRevision: Bool = false) {
+        self.init(post: post, blog: post.blog, type: type, loadAutosaveRevision: loadAutosaveRevision)
     }
 
 
     /// Initialize as an editor to create a new post for the provided blog
     ///
     /// - Parameter blog: blog to create a new post for
-    @objc convenience init(blog: Blog) {
-        self.init(post: nil, blog: blog)
+    @objc convenience init(blog: Blog, type: String) {
+        self.init(post: nil, blog: blog, type: type)
     }
 
     /// Initialize as an editor with a specified post to edit and blog to post too.
@@ -66,7 +67,7 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false) {
+    fileprivate init(post: Post?, blog: Blog, type: String, loadAutosaveRevision: Bool = false) {
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
@@ -77,6 +78,7 @@ class EditPostViewController: UIViewController {
             post.fixLocalMediaURLs()
         }
         self.blog = blog
+        self.type = type
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
@@ -121,7 +123,7 @@ class EditPostViewController: UIViewController {
         } else {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
-            let newPost = postService.createDraftPost(for: blog)
+            let newPost = postService.createDraftPost(for: blog, andPostType: self.type)
             post = newPost
             return newPost
         }
@@ -283,7 +285,7 @@ extension EditPostViewController: UIViewControllerRestoration {
                 return nil
         }
 
-        return EditPostViewController(post: reloadedPost)
+        return EditPostViewController(post: reloadedPost, type: "")
     }
 
     override func encodeRestorableState(with coder: NSCoder) {

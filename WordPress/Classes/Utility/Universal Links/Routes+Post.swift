@@ -15,7 +15,7 @@ struct NewPostNavigationAction: NavigationAction {
         if let blog = blog(from: values) {
             WPTabBarController.sharedInstance().showPostTab(for: blog)
         } else {
-            WPTabBarController.sharedInstance().showPostTab()
+            WPTabBarController.sharedInstance()?.showPostTab(withType: Post.typeDefaultIdentifier)
         }
     }
 }

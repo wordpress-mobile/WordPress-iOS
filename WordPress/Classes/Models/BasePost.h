@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString * authorAvatarURL;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
 @property (nonatomic, strong, nullable) NSString * postTitle;
+@property (nonatomic, strong, nullable) NSString * postType;
 @property (nonatomic, strong, nullable) NSString * content;
 @property (nonatomic, strong, nullable) NSString * password;
 @property (nonatomic, strong, nullable) NSString * permaLink;

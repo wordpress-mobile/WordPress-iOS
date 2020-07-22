@@ -592,12 +592,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabReader];
 }
 
-- (void)showPostTab
+- (void)showPostTabWithType: (NSString*)type
 {
-    [self showPostTabWithCompletion:nil];
+    [self showPostTabWithCompletion:nil type:type];
 }
 
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -605,7 +605,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
+        [self showPostTabAnimated:true toMedia:false blog:nil type:type afterDismiss:afterDismiss];
     }
 }
 
@@ -616,7 +616,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:YES toMedia:NO blog:blog];
+        [self showPostTabAnimated:YES toMedia:NO blog:blog type:Post.typeDefaultIdentifier];
     }
 }
 // will be removed when the new IA implementation completes
@@ -630,17 +630,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabNotifications];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia type:(NSString*)type
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil type:type];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog afterDismiss:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog type:type afterDismiss:nil];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type afterDismiss:(void (^)(void))afterDismiss
 {
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -650,7 +650,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         blog = [self currentOrLastBlog];
     }
 
-    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
+    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog type:type];
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
@@ -898,7 +898,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
-        [self showPostTab];
+        [self showPostTabWithType:Post.typeDefaultIdentifier];
         return NO;
     }
 
@@ -1078,7 +1078,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     return @[
-             [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTab) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
+             [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTabWithType:) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
              [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.")],
              [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(showReaderTab) discoverabilityTitle:NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.")],
              // will be removed when the new IA implementation completes

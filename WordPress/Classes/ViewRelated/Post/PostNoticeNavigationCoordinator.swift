@@ -39,7 +39,7 @@ class PostNoticeNavigationCoordinator {
                 return
         }
 
-        let editor = EditPostViewController(post: post)
+        let editor = EditPostViewController(post: post, type: Post.typeDefaultIdentifier)
         editor.modalPresentationStyle = .fullScreen
         editor.openWithPostPost = true
         editor.onClose = { _ in

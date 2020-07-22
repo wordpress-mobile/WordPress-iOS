@@ -10,7 +10,6 @@ extension Post {
     @NSManaged var likeCount: NSNumber?
     @NSManaged var longitudeID: String?
     @NSManaged var postFormat: String?
-    @NSManaged var postType: String?
     @NSManaged var publicID: String?
     @NSManaged var publicizeMessage: String?
     @NSManaged var publicizeMessageID: String?

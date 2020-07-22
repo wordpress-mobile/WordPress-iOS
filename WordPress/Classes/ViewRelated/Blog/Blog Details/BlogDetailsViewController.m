@@ -436,13 +436,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         __weak __typeof(self) weakSelf = self;
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTab];
+            [((WPTabBarController *)self.tabBarController) showPostTabWithType:Post.typeDefaultIdentifier];
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             
             WPTabBarController *controller = (WPTabBarController *)self.tabBarController;
             Blog *blog = [controller currentOrLastBlog];
             [controller showPageEditorForBlog:blog];
+        } newItinerary:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            [((WPTabBarController *)self.tabBarController) showPostTabWithType:@"tribe_events"];
         }];
     }
     
@@ -812,7 +815,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  callback:^{
         [weakSelf showJourneysFromSource:BlogDetailsNavigationSourceRow];
                                                  }];
-//    journeysRow.quickStartIdentifier = QuickStartTourElementPages;
     [rows addObject:journeysRow];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Itinerary", @"Noun. Title. Links to the blog's Itinerary screen.")
@@ -1584,8 +1586,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showItineraryFromSource:(BlogDetailsNavigationSource)source
 {
+    [self trackEvent:WPAnalyticsStatOpenedPosts fromSource:source];
+    PostListViewController *controller = [PostListViewController itineraryControllerWithBlog: self.blog];
+    [self showDetailViewController:controller sender:self];
 
-
+    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showJourneysFromSource:(BlogDetailsNavigationSource)source

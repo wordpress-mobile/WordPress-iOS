@@ -1573,6 +1573,8 @@
 		BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		C20FB4E424AA72F8006E39F1 /* beauVoyage.png in Resources */ = {isa = PBXBuildFile; fileRef = C20FB4E324AA72F8006E39F1 /* beauVoyage.png */; };
 		C281495124B1EC620030FCCF /* BVCreatePostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */; };
+		C2923C8524C1D1CA00325DC4 /* ItineraryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */; };
+		C2923C8724C1D97100325DC4 /* AddPostCategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */; };
 		C293D1272490672B00251B32 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = C293D1262490672B00251B32 /* acknowledgements.html */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -4088,6 +4090,9 @@
 		C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 98.xcdatamodel"; sourceTree = "<group>"; };
 		C20FB4E324AA72F8006E39F1 /* beauVoyage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beauVoyage.png; sourceTree = "<group>"; };
 		C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BVCreatePostCoordinator.swift; sourceTree = "<group>"; };
+		C2923C8324C1C66C00325DC4 /* WordPress 99.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 99.xcdatamodel"; sourceTree = "<group>"; };
+		C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryListViewController.swift; sourceTree = "<group>"; };
+		C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostCategoryButton.swift; sourceTree = "<group>"; };
 		C293D1262490672B00251B32 /* acknowledgements.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html"; sourceTree = "<group>"; };
 		C4842C47973677FC79B1E746 /* Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-BeauVoyageNotificationServiceExtension/Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
@@ -6556,6 +6561,7 @@
 				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
 				5D5D0025187DA9D30027CEF6 /* PostCategoriesViewController.h */,
 				5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */,
+				C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6706,6 +6712,7 @@
 				591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */,
 				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
 				E684383D221F535900752258 /* LoadMoreCounter.swift */,
+				C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -12515,6 +12522,7 @@
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
+				C2923C8724C1D97100325DC4 /* AddPostCategoryButton.swift in Sources */,
 				E192E78C22EF453C008D725D /* WordPress-87-88.xcmappingmodel in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,
 				E125F1E71E8E59C800320B67 /* SharePost+UIActivityItemSource.swift in Sources */,
@@ -12954,6 +12962,7 @@
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
+				C2923C8524C1D1CA00325DC4 /* ItineraryListViewController.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
 				981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,
@@ -14168,7 +14177,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.0.5;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14236,7 +14245,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.0.5;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14687,7 +14696,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.0.5;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -14755,7 +14764,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.0.5;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -15592,6 +15601,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C2923C8324C1C66C00325DC4 /* WordPress 99.xcdatamodel */,
 				C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */,
 				E687A0AE249AC02400C8BA18 /* WordPress 97.xcdatamodel */,
 				3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */,
@@ -15691,7 +15701,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = C207F7DB24B73F6C002BA90C /* WordPress 98.xcdatamodel */;
+			currentVersion = C2923C8324C1C66C00325DC4 /* WordPress 99.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

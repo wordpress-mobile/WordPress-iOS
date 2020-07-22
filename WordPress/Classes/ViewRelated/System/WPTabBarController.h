@@ -50,8 +50,8 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showMySitesTab;
 - (void)showReaderTab;
 - (void)resetReaderTab;
-- (void)showPostTab;
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss;
+- (void)showPostTabWithType: (NSString*)type;
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type;
 - (void)showPostTabForBlog:(Blog *)blog;
 // will be removed when the new IA implementation completes
 - (void)showMeTab;

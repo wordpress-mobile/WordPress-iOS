@@ -30,6 +30,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
+    var isItinerary = false
+
     private let postCompactCellIdentifier = "PostCompactCellIdentifier"
     private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
@@ -104,6 +106,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
         controller.blog = blog
         controller.restorationClass = self
+
+        return controller
+    }
+
+    @objc class func itineraryControllerWithBlog(_ blog: Blog) -> PostListViewController {
+
+        let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
+        controller.blog = blog
+        controller.restorationClass = self
+        controller.isItinerary = true
 
         return controller
     }
@@ -400,8 +413,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if let blog = blog {
             // Show all original posts without a revision & revision posts.
-            let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
-            predicates.append(basePredicate)
+            if isItinerary {
+                let basePredicate = NSPredicate(format: "blog = %@ && revision = nil && postType = %@", blog, "tribe_events")
+                predicates.append(basePredicate)
+            } else {
+                let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+                predicates.append(basePredicate)
+            }
         }
 
         let searchText = currentSearchTerm() ?? ""
@@ -513,7 +531,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        let editor = EditPostViewController(blog: blog)
+        let editor = EditPostViewController(blog: blog, type: Post.typeDefaultIdentifier)
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)

@@ -27,7 +27,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
 
-- (Post *)createDraftPostForBlog:(Blog *)blog;
+- (Post *)createDraftPostForBlog:(Blog *)blog andPostType: (NSString*)type;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
 - (nullable AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;

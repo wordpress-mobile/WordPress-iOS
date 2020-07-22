@@ -18,7 +18,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
 @property (nonatomic, strong) NSMutableArray *selectedCategories;
-@property (nonatomic, strong) UIButton *saveButton;
+@property (nonatomic, strong) AddPostCategoryButton *saveButton;
 @property (nonatomic, strong) NSArray *originalSelection;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, assign) CategoriesSelectionMode selectionMode;
@@ -105,12 +105,12 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
 - (void) addSaveButton {
     if (self.selectionMode == CategoriesSelectionModeBeauVoyageAddPost) {
-        self.saveButton = [[UIButton alloc] init];
+        self.saveButton = [[AddPostCategoryButton alloc] init];
         [self.saveButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
-        self.saveButton.backgroundColor = [UIColor colorNamed:@"Blue60"];
         self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
         self.saveButton.layer.cornerRadius = 5;
         self.saveButton.layer.masksToBounds = YES;
+        [self.saveButton setEnabled:NO];
         [self.saveButton setTitle: NSLocalizedString(@"Save", comment: "Save Action") forState:UIControlStateNormal];
         [self.tableView addSubview:self.saveButton];
         [NSLayoutConstraint activateConstraints:@[
@@ -359,6 +359,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
             if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
                 [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
             }
+            [self.saveButton setEnabled: self.selectedCategories.count != 0];
         } break;
         case (CategoriesSelectionModeBlogDefault): {
             if ([self.selectedCategories containsObject:category]){

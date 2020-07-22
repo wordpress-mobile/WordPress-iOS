@@ -1282,7 +1282,7 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
             WPTabBarController.sharedInstance().showReaderTab()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            WPTabBarController.sharedInstance().showPostTab()
+            WPTabBarController.sharedInstance().showPostTab(withType: Post.typeDefaultIdentifier)
         }
     }
 }

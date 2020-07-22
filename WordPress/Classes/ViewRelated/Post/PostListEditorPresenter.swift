@@ -20,7 +20,7 @@ struct PostListEditorPresenter {
     }
 
     private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: PostListViewController) {
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
+        let editor = EditPostViewController(post: post, type: Post.typeDefaultIdentifier, loadAutosaveRevision: loadAutosaveRevision)
         editor.modalPresentationStyle = .fullScreen
         postListViewController.present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)

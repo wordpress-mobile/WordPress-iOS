@@ -13,7 +13,7 @@ class MediaNoticeNavigationCoordinator {
     static func presentEditor(for blog: Blog, source: String, media: [Media]) {
         WPAppAnalytics.track(.notificationsUploadMediaSuccessWritePost, with: blog)
 
-        let editor = EditPostViewController(blog: blog)
+        let editor = EditPostViewController(blog: blog, type: Post.typeDefaultIdentifier)
         editor.modalPresentationStyle = .fullScreen
         editor.insertedMedia = media
         WPTabBarController.sharedInstance().present(editor, animated: false)
