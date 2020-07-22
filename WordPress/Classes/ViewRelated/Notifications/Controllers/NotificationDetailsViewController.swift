@@ -205,7 +205,6 @@ class NotificationDetailsViewController: UIViewController {
         tableView.reloadData()
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
-        attachReaderViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
         refreshNavigationBar()
     }
@@ -509,7 +508,7 @@ private extension NotificationDetailsViewController {
             let postID = note.metaPostID,
             let siteID = note.metaSiteID else {
                 readerDetailViewController?.remove()
-            return
+                return
         }
 
         readerDetailViewController?.remove()
