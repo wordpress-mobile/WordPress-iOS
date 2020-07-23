@@ -1,5 +1,9 @@
 import UIKit
 
+protocol ReaderTopicsCellDelegate: class {
+    func didSelect(topic: ReaderTagTopic)
+}
+
 /// A cell that displays topics the user might like
 ///
 class ReaderTopicsCell: UITableViewCell {
@@ -20,6 +24,8 @@ class ReaderTopicsCell: UITableViewCell {
 
     /// Constraints to be activated in regular horizontal size class
     private var regularConstraints: [NSLayoutConstraint] = []
+
+    weak var delegate: ReaderTopicsCellDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -126,6 +132,11 @@ extension ReaderTopicsCell: UITableViewDelegate {
         header.pinSubviewToAllEdges(headerTitle, insets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0))
         headerTitle.font = WPStyleGuide.serifFontForTextStyle(.title2)
         return header
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let topic = interests[indexPath.row]
+        delegate?.didSelect(topic: interests[indexPath.row])
     }
 }
 

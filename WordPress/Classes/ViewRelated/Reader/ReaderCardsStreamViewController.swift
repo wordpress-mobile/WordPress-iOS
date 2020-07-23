@@ -23,6 +23,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests {
             let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCell
             cell.configure(Array(interests))
+            cell.delegate = self
             return cell
         } else {
             return UITableViewCell()
@@ -90,5 +91,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let controller = ReaderCardsStreamViewController()
         controller.readerTopic = topic
         return controller
+    }
+}
+
+// MARK: - Suggested Topics Delegate
+
+extension ReaderCardsStreamViewController: ReaderTopicsCellDelegate {
+    func didSelect(topic: ReaderTagTopic) {
+        let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+        navigationController?.pushViewController(topicStreamViewController, animated: true)
     }
 }
