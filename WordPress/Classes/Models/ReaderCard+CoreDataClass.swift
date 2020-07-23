@@ -14,7 +14,7 @@ public class ReaderCard: NSManagedObject {
             post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: managedObjectContext)
         case .interests:
             interests = Set(remoteCard.interests?.map {
-                ReaderTagTopic(remoteInterest: $0, context: context)
+                ReaderTagTopic.createIfNeeded(from: $0, context: context)
             } ?? [])
         default:
             break
