@@ -1573,7 +1573,6 @@
 		BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		C20FB4E424AA72F8006E39F1 /* beauVoyage.png in Resources */ = {isa = PBXBuildFile; fileRef = C20FB4E324AA72F8006E39F1 /* beauVoyage.png */; };
 		C281495124B1EC620030FCCF /* BVCreatePostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */; };
-		C2923C8524C1D1CA00325DC4 /* ItineraryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */; };
 		C2923C8724C1D97100325DC4 /* AddPostCategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */; };
 		C293D1272490672B00251B32 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = C293D1262490672B00251B32 /* acknowledgements.html */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
@@ -4091,7 +4090,6 @@
 		C20FB4E324AA72F8006E39F1 /* beauVoyage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beauVoyage.png; sourceTree = "<group>"; };
 		C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BVCreatePostCoordinator.swift; sourceTree = "<group>"; };
 		C2923C8324C1C66C00325DC4 /* WordPress 99.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 99.xcdatamodel"; sourceTree = "<group>"; };
-		C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItineraryListViewController.swift; sourceTree = "<group>"; };
 		C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostCategoryButton.swift; sourceTree = "<group>"; };
 		C293D1262490672B00251B32 /* acknowledgements.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html"; sourceTree = "<group>"; };
 		C4842C47973677FC79B1E746 /* Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-BeauVoyageNotificationServiceExtension/Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6712,7 +6710,6 @@
 				591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */,
 				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
 				E684383D221F535900752258 /* LoadMoreCounter.swift */,
-				C2923C8424C1D1CA00325DC4 /* ItineraryListViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -12962,7 +12959,6 @@
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
-				C2923C8524C1D1CA00325DC4 /* ItineraryListViewController.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
 				981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,

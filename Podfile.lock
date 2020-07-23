@@ -642,7 +642,7 @@ CHECKOUT OPTIONS:
     :commit: e987739c9344e4fb8d5d38ba60f7ee710679c20f
     :git: https://github.com/beaubateau/WordPressAuthenticator-iOS
   WordPressKit:
-    :commit: 56a8859e2f4f92753d99bca9c951315bd28a9630
+    :commit: d8fdbb703057946665614a9d2fa1c51e693e3d61
     :git: https://github.com/beaubateau/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:

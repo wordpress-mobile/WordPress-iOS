@@ -436,7 +436,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         __weak __typeof(self) weakSelf = self;
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTabWithType:Post.typeDefaultIdentifier];
+            [((WPTabBarController *)self.tabBarController) showPostTabWithType:Post.typeDefaultIdentifier andEditType:EditPostTypeBeauvoyage];
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             
@@ -445,7 +445,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [controller showPageEditorForBlog:blog];
         } newItinerary:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTabWithType:@"tribe_events"];
+            [((WPTabBarController *)self.tabBarController) showPostTabWithType:@"tribe_events" andEditType:EditPostTypeItinerary];
         }];
     }
     

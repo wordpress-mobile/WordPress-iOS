@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class ReaderTabViewModel;
 @class WPSplitViewController;
 @class QuickStartTourGuide;
+@class EditPostViewController;
 @protocol ScenePresenter;
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
@@ -50,9 +51,9 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showMySitesTab;
 - (void)showReaderTab;
 - (void)resetReaderTab;
-- (void)showPostTabWithType: (NSString*)type;
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type;
 - (void)showPostTabForBlog:(Blog *)blog;
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type andEditType:(int)editType;
+- (void)showPostTabWithType: (NSString*)type andEditType:(int)editType;
 // will be removed when the new IA implementation completes
 - (void)showMeTab;
 - (void)showNotificationsTab;

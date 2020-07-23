@@ -592,12 +592,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabReader];
 }
 
-- (void)showPostTabWithType: (NSString*)type
+- (void)showPostTabWithType: (NSString*)type andEditType: (int) editType
 {
-    [self showPostTabWithCompletion:nil type:type];
+    [self showPostTabWithCompletion:nil type:type andEditType:editType];
 }
 
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type andEditType: (int) editType;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -605,7 +605,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil type:type afterDismiss:afterDismiss];
+        [self showPostTabAnimated:true toMedia:false blog:nil type:type andEditType:editType afterDismiss:afterDismiss];
     }
 }
 
@@ -616,7 +616,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:YES toMedia:NO blog:blog type:Post.typeDefaultIdentifier];
+        [self showPostTabAnimated:YES toMedia:NO blog:blog type:Post.typeDefaultIdentifier andEditType:EditPostTypeNormal];
     }
 }
 // will be removed when the new IA implementation completes
@@ -632,15 +632,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia type:(NSString*)type
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil type:type];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil type:type andEditType:EditPostTypeNormal];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type andEditType: (int) editType
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog type:type afterDismiss:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog type:type andEditType:editType afterDismiss:nil];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type afterDismiss:(void (^)(void))afterDismiss
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type andEditType: (int) editType afterDismiss:(void (^)(void))afterDismiss
 {
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -655,7 +655,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
-    editor.isBVOrder = YES;
+    editor.editType = editType;
     
     NSString *tapSource = [Feature enabled:FeatureFlagFloatingCreateButton] ? @"create_button" : @"tab_bar";
     [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
@@ -898,7 +898,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
-        [self showPostTabWithType:Post.typeDefaultIdentifier];
+        [self showPostTabWithType:Post.typeDefaultIdentifier andEditType:EditPostTypeNormal];
         return NO;
     }
 

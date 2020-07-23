@@ -1,5 +1,11 @@
 import UIKit
 
+@objc public enum EditPostType: Int32 {
+    case beauvoyage
+    case itinerary
+    case normal
+}
+
 class EditPostViewController: UIViewController {
 
     // MARK: - Editor Factory
@@ -18,7 +24,7 @@ class EditPostViewController: UIViewController {
     /// is editing a reblogged post
     var postIsReblogged = false
 
-    @objc public var isBVOrder = false
+    @objc var editType: EditPostType = .normal
 
     private let loadAutosaveRevision: Bool
     private let type: String
@@ -175,8 +181,10 @@ class EditPostViewController: UIViewController {
                 editor.prepopulateMediaItems(insertedMedia)
             }
         }
-        if isBVOrder {
-            editor.displayPostSettings(isBVOrder: true)
+        switch editType {
+        case .beauvoyage, .itinerary:
+            editor.displayPostSettings(type: editType)
+        case .normal: break
         }
     }
 

@@ -184,7 +184,11 @@ BOOL categoryShowed = NO;
     [self.navigationController setToolbarHidden:YES];
     
     [self reloadData];
-    if (self.isBVOrder && !featureImageShowed) {
+
+    if (self.editPostType == EditPostTypeItinerary && !featureImageShowed) {
+        featureImageShowed = YES;
+        [self showPostGeolocationSelector];
+    } else if (self.editPostType == EditPostTypeBeauvoyage && !featureImageShowed) {
         featureImageShowed = YES;
         [self showFeaturedImageSelector];
     }
@@ -1267,7 +1271,7 @@ BOOL categoryShowed = NO;
 - (void)showCategoriesSelection
 {
     CategoriesSelectionMode mode;
-    if(self.isBVOrder) {
+    if (self.editPostType == EditPostTypeItinerary || self.editPostType == EditPostTypeBeauvoyage) {
         mode = CategoriesSelectionModeBeauVoyageAddPost;
     } else {
         mode = CategoriesSelectionModePost;
@@ -1419,7 +1423,7 @@ BOOL categoryShowed = NO;
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
                           withRowAnimation:UITableViewRowAnimationFade];
-    if (self.isBVOrder && featureImageShowed && !categoryShowed) {
+    if ((self.editPostType == EditPostTypeItinerary || self.editPostType == EditPostTypeBeauvoyage) && featureImageShowed && !categoryShowed) {
         categoryShowed = YES;
         [self showCategoriesSelection];
     }
