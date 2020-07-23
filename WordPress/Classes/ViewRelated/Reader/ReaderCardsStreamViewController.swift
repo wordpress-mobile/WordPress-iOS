@@ -20,9 +20,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
             return cell(for: cardPost, at: indexPath)
-        } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests {
+        } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests?.array as? [ReaderTagTopic] {
             let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderSuggestedTopicsCell
-            cell.configure(Array(interests))
+            cell.configure(interests)
             cell.delegate = self
             return cell
         } else {

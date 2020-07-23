@@ -508,7 +508,7 @@
     </entity>
     <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="interests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderTagTopic" inverseName="card" inverseEntity="ReaderTagTopic" syncable="YES"/>
+        <relationship name="interests" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderTagTopic" inverseName="card" inverseEntity="ReaderTagTopic" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">

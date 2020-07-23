@@ -40,7 +40,12 @@ class ReaderCardService {
                                     cards.enumerated().forEach { index, remoteCard in
                                         let card = ReaderCard(context: self.syncContext, from: remoteCard)
 
-                                        card?.interests?.forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
+                                        // Assign each interest an endpoint
+                                        card?
+                                            .interests?
+                                            .array
+                                            .compactMap { $0 as? ReaderTagTopic }
+                                            .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
 
                                         // To keep the API order
                                         card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
