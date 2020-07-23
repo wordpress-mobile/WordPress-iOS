@@ -36,10 +36,11 @@ class ReaderCardTests: XCTestCase {
 
         remoteCard(ofType: .interests) { remoteCard in
             let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let interests = card?.interests?.array as? [ReaderTagTopic]
 
-            expect(card?.interests?.count).to(equal(2))
-            expect(card?.interests?.filter { $0.title == "Activism" }).toNot(beNil())
-            expect(card?.interests?.filter { $0.slug == "activism" }).toNot(beNil())
+            expect(interests?.count).to(equal(2))
+            expect(interests?.filter { $0.title == "Activism" }).toNot(beNil())
+            expect(interests?.filter { $0.slug == "activism" }).toNot(beNil())
             expectation.fulfill()
         }
 
