@@ -508,7 +508,7 @@
     </entity>
     <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="interests" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderInterest" inverseName="card" inverseEntity="ReaderInterest" syncable="YES"/>
+        <relationship name="interests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderTagTopic" inverseName="card" inverseEntity="ReaderTagTopic" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
@@ -524,7 +524,7 @@
     <entity name="ReaderInterest" representedClassName=".ReaderInterest" syncable="YES">
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="interests" inverseEntity="ReaderCard" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" syncable="YES"/>
     </entity>
     <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -614,6 +614,7 @@
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="interests" inverseEntity="ReaderCard" syncable="YES"/>
     </entity>
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
@@ -834,7 +835,7 @@
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>
         <element name="ReaderSiteInfoSubscriptionPost" positionX="-1845.87109375" positionY="1035.71484375" width="128" height="75"/>
         <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="240"/>
-        <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="90"/>
+        <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="103"/>
         <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="60"/>
         <element name="ReferrerStatsRecordValue" positionX="-273.765625" positionY="1398.2265625" width="128" height="133"/>
         <element name="Revision" positionX="-1287.671875" positionY="1336.49609375" width="128" height="195"/>

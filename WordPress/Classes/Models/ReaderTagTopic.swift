@@ -18,12 +18,13 @@ import Foundation
 
     /// If an interest was added while the user is not logged into a WP.com account
     /// The tagID will be 0
+    /// TODO: change to wasFollowedWhileLoggedOut
     @objc var wasAddedWhileLoggedOut: Bool {
         return tagID == Self.loggedOutTagID
     }
 
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
-    convenience init?(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) {
+    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) {
         self.init(context: context)
 
         title = remoteInterest.title

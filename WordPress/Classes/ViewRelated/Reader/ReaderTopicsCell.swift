@@ -7,7 +7,7 @@ class ReaderTopicsCell: UITableViewCell {
 
     private let tableView = TopicsTableView()
 
-    private var interests: [ReaderInterest] = [] {
+    private var interests: [ReaderTagTopic] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -36,7 +36,7 @@ class ReaderTopicsCell: UITableViewCell {
         refreshHorizontalConstraints()
     }
 
-    func configure(_ interests: [ReaderInterest]) {
+    func configure(_ interests: [ReaderTagTopic]) {
         self.interests = interests
     }
 

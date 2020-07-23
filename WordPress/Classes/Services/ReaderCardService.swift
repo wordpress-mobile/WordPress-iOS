@@ -27,25 +27,27 @@ class ReaderCardService {
             self.service.fetchCards(for: slugs,
                                success: { [weak self] cards in
 
-                                guard let syncContext = self?.syncContext else {
+                                guard let `self` = self else {
                                     return
                                 }
 
-                                syncContext.perform {
+                                self.syncContext.perform {
 
                                     if page == Constants.firstPage {
-                                        self?.removeAllCards()
+                                        self.removeAllCards()
                                     }
 
                                     cards.enumerated().forEach { index, remoteCard in
-                                        let card = ReaderCard(context: syncContext, from: remoteCard)
+                                        let card = ReaderCard(context: self.syncContext, from: remoteCard)
+
+                                        card?.interests?.forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
 
                                         // To keep the API order
                                         card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
                                     }
                                 }
 
-                                self?.coreDataStack.save(syncContext) {
+                                self.coreDataStack.save(self.syncContext) {
                                     success(cards.count, true)
                                 }
             }, failure: { error in
@@ -56,6 +58,7 @@ class ReaderCardService {
     }
 
     private func removeAllCards() {
+        // TODO: remove topics
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
