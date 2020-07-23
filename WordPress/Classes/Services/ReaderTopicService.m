@@ -964,13 +964,18 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         // If the user adds a locally saved tag/interest prevent it from being deleted
                         // while the user is logged out.
                         if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
-                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
-                                ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+                            ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
+                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
                                 if (tagTopic.wasFollowedWhileLoggedOut) {
                                     DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
                                     continue;
                                 }
+                            }
+
+                            if (tagTopic.card) {
+                                DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
+                                continue;
                             }
                         }
 

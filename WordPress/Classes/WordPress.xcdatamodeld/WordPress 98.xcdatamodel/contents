@@ -609,7 +609,7 @@
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="interests" inverseEntity="ReaderCard" syncable="YES"/>
+        <relationship name="card" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="interests" inverseEntity="ReaderCard" syncable="YES"/>
     </entity>
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
