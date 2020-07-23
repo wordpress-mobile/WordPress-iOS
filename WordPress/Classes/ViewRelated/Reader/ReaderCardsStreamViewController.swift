@@ -67,6 +67,15 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         })
     }
 
+    override func syncIfAppropriate() {
+        // Only sync if no results are shown
+        guard content.content?.count == 0 else {
+            return
+        }
+
+        super.syncIfAppropriate()
+    }
+
     // MARK: - TableViewHandler
 
     override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
