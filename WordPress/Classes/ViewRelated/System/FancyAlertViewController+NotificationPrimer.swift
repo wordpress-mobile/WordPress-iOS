@@ -16,18 +16,23 @@ extension FancyAlertViewController {
     ///
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
-    static func makeNotificationAlertController(titleText: String?, bodyText: String?, approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
+    static func makeNotificationAlertController(titleText: String?,
+                                                bodyText: String?,
+                                                seenEvent: WPAnalyticsEvent,
+                                                allowEvent: WPAnalyticsEvent,
+                                                noEvent: WPAnalyticsEvent,
+                                                approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let publishButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             approveAction(controller)
             // TODO: Analytics must be differentiated between first and second alert
-            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+            WPAnalytics.track(allowEvent, properties: [Analytics.locationKey: Analytics.alertKey])
         }
 
         let dismissButton = ButtonConfig(Strings.notNowText) { controller, _ in
             defer {
                 // TODO: Analytics must be differentiated between first and second alert
-                WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+                WPAnalytics.track(noEvent, properties: [Analytics.locationKey: Analytics.alertKey])
             }
             controller.dismiss(animated: true)
         }
@@ -41,7 +46,7 @@ extension FancyAlertViewController {
                                                      defaultButton: publishButton,
                                                      cancelButton: dismissButton,
                                                      appearAction: {
-                                                        WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
+                                                        WPAnalytics.track(seenEvent, properties: [Analytics.locationKey: Analytics.alertKey])
                                                      },
                                                      dismissAction: {})
 
@@ -50,11 +55,21 @@ extension FancyAlertViewController {
     }
 
     static func makeNotificationPrimerAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
-        return makeNotificationAlertController(titleText: Strings.firstAlertTitleText, bodyText: Strings.firstAlertBodyText, approveAction: approveAction)
+        return makeNotificationAlertController(titleText: Strings.firstAlertTitleText,
+                                               bodyText: Strings.firstAlertBodyText,
+                                               seenEvent: .pushNotificationsPrimerSeen,
+                                               allowEvent: .pushNotificationsPrimerAllowTapped,
+                                               noEvent: .pushNotificationsPrimerNoTapped,
+                                               approveAction: approveAction)
     }
 
     static func makeNotificationSecondAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
-        return makeNotificationAlertController(titleText: Strings.secondAlertTitleText, bodyText: nil, approveAction: approveAction)
+        return makeNotificationAlertController(titleText: Strings.secondAlertTitleText,
+                                               bodyText: nil,
+                                               seenEvent: .secondNotificationsAlertSeen,
+                                               allowEvent: .secondNotificationsAlertAllowTapped,
+                                               noEvent: .secondNotificationsAlertNoTapped,
+                                               approveAction: approveAction)
     }
 }
 
