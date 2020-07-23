@@ -63,7 +63,6 @@ class ReaderCardService {
     }
 
     private func removeAllCards() {
-        // TODO: remove topics
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
