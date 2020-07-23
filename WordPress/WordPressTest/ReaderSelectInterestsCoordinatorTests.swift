@@ -196,6 +196,10 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
         fetchSuccessExpectation?.fulfill()
     }
 
+    func path(slug: String) -> String {
+        return "/path/to/slug"
+    }
+
     // MARK: - Private: Helpers
     private func populateTestItems() {
         guard let context = context else {
