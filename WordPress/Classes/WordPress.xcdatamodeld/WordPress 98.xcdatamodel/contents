@@ -521,11 +521,6 @@
     </entity>
     <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderGapMarker" representedClassName="ReaderGapMarker" parentEntity="ReaderPost" syncable="YES"/>
-    <entity name="ReaderInterest" representedClassName=".ReaderInterest" syncable="YES">
-        <attribute name="slug" attributeType="String" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderCard" syncable="YES"/>
-    </entity>
     <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -827,7 +822,6 @@
         <element name="ReaderCrossPostMeta" positionX="-1292.6171875" positionY="353.91796875" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="-1651.8125" positionY="578.61328125" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="-1092.98828125" positionY="814.5703125" width="128" height="45"/>
-        <element name="ReaderInterest" positionX="-1638" positionY="-459" width="128" height="88"/>
         <element name="ReaderListTopic" positionX="-1500.2890625" positionY="932.5703125" width="128" height="135"/>
         <element name="ReaderPost" positionX="-1102" positionY="72.3046875" width="128" height="703"/>
         <element name="ReaderSearchSuggestion" positionX="-1292.68359375" positionY="211.44921875" width="128" height="75"/>
