@@ -1,5 +1,14 @@
+15.4
+-----
+ * [***] Block Editor: Media editing support in Media & Text block.
+ * [***] Block Editor: New block: Social Icons
+ * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
+
 15.3
 -----
+* [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
+* [***] Block Editor: Users can now individually edit unsupported blocks found in posts or pages. Not available on selfhosted sites or sites defaulting to classic editor.
+* [*] Block Editor: Improved editor loading experience with Ghost Effect.
  
 15.2
 ----

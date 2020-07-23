@@ -4,7 +4,7 @@
 @import CocoaLumberjack;
 
 @interface WPLogger ()
-@property (nonatomic, strong, readwrite) DDFileLogger *fileLogger;
+@property (nonatomic, strong, readwrite) DDFileLogger * _Nonnull fileLogger;
 @end
 
 @implementation WPLogger

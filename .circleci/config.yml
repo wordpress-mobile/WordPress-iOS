@@ -38,6 +38,9 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
+      - run:
+          name: Install Dependencies
+          command: rake dependencies
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPress' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData

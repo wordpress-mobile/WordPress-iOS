@@ -10,7 +10,6 @@ enum FeatureFlag: Int, CaseIterable {
     case meMove
     case floatingCreateButton
     case newReaderNavigation
-    case tenor
     case readerWebview
     case swiftCoreData
     case homepageSettings
@@ -40,8 +39,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .floatingCreateButton:
             return true
         case .newReaderNavigation:
-            return true
-        case .tenor:
             return true
         case .readerWebview:
             return true
@@ -89,8 +86,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
-        case .tenor:
-            return "Tenor GIF media source"
         case .readerWebview:
             return "Reader content displayed in a WebView"
         case .swiftCoreData:

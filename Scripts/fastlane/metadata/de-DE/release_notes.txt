@@ -1,12 +1,7 @@
-Es ist einfach so: GIFs machen das Internet besser. Du hast jetzt über Tenor Zugriff auf eine Bibliothek mit kostenlosen GIFs, die du jedem Beitrag oder jeder Seite mithilfe eines Bild-Blocks hinzufügen kannst. Die Animation wird sogar beim Erstellen direkt im Editor angezeigt.
+Schon gesehen? Das ist kein Trick – der Reader ist jetzt viel übersichtlicher. Der Grund: Wir haben viele Veränderungen an der Darstellung von Beiträgen vorgenommen. Dadurch werden viele kleine Dinge wie Leerzeichen, Positionierung und Größendarstellungen behoben, die das Gesamterlebnis deutlich angenehmer machen. Außerdem werden Navigations- und Werkzeugleiste wie auf magische Weise butterweich ein- und ausgeblendet! Und ein wenig Magie können wir doch im Moment alle gut gebrauchen, nicht wahr?
 
-Der Block-Editor weist eine weitere Reihe von Verbesserungen auf:
-– Unterstützung für Theme-definierte Farben und Farbverläufe im Cover-Block
-– Die Möglichkeit, Videos zu Cover-Blocks hochzuladen, auch wenn der Editor geschlossen ist
-– Und unsere wichtigste Aktualisierung: verbesserte Verarbeitung von Beschriftungen und Zitaten Wenn du nach dem Hinzufügen von Beschriftungen in Bild-, Video-, Galerie-, Zitat- und Pullquote-Blöcken die Eingabetaste drückst, wird der Cursor automatisch in einem neuen Block positioniert.
+Wir wissen, dass die nötige Inspiration für einen Titel für deine Website manchmal auf sich warten lässt, und manchmal hat man später einfach eine bessere Idee. Deshalb kannst du den Titel deiner Website jetzt ändern, indem du in den Website-Details auf den Titel deiner Website tippst. Und wenn dir gerade ein ganz großartiger Name für eine neue Website eingefallen ist, gibt es jetzt eine neue Schnellstart-Aufgabe, mit der du die Titel für all deine neuen Websites festlegen kannst.
 
-Zusätzlich zu diesen Aktualisierungen kannst du jetzt direkt in der Seiten-Liste auswählen, welche Seiten du als deine Startseiten und Beitragsseite verwenden möchtest. Und es gibt einen Schalter auf App-Ebene, um zwischen hellem und dunklem Design zu wählen.
+Hast du ein Händchen für Farben? Wir haben den Block-Editor verbessert, sodass du in den Button- und Cover-Blöcken den Verlaufstyp und -winkel anpassen kannst. Wenn du sehen möchtest, wie viele Blöcke du verwendest und wie viel du tippst, zeigen wir jetzt Kennzahlen für Blöcke, Wörter und Zeichen an.
 
-Wir wissen, dass das Datum der letzten Beiträge auf der Einsichten-Seite falsch berechnet wurde. Dies wurde nun behoben!
-
-Ein paar Probleme bei Schnellstart-Touren haben dazu geführt, dass diese etwas langsamer waren. Wir haben einige Vorgangsprobleme in den Touren „Zielgruppe vergrößern“ und „Einen Beitrag veröffentlichen“ behoben und einen Fehler korrigiert, der dafür sorgte, dass VoiceOver-Kunden keine Updates zu abgeschlossenen Schnellstart-Aufgaben erhielten. (Und für alle VoiceOver-Benutzer: VoiceOver wird jetzt auch vom Abschnitt „Nächste Schritte“ unterstützt.)
+Außerdem haben wir einen lästigen Absturz behoben, der aufgetreten war, wenn du nach der Abmeldung und sofortigen erneuten Anmeldung zu schnell zum Block-Editor gewechselt bist. Jetzt kannst du dich nach Lust und Laune an- und abmelden!
