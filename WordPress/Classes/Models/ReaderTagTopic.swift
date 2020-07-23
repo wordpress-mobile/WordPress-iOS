@@ -16,11 +16,10 @@ import Foundation
         return NSNotFound as NSNumber
     }
 
-    /// If an interest was added while the user is not logged into a WP.com account
+    /// If an interest was followed while the user is not logged into a WP.com account
     /// The tagID will be 0
-    /// TODO: change to wasFollowedWhileLoggedOut
-    @objc var wasAddedWhileLoggedOut: Bool {
-        return tagID == Self.loggedOutTagID
+    @objc var wasFollowedWhileLoggedOut: Bool {
+        return tagID == Self.loggedOutTagID && following
     }
 
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest

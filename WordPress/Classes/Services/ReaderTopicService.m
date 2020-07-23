@@ -967,7 +967,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                             if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
                                 ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
-                                if (tagTopic.wasAddedWhileLoggedOut) {
+                                if (tagTopic.wasFollowedWhileLoggedOut) {
                                     DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
                                     continue;
                                 }
