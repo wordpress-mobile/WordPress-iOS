@@ -6,7 +6,7 @@ protocol ReaderTopicsCellDelegate: class {
 
 /// A cell that displays topics the user might like
 ///
-class ReaderTopicsCell: UITableViewCell {
+class ReaderSuggestedTopicsCell: UITableViewCell {
     private let containerView = UIView()
 
     private let tableView = TopicsTableView()
@@ -99,7 +99,7 @@ class ReaderTopicsCell: UITableViewCell {
     }
 }
 
-extension ReaderTopicsCell: UITableViewDataSource {
+extension ReaderSuggestedTopicsCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return interests.count
     }
@@ -122,7 +122,7 @@ extension ReaderTopicsCell: UITableViewDataSource {
     }
 }
 
-extension ReaderTopicsCell: UITableViewDelegate {
+extension ReaderSuggestedTopicsCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UIView()
         let headerTitle = UILabel()

@@ -12,7 +12,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
-        tableView.register(ReaderTopicsCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+        tableView.register(ReaderSuggestedTopicsCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
     // MARK: - TableView Related
@@ -21,7 +21,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
             return cell(for: cardPost, at: indexPath)
         } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderSuggestedTopicsCell
             cell.configure(Array(interests))
             cell.delegate = self
             return cell
