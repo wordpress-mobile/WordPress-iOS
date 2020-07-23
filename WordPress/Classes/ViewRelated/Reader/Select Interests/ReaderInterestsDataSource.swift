@@ -12,7 +12,7 @@ class ReaderInterestViewModel {
         return interest.slug
     }
 
-    private var interest: RemoteReaderInterest
+    let interest: RemoteReaderInterest
 
     init(interest: RemoteReaderInterest) {
         self.interest = interest
