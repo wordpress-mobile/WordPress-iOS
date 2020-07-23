@@ -34,6 +34,19 @@ class ReaderSelectInterestsCoordinator {
         }()
     }
 
+    // MARK: - Saving
+    public func saveInterests(interests: [RemoteReaderInterest], completion: @escaping (Bool) -> Void) {
+        let isLoggedIn = userId != nil
+
+        interestsService.followInterests(interests, success: { _ in
+            completion(true)
+
+        }, failure: { _ in
+            completion(false)
+
+        }, isLoggedIn: isLoggedIn)
+    }
+
     // MARK: - Display Logic
 
     /// Determines whether or not the select interests view should be displayed

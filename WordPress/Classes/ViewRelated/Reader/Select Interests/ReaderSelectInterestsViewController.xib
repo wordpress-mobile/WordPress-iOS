@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -13,6 +13,9 @@
                 <outlet property="activityIndicatorView" destination="a7r-YY-Vl7" id="IQc-pB-zlX"/>
                 <outlet property="buttonContainerView" destination="X4F-fc-WqY" id="TtA-Ul-l6R"/>
                 <outlet property="collectionView" destination="fUq-vV-Pah" id="ueF-52-q8k"/>
+                <outlet property="contentContainerView" destination="y7t-k2-AgA" id="KvG-Vr-Y5Y"/>
+                <outlet property="loadingLabel" destination="NPa-Pf-eLr" id="Uzi-sA-Nvp"/>
+                <outlet property="loadingView" destination="DIz-pa-QD0" id="NUq-Ic-P2y"/>
                 <outlet property="nextButton" destination="5kh-rf-B5P" id="pMz-bN-ncz"/>
                 <outlet property="subTitleLabel" destination="Efr-XO-GjF" id="Yjz-wS-DOq"/>
                 <outlet property="titleLabel" destination="sln-01-DYL" id="Pqx-Ot-sSb"/>
@@ -21,87 +24,112 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2ka-fB-oWM">
-                    <rect key="frame" x="0.0" y="44" width="414" height="752"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y7t-k2-AgA" userLabel="Content Container View">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rOi-KY-muX">
-                            <rect key="frame" x="20" y="8" width="374" height="110"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2ka-fB-oWM">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="670"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discover and follow blogs you love" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sln-01-DYL" userLabel="Header Label">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="81.666666666666671"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your interests" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efr-XO-GjF" userLabel="Subtitle Label">
-                                    <rect key="frame" x="0.0" y="89.666666666666657" width="374" height="20.333333333333329"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rOi-KY-muX">
+                                    <rect key="frame" x="20" y="8" width="374" height="110"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discover and follow blogs you love" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sln-01-DYL" userLabel="Header Label">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="81.666666666666671"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your interests" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efr-XO-GjF" userLabel="Subtitle Label">
+                                            <rect key="frame" x="0.0" y="89.666666666666671" width="374" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fUq-vV-Pah">
+                                    <rect key="frame" x="20" y="128" width="374" height="542"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IKi-eM-O1E" customClass="ReaderInterestsCollectionViewFlowLayout" customModule="WordPress" customModuleProvider="target">
+                                        <size key="itemSize" width="128" height="128"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="7a3-Gm-xSh"/>
+                                        <outlet property="delegate" destination="-1" id="EUg-Zm-REW"/>
+                                    </connections>
+                                </collectionView>
                             </subviews>
+                            <edgeInsets key="layoutMargins" top="8" left="20" bottom="0.0" right="20"/>
                         </stackView>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fUq-vV-Pah">
-                            <rect key="frame" x="20" y="128" width="374" height="624"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IKi-eM-O1E" customClass="ReaderInterestsCollectionViewFlowLayout" customModule="WordPress" customModuleProvider="target">
-                                <size key="itemSize" width="128" height="128"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="7a3-Gm-xSh"/>
-                                <outlet property="delegate" destination="-1" id="EUg-Zm-REW"/>
-                            </connections>
-                        </collectionView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4F-fc-WqY" userLabel="Button Container View">
+                            <rect key="frame" x="0.0" y="670" width="414" height="66"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kh-rf-B5P" customClass="FancyButton" customModule="WordPressUI">
+                                    <rect key="frame" x="20" y="10" width="374" height="46"/>
+                                    <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
+                                    <state key="normal" title="Select a few to continue">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="OYJ-EI-lUA"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="66" id="012-kS-ALd"/>
+                                <constraint firstAttribute="bottom" secondItem="5kh-rf-B5P" secondAttribute="bottom" constant="10" id="LUO-CS-zZF"/>
+                                <constraint firstAttribute="trailing" secondItem="5kh-rf-B5P" secondAttribute="trailing" constant="20" id="RrJ-SS-xG6"/>
+                                <constraint firstItem="5kh-rf-B5P" firstAttribute="top" secondItem="X4F-fc-WqY" secondAttribute="top" constant="10" id="nTd-5J-dOz"/>
+                                <constraint firstItem="5kh-rf-B5P" firstAttribute="leading" secondItem="X4F-fc-WqY" secondAttribute="leading" constant="20" id="zV4-Ir-MFf"/>
+                            </constraints>
+                        </view>
                     </subviews>
-                    <edgeInsets key="layoutMargins" top="8" left="20" bottom="0.0" right="20"/>
-                </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4F-fc-WqY" userLabel="Button Container View">
-                    <rect key="frame" x="0.0" y="796" width="414" height="66"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kh-rf-B5P" customClass="FancyButton" customModule="WordPressUI">
-                            <rect key="frame" x="20" y="10" width="374" height="46"/>
-                            <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
-                            <state key="normal" title="Select a few to continue">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="OYJ-EI-lUA"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="66" id="012-kS-ALd"/>
-                        <constraint firstAttribute="bottom" secondItem="5kh-rf-B5P" secondAttribute="bottom" constant="10" id="LUO-CS-zZF"/>
-                        <constraint firstAttribute="trailing" secondItem="5kh-rf-B5P" secondAttribute="trailing" constant="20" id="RrJ-SS-xG6"/>
-                        <constraint firstItem="5kh-rf-B5P" firstAttribute="top" secondItem="X4F-fc-WqY" secondAttribute="top" constant="10" id="nTd-5J-dOz"/>
-                        <constraint firstItem="5kh-rf-B5P" firstAttribute="leading" secondItem="X4F-fc-WqY" secondAttribute="leading" constant="20" id="zV4-Ir-MFf"/>
+                        <constraint firstItem="X4F-fc-WqY" firstAttribute="leading" secondItem="y7t-k2-AgA" secondAttribute="leading" id="9mr-Wg-Hvq"/>
+                        <constraint firstAttribute="trailing" secondItem="X4F-fc-WqY" secondAttribute="trailing" id="AzF-5F-ioe"/>
+                        <constraint firstAttribute="trailing" secondItem="2ka-fB-oWM" secondAttribute="trailing" id="Fnt-G7-QEW"/>
+                        <constraint firstItem="2ka-fB-oWM" firstAttribute="leading" secondItem="y7t-k2-AgA" secondAttribute="leading" id="Mso-AA-bvt"/>
+                        <constraint firstItem="2ka-fB-oWM" firstAttribute="top" secondItem="y7t-k2-AgA" secondAttribute="top" id="NQz-F4-hfI"/>
+                        <constraint firstItem="X4F-fc-WqY" firstAttribute="top" secondItem="2ka-fB-oWM" secondAttribute="bottom" id="PrH-sw-ZRT"/>
+                        <constraint firstAttribute="bottom" secondItem="X4F-fc-WqY" secondAttribute="bottom" id="e2B-2S-d5a"/>
                     </constraints>
                 </view>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a7r-YY-Vl7">
-                    <rect key="frame" x="197" y="410" width="20" height="20"/>
-                </activityIndicatorView>
+                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="DIz-pa-QD0" userLabel="Loading Container View">
+                    <rect key="frame" x="20" y="331.33333333333331" width="374" height="73.333333333333314"/>
+                    <subviews>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a7r-YY-Vl7">
+                            <rect key="frame" x="0.0" y="0.0" width="374" height="20"/>
+                        </activityIndicatorView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPa-Pf-eLr">
+                            <rect key="frame" x="0.0" y="53" width="374" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
-                <constraint firstItem="a7r-YY-Vl7" firstAttribute="centerX" secondItem="2ka-fB-oWM" secondAttribute="centerX" id="22Y-PR-zvD"/>
-                <constraint firstItem="2ka-fB-oWM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="IP0-p9-Enf"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2ka-fB-oWM" secondAttribute="trailing" id="O6R-Ud-5bg"/>
-                <constraint firstItem="2ka-fB-oWM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Pvc-kD-Ozf"/>
-                <constraint firstItem="X4F-fc-WqY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="VQH-7v-APj"/>
-                <constraint firstItem="a7r-YY-Vl7" firstAttribute="centerY" secondItem="2ka-fB-oWM" secondAttribute="centerY" id="YL1-0t-G5U"/>
-                <constraint firstItem="X4F-fc-WqY" firstAttribute="top" secondItem="2ka-fB-oWM" secondAttribute="bottom" id="Zxn-Tx-1xX"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="X4F-fc-WqY" secondAttribute="trailing" id="t47-iQ-NNe"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="X4F-fc-WqY" secondAttribute="bottom" id="tsz-xv-qD4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="y7t-k2-AgA" secondAttribute="bottom" id="1eg-oJ-DKt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="DIz-pa-QD0" secondAttribute="trailing" constant="20" id="LAe-0c-dgq"/>
+                <constraint firstItem="DIz-pa-QD0" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="W40-bk-aVZ"/>
+                <constraint firstItem="y7t-k2-AgA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Wnu-bP-bRf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="y7t-k2-AgA" secondAttribute="trailing" id="iN8-nW-KD8"/>
+                <constraint firstItem="DIz-pa-QD0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="nhC-Ak-j1v"/>
+                <constraint firstItem="DIz-pa-QD0" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="oBH-mC-Zzj"/>
+                <constraint firstItem="y7t-k2-AgA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="w4M-aZ-bPI"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="-577" y="155"/>
