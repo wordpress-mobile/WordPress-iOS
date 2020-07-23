@@ -136,7 +136,7 @@ extension ReaderSuggestedTopicsCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let topic = interests[indexPath.row]
-        delegate?.didSelect(topic: interests[indexPath.row])
+        delegate?.didSelect(topic: topic)
     }
 }
 
