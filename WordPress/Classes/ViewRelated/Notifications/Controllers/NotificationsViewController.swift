@@ -1107,8 +1107,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
     func tableViewWillChangeContent(_ tableView: UITableView) {
         guard shouldCountNotificationsForSecondAlert,
-            let note = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
-            let timestamp = note.timestamp else {
+            let notification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let timestamp = notification.timestamp else {
                 timestampBeforeUpdatesForSecondAlert = nil
                 return
         }
