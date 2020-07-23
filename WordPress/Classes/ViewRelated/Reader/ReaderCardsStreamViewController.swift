@@ -15,6 +15,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         tableView.register(ReaderSuggestedTopicsCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        // Only sync if the tableview is at the top, otherwise this will change offset
+        if isTableViewAtTheTop() {
+            super.viewWillAppear(animated)
+        }
+    }
+
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -48,6 +55,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return cell
     }
 
+    private func isTableViewAtTheTop() -> Bool {
+        return tableView.contentOffset.y == 0
+    }
+
     // MARK: - Sync
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
@@ -69,15 +80,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
             failure?(error as NSError)
         })
-    }
-
-    override func syncIfAppropriate() {
-        // Only sync if no results are shown
-        guard content.content?.count == 0 else {
-            return
-        }
-
-        super.syncIfAppropriate()
     }
 
     // MARK: - TableViewHandler
