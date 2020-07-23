@@ -13,6 +13,10 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
 
     private var interests: [ReaderTagTopic] = [] {
         didSet {
+            guard oldValue != interests else {
+                return
+            }
+
             tableView.reloadData()
         }
     }
@@ -137,6 +141,7 @@ extension ReaderSuggestedTopicsCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let topic = interests[indexPath.row]
         delegate?.didSelect(topic: topic)
+        tableView.deselectSelectedRowWithAnimation(true)
     }
 }
 
