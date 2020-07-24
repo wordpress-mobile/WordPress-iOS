@@ -10,6 +10,10 @@ class GutenbergLightNavigationController: UINavigationController {
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+
     var shadowIsHidden: Bool = false {
         didSet {
             if shadowIsHidden {
@@ -44,5 +48,7 @@ class GutenbergLightNavigationController: UINavigationController {
 
         navigationBar.barStyle = .default
         navigationBar.barTintColor = .white
+
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
