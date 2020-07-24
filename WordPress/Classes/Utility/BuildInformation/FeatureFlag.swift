@@ -30,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedSiteAddress:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .unifiedGoogle:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
