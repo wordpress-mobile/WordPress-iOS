@@ -332,7 +332,7 @@ extension WPStyleGuide {
 
         let followIcon = UIImage.gridicon(.readerFollow, size: size)
         let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
-        
+
         button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
         button.layer.cornerRadius = 4.0
 
