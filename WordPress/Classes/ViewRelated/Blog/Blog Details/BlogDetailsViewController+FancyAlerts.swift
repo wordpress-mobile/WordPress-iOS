@@ -28,10 +28,21 @@ extension BlogDetailsViewController {
                 case .siteIcon, .siteTitle:
                     // handles the padding in case the element is not in the table view
                     self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                case .viewSite:
+                    guard let self = self,
+                        let navigationController = self.navigationController,
+                        navigationController.visibleViewController != self else {
+                        return
+                    }
+
+                    self.dismiss(animated: true) {
+                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        self.shouldScrollToViewSite = true
+                        navigationController.popToViewController(self, animated: true)
+                    }
                 default:
                     break
                 }
-
             }
         }
     }

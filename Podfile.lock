@@ -385,7 +385,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.21.0-beta.1):
+  - WordPressAuthenticator (1.21.0-beta.4):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -397,7 +397,7 @@ PODS:
     - WordPressKit (~> 4.0-beta.0)
     - WordPressShared (~> 1.9-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.13.0-beta.2):
+  - WordPressKit (4.13.0-beta.4):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -405,7 +405,7 @@ PODS:
     - WordPressShared (~> 1.9)
     - wpxmlrpc (= 0.8.5)
   - WordPressMocks (0.0.8)
-  - WordPressShared (1.9.1):
+  - WordPressShared (1.9.2-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.7.1)
@@ -491,9 +491,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.21.0-beta)
-  - WordPressKit (= 4.13.0-beta.2)
+  - WordPressKit (= 4.13.0-beta.4)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.9.1)
+  - WordPressShared (= 1.9.2-beta.1)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/2e899459e4c058c00a1bb80da8fed7282e433458/third-party-podspecs/Yoga.podspec.json`)
@@ -501,9 +501,8 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  trunk:
+  https://cdn.cocoapods.org/:
     - 1PasswordExtension
-    - Alamofire
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
     - AMScrollingNavbar
@@ -519,7 +518,6 @@ SPEC REPOS:
     - FormatterKit
     - Gifu
     - GoogleSignIn
-    - Gridicons
     - GTMAppAuth
     - GTMSessionFetcher
     - JTAppleCalendar
@@ -527,11 +525,8 @@ SPEC REPOS:
     - MediaEditor
     - MRProgress
     - Nimble
-    - NSObject-SafeExpectations
-    - "NSURL+IDN"
     - OCMock
     - OHHTTPStubs
-    - Reachability
     - Sentry
     - SimulatorStatusMagic
     - Sodium
@@ -555,6 +550,14 @@ SPEC REPOS:
     - ZendeskSupportProvidersSDK
     - ZendeskSupportSDK
     - ZIPFoundation
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - CocoaLumberjack
+    - Gridicons
+    - GTMSessionFetcher
+    - NSObject-SafeExpectations
+    - "NSURL+IDN"
+    - Reachability
 
 EXTERNAL SOURCES:
   FBLazyVector:
@@ -722,10 +725,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 3dcbf9b65932cf986bc5ae494fe84b36d9acde76
-  WordPressKit: 7babbf3a2ddb5a093f4af87e07f2c1f0e5d59db3
+  WordPressAuthenticator: f634b784301296593d44b72767eec93f3bc8df38
+  WordPressKit: c430dc757de5024a783621c625c326606561fa9d
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
-  WordPressShared: 423779c24b1f8f2ee06d1068d30c7d2ea51ca813
+  WordPressShared: 2d1975a170a01f7dae5dac226fbf9b33b925c2c2
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: 754bc043ea42abc2eae8a07e5680c777c112666a
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
@@ -739,6 +742,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 2aa276200b731d857d6f295cd284a465c7d95362
+PODFILE CHECKSUM: 59f622efe883bee7ae854b62c7426304e7468a61
 
 COCOAPODS: 1.8.4
