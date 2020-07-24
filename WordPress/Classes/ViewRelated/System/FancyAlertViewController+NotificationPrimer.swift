@@ -1,9 +1,10 @@
 extension FancyAlertViewController {
     private struct Strings {
         static let firstAlertTitleText = NSLocalizedString("Stay in the loop", comment: "Title of the first alert preparing users to grant permission for us to send them push notifications.")
-        static let firstAlertBodyText = NSLocalizedString("We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?", comment: "Body text of the first alert preparing users to grant permission for us to send them push notifications.")
-        static let secondAlertTitleText = NSLocalizedString("Find out faster with push notifications", comment: "Title of the second alert preparing users to grant permission for us to send them push notifications.")
-        static let allowButtonText = NSLocalizedString("Allow notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
+        static let firstAlertBodyText = NSLocalizedString("We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?", comment: "Body text of the first alert preparing users to grant permission for us to send them push notifications.")
+        static let firstAllowButtonText = NSLocalizedString("Allow notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
+        static let secondAlertTitleText = NSLocalizedString("Get your notifications faster", comment: "Title of the second alert preparing users to grant permission for us to send them push notifications.")
+        static let secondAllowButtonText = NSLocalizedString("Allow push notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
         static let notNowText = NSLocalizedString("Not now", comment: "Not now button title shown in alert preparing users to grant permission for us to send them push notifications.")
     }
 
@@ -18,20 +19,19 @@ extension FancyAlertViewController {
     /// - Returns: FancyAlertViewController of the primer
     static func makeNotificationAlertController(titleText: String?,
                                                 bodyText: String?,
+                                                allowButtonText: String,
                                                 seenEvent: WPAnalyticsEvent,
                                                 allowEvent: WPAnalyticsEvent,
                                                 noEvent: WPAnalyticsEvent,
                                                 approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
-        let publishButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
+        let allowButton = ButtonConfig(allowButtonText) { controller, _ in
             approveAction(controller)
-            // TODO: Analytics must be differentiated between first and second alert
             WPAnalytics.track(allowEvent, properties: [Analytics.locationKey: Analytics.alertKey])
         }
 
         let dismissButton = ButtonConfig(Strings.notNowText) { controller, _ in
             defer {
-                // TODO: Analytics must be differentiated between first and second alert
                 WPAnalytics.track(noEvent, properties: [Analytics.locationKey: Analytics.alertKey])
             }
             controller.dismiss(animated: true)
@@ -43,7 +43,7 @@ extension FancyAlertViewController {
                                                      bodyText: bodyText,
                                                      headerImage: image,
                                                      dividerPosition: .bottom,
-                                                     defaultButton: publishButton,
+                                                     defaultButton: allowButton,
                                                      cancelButton: dismissButton,
                                                      appearAction: {
                                                         WPAnalytics.track(seenEvent, properties: [Analytics.locationKey: Analytics.alertKey])
@@ -57,6 +57,7 @@ extension FancyAlertViewController {
     static func makeNotificationPrimerAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
         return makeNotificationAlertController(titleText: Strings.firstAlertTitleText,
                                                bodyText: Strings.firstAlertBodyText,
+                                               allowButtonText: Strings.firstAllowButtonText,
                                                seenEvent: .pushNotificationsPrimerSeen,
                                                allowEvent: .pushNotificationsPrimerAllowTapped,
                                                noEvent: .pushNotificationsPrimerNoTapped,
@@ -66,6 +67,7 @@ extension FancyAlertViewController {
     static func makeNotificationSecondAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
         return makeNotificationAlertController(titleText: Strings.secondAlertTitleText,
                                                bodyText: nil,
+                                               allowButtonText: Strings.secondAllowButtonText,
                                                seenEvent: .secondNotificationsAlertSeen,
                                                allowEvent: .secondNotificationsAlertAllowTapped,
                                                noEvent: .secondNotificationsAlertNoTapped,
