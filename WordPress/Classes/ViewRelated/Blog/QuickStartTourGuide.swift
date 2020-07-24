@@ -270,8 +270,9 @@ open class QuickStartTourGuide: NSObject {
         QuickStartShareTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
-        QuickStartCheckStatsTour(),
-        QuickStartExplorePlansTour()
+        QuickStartCheckStatsTour()
+// Temporarily disabled
+//        QuickStartExplorePlansTour()
     ]
 }
 
