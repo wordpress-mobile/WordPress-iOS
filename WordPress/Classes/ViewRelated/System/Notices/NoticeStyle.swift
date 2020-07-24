@@ -9,6 +9,12 @@ public enum NoticeDismissGesture {
     case tap
 }
 
+// iOS 12 color compatibility
+private enum Compatibility {
+    static let systemGray5 = UIColor(displayP3Red: 229/255, green: 229/255, blue: 234/255, alpha: 1)
+    static let secondaryLabel = UIColor(displayP3Red: 60/255, green: 60/255, blue: 67/255, alpha: 0.6)
+}
+
 public protocol NoticeStyle {
 
     // Text
@@ -34,6 +40,32 @@ public protocol NoticeStyle {
     var dismissGesture: NoticeDismissGesture? { get }
 }
 
+extension NoticeStyle {
+    public var backgroundColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return .systemGray5
+        } else {
+            return Compatibility.systemGray5
+        }
+    }
+
+    public var titleColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return .label
+        } else {
+            return UIColor.black
+        }
+    }
+
+    public var messageColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return .secondaryLabel
+        } else {
+            return Compatibility.secondaryLabel
+        }
+    }
+}
+
 public struct NormalNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString? = nil
 
@@ -42,10 +74,6 @@ public struct NormalNoticeStyle: NoticeStyle {
     public var messageLabelFont: UIFont { return UIFont.systemFont(ofSize: 14.0) }
     public var actionButtonFont: UIFont? { return UIFont.systemFont(ofSize: 14.0, weight: .medium) }
     public let cancelButtonFont: UIFont? = nil
-
-    public let titleColor: UIColor = .textInverted
-    public let messageColor: UIColor = .textInverted
-    public let backgroundColor: UIColor = .neutral(.shade80)
 
     public let layoutMargins = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
 
@@ -64,10 +92,6 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public var messageLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline) }
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
-
-    public let titleColor: UIColor = .white
-    public let messageColor: UIColor = .neutral(.shade10)
-    public let backgroundColor: UIColor = UIColor.neutral(.shade70).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
@@ -90,10 +114,6 @@ public struct ToolTipNoticeStyle: NoticeStyle {
     public var messageLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline) }
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
-
-    public let titleColor: UIColor = .textInverted
-    public let messageColor: UIColor = .textInverted
-    public let backgroundColor: UIColor = UIColor.neutral(.shade70).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 

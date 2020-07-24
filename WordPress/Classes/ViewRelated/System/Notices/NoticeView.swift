@@ -184,7 +184,11 @@ class NoticeView: UIView {
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.primary(.shade40), for: .normal)
+        if #available(iOS 13.0, *) {
+            actionButton.setTitleColor(.label, for: .normal)
+        } else {
+            actionButton.setTitleColor(.black, for: .normal)
+        }
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
@@ -239,7 +243,11 @@ class NoticeView: UIView {
         cancelBackgroundView.addTrailingBorder()
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.white, for: .normal)
+        if #available(iOS 13.0, *) {
+            actionButton.setTitleColor(.label, for: .normal)
+        } else {
+            actionButton.setTitleColor(.black, for: .normal)
+        }
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
