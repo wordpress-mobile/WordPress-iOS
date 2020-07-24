@@ -40,10 +40,7 @@ final class MediaLibraryMediaPickingCoordinator {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.tenor.enabled {
-            menuAlert.addAction(tenorAction(origin: origin, blog: blog))
-        }
-
+        menuAlert.addAction(tenorAction(origin: origin, blog: blog))
         menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         menuAlert.addAction(cancelAction())
 
