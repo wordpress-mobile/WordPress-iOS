@@ -1,0 +1,5 @@
+v15.3 inclui três grandes mudanças:
+
+- Todos os blocos agora têm as opções copiar, cortar, colar e duplicar.
+- Você pode editar blocos sem suporte em uma tela separada do app, usando as mesmas ferramentas disponíveis no editor web completo. (Observação: ainda não está disponível para sites auto-hospedados ou sites com o editor clássico como padrão).
+- Efeito Fantasma! É um toque visual muito legal que incluímos no editor, que mostra áreas sombreadas para que você saiba quando o conteúdo estiver carregando.

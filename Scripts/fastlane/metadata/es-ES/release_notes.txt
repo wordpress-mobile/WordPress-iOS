@@ -1,7 +1,5 @@
-No, tu mente no te está confundiendo — el lector es mucho más sencillo. Es debid a que hemos hecho un montón de correcciones en cómo se ven las cosas cuando estás leyendo una entrada. Entre estas correcciones se incluyen un montón de pequeñas cosas, como el espaciado, el posicionamiento, el tamaño, y todo ello supone una experiencia mucho más placentera. Además, ¡la barra de navegación y la barra de herramientas desaparecen y reaparecen tan suavemente que parece magia! ¿No estás de acuerdo en que precisamente ahora todos necesitamos un poco de magia en nuestras vidas?
+La versión 15.3 incluye tres grandes cambios:
 
-Sabemos que encontrar título para tu sitio puede ser difícil, y que los humanos suelen ser indecisos e inconstantes, es por eso que hemos hecho que el título de tu sitio ahora se pueda cambiar tocando en la pantalla de detalles del título del sitio. Y si acabas de descubrir un nombre brillante para un sitio nuevo, ahora tienes una tarea de inicio rápido para configurar un título para cualquier nuevo sitio que quieras empezar.
-
-Si tienes buena vista para los colores, hemos añadido compatibilidad en el editor de bloques con la personalización del tipo de gradiente y el ángulo en los bloques de botones y fondo. Y si sueles revisar cuántos bloques usas y cuánto tecleas, ahora mostramos información métrica de los bloques, palabras y caracteres.
-
-Lo último y no menos importante, es que hemos corregido un molesto fallo que surgía al navegar demasiado rápido al editor de bloques tras desconectarse y acceder de nuevo. ¡Ahora puedes sentirte libre de conectarte y desconectarte sin sentirte abandonado!
+- Ahora, todos los bloques tienen las opciones de copiar, cortar, pegar y duplicar.
+- Puedes editar individualmente los bloques no compatibles en una pantalla separada de la aplicación, usando las mismas herramientas disponibles en el editor web completo. (Nota: esto aún no está disponible para sitios autoalojados o sitios que tienen por defecto el editor clásico).
+- ¡Efecto fantasma! Es un bonito toque visual que hemos añadido al editor que muestra áreas sombreadas para que sepas cuándo y dónde se carga el contenido.
