@@ -236,7 +236,7 @@ extension WPStyleGuide {
     // MARK: - Apply Stream Header Styles
 
     @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
+        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
         label.textColor = .text
     }
 
@@ -323,6 +323,49 @@ extension WPStyleGuide {
         button.setTitleColor(normalColor, for: UIControl.State())
         button.setTitleColor(highlightedColor, for: .highlighted)
         button.setTitleColor(selectedColor, for: .selected)
+    }
+
+
+    @objc public class func applyReaderFollowTopicButtonStyle(_ button: UIButton) {
+        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
+        let size = CGSize(width: side, height: side)
+
+        let followIcon = UIImage.gridicon(.readerFollow, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
+        
+        button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
+        button.layer.cornerRadius = 4.0
+        
+        let followBackgroundColor: UIColor = .primaryButtonBackground
+        let followTextColor: UIColor = .white
+        let followingBackgroundColor: UIColor = .basicBackground
+        let followingTextColor: UIColor = .textSubtle
+
+        button.backgroundColor = button.isSelected ? followingBackgroundColor : followBackgroundColor
+        button.tintColor = button.isSelected ? followingTextColor : followTextColor
+        
+        button.setTitleColor(followTextColor, for: .normal)
+        button.setTitleColor(followingTextColor, for: .selected)
+
+        let imageTitleSpace: CGFloat = 2.0
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
+        button.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
+
+        let tintedFollowIcon = followIcon.imageWithTintColor(followTextColor)
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(followingTextColor)
+
+        button.setImage(tintedFollowIcon, for: .normal)
+        button.setImage(tintedFollowingIcon, for: .selected)
+
+        button.setTitle(followStringForDisplay, for: .normal)
+        button.setTitle(followingStringForDisplay, for: .selected)
+        
+        button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
+        
+        // Default accessibility label and hint.
+        button.accessibilityLabel = button.isSelected ? followingStringForDisplay : followStringForDisplay
+        button.accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
