@@ -3,6 +3,7 @@ import Gridicons
 
 class GutenbergLayoutPickerViewController: UIViewController {
 
+    @IBOutlet weak var intialHeaderPosition: NSLayoutConstraint!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleView: UILabel!
@@ -20,16 +21,37 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
+    private var isLayingOutHeader: Bool = false {
+        didSet {
+            intialHeaderPosition.isActive = isLayingOutHeader
+            headerHeightConstraint.isActive = !isLayingOutHeader
+        }
+    }
+
+    private var shouldUseCompactLayout: Bool {
+        let device = UIDevice.current
+        return device.userInterfaceIdiom == .phone && device.orientation.isLandscape
+    }
+
     private var maxHeaderHeight: CGFloat {
-        return largeTitleView.frame.height +
-        midHeaderHeight
+
+        if shouldUseCompactLayout {
+            return minHeaderHeight
+        } else {
+            return largeTitleView.frame.height +
+                midHeaderHeight
+        }
     }
     private var midHeaderHeight: CGFloat {
-        return titleToSubtitleSpacing.constant +
-            promptView.frame.height +
-            subtitleToCategoryBarSpacing.constant +
-            categoryBar.frame.height +
-            maxHeaderBottomSpacing.constant
+        if shouldUseCompactLayout {
+            return minHeaderHeight
+        } else {
+            return titleToSubtitleSpacing.constant +
+                promptView.frame.height +
+                subtitleToCategoryBarSpacing.constant +
+                categoryBar.frame.height +
+                maxHeaderBottomSpacing.constant
+        }
     }
     private var minHeaderHeight: CGFloat {
         return categoryBar.frame.height + minHeaderBottomSpacing.constant
@@ -75,7 +97,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animateAlongsideTransition(in: nil, animation: nil) { (_) in
-            self.scrollViewDidEndDragging(self.tableView, willDecelerate: false)
+            self.layoutHeader()
         }
     }
 
@@ -125,18 +147,22 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutHeader() {
+        isLayingOutHeader = true
+
+        largeTitleView.isHidden = shouldUseCompactLayout
+        promptView.isHidden = shouldUseCompactLayout
+
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
-        largeTitleView.sizeToFit()
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
-        titleView.sizeToFit()
 
         let tableFooterFrame = footerView.frame
         let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
 
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        isLayingOutHeader = false
+
         scrollViewDidEndDragging(tableView, willDecelerate: false)
-        headerHeightConstraint.constant = maxHeaderHeight // Reset the header to accomodate dynamic text
     }
 }
 
@@ -168,7 +194,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
         scrollView.contentOffset.y = maxHeaderHeight - height
         headerHeightConstraint.constant = height
-        self.titleView.isHidden = (height >= self.maxHeaderHeight)
+        titleView.isHidden = (height >= maxHeaderHeight) && !shouldUseCompactLayout
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
