@@ -335,7 +335,7 @@ extension WPStyleGuide {
         
         button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
         button.layer.cornerRadius = 4.0
-        
+
         let followBackgroundColor: UIColor = .primaryButtonBackground
         let followTextColor: UIColor = .white
         let followingBackgroundColor: UIColor = .basicBackground
@@ -343,7 +343,7 @@ extension WPStyleGuide {
 
         button.backgroundColor = button.isSelected ? followingBackgroundColor : followBackgroundColor
         button.tintColor = button.isSelected ? followingTextColor : followTextColor
-        
+
         button.setTitleColor(followTextColor, for: .normal)
         button.setTitleColor(followingTextColor, for: .selected)
 
@@ -360,9 +360,9 @@ extension WPStyleGuide {
 
         button.setTitle(followStringForDisplay, for: .normal)
         button.setTitle(followingStringForDisplay, for: .selected)
-        
+
         button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
-        
+
         // Default accessibility label and hint.
         button.accessibilityLabel = button.isSelected ? followingStringForDisplay : followStringForDisplay
         button.accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")

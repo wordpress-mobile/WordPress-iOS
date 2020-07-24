@@ -10,8 +10,6 @@ import WordPressShared
 
 
     // MARK: - Lifecycle Methods
-
-    
     open override func awakeFromNib() {
         super.awakeFromNib()
 

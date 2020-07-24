@@ -164,7 +164,7 @@ import WordPressFlux
             }
         }
     }
-    
+
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
@@ -1814,8 +1814,6 @@ extension ReaderStreamViewController: ReaderContentViewController {
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
 
         displaySelectInterestsIfNeeded(content)
-        
-        
     }
 }
 
