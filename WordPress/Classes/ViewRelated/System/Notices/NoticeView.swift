@@ -52,7 +52,7 @@ class NoticeView: UIView {
         configureGestureRecognizer()
         configureLabels()
         configureForNotice()
-        setActionButtonTitleColor()
+
         if notice.actionTitle != nil && notice.cancelTitle != nil {
             configureDualButtons()
         } else if notice.actionTitle != nil {
@@ -159,14 +159,6 @@ class NoticeView: UIView {
         }
     }
 
-    private func setActionButtonTitleColor() {
-        if #available(iOS 13.0, *) {
-            actionButton.setTitleColor(.label, for: .normal)
-        } else {
-            actionButton.setTitleColor(.black, for: .normal)
-        }
-    }
-
     private func configureActionButton() {
         guard let actionTitle = notice.actionTitle else {
             actionBackgroundView.isHidden = true
@@ -192,6 +184,7 @@ class NoticeView: UIView {
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        actionButton.setTitleColor(.primary(.shade40), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
@@ -246,6 +239,11 @@ class NoticeView: UIView {
         cancelBackgroundView.addTrailingBorder()
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        if #available(iOS 13.0, *) {
+            actionButton.setTitleColor(.label, for: .normal)
+        } else {
+            actionButton.setTitleColor(.black, for: .normal)
+        }
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
