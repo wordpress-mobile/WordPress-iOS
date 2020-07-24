@@ -342,7 +342,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)dismissViewController
 {
     if (self.isModal) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:self.onDismiss];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }

@@ -12,7 +12,7 @@ class ReaderInterestViewModel {
         return interest.slug
     }
 
-    private var interest: RemoteReaderInterest
+    let interest: RemoteReaderInterest
 
     init(interest: RemoteReaderInterest) {
         self.interest = interest
@@ -26,11 +26,6 @@ class ReaderInterestViewModel {
 // MARK: - ReaderInterestsDataDelegate
 protocol ReaderInterestsDataDelegate: AnyObject {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource)
-}
-
-protocol ReaderInterestsService: AnyObject {
-    func fetchInterests(success: @escaping ([RemoteReaderInterest]) -> Void,
-                        failure: @escaping (Error) -> Void)
 }
 
 // MARK: - ReaderInterestsDataSource

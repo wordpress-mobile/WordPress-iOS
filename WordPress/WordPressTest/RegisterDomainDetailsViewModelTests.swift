@@ -189,4 +189,14 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value == MockData.phoneCountryCode)
         XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value == MockData.phoneNumber)
     }
+
+    func testValueSanitizer() {
+        let latin1SupplementAndLatinExtendedALetters = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſ"
+
+        let latinASCIIApproximates = "AAAAAAAECEEEEIIIIDNOOOOOOUUUUYTHssaaaaaaaeceeeeiiiidnoooooouuuuythyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKkqLlLlLlLlLlNnNnNn'nNnOoOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs"
+
+        let result = RegisterDomainDetailsViewModel.transformToLatinASCII(value: latin1SupplementAndLatinExtendedALetters)
+
+        XCTAssertEqual(result, latinASCIIApproximates)
+    }
 }

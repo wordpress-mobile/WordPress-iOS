@@ -129,14 +129,10 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade60))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
+        WPStyleGuide.configureSearchBar(searchBar)
 
         searchBar.autocapitalizationType = .none
         searchBar.keyboardType = .URL
-        searchBar.isTranslucent = false
-        searchBar.tintColor = .neutral(.shade30)
-        searchBar.barTintColor = .neutral(.shade5)
-        searchBar.backgroundImage = UIImage()
-        searchBar.returnKeyType = .done
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
         if #available(iOS 13.0, *) {

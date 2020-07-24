@@ -174,6 +174,10 @@ private extension LoginEpilogueViewController {
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
+
+        // Reset the nav style so the nav bar has the WP style, not the Auth style.
+        WPStyleGuide.configureNavigationAppearance()
+
         navigationController?.dismiss(animated: true)
     }
 

@@ -26,10 +26,7 @@ final class AztecMediaPickingCoordinator {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.tenor.enabled {
-            alertController.addAction(tenorAction(origin: origin, blog: blog))
-        }
-
+        alertController.addAction(tenorAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 

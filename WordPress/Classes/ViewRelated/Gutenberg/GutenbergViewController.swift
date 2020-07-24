@@ -877,15 +877,15 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            FeatureFlag.tenor.enabled ? .tenor : nil,
+            .tenor,
             .filesApp,
         ].compactMap { $0 }
     }
 
-    func gutenbergCapabilities() -> [String: Bool]? {
+    func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
-            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
+            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
         ]
     }
 
