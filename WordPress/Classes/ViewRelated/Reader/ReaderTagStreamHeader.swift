@@ -18,7 +18,7 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
+        backgroundColor = .basicBackground
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
 
