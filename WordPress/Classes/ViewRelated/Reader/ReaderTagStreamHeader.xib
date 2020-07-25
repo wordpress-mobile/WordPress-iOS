@@ -30,6 +30,7 @@
                     </connections>
                 </button>
             </subviews>
+            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="gN8-Rn-2M3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="0ga-1S-GtT"/>
