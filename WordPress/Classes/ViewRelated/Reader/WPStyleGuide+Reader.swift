@@ -585,13 +585,13 @@ extension WPStyleGuide {
             static let followTextColor: UIColor = .white
             static let followingBackgroundColor: UIColor = .basicBackground
             static let followingTextColor: UIColor = .textSubtle
-            
+
             static let imageTitleSpace: CGFloat = 2.0
             static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
             static let titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
             static let contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
         }
-        
+
         struct Text {
             static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
             static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
