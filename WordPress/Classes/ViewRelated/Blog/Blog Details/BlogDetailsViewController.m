@@ -786,18 +786,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([self.blog supports:BlogFeaturePlans]) {
-        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-                                                         identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
-                                                           callback:^{
-                                                               [weakSelf showPlans];
-                                                           }];
-
-        plansRow.detail = self.blog.planTitle;
-        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
-        [rows addObject:plansRow];
-    }
+// Temporarily disabled
+//    if ([self.blog supports:BlogFeaturePlans]) {
+//        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+//                                                         identifier:BlogDetailsPlanCellIdentifier
+//                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
+//                                                           callback:^{
+//                                                               [weakSelf showPlans];
+//                                                           }];
+//
+//        plansRow.detail = self.blog.planTitle;
+//        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
+//        [rows addObject:plansRow];
+//    }
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }

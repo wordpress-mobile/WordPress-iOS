@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-06 16:35:23+0000 */
+/* Translation-Revision-Date: 2020-07-21 20:14:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "%s-innstillinger";
+"%s block options" = "%s block options";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-blokk. Tom";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativt:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Always Send Crash Logs";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "En aktiv internettilkobling er påkrevd";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "Blokker dette nettstedet";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Block copied";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Block cut";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Block duplicated";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blokkredigering aktivert";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokker fiendtlige innloggingsforsøk";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Block pasted";
+
+/* No comment provided by engineer. */
+"Block settings" = "Blokkinnstillinger";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1100,6 +1118,9 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "Velg fra enheten";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "Choose your interests";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Når du velger et annet nettsted vil du miste redigeringene til nettstedsspesifikt innhold som media og kategorier. Er du sikker?";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Fortsetter med Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "Copied block";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
+
+/* No comment provided by engineer. */
+"Copy block" = "Kopier blokk";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan bli bedre";
@@ -1489,6 +1516,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Landkode";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Crash Logging";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Crash reports";
@@ -1602,6 +1632,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpass sideinnstillinger for liker, kommentarer, følgere og mer.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Kutt blokk";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Mørk";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Oppdag nettsteder";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Discover and follow blogs you love";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1889,6 +1926,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Kladder";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicate block";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Øst";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "Aktivere sidevarslinger?";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Encrypted Logs";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Gå inn i fullskjerm";
@@ -2380,7 +2423,7 @@ translators: sample content for \"Contact\" page template
 translators: sample content for \"Portfolio\" page template
 translators: sample content for \"Services\" page template
 translators: sample content for \"Team\" page template */
-"Get in Touch" = "Get in Touch";
+"Get in Touch" = "Ta kontakt";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Mest populære tidspunkt";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "Flytt %s ned";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "Flytt %s mot venstre";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "Flytt %s mot høyre";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "Flytt %s opp";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "Flytt bilde bakover";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Flytt bilde forover";
 
+/* No comment provided by engineer. */
+"Move block down" = "Flytt blokk ned";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Flytt blokk ned fra rad %1$s til rad %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Flytt blokken mot venstre";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Flytt blokken mot venstre fra posisjon %1$s til posisjon %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "Flytt blokken mot høyre";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Flytt blokken mot høyre fra posisjon %1$s til posisjon %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Flytt blokk opp";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Flytt blokk opp fra rad %1$s til rad %2$s";
@@ -3859,6 +3902,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Paste URL" = "Lim inn URL";
 
+/* No comment provided by engineer. */
+"Paste block" = "Lim inn blokk";
+
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Lim inn uten formattering";
 
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Slett";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "Fjern %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Fjern @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Fjern merknader";
+
+/* No comment provided by engineer. */
+"Remove block" = "Fjern blokk";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Fjern fra innsikter";
@@ -4843,6 +4889,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a color" = "Velg en farge";
 
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Select a few to continue";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Velge medier.";
 
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Send lenke";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Send Log Message";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Send tilbakeping";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Send Test Crash";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Send notifikasjoner med E-post";

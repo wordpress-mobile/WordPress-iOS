@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-09 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-07-22 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li מילים, %2$li תווים";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "%s הגדרות";
+"%s block options" = "%s אפשרויות הבלוק";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "הבלוק %s. ריק";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "לחלופין:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "תמיד לשלוח דוחות קריסה";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "נדרש חיבור פעיל לאינטרנט";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "חסימת אתר";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "הבלוק הועתק";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "הבלוק נחתך";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "הבלוק שוכפל";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "חסימת ניסיונות התחברות זדוניים";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "הבלוק הודבק";
+
+/* No comment provided by engineer. */
+"Block settings" = "הגדרות הבלוק";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1100,6 +1118,9 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "לבחור מהמכשיר";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "לבחור את תחומי העניין שלך";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "בבחירת אתרים שונים תאבד את היכולת לערוך תכנים\/מדיה\/קטגוריות מאתר ספציפי. האם אתה בטוח?";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "להמשיך עם Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "הבלוק הועתק";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "העתקת הקישור לתגובה";
+
+/* No comment provided by engineer. */
+"Copy block" = "להעתיק בלוק";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "יכול להיות יותר טוב";
@@ -1489,6 +1516,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "קידומת טלפון בינלאומית";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "ליצור דוח קריסה";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "דוחות קריסה";
@@ -1602,6 +1632,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "התאמה אישית של הגדרות האתר שלך עבור לייקים, תגובות, עוקבים ועוד.";
+
+/* No comment provided by engineer. */
+"Cut block" = "לחתוך בלוק";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "צבעים כהים";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "עיון באתרים";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "דיון";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1889,6 +1926,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "טיוטות";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "לשכפל בלוק";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "מזרח";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "האם להפעיל הודעות אתר?";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "להצפין את היומנים";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "להיכנס לתצוגה של מסך מלא";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "המועד הפופולרי ביותר";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "להזיז את %s למטה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "להזיז את %s שמאלה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "להזיז את %s ימינה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "להזיז את %s למעלה";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "להעביר את התמונה אחורה";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "להעביר את התמונה קדימה";
 
+/* No comment provided by engineer. */
+"Move block down" = "להזיז את הבלוק למטה";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "להזיז את הבלוק למטה משורה %1$s לשורה %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "להזיז את הבלוק שמאלה";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "להזיז את הבלוק שמאלה מהמיקום %1$s למיקום %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "להזיז את הבלוק ימינה";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "להזיז את הבלוק ימינה מהמיקום %1$s למיקום %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "להזיז את הבלוק למעלה";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "להזיז את הבלוק למעלה משורה %1$s לשורה %2$s";
@@ -3859,6 +3902,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Paste URL" = "להדביק את כתובת ה-URL";
 
+/* No comment provided by engineer. */
+"Paste block" = "להדביק בלוק";
+
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "הדבקה בלי העיצוב";
 
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "מחק";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "להסיר את %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "הסרת @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "להסיר את ההסברים";
+
+/* No comment provided by engineer. */
+"Remove block" = "להסיר בלוק";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
@@ -4843,6 +4889,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a color" = "לבחור צבע";
 
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "יש לבחור מספר אפשרויות כדי להמשיך";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "בחירת מדיה.";
 
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "שליחת קישור";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "לשלוח הודעה ליומן";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "שליחת פינגבק";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "לשלוח כסף לבדיקה";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "שליחת הודעות באמצעות האימייל";
