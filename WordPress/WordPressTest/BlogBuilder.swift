@@ -11,6 +11,11 @@ final class BlogBuilder {
     init(_ context: NSManagedObjectContext) {
         blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
 
+        // Add Account
+        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        account.displayName = "displayName"
+        blog.account = account
+
         // Non-null properties in Core Data
         blog.dotComID = NSNumber(value: arc4random_uniform(UInt32.max))
         blog.url = "https://example.com"
