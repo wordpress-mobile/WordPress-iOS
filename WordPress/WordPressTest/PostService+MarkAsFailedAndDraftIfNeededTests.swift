@@ -34,7 +34,8 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     }
 
     func testMarkAPostAsFailedKeepShouldAttemptAutoUpload() {
-        let post = PostBuilder(context)
+        let blog = BlogBuilder(context).withAnAccount().build()
+        let post = PostBuilder(context, blog: blog)
             .with(status: .pending)
             .confirmedAutoUpload()
             .build()
