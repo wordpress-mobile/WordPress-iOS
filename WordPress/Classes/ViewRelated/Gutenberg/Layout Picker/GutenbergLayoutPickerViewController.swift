@@ -82,11 +82,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
                 styleButtons()
             }
         }
-
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            headerView.invalidateIntrinsicContentSize()
-            largeTitleView.invalidateIntrinsicContentSize()
-        }
     }
 
     @IBAction func closeModal(_ sender: Any) {
