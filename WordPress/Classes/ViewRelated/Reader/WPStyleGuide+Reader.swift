@@ -578,7 +578,7 @@ extension WPStyleGuide {
         public static let titleTextStyle: UIFont.TextStyle = .title1
         public static let contentTextStyle: UIFont.TextStyle = .callout
     }
-    
+
     public struct FollowButton {
         struct Style {
             static let followBackgroundColor: UIColor = .primaryButtonBackground
