@@ -12,7 +12,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
-        tableView.register(ReaderSuggestedTopicsCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+        tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +49,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     func cell(for interests: [ReaderTagTopic]) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderSuggestedTopicsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCardCell
         cell.configure(interests)
         cell.delegate = self
         return cell
@@ -111,7 +111,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
 // MARK: - Suggested Topics Delegate
 
-extension ReaderCardsStreamViewController: ReaderTopicsCellDelegate {
+extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)

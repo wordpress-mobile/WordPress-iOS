@@ -1,12 +1,12 @@
 import UIKit
 
-protocol ReaderTopicsCellDelegate: class {
+protocol ReaderTopicsCardCellDelegate: class {
     func didSelect(topic: ReaderTagTopic)
 }
 
 /// A cell that displays topics the user might like
 ///
-class ReaderSuggestedTopicsCell: UITableViewCell {
+class ReaderTopicsCardCell: UITableViewCell {
     private let containerView = UIView()
 
     private let tableView = TopicsTableView()
@@ -29,7 +29,7 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
     /// Constraints to be activated in regular horizontal size class
     private var regularConstraints: [NSLayoutConstraint] = []
 
-    weak var delegate: ReaderTopicsCellDelegate?
+    weak var delegate: ReaderTopicsCardCellDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -104,7 +104,7 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
     }
 }
 
-extension ReaderSuggestedTopicsCell: UITableViewDataSource {
+extension ReaderTopicsCardCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return topics.count
     }
@@ -127,7 +127,7 @@ extension ReaderSuggestedTopicsCell: UITableViewDataSource {
     }
 }
 
-extension ReaderSuggestedTopicsCell: UITableViewDelegate {
+extension ReaderTopicsCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UIView()
         let headerTitle = UILabel()
