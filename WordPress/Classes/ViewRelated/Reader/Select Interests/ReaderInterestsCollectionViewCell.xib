@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Rkr-bc-DpA" customClass="ReaderInterestsCollectionViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="60" height="42"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qzH-3z-TAw">
+                <rect key="frame" x="0.0" y="0.0" width="60" height="42"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shg-Q6-qpS">
+                        <rect key="frame" x="0.0" y="0.0" width="60" height="42"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="shg-Q6-qpS" secondAttribute="bottom" id="TWO-6R-A3T"/>
+                    <constraint firstItem="shg-Q6-qpS" firstAttribute="leading" secondItem="qzH-3z-TAw" secondAttribute="leading" id="XVJ-Cl-c5B"/>
+                    <constraint firstItem="shg-Q6-qpS" firstAttribute="top" secondItem="qzH-3z-TAw" secondAttribute="top" id="bwa-ec-4B9"/>
+                    <constraint firstAttribute="trailing" secondItem="shg-Q6-qpS" secondAttribute="trailing" id="h9X-hf-k7w"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="60" height="50"/>
+            <connections>
+                <outlet property="label" destination="shg-Q6-qpS" id="0gJ-lc-J5c"/>
+            </connections>
+            <point key="canvasLocation" x="-934.78260869565224" y="-9.375"/>
+        </collectionViewCell>
+    </objects>
+</document>

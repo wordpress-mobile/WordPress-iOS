@@ -77,7 +77,9 @@ extension BlogDetailsViewController {
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true, completion: nil)
+        present(navigationViewController, animated: true) { [weak self] in
+            self?.toggleSpotlightOnHeaderView()
+        }
 
         QuickStartTourGuide.find()?.visited(.checklist)
     }
