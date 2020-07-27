@@ -11,9 +11,9 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
 
     private let tableView = TopicsTableView()
 
-    private var interests: [ReaderTagTopic] = [] {
+    private var topics: [ReaderTagTopic] = [] {
         didSet {
-            guard oldValue != interests else {
+            guard oldValue != topics else {
                 return
             }
 
@@ -46,8 +46,8 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
         refreshHorizontalConstraints()
     }
 
-    func configure(_ interests: [ReaderTagTopic]) {
-        self.interests = interests
+    func configure(_ topics: [ReaderTagTopic]) {
+        self.topics = topics
     }
 
     private func setupTableView() {
@@ -106,12 +106,12 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
 
 extension ReaderSuggestedTopicsCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return interests.count
+        return topics.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath as IndexPath)
-        cell.textLabel?.text = interests[indexPath.row].title
+        cell.textLabel?.text = topics[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         cell.separatorInset = UIEdgeInsets.zero
         cell.backgroundColor = .none
@@ -140,7 +140,7 @@ extension ReaderSuggestedTopicsCell: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let topic = interests[indexPath.row]
+        let topic = topics[indexPath.row]
         delegate?.didSelect(topic: topic)
         tableView.deselectSelectedRowWithAnimation(true)
     }
