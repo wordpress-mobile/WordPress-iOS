@@ -126,10 +126,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Hj-mT-YmE">
                                 <rect key="frame" x="0.0" y="732" width="414" height="110"/>
                                 <subviews>
-                                    <view opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5S-dO-HsH">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="23P-EU-wmp">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bI9-Jh-RnP">
@@ -171,14 +167,10 @@
                                     <constraint firstItem="23P-EU-wmp" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" id="GNM-KC-RD1"/>
                                     <constraint firstAttribute="trailing" secondItem="23P-EU-wmp" secondAttribute="trailing" id="NhP-tv-4D3"/>
                                     <constraint firstAttribute="trailing" secondItem="gS8-vY-WED" secondAttribute="trailing" constant="20" id="O9C-a2-exM"/>
-                                    <constraint firstAttribute="bottom" secondItem="s5S-dO-HsH" secondAttribute="bottom" id="WUr-FP-zcc"/>
                                     <constraint firstAttribute="bottom" secondItem="23P-EU-wmp" secondAttribute="bottom" id="YJo-ib-KjJ"/>
-                                    <constraint firstItem="s5S-dO-HsH" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" id="aTj-oF-UbS"/>
                                     <constraint firstItem="gS8-vY-WED" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" constant="20" id="e5c-pu-cOm"/>
                                     <constraint firstItem="23P-EU-wmp" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" id="mZs-uU-veX"/>
-                                    <constraint firstAttribute="trailing" secondItem="s5S-dO-HsH" secondAttribute="trailing" id="ncG-O3-BmU"/>
                                     <constraint firstItem="4d5-b5-WY5" firstAttribute="leading" secondItem="2Hj-mT-YmE" secondAttribute="leading" id="trb-MF-1tH"/>
-                                    <constraint firstItem="s5S-dO-HsH" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" id="xFA-cv-ceT"/>
                                     <constraint firstItem="gS8-vY-WED" firstAttribute="top" secondItem="4d5-b5-WY5" secondAttribute="bottom" constant="16" id="yS5-gX-gi9"/>
                                     <constraint firstAttribute="trailing" secondItem="4d5-b5-WY5" secondAttribute="trailing" id="ycn-K0-U6M"/>
                                     <constraint firstItem="4d5-b5-WY5" firstAttribute="top" secondItem="2Hj-mT-YmE" secondAttribute="top" id="yqZ-0P-CpH"/>
@@ -250,6 +242,7 @@
                         <outlet property="categoryBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="closeButton" destination="Fgx-ig-LXQ" id="FPM-yz-gPg"/>
                         <outlet property="createBlankPageBtn" destination="zm3-8S-slr" id="KLr-3l-vzg"/>
+                        <outlet property="footerFX" destination="23P-EU-wmp" id="YKE-Pl-tE6"/>
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
                         <outlet property="headerHeightConstraint" destination="yrU-yj-SJL" id="n1e-gV-ZH4"/>
                         <outlet property="headerView" destination="DTZ-MR-Eqm" id="pgP-hd-zPq"/>

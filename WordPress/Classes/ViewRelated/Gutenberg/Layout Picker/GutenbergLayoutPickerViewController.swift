@@ -33,7 +33,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
             return minHeaderHeight
         } else {
             return largeTitleView.frame.height +
-                midHeaderHeight
+            midHeaderHeight
         }
     }
     private var midHeaderHeight: CGFloat {
@@ -49,6 +49,20 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
     private var minHeaderHeight: CGFloat {
         return categoryBar.frame.height + minHeaderBottomSpacing.constant
+    }
+
+    private var titleIsHidden: Bool = true {
+        didSet {
+            if oldValue != titleIsHidden {
+                titleView.isHidden = false
+                let alpha: CGFloat = titleIsHidden ? 0 : 1
+                UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+                    self.titleView.alpha = alpha
+                }) { (_) in
+                    self.titleView.isHidden = self.titleIsHidden
+                }
+            }
+        }
     }
 
     override func viewDidLoad() {
@@ -166,10 +180,20 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
 
-        titleView.isHidden = largeTitleView.frame.maxY > 0
+        titleIsHidden = largeTitleView.frame.maxY > 0
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        snapToHeight(scrollView)
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            snapToHeight(scrollView)
+        }
+    }
+
+    private func snapToHeight(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout else { return }
 
         if largeTitleView.frame.midY > 0 {
@@ -184,7 +208,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
         scrollView.contentOffset.y = maxHeaderHeight - height
         headerHeightConstraint.constant = height
-        titleView.isHidden = (height >= maxHeaderHeight) && !shouldUseCompactLayout
+        titleIsHidden = (height >= maxHeaderHeight) && !shouldUseCompactLayout
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
