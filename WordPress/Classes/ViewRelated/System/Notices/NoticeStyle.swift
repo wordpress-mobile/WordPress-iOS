@@ -30,6 +30,7 @@ public protocol NoticeStyle {
     var titleColor: UIColor { get }
     var messageColor: UIColor { get }
     var backgroundColor: UIColor { get }
+    var actionButtonTitleColor: UIColor { get }
 
     /// The space between the border of the Notice and the contents (title, label, and buttons).
     var layoutMargins: UIEdgeInsets { get }
@@ -62,6 +63,14 @@ extension NoticeStyle {
             return .secondaryLabel
         } else {
             return Compatibility.secondaryLabel
+        }
+    }
+
+    public var actionButtonTitleColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return .label
+        } else {
+            return .black
         }
     }
 }

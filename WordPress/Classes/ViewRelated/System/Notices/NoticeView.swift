@@ -239,11 +239,8 @@ class NoticeView: UIView {
         cancelBackgroundView.addTrailingBorder()
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        if #available(iOS 13.0, *) {
-            actionButton.setTitleColor(.label, for: .normal)
-        } else {
-            actionButton.setTitleColor(.black, for: .normal)
-        }
+        actionButton.setTitleColor(notice.style.actionButtonTitleColor, for: .normal)
+        
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
