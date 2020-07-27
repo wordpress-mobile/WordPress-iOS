@@ -224,6 +224,10 @@ class Post: AbstractPost {
         return (tags?.trim().count > 0)
     }
 
+    override func authorForDisplay() -> String? {
+        return author ?? blog.account?.displayName
+    }
+
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
