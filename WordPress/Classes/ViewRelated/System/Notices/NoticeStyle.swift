@@ -9,12 +9,6 @@ public enum NoticeDismissGesture {
     case tap
 }
 
-// iOS 12 color compatibility
-private enum Compatibility {
-    static let systemGray5 = UIColor(displayP3Red: 229/255, green: 229/255, blue: 234/255, alpha: 1)
-    static let secondaryLabel = UIColor(displayP3Red: 60/255, green: 60/255, blue: 67/255, alpha: 0.6)
-}
-
 public protocol NoticeStyle {
 
     // Text

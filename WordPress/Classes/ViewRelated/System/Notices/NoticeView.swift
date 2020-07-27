@@ -240,7 +240,6 @@ class NoticeView: UIView {
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
         actionButton.setTitleColor(notice.style.actionButtonTitleColor, for: .normal)
-
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
