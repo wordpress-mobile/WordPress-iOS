@@ -4,6 +4,7 @@ extension FancyAlertViewController {
         static let firstAlertBodyText = NSLocalizedString("We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?", comment: "Body text of the first alert preparing users to grant permission for us to send them push notifications.")
         static let firstAllowButtonText = NSLocalizedString("Allow notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
         static let secondAlertTitleText = NSLocalizedString("Get your notifications faster", comment: "Title of the second alert preparing users to grant permission for us to send them push notifications.")
+        static let secondAlertBodyText = NSLocalizedString("Learn about new comments, likes, and follows in seconds.", comment: "Body text of the first alert preparing users to grant permission for us to send them push notifications.")
         static let secondAllowButtonText = NSLocalizedString("Allow push notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
         static let notNowText = NSLocalizedString("Not now", comment: "Not now button title shown in alert preparing users to grant permission for us to send them push notifications.")
     }
@@ -66,7 +67,7 @@ extension FancyAlertViewController {
 
     static func makeNotificationSecondAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
         return makeNotificationAlertController(titleText: Strings.secondAlertTitleText,
-                                               bodyText: nil,
+                                               bodyText: Strings.secondAlertBodyText,
                                                allowButtonText: Strings.secondAllowButtonText,
                                                seenEvent: .secondNotificationsAlertSeen,
                                                allowEvent: .secondNotificationsAlertAllowTapped,
