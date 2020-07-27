@@ -24,7 +24,6 @@ public protocol NoticeStyle {
     var titleColor: UIColor { get }
     var messageColor: UIColor { get }
     var backgroundColor: UIColor { get }
-    var actionButtonTitleColor: UIColor { get }
 
     /// The space between the border of the Notice and the contents (title, label, and buttons).
     var layoutMargins: UIEdgeInsets { get }
@@ -46,10 +45,6 @@ extension NoticeStyle {
 
     public var messageColor: UIColor {
         .invertedSecondaryLabel
-    }
-
-    public var actionButtonTitleColor: UIColor {
-        .invertedLabel
     }
 }
 
