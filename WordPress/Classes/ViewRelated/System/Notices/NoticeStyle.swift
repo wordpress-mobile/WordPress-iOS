@@ -43,35 +43,19 @@ public protocol NoticeStyle {
 
 extension NoticeStyle {
     public var backgroundColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return .systemGray5
-        } else {
-            return Compatibility.systemGray5
-        }
+        .invertedSystem5
     }
 
     public var titleColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return .label
-        } else {
-            return UIColor.black
-        }
+        .invertedLabel
     }
 
     public var messageColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return .secondaryLabel
-        } else {
-            return Compatibility.secondaryLabel
-        }
+        .invertedSecondaryLabel
     }
 
     public var actionButtonTitleColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return .label
-        } else {
-            return .black
-        }
+        .invertedLabel
     }
 }
 

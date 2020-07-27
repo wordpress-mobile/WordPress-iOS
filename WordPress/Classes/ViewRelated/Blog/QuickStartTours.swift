@@ -398,11 +398,7 @@ private extension String {
         static let iconOffset: CGFloat = 1.0
         static let iconSize: CGFloat = 16.0
         static var highlightColor: UIColor {
-            if #available(iOS 13.0, *) {
-                return .label
-            } else {
-                return .black
-            }
+            .invertedLabel
         }
     }
 }
