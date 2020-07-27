@@ -21,6 +21,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
     @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var footerFX: UIVisualEffectView!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
@@ -71,6 +72,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
         styleButtons()
         layoutHeader()
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityLabel = NSLocalizedString("Close", comment: "Close the modal window")
+
+        if #available(iOS 13.0, *) {
+            footerFX.effect = UIBlurEffect.init(style: .systemChromeMaterial)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
