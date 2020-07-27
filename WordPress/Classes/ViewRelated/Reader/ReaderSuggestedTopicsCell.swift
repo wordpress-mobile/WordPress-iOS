@@ -100,6 +100,7 @@ class ReaderSuggestedTopicsCell: UITableViewCell {
 
     private enum Constants {
         static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might ")
     }
 }
 
@@ -130,7 +131,7 @@ extension ReaderSuggestedTopicsCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UIView()
         let headerTitle = UILabel()
-        headerTitle.text = "You might like"
+        headerTitle.text = Constants.title
         header.addSubview(headerTitle)
         headerTitle.translatesAutoresizingMaskIntoConstraints = false
         header.pinSubviewToAllEdges(headerTitle, insets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0))
