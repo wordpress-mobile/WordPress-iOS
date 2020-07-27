@@ -4,7 +4,7 @@ import Foundation
     @NSManaged open var isRecommended: Bool
     @NSManaged open var slug: String
     @NSManaged open var tagID: NSNumber
-    @NSManaged open var card: NSOrderedSet?
+    @NSManaged open var cards: NSOrderedSet?
 
     override open class var TopicType: String {
         return "tag"

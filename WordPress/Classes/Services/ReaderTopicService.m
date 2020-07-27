@@ -973,7 +973,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                                 }
                             }
 
-                            if (tagTopic.card) {
+                            if (tagTopic.cards) {
                                 DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
                                 continue;
                             }
