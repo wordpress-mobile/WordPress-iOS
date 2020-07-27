@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-04 10:29:45+0000 */
+/* Translation-Revision-Date: 2020-07-14 09:23:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li palabras, %2$li caracteres";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "Ajustes de %s";
+"%s block options" = "Opciones del bloque %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Bloque %s. Vacío";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Otras opciones:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Enviar siempre los registros de fallos";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Se requiere una conexión activa a Internet";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "Bloquear este sitio";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Bloque copiado";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Bloque cortado";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Bloque duplicado";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor de bloques activado";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Bloquear intentos de acceso malintencionados";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Bloque pegado";
+
+/* No comment provided by engineer. */
+"Block settings" = "Ajustes del bloque";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1100,6 +1118,9 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "Elegir del dispositivo";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "Elige tus intereses";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Eligiendo un sitio diferente perderás la capacidad de editar algún contenido, como elementos multimedia y categorías. ¿Estás seguro?";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuando con Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "Bloque copiado";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copiar enlace al comentario";
+
+/* No comment provided by engineer. */
+"Copy block" = "Copiar bloque";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Podría ser mejor";
@@ -1489,6 +1516,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Código de país";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Registro de fallos";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Informes de fallos";
@@ -1602,6 +1632,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personaliza los ajustes de tu sitio para los «me gusta», comentarios, seguimientos y más.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Cortar bloque";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Oscuro";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Descubrir sitios";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Descubre y sigue los blogs que te gustan";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Comentarios";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1889,6 +1926,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Borradores";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicar bloque";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Este";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "¿Activamos los avisos del sitio?";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Registros cifrados";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrar en pantalla completa";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Lo más popular";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "Mover %s abajo";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "Mover %s a la izquierda";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "Mover %s a la derecha";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "Mover %s arriba";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "Mover la imagen hacia atrás";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Mover la imagen hacia delante";
 
+/* No comment provided by engineer. */
+"Move block down" = "Mover bloque abajo";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Mover el bloque hacia abajo desde la fila %1$s a la fila %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Mover bloque a la izquierda";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Mover el bloque a la izquierda desde la posición %1$s a la posición %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "Mover el bloque a la derecha";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Mover el bloque a la derecha desde la posición %1$s a la posición %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Mover bloque arriba";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Mover el bloque hacia arriba desde la fila %1$s a la fila %2$s";
@@ -3859,6 +3902,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Paste URL" = "Pegar URL";
 
+/* No comment provided by engineer. */
+"Paste block" = "Pegar bloque";
+
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Pegar sin formato";
 
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Eliminar";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "Eliminar %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Borrar @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Eliminar las notas";
+
+/* No comment provided by engineer. */
+"Remove block" = "Eliminar bloque";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Eliminar de las perspectivas";
@@ -4843,6 +4889,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a color" = "Seleccionar un color";
 
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Selecciona algunos para continuar";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Elige medios.";
 
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Enviar enlace";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Enviar el mensaje del registro";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Enviar pingbacks";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Enviar una prueba de fallos";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Enviar avisos por correo electrónico";

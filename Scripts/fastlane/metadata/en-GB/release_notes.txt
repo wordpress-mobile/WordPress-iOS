@@ -1,7 +1,5 @@
-No, your mind is not playing tricks on you – the Reader looks much easier on the eyes. That’s because we made a lot of fixes in how things look when you’re reading a post. These fixes include a lot of little things like spacing, positioning, and sizing, which all add up to a much more pleasant experience. Plus, the navigation bar and toolbar disappear and reappear so smoothly, it’s like magic! Wouldn’t you agree that we all need a little magic in our lives right now?
+v15.3 includes three great changes:
 
-We know that coming up with a title for your site can be hard and that humans can be indecisive and fickle, which is why we’ve made it so that the title of your site can now be changed by tapping on the title in the site detail screen. And if you’ve recently come up with a brilliant name for a new site, there’s now a new Quick Start task to set a title for any new sites you want to start.
-
-If you have an eye for colour, we’ve added support in the block editor for customising the gradient type and angle in Button and Cover blocks. And if you’re keeping track of how many blocks you’re using and how much you’re typing, we’re now displaying metric information for block, word, and character counts.
-
-Last but not least, we fixed a pesky crash that resulted from navigating to the block editor too quickly after logging out and logging immediately back in. Now you can feel free to log in and out with abandon!
+- All blocks now have copy, cut, paste, and duplicate options.
+- You can individually edit unsupported blocks on a separate screen in the app, using the same tools available in the full web editor. (Note: this isn’t yet available for self-hosted sites, or those sites that default to the classic editor.)
+- Ghost Effect! It’s a nice visual touch we added to the editor that displays shaded areas to let you know when and where content is loading.

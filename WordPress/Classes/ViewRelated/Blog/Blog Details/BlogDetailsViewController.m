@@ -426,6 +426,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [self createUserActivity];
     [self startAlertTimer];
+
+    if (self.shouldScrollToViewSite == YES) {
+        [self scrollToElement:QuickStartTourElementViewSite];
+        self.shouldScrollToViewSite = NO;
+    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
@@ -433,14 +438,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (!_createButtonCoordinator) {
         __weak __typeof(self) weakSelf = self;
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            [((WPTabBarController *)self.tabBarController) showPostTabWithCompletion:^(void) {
-                [self startAlertTimer];
+            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
+                [weakSelf startAlertTimer];
             }];
         } newPage:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            
-            WPTabBarController *controller = (WPTabBarController *)self.tabBarController;
+            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
             Blog *blog = [controller currentOrLastBlog];
             [controller showPageEditorForBlog:blog];
         }];
@@ -784,18 +786,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([self.blog supports:BlogFeaturePlans]) {
-        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-                                                         identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
-                                                           callback:^{
-                                                               [weakSelf showPlans];
-                                                           }];
-
-        plansRow.detail = self.blog.planTitle;
-        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
-        [rows addObject:plansRow];
-    }
+// Temporarily disabled
+//    if ([self.blog supports:BlogFeaturePlans]) {
+//        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+//                                                         identifier:BlogDetailsPlanCellIdentifier
+//                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
+//                                                           callback:^{
+//                                                               [weakSelf showPlans];
+//                                                           }];
+//
+//        plansRow.detail = self.blog.planTitle;
+//        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
+//        [rows addObject:plansRow];
+//    }
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
