@@ -42,7 +42,7 @@ class ReaderCardService {
 
                                         // Assign each interest an endpoint
                                         card?
-                                            .interests?
+                                            .topics?
                                             .array
                                             .compactMap { $0 as? ReaderTagTopic }
                                             .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }

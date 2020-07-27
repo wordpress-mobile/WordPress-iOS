@@ -508,8 +508,8 @@
     </entity>
     <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="interests" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderTagTopic" inverseName="cards" inverseEntity="ReaderTagTopic" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderTagTopic" inverseName="cards" inverseEntity="ReaderTagTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -609,7 +609,7 @@
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="interests" inverseEntity="ReaderCard" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="topics" inverseEntity="ReaderCard" syncable="YES"/>
     </entity>
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>

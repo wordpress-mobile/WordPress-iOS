@@ -22,11 +22,16 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cardPost = cards?[indexPath.row].post {
-            return cell(for: cardPost, at: indexPath)
-        } else if let interests = cards?[indexPath.row].interests?.array as? [ReaderTagTopic] {
-            return cell(for: interests)
-        } else {
+        guard let card = cards?[indexPath.row] else {
+            return UITableViewCell()
+        }
+
+        switch card.type {
+        case .post:
+            return cell(for: card.post!, at: indexPath)
+        case .topics:
+            return cell(for: card.topicsArray)
+        case .unknown:
             return UITableViewCell()
         }
     }
