@@ -27,7 +27,7 @@ class ReaderCardService {
             self.service.fetchCards(for: slugs,
                                success: { [weak self] cards in
 
-                                guard let `self` = self else {
+                                guard let self = self else {
                                     return
                                 }
 
