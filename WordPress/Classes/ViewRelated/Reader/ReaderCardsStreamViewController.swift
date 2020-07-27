@@ -5,6 +5,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
 
+    private var cards: [ReaderCard]? {
+        content.content as? [ReaderCard]
+    }
+
     lazy var cardsService: ReaderCardService = {
         return ReaderCardService()
     }()
@@ -18,9 +22,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
+        if let cardPost = cards?[indexPath.row].post {
             return cell(for: cardPost, at: indexPath)
-        } else if let posts = content.content as? [ReaderCard], let interests = posts[indexPath.row].interests?.array as? [ReaderTagTopic] {
+        } else if let interests = cards?[indexPath.row].interests?.array as? [ReaderTagTopic] {
             return cell(for: interests)
         } else {
             return UITableViewCell()
