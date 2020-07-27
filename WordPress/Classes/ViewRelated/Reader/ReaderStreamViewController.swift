@@ -117,7 +117,7 @@ import WordPressFlux
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = NSLocalizedString("TOPIC", comment: "Topic page title")
+                title = NSLocalizedString("Topic", comment: "Topic page title")
 
                 fetchTagTopic()
             }
@@ -621,7 +621,7 @@ import WordPressFlux
         }
 
         if ReaderHelpers.isTopicTag(topic) {
-             title = NSLocalizedString("TOPIC", comment: "Topic page title")
+             title = NSLocalizedString("Topic", comment: "Topic page title")
         } else {
             title = topic.title
         }

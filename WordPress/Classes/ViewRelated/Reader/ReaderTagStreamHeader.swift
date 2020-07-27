@@ -5,8 +5,9 @@ import WordPressShared
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: UIButton!
 
-    open var delegate: ReaderStreamHeaderDelegate?
+    let followButtonBorderColor: CGColor =  UIColor.gray(.shade30).cgColor
 
+    open var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
     open override func awakeFromNib() {
@@ -29,7 +30,7 @@ import WordPressShared
 
         WPStyleGuide.applyReaderFollowTopicButtonStyle(followButton)
         if #available(iOS 13, *) {
-            traitCollection.performAsCurrent { followButton.layer.borderColor = UIColor.gray(.shade30).cgColor }
+            traitCollection.performAsCurrent { followButton.layer.borderColor = followButtonBorderColor }
             setNeedsDisplay()
         }
     }

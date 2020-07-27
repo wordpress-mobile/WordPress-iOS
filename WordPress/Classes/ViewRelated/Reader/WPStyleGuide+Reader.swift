@@ -316,9 +316,9 @@ extension WPStyleGuide {
         button.setImage(tintedFollowingIcon, for: .selected)
         button.setImage(highlightIcon, for: .highlighted)
 
-        button.setTitle(followStringForDisplay, for: UIControl.State())
-        button.setTitle(followingStringForDisplay, for: .selected)
-        button.setTitle(followingStringForDisplay, for: .highlighted)
+        button.setTitle(FollowButton.Text.followStringForDisplay, for: UIControl.State())
+        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
+        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .highlighted)
 
         button.setTitleColor(normalColor, for: UIControl.State())
         button.setTitleColor(highlightedColor, for: .highlighted)
@@ -336,36 +336,30 @@ extension WPStyleGuide {
         button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
         button.layer.cornerRadius = 4.0
 
-        let followBackgroundColor: UIColor = .primaryButtonBackground
-        let followTextColor: UIColor = .white
-        let followingBackgroundColor: UIColor = .basicBackground
-        let followingTextColor: UIColor = .textSubtle
+        button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
 
-        button.backgroundColor = button.isSelected ? followingBackgroundColor : followBackgroundColor
-        button.tintColor = button.isSelected ? followingTextColor : followTextColor
+        button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
+        button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
 
-        button.setTitleColor(followTextColor, for: .normal)
-        button.setTitleColor(followingTextColor, for: .selected)
+        button.imageEdgeInsets = FollowButton.Style.imageEdgeInsets
+        button.titleEdgeInsets = FollowButton.Style.titleEdgeInsets
+        button.contentEdgeInsets = FollowButton.Style.contentEdgeInsets
 
-        let imageTitleSpace: CGFloat = 2.0
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
-        button.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
-
-        let tintedFollowIcon = followIcon.imageWithTintColor(followTextColor)
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(followingTextColor)
+        let tintedFollowIcon = followIcon.imageWithTintColor(FollowButton.Style.followTextColor)
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(FollowButton.Style.followingTextColor)
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
 
-        button.setTitle(followStringForDisplay, for: .normal)
-        button.setTitle(followingStringForDisplay, for: .selected)
+        button.setTitle(FollowButton.Text.followStringForDisplay, for: .normal)
+        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
 
         button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
 
         // Default accessibility label and hint.
-        button.accessibilityLabel = button.isSelected ? followingStringForDisplay : followStringForDisplay
-        button.accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
+        button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
+        button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
@@ -505,14 +499,6 @@ extension WPStyleGuide {
         }
     }
 
-    @objc public static var followStringForDisplay: String {
-        return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-    }
-
-    @objc public static var followingStringForDisplay: String {
-        return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-    }
-
     @objc public class func savePostStringForDisplay(_ isSaved: Bool) -> String {
         if isSaved {
             return NSLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
@@ -592,5 +578,24 @@ extension WPStyleGuide {
         public static let titleTextStyle: UIFont.TextStyle = .title1
         public static let contentTextStyle: UIFont.TextStyle = .callout
     }
-
+    
+    public struct FollowButton {
+        struct Style {
+            static let followBackgroundColor: UIColor = .primaryButtonBackground
+            static let followTextColor: UIColor = .white
+            static let followingBackgroundColor: UIColor = .basicBackground
+            static let followingTextColor: UIColor = .textSubtle
+            
+            static let imageTitleSpace: CGFloat = 2.0
+            static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
+            static let titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
+            static let contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
+        }
+        
+        struct Text {
+            static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
+            static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+            static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        }
+    }
 }
