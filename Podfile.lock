@@ -650,7 +650,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.33.0
   WordPressAuthenticator:
-    :commit: 52558af98b2871a98daafd6644386cbc6143b834
+    :commit: 6f9969d88cc47809e01d7dbf74b4683d4bfd38fb
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -744,6 +744,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: c29dd581c44930defed347a44d91d88ac634b99e
+PODFILE CHECKSUM: 03a412b58350fe38ef43787c0f80b8ee0a2eb5ff
 
 COCOAPODS: 1.8.4
