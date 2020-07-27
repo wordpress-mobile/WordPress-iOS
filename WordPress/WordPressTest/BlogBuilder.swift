@@ -8,7 +8,11 @@ import Foundation
 final class BlogBuilder {
     private let blog: Blog
 
+    private let context: NSManagedObjectContext
+
     init(_ context: NSManagedObjectContext) {
+        self.context = context
+
         blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
 
         // Non-null properties in Core Data
@@ -23,6 +27,15 @@ final class BlogBuilder {
             "value": atomic ? 1 : 0
         ]
         blog.options = options
+
+        return self
+    }
+
+    func withAnAccount() -> Self {
+        // Add Account
+        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        account.displayName = "displayName"
+        blog.account = account
 
         return self
     }

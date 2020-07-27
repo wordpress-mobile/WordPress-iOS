@@ -1,7 +1,5 @@
-Nej, du ser inte i syne. Vår läsare blivit betydligt ögonvänligare. Vi har nämligen korrigerat utseendet på många saker när du läser ett inlägg. Det är en massa småsaker, såsom storleken på mellanrum, placering och storlek för olika objekt. Allt sammantaget ger det hela en trevligare upplevelse. Dessutom visas och döljs navigeringslisten så smidigt att det nästan känns magiskt! Visst behöver vi alla lite magi i vår tillvaro just nu!
+v 15.3 innehåller tre stora förbättringar:
 
-Vi vet att det kan vara svårt att hitta på en rubrik för webbplatsen och att det ibland kan vara riktigt svårt att bestämma sig. Därför har vi nu gjort det möjligt att ändra webbplatsens rubrik genom att trycka på rubriken i sidan med informationen om webbplatsen. Om du just har kommit på den perfekta rubriken för en ny webbplats finns det nu en snabbstartsåtgärd där du kan ange rubriken för alla nya webbplatser du skulle vilja starta.
-
-Om du är duktigt på färgsättning så finns det nu stöd i blockredigeraren för anpassning av gradienttyper och -vinklar i blocken för knappar och omslag. Om du håller koll på hur många block du använder och hur mycket text du skriver så visar vi nu räknare med uppgifter om antalet block, ord och tecken.
-
-Sist, men inte minst, har vi nu rättat en irriterande programkrasch som kunde inträffa om man gick till blockredigeraren direkt efter att man loggat ut och sedan omedelbart loggat in igen. Nu kan du logga in och ut hur mycket du vill utan några problem!
+- Nu har alla block val för att kopiera, klippa ut, klistra in och duplicera.
+- Block som saknar stöd kan redigeras i ett eget fönster i appen med samma verktyg som finns tillgängliga i den kompletta webbredigeraren. (Obs: detta är ännu inte tillgängligt för webbplats på eget webbhotell eller om webbplatsen som standard använder den klassiska redigeraren.)
+- Suddighetseffekt! En trevlig visuell finess vi lagt till i redigeraren är skuggade områden för att visa var och när innehåll laddas in.
