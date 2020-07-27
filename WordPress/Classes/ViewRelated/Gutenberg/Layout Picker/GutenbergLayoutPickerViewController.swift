@@ -3,7 +3,6 @@ import Gridicons
 
 class GutenbergLayoutPickerViewController: UIViewController {
 
-    @IBOutlet weak var intialHeaderPosition: NSLayoutConstraint!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleView: UILabel!
@@ -13,6 +12,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
+
+    /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
+    /// when scrolling begins to allow pushing the non static items out of the scrollable area.
+    @IBOutlet weak var initialHeaderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleToSubtitleSpacing: NSLayoutConstraint!
     @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
@@ -21,20 +24,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
-    private var isLayingOutHeader: Bool = false {
-        didSet {
-            intialHeaderPosition.isActive = isLayingOutHeader
-            headerHeightConstraint.isActive = !isLayingOutHeader
-        }
-    }
-
     private var shouldUseCompactLayout: Bool {
-        let device = UIDevice.current
-        return device.userInterfaceIdiom == .phone && device.orientation.isLandscape
+        return traitCollection.verticalSizeClass == .compact
     }
 
     private var maxHeaderHeight: CGFloat {
-
         if shouldUseCompactLayout {
             return minHeaderHeight
         } else {
@@ -89,15 +83,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
 
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            styleButtons()
-            layoutHeader()
-        }
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animateAlongsideTransition(in: nil, animation: nil) { (_) in
-            self.layoutHeader()
+            headerView.invalidateIntrinsicContentSize()
+            largeTitleView.invalidateIntrinsicContentSize()
         }
     }
 
@@ -147,28 +134,33 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutHeader() {
-        isLayingOutHeader = true
-
-        largeTitleView.isHidden = shouldUseCompactLayout
-        promptView.isHidden = shouldUseCompactLayout
-
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
+
+        headerHeightConstraint.constant = maxHeaderHeight
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
 
         let tableFooterFrame = footerView.frame
         let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
 
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
-        isLayingOutHeader = false
-
-        scrollViewDidEndDragging(tableView, willDecelerate: false)
     }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard !shouldUseCompactLayout && !headerHeightConstraint.isActive else { return }
+
+        headerHeightConstraint.isActive = true
+        initialHeaderTopConstraint.isActive = false
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !shouldUseCompactLayout else { return }
+
         let scrollOffset = scrollView.contentOffset.y
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
@@ -182,6 +174,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard !shouldUseCompactLayout else { return }
+
         if largeTitleView.frame.midY > 0 {
             snapToHeight(scrollView, height: maxHeaderHeight)
         } else if promptView.frame.midY > 0 {

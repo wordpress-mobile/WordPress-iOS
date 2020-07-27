@@ -44,7 +44,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DTZ-MR-Eqm">
                                 <rect key="frame" x="0.0" y="56" width="414" height="205.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
                                         <rect key="frame" x="67" y="53" width="280" height="64.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" priority="750" constant="280" id="uXu-Ky-l0r"/>
@@ -52,12 +52,14 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=compact" hidden="YES"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S74-AK-pHd">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S74-AK-pHd">
                                         <rect key="frame" x="84.5" y="0.0" width="245" height="41"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=compact" hidden="YES"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa">
                                         <rect key="frame" x="0.0" y="137.5" width="414" height="44"/>
@@ -85,6 +87,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="fhN-6z-taa" secondAttribute="trailing" id="3Zj-xu-kOK"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fhN-6z-taa" secondAttribute="bottom" constant="9" id="3wZ-NV-ETZ"/>
+                                    <constraint firstItem="S74-AK-pHd" firstAttribute="top" secondItem="DTZ-MR-Eqm" secondAttribute="top" id="4pf-bx-DHy"/>
                                     <constraint firstItem="4ff-7z-VN8" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="Ckj-L2-I9f"/>
                                     <constraint firstItem="S74-AK-pHd" firstAttribute="centerX" secondItem="DTZ-MR-Eqm" secondAttribute="centerX" id="D5r-df-4Ke"/>
                                     <constraint firstAttribute="bottom" secondItem="4ff-7z-VN8" secondAttribute="bottom" id="GwS-lS-4cI"/>
@@ -92,19 +95,31 @@
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DTZ-MR-Eqm" secondAttribute="top" id="OQo-1y-GIH"/>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="top" secondItem="yqC-YH-PXy" secondAttribute="bottom" constant="20" id="TWT-Wj-G1p"/>
                                     <constraint firstItem="S74-AK-pHd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DTZ-MR-Eqm" secondAttribute="leading" constant="5" id="Uqh-1Y-Vt5"/>
+                                    <constraint firstItem="fhN-6z-taa" firstAttribute="top" secondItem="DTZ-MR-Eqm" secondAttribute="top" id="X0m-zz-UO3"/>
                                     <constraint firstItem="yqC-YH-PXy" firstAttribute="top" secondItem="S74-AK-pHd" secondAttribute="bottom" constant="12" id="h5U-Rb-Tvs"/>
                                     <constraint firstAttribute="trailing" secondItem="4ff-7z-VN8" secondAttribute="trailing" id="lHV-hQ-Tyq"/>
                                     <constraint firstItem="yqC-YH-PXy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DTZ-MR-Eqm" secondAttribute="leading" constant="20" id="nEd-ak-pA5">
                                         <variation key="widthClass=regular" constant="170"/>
                                     </constraint>
-                                    <constraint firstItem="S74-AK-pHd" firstAttribute="top" secondItem="DTZ-MR-Eqm" secondAttribute="top" id="nne-kl-lcH"/>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
-                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP"/>
-                                    <constraint firstAttribute="height" constant="204" id="yrU-yj-SJL"/>
+                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP">
+                                        <variation key="heightClass=compact" constant="9"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="205.5" id="yrU-yj-SJL"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="yrU-yj-SJL"/>
+                                        <exclude reference="X0m-zz-UO3"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="yrU-yj-SJL"/>
+                                        <exclude reference="h5U-Rb-Tvs"/>
+                                        <include reference="TWT-Wj-G1p"/>
+                                        <include reference="X0m-zz-UO3"/>
+                                        <include reference="vJ5-2N-JfP"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -197,6 +212,7 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
+                                    <variation key="heightClass=compact" hidden="NO"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -235,7 +251,7 @@
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
                         <outlet property="headerHeightConstraint" destination="yrU-yj-SJL" id="n1e-gV-ZH4"/>
                         <outlet property="headerView" destination="DTZ-MR-Eqm" id="pgP-hd-zPq"/>
-                        <outlet property="intialHeaderPosition" destination="nne-kl-lcH" id="hCv-l7-WfF"/>
+                        <outlet property="initialHeaderTopConstraint" destination="4pf-bx-DHy" id="7iv-2m-zD3"/>
                         <outlet property="largeTitleView" destination="S74-AK-pHd" id="N2V-CK-Nng"/>
                         <outlet property="maxHeaderBottomSpacing" destination="vJ5-2N-JfP" id="7Kz-K6-waN"/>
                         <outlet property="minHeaderBottomSpacing" destination="3wZ-NV-ETZ" id="OhI-lZ-ARC"/>
