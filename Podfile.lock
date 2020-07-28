@@ -491,7 +491,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.21.0-beta)
-  - WordPressKit (= 4.13.0-beta.4)
+  - WordPressKit (from `../WordPressKit-iOS`)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.9.2-beta.1)
   - WordPressUI (~> 1.7.1)
@@ -541,7 +541,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -632,6 +631,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.33.0
+  WordPressKit:
+    :path: "../WordPressKit-iOS"
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.33.0/third-party-podspecs/Yoga.podspec.json
 
@@ -739,6 +740,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 25bd3157c1742a4894c165d870867e05671e951b
+PODFILE CHECKSUM: 20b14f7022bd3f2c3f1f7297deb701c62f77fbc2
 
 COCOAPODS: 1.8.4
