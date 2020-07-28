@@ -184,7 +184,7 @@ class NoticeView: UIView {
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.link, for: .normal)
+        actionButton.setTitleColor(.invertedLink, for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }

@@ -27,7 +27,7 @@ extension UIColor {
         }
     }
 
-    static var link: UIColor {
+    static var invertedLink: UIColor {
         UIColor(light: .primary(.shade30), dark: .primary(.shade50))
     }
 }
