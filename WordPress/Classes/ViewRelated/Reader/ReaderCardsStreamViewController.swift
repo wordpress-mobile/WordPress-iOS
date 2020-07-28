@@ -3,6 +3,12 @@ import Foundation
 class ReaderCardsStreamViewController: ReaderStreamViewController {
     private var currentPage = 1
 
+    private let readerCardTopicsIdentifier = "ReaderTopicsCell"
+
+    private var cards: [ReaderCard]? {
+        content.content as? [ReaderCard]
+    }
+
     lazy var cardsService: ReaderCardService = {
         return ReaderCardService()
     }()
@@ -10,14 +16,22 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
+        tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let posts = content.content as? [ReaderCard], let cardPost = posts[indexPath.row].post {
-            return cell(for: cardPost, at: indexPath)
-        } else {
+        guard let card = cards?[indexPath.row] else {
+            return UITableViewCell()
+        }
+
+        switch card.type {
+        case .post:
+            return cell(for: card.post!, at: indexPath)
+        case .topics:
+            return cell(for: card.topicsArray)
+        case .unknown:
             return UITableViewCell()
         }
     }
@@ -34,6 +48,17 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         if let posts = content.content as? [ReaderCard], let post = posts[indexPath.row].post {
             bumpRenderTracker(post)
         }
+    }
+
+    func cell(for interests: [ReaderTagTopic]) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCardCell
+        cell.configure(interests)
+        cell.delegate = self
+        return cell
+    }
+
+    private func isTableViewAtTheTop() -> Bool {
+        return tableView.contentOffset.y == 0
     }
 
     // MARK: - Sync
@@ -59,6 +84,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         })
     }
 
+    override func syncIfAppropriate() {
+        // Only sync if the tableview is at the top, otherwise this will change tableview's offset
+        if isTableViewAtTheTop() {
+            super.syncIfAppropriate()
+        }
+    }
+
     // MARK: - TableViewHandler
 
     override func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
@@ -68,7 +100,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "post == NULL OR post != null")
+        return NSPredicate(format: "post != NULL OR topics.@count != 0")
     }
 
     /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
@@ -83,5 +115,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let controller = ReaderCardsStreamViewController()
         controller.readerTopic = topic
         return controller
+    }
+}
+
+// MARK: - Suggested Topics Delegate
+
+extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
+    func didSelect(topic: ReaderTagTopic) {
+        let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+        navigationController?.pushViewController(topicStreamViewController, animated: true)
     }
 }

@@ -893,7 +893,7 @@ import WordPressFlux
     /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
-    private func syncIfAppropriate() {
+    func syncIfAppropriate() {
         guard UIApplication.shared.isRunningTestSuite() == false else {
             return
         }

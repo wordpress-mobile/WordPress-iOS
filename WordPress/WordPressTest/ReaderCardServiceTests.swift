@@ -8,14 +8,15 @@ class ReaderCardServiceTests: XCTestCase {
 
     private var coreDataStack: CoreDataStack!
     private var remoteService: ReaderPostServiceRemote!
+    private var followedInterestsService: ReaderFollowedInterestsServiceMock!
     private var apiMock: WordPressComMockRestApi!
 
     override func setUp() {
         super.setUp()
         coreDataStack = TestContextManager()
         apiMock = WordPressComMockRestApi()
+        followedInterestsService = ReaderFollowedInterestsServiceMock(context: coreDataStack.mainContext)
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
-        createInterests()
     }
 
     override func tearDown() {
@@ -29,9 +30,9 @@ class ReaderCardServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Call the API with pug and cat slugs")
 
         apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         service.fetch(success: { _, _ in
-        expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
+            expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
             expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=cat"))
             expectation.fulfill()
         }, failure: { _ in })
@@ -44,9 +45,9 @@ class ReaderCardServiceTests: XCTestCase {
     func testReturnErrorWhenNotFollowingAnyInterest() {
         let expectation = self.expectation(description: "Error when now following interests")
         apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
+        followedInterestsService.returnInterests = false
 
-        clearInterests()
         service.fetch(success: { _, _ in }, failure: { error in
             expect(error).toNot(beNil())
             expectation.fulfill()
@@ -61,7 +62,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testSaveCards() {
         let expectation = self.expectation(description: "9 reader cards should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(success: { _, _ in
@@ -78,7 +79,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testSaveCardsWithPosts() {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(success: { _, _ in
@@ -95,7 +96,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testFailure() {
         let expectation = self.expectation(description: "Failure callback should be called")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = false
 
         service.fetch(success: { _, _ in }, failure: { error in
@@ -111,7 +112,7 @@ class ReaderCardServiceTests: XCTestCase {
     func testFirstPageClean() {
         let expectation = self.expectation(description: "Only 9 cards should be returned")
 
-        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack)
+        let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(page: 2, success: { _, _ in
@@ -124,39 +125,6 @@ class ReaderCardServiceTests: XCTestCase {
         }, failure: {_ in })
 
         waitForExpectations(timeout: 5, handler: nil)
-    }
-
-    /// Save 2 Interests in the database
-    private func createInterests() {
-        let pugTopic = ReaderTagTopic(context: coreDataStack.mainContext)
-        pugTopic.slug = "pug"
-        pugTopic.isRecommended = false
-        pugTopic.tagID = 1
-        pugTopic.inUse = false
-        pugTopic.following = true
-        pugTopic.path = ""
-        pugTopic.showInMenu = false
-        pugTopic.title = "Pug"
-        pugTopic.type = "pug"
-
-        let catTopic = ReaderTagTopic(context: coreDataStack.mainContext)
-        catTopic.slug = "cat"
-        catTopic.isRecommended = false
-        catTopic.tagID = 2
-        catTopic.inUse = false
-        catTopic.following = true
-        catTopic.path = ""
-        catTopic.showInMenu = false
-        catTopic.title = "Cat"
-        catTopic.type = "cat"
-
-        coreDataStack.save(coreDataStack.mainContext)
-    }
-
-    /// Remove all saved interests
-    private func clearInterests() {
-        let interests = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())) as? [NSManagedObject]
-        interests?.forEach { coreDataStack.mainContext.delete($0) }
     }
 }
 
@@ -181,5 +149,57 @@ class WordPressComMockRestApi: WordPressComRestApi {
         }
 
         return Progress()
+    }
+}
+
+private class ReaderFollowedInterestsServiceMock: ReaderFollowedInterestsService {
+    var returnInterests = true
+
+    private let context: NSManagedObjectContext
+
+    lazy var topics: [ReaderTagTopic] = {
+        let pugTopic = ReaderTagTopic(context: context)
+        pugTopic.slug = "pug"
+        pugTopic.isRecommended = false
+        pugTopic.tagID = 1
+        pugTopic.inUse = false
+        pugTopic.following = true
+        pugTopic.path = ""
+        pugTopic.showInMenu = false
+        pugTopic.title = "Pug"
+        pugTopic.type = "pug"
+
+        let catTopic = ReaderTagTopic(context: context)
+        catTopic.slug = "cat"
+        catTopic.isRecommended = false
+        catTopic.tagID = 2
+        catTopic.inUse = false
+        catTopic.following = true
+        catTopic.path = ""
+        catTopic.showInMenu = false
+        catTopic.title = "Cat"
+        catTopic.type = "cat"
+
+        return [pugTopic, catTopic]
+    }()
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
+    func fetchFollowedInterestsLocally(completion: @escaping ([ReaderTagTopic]?) -> Void) {
+        completion(returnInterests ? topics : [])
+    }
+
+    func fetchFollowedInterestsRemotely(completion: @escaping ([ReaderTagTopic]?) -> Void) {
+        completion(returnInterests ? topics : [])
+    }
+
+    func followInterests(_ interests: [RemoteReaderInterest], success: @escaping ([ReaderTagTopic]?) -> Void, failure: @escaping (Error) -> Void, isLoggedIn: Bool) {
+
+    }
+
+    func path(slug: String) -> String {
+        return ""
     }
 }
