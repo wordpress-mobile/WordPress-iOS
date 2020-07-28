@@ -100,7 +100,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "post == NULL OR post != null")
+        return NSPredicate(format: "post != NULL OR topics.@count != 0")
     }
 
     /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
