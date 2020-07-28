@@ -185,7 +185,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     private func layoutTableViewHeader() {
         let tableFooterFrame = footerView.frame
-        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        let bottomInset = tableFooterFrame.size.height
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
     }

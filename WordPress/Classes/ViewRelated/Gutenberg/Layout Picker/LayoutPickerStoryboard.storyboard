@@ -153,9 +153,7 @@
                                         <variation key="widthClass=regular" constant="170"/>
                                     </constraint>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
-                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP">
-                                        <variation key="heightClass=compact" constant="9"/>
-                                    </constraint>
+                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP"/>
                                     <constraint firstAttribute="height" constant="205.5" id="yrU-yj-SJL"/>
                                 </constraints>
                                 <variation key="default">
@@ -170,7 +168,7 @@
                                         <exclude reference="h5U-Rb-Tvs"/>
                                         <include reference="TWT-Wj-G1p"/>
                                         <include reference="X0m-zz-UO3"/>
-                                        <include reference="vJ5-2N-JfP"/>
+                                        <exclude reference="vJ5-2N-JfP"/>
                                     </mask>
                                 </variation>
                             </view>
