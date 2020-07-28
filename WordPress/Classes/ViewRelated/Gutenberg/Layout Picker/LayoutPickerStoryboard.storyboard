@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -206,6 +207,21 @@
                                                     <action selector="createBlankPage:" destination="6uO-HR-ECX" eventType="touchUpInside" id="p28-fq-nCl"/>
                                                 </connections>
                                             </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yt3-Sv-2ZO">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <state key="normal" title="Preview">
+                                                    <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                </state>
+                                            </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CcO-r6-GJK">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
+                                                <color key="backgroundColor" name="Pink50"/>
+                                                <state key="normal" title="Create Page">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="5en-Io-MIm"/>
@@ -260,6 +276,7 @@
                         <outlet property="categoryBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="closeButton" destination="jOR-Cu-uXg" id="JYm-hS-Ov6"/>
                         <outlet property="createBlankPageBtn" destination="zm3-8S-slr" id="KLr-3l-vzg"/>
+                        <outlet property="createPageBtn" destination="CcO-r6-GJK" id="rBK-hn-WsJ"/>
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
                         <outlet property="headerBar" destination="Uh3-j1-P0D" id="1Ra-RG-uNE"/>
                         <outlet property="headerHeightConstraint" destination="yrU-yj-SJL" id="n1e-gV-ZH4"/>
@@ -268,6 +285,7 @@
                         <outlet property="largeTitleView" destination="S74-AK-pHd" id="N2V-CK-Nng"/>
                         <outlet property="maxHeaderBottomSpacing" destination="vJ5-2N-JfP" id="7Kz-K6-waN"/>
                         <outlet property="minHeaderBottomSpacing" destination="3wZ-NV-ETZ" id="OhI-lZ-ARC"/>
+                        <outlet property="previewBtn" destination="Yt3-Sv-2ZO" id="bTE-wA-RbY"/>
                         <outlet property="promptView" destination="yqC-YH-PXy" id="gxZ-Pj-Rdj"/>
                         <outlet property="subtitleToCategoryBarSpacing" destination="TWT-Wj-G1p" id="OfT-Wy-xkZ"/>
                         <outlet property="tableView" destination="eiU-pw-Xq6" id="blQ-fQ-0HC"/>
@@ -282,4 +300,9 @@
             <point key="canvasLocation" x="15.942028985507248" y="-236.38392857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Pink50">
+            <color red="0.78823529411764703" green="0.20784313725490197" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

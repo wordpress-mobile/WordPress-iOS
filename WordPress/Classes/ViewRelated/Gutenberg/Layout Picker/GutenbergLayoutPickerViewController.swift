@@ -15,6 +15,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
+    @IBOutlet weak var previewBtn: UIButton!
+    @IBOutlet weak var createPageBtn: UIButton!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -33,8 +35,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
             }
         }
     }
-
-    var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
     private var shouldUseCompactLayout: Bool {
         return traitCollection.verticalSizeClass == .compact
@@ -76,7 +76,23 @@ class GutenbergLayoutPickerViewController: UIViewController {
             }
         }
     }
+
+    var accentColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.muriel(color: .accent, .shade40)
+                } else {
+                    return UIColor.muriel(color: .accent, .shade50)
+                }
+            }
+        } else {
+            return UIColor.muriel(color: .accent, .shade50)
+        }
+    }
+
     var layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
+    var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,12 +161,16 @@ class GutenbergLayoutPickerViewController: UIViewController {
             seperator = .lightGray
         }
 
-        [createBlankPageBtn].forEach { (button) in
+        [createBlankPageBtn, previewBtn].forEach { (button) in
             button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
             button?.layer.borderColor = seperator.cgColor
             button?.layer.borderWidth = 1
             button?.layer.cornerRadius = 8
         }
+
+        createPageBtn.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
+        createPageBtn.backgroundColor = accentColor
+        createPageBtn.layer.cornerRadius = 8
 
         if #available(iOS 13.0, *) {
             closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
