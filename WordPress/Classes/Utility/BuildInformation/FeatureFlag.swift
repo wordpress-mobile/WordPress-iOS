@@ -10,14 +10,12 @@ enum FeatureFlag: Int, CaseIterable {
     case meMove
     case floatingCreateButton
     case newReaderNavigation
-    case tenor
     case readerWebview
     case swiftCoreData
     case homepageSettings
     case readerImprovementsPhase2
     case gutenbergMentions
     case gutenbergModalLayoutPicker
-    case gutenbergSnappyLayoutPicker // Added for design feedback this should be removed before merging the PR
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -42,8 +40,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .newReaderNavigation:
             return true
-        case .tenor:
-            return true
         case .readerWebview:
             return true
         case .swiftCoreData:
@@ -56,8 +52,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .gutenbergModalLayoutPicker:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
-        case .gutenbergSnappyLayoutPicker:
-            return false
         }
     }
 }
@@ -92,8 +86,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
-        case .tenor:
-            return "Tenor GIF media source"
         case .readerWebview:
             return "Reader content displayed in a WebView"
         case .swiftCoreData:
@@ -106,8 +98,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Mentions in Gutenberg"
         case .gutenbergModalLayoutPicker:
             return "Gutenberg Modal Layout Picker"
-        case .gutenbergSnappyLayoutPicker:
-            return "Make Modal Layout Picker \"Snappy\" on Collapse"
         }
     }
 

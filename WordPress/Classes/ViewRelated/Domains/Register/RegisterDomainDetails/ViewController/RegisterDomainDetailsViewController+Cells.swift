@@ -45,7 +45,8 @@ extension RegisterDomainDetailsViewController {
             value: row.value,
             placeholder: row.placeholder,
             valueColor: valueColor(row: row),
-            accessoryType: row.accessoryType()
+            accessoryType: row.accessoryType(),
+            valueSanitizer: row.valueSanitizer
         ))
 
         updateStyle(of: cell, at: indexPath)
