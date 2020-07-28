@@ -241,7 +241,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        label.font = WPStyleGuide.serifFontForTextStyle(.subheadline)
         label.textColor = .textSubtle
     }
 

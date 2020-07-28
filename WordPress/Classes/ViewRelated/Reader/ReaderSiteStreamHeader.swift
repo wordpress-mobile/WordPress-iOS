@@ -26,11 +26,10 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 @objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader {
-    @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var detailLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: PostMetaButton!
+    @IBOutlet fileprivate weak var followButton: UIButton!
     @IBOutlet fileprivate weak var followCountLabel: UILabel!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
 
@@ -46,10 +45,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -69,7 +64,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         titleLabel.text = siteTopic.title
         detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
-        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        WPStyleGuide.applyReaderFollowSiteButtonStyle(followButton)
         followButton.isSelected = topic.following
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
