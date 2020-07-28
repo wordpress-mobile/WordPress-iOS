@@ -26,4 +26,8 @@ extension UIColor {
             return UIColor(displayP3Red: 235/255, green: 235/255, blue: 245/255, alpha: 0.6)
         }
     }
+
+    static var link: UIColor {
+        UIColor(light: .primary(.shade30), dark: .primary(.shade50))
+    }
 }
