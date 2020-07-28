@@ -66,7 +66,7 @@ class ReaderCardTests: XCTestCase {
         let apiMock = WordPressComMockRestApi()
         apiMock.succeed = true
         let remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
-        remoteService.fetchCards(for: [], success: { cards in
+        remoteService.fetchCards(for: [], success: { cards, _ in
             completion(cards.first { $0.type == type }!)
         }, failure: { _ in })
     }
