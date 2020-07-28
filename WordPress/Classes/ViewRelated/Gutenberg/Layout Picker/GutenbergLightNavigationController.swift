@@ -14,26 +14,6 @@ class GutenbergLightNavigationController: UINavigationController {
         return .default
     }
 
-    var shadowIsHidden: Bool = false {
-        didSet {
-            if shadowIsHidden {
-                if #available(iOS 13.0, *) {
-                    navigationBar.standardAppearance.shadowColor = UIColor.clear
-                    navigationBar.scrollEdgeAppearance?.shadowColor = UIColor.clear
-                } else {
-                    navigationBar.shadowImage = UIImage()
-                }
-            } else {
-                if #available(iOS 13.0, *) {
-                    navigationBar.standardAppearance.shadowColor = separatorColor
-                    navigationBar.scrollEdgeAppearance?.shadowColor = separatorColor
-                } else {
-                    navigationBar.shadowImage = UIImage(color: .lightGray)
-                }
-            }
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {

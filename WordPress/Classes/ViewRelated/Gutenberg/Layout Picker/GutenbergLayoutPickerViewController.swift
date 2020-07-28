@@ -3,6 +3,7 @@ import Gridicons
 
 class GutenbergLayoutPickerViewController: UIViewController {
 
+    @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleView: UILabel!
@@ -21,7 +22,15 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
     @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
-    @IBOutlet weak var footerFX: UIVisualEffectView!
+    @IBOutlet var visualEffects: [UIVisualEffectView]! {
+        didSet {
+            if #available(iOS 13.0, *) {
+                visualEffects.forEach { (visualEffect) in
+                    visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
+                }
+            }
+        }
+    }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
@@ -72,24 +81,20 @@ class GutenbergLayoutPickerViewController: UIViewController {
         styleButtons()
         layoutHeader()
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityLabel = NSLocalizedString("Close", comment: "Close the modal window")
-
-        if #available(iOS 13.0, *) {
-            footerFX.effect = UIBlurEffect.init(style: .systemChromeMaterial)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = true
+        navigationController?.isNavigationBarHidden = true
         super.viewWillAppear(animated)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = false
+        navigationController?.isNavigationBarHidden = false
         super.viewDidDisappear(animated)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        (navigationController as? GutenbergLightNavigationController)?.shadowIsHidden = false
+        navigationController?.isNavigationBarHidden = false
         super.prepare(for: segue, sender: sender)
     }
 
@@ -99,6 +104,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
                 styleButtons()
+            }
+        }
+
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+            layoutTableViewHeader()
+            if let visibleRow = tableView.indexPathsForVisibleRows?.first {
+                tableView.scrollToRow(at: visibleRow, at: .top, animated: true)
             }
         }
     }
@@ -148,33 +160,46 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
+    private func layoutTableViewHeader() {
+        let tableFooterFrame = footerView.frame
+        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+    }
+
     private func layoutHeader() {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
 
         headerHeightConstraint.constant = maxHeaderHeight
+        layoutTableViewHeader()
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
-        let tableFooterFrame = footerView.frame
-        let bottomInset = tableFooterFrame.size.height - (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 44)
+        let fillColor: UIColor
+        if #available(iOS 13.0, *) {
+            fillColor = .systemBackground
+        } else {
+            fillColor = .white
+        }
 
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight))
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        tableView.tableHeaderView?.backgroundColor = fillColor
+        tableView.tableFooterView?.backgroundColor = fillColor
     }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout && !headerHeightConstraint.isActive else { return }
-
-        headerHeightConstraint.isActive = true
-        initialHeaderTopConstraint.isActive = false
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout else { return }
+        guard !shouldUseCompactLayout else {
+            titleIsHidden = false
+            return
+        }
+
+        if !headerHeightConstraint.isActive {
+            initialHeaderTopConstraint.isActive = false
+            headerHeightConstraint.isActive = true
+        }
 
         let scrollOffset = scrollView.contentOffset.y
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
