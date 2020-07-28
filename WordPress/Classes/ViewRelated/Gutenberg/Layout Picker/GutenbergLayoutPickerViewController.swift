@@ -80,7 +80,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
-        navigationController?.navigationItem.rightBarButtonItem?.accessibilityLabel = NSLocalizedString("Close", comment: "Close the modal window")
     }
 
     override func viewWillAppear(_ animated: Bool) {
