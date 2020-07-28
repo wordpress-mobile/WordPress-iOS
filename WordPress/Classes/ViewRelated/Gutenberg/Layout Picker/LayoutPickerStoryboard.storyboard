@@ -53,7 +53,7 @@
                                         <blurEffect style="regular"/>
                                     </visualEffectView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a Layout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Irb-2L-Gsp">
-                                        <rect key="frame" x="143" y="0.0" width="128" height="56"/>
+                                        <rect key="frame" x="143" y="18" width="128" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -82,16 +82,16 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="xQd-V8-HHV" secondAttribute="bottom" id="10m-R3-dFc"/>
-                                    <constraint firstItem="Irb-2L-Gsp" firstAttribute="top" secondItem="Uh3-j1-P0D" secondAttribute="top" id="2BV-R1-xth"/>
-                                    <constraint firstAttribute="height" constant="56" id="7Hu-B3-Hbe"/>
-                                    <constraint firstAttribute="bottom" secondItem="Irb-2L-Gsp" secondAttribute="bottom" id="EA4-Ha-TPp"/>
-                                    <constraint firstItem="jOR-Cu-uXg" firstAttribute="centerY" secondItem="Uh3-j1-P0D" secondAttribute="centerY" id="Gij-QM-Hd9"/>
+                                    <constraint firstItem="Irb-2L-Gsp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uh3-j1-P0D" secondAttribute="top" id="2BV-R1-xth"/>
+                                    <constraint firstItem="Irb-2L-Gsp" firstAttribute="centerY" secondItem="jOR-Cu-uXg" secondAttribute="centerY" id="3fn-bf-ODB"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Irb-2L-Gsp" secondAttribute="bottom" id="EA4-Ha-TPp"/>
                                     <constraint firstItem="Irb-2L-Gsp" firstAttribute="centerX" secondItem="Uh3-j1-P0D" secondAttribute="centerX" id="UOb-Xb-XWn"/>
                                     <constraint firstItem="xQd-V8-HHV" firstAttribute="leading" secondItem="Uh3-j1-P0D" secondAttribute="leading" id="WTL-kH-FcX"/>
                                     <constraint firstItem="xQd-V8-HHV" firstAttribute="top" secondItem="Uh3-j1-P0D" secondAttribute="top" id="XC3-2i-1qV"/>
                                     <constraint firstItem="jOR-Cu-uXg" firstAttribute="width" secondItem="jOR-Cu-uXg" secondAttribute="height" multiplier="1:1" id="aS9-dr-vpA"/>
                                     <constraint firstAttribute="trailing" secondItem="jOR-Cu-uXg" secondAttribute="trailing" constant="13" id="fej-64-0cu"/>
                                     <constraint firstAttribute="trailing" secondItem="xQd-V8-HHV" secondAttribute="trailing" id="nOr-wH-iMW"/>
+                                    <constraint firstAttribute="bottom" secondItem="jOR-Cu-uXg" secondAttribute="bottom" constant="13" id="pUu-vg-esB"/>
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DTZ-MR-Eqm">
@@ -254,6 +254,7 @@
                             <constraint firstAttribute="bottom" secondItem="2Hj-mT-YmE" secondAttribute="bottom" id="gu4-Iy-a0x"/>
                             <constraint firstItem="Uh3-j1-P0D" firstAttribute="top" secondItem="1ZG-pe-aDl" secondAttribute="top" id="hW9-t5-sTL"/>
                             <constraint firstItem="eiU-pw-Xq6" firstAttribute="leading" secondItem="ad1-6E-LbB" secondAttribute="leading" id="oph-yf-8ZF"/>
+                            <constraint firstItem="jOR-Cu-uXg" firstAttribute="top" secondItem="ad1-6E-LbB" secondAttribute="top" constant="13" id="pMF-KH-URM"/>
                             <constraint firstItem="gS8-vY-WED" firstAttribute="leading" secondItem="ad1-6E-LbB" secondAttribute="leading" constant="20" id="r5i-Km-gxu"/>
                             <constraint firstItem="2Hj-mT-YmE" firstAttribute="leading" secondItem="1ZG-pe-aDl" secondAttribute="leading" id="uqK-Wk-nWk"/>
                             <constraint firstAttribute="bottom" secondItem="eiU-pw-Xq6" secondAttribute="bottom" id="w7N-g8-juX"/>
