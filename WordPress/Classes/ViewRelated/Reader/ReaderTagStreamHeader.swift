@@ -5,8 +5,6 @@ import WordPressShared
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: UIButton!
 
-    let followButtonBorderColor: CGColor =  UIColor.gray(.shade30).cgColor
-
     open var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
@@ -20,6 +18,16 @@ import WordPressShared
     @objc func applyStyles() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                WPStyleGuide.applyReaderFollowTopicButtonStyle(followButton)
+            }
+        }
+    }
 
 
     // MARK: - Configuration
@@ -27,12 +35,7 @@ import WordPressShared
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
         followButton.isSelected = topic.following
-
         WPStyleGuide.applyReaderFollowTopicButtonStyle(followButton)
-        if #available(iOS 13, *) {
-            traitCollection.performAsCurrent { followButton.layer.borderColor = followButtonBorderColor }
-            setNeedsDisplay()
-        }
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {

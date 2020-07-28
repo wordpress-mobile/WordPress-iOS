@@ -335,6 +335,7 @@ extension WPStyleGuide {
 
         button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
         button.layer.cornerRadius = 4.0
+        button.layer.borderColor = UIColor(light: .gray(.shade30), dark: .gray(.shade60)).cgColor
 
         button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
         button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
