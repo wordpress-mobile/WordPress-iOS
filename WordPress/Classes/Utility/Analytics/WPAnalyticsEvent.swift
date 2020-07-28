@@ -116,11 +116,11 @@ import Foundation
         case .pushNotificationsPrimerNoTapped:
             return "notifications_primer_no_tapped"
         case .secondNotificationsAlertSeen:
-            return "second_notifications_alert_seen"
+            return "notifications_second_alert_seen"
         case .secondNotificationsAlertAllowTapped:
-            return "second_notifications_alert_allow_tapped"
+            return "notifications_second_alert_allow_tapped"
         case .secondNotificationsAlertNoTapped:
-            return "second_notifications_alert_no_tapped"
+            return "notifications_second_alert_no_tapped"
     }
 }
 

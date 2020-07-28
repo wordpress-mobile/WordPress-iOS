@@ -1761,6 +1761,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     private enum Constants {
         static let inlineTabAccessCount = 6
         static let displayAlertDelay = 0.2
+        // number of notifications after which the second alert will show up
         static let secondNotificationsAlertThreshold = 10
         static let secondNotificationsAlertDisabled = -1
     }
