@@ -62,13 +62,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sync
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
-        cardsService.fetch(firstPage: true, success: success, failure: failure)
+        cardsService.fetch(isFirstPage: true, success: success, failure: failure)
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         footerView.showSpinner(true)
 
-        cardsService.fetch(firstPage: false, success: { _, hasMore in
+        cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
             guard let error = error else {

@@ -31,7 +31,7 @@ class ReaderCardServiceTests: XCTestCase {
 
         apiMock.succeed = true
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
-        service.fetch(firstPage: true, success: { _, _ in
+        service.fetch(isFirstPage: true, success: { _, _ in
             expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
             expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=cat"))
             expectation.fulfill()
@@ -47,8 +47,8 @@ class ReaderCardServiceTests: XCTestCase {
 
         apiMock.succeed = true
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
-        service.fetch(firstPage: true, success: { _, _ in
-            service.fetch(firstPage: false, success: { _, _ in
+        service.fetch(isFirstPage: true, success: { _, _ in
+            service.fetch(isFirstPage: false, success: { _, _ in
                 expect(self.apiMock.GETCalledWithURL).to(contain("&page_handle=ZnJvbT0xMCZiZWZvcmU9MjAyMC0wNy0yNlQxMyUzQTU1JTNBMDMlMkIwMSUzQTAw"))
                 expectation.fulfill()
             }, failure: { _ in })
@@ -65,7 +65,7 @@ class ReaderCardServiceTests: XCTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         followedInterestsService.returnInterests = false
 
-        service.fetch(firstPage: true, success: { _, _ in }, failure: { error in
+        service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
             expect(error).toNot(beNil())
             expectation.fulfill()
         })
@@ -82,7 +82,7 @@ class ReaderCardServiceTests: XCTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
-        service.fetch(firstPage: true, success: { _, _ in
+        service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
             expect(cards?.count).to(equal(9))
             expectation.fulfill()
@@ -99,7 +99,7 @@ class ReaderCardServiceTests: XCTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
-        service.fetch(firstPage: true, success: { _, _ in
+        service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
             expect(cards?.filter { $0.post != nil }.count).to(equal(8))
             expectation.fulfill()
@@ -116,7 +116,7 @@ class ReaderCardServiceTests: XCTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = false
 
-        service.fetch(firstPage: true, success: { _, _ in }, failure: { error in
+        service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
             expect(error).toNot(beNil())
             expectation.fulfill()
         })
@@ -132,9 +132,9 @@ class ReaderCardServiceTests: XCTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
-        service.fetch(firstPage: false, success: { _, _ in
+        service.fetch(isFirstPage: false, success: { _, _ in
             // Fetch again, this time the 1st page
-            service.fetch(firstPage: true, success: { _, _ in
+            service.fetch(isFirstPage: true, success: { _, _ in
                 let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
                 expect(cards?.count).to(equal(9))
                 expectation.fulfill()

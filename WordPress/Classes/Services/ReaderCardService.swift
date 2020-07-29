@@ -25,7 +25,7 @@ class ReaderCardService {
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
-    func fetch(firstPage: Bool, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
+    func fetch(isFirstPage: Bool, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
         followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
             guard let interests = topics, !interests.isEmpty else {
                 failure(Errors.noInterests)
@@ -33,8 +33,7 @@ class ReaderCardService {
             }
 
             let slugs = interests.map { $0.slug }
-            let pageHandle: String? = firstPage ? nil : self.pageHandle
-            self.service.fetchCards(for: slugs, page: pageHandle,
+            self.service.fetchCards(for: slugs, page: self.pageHandle(isFirstPage: isFirstPage),
                                success: { [weak self] cards, pageHandle in
 
                                 guard let self = self else {
@@ -45,7 +44,7 @@ class ReaderCardService {
 
                                 self.syncContext.perform {
 
-                                    if firstPage {
+                                    if isFirstPage {
                                         self.pageNumber = 1
                                         self.removeAllCards()
                                     } else {
@@ -91,6 +90,10 @@ class ReaderCardService {
         } catch let error {
             print("Clean card error:", error)
         }
+    }
+
+    private func pageHandle(isFirstPage: Bool) -> String? {
+        isFirstPage ? nil : self.pageHandle
     }
 
     enum Errors: Error {
