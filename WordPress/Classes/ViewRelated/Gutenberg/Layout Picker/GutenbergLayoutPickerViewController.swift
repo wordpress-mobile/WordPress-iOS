@@ -75,8 +75,20 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
+    private func setStaticText() {
+        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+
+        let translatedTitle = NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page")
+        titleView.text = translatedTitle
+        largeTitleView.text = translatedTitle
+
+        promptView.text = NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page")
+        createBlankPageBtn.setTitle(NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"), for: .normal)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
