@@ -235,7 +235,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.contentTextStyle)
         label.textColor = .textSubtle
     }
 
