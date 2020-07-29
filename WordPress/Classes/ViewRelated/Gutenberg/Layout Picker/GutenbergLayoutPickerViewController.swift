@@ -291,9 +291,22 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryRowCellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
+        cell.delegate = self
         let category = layouts.categories[indexPath.row]
         cell.category = category
         cell.layouts = layouts.layouts(forCategory: category.slug)
         return cell
+    }
+}
+
+extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCellDelegate {
+
+    func didSelectLayout(_ layout: GutenbergLayout?, isSelected: Bool, forCell cell: LayoutPickerCategoryTableViewCell) {
+        guard let selectedIndexPath = tableView.indexPath(for: cell) else { return }
+        tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+
+        createBlankPageBtn.isHidden = !isSelected
+        previewBtn.isHidden = isSelected
+        createPageBtn.isHidden = isSelected
     }
 }

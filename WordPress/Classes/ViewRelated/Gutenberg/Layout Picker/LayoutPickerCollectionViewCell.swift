@@ -74,9 +74,15 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
         previewLoadingView.startAnimating()
         imageView.downloadImage(from: url, success: { _ in
-            self.previewLoadingView.stopAnimating()
+            self.stopProgressBar()
         }, failure: { _ in
-            self.previewLoadingView.stopAnimating()
+            self.stopProgressBar()
         })
+    }
+
+    func stopProgressBar() {
+        DispatchQueue.main.async {
+            self.previewLoadingView.stopAnimating()
+        }
     }
 }

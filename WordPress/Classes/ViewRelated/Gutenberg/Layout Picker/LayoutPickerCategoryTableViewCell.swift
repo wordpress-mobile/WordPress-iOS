@@ -1,6 +1,10 @@
 import UIKit
 import Gutenberg
 
+protocol LayoutPickerCategoryTableViewCellDelegate: class {
+    func didSelectLayout(_ layout: GutenbergLayout?, isSelected: Bool, forCell cell: LayoutPickerCategoryTableViewCell)
+}
+
 class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
     static var nib: UINib {
@@ -10,6 +14,8 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+
+    weak var delegate: LayoutPickerCategoryTableViewCellDelegate?
 
     var layouts = [GutenbergLayout]() {
         didSet {
@@ -33,12 +39,12 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
     }
 
-    override var isSelected: Bool {
-        didSet {
-            if !isSelected {
-                collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
-                    self.collectionView.deselectItem(at: indexPath, animated: true)
-                })
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        if !selected, let selectedItems = collectionView.indexPathsForSelectedItems {
+            selectedItems.forEach { (indexPath) in
+                self.collectionView.deselectItem(at: indexPath, animated: true)
             }
         }
     }
@@ -51,6 +57,14 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
             return false
         }
         return true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didSelectLayout(nil, isSelected: true, forCell: self)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        delegate?.didSelectLayout(nil, isSelected: false, forCell: self)
     }
 }
 
