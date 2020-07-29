@@ -45,7 +45,13 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 }
 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
-
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            return false
+        }
+        return true
+    }
 }
 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegateFlowLayout {
