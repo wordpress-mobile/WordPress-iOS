@@ -20,6 +20,14 @@
 @dynamic wp_slug;
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
+@dynamic eventTimezone;
+@dynamic eventStartDate;
+@dynamic eventEndDate;
+@dynamic eventStartDateUTC;
+@dynamic eventEndDateUTC;
+@dynamic eventShowMap;
+@dynamic eventShowMapLink;
+@dynamic eventAllDay;
 
 @synthesize isFeaturedImageChanged;
 

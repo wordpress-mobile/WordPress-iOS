@@ -45,7 +45,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowShareMessage,
     PostSettingsRowGeolocation,
     PostSettingsRowSlug,
-    PostSettingsRowExcerpt
+    PostSettingsRowExcerpt,
+    PostSettingsRowDateTime,
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -66,7 +67,7 @@ static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
 PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
-FeaturedImageViewControllerDelegate>
+FeaturedImageViewControllerDelegate, PostGeolocationViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -109,6 +110,7 @@ BOOL featureImageShowed = NO;
 BOOL categoryShowed = NO;
 
 #pragma mark - Initialization and dealloc
+
 
 - (void)dealloc
 {
@@ -187,7 +189,7 @@ BOOL categoryShowed = NO;
 
     if (self.editPostType == EditPostTypeItinerary && !featureImageShowed) {
         featureImageShowed = YES;
-        [self showPostGeolocationSelector];
+        [self showPostGeolocationSelectorWitVisibleRemoveButton:NO];
     } else if (self.editPostType == EditPostTypeBeauvoyage && !featureImageShowed) {
         featureImageShowed = YES;
         [self showFeaturedImageSelector];
@@ -213,6 +215,15 @@ BOOL categoryShowed = NO;
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     if ([self.passwordTextField isFirstResponder]) {
         self.textFieldDidHaveFocusBeforeOrientationChange = YES;
+    }
+}
+
+#pragma mark - PostGeolocationViewControllerDelegate
+
+-(void)postGeolocationViewControllerClosed
+{
+    if (self.editPostType == EditPostTypeItinerary) {
+        [self showPostDateTimeSelector];
     }
 }
 
@@ -417,6 +428,7 @@ BOOL categoryShowed = NO;
                                   @(PostSettingsSectionMeta),
                                   @(PostSettingsSectionFormat),
                                   @(PostSettingsSectionFeaturedImage),
+                                  @(PostSettingsSectionDateTime),
                                   stickyPostSection,
                                   @(PostSettingsSectionShare),
                                   @(PostSettingsSectionGeolocation),
@@ -449,27 +461,21 @@ BOOL categoryShowed = NO;
             return 4;
         }
         return 3;
-
     } else if (sec == PostSettingsSectionFormat) {
         return 1;
-
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
-
+    } else if (sec == PostSettingsSectionDateTime) {
+        return self.editPostType == EditPostTypeItinerary ? 1 : 0;
     } else if (sec == PostSettingsSectionStickyPost) {
         return 1;
-        
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
-
     } else if (sec == PostSettingsSectionGeolocation) {
         return 1;
-
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
-
     }
-
     return 0;
 }
 
@@ -564,6 +570,8 @@ BOOL categoryShowed = NO;
         cell = [self configurePostFormatCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionDateTime) {
+        cell = [self configureDateTimeCellForIndexPath: indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare) {
@@ -597,6 +605,8 @@ BOOL categoryShowed = NO;
         [self showPostFormatSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImage) {
         [self showFeaturedImageSelector];
+    } else if (cell.tag == PostSettingsRowDateTime) {
+        [self showPostDateTimeSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
@@ -606,7 +616,7 @@ BOOL categoryShowed = NO;
     } else if (cell.tag == PostSettingsRowShareMessage) {
         [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowGeolocation) {
-        [self showPostGeolocationSelector];
+        [self showPostGeolocationSelectorWitVisibleRemoveButton:YES];
     } else if (cell.tag == PostSettingsRowSlug) {
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
@@ -922,6 +932,15 @@ BOOL categoryShowed = NO;
     return _setGeoLocationCell;
 }
 
+- (UITableViewCell *)configureDateTimeCellForIndexPath:(NSIndexPath *)indexPath
+{
+    WPTableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedString(@"Date Time", @"Label for the Date Time field. Should be the same as WP core.");
+    cell.tag = PostSettingsRowDateTime;
+    cell.accessibilityIdentifier = @"Date Time";
+    return cell;
+}
+
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell;
@@ -1175,12 +1194,21 @@ BOOL categoryShowed = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showPostGeolocationSelector
+- (void)showPostGeolocationSelectorWitVisibleRemoveButton: (BOOL)isRemoveButtonVisible
 {
     PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
+    controller.delegate = self;
+    controller.isRemoveVisible = isRemoveButtonVisible;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)showPostDateTimeSelector
+{
+    PostItineraryDateViewModelImpl * viewModel = [[PostItineraryDateViewModelImpl alloc] initWithPost: self.post];
+    PostItineraryDateViewController *controller = [[PostItineraryDateViewController alloc] initWithViewModel:viewModel];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showFeaturedImageSelector
@@ -1262,7 +1290,7 @@ BOOL categoryShowed = NO;
     picker.delegate = self;
     [self registerChangeObserverForPicker:picker.mediaPicker];
 
-    picker.modalPresentationStyle = UIModalPresentationFormSheet;
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:picker animated:YES completion:nil];
 
     self.mediaDataSource = mediaDataSource;

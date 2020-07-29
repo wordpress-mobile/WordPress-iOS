@@ -941,9 +941,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:3];
+    NSMutableArray *metadata = [[NSMutableArray alloc] init];
     Coordinate *c = post.geolocation;
-
     /*
      This might look more complicated than it should be, but it needs to be that way.
 
@@ -953,6 +952,54 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
      - !geolocation &&  ID: delete
      - !geolocation && !ID: noop
      */
+    if (post.eventAllDay) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventAllDay";
+        dictionary[@"value"] = post.eventAllDay;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventTimezone) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventTimezone";
+        dictionary[@"value"] = post.eventTimezone;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventStartDate) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventStartDate";
+        dictionary[@"value"] = post.eventStartDate;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventStartDateUTC) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventStartDateUTC";
+        dictionary[@"value"] = post.eventStartDateUTC;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventEndDate) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventEndDate";
+        dictionary[@"value"] = post.eventEndDate;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventEndDateUTC) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventEndDateUTC";
+        dictionary[@"value"] = post.eventEndDateUTC;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventShowMap) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventShowMap";
+        dictionary[@"value"] = post.eventShowMap;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventShowMapLink) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventShowMapLink";
+        dictionary[@"value"] = post.eventShowMapLink;
+        [metadata addObject:dictionary];
+    }
     if (post.latitudeID || c) {
         NSMutableDictionary *latitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         if (post.latitudeID) {

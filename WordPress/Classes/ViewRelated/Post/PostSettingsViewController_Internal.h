@@ -5,6 +5,7 @@ typedef enum {
     PostSettingsSectionMeta,
     PostSettingsSectionFormat,
     PostSettingsSectionFeaturedImage,
+    PostSettingsSectionDateTime,
     PostSettingsSectionStickyPost,
     PostSettingsSectionShare,
     PostSettingsSectionGeolocation,

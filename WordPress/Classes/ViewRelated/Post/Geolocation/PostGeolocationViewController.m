@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     if (self) {
         _post = post;
         _locationService = locationService;
+        _isRemoveVisible = YES;
     }
     return self;
 }
@@ -51,7 +52,9 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.view.backgroundColor = [UIColor murielNeutral5];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
-    self.navigationItem.leftBarButtonItems = @[self.removeButton];
+    if (self.isRemoveVisible) {
+        self.navigationItem.leftBarButtonItems = @[self.removeButton];
+    }
     self.navigationItem.rightBarButtonItems = @[self.doneButton];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
@@ -76,6 +79,12 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     } else {
         [self searchCurrentLocationFromUserRequest:NO];
     }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear: animated];
+    [self.delegate postGeolocationViewControllerClosed];
 }
 
 - (UIView *)searchBarTop

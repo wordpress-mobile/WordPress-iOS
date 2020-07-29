@@ -22,6 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString * wp_slug;
 @property (nonatomic, strong, nullable) NSString * suggested_slug;
 @property (nonatomic, strong, nullable) NSNumber * remoteStatusNumber;
+@property (nonatomic, strong, nullable) NSString * eventTimezone;
+@property (nonatomic, strong, nullable) NSString * eventStartDate;
+@property (nonatomic, strong, nullable) NSString * eventEndDate;
+@property (nonatomic, strong, nullable) NSString * eventStartDateUTC;
+@property (nonatomic, strong, nullable) NSString * eventEndDateUTC;
+@property (nonatomic, strong, nullable) NSString * eventShowMap;
+@property (nonatomic, strong, nullable) NSString * eventShowMapLink;
+@property (nonatomic, strong, nullable) NSString * eventAllDay;
+
 
 // Helpers
 /**
