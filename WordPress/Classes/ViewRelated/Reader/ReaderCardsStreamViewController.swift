@@ -135,9 +135,9 @@ private extension ReaderCardsStreamViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsViewController?.userIsFollowingTopics { [unowned self] isFollowing in
             if isFollowing {
-                self.showSelectInterestsView()
-            } else {
                 self.selectInterestsViewController = nil
+            } else {
+                self.showSelectInterestsView()
             }
         }
     }
