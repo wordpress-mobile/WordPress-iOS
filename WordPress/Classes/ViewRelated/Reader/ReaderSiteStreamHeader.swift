@@ -51,24 +51,37 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderSiteStreamCountStyle(followCountLabel)
     }
 
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+                   preferredContentSizeDidChange()
+        }
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+            }
+        }
+    }
 
     // MARK: - Configuration
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
-        assert(topic.isKind(of: ReaderSiteTopic.self), "Topic must be a site topic")
+        guard let siteTopic = topic as? ReaderSiteTopic else {
+            DDLogError("Topic must be a site topic")
+            return
+        }
 
-        let siteTopic = topic as! ReaderSiteTopic
+        followButton.isSelected = topic.following
+        titleLabel.text = siteTopic.title
+        descriptionLabel.text = siteTopic.siteDescription
+        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
+        detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
         configureHeaderImage(siteTopic.siteBlavatar)
 
-        titleLabel.text = siteTopic.title
-        detailLabel.text = URL(string: siteTopic.siteURL)?.host
-
-        WPStyleGuide.applyReaderFollowSiteButtonStyle(followButton)
-        followButton.isSelected = topic.following
-
-        descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
-        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
         if descriptionLabel.attributedText?.length > 0 {
             descriptionLabel.isHidden = false
@@ -104,19 +117,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         return str
     }
 
-    @objc func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
-        return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
-    }
-
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
         followButton.isHidden = !enable
-    }
-
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
     }
 
     func preferredContentSizeDidChange() {
