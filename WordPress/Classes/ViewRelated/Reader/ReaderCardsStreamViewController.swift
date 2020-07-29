@@ -11,10 +11,23 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
+    // Select Interests
+    private lazy var interestsCoordinator: ReaderSelectInterestsCoordinator = {
+        return ReaderSelectInterestsCoordinator()
+    }()
+
+    private var selectInterestsViewController: ReaderSelectInterestsViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        displaySelectInterestsIfNeeded()
     }
 
     // MARK: - TableView Related
@@ -119,5 +132,57 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+    }
+}
+
+// MARK: - Select Interests Display
+private extension ReaderCardsStreamViewController {
+    func displaySelectInterestsIfNeeded() {
+        if self.selectInterestsViewController != nil {
+            showSelectInterestsViewIfNeeded()
+            return
+        }
+
+        // If we're not showing the select interests view, check to see if we should
+        interestsCoordinator.shouldDisplay { [unowned self] shouldDisplay in
+            if shouldDisplay {
+                self.makeSelectInterestsViewControllerIfNeeded()
+                self.showSelectInterestsViewIfNeeded()
+            }
+        }
+    }
+
+    func showSelectInterestsViewIfNeeded() {
+        guard let controller = selectInterestsViewController else {
+            return
+        }
+
+        // Using duration zero to prevent the screen from blinking
+        UIView.animate(withDuration: 0) {
+            controller.view.frame = self.view.bounds
+            self.add(controller)
+        }
+    }
+
+    func makeSelectInterestsViewControllerIfNeeded() {
+        if selectInterestsViewController != nil {
+            return
+        }
+
+        let controller = ReaderSelectInterestsViewController()
+        controller.didSaveInterests = { [unowned self] in
+            guard let controller = self.selectInterestsViewController else {
+                return
+            }
+
+            UIView.animate(withDuration: 0.2, animations: {
+                controller.view.alpha = 0.0
+            }) { [unowned self] _ in
+                controller.remove()
+                self.selectInterestsViewController = nil
+            }
+        }
+
+        selectInterestsViewController = controller
     }
 }
