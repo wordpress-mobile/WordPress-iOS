@@ -33,7 +33,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedSiteAddress:
             return false
         case .unifiedGoogle:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return false
         case .meMove:
             return true
         case .floatingCreateButton:

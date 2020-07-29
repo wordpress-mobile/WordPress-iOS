@@ -2,7 +2,7 @@
 
 使用 iOS 版 WordPress，你就能夠在掌上輕鬆發佈文章。 窩在沙發上信手創作幾行俳句； 趁著午休時間拍照並上傳； 回覆最新的回應；或者查看統計資料，並瞭解今天的讀者來自哪些國家。
 
-iOS 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力協助開發此程式。深入瞭解：https://apps.wordpress.com/contribute/。
+Android 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力協助開發此程式。 深入瞭解：https://apps.wordpress.com/contribute/。
 
 iOS 版 WordPress 支援 WordPress.com 和執行 WordPress 4.0 或以上版本的自助託管 WordPress.org 網站。
 

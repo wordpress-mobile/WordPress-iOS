@@ -1,7 +1,5 @@
-Non, votre esprit ne vous joue pas des tours. Le Lecteur est beaucoup plus agréable à regarder. Cela s’explique par les nombreuses corrections apportées à l’affichage lors de la lecture d’un article. Ces corrections incluent beaucoup de petites choses comme l’espacement, le positionnement et le dimensionnement, qui ensemble rendent l’apparence plus agréable. De plus, la barre de navigation et la barre d’outils disparaissent et réapparaissent si facilement que ça en est magique ! Nous avons tous besoin d’un peu de magie dans nos vies ces derniers temps, vous n’êtes pas d’accord ?
+v15.3 inclut trois grands changements :
 
-Nous savons que trouver un nom à votre site peut être difficile et que les humains peuvent être indécis et changeants, c’est pourquoi nous avons fait en sorte que le titre du site puisse être modifié en appuyant dessus sur l’écran de détails du site. Si vous avez trouvé un super nom pour un nouveau site, il existe désormais une nouvelle tâche Démarrage rapide qui permet de définir un titre pour tous les nouveaux sites que vous voulez lancer.
-
-Si vous aimez la couleur, nous avons ajouté une assistance dans l’éditeur de blocs pour personnaliser le type de dégradé et l’angle dans les blocs Bouton et Bannière. Si vous conservez une trace du nombre de blocs que vous utilisez et de la quantité de mots que vous tapez, nous affichons désormais des informations de mesure pour le nombre de blocs, de mots et de caractères.
-
-Enfin et surtout, nous avons corrigé un incident embêtant qui était provoqué par une navigation trop rapide vers l’éditeur de blocs après une déconnexion suivie d’une reconnexion immédiate. Vous pouvez maintenant vous connecter et vous déconnecter en toute décontraction !
+- Tous les blocs contiennent désormais des options pour copier, couper, coller et dupliquer.
+- Vous pouvez modifier individuellement des blocs non pris en charge sur un écran séparé de l’application, à l’aide des mêmes outils disponibles dans l’éditeur Web complet. (Remarque : cela n’est pas encore disponible pour les sites auto-hébergés ou pour les sites utilisant l’éditeur classique par défaut.)
+- Effet fantôme ! Nous avons ajouté à l’éditeur cet effet visuel sympa qui affiche des zones ombrées afin que vous sachiez quand et où du contenu est chargé.
