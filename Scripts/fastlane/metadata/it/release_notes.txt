@@ -1,7 +1,5 @@
-No, la tua mente non ti sta giocando brutti scherzi: il Reader appare più semplice agli occhi. Questo perché abbiamo eseguito molte correzioni a come appaiono i contenuti quando leggi un articolo. Queste correzioni includono molti piccoli particolari come la spaziatura, il posizionamento e il ridimensionamento, che si sommano a un'esperienza molto più piacevole. Inoltre, la barra di navigazione e la barra degli strumenti scompaiono e riappaiono in modo così perfetto che sembrano una magia. Non sei d'accordo sul fatto che tutti abbiamo bisogno di un po' di magia nelle nostre vite in questo momento?
+La versione 15.3 contiene tre importanti modifiche:
 
-Sappiamo che farsi venire in mente un titolo per il sito possa essere complicato e che gli esseri umani sono indecisi e volubili. È per questo che abbiamo fatto in modo che il titolo del tuo sito possa essere ora modificato toccando il titolo nella schermata dei dettagli del sito. Inoltre, se ti è di recente venuto in mente un nome brillante per un nuovo sito, è presente una nuova attività di Avvio rapido per impostare un titolo per qualsiasi nuovo sito tu desideri avviare.
-
-Se hai occhio per il colore, abbiamo aggiunto il supporto nell'editor a blocchi per la personalizzazione del tipo di gradiente e dell'angolo dei blocchi Pulsante e Copertina. In aggiunta, se tieni traccia di quanti blocchi stai usando e di quanto stai digitando, saranno visibili ora le informazioni di tipo metrico di blocco, conteggio parole e conteggio caratteri.
-
-Ultimo, ma non meno importante, abbiamo corretto un fastidioso arresto anomalo derivante dalla navigazione troppo rapida nell'editor a blocchi dopo la disconnessione e l'immediato nuovo accesso. Ora puoi sentirti libero di accedere e disconnetterti con slancio.
+- Tutti i blocchi ora dispongono delle opzioni per copiare, tagliare, incollare e duplicare.
+- Puoi modificare individualmente i blocchi non supportati in una schermata separata nell'app, utilizzando gli stessi strumenti disponibili nell'editor web completo. (Nota: questa opzione non è ancora disponibile per i siti ospitati personalmente o per i siti che per impostazione predefinita utilizzano l'editor classico.)
+- Effetto fantasma! Si tratta di un bel tocco visivo che abbiamo aggiunto all'editor e mostra aree sfumate per indicarti dove e quando il contenuto è in fase di caricamento.
