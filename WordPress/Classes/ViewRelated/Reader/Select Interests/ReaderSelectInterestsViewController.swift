@@ -76,7 +76,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Display logic
     func userIsFollowingTopics(completion: @escaping (Bool) -> Void) {
-        coordinator.shouldDisplay(completion: completion)
+        coordinator.isFollowingInterests(completion: completion)
     }
 
     // MARK: - Private: Configuration
