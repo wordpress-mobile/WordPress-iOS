@@ -54,6 +54,7 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
             collectionView.deselectItem(at: indexPath, animated: true)
+            delegate?.didSelectLayout(nil, isSelected: false, forCell: self)
             return false
         }
         return true

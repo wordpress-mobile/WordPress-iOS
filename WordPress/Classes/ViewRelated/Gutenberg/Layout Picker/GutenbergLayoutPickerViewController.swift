@@ -305,8 +305,8 @@ extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCell
         guard let selectedIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
 
-        createBlankPageBtn.isHidden = !isSelected
-        previewBtn.isHidden = isSelected
-        createPageBtn.isHidden = isSelected
+        createBlankPageBtn.isHidden = isSelected
+        previewBtn.isHidden = !isSelected
+        createPageBtn.isHidden = !isSelected
     }
 }
