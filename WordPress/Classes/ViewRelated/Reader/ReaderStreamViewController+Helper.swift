@@ -39,7 +39,7 @@ extension ReaderStreamViewController {
         }
 
         // if tag
-        if ReaderHelpers.isTopicTag(topic) {
+        if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
             return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
         }
 
