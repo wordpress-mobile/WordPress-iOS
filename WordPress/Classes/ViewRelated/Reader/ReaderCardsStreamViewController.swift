@@ -11,12 +11,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
-    // Select Interests
-    private lazy var interestsCoordinator: ReaderSelectInterestsCoordinator = {
-        return ReaderSelectInterestsCoordinator()
-    }()
-
-    private var selectInterestsViewController: ReaderSelectInterestsViewController?
+    private var selectInterestsViewController: ReaderSelectInterestsViewController? = ReaderSelectInterestsViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,16 +133,12 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
 // MARK: - Select Interests Display
 private extension ReaderCardsStreamViewController {
     func displaySelectInterestsIfNeeded() {
-        if self.selectInterestsViewController != nil {
-            showSelectInterestsViewIfNeeded()
-            return
-        }
-
-        // If we're not showing the select interests view, check to see if we should
-        interestsCoordinator.shouldDisplay { [unowned self] shouldDisplay in
-            if shouldDisplay {
+        selectInterestsViewController?.userIsFollowingTopics { [unowned self] isFollowing in
+            if isFollowing {
                 self.makeSelectInterestsViewControllerIfNeeded()
                 self.showSelectInterestsViewIfNeeded()
+            } else {
+                self.selectInterestsViewController = nil
             }
         }
     }
@@ -157,11 +148,8 @@ private extension ReaderCardsStreamViewController {
             return
         }
 
-        // Using duration zero to prevent the screen from blinking
-        UIView.animate(withDuration: 0) {
-            controller.view.frame = self.view.bounds
-            self.add(controller)
-        }
+        controller.view.frame = self.view.bounds
+        self.add(controller)
     }
 
     func makeSelectInterestsViewControllerIfNeeded() {
@@ -169,8 +157,7 @@ private extension ReaderCardsStreamViewController {
             return
         }
 
-        let controller = ReaderSelectInterestsViewController()
-        controller.didSaveInterests = { [unowned self] in
+        selectInterestsViewController?.didSaveInterests = { [unowned self] in
             guard let controller = self.selectInterestsViewController else {
                 return
             }
@@ -182,7 +169,5 @@ private extension ReaderCardsStreamViewController {
                 self.selectInterestsViewController = nil
             }
         }
-
-        selectInterestsViewController = controller
     }
 }

@@ -51,6 +51,11 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureNoResultsViewController()
         applyStyles()
         updateNextButtonState()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         refreshData()
     }
 
@@ -67,6 +72,11 @@ class ReaderSelectInterestsViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func nextButtonTapped(_ sender: Any) {
         saveSelectedInterests()
+    }
+
+    // MARK: - Display logic
+    func userIsFollowingTopics(completion: @escaping (Bool) -> Void) {
+        coordinator.shouldDisplay(completion: completion)
     }
 
     // MARK: - Private: Configuration
