@@ -135,35 +135,28 @@ private extension ReaderCardsStreamViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsViewController?.userIsFollowingTopics { [unowned self] isFollowing in
             if isFollowing {
-                self.makeSelectInterestsViewControllerIfNeeded()
-                self.showSelectInterestsViewIfNeeded()
+                self.showSelectInterestsView()
             } else {
                 self.selectInterestsViewController = nil
             }
         }
     }
 
-    func showSelectInterestsViewIfNeeded() {
+    func showSelectInterestsView() {
         guard let controller = selectInterestsViewController else {
             return
         }
 
         controller.view.frame = self.view.bounds
         self.add(controller)
-    }
 
-    func makeSelectInterestsViewControllerIfNeeded() {
-        if selectInterestsViewController != nil {
-            return
-        }
-
-        selectInterestsViewController?.didSaveInterests = { [unowned self] in
+        controller.didSaveInterests = { [unowned self] in
             guard let controller = self.selectInterestsViewController else {
                 return
             }
 
             UIView.animate(withDuration: 0.2, animations: {
-                controller.view.alpha = 0.0
+                controller.view.alpha = 0
             }) { [unowned self] _ in
                 controller.remove()
                 self.selectInterestsViewController = nil
