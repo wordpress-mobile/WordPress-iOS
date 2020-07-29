@@ -453,7 +453,7 @@ import WordPressFlux
 
     private func setupTableView() {
         configureRefreshControl()
-        add(tableViewController, asChildOf: self)
+        add(tableViewController)
         layoutTableView()
         tableConfiguration.setup(tableView)
         setupUndoCell(tableView)
@@ -461,12 +461,6 @@ import WordPressFlux
 
     @objc func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-    }
-
-    private func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
-        controller.addChild(childController)
-        controller.view.addSubview(childController.view)
-        childController.didMove(toParent: controller)
     }
 
     private func layoutTableView() {
