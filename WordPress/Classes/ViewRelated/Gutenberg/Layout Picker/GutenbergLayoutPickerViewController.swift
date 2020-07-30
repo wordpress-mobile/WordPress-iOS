@@ -2,6 +2,20 @@ import UIKit
 import Gridicons
 import Gutenberg
 
+class GutenbergLayoutDisplayCategory {
+    var category: GutenbergLayoutCategory
+    var layouts: [GutenbergLayout]
+    var selectedIndex: IndexPath?
+    var scrollOffset: CGPoint
+
+    init(category: GutenbergLayoutCategory, layouts: [GutenbergLayout], selectedIndex: IndexPath? = nil, scrollOffset: CGPoint = .zero) {
+        self.category = category
+        self.layouts = layouts
+        self.selectedIndex = selectedIndex
+        self.scrollOffset = scrollOffset
+    }
+}
+
 class GutenbergLayoutPickerViewController: UIViewController {
     let categoryRowCellReuseIdentifier = "CategoryRowCell"
 
@@ -87,7 +101,17 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    var layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
+    /// Keeps track of the selected index path for cells. This treats section as the row in the table view and row as the selected index of the layout in the category.
+    private var selectedIndexPath: IndexPath? = nil
+    private var displayCategories = [GutenbergLayoutDisplayCategory]()
+    var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
+        didSet {
+            displayCategories = layouts.categories.map({
+                GutenbergLayoutDisplayCategory(category: $0, layouts: layouts.layouts(forCategory: $0.slug))
+            })
+        }
+    }
+
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
 
     private func setStaticText() {
@@ -110,6 +134,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
+        layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -290,15 +315,14 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return layouts.categories.count
+        return displayCategories.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryRowCellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
         cell.delegate = self
-        let category = layouts.categories[indexPath.row]
-        cell.category = category
-        cell.layouts = layouts.layouts(forCategory: category.slug)
+        cell.displayCategory = displayCategories[indexPath.row]
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 }

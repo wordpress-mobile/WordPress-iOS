@@ -17,18 +17,21 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
     weak var delegate: LayoutPickerCategoryTableViewCellDelegate?
 
-    var layouts = [GutenbergLayout]() {
+    private var layouts = [GutenbergLayout]() {
         didSet {
             collectionView.reloadData()
         }
     }
-    var category: GutenbergLayoutCategory? = nil {
+    var displayCategory: GutenbergLayoutDisplayCategory? = nil {
         didSet {
-            categoryTitle.text = category?.description ?? ""
+            layouts = displayCategory?.layouts ?? []
+            categoryTitle.text = displayCategory?.category.description ?? ""
+            collectionView.contentOffset = displayCategory?.scrollOffset ?? .zero
         }
     }
 
     override func prepareForReuse() {
+        displayCategory?.scrollOffset = collectionView.contentOffset
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
     }
@@ -39,22 +42,26 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    private func deselectItem(_ indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        collectionView(collectionView, didDeselectItemAt: indexPath)
+    }
 
+    override func setSelected(_ selected: Bool, animated: Bool) {
         if !selected, let selectedItems = collectionView.indexPathsForSelectedItems {
             selectedItems.forEach { (indexPath) in
-                self.collectionView.deselectItem(at: indexPath, animated: true)
+                deselectItem(indexPath)
             }
         }
+
+        super.setSelected(selected, animated: animated)
     }
 }
 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
-            collectionView.deselectItem(at: indexPath, animated: true)
-            delegate?.didSelectLayout(nil, isSelected: false, forCell: self)
+            deselectItem(indexPath)
             return false
         }
         return true
@@ -65,6 +72,7 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        displayCategory?.selectedIndex = nil
         delegate?.didSelectLayout(nil, isSelected: false, forCell: self)
     }
 }
@@ -78,12 +86,14 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegateFlowLayout 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return layouts.count
-        return 30
+        return 30 // Static layouts currently only have one layout per category. Adding multiple in here to help test
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: layoutCellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
-        cell.layout = layouts.first
+        cell.isSelected = (displayCategory?.selectedIndex == indexPath)
+        //        cell.layout = layouts[indexPath.row]
+        cell.layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
         return cell
     }
 }
