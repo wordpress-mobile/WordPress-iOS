@@ -45,28 +45,19 @@ class GutenbergLayoutPickerViewController: UIViewController {
         if shouldUseCompactLayout {
             return minHeaderHeight
         } else {
-            if _maxHeaderHeight == 0 {
-                _maxHeaderHeight = largeTitleView.frame.height +
-                midHeaderHeight
-            }
             return _maxHeaderHeight
         }
     }
 
+    private var _midHeaderHeight: CGFloat = 0
     private var midHeaderHeight: CGFloat {
         if shouldUseCompactLayout {
             return minHeaderHeight
         } else {
-            return titleToSubtitleSpacing.constant +
-                promptView.frame.height +
-                subtitleToCategoryBarSpacing.constant +
-                categoryBar.frame.height +
-                maxHeaderBottomSpacing.constant
+            return _midHeaderHeight
         }
     }
-    private var minHeaderHeight: CGFloat {
-        return categoryBar.frame.height + minHeaderBottomSpacing.constant
-    }
+    private var minHeaderHeight: CGFloat = 0
 
     private var titleIsHidden: Bool = true {
         didSet {
@@ -209,6 +200,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
     }
 
+    private func calculateHeaderSnapPoints() {
+        minHeaderHeight = categoryBar.frame.height + minHeaderBottomSpacing.constant
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + categoryBar.frame.height + maxHeaderBottomSpacing.constant
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + categoryBar.frame.height + maxHeaderBottomSpacing.constant
+        _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+    }
+
     private func layoutHeader() {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
@@ -216,6 +214,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
+        calculateHeaderSnapPoints()
         layoutTableViewHeader()
 
         let fillColor: UIColor
