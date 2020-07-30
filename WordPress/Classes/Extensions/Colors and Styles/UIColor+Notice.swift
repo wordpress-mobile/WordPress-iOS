@@ -30,4 +30,13 @@ extension UIColor {
     static var invertedLink: UIColor {
         UIColor(light: .primary(.shade30), dark: .primary(.shade50))
     }
+
+    static var invertedSeparator: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor(light: UIColor.separator.color(for: UITraitCollection(userInterfaceStyle: .dark)),
+                           dark: UIColor.separator.color(for: UITraitCollection(userInterfaceStyle: .light)))
+        } else {
+            return UIColor(displayP3Red: 84/255, green: 84/255, blue: 88/255, alpha: 0.6)
+        }
+    }
 }
