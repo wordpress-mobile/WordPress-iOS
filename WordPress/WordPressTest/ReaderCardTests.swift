@@ -21,8 +21,8 @@ class ReaderCardTests: XCTestCase {
             let card = ReaderCard(context: self.testContext, from: remoteCard)
 
             expect(card?.post).toNot(beNil())
-            expect(card?.post?.postTitle).to(equal("Crypto Startup School: The legal and fundraising implications of crypto tokens"))
-            expect(card?.post?.blogName).to(equal("TechCrunch"))
+            expect(card?.post?.postTitle).to(equal("Pats, Please"))
+            expect(card?.post?.blogName).to(equal("Grace & Gratitude"))
             expectation.fulfill()
         }
 
@@ -66,7 +66,7 @@ class ReaderCardTests: XCTestCase {
         let apiMock = WordPressComMockRestApi()
         apiMock.succeed = true
         let remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
-        remoteService.fetchCards(for: [], success: { cards in
+        remoteService.fetchCards(for: [], success: { cards, _ in
             completion(cards.first { $0.type == type }!)
         }, failure: { _ in })
     }

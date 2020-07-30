@@ -2,13 +2,22 @@ import Foundation
 
 class ReaderCardService {
     private let service: ReaderPostServiceRemote
+
     private let coreDataStack: CoreDataStack
+
     private let followedInterestsService: ReaderFollowedInterestsService
+
     private lazy var syncContext: NSManagedObjectContext = {
         return coreDataStack.newDerivedContext()
     }()
 
-    init(service: ReaderPostServiceRemote = ReaderPostServiceRemote(wordPressComRestApi: WordPressComMockrestApi()),
+    /// An string used to retrieve the next page
+    private var pageHandle: String?
+
+    /// Used only internally to order the cards
+    private var pageNumber = 1
+
+    init(service: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil) {
         self.service = service
@@ -16,7 +25,7 @@ class ReaderCardService {
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
-    func fetch(page: Int = 1, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
+    func fetch(isFirstPage: Bool, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
         followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
             guard let interests = topics, !interests.isEmpty else {
                 failure(Errors.noInterests)
@@ -24,17 +33,22 @@ class ReaderCardService {
             }
 
             let slugs = interests.map { $0.slug }
-            self.service.fetchCards(for: slugs,
-                               success: { [weak self] cards in
+            self.service.fetchCards(for: slugs, page: self.pageHandle(isFirstPage: isFirstPage),
+                               success: { [weak self] cards, pageHandle in
 
                                 guard let self = self else {
                                     return
                                 }
 
+                                self.pageHandle = pageHandle
+
                                 self.syncContext.perform {
 
-                                    if page == Constants.firstPage {
+                                    if isFirstPage {
+                                        self.pageNumber = 1
                                         self.removeAllCards()
+                                    } else {
+                                        self.pageNumber += 1
                                     }
 
                                     cards.enumerated().forEach { index, remoteCard in
@@ -48,12 +62,13 @@ class ReaderCardService {
                                             .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
 
                                         // To keep the API order
-                                        card?.sortRank = Double((page * Constants.paginationMultiplier) + index)
+                                        card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
                                     }
                                 }
 
                                 self.coreDataStack.save(self.syncContext) {
-                                    success(cards.count, true)
+                                    let hasMore = pageHandle != nil
+                                    success(cards.count, hasMore)
                                 }
             }, failure: { error in
                 failure(error)
@@ -77,6 +92,10 @@ class ReaderCardService {
         }
     }
 
+    private func pageHandle(isFirstPage: Bool) -> String? {
+        isFirstPage ? nil : self.pageHandle
+    }
+
     enum Errors: Error {
         case noInterests
     }
@@ -87,18 +106,16 @@ class ReaderCardService {
     }
 }
 
-// RI2: The Cards API is not ready yet, that's why we're mocking it here
-class WordPressComMockrestApi: WordPressComRestApi {
-    override func GET(_ URLString: String, parameters: [String: AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
-        guard
-            let fileURL: URL = Bundle.main.url(forResource: "reader-cards-success.json", withExtension: nil),
-            let data: Data = try? Data(contentsOf: fileURL),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject
-        else {
-            return Progress()
-        }
+/// Used to inject the ReaderPostServiceRemote as an dependency
+private extension ReaderPostServiceRemote {
+    class func withDefaultApi() -> ReaderPostServiceRemote {
+        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+        let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
 
-        success(jsonObject, nil)
-        return Progress()
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token,
+                                              userAgent: WPUserAgent.wordPress(),
+                                              localeKey: WordPressComRestApi.LocaleKeyV2)
+        return ReaderPostServiceRemote(wordPressComRestApi: api)
     }
 }
