@@ -1,7 +1,5 @@
-Tidak, pikiran Anda tidak sedang menipu Anda, halaman Pembaca memang terlihat lebih bersahabat. Hal itu karena kami membuat banyak perbaikan pada tampilan yang Anda lihat saat membaca pos. Perbaikannya termasuk banyak hal kecil seperti pengaturan spasi, posisi, dan ukuran, yang menghasilkan pengalaman yang lebih menyenangkan. Selain itu, bar navigasi dan bilah peralatan menghilang dan muncul dengan mulus seperti keajaiban! Tidakkah Anda setuju bahwa kita memerlukan sedikit keajaiban dalam hidup saat ini?
+v15.3 menampilkan tiga perubahan besar:
 
-Kami tahu bahwa memikirkan judul untuk situs Anda adalah hal yang sulit dan manusia dapat menjadi bimbang dan berubah-ubah, oleh sebab itu kami membuat judul situs Anda kini dapat diubah dengan mengetuk judul pada layar detail situs. Dan jika Anda baru saja terpikirkan nama brilian untuk situs baru Anda, sekarang terdapat tugas Quick Start untuk mengatur judul untuk situs baru apa pun yang Anda ingin mulai.
-
-Jika Anda memiliki selera warna, kami telah menambahkan dukungan di penyunting Blok untuk menyesuaikan tipe gradien dan sudut pandang di blok Tombol dan Sampul. Dan jika Anda ingin memastikan berapa banyak blok yang Anda gunakan dan berapa banyak kata yang Anda ketik, saat ini kami menampilkan informasi metrik untuk mengetahui jumlah blok, kata, dan karakter.
-
-Terakhir, kami memperbaiki crash menyebalkan yang bersumber dari navigasi ke penyunting Blok yang terlalu cepat akibat logout dan langsung login kembali. Sekarang Anda bisa login dan logout dengan bebas!
+-- Seluruh blok kini memiliki pilihan salin, potong, tempel, dan duplikasi.
+- Anda dapat secara individual mengedit blok yang tidak didukung pada layar terpisah di aplikasi dengan menggunakan alat yang sama dengan yang tersedia di editor web lengkap. (Catatan: versi ini belum tersedia untuk situs yang di-hosting sendiri atau situs yang menggunakan editor lama sebagai editor asal.)
+-- Ghost Effect! Kami menambahkan sentuhan visual yang menarik pada penyunting yang menampilkan area berwarna gelap sehingga Anda dapat mengetahui kapan dan di mana konten dimuat.

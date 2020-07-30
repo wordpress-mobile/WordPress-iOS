@@ -334,7 +334,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
-        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
         ghostView.startAnimation()
     }
 
@@ -342,6 +341,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
+    }
+
+    override func viewLayoutMarginsDidChange() {
+        super.viewLayoutMarginsDidChange()
+        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -873,7 +877,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            FeatureFlag.tenor.enabled ? .tenor : nil,
+            .tenor,
             .filesApp,
         ].compactMap { $0 }
     }
