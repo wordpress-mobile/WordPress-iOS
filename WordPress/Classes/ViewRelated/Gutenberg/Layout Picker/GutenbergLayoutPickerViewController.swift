@@ -5,13 +5,11 @@ import Gutenberg
 class GutenbergLayoutDisplayCategory {
     var category: GutenbergLayoutCategory
     var layouts: [GutenbergLayout]
-    var selectedIndex: IndexPath?
     var scrollOffset: CGPoint
 
-    init(category: GutenbergLayoutCategory, layouts: [GutenbergLayout], selectedIndex: IndexPath? = nil, scrollOffset: CGPoint = .zero) {
+    init(category: GutenbergLayoutCategory, layouts: [GutenbergLayout], scrollOffset: CGPoint = .zero) {
         self.category = category
         self.layouts = layouts
-        self.selectedIndex = selectedIndex
         self.scrollOffset = scrollOffset
     }
 }
@@ -101,8 +99,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    /// Keeps track of the selected index path for cells. This treats section as the row in the table view and row as the selected index of the layout in the category.
-    private var selectedIndexPath: IndexPath? = nil
+    /// Keeps track of the selected index path for cells. This treats section as the row in the table view and item as the selected index of the layout in the category.
+    private var selectedLayoutIndexPath: IndexPath? = nil {
+        didSet {
+            layoutSelected(selectedLayoutIndexPath != nil)
+        }
+    }
     private var displayCategories = [GutenbergLayoutDisplayCategory]()
     var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
         didSet {
@@ -252,6 +254,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         tableView.tableHeaderView?.backgroundColor = fillColor
         tableView.tableFooterView?.backgroundColor = fillColor
     }
+
+    private func layoutSelected(_ isSelected: Bool) {
+        createBlankPageBtn.isHidden = isSelected
+        previewBtn.isHidden = !isSelected
+        createPageBtn.isHidden = !isSelected
+    }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
@@ -321,20 +329,26 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: categoryRowCellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
         cell.delegate = self
-        cell.displayCategory = displayCategories[indexPath.row]
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        cell.displayCategory = displayCategories[indexPath.row]
+
+        if let selectedLayoutIndexPath = selectedLayoutIndexPath, selectedLayoutIndexPath.section == indexPath.row {
+            cell.selectItemAt(selectedLayoutIndexPath.item)
+        }
+
         return cell
     }
 }
 
 extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCellDelegate {
 
-    func didSelectLayout(_ layout: GutenbergLayout?, isSelected: Bool, forCell cell: LayoutPickerCategoryTableViewCell) {
-        guard let selectedIndexPath = tableView.indexPath(for: cell) else { return }
-        tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell) {
+        guard let tableViewIndexPath = tableView.indexPath(for: cell) else { return }
+        selectedLayoutIndexPath = IndexPath(item: position, section: tableViewIndexPath.row)
+        tableView.selectRow(at: tableViewIndexPath, animated: false, scrollPosition: .none)
+    }
 
-        createBlankPageBtn.isHidden = isSelected
-        previewBtn.isHidden = !isSelected
-        createPageBtn.isHidden = !isSelected
+    func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell) {
+        selectedLayoutIndexPath = nil
     }
 }

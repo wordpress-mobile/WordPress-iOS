@@ -2,7 +2,8 @@ import UIKit
 import Gutenberg
 
 protocol LayoutPickerCategoryTableViewCellDelegate: class {
-    func didSelectLayout(_ layout: GutenbergLayout?, isSelected: Bool, forCell cell: LayoutPickerCategoryTableViewCell)
+    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell)
+    func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell)
 }
 
 class LayoutPickerCategoryTableViewCell: UITableViewCell {
@@ -32,6 +33,7 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         displayCategory?.scrollOffset = collectionView.contentOffset
+        delegate = nil
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
     }
@@ -56,6 +58,10 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
         super.setSelected(selected, animated: animated)
     }
+
+    func selectItemAt(_ position: Int) {
+        collectionView.selectItem(at: IndexPath(item: position, section: 0), animated: false, scrollPosition: [])
+    }
 }
 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
@@ -68,12 +74,11 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectLayout(nil, isSelected: true, forCell: self)
+        delegate?.didSelectLayoutAt(indexPath.item, forCell: self)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        displayCategory?.selectedIndex = nil
-        delegate?.didSelectLayout(nil, isSelected: false, forCell: self)
+        delegate?.didDeselectItem(forCell: self)
     }
 }
 
@@ -85,14 +90,11 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegateFlowLayout 
 
 extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return layouts.count
         return 30 // Static layouts currently only have one layout per category. Adding multiple in here to help test
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: layoutCellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
-        cell.isSelected = (displayCategory?.selectedIndex == indexPath)
-        //        cell.layout = layouts[indexPath.row]
         cell.layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
         return cell
     }
