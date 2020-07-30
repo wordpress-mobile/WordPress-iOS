@@ -24,7 +24,7 @@ import WordPressShared
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                WPStyleGuide.applyReaderFollowTopicButtonStyle(followButton)
+                WPStyleGuide.applyReaderFollowButtonStyle(followButton)
             }
         }
     }
@@ -35,7 +35,7 @@ import WordPressShared
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
         followButton.isSelected = topic.following
-        WPStyleGuide.applyReaderFollowTopicButtonStyle(followButton)
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
