@@ -356,7 +356,7 @@ fileprivate extension UIView {
 
     func makeBorderView() -> UIView {
         let borderView = UIView()
-        borderView.backgroundColor = Constants.borderColor
+        borderView.backgroundColor = .invertedSeparator
         borderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(borderView)
 
@@ -364,7 +364,6 @@ fileprivate extension UIView {
     }
 
     struct Constants {
-        static let borderColor = UIColor.white.withAlphaComponent(0.25)
         static let visualEffect = UIBlurEffect(style: .extraLight)
     }
 }
