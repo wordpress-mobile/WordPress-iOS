@@ -179,7 +179,7 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testHeaderLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, String(format: TestConstants.headerLabel, "An author", "A blog name" + ", " + mock!.dateForDisplay().mediumString()), "Incorrect accessibility label: Header Button ")
+        XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, String(format: TestConstants.headerLabel, "An author", "A blog name" + ", " + mock!.dateForDisplay().mediumString(timeZone: TimeZone(identifier: "GMT-7"))), "Incorrect accessibility label: Header Button ")
     }
 
     func testSaveForLaterButtonLabelMatchesExpectation() {
