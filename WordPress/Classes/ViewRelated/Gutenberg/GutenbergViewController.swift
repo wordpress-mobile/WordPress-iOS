@@ -886,6 +886,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+            .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
 
