@@ -40,14 +40,19 @@ class GutenbergLayoutPickerViewController: UIViewController {
         return traitCollection.verticalSizeClass == .compact
     }
 
+    private var _maxHeaderHeight: CGFloat = 0
     private var maxHeaderHeight: CGFloat {
         if shouldUseCompactLayout {
             return minHeaderHeight
         } else {
-            return largeTitleView.frame.height +
-            midHeaderHeight
+            if _maxHeaderHeight == 0 {
+                _maxHeaderHeight = largeTitleView.frame.height +
+                midHeaderHeight
+            }
+            return _maxHeaderHeight
         }
     }
+
     private var midHeaderHeight: CGFloat {
         if shouldUseCompactLayout {
             return minHeaderHeight
@@ -208,10 +213,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
 
-        headerHeightConstraint.constant = maxHeaderHeight
-        layoutTableViewHeader()
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
+
+        layoutTableViewHeader()
 
         let fillColor: UIColor
         if #available(iOS 13.0, *) {
