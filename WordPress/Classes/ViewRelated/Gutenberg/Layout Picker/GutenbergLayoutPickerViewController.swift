@@ -341,9 +341,9 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCellDelegate {
 
     func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell) {
-        guard let tableViewIndexPath = tableView.indexPath(for: cell) else { return }
-        selectedLayoutIndexPath = IndexPath(item: position, section: tableViewIndexPath.row)
-        tableView.selectRow(at: tableViewIndexPath, animated: false, scrollPosition: .none)
+        guard let cellIndexPath = tableView.indexPath(for: cell) else { return }
+        tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
+        selectedLayoutIndexPath = IndexPath(item: position, section: cellIndexPath.row)
     }
 
     func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell) {
