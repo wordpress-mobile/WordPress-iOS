@@ -10,12 +10,12 @@ enum FeatureFlag: Int, CaseIterable {
     case meMove
     case floatingCreateButton
     case newReaderNavigation
-    case tenor
     case readerWebview
     case swiftCoreData
     case homepageSettings
     case readerImprovementsPhase2
     case gutenbergMentions
+    case gutenbergModalLayoutPicker
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -33,14 +33,12 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedSiteAddress:
             return false
         case .unifiedGoogle:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return false
         case .meMove:
             return true
         case .floatingCreateButton:
             return true
         case .newReaderNavigation:
-            return true
-        case .tenor:
             return true
         case .readerWebview:
             return true
@@ -52,6 +50,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .gutenbergMentions:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+        case .gutenbergModalLayoutPicker:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 }
@@ -86,8 +86,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
-        case .tenor:
-            return "Tenor GIF media source"
         case .readerWebview:
             return "Reader content displayed in a WebView"
         case .swiftCoreData:
@@ -98,6 +96,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Reader Improvements Phase 2"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
+        case .gutenbergModalLayoutPicker:
+            return "Gutenberg Modal Layout Picker"
         }
     }
 

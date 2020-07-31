@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-05 11:45:42+0000 */
+/* Translation-Revision-Date: 2020-07-16 13:36:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li fjalë, %2$li shenja";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "Rregullime %s";
+"%s block options" = "Mundësi blloku %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s bllok. I zbrazët";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Ndryshe:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Dërgo Përherë Regjistrime Vithisjesh";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Lypse një lidhje internet aktive";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "Bllokoje Këtë Sajt";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Blloku u kopjua";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Blloku u pre";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Blloku u përsëdyt";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Përpunuesi me blloqe i aktivizuar";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blloko përpjekje dashakeqe për hyrje";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Blloku u ngjit";
+
+/* No comment provided by engineer. */
+"Block settings" = "Rregullime blloku";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -906,10 +924,10 @@
 "Can Not Request Link" = "S’Kërkohet Dot Lidhje";
 
 /* Alert message that is shown when trying to publish empty page */
-"Can't publish an empty page" = "Can't publish an empty page";
+"Can't publish an empty page" = "S’botohet dot një faqe e zbrazët";
 
 /* Alert message that is shown when trying to publish empty post */
-"Can't publish an empty post" = "Can't publish an empty post";
+"Can't publish an empty post" = "S’botohet dot një postim i zbrazët";
 
 /* Alert dismissal title
    Button label when canceling alert in quick start
@@ -1101,6 +1119,9 @@
 /* No comment provided by engineer. */
 "Choose from device" = "Zgjidhni nga pajisje";
 
+/* Reader select interests subtitle label text */
+"Choose your interests" = "Zgjidhni ç’ju intereson";
+
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Zgjedhja e një sajti tjetër do të sjellë humbjen e përpunimeve te lëndë specifike e sajtit, të tilla si media dhe kategori. Jeni i sigurt?";
 
@@ -1263,7 +1284,7 @@
 "Completed: Publish a post" = "E plotësuar: Botoni një postim";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Set your site title" = "Completed: Set your site title";
+"Completed: Set your site title" = "E plotësuar: Caktoni titullin e sajtit tuaj";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "E plotësuar: Ngarkoni një ikonë sajti";
@@ -1376,7 +1397,7 @@
 "Contact us at %@" = "Lidhuni me ne te %@";
 
 /* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Content Structure\nBlocks: %li, Words: %li, Characters: %li";
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Strukturë Lënde\nBlloqe: %1$li, Fjalë: %2$li, Shenja: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "Lëndë…";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "Blloku u kopjua";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopjo Lidhjen për te Komenti";
+
+/* No comment provided by engineer. */
+"Copy block" = "Kopjoje bllokun";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Mund të Bëhet Më i Mirë";
@@ -1489,6 +1516,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Kod Vendi";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Regjistrim Vithisjesh";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Njoftime vithisjesh";
@@ -1579,7 +1609,7 @@
 "Customize" = "Përshtateni";
 
 /* No comment provided by engineer. */
-"Customize Gradient" = "Customize Gradient";
+"Customize Gradient" = "Përshtatni Gradient";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1602,6 +1632,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Përshtatni rregullime të sajtit tuaj, të tilla si Pëlqime, Komente, Ndjekje, etj.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Prije bllokun";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "E errët";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Zbuloni Sajte";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Zbuloni dhe ndiqni blogjet që keni për zemër";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskutim";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1869,7 +1906,7 @@
 "Double tap to select layout" = "Prekeni dy herë që të përzgjidhet skemë";
 
 /* translators: accessibility text (hint for selecting option) */
-"Double tap to select the option" = "Double tap to select the option";
+"Double tap to select the option" = "Prekeni dy herë që të përzgjidhet mundësia";
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Prekeni dyfish që të aktivizohet\/çaktivizohet rregullimi";
@@ -1889,6 +1926,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Skica";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Përsëdyte bllokun";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Lindje";
@@ -1943,7 +1983,7 @@
 "Edit video" = "Përpunoni video";
 
 /* Editing GIF alert message. */
-"Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij";
+"Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
 
 /* Title for the editor settings section */
 "Editor" = "Redaktor";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "Të aktivizohen njoftime sajti?";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Regjistra të Fshehtëzuar";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Kalo nën mënyrën “Sa Krejt Ekrani”";
@@ -2127,7 +2170,7 @@
 "Error updating Jetpack settings" = "Gabim në përditësim rregullimesh Jetpack-u";
 
 /* Error message informing the user that their site's title could not be changed */
-"Error updating site title" = "Error updating site title";
+"Error updating site title" = "Gabim gjatë përditësimit të titullit të sajtit";
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Gabim në përditësim rregullimesh përshpejtimi sajti";
@@ -2267,7 +2310,7 @@
 "Find sites that speak to you, and follow them to get updates when they publish." = "Gjeni sajte që janë afër jush, dhe ndiqini ata që të merrni të rejat kur botojnë të tilla.";
 
 /* The hint button's title text to help users find their site address. */
-"Find your site address" = "Find your site address";
+"Find your site address" = "Gjeni adresën e sajtit tuaj";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Po gjendet vendndodhja juaj…";
@@ -2392,7 +2435,7 @@ translators: sample content for \"Team\" page template */
 "Get your site up and running" = "Krijojeni dhe vëreni në punë sajtin tuaj";
 
 /* View title for initial auth views. */
-"Getting Started" = "Getting Started";
+"Getting Started" = "Si T’ia Fillohet";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Po merren të dhëna llogarie";
@@ -2401,7 +2444,7 @@ translators: sample content for \"Team\" page template */
 "Give Up" = "Lëre Fare";
 
 /* Description of a Quick Start Tour */
-"Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Jepini sajtit tuaj një emër që pasqyron personalitetin dhe subjektin e tij. Përshtypja e parë ka vlerë!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -2429,7 +2472,7 @@ translators: sample content for \"Team\" page template */
 "Grabbing site URL" = "Marrje URL-je sajti";
 
 /* No comment provided by engineer. */
-"Gradient Type" = "Gradient Type";
+"Gradient Type" = "Lloj Gradienti";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Bukur!\n Na pëlqejnë fort lajmet prej përdoruesish të lumtur \n😁";
@@ -2469,7 +2512,7 @@ translators: sample content for \"Team\" page template */
 "Guides you through the process of reviewing statistics for your site." = "Ju udhëheq përmes procesit të shqyrtimit të statistikave për sajtin tuaj.";
 
 /* This value is used to set the accessibility hint text for setting the site title. */
-"Guides you through the process of setting a title for your site." = "Guides you through the process of setting a title for your site.";
+"Guides you through the process of setting a title for your site." = "Ju udhëheq përmes procesit të ujdisjes së titullit të sajtit tuaj.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Ju udhëheq përmes procesit të ujdisjes së sajtit tuaj.";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Koha Më Popullore";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "Ule %s Poshtë";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "Shpjere %s Majtas";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "Shpjere %s Djathtas";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "Ngjite %s Sipër";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "Shpjere Figurën Prapa";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Shpjere Figurën Përpara";
 
+/* No comment provided by engineer. */
+"Move block down" = "Shpjere bllokun më poshtë";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Kaloje bllokun nga rreshti %1$s poshtë te rreshti %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Shpjere bllokun majtas";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Kaloje bllokun majtas nga pozicioni %1$s në pozicionin %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "Shpjere bllokun djathtas";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Kaloje bllokun djathtas nga pozicioni %1$s sipër në pozicionin %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Shpjere bllokun më sipër";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Kaloje bllokun nga rreshti %1$s sipër te rreshti %2$s";
@@ -3322,13 +3365,13 @@ translators: sample content for \"Services\" page template */
 "Navigate Up" = "Ngjituni";
 
 /* No comment provided by engineer. */
-"Navigates to custom color picker" = "Navigates to custom color picker";
+"Navigates to custom color picker" = "Shkon te zgjedhës ngjyrash vetjake";
 
 /* No comment provided by engineer. */
-"Navigates to customize the gradient" = "Navigates to customize the gradient";
+"Navigates to customize the gradient" = "Shkon te pjesa për përshtatje gradienti";
 
 /* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigates to the previous content sheet";
+"Navigates to the previous content sheet" = "Ju shpie te fleta e mëparshme e lëndës";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Ju Duhet Ndihmë?";
@@ -3729,7 +3772,7 @@ translators: sample content for \"Services\" page template */
 "Open in browser" = "Hape në shfletues";
 
 /* No comment provided by engineer. */
-"Open link in a browser" = "Open link in a browser";
+"Open link in a browser" = "Hape lidhjen në shfletues";
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Hape lidhjen në dritare\/skedë të re";
@@ -3859,6 +3902,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Paste URL" = "Ngjitni URL";
 
+/* No comment provided by engineer. */
+"Paste block" = "Ngjite bllokun";
+
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Ngjite pa Formatim";
 
@@ -3910,7 +3956,7 @@ translators: sample content for \"Services\" page template */
 "Play video" = "Luaje videon";
 
 /* Suggestion to add content before trying to publish post or page */
-"Please add some content before trying to publish." = "Please add some content before trying to publish.";
+"Please add some content before trying to publish." = "Ju lutemi, shtoni ca lëndë, përpara se të provoni të botoni.";
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Ju lutemi, kontrolloni lidhjen tuaj në internet dhe riprovoni.";
@@ -3979,7 +4025,7 @@ translators: sample content for \"Services\" page template */
 "Please log out before connecting to a different wordpress.com site" = "Ju lutemi, përpara se të lidheni te një sajt tjetër wordpress.com, dilni nga llogaria";
 
 /* Used on an error alert to prompt the user to try again */
-"Please try again later" = "Please try again later";
+"Please try again later" = "Ju lutemi, riprovoni më vonë";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Ju lutemi, riprovoni më vonë.";
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Hiqe";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "Hiqe %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Hiqe @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Hiqi shënimet";
+
+/* No comment provided by engineer. */
+"Remove block" = "Hiqe bllokun";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
@@ -4567,7 +4613,7 @@ translators: sample content for \"Services\" page template */
 "Reset filter" = "Zeroje filtrin";
 
 /* The secondary call-to-action button title text, for when the user can't remember their password. */
-"Reset your password" = "Reset your password";
+"Reset your password" = "Ricaktoni fjalëkalimi tuaj";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Ripërmasojeni & Qetheni";
@@ -4823,7 +4869,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Përzgjidhni %@ që të shihni planin tuaj të tanishëm dhe të tjerë plane të mundshëm.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Select %@ to set a new title.";
+"Select %@ to set a new title." = "Përzgjidhni %@ që të caktoni titull të ri.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Përzgjidhni %@ që të filloni personalizimin e sajtit tuaj";
@@ -4842,6 +4888,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Select a color" = "Përzgjidhni një ngjyrë";
+
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Që të vazhdohet, përzgjidhni ndoca";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Përzgjidhni media.";
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Dërgoje Lidhjen";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Dërgo Mesazh Regjistri";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Dërgo Pingback-e";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Send Test Crash";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Dërgo njoftime me email";
@@ -4935,7 +4990,7 @@ translators: sample content for \"Services\" page template */
 "Set up Jetpack" = "Rregulloni Jetpack-un";
 
 /* Title of a Quick Start Tour */
-"Set your site title" = "Set your site title";
+"Set your site title" = "Caktoni titullin e sajtit tuaj";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Ujdisje teme";
@@ -5073,7 +5128,7 @@ translators: sample content for \"Services\" page template */
 "Sidebar title plugin" = "Shtojcë titulli anështylle";
 
 /* View title during the sign up process. */
-"Sign Up" = "Sign Up";
+"Sign Up" = "Regjistrohuni";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Regjistrohuni";
@@ -5145,7 +5200,7 @@ translators: sample content for \"Services\" page template */
 "Site timezone (UTC%@%d%@)" = "Zonë kohore e sajtit (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
-"Site title changed successfully" = "Site title changed successfully";
+"Site title changed successfully" = "Titulli i sajtit u ndryshua me sukses";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5580,10 +5635,10 @@ translators: sample content for \"Services\" page template */
 "The Internet connection appears to be offline." = "Lidhja Internet duket se është jashtë linje.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
-"The Site Title can only be changed by a user with the administrator role." = "The Site Title can only be changed by a user with the administrator role.";
+"The Site Title can only be changed by a user with the administrator role." = "Titulli i Sajtit mund të ndryshohet vetëm nga një përdorues me rolin e administratorit.";
 
 /* Description of the purpose of a site's title. */
-"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.";
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titulli i Sajtit shfaqet te shtylla e titujve të një shfletuesi dhe, për shumicën e temave, shfaqet te kryet.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-së i mungon një strehë e vlefshme.";
@@ -6291,7 +6346,7 @@ translators: sample content for \"Services\" page template */
 "Uploading media..." = "Po ngarkohet media…";
 
 /* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Uploading post";
+"Uploading post" = "Po ngarkohet postimi";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Po ngarkohet postimi…";
@@ -7022,7 +7077,7 @@ translators: sample content for \"Services\" page template */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Fjalëkalimi juaj duhet të jetë të paktën gjashtë shenja i gjatë. Për ta bërë më të fortë, përdorni shkronja me të mëdha dhe me të vogla, numra, dhe simbole të tillë si ! \" ? $ % ^ & ).";
 
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Your post is currently being uploaded. Please wait until this completes.";
+"Your post is currently being uploaded. Please wait until this completes." = "Postimi juaj po ngarkohet. Ju lutemi, prisni deri sa të plotësohet kjo.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";

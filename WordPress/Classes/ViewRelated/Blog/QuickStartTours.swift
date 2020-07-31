@@ -356,12 +356,16 @@ private extension String {
 
         let resultString = NSMutableAttributedString(string: normalParts[0], attributes: [.font: Fonts.regular])
 
-        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Constants.highlightColor, .font: Fonts.highlight])
+        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Appearance.highlightColor, .font: Fonts.highlight])
 
         if let icon = icon {
             let iconAttachment = NSTextAttachment()
-            iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
-            iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
+            if #available(iOS 13.0, *) {
+                iconAttachment.image = icon.withTintColor(Appearance.highlightColor)
+            } else {
+                iconAttachment.image = icon.imageWithTintColor(Appearance.highlightColor)
+            }
+            iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Appearance.iconOffset, width: Appearance.iconSize, height: Appearance.iconSize)
             let iconStr = NSAttributedString(attachment: iconAttachment)
 
             switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
@@ -390,9 +394,11 @@ private extension String {
         static let highlight = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     }
 
-    private enum Constants {
+    private enum Appearance {
         static let iconOffset: CGFloat = 1.0
         static let iconSize: CGFloat = 16.0
-        static let highlightColor: UIColor = .white
+        static var highlightColor: UIColor {
+            .invertedLabel
+        }
     }
 }

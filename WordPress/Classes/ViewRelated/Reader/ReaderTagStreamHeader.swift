@@ -2,15 +2,12 @@ import Foundation
 import WordPressShared
 
 @objc open class ReaderTagStreamHeader: UIView, ReaderStreamHeader {
-    @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: PostMetaButton!
+    @IBOutlet fileprivate weak var followButton: UIButton!
 
     open var delegate: ReaderStreamHeaderDelegate?
 
-
     // MARK: - Lifecycle Methods
-
     open override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -19,11 +16,17 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
+    }
+
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+            }
+        }
     }
 
 
@@ -31,8 +34,8 @@ import WordPressShared
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
-        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         followButton.isSelected = topic.following
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {

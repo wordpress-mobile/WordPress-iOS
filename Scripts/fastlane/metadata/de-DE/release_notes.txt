@@ -1,7 +1,5 @@
-Schon gesehen? Das ist kein Trick – der Reader ist jetzt viel übersichtlicher. Der Grund: Wir haben viele Veränderungen an der Darstellung von Beiträgen vorgenommen. Dadurch werden viele kleine Dinge wie Leerzeichen, Positionierung und Größendarstellungen behoben, die das Gesamterlebnis deutlich angenehmer machen. Außerdem werden Navigations- und Werkzeugleiste wie auf magische Weise butterweich ein- und ausgeblendet! Und ein wenig Magie können wir doch im Moment alle gut gebrauchen, nicht wahr?
+Version 15.3 beinhaltet drei große Änderungen:
 
-Wir wissen, dass die nötige Inspiration für einen Titel für deine Website manchmal auf sich warten lässt, und manchmal hat man später einfach eine bessere Idee. Deshalb kannst du den Titel deiner Website jetzt ändern, indem du in den Website-Details auf den Titel deiner Website tippst. Und wenn dir gerade ein ganz großartiger Name für eine neue Website eingefallen ist, gibt es jetzt eine neue Schnellstart-Aufgabe, mit der du die Titel für all deine neuen Websites festlegen kannst.
-
-Hast du ein Händchen für Farben? Wir haben den Block-Editor verbessert, sodass du in den Button- und Cover-Blöcken den Verlaufstyp und -winkel anpassen kannst. Wenn du sehen möchtest, wie viele Blöcke du verwendest und wie viel du tippst, zeigen wir jetzt Kennzahlen für Blöcke, Wörter und Zeichen an.
-
-Außerdem haben wir einen lästigen Absturz behoben, der aufgetreten war, wenn du nach der Abmeldung und sofortigen erneuten Anmeldung zu schnell zum Block-Editor gewechselt bist. Jetzt kannst du dich nach Lust und Laune an- und abmelden!
+– Alle Blöcke verfügen jetzt über die Optionen „Kopieren“, „Ausschneiden“, „Einfügen“ und „Duplizieren“.
+– Du kannst nicht unterstützte Blöcke nun auf einem separaten Bildschirm in der App individuell bearbeiten und dafür dieselben Tools wie im Web-Editor nutzen. (Hinweis: Dies ist noch nicht für selbst gehostete Websites oder Websites, die den klassischen Editor nutzen, verfügbar.)
+ Der Geister-Effekt! Ein visuelles Element, das wir dem Editor hinzugefügt haben: Es zeigt schattierte Bereiche an, damit du besser sehen kannst, wann und wo Inhalte geladen werden.
