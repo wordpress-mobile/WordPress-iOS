@@ -155,6 +155,9 @@ private extension ReaderCardsStreamViewController {
                 return
             }
 
+            self.displayLoadingStream()
+            self.syncIfAppropriate()
+
             UIView.animate(withDuration: 0.2, animations: {
                 controller.view.alpha = 0
             }) { [unowned self] _ in
