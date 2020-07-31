@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-09 16:54:09+0000 */
+/* Translation-Revision-Date: 2020-07-24 18:08:50+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$lكلمات i و%2$lحروف i";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "إعدادات %s";
+"%s block options" = "%s خيارات المكوِّن";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "مكوِّن %s. فارغ";
@@ -277,10 +277,10 @@
 "A list of sites on this account." = "قائمة المواقع الموجودة على هذا الحساب.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
-"A series of steps showing you how to add a theme, site icon and more." = "A series of steps showing you how to add a theme, site icon and more.";
+"A series of steps showing you how to add a theme, site icon and more." = "سلسلة من الخطوات توضح لك كيفية إضافة قالب، وأيقونة موقع والمزيد.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
-"A series of steps to assist with growing your site's audience." = "A series of steps to assist with growing your site's audience.";
+"A series of steps to assist with growing your site's audience." = "سلسلة من الخطوات للمساعدة في زيادة جمهور موقعك.";
 
 /* translators: sample content for \"Team\" page template */
 "A short bio with personal history, key achievements, or an interesting fact." = "سيرة ذاتية قصيرة مع التاريخ الشخصي والإنجازات الرئيسية، أو حقيقة مثيرة للاهتمام.";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "بدلاً من ذلك:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "إرسال سجلات الأعطال دومًا";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "يلزم وجود اتصال بالإنترنت نشط";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "حظر هذا الموقع";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "المكوِّن الذي تم نسخه";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "المكوِّن الذي تم قصه";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "المكوِّن الذي تم تكراره";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "تم تمكين محرر المكوّنات";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "تم حظر محاولات تسجيل الدخول الضارة";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "المكوِّن الذي تم لصقه";
+
+/* No comment provided by engineer. */
+"Block settings" = "إعدادات المكوِّن";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1100,6 +1118,9 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "الاختيار من الجهاز";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "اختيار اهتماماتك";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "سيؤدي اختيار موقع مختلف إلى فقد التعديلات التي تمت على محتوى موقع معين مثل الوسائط والتصنيفات. هل أنت متأكد من ذلك؟";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "المتابعة عبر Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "المكوِّن الذي تم نسخه";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "نسخ الرابط إلى التعليق";
+
+/* No comment provided by engineer. */
+"Copy block" = "نسخ المكوِّن";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "قد يكون أفضل";
@@ -1490,8 +1517,11 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "رمز البلد";
 
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "تسجيل الأعطال";
+
 /* Label for switch to turn on/off sending crashes info */
-"Crash reports" = "Crash reports";
+"Crash reports" = "تقارير الأعطال";
 
 /* Accessibility label for create floating action button */
 "Create" = "إنشاء";
@@ -1603,6 +1633,9 @@
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "إضفاء الطابع الشخصي على إعدادات موقعك مثل الإعجابات والتعليقات والمتابعات، والمزيد.";
 
+/* No comment provided by engineer. */
+"Cut block" = "قص المكوِّن";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "داكن";
 
@@ -1666,7 +1699,7 @@
 /* Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
-"Delete Permanently" = "حذف نهائيًا";
+"Delete Permanently" = "حذف بشكل دائم";
 
 /* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "هل تريد الحذف نهائيًا؟";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "اكتشاف المواقع";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "اكتشاف المدونات التي تحبها ومتابعتها";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "مناقشة";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1890,6 +1927,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "المسودات";
 
+/* No comment provided by engineer. */
+"Duplicate block" = "تكرار المكوِّن";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "شرق";
 
@@ -1908,7 +1948,7 @@
 "Edit %@" = "تحرير %@";
 
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Edit %@ block";
+"Edit %@ block" = "تحرير مكوّن %@";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "تحرير مفتاح قائمة الحظر";
@@ -1928,7 +1968,7 @@
 "Edit Post" = "تحرير المقالة";
 
 /* No comment provided by engineer. */
-"Edit block in web browser" = "Edit block in web browser";
+"Edit block in web browser" = "تحرير المكوِّن في متصفح الويب";
 
 /* No comment provided by engineer. */
 "Edit media" = "تحرير الوسائط";
@@ -1943,7 +1983,7 @@
 "Edit video" = "تحرير الفيديو";
 
 /* Editing GIF alert message. */
-"Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
+"Editing this GIF will remove its animation." = "سيؤدي تحرير ملف GIF هذا إلى إزالة الرسوم المتحركة الخاصة به.";
 
 /* Title for the editor settings section */
 "Editor" = "المحرّر";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "هل ترغب في تمكين التنبيهات في الموقع؟";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "سجلات مشفَّرة";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "الدخول إلى وضع ملء الشاشة";
@@ -2570,7 +2613,7 @@ translators: sample content for \"Team\" page template */
 "Homepage Settings" = "إعدادات الصفحة الرئيسية";
 
 /* Message informing the user that their static homepage page was set successfully */
-"Homepage successfully updated" = "Homepage successfully updated";
+"Homepage successfully updated" = "تم تحديث الصفحة الرئيسية بنجاح";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "مرحى!\nعلى وشك الانتهاء";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "الوقت الأكثر شعبية";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "نقل %s إلى الأسفل";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "نقل %s إلى اليسار";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "نقل %s إلى اليمين";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "نقل %s إلى الأعلى";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "تحريك الصورة إلى الخلف";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "تحريك الصورة إلى الأمام";
 
+/* No comment provided by engineer. */
+"Move block down" = "تحريك المكوّن لأسفل";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "نقل المكوِّن إلى أسفل من الصف %1$s إلى الصف %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "نقل المكوِّن إلى اليسار";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "نقل المكوِّن إلى اليسار من الموضع %1$s إلى الموضع %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "نقل المكوِّن إلى اليمين";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "نقل المكوِّن إلى اليمين من الموضع %1$s إلى الموضع %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "تحريك المكوّن لأعلى";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "نقل المكوِّن إلى أعلى من الصف %1$s إلى الصف %2$s";
@@ -3576,7 +3619,7 @@ translators: sample content for \"Services\" page template */
 "Not Now" = "ليس الآن";
 
 /* Display value for Support email field if there is no user email address. */
-"Not Set" = "غير مُعيَّن";
+"Not Set" = "لم يتم التعيين";
 
 /* Not this time button title shown in alert asking if users want to try out the quick start checklist. */
 "Not This Time" = "ليس في هذه المرة";
@@ -3616,7 +3659,7 @@ translators: sample content for \"Services\" page template */
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
-"Notifications" = "تنبيهات";
+"Notifications" = "الإشعارات";
 
 /* WordPress.com Notifications Timeline */
 "Notifications Tab" = "علامة تبويب التنبيهات";
@@ -3858,6 +3901,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Paste URL" = "لصق الرابط";
+
+/* No comment provided by engineer. */
+"Paste block" = "لصق المكوِّن";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "اللصق من دون تنسيق";
@@ -4138,7 +4184,7 @@ translators: sample content for \"Services\" page template */
 "Posts page" = "صفحة المقالات";
 
 /* Message informing the user that their static homepage for posts was set successfully */
-"Posts page successfully updated" = "Posts page successfully updated";
+"Posts page successfully updated" = "تم تحديث صفحة المقالات بنجاح";
 
 /* Posts per Page Title */
 "Posts per Page" = "عدد المقالات لكل صفحة";
@@ -4203,7 +4249,7 @@ translators: sample content for \"Services\" page template */
 "Privacy Settings" = "إعدادات الخصوصية";
 
 /* Link to the CCPA privacy notice for residents of California. */
-"Privacy notice for California users" = "Privacy notice for California users";
+"Privacy notice for California users" = "إشعار الخصوصية الخاص بالمستخدمين في كاليفورنيا";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "إزالة";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "إزالة %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "إزالة @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "إزالة التعليقات التوضيحية";
+
+/* No comment provided by engineer. */
+"Remove block" = "إزالة المكوِّن";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "إزالة من الرؤى";
@@ -4793,43 +4839,43 @@ translators: sample content for \"Services\" page template */
 "Select" = "تحديد";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue" = "Select %@ to continue";
+"Select %@ to continue" = "حدّد %@ للمتابعة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Select %@ to continue.";
+"Select %@ to continue." = "حدّد %@ للمتابعة.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Select %@ to create a new page.";
+"Select %@ to create a new page." = "حدّد %@ لإنشاء صفحة جديدة.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new post" = "Select %@ to create a new post";
+"Select %@ to create a new post" = "حدّد %@ لإنشاء مقالة جديدة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to discover new themes" = "Select %@ to discover new themes";
+"Select %@ to discover new themes" = "حدّد %@ لاكتشاف القوالب الجديدة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Select %@ to look for sites with similar interests";
+"Select %@ to look for sites with similar interests" = "حدّد %@ للبحث عن مواقع ذات اهتمامات متشابهة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Select %@ to preview";
+"Select %@ to preview" = "حدّد %@ للمعاينة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see how your site is performing." = "Select %@ to see how your site is performing.";
+"Select %@ to see how your site is performing." = "حدّد %@ لمعرفة مستوى أداء موقعك.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your checklist" = "Select %@ to see your checklist";
+"Select %@ to see your checklist" = "حدّد %@ لرؤية قائمة الاختيار الخاصة بك";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current plan and other available plans." = "Select %@ to see your current plan and other available plans.";
+"Select %@ to see your current plan and other available plans." = "حدّد %@ لرؤية خطتك الحالية والخطط المتاحة الأخرى.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "حدِّد %@ لتعيين عنوان جديد.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to start personalising your site" = "Select %@ to start personalising your site";
+"Select %@ to start personalising your site" = "حدّد %@ لبدء تخصيص موقعك";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to upload a new one." = "Select %@ to upload a new one.";
+"Select %@ to upload a new one." = "حدّد %@ لرفع عنصر جديد.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "تحديد البلد";
@@ -4843,6 +4889,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a color" = "تحديد لون";
 
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "تحديد القليل للاستمرار";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "تحديد الوسائط.";
 
@@ -4850,7 +4899,7 @@ translators: sample content for \"Services\" page template */
 "Select paragraph style" = "تحديد نمط الفقرة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ to add your social media accounts" = "Select the %@ to add your social media accounts";
+"Select the %@ to add your social media accounts" = "حدّد %@ لإضافة حساباتك على وسائل التواصل الاجتماعي";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "حدد الحساب الذي ترغب في اعتماده. لاحظ أن مقالاتك ستتم مشاركتها مع الحساب المحدد تلقائيًا.";
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "إرسال رابط";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "إرسال رسالة السجل";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "إرسال تنبيهات";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "إرسال اختبار الأعطال";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "إرسال تنبيهات عبر البريد الإلكتروني";
@@ -4923,10 +4978,10 @@ translators: sample content for \"Services\" page template */
 "Set Parent" = "تعيين الأصل";
 
 /* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Set as Homepage";
+"Set as Homepage" = "تعيين كصفحة رئيسية";
 
 /* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Set as Posts Page";
+"Set as Posts Page" = "تعيين كصفحة مقالات";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "الإعداد";
@@ -5417,7 +5472,7 @@ translators: sample content for \"Services\" page template */
 "Switches to the default Font Size" = "التبديل إلى حجم الخط الافتراضي";
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
-"System default" = "System default";
+"System default" = "النظام الافتراضي";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "جدول يعرض %@";
@@ -6263,7 +6318,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
-"Uploaded" = "المرفوعة";
+"Uploaded" = "تم الرفع";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "تم رفع مسودة مقالة واحدة، و%ld من الملفات";
@@ -6472,7 +6527,7 @@ translators: sample content for \"Services\" page template */
 "Want to work with us?" = "ترغب بالعمل معنا؟";
 
 /* Editing GIF alert title. */
-"Warning" = "Warning";
+"Warning" = "تحذير";
 
 /* No comment provided by engineer. */
 "Warning Message" = "رسالة التحذير";
@@ -6652,7 +6707,7 @@ translators: sample content for \"Services\" page template */
 "We'll submit your post for review when your device is back online." = "سنرسل مقالتك من أجل المعاينة عندما يعود الجهاز متصلاً بالإنترنت.";
 
 /* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "We'll use this email address to create your new WordPress.com account.";
+"We'll use this email address to create your new WordPress.com account." = "سنستخدم عنوان البريد الإلكتروني هذا لإنشاء حسابك الجديد على WordPress.com.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "نقوم بالإعداد النهائي — انتهينا تقريبًا…";

@@ -786,7 +786,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func datePublished() -> String {
-        return contentProvider?.dateForDisplay()?.readerDateForDisplay() ?? ""
+        return contentProvider?.dateForDisplay()?.mediumString() ?? ""
     }
 }
 
@@ -816,13 +816,6 @@ extension ReaderPostCardCell {
 
     func getReblogButtonForTesting() -> UIButton {
         return reblogActionButton
-    }
-}
-
-private extension Date {
-    func readerDateForDisplay() -> String {
-        let relativeFormatter = ReaderRelativeTimeFormatter()
-        return relativeFormatter.string(from: self)
     }
 }
 

@@ -118,7 +118,7 @@ import WordPressFlux
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = tagSlug
+                title = NSLocalizedString("Topic", comment: "Topic page title")
 
                 fetchTagTopic()
             }
@@ -165,6 +165,8 @@ import WordPressFlux
             }
         }
     }
+
+    var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
         willSet {
@@ -613,7 +615,11 @@ import WordPressFlux
             return
         }
 
-        title = topic.title
+        if ReaderHelpers.isTopicTag(topic) {
+             title = NSLocalizedString("Topic", comment: "Topic page title")
+        } else {
+            title = topic.title
+        }
     }
 
 
@@ -1812,6 +1818,7 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
+        isContentFiltered = content.topicType == .tag
         hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type

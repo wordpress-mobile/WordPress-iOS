@@ -1,7 +1,5 @@
-Nee, je geest speelt geen grapjes met je - de Reader ziet er veel gemakkelijker uit voor de ogen. Dat komt omdat we veel verbeteringen hebben aangebracht in hoe de dingen eruitzien wanneer je een bericht leest. Deze oplossingen bevatten veel kleine dingen zoals spatiëring, positionering en grootte, die allemaal een veel aangenamere ervaring opleveren. Bovendien verdwijnen de navigatiebalk en de toolbar en verschijnen ze zo soepel dat het net magie is! Bent je het er niet mee eens dat we nu allemaal een beetje magie in ons leven nodig hebben?
+v15.3 bevat drie geweldige wijzigingen:
 
-We weten dat het moeilijk kan zijn om een ​​titel voor je site te bedenken en dat mensen besluiteloos en wispelturig kunnen zijn. Daarom hebben we ervoor gezorgd dat de titel van je site nu kan worden gewijzigd door op de titel op de site te tikken detailscherm. En als je onlangs een briljante naam hebt bedacht voor een nieuwe site, is er nu een nieuwe Quick Start taak om een ​​titel in te stellen voor alle nieuwe sites die je wilt starten.
-
-Als je oog voor kleur hebt, hebben we ondersteuning toegevoegd in de block-editor voor het aanpassen van het verlooptype en de hoek in knop- en cover-blokken. En als je bijhoudt hoeveel blokken je gebruikt en hoeveel je typt, geven we nu metrische informatie weer voor het aantal blokken, woorden en tekens.
-
-En last but not least hebben we een vervelende crash verholpen die het gevolg was van het te snel navigeren naar de block-editor na uitloggen en direct weer inloggen. Nu kan je je vrij voelen om in/uit te loggen met afbreken!
+- Alle blokken bevatten nu opties voor kopiëren, knippen, plakken en dupliceren.
+- Je kan niet-ondersteunde blokken individueel bewerken op een afzonderlijk scherm in de app en daarbij dezelfde tools gebruiken die beschikbaar zijn in de volledige webeditor. (Let op: dit is nog niet beschikbaar voor zelfgehoste sites of sites die de klassieke editor als standaardinstelling hebben.)
+- Spookeffect! Het is een leuke visuele toevoeging aan de editor, waarmee gemarkeerde gebieden worden aangegeven om je te laten weten wanneer en waar content wordt geladen.

@@ -1,7 +1,5 @@
-Hayır, zihniniz size oyun oynamıyor - Okuyucu gözlerde çok daha kolay görünür. Çünkü bir yayını okurken nasıl görüneceğiyle ilgili birçok düzeltme yaptık. Bu düzeltmeler arasında aralıklandırma, yerleşim ve boyutlandırma gibi pek çok küçük ayrıntı bulunuyor ve bunların tümü çok daha hoş bir deneyim yaratıyor. Ayrıca, gezinme çubuğu ile araç çubuğu tıpkı bir sihir gibi çok düzgün bir şekilde kaybolup yeniden görünüyor. Sizce de şu an hepimizin hayatında biraz sihire ihtiyaç yok mu?
+v15.3 üç büyük değişiklik içerir:
 
-Siteniz için bir başlık bulmanın zor olabileceğini ve insanların kararsız çekebileceğini biliyoruz, bu yüzden de sitenizin başlığını artık site ayrıntı ekranından başlığa dokunarak değiştirilebilmenizi sağladık. Yeni bir site için son günlerde çarpıcı bir ad bulduysanız, artık başlatmak istediğiniz yeni siteler için başlık ayarlamanıza olanak veren yeni bir Hızlı Başlangıç görevi var.
-
-Renklere dikkat ediyorsanız, Düğme ve Kapak bloklarındaki gradyan türünü ve açısını özelleştirmeniz için Blok düzenleyicisine destek ekledik. Kaç blok kullandığınızı ve ne kadar yazdığınızı takip ediyorsanız, artık blok, kelime ve karakter sayıları için ölçüm bilgilerini görüntülüyoruz.
-
-Son olarak ve en önemlisi de, oturumu kapattıktan ve tekrar giriş yaptıktan hemen sonra Blok düzenleyiciye çok hızlı bir şekilde gitmekten kaynaklanan sinir bozucu bir kilitlenme sorunu düzeltildi. Artık istediğiniz gibi giriş ve çıkış yapabilirsiniz.
+- Artık tüm bloklar kopyalama, kesme, yapıştırma ve çoğaltma seçeneklerine sahiptir.
+- Desteklenmeyen blokları, web metin düzenleyicisiyle aynı araçları kullanarak, uygulamada ayrı bir ekranda ayrı ayrı düzenleyebilirsiniz. (Not: bu henüz kendi kendine barındırılan siteler veya varsayılan olarak klasik düzenleyiciye sahip siteler için kullanılamaz.)
+- Hayalet etkisi! Metin düzenleyiciye, içeriğin ne zaman ve nerede yüklendiğini bildiren gölgeli alanları gösteren hoş bir görsel dokunuş.
