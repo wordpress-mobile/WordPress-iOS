@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 class ReaderSelectInterestsCoordinatorTests: XCTestCase {
-    func testShouldDisplayReturnsTrue() {
+    func testisFollowingInterestsReturnsFalse() {
         let store = EphemeralKeyValueDatabase()
         let service = MockFollowedInterestsService(populateItems: false)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
@@ -11,72 +11,33 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
         service.fetchSuccessExpectation = expectation(description: "Fetching of interests succeeds")
 
         let displayExpectation = expectation(description: "Should display returns true")
-        coordinator.shouldDisplay { (result) in
+        coordinator.isFollowingInterests { (result) in
+            displayExpectation.fulfill()
+
+            XCTAssertFalse(result)
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
+    func testisFollowingInterestsReturnsTrue() {
+        let store = EphemeralKeyValueDatabase()
+        let service = MockFollowedInterestsService(populateItems: true)
+        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
+
+        let successExpectation = expectation(description: "Fetching of interests succeeds")
+
+        service.success = true
+        service.fetchSuccessExpectation = successExpectation
+
+        let displayExpectation = expectation(description: "Should display returns true")
+        coordinator.isFollowingInterests { (result) in
             displayExpectation.fulfill()
 
             XCTAssertTrue(result)
         }
 
         waitForExpectations(timeout: 4, handler: nil)
-    }
-
-    func testShouldDisplayReturnsFalseIfUserHasFollowedInterests() {
-        let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: true)
-        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
-
-        let successExpectation = expectation(description: "Fetching of interests succeeds")
-
-        service.success = true
-        service.fetchSuccessExpectation = successExpectation
-
-        let displayExpectation = expectation(description: "Should display returns true")
-        coordinator.shouldDisplay { (result) in
-            displayExpectation.fulfill()
-
-            XCTAssertFalse(result)
-        }
-
-        waitForExpectations(timeout: 4, handler: nil)
-    }
-
-    func testShouldDisplayReturnsFalseIfUserHasSeenBefore() {
-        let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: true)
-        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
-        coordinator.markAsSeen()
-
-        let successExpectation = expectation(description: "Fetching of interests succeeds")
-
-        service.success = true
-        service.fetchSuccessExpectation = successExpectation
-
-        let displayExpectation = expectation(description: "Should display returns true")
-        coordinator.shouldDisplay { (result) in
-            displayExpectation.fulfill()
-
-            XCTAssertFalse(result)
-        }
-
-        waitForExpectations(timeout: 4, handler: nil)
-    }
-
-    func testMarkAsSeen() {
-        let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: false)
-        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
-
-        coordinator.markAsSeen()
-
-        XCTAssertTrue(coordinator.hasSeenBefore())
-    }
-
-    func testHasSeenBeforeFalse() {
-        let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: false)
-        let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
-
-        XCTAssertFalse(coordinator.hasSeenBefore())
     }
 
     func testSaveInterestsTriggersSuccess() {

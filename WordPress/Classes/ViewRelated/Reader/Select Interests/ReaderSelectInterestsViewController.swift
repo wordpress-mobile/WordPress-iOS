@@ -51,6 +51,11 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureNoResultsViewController()
         applyStyles()
         updateNextButtonState()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         refreshData()
     }
 
@@ -67,6 +72,11 @@ class ReaderSelectInterestsViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func nextButtonTapped(_ sender: Any) {
         saveSelectedInterests()
+    }
+
+    // MARK: - Display logic
+    func userIsFollowingTopics(completion: @escaping (Bool) -> Void) {
+        coordinator.isFollowingInterests(completion: completion)
     }
 
     // MARK: - Private: Configuration
@@ -150,10 +160,8 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         activityIndicatorView.startAnimating()
 
-        UIView.animate(withDuration: Constants.animationDuration) {
-            self.contentContainerView.alpha = 0
-            self.loadingView.alpha = 1
-        }
+        contentContainerView.alpha = 0
+        loadingView.alpha = 1
     }
 
     private func stopLoading() {

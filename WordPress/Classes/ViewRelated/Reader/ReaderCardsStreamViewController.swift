@@ -11,10 +11,18 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
+    private var selectInterestsViewController: ReaderSelectInterestsViewController? = ReaderSelectInterestsViewController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        displaySelectInterestsIfNeeded()
     }
 
     // MARK: - TableView Related
@@ -119,5 +127,40 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+    }
+}
+
+// MARK: - Select Interests Display
+private extension ReaderCardsStreamViewController {
+    func displaySelectInterestsIfNeeded() {
+        selectInterestsViewController?.userIsFollowingTopics { [unowned self] isFollowing in
+            if isFollowing {
+                self.selectInterestsViewController = nil
+            } else {
+                self.showSelectInterestsView()
+            }
+        }
+    }
+
+    func showSelectInterestsView() {
+        guard let controller = selectInterestsViewController else {
+            return
+        }
+
+        controller.view.frame = self.view.bounds
+        self.add(controller)
+
+        controller.didSaveInterests = { [unowned self] in
+            guard let controller = self.selectInterestsViewController else {
+                return
+            }
+
+            UIView.animate(withDuration: 0.2, animations: {
+                controller.view.alpha = 0
+            }) { [unowned self] _ in
+                controller.remove()
+                self.selectInterestsViewController = nil
+            }
+        }
     }
 }
