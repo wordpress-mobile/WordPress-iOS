@@ -14,6 +14,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var previewLoadingView: UIActivityIndicatorView!
+    @IBOutlet weak var checkmarkBackground: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView! {
         didSet {
             if #available(iOS 13.0, *) {
@@ -61,6 +62,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         didSet {
             imageView.layer.borderWidth = isSelected ? 2 : 0
             checkmarkImageView.isHidden = !isSelected
+            checkmarkBackground.isHidden = !isSelected
         }
     }
 
