@@ -1610,7 +1610,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 
 // MARK: - Handling Loading and No Results
 
-private extension ReaderStreamViewController {
+extension ReaderStreamViewController {
 
     func displayLoadingStream() {
         configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
