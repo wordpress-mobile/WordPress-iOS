@@ -263,10 +263,12 @@ private extension ReaderTabView {
         tabBar.addSubview(ghostTabBar)
         tabBar.pinSubviewToAllEdges(ghostTabBar)
 
+        loadingView = ghostTabBar
+
         ghostTabBar.startGhostAnimation(style: GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                                           beatStartColor: .placeholderElement,
                                                           beatEndColor: .placeholderElementFaded))
-        loadingView = ghostTabBar
+
     }
 
     /// Hide the ghost tab bar
