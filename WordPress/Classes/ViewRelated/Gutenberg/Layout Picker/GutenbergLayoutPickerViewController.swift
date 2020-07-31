@@ -162,7 +162,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
             }
         }
 
-        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+        if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             layoutTableViewHeader()
             if let visibleRow = tableView.indexPathsForVisibleRows?.first {
                 tableView.scrollToRow(at: visibleRow, at: .top, animated: true)
@@ -228,7 +228,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     private func calculateHeaderSnapPoints() {
         minHeaderHeight = categoryBar.frame.height + minHeaderBottomSpacing.constant
-        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + categoryBar.frame.height + maxHeaderBottomSpacing.constant
         _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + categoryBar.frame.height + maxHeaderBottomSpacing.constant
         _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
     }
