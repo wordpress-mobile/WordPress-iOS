@@ -8,10 +8,13 @@ protocol LayoutPickerCategoryTableViewCellDelegate: class {
 
 class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
+    static var cellReuseIdentifier: String {
+        return "LayoutPickerCategoryTableViewCell"
+    }
+
     static var nib: UINib {
         return UINib(nibName: "LayoutPickerCategoryTableViewCell", bundle: Bundle.main)
     }
-    let layoutCellReuseIdentifier = "LayoutCollectionViewCell"
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -40,7 +43,7 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: layoutCellReuseIdentifier)
+        collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier)
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
     }
 
@@ -94,7 +97,7 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: layoutCellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
         cell.layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
         return cell
     }

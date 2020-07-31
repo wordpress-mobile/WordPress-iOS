@@ -4,6 +4,10 @@ import Gridicons
 
 class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
+    static var cellReuseIdentifier: String {
+         return "LayoutPickerCollectionViewCell"
+     }
+
     static var nib: UINib {
         return UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
     }

@@ -15,7 +15,6 @@ class GutenbergLayoutDisplayCategory {
 }
 
 class GutenbergLayoutPickerViewController: UIViewController {
-    let categoryRowCellReuseIdentifier = "CategoryRowCell"
 
     @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var headerView: UIView!
@@ -131,7 +130,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(LayoutPickerCategoryTableViewCell.nib, forCellReuseIdentifier: categoryRowCellReuseIdentifier)
+        tableView.register(LayoutPickerCategoryTableViewCell.nib, forCellReuseIdentifier: LayoutPickerCategoryTableViewCell.cellReuseIdentifier)
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
@@ -327,7 +326,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: categoryRowCellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerCategoryTableViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.displayCategory = displayCategories[indexPath.row]
