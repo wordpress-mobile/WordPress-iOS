@@ -41,6 +41,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
                                                                 enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
                                                                 enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled,
+                                                                enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
                                                                 enableUnifiedSignup: FeatureFlag.unifiedSignup.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
