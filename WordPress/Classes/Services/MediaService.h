@@ -14,7 +14,8 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
     MediaServiceErrorFileDoesNotExist = 0,
     MediaServiceErrorFileLargerThanDiskQuotaAvailable = 1,
     MediaServiceErrorFileLargerThanMaxFileSize = 2,
-    MediaServiceErrorUnableToCreateMedia = 3
+    MediaServiceErrorUnableToCreateMedia = 3,
+    MediaServiceErrorUnknownUploadError = 4
 };
 
 @interface MediaService : LocalCoreDataService
