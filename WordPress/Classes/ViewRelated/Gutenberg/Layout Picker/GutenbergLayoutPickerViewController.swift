@@ -349,4 +349,9 @@ extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCell
     func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell) {
         selectedLayoutIndexPath = nil
     }
+
+    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerCategoryTableViewCell) {
+        guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
+        tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+    }
 }

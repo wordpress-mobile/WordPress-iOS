@@ -4,6 +4,7 @@ import Gutenberg
 protocol LayoutPickerCategoryTableViewCellDelegate: class {
     func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell)
     func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell)
+    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerCategoryTableViewCell)
 }
 
 class LayoutPickerCategoryTableViewCell: UITableViewCell {
@@ -98,7 +99,27 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
-        cell.layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
+        let layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
+        cell.layout = layout
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = layout.title + " \(indexPath.item)"
         return cell
+    }
+}
+
+/// Accessibility
+extension LayoutPickerCategoryTableViewCell {
+    override func accessibilityElementDidBecomeFocused() {
+        delegate?.accessibilityElementDidBecomeFocused(forCell: self)
+    }
+}
+
+class AccessibleCollectionView: UICollectionView {
+    override func accessibilityElementCount() -> Int {
+        guard let dataSource = dataSource else {
+            return 0
+        }
+
+        return dataSource.collectionView(self, numberOfItemsInSection: 0)
     }
 }
