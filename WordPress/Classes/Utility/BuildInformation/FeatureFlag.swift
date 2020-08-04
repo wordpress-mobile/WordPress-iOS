@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable {
     case meMove
     case floatingCreateButton
     case newReaderNavigation
-    case readerWebview
     case swiftCoreData
     case homepageSettings
     case readerImprovementsPhase2
@@ -45,8 +44,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .floatingCreateButton:
             return true
         case .newReaderNavigation:
-            return true
-        case .readerWebview:
             return true
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
@@ -96,8 +93,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
-        case .readerWebview:
-            return "Reader content displayed in a WebView"
         case .swiftCoreData:
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
