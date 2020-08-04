@@ -1538,27 +1538,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        var controller: UIViewController
-
-        if FeatureFlag.readerWebview.enabled {
-            controller = ReaderDetailWebviewViewController.controllerWithPost(post)
-        } else {
-
-            if post.sourceAttributionStyle() == .post &&
-                post.sourceAttribution.postID != nil &&
-                post.sourceAttribution.blogID != nil {
-
-                controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-
-            } else if post.isCross() {
-                controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-
-            } else {
-                controller = ReaderDetailViewController.controllerWithPost(post)
-
-            }
-
-        }
+        let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
