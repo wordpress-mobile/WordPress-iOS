@@ -12,5 +12,10 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var filterLabel: UILabel!
 
-    var filter: GutenbergLayoutSection? = nil
+    var filter: GutenbergLayoutSection? = nil {
+        didSet {
+            filterLabel.text = [filter?.section.emoji, filter?.section.title].compactMap { $0 }.joined(separator: " ")
+            filterLabel.accessibilityLabel = filter?.section.title
+        }
+    }
 }

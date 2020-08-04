@@ -41,6 +41,7 @@ extension GutenbergLayoutFilterBar: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerFilterCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerFilterCollectionViewCell
+        cell.filter = filterDelegate?.filter(forIndex: indexPath.item)
         return cell
     }
 }
