@@ -19,7 +19,7 @@ class ReaderDetailCoordinator {
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
-    /// A Authenticator for private posts that needs special webview cookies
+    /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
         guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
             DDLogInfo("Account not available for Reader authentication")
