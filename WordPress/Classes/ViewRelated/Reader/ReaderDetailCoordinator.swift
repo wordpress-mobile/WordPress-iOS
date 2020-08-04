@@ -172,13 +172,14 @@ class ReaderDetailCoordinator {
     /// - Parameter webView: the webView where the post will be rendered
     /// - Parameter completion: a completion block
     func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
-        guard let postURLString = post?.permaLink,
+        guard let authenticator = authenticator,
+            let postURLString = post?.permaLink,
             let postURL = URL(string: postURLString) else {
             completion()
             return
         }
 
-        authenticator?.request(url: postURL, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { _ in
+        authenticator.request(url: postURL, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { _ in
             completion()
         }
     }
