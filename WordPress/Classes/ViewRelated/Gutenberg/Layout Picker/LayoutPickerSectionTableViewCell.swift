@@ -1,42 +1,42 @@
 import UIKit
 import Gutenberg
 
-protocol LayoutPickerCategoryTableViewCellDelegate: class {
-    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell)
-    func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell)
-    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerCategoryTableViewCell)
+protocol LayoutPickerSectionTableViewCellDelegate: class {
+    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell)
+    func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell)
+    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerSectionTableViewCell)
 }
 
-class LayoutPickerCategoryTableViewCell: UITableViewCell {
+class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     static var cellReuseIdentifier: String {
-        return "LayoutPickerCategoryTableViewCell"
+        return "LayoutPickerSectionTableViewCell"
     }
 
     static var nib: UINib {
-        return UINib(nibName: "LayoutPickerCategoryTableViewCell", bundle: Bundle.main)
+        return UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
     }
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    weak var delegate: LayoutPickerCategoryTableViewCellDelegate?
+    weak var delegate: LayoutPickerSectionTableViewCellDelegate?
 
     private var layouts = [GutenbergLayout]() {
         didSet {
             collectionView.reloadData()
         }
     }
-    var displayCategory: GutenbergLayoutDisplayCategory? = nil {
+    var section: GutenbergLayoutSection? = nil {
         didSet {
-            layouts = displayCategory?.layouts ?? []
-            categoryTitle.text = displayCategory?.category.description ?? ""
-            collectionView.contentOffset = displayCategory?.scrollOffset ?? .zero
+            layouts = section?.layouts ?? []
+            categoryTitle.text = section?.section.description ?? ""
+            collectionView.contentOffset = section?.scrollOffset ?? .zero
         }
     }
 
     override func prepareForReuse() {
-        displayCategory?.scrollOffset = collectionView.contentOffset
+        section?.scrollOffset = collectionView.contentOffset
         delegate = nil
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
@@ -68,7 +68,7 @@ class LayoutPickerCategoryTableViewCell: UITableViewCell {
     }
 }
 
-extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
+extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
             deselectItem(indexPath)
@@ -86,13 +86,13 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegate {
     }
 }
 
-extension LayoutPickerCategoryTableViewCell: UICollectionViewDelegateFlowLayout {
+extension LayoutPickerSectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 148.0, height: 230.0)
      }
 }
 
-extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
+extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 30 // Static layouts currently only have one layout per category. Adding multiple in here to help test
     }
@@ -108,7 +108,7 @@ extension LayoutPickerCategoryTableViewCell: UICollectionViewDataSource {
 }
 
 /// Accessibility
-extension LayoutPickerCategoryTableViewCell {
+extension LayoutPickerSectionTableViewCell {
     override func accessibilityElementDidBecomeFocused() {
         delegate?.accessibilityElementDidBecomeFocused(forCell: self)
     }

@@ -1,12 +1,12 @@
 import UIKit
 
-protocol CategoryBarDelegate {
-    func numberOfCategories() -> Int
-    func category(forIndex: Int) -> GutenbergLayoutDisplayCategory
+protocol FilterBarDelegate {
+    func numberOfFilters() -> Int
+    func filter(forIndex: Int) -> GutenbergLayoutSection
 }
 
 class GutenbergLayoutFilterBar: UICollectionView {
-    var categoryDelegate: CategoryBarDelegate?
+    var filterDelegate: FilterBarDelegate?
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -36,7 +36,7 @@ extension GutenbergLayoutFilterBar: UICollectionViewDelegateFlowLayout {
 
 extension GutenbergLayoutFilterBar: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categoryDelegate?.numberOfCategories() ?? 0
+        return filterDelegate?.numberOfFilters() ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

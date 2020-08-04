@@ -2,13 +2,13 @@ import UIKit
 import Gridicons
 import Gutenberg
 
-class GutenbergLayoutDisplayCategory {
-    var category: GutenbergLayoutCategory
+class GutenbergLayoutSection {
+    var section: GutenbergLayoutCategory
     var layouts: [GutenbergLayout]
     var scrollOffset: CGPoint
 
-    init(category: GutenbergLayoutCategory, layouts: [GutenbergLayout], scrollOffset: CGPoint = .zero) {
-        self.category = category
+    init(section: GutenbergLayoutCategory, layouts: [GutenbergLayout], scrollOffset: CGPoint = .zero) {
+        self.section = section
         self.layouts = layouts
         self.scrollOffset = scrollOffset
     }
@@ -22,7 +22,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
-    @IBOutlet weak var categoryBar: GutenbergLayoutCategoryBar!
+    @IBOutlet weak var categoryBar: GutenbergLayoutFilterBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
@@ -104,11 +104,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
             layoutSelected(selectedLayoutIndexPath != nil)
         }
     }
-    private var displayCategories = [GutenbergLayoutDisplayCategory]()
+    private var sections = [GutenbergLayoutSection]()
     var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
         didSet {
-            displayCategories = layouts.categories.map({
-                GutenbergLayoutDisplayCategory(category: $0, layouts: layouts.layouts(forCategory: $0.slug))
+            sections = layouts.categories.map({
+                GutenbergLayoutSection(section: $0, layouts: layouts.layouts(forCategory: $0.slug))
             })
         }
     }
@@ -130,8 +130,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(LayoutPickerCategoryTableViewCell.nib, forCellReuseIdentifier: LayoutPickerCategoryTableViewCell.cellReuseIdentifier)
-        categoryBar.categoryDelegate = self
+        tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
+        categoryBar.filterDelegate = self
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
@@ -323,14 +323,14 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayCategories.count
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerCategoryTableViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerCategoryTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerSectionTableViewCell
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.displayCategory = displayCategories[indexPath.row]
+        cell.section = sections[indexPath.row]
 
         if let selectedLayoutIndexPath = selectedLayoutIndexPath, selectedLayoutIndexPath.section == indexPath.row {
             cell.selectItemAt(selectedLayoutIndexPath.item)
@@ -340,30 +340,30 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
 }
 
-extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCellDelegate {
+extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellDelegate {
 
-    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerCategoryTableViewCell) {
+    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell) {
         guard let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
         selectedLayoutIndexPath = IndexPath(item: position, section: cellIndexPath.row)
     }
 
-    func didDeselectItem(forCell cell: LayoutPickerCategoryTableViewCell) {
+    func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell) {
         selectedLayoutIndexPath = nil
     }
 
-    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerCategoryTableViewCell) {
+    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerSectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
 }
 
-extension GutenbergLayoutPickerViewController: CategoryBarDelegate {
-    func numberOfCategories() -> Int {
-        return displayCategories.count
+extension GutenbergLayoutPickerViewController: FilterBarDelegate {
+    func numberOfFilters() -> Int {
+        return sections.count
     }
 
-    func category(forIndex index: Int) -> GutenbergLayoutDisplayCategory {
-        return displayCategories[index]
+    func filter(forIndex index: Int) -> GutenbergLayoutSection {
+        return sections[index]
     }
 }
