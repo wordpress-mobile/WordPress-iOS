@@ -113,7 +113,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
-        coordinator?.authenticateIfNeeded(in: webView) { [weak self] in
+        coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
     }

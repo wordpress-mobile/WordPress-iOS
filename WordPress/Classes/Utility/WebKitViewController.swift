@@ -6,6 +6,7 @@ import WebKit
 protocol WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? { get }
     func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void)
+    func storeAuthenticationCookies(for url: URL, cookieJar cookieStore: CookieJar, completion: @escaping () -> ())
 }
 
 extension WebKitAuthenticatable {
@@ -19,6 +20,16 @@ extension WebKitAuthenticatable {
             authenticator.request(url: url, cookieJar: cookieStore) { (request) in
                 completion(request)
             }
+        }
+    }
+
+    func storeAuthenticationCookies(for url: URL, cookieJar cookieStore: CookieJar, completion: @escaping () -> ()) {
+        guard let authenticator = authenticator else {
+            return completion()
+        }
+
+        authenticator.request(url: url, cookieJar: cookieStore) { _ in
+            completion()
         }
     }
 }
