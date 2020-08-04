@@ -11,6 +11,7 @@ class ReaderTabView: UIView {
     private let verticalDivider: UIView
     private let horizontalDivider: UIView
     private let containerView: UIView
+    private var loadingView: UIView?
 
     private let viewModel: ReaderTabViewModel
 
@@ -39,6 +40,7 @@ class ReaderTabView: UIView {
             self?.tabBar.items = tabItems
             self?.tabBar.setSelectedIndex(index)
             self?.configureTabBarElements()
+            self?.hideGhost()
             self?.addContentToContainerView()
         }
         setupViewElements()
@@ -84,6 +86,7 @@ extension ReaderTabView {
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
+        showGhost()
         viewModel.fetchReaderMenu()
     }
 
@@ -238,10 +241,53 @@ extension ReaderTabView {
     }
 }
 
-// MARK: - Appearance
-extension ReaderTabView {
 
-    private enum Appearance {
+// MARK: - Ghost
+private extension ReaderTabView {
+
+    /// Build the ghost tab bar
+    func makeGhostTabBar() -> FilterTabBar {
+        let ghostTabBar = FilterTabBar()
+
+        ghostTabBar.items = Appearance.ghostTabItems
+        ghostTabBar.isUserInteractionEnabled = false
+        ghostTabBar.tabBarHeight = Appearance.barHeight
+        ghostTabBar.dividerColor = .clear
+
+        return ghostTabBar
+    }
+
+    /// Show the ghost tab bar
+    func showGhost() {
+        let ghostTabBar = makeGhostTabBar()
+        tabBar.addSubview(ghostTabBar)
+        tabBar.pinSubviewToAllEdges(ghostTabBar)
+
+        loadingView = ghostTabBar
+
+        ghostTabBar.startGhostAnimation(style: GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                                                          beatStartColor: .placeholderElement,
+                                                          beatEndColor: .placeholderElementFaded))
+
+    }
+
+    /// Hide the ghost tab bar
+    func hideGhost() {
+        loadingView?.stopGhostAnimation()
+        loadingView?.removeFromSuperview()
+        loadingView = nil
+    }
+
+    struct GhostTabItem: FilterTabBarItem {
+        var title: String
+        let accessibilityIdentifier = ""
+    }
+}
+
+// MARK: - Appearance
+private extension ReaderTabView {
+
+    enum Appearance {
         static let barHeight: CGFloat = 48
 
         static let tabBarAnimationsDuration = 0.2
@@ -261,6 +307,8 @@ extension ReaderTabView {
         static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
+        // "ghost" titles are set to the default english titles, as they won't be visible anyway
+        static let ghostTabItems = [GhostTabItem(title: "Following"), GhostTabItem(title: "Discover"), GhostTabItem(title: "Likes"), GhostTabItem(title: "Saved")]
     }
 }
 

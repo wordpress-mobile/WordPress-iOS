@@ -19,6 +19,16 @@ class ReaderDetailCoordinator {
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
+    /// An authenticator to ensure any request made to WP sites is properly authenticated
+    lazy var authenticator: RequestAuthenticator? = {
+        guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
+            DDLogInfo("Account not available for Reader authentication")
+            return nil
+        }
+
+        return RequestAuthenticator(account: account)
+    }()
+
     /// Core Data stack manager
     private let coreDataStack: CoreDataStack
 
@@ -154,6 +164,24 @@ class ReaderDetailCoordinator {
 
         presentWebViewController(postURL)
         viewController?.navigationController?.popViewController(animated: true)
+    }
+
+    /// Some posts have content from private sites that need special cookies
+    ///
+    /// Use this method to make sure these cookies are downloaded.
+    /// - Parameter webView: the webView where the post will be rendered
+    /// - Parameter completion: a completion block
+    func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
+        guard let authenticator = authenticator,
+            let postURLString = post?.permaLink,
+            let postURL = URL(string: postURLString) else {
+            completion()
+            return
+        }
+
+        authenticator.request(url: postURL, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { _ in
+            completion()
+        }
     }
 
     /// Requests a ReaderPost from the service and updates the View.
