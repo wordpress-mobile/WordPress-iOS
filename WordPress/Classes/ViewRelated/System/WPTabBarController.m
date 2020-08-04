@@ -598,28 +598,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         topDetailVC = (UIViewController *)self.readerSplitViewController.topDetailViewController;
     }
 
-    UIViewController *readerPostDetailVC;
-    if ([Feature enabled:FeatureFlagReaderWebview]) {
-        if ([topDetailVC isKindOfClass:[ReaderDetailWebviewViewController class]]) {
-            ReaderDetailWebviewViewController *readerDetailVC = (ReaderDetailWebviewViewController *)topDetailVC;
-            ReaderPost *readerPost = readerDetailVC.post;
-            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-             // The desired reader detail VC is already the top VC for the tab. Move along.
-                return;
-            }
+    if ([topDetailVC isKindOfClass:[ReaderDetailWebviewViewController class]]) {
+        ReaderDetailWebviewViewController *readerDetailVC = (ReaderDetailWebviewViewController *)topDetailVC;
+        ReaderPost *readerPost = readerDetailVC.post;
+        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+         // The desired reader detail VC is already the top VC for the tab. Move along.
+            return;
         }
-        readerPostDetailVC = [ReaderDetailWebviewViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
-    } else {
-        if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-            ReaderPost *readerPost = readerDetailVC.post;
-            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-             // The desired reader detail VC is already the top VC for the tab. Move along.
-                return;
-            }
-        }
-        readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
     }
+    UIViewController *readerPostDetailVC = [ReaderDetailWebviewViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
 
     if (topDetailVC && [Feature enabled:FeatureFlagNewReaderNavigation]) {
         [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
