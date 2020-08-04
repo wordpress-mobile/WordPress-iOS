@@ -7,6 +7,10 @@ class GutenbergLayoutSection {
     var layouts: [GutenbergLayout]
     var scrollOffset: CGPoint
 
+    var filterTitle: String {
+        return [section.emoji, section.title].compactMap { $0 }.joined(separator: " ")
+    }
+
     init(section: GutenbergLayoutCategory, layouts: [GutenbergLayout], scrollOffset: CGPoint = .zero) {
         self.section = section
         self.layouts = layouts

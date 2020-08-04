@@ -30,7 +30,15 @@ extension GutenbergLayoutFilterBar: UICollectionViewDelegate {
 
 extension GutenbergLayoutFilterBar: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 105.0, height: 44.0)
+        guard let filterTitle = filterDelegate?.filter(forIndex: indexPath.item).filterTitle else {
+            return CGSize(width: 105.0, height: 44.0)
+        }
+
+        let itemSize = filterTitle.size(withAttributes: [
+            NSAttributedString.Key.font: LayoutPickerFilterCollectionViewCell.font
+        ])
+        let width = itemSize.width + 32
+        return CGSize(width: width, height: 44.0)
      }
 }
 
