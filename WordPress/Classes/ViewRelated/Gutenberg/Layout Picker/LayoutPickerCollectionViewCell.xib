@@ -38,7 +38,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark-circle" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-n7-XEA">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-n7-XEA">
                         <rect key="frame" x="104" y="12" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="hx0-n7-XEA" secondAttribute="height" multiplier="1:1" id="R5g-G9-uHa"/>
@@ -72,7 +72,4 @@
             <point key="canvasLocation" x="239.13043478260872" y="211.60714285714286"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="checkmark-circle" width="24" height="24"/>
-    </resources>
 </document>
