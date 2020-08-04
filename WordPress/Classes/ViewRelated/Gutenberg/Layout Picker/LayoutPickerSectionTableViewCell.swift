@@ -27,7 +27,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
             collectionView.reloadData()
         }
     }
-    var section: GutenbergLayoutSectionFilter? = nil {
+    var section: GutenbergLayoutSection? = nil {
         didSet {
             layouts = section?.layouts ?? []
             categoryTitle.text = section?.section.description ?? ""

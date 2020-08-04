@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 import Gutenberg
 
-class GutenbergLayoutSectionFilter {
+class GutenbergLayoutSection {
     var section: GutenbergLayoutCategory
     var layouts: [GutenbergLayout]
     var scrollOffset: CGPoint
@@ -104,11 +104,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
             layoutSelected(selectedLayoutIndexPath != nil)
         }
     }
-    private var sections = [GutenbergLayoutSectionFilter]()
+    private var sections = [GutenbergLayoutSection]()
     var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
         didSet {
             sections = layouts.categories.map({
-                GutenbergLayoutSectionFilter(section: $0, layouts: layouts.layouts(forCategory: $0.slug))
+                GutenbergLayoutSection(section: $0, layouts: layouts.layouts(forCategory: $0.slug))
             })
         }
     }
