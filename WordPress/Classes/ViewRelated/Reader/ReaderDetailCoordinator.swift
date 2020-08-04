@@ -178,7 +178,7 @@ class ReaderDetailCoordinator {
             return
         }
 
-        storeAuthenticationCookies(for: postURL, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) {
+        authenticator?.request(url: postURL, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { _ in
             completion()
         }
     }
@@ -465,7 +465,3 @@ extension ReaderDetailCoordinator {
         }
     }
 }
-
-// MARK: - WebKitAuthenticatable conformance
-
-extension ReaderDetailCoordinator: WebKitAuthenticatable { }
