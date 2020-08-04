@@ -6573,15 +6573,11 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8BADF16324801B4B005AD038 /* DetailWebView */,
 				D800D86220997B6400E7C7E5 /* ReaderMenuItems */,
 				D816043E209C1AD300ABAFFA /* ReaderPostActions */,
 				D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */,
 				5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */,
 				5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */,
-				8BDA5A6A247C2EAF00AB124C /* ReaderDetailViewController.swift */,
-				8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */,
-				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
 				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
@@ -6664,6 +6660,7 @@
 				E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */,
 				E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */,
 				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
+				8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */,
 				E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */,
 				E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */,
 				E6A3384F1BB0A70F00371587 /* ReaderGapMarkerCell.swift */,
@@ -7817,21 +7814,16 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		8BADF16324801B4B005AD038 /* DetailWebView */ = {
+		8BADF16324801B4B005AD038 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				8B64B4B1247EC3A2009A1229 /* reader.css */,
-				8BADF16424801BCE005AD038 /* ReaderWebView.swift */,
-				8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */,
-				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
-				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
-				8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */,
-				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
-				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
-				8B11B6672489C0A4000F1A0F /* ReaderScrollView.swift */,
-				8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */,
+				8BD89F2C24D9E73600341C90 /* Views */,
+				8BD89F2B24D9E70A00341C90 /* WebView */,
+				8BDA5A6A247C2EAF00AB124C /* ReaderDetailViewController.swift */,
+				8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */,
+				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
 			);
-			path = DetailWebView;
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		8BD36E042395CC2F00EFFF1C /* Aztec */ = {
@@ -7840,6 +7832,29 @@
 				8BD36E052395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift */,
 			);
 			name = Aztec;
+			sourceTree = "<group>";
+		};
+		8BD89F2B24D9E70A00341C90 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				8BADF16424801BCE005AD038 /* ReaderWebView.swift */,
+				8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */,
+				8BDC4C38249BA5CA00DE0A2D /* ReaderCSS.swift */,
+				8B64B4B1247EC3A2009A1229 /* reader.css */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
+		8BD89F2C24D9E73600341C90 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
+				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
+				8B11B6672489C0A4000F1A0F /* ReaderScrollView.swift */,
+				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
+				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		8BE69514243E676C00FF492F /* Prepublishing Nudges */ = {
@@ -9637,6 +9652,7 @@
 			children = (
 				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
 				321955BE24BE234C00E3F316 /* ReaderInterestsCoordinator.swift */,
+				8BADF16324801B4B005AD038 /* Detail */,
 				32E1BFD824A66801007A08F0 /* Select Interests */,
 				F5A738C1244DF92300EDE065 /* Manage */,
 				F597768C243E1E140062BAD1 /* Filter */,
