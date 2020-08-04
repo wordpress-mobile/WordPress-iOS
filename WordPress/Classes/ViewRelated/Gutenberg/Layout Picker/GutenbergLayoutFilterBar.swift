@@ -14,10 +14,19 @@ class GutenbergLayoutFilterBar: UICollectionView {
         self.delegate = self
         self.dataSource = self
     }
+
+    private func deselectItem(_ indexPath: IndexPath) {
+        deselectItem(at: indexPath, animated: true)
+        collectionView(self, didDeselectItemAt: indexPath)
+    }
 }
 
 extension GutenbergLayoutFilterBar: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
+            deselectItem(indexPath)
+            return false
+        }
         return true
     }
 
@@ -30,14 +39,11 @@ extension GutenbergLayoutFilterBar: UICollectionViewDelegate {
 
 extension GutenbergLayoutFilterBar: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let filterTitle = filterDelegate?.filter(forIndex: indexPath.item).filterTitle else {
+        guard let filter = filterDelegate?.filter(forIndex: indexPath.item) else {
             return CGSize(width: 105.0, height: 44.0)
         }
 
-        let itemSize = filterTitle.size(withAttributes: [
-            NSAttributedString.Key.font: LayoutPickerFilterCollectionViewCell.font
-        ])
-        let width = itemSize.width + 32
+        let width = LayoutPickerFilterCollectionViewCell.estimatedWidth(forFilter: filter)
         return CGSize(width: width, height: 44.0)
      }
 }

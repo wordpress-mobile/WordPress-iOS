@@ -50,6 +50,7 @@
             <size key="customSize" width="366" height="140"/>
             <connections>
                 <outlet property="filterLabel" destination="ZXR-Oy-qLj" id="Pgk-G6-YP5"/>
+                <outlet property="pillBackgroundView" destination="Adq-89-2rL" id="3gq-mY-1FI"/>
             </connections>
             <point key="canvasLocation" x="366.66666666666669" y="182.8125"/>
         </collectionViewCell>

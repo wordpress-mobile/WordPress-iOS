@@ -14,12 +14,40 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
+    static func title(forFilter filter: GutenbergLayoutSection?) -> String {
+        let section = filter?.section
+        return [section?.emoji, section?.title].compactMap { $0 }.joined(separator: " ")
+    }
+
+    static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
+        let size = title(forFilter: filter).size(withAttributes: [
+            NSAttributedString.Key.font: font
+        ])
+
+        return size.width + 32
+    }
+
     @IBOutlet weak var filterLabel: UILabel!
+    @IBOutlet weak var pillBackgroundView: UIView!
 
     var filter: GutenbergLayoutSection? = nil {
         didSet {
-            filterLabel.text = filter?.filterTitle
-            filterLabel.accessibilityLabel = filter?.section.title
+            let section = filter?.section
+            filterLabel.text = LayoutPickerFilterCollectionViewCell.title(forFilter: filter)
+            filterLabel.accessibilityLabel = section?.title
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            if #available(iOS 13.0, *) {
+                let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: .dark))
+                pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
+            } else {
+                pillBackgroundView.backgroundColor = isSelected ? .gray(.shade5) : .neutral(.shade5)
+            }
+
+            filterLabel.textColor = isSelected ? .white : .text
         }
     }
 
