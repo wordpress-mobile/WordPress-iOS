@@ -22,7 +22,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
-    @IBOutlet weak var categoryBar: UICollectionView!
+    @IBOutlet weak var categoryBar: GutenbergLayoutCategoryBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
@@ -131,11 +131,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(LayoutPickerCategoryTableViewCell.nib, forCellReuseIdentifier: LayoutPickerCategoryTableViewCell.cellReuseIdentifier)
+        categoryBar.categoryDelegate = self
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
         layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
+        categoryBar.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -353,5 +355,15 @@ extension GutenbergLayoutPickerViewController: LayoutPickerCategoryTableViewCell
     func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerCategoryTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+    }
+}
+
+extension GutenbergLayoutPickerViewController: CategoryBarDelegate {
+    func numberOfCategories() -> Int {
+        return displayCategories.count
+    }
+
+    func category(forIndex index: Int) -> GutenbergLayoutDisplayCategory {
+        return displayCategories[index]
     }
 }
