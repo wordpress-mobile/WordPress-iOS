@@ -1,6 +1,14 @@
+15.5
+-----
+* [*] Reader: revamped UI for your site header.
+ 
 15.4
 -----
- 
+ * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below. 
+ * [***] Block Editor: Media editing support in Media & Text block.
+ * [***] Block Editor: New block: Social Icons
+ * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
+
 15.3
 -----
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks

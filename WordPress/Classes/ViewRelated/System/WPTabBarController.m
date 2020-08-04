@@ -123,16 +123,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(showReaderBadge:)
-                                                     name:NSNotification.NewsCardAvailable
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(hideReaderBadge:)
-                                                     name:NSNotification.NewsCardNotAvailable
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
                                                      name:WPAccountDefaultWordPressComAccountChangedNotification
                                                    object:nil];

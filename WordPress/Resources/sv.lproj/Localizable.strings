@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-04 08:50:45+0000 */
+/* Translation-Revision-Date: 2020-07-14 06:10:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li ord, %2$li tecken";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "Inställningar för %s";
+"%s block options" = "Inställningar för blocket %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Block av typen %s. Tomt";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativt:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Skicka alltid kraschloggar";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Man behöver ha en fungerande internetanslutning";
 
@@ -831,11 +834,26 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "Blockera den här webbplatsen";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Blocket kopierat";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Blocket har klippts ut";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Blocket har duplicerats";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blockredigeraren är aktiverad";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blockera obehöriga inloggningsförsök";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Blocket har klistrats in";
+
+/* No comment provided by engineer. */
+"Block settings" = "Blockinställningar";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1100,6 +1118,9 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "Välj från enheten";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "Välj dina intressen";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "När du väljer en annan webbplats kommer du förlora ändringar i inlägget som är specifikt till webbplatsen, t ex uppladdade foton och valda kategorier. Är du säker?";
@@ -1408,8 +1429,14 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Fortsätter med Apple";
 
+/* No comment provided by engineer. */
+"Copied block" = "Blocket kopierat";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopiera länk till kommentaren";
+
+/* No comment provided by engineer. */
+"Copy block" = "Kopiera block";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kunde vara bättre";
@@ -1489,6 +1516,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Landskod";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Loggning av krascher";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Kraschrapporter";
@@ -1602,6 +1632,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Anpassa din webbplats inställningar för Gillar, Kommentarer, Följare och mer";
+
+/* No comment provided by engineer. */
+"Cut block" = "Klipp ut blocket";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Mörk";
@@ -1742,6 +1775,9 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Upptäck webbplatser";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Upptäck och följ bloggar du gillar";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskussion";
@@ -1809,6 +1845,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1889,6 +1926,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Utkast";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicera block";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Öster";
@@ -2008,6 +2048,9 @@
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "Aktivera notiser från webbplats?";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Krypterade loggar";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Starta fullskärmsläge";
@@ -3228,32 +3271,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populäraste tidpunkten";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "Flytta %s nedåt";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "Flytta %s åt vänster";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "Flytta %s åt höger";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "Flytta %s uppåt";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "Flytta bilden bakåt";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Flytta bilden framåt";
 
+/* No comment provided by engineer. */
+"Move block down" = "Flytta block nedåt";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Flytta block nedåt från rad %1$s till rad %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Flytta blocket åt vänster";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Flytta blocket åt vänster från position %1$s till position %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "Flytta blocket åt höger";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Flytta blocket åt höger från position %1$s till position %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Flytta block uppåt";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Flytta block uppåt från rad  %1$s till rad %2$s";
@@ -3859,6 +3902,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Paste URL" = "Klistra in en URL";
 
+/* No comment provided by engineer. */
+"Paste block" = "Klistra in block";
+
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Klistra in utan formatering";
 
@@ -4444,9 +4490,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Ta bort";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "Ta bort %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Ta bort @%@";
@@ -4480,6 +4523,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Remove annotations" = "Ta bort bildtexter\/förklaringar";
+
+/* No comment provided by engineer. */
+"Remove block" = "Ta bort block";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
@@ -4843,6 +4889,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a color" = "Välj en färg";
 
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Välj några för att fortsätta";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Välj media.";
 
@@ -4894,8 +4943,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Skicka länk";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Skicka ett loggmeddelande";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Skicka pingbacks";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Skicka en testkrasch";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Skicka notifieringar via e-post";
