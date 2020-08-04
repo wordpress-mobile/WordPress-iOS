@@ -22,6 +22,7 @@ class ReaderDetailCoordinator {
     /// A Authenticator for private posts that needs special webview cookies
     lazy var authenticator: RequestAuthenticator? = {
         guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
+            DDLogInfo("Account not available for Reader authentication")
             return nil
         }
 
