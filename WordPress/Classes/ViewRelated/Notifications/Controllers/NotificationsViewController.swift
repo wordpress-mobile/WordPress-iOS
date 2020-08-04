@@ -664,7 +664,7 @@ extension NotificationsViewController {
         // Display Details
         //
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
-            let readerViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
 
             return
@@ -1487,7 +1487,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         ensureNotificationsListIsOnscreen()
 
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
-            return ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
+            return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         }
 
         if let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "NotificationDetailsViewController") as? NotificationDetailsViewController {

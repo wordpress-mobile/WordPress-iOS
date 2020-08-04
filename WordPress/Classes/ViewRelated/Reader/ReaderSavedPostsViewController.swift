@@ -259,7 +259,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
+        let controller = ReaderDetailViewController.controllerWithPost(post)
 
         trackSavedPostNavigation()
 

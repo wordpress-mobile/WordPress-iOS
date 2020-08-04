@@ -1538,7 +1538,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
+        let controller = ReaderDetailViewController.controllerWithPost(post)
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()

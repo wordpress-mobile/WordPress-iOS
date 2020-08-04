@@ -35,7 +35,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
-        let readerViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
+        let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 

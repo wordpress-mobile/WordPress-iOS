@@ -3,23 +3,23 @@ import Nimble
 
 @testable import WordPress
 
-class ReaderDetailWebviewViewControllerTests: XCTestCase {
+class ReaderDetailViewControllerTests: XCTestCase {
 
-    /// Given a post URL. returns a ReaderDetailWebviewViewController
+    /// Given a post URL. returns a ReaderDetailViewController
     ///
     func testControllerWithURL() {
         let url = URL(string: "https://wpmobilep2.wordpress.com/post")!
 
-        let controller = ReaderDetailWebviewViewController.controllerWithPostURL(url)
+        let controller = ReaderDetailViewController.controllerWithPostURL(url)
 
-        expect(controller).to(beAKindOf(ReaderDetailWebviewViewController.self))
+        expect(controller).to(beAKindOf(ReaderDetailViewController.self))
     }
 
     /// Starts the coordinator with the ReaderPost and call start in viewDidLoad
     ///
     func testControllerWithPostRendersPostContent() {
         let post: ReaderPost = ReaderPostBuilder().build()
-        let controller = ReaderDetailWebviewViewController.controllerWithPost(post)
+        let controller = ReaderDetailViewController.controllerWithPost(post)
         let coordinatorMock = ReaderDetailCoordinatorMock(view: controller)
         let originalCoordinator = controller.coordinator
         controller.coordinator = coordinatorMock
@@ -37,7 +37,7 @@ class ReaderDetailWebviewViewControllerTests: XCTestCase {
         let postID: NSNumber = 1
         let sideID: NSNumber = 2
 
-        let controller = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: sideID)
+        let controller = ReaderDetailViewController.controllerWithPostID(postID, siteID: sideID)
 
         expect(controller.coordinator?.postID).to(equal(1))
         expect(controller.coordinator?.siteID).to(equal(2))

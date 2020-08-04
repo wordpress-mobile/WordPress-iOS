@@ -220,7 +220,7 @@ class ReaderCoordinator: NSObject {
             failureBlock?()
         }
 
-        let detailViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID as NSNumber,
+        let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
                                                                                    siteID: feedID as NSNumber,
                                                                                    isFeed: isFeed)
 
