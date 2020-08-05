@@ -338,11 +338,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Now do it for realz.
     NSDictionary *properties = @{@"tag":slug};
 
-    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error unfollowing topic: %@", NSStringFromSelector(_cmd), error);
@@ -374,12 +383,21 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error following topic by name: %@", NSStringFromSelector(_cmd), error);
@@ -953,6 +971,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
+                        if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            DDLogInfo(@"Not unfollowing a locally saved topic: %@", topic.title);
+                            continue;
+                        }
+
                         // If the topic is in use just set showInMenu to false
                         // and let it be cleaned up like any other non-menu topic.
                         DDLogInfo(@"Removing topic from menu: %@", topic.title);
@@ -967,10 +990,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                             ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
                             if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
-                                if (tagTopic.wasFollowedWhileLoggedOut) {
-                                    DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
-                                    continue;
-                                }
+                                DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
+                                continue;
                             }
 
                             if (tagTopic.cards) {
