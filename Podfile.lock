@@ -650,7 +650,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :commit: 0139ebce6f6593c310bf6b80f80344c84896d899
+    :commit: 31206bade87a36f6ac946c72571cf29ef7768180
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -744,6 +744,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: bca2f127a17771a01d7235cac21f6431a2fedb8d
+PODFILE CHECKSUM: 6e23c9e25d75da9d3f58c54a5b8ce5ca6478d2d5
 
 COCOAPODS: 1.8.4
