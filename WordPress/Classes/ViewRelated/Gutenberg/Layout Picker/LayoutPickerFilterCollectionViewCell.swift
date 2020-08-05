@@ -41,15 +41,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            if #available(iOS 13.0, *) {
-                let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
-                let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
-                pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
-            } else {
-                pillBackgroundView.backgroundColor = isSelected ? .gray(.shade5) : .neutral(.shade5)
-            }
-
-            filterLabel.textColor = isSelected ? .white : .text
+            updateSelectedStyle()
         }
     }
 
@@ -61,5 +53,31 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         filter = nil
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                updateSelectedStyle()
+            }
+        }
+    }
+
+    private func updateSelectedStyle() {
+        if #available(iOS 13.0, *) {
+            let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
+            let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
+            pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
+        } else {
+            pillBackgroundView.backgroundColor = isSelected ? .gray(.shade5) : .neutral(.shade5)
+        }
+
+        if #available(iOS 13.0, *), traitCollection.userInterfaceStyle == .dark {
+            filterLabel.textColor = isSelected ? .darkText : .white
+        } else {
+            filterLabel.textColor = isSelected ? .white : .darkText
+        }
     }
 }
