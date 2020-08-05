@@ -30,6 +30,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var filterLabel: UILabel!
     @IBOutlet weak var pillBackgroundView: UIView!
+    @IBOutlet weak var checkmark: UIImageView!
 
     var filter: GutenbergLayoutSection? = nil {
         didSet {
@@ -39,15 +40,33 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    var checkmarkTintColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.darkText
+                } else {
+                    return UIColor.white
+                }
+            }
+        } else {
+            return UIColor.white
+        }
+    }
+
     override var isSelected: Bool {
         didSet {
             updateSelectedStyle()
+            checkmark.isHidden = !isSelected
+            filterLabel.text = LayoutPickerFilterCollectionViewCell.title(forFilter: filter, isSelected: isSelected)
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         filterLabel.font = LayoutPickerFilterCollectionViewCell.font
+        checkmark.image = UIImage.gridicon(.checkmark)
+        checkmark.tintColor = checkmarkTintColor
     }
 
     override func prepareForReuse() {

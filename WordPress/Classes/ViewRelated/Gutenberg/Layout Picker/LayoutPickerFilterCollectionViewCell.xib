@@ -20,17 +20,26 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Adq-89-2rL">
                         <rect key="frame" x="0.0" y="0.0" width="105" height="44"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-Oy-qLj">
-                                <rect key="frame" x="34" y="13" width="37" height="18"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Vvr-2Z-jvR">
+                                <rect key="frame" x="34" y="10" width="37.5" height="24"/>
+                                <subviews>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="FdX-4a-9fh">
+                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="24"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-Oy-qLj">
+                                        <rect key="frame" x="0.0" y="0.0" width="37.5" height="24"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="quaternarySystemFillColor" red="0.4549019608" green="0.4549019608" blue="0.50196078430000002" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ZXR-Oy-qLj" firstAttribute="centerX" secondItem="Adq-89-2rL" secondAttribute="centerX" id="WFS-G7-d80"/>
-                            <constraint firstItem="ZXR-Oy-qLj" firstAttribute="centerY" secondItem="Adq-89-2rL" secondAttribute="centerY" id="fAG-Sg-N2B"/>
+                            <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerX" secondItem="Adq-89-2rL" secondAttribute="centerX" id="BrQ-Zo-Kxg"/>
+                            <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerY" secondItem="Adq-89-2rL" secondAttribute="centerY" id="Rac-cJ-KOo"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -49,10 +58,14 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="366" height="140"/>
             <connections>
+                <outlet property="checkmark" destination="FdX-4a-9fh" id="X5c-Wb-ZYz"/>
                 <outlet property="filterLabel" destination="ZXR-Oy-qLj" id="Pgk-G6-YP5"/>
                 <outlet property="pillBackgroundView" destination="Adq-89-2rL" id="3gq-mY-1FI"/>
             </connections>
-            <point key="canvasLocation" x="366.66666666666669" y="182.8125"/>
+            <point key="canvasLocation" x="365.94202898550725" y="182.8125"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="checkmark" width="24" height="24"/>
+    </resources>
 </document>
