@@ -220,22 +220,11 @@ class ReaderCoordinator: NSObject {
             failureBlock?()
         }
 
-        var detailViewController: UIViewController
-        if FeatureFlag.readerWebview.enabled {
-            let readerDetailViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID as NSNumber,
-                                                                                       siteID: feedID as NSNumber,
-                                                                                       isFeed: isFeed)
+        let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
+                                                                                   siteID: feedID as NSNumber,
+                                                                                   isFeed: isFeed)
 
-            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
-            detailViewController = readerDetailViewController
-        } else {
-            let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
-                                                                                       siteID: feedID as NSNumber,
-                                                                                       isFeed: isFeed)
-
-            readerDetailViewController.postLoadFailureBlock = postLoadFailureBlock
-            detailViewController = readerDetailViewController
-        }
+        detailViewController.postLoadFailureBlock = postLoadFailureBlock
 
         guard !FeatureFlag.newReaderNavigation.enabled else {
             WPTabBarController.sharedInstance().navigateToReader(detailViewController)
