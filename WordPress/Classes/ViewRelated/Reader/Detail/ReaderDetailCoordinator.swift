@@ -323,7 +323,7 @@ class ReaderDetailCoordinator {
     /// Given a URL presents it in a new Reader detail screen
     ///
     private func presentReaderDetail(_ url: URL) {
-        let readerDetail = ReaderDetailWebviewViewController.controllerWithPostURL(url)
+        let readerDetail = ReaderDetailViewController.controllerWithPostURL(url)
         viewController?.navigationController?.pushViewController(readerDetail, animated: true)
     }
 
@@ -456,7 +456,7 @@ extension ReaderDetailCoordinator {
             return nil
         }
 
-        return ReaderDetailWebviewViewController.controllerWithPost(post)
+        return ReaderDetailViewController.controllerWithPost(post)
     }
 
 
