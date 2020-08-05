@@ -39,7 +39,7 @@ import WordPressShared
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
-        
+
     }
 
     fileprivate func adjustInsetsForTextDirection() {
