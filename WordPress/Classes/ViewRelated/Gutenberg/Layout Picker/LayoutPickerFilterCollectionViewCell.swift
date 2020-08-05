@@ -14,9 +14,10 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
-    static func title(forFilter filter: GutenbergLayoutSection?) -> String {
+    static func title(forFilter filter: GutenbergLayoutSection?, isSelected: Bool = false) -> String {
         let section = filter?.section
-        return [section?.emoji, section?.title].compactMap { $0 }.joined(separator: " ")
+        let emoji = isSelected ? nil : section?.emoji
+        return [emoji, section?.title].compactMap { $0 }.joined(separator: " ")
     }
 
     static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
@@ -41,7 +42,8 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if #available(iOS 13.0, *) {
-                let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: .dark))
+                let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
+                let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
                 pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
             } else {
                 pillBackgroundView.backgroundColor = isSelected ? .gray(.shade5) : .neutral(.shade5)
