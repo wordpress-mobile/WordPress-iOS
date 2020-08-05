@@ -18,14 +18,14 @@ import Foundation
     }
 
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
-    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) {
+    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
         self.init(context: context)
 
         title = remoteInterest.title
         slug = remoteInterest.slug
         tagID = Self.loggedOutTagID
         type = Self.TopicType
-        following = true
+        following = isFollowing
         showInMenu = true
     }
 
