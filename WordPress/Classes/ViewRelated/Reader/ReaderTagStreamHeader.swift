@@ -39,7 +39,7 @@ import WordPressShared
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
-        followButton.isHidden = !enable
+        
     }
 
     fileprivate func adjustInsetsForTextDirection() {
