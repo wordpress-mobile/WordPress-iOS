@@ -14,14 +14,8 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
-    static func title(forFilter filter: GutenbergLayoutSection?, isSelected: Bool = false) -> String {
-        let section = filter?.section
-        let emoji = isSelected ? nil : section?.emoji
-        return [emoji, section?.title].compactMap { $0 }.joined(separator: " ")
-    }
-
     static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
-        let size = title(forFilter: filter).size(withAttributes: [
+        let size = "👋 \(filter.section.title)".size(withAttributes: [
             NSAttributedString.Key.font: font
         ])
 
@@ -35,9 +29,15 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     var filter: GutenbergLayoutSection? = nil {
         didSet {
             let section = filter?.section
-            filterLabel.text = LayoutPickerFilterCollectionViewCell.title(forFilter: filter)
+            filterLabel.text = filterTitle
             filterLabel.accessibilityLabel = section?.title
         }
+    }
+
+    var filterTitle: String {
+        let section = filter?.section
+        let emoji = isSelected ? nil : section?.emoji
+        return [emoji, section?.title].compactMap { $0 }.joined(separator: " ")
     }
 
     var checkmarkTintColor: UIColor {
@@ -58,7 +58,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         didSet {
             updateSelectedStyle()
             checkmark.isHidden = !isSelected
-            filterLabel.text = LayoutPickerFilterCollectionViewCell.title(forFilter: filter, isSelected: isSelected)
+            filterLabel.text = filterTitle
         }
     }
 
