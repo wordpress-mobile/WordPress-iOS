@@ -36,6 +36,8 @@ class ReaderTabViewController: UIViewController {
             }
             viewModel.presentManage(from: self)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -92,6 +94,13 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
     func setStartIndex(_ index: Int) {
         viewModel.selectedIndex = index
+    }
+}
+
+// MARK: - Notifications
+extension ReaderTabViewController {
+    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
+        loadView()
     }
 }
 
