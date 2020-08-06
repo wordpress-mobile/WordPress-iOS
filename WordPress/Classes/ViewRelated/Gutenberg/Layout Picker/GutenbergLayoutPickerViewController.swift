@@ -104,7 +104,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
             layoutSelected(selectedLayoutIndexPath != nil)
         }
     }
-    private var sections = [GutenbergLayoutSection]()
+
+    private var filteredSections: [GutenbergLayoutSection]?
+    private var sections: [GutenbergLayoutSection] = []
     var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
         didSet {
             sections = layouts.categories.map({
@@ -114,6 +116,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
+    private var isUpdating: Bool = false
 
     private func setStaticText() {
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
@@ -323,14 +326,14 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections.count
+        return (filteredSections ?? sections).count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerSectionTableViewCell
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = sections[indexPath.row]
+        cell.section = (filteredSections ?? sections)[indexPath.row]
 
         if let selectedLayoutIndexPath = selectedLayoutIndexPath, selectedLayoutIndexPath.section == indexPath.row {
             cell.selectItemAt(selectedLayoutIndexPath.item)
@@ -365,5 +368,46 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
 
     func filter(forIndex index: Int) -> GutenbergLayoutSection {
         return sections[index]
+    }
+
+    func reloadCurrentFilterRow() {
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+
+    func willSelectFilter(forIndex index: Int) {
+        isUpdating = true
+    }
+
+    func didSelectFilter(forIndex index: Int) {
+        defer {
+            isUpdating = false
+        }
+
+        guard filteredSections == nil else {
+            filteredSections = [sections[index]]
+            reloadCurrentFilterRow()
+            return
+        }
+
+
+        let rowsToRemove = (0..<sections.count).compactMap { ($0 == index) ? nil : IndexPath(row: $0, section: 0) }
+
+        filteredSections = [sections[index]]
+        tableView.performBatchUpdates({
+            tableView.deleteRows(at: rowsToRemove, with: .left)
+        }) { _ in
+            self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
+        }
+    }
+
+    func didDeselectFilter(forIndex index: Int) {
+        guard !isUpdating else { return }
+        let currentRowSlug = filteredSections?.first?.section.slug
+
+        filteredSections = nil
+        let rowsToAdd = (0..<sections.count).compactMap { (sections[$0].section.slug == currentRowSlug) ? nil : IndexPath(row: $0, section: 0) }
+        tableView.performBatchUpdates({
+            tableView.insertRows(at: rowsToAdd, with: .left)
+        })
     }
 }
