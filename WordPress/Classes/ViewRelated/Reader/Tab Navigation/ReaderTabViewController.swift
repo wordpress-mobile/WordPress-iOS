@@ -99,6 +99,7 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
 // MARK: - Notifications
 extension ReaderTabViewController {
+    // Ensure that topics and sites are synced when account changes
     @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
         loadView()
     }
