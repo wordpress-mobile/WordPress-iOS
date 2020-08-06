@@ -345,7 +345,12 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
-        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
+        ghostView.frame = view.frame
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        ghostView.frame = view.frame
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
