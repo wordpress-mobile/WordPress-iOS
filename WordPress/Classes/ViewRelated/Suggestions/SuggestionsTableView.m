@@ -60,7 +60,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
     } else {
         [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
-        [self.separatorView setBackgroundColor: [WPStyleGuide lightGrey]];
+        [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
     }
 }
 
