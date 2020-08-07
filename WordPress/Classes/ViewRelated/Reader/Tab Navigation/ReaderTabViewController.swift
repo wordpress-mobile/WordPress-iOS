@@ -39,10 +39,6 @@ class ReaderTabViewController: UIViewController {
             viewModel.presentManage(from: self)
         }
 
-        viewModel.onDidChangeTabBar { [weak self] items, _ in
-            self?.displaySelectInterestsIfNeeded()
-        }
-
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
@@ -54,6 +50,10 @@ class ReaderTabViewController: UIViewController {
         super.viewDidAppear(animated)
 
         displaySelectInterestsIfNeeded()
+
+        viewModel.onDidChangeTabBar { [weak self] items, _ in
+            self?.displaySelectInterestsIfNeeded()
+        }
     }
 
     func setupSearchButton() {

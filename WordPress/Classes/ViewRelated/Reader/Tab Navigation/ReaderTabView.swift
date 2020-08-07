@@ -42,6 +42,8 @@ class ReaderTabView: UIView {
             self?.addContentToContainerView()
         }
         setupViewElements()
+
+        viewModel.fetchReaderMenu()
     }
 
     required init?(coder: NSCoder) {
@@ -94,7 +96,6 @@ extension ReaderTabView {
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-        viewModel.fetchReaderMenu()
     }
 
     private func configureTabBarElements() {
