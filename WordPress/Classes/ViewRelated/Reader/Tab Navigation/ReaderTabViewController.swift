@@ -4,15 +4,15 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    private let makeReaderTabView: (ReaderTabViewModel) -> UIView
+    private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
-    private lazy var readerTabView: UIView = {
+    private lazy var readerTabView: ReaderTabView = {
         return makeReaderTabView(viewModel)
     }()
 
     private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
 
-    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
@@ -137,7 +137,7 @@ private extension ReaderTabViewController {
         navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
 
         selectInterestsViewController.didSaveInterests = { [unowned self] in
-            // TODO: present Discover feed
+            self.readerTabView.selectDiscover()
 
             self.selectInterestsViewController.dismiss(animated: true)
         }

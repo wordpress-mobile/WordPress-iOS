@@ -47,6 +47,16 @@ class ReaderTabView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func selectDiscover() {
+        guard let discoverIndex = tabBar.items
+            .firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") }) else {
+            return
+        }
+
+        tabBar.setSelectedIndex(discoverIndex)
+        selectedTabDidChange(tabBar)
+    }
 }
 
 // MARK: - UI setup
