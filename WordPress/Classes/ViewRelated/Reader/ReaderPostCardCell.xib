@@ -52,6 +52,11 @@
                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="k3b-5o-H9u">
                         <rect key="frame" x="0.0" y="8" width="320" height="476"/>
                         <subviews>
+                            <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="20" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pbj-mu-PTK" customClass="DynamicHeightCollectionView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="16" y="16" width="288" height="0.0"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewLayout key="collectionViewLayout" id="t6g-bE-oxG" customClass="ReaderInterestsCollectionViewFlowLayout" customModule="WordPress" customModuleProvider="target"/>
+                            </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xwk-ft-EDo" userLabel="Header Stack View">
                                 <rect key="frame" x="16" y="16" width="288" height="40"/>
                                 <subviews>
@@ -339,12 +344,13 @@
                 <outlet property="saveForLaterButton" destination="YRe-Q4-Aq4" id="6Hb-rc-u9V"/>
                 <outlet property="summaryLabel" destination="u1n-gR-1xw" id="jsD-Vc-hr5"/>
                 <outlet property="titleLabel" destination="Zf5-cD-Pd2" id="56V-Zc-1sF"/>
+                <outlet property="topicsCollectionView" destination="pbj-mu-PTK" id="JeG-YH-hdo"/>
                 <outletCollection property="actionButtons" destination="YRe-Q4-Aq4" collectionClass="NSMutableArray" id="VSk-GF-Wg6"/>
                 <outletCollection property="actionButtons" destination="3W2-KV-isX" collectionClass="NSMutableArray" id="4sJ-zt-Nh2"/>
                 <outletCollection property="actionButtons" destination="z4x-8W-5Dc" collectionClass="NSMutableArray" id="isM-Mg-Ff8"/>
                 <outletCollection property="actionButtons" destination="Mch-Ja-RJu" collectionClass="NSMutableArray" id="ff2-tZ-cST"/>
             </connections>
-            <point key="canvasLocation" x="-281" y="331"/>
+            <point key="canvasLocation" x="-506" y="247"/>
         </tableViewCell>
     </objects>
     <resources>
