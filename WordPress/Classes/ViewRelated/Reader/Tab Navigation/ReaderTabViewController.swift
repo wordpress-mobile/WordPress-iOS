@@ -10,6 +10,8 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
+    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
+
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
@@ -37,11 +39,21 @@ class ReaderTabViewController: UIViewController {
             viewModel.presentManage(from: self)
         }
 
+        viewModel.onDidChangeTabBar { [weak self] items, _ in
+            self?.displaySelectInterestsIfNeeded()
+        }
+
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError(ReaderTabConstants.storyBoardInitError)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        displaySelectInterestsIfNeeded()
     }
 
     func setupSearchButton() {
@@ -102,6 +114,33 @@ extension ReaderTabViewController {
     // Ensure that topics and sites are synced when account changes
     @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
         loadView()
+    }
+}
+
+// MARK: - Select Interests Display
+private extension ReaderTabViewController {
+    func displaySelectInterestsIfNeeded() {
+        guard viewModel.itemsLoaded, isViewOnScreen() else {
+            return
+        }
+
+        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
+            if !isFollowing {
+                self.showSelectInterestsView()
+            }
+        }
+    }
+
+    func showSelectInterestsView() {
+        definesPresentationContext = true
+        selectInterestsViewController.modalPresentationStyle = .overCurrentContext
+        navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
+
+        selectInterestsViewController.didSaveInterests = { [unowned self] in
+            // TODO: present Discover feed
+
+            self.selectInterestsViewController.dismiss(animated: true)
+        }
     }
 }
 

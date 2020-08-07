@@ -29,6 +29,11 @@ import WordPressFlux
     /// search
     var navigateToSearch: () -> Void
 
+    /// if items are loaded
+    var itemsLoaded: Bool {
+        return tabItems.count > 0
+    }
+
     /// Settings
     private let settingsPresenter: ScenePresenter
     var settingsTapped: ((UIView) -> Void)?
