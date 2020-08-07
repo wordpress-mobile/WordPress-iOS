@@ -4,6 +4,7 @@ import UIKit
 public class GutenbergMentionsViewController: UIViewController {
 
     static let mentionTriggerText = String("@")
+    static let minimumHeaderHeight = CGFloat(50)
 
     public lazy var backgroundView: UIView = {
         let view = UIView(frame: .zero)
@@ -153,6 +154,10 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
 
     public func suggestionsTableViewDidTapHeader(_ suggestionsTableView: SuggestionsTableView) {
         onCompletion?(.failure(buildErrorForCancelation()))
+    }
+
+    public func suggestionsTableViewHeaderMinimumHeight(_ suggestionsTableView: SuggestionsTableView) -> CGFloat {
+        return Self.minimumHeaderHeight
     }
 }
 
