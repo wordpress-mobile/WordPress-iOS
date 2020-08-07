@@ -33,6 +33,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingView: UIStackView!
 
+    @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
+
     // MARK: - Data
     private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
     private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
@@ -51,12 +53,23 @@ class ReaderSelectInterestsViewController: UIViewController {
         configureNoResultsViewController()
         applyStyles()
         updateNextButtonState()
+        refreshData()
+
+        // If the view is being presented overCurrentContext take into account tab bar height
+        if modalPresentationStyle == .overCurrentContext {
+            bottomSpaceHeightConstraint.constant = presentingViewController?.tabBarController?.tabBar.bounds.size.height ?? 0
+        }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
-        refreshData()
+        // If this view was presented over current context and it's disappearing
+        // it means that the user switched tabs. Keeping it in the view hierarchy cause
+        // weird black screens, so we dismiss it to avoid that.
+        if modalPresentationStyle == .overCurrentContext {
+            dismiss(animated: false)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
