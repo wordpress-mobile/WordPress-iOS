@@ -493,7 +493,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `6191ef8`)
   - WordPressKit (~> 4.14-beta)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `feature/271-extract-collectiontype-helper`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `ec212d0`)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/75ddd7f573ba78e8b0e4bfc1cafd386469658cbb/third-party-podspecs/Yoga.podspec.json`)
@@ -634,7 +634,7 @@ EXTERNAL SOURCES:
     :commit: 6191ef8
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressShared:
-    :branch: feature/271-extract-collectiontype-helper
+    :commit: ec212d0
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/75ddd7f573ba78e8b0e4bfc1cafd386469658cbb/third-party-podspecs/Yoga.podspec.json
@@ -655,7 +655,7 @@ CHECKOUT OPTIONS:
     :commit: 6191ef8
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressShared:
-    :commit: ec212d0072ac1908c3465cb67d1a83118ae1b1fb
+    :commit: ec212d0
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
@@ -749,6 +749,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 75483eb6f1e57326f373f95166e16bc41c2fa7e5
+PODFILE CHECKSUM: c4783bddf36c16bf60a434cce04f065387bffdaa
 
 COCOAPODS: 1.8.4
