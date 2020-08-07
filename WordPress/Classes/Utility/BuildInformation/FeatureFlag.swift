@@ -55,7 +55,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerImprovementsPhase2:
             return false
         case .gutenbergMentions:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .gutenbergModalLayoutPicker:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
