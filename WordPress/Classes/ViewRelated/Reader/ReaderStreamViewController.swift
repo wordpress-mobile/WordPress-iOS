@@ -304,6 +304,9 @@ import WordPressFlux
         view.isUserInteractionEnabled = readerTopic != nil
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCardCellHeightDidChange(_:)), name: NSNotification.Name.postCardCellHeightDidChange, object: nil)
+
         refreshImageRequestAuthToken()
 
         setupTableView()
@@ -1155,6 +1158,10 @@ import WordPressFlux
         refreshImageRequestAuthToken()
     }
 
+    @objc private func postCardCellHeightDidChange(_ notification: Foundation.Notification) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
 
     // MARK: - Helpers for TableViewHandler
 
@@ -1203,6 +1210,7 @@ import WordPressFlux
                                                 topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn))
+
     }
 
     @objc private func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
