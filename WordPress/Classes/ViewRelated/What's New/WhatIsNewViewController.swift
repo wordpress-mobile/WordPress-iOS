@@ -47,6 +47,7 @@ class WhatIsNewView: UIView {
 
 
     @objc private func continueButtonTapped() {
+        // TODO - WHATSNEW: this will likely need to be changed to not rely on the responder chain
         guard let controller = self.next as? UIViewController else {
             return
         }
@@ -55,7 +56,7 @@ class WhatIsNewView: UIView {
 }
 
 
-extension WhatIsNewView {
+private extension WhatIsNewView {
 
     enum Constants {
         static let continueButtonHeight: CGFloat = 48
