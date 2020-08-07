@@ -72,7 +72,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
 
 
         interests.forEach { interest in
-            let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext)
+            let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext, isFollowing: true)
             topic.path = path(slug: interest.slug)
         }
 

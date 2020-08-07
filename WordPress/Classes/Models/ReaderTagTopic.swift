@@ -17,21 +17,15 @@ import Foundation
         return NSNotFound as NSNumber
     }
 
-    /// If an interest was followed while the user is not logged into a WP.com account
-    /// The tagID will be 0
-    @objc var wasFollowedWhileLoggedOut: Bool {
-        return tagID == Self.loggedOutTagID && following
-    }
-
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
-    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) {
+    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
         self.init(context: context)
 
         title = remoteInterest.title
         slug = remoteInterest.slug
         tagID = Self.loggedOutTagID
         type = Self.TopicType
-        following = true
+        following = isFollowing
         showInMenu = true
     }
 
