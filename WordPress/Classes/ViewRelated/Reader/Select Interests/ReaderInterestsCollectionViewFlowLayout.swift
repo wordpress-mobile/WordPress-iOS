@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ReaderInterestsCollectionViewFlowLayoutDelegate: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int) -> CGSize
+    func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int?) -> CGSize
 }
 
 class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
@@ -66,7 +66,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         for item in 0 ..< count {
             let indexPath: IndexPath = IndexPath(row: item, section: 0)
             let isCollapseItem = item == numberOfItems
-            let itemSize = isCollapseItem ? sizeForOverflowItem(at: indexPath, remainingItems: 0) : sizeForItem(at: indexPath)
+            let itemSize = isCollapseItem ? sizeForOverflowItem(at: indexPath) : sizeForItem(at: indexPath)
             var frame: CGRect = CGRect(origin: .zero, size: itemSize)
 
             if item == 0 {
@@ -90,7 +90,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
                         let lastFrame = layoutAttributes.last?.frame ?? previousFrame
                         var overflowFrame = previousFrame
 
-                        overflowFrame.size = sizeForOverflowItem(at: indexPath, remainingItems: remainingItems ?? 0)
+                        overflowFrame.size = sizeForOverflowItem(at: indexPath, remainingItems: remainingItems)
                         overflowFrame.origin.x = isRightToLeft ? lastFrame.minX - itemSpacing - overflowFrame.width : lastFrame.maxX + itemSpacing
 
                         let overflowAttribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: Self.overflowItemKind,
@@ -151,7 +151,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return CGSize(width: size.width, height: cellHeight)
     }
 
-    private func sizeForOverflowItem(at indexPath: IndexPath, remainingItems: Int) -> CGSize {
+    private func sizeForOverflowItem(at indexPath: IndexPath, remainingItems: Int? = nil) -> CGSize {
         guard
             let collectionView = collectionView,
             let delegate = delegate
