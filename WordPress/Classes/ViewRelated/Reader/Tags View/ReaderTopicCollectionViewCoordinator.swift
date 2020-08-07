@@ -42,7 +42,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     init(collectionView: UICollectionView, tags: [String]) {
         self.collectionView = collectionView
-        self.tags = tags + tags + tags
+        self.tags = tags
 
         super.init()
 
