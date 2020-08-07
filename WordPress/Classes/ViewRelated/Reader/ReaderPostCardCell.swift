@@ -11,6 +11,10 @@ private struct Constants {
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
+extension NSNotification.Name {
+    static let postCardCellHeightDidChange = NSNotification.Name(rawValue: "PostCardCellHeightDidChange")
+}
+
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
@@ -29,6 +33,8 @@ private struct Constants {
 
     // Wrapper views
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
+
+    @IBOutlet weak var topicsCollectionView: UICollectionView!
 
     // Header realated Views
 
@@ -77,6 +83,8 @@ private struct Constants {
         return  width <= 320
     }
 
+    var topicsCoordinator: ReaderTopicCollectionViewCoordinator?
+
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
@@ -113,7 +121,6 @@ private struct Constants {
     }()
 
     // MARK: - Lifecycle Methods
-
     open override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -155,6 +162,8 @@ private struct Constants {
 
     open override func prepareForReuse() {
         super.prepareForReuse()
+
+        topicsCoordinator = nil
         imageLoader.prepareForReuse()
     }
 
@@ -237,6 +246,7 @@ private struct Constants {
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
+        configureTopicsCollectionView()
         configureHeader()
         configureAvatarImageView()
         configureFeaturedImageIfNeeded()
@@ -248,10 +258,26 @@ private struct Constants {
         prepareForVoiceOver()
     }
 
+    func configureTopicsCollectionView() {
+        guard
+            let contentProvider = contentProvider,
+            let tags = contentProvider.tagsForDisplay?()
+        else {
+            topicsCollectionView.isHidden = true
+            return
+        }
+
+        let coordinator = ReaderTopicCollectionViewCoordinator(collectionView: topicsCollectionView, tags: tags)
+        coordinator.delegate = self
+
+        self.topicsCoordinator = coordinator
+    }
+
     fileprivate func configureHeader() {
         guard let contentProvider = contentProvider else {
             return
         }
+        //
 
         // Always reset
         avatarImageView.image = nil
@@ -425,11 +451,14 @@ private struct Constants {
             return false
         }
 
-        guard let contentProvider = contentProvider else {
+        guard
+            let contentProvider = contentProvider,
+            let likeCount = contentProvider.likeCount()
+        else {
             return false
         }
 
-        let hasLikes = contentProvider.likeCount().intValue > 0
+        let hasLikes = likeCount.intValue > 0
 
         guard loggedInActionVisibility.isEnabled || hasLikes else {
             return false
@@ -829,5 +858,17 @@ extension ReaderPostCardCell: GhostableView {
         headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
+    }
+}
+
+extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        layoutIfNeeded()
+
+        NotificationCenter.default.post(name: NSNotification.Name.postCardCellHeightDidChange, object: self)
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
+        print("topic selected", topic)
     }
 }

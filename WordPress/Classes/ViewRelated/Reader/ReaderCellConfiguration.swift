@@ -41,6 +41,7 @@ final class ReaderCellConfiguration {
 
         postCell.loggedInActionVisibility = loggedInActionVisibility
         postCell.configureCell(post)
+        postCell.layoutIfNeeded()
     }
 
     func configureGapMarker(_ cell: ReaderGapMarkerCell, filling: Bool) {
