@@ -33,6 +33,16 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private lazy var service: BlogJetpackSettingsService? = {
+        guard
+            let settings = post.blog.settings,
+            let context = settings.managedObjectContext
+        else {
+            return nil
+        }
+        return BlogJetpackSettingsService(managedObjectContext: context)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -329,6 +339,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
         fetchEditorTheme()
+
+        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
+            self?.gutenberg.updateCapabilities()
+            print("---> Success syncing JETPACK: Enabled=\(self!.post.blog.settings!.jetpackSSOEnabled)")
+        }, failure: { (error) in
+            print("---> ERROR syncking JETPACK")
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
