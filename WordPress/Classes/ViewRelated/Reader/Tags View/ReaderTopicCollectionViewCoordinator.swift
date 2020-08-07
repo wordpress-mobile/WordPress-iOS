@@ -1,0 +1,185 @@
+import UIKit
+
+enum ReaderTopicCollectionViewState {
+    case collapsed
+    case expanded
+}
+
+protocol ReaderTopicCollectionViewCoordinatorDelegate: AnyObject {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String)
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState)
+}
+
+class ReaderTopicCollectionViewCoordinator: NSObject {
+    private struct Constants {
+        static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
+        static let overflowReuseIdentifier = "OverflowItem"
+
+        static let interestsLabelMargin: CGFloat = 8
+
+        static let cellCornerRadius: CGFloat = 4
+        static let cellSpacing: CGFloat = 6
+        static let cellHeight: CGFloat = 26
+    }
+
+    private struct Strings {
+        static let collapseButtonTitle: String = NSLocalizedString("Hide", comment: "")
+    }
+
+    weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
+
+    let collectionView: UICollectionView
+    let tags: [String]
+
+    deinit {
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = false
+        layout.invalidateLayout()
+    }
+
+    init(collectionView: UICollectionView, tags: [String]) {
+        self.collectionView = collectionView
+        self.tags = tags + tags + tags
+
+        super.init()
+
+        configureCollectionView()
+    }
+
+    func reloadData() {
+        collectionView.reloadData()
+        collectionView.invalidateIntrinsicContentSize()
+    }
+
+    private func configureCollectionView() {
+        guard tags.count != 0 else {
+            collectionView.isHidden = true
+            return
+        }
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        collectionView.contentInset = .zero
+
+        let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
+
+        // Register the main cell
+        collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
+
+        // Register the overflow item type
+        collectionView.register(nib, forSupplementaryViewOfKind: ReaderInterestsCollectionViewFlowLayout.overflowItemKind, withReuseIdentifier: Constants.overflowReuseIdentifier)
+
+        // Configure Layout
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.delegate = self
+        layout.maxNumberOfDisplayedLines = 1
+        layout.itemSpacing = Constants.cellSpacing
+        layout.cellHeight = Constants.cellHeight
+
+        collectionView.isHidden = false
+    }
+
+    private func sizeForCell(title: String) -> CGSize {
+        let attributes: [NSAttributedString.Key: Any] = [
+             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
+         ]
+
+         let title: NSString = title as NSString
+
+         var size = title.size(withAttributes: attributes)
+         size.width += (Constants.interestsLabelMargin * 2)
+
+         return size
+    }
+
+    private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
+        ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
+
+        cell.layer.cornerRadius = Constants.cellCornerRadius
+        cell.label.text = title
+    }
+
+    private func string(for remainingItems: Int?) -> String {
+        guard let items = remainingItems else {
+            return Strings.collapseButtonTitle
+        }
+
+        return "\(items)+"
+    }
+}
+
+extension ReaderTopicCollectionViewCoordinator: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tags.count
+    }
+}
+
+extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
+                                                          for: indexPath) as? ReaderInterestsCollectionViewCell else {
+            fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
+        }
+
+        configure(cell: cell, with: tags[indexPath.row])
+
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let overflowKind = ReaderInterestsCollectionViewFlowLayout.overflowItemKind
+
+        guard
+            kind == overflowKind,
+            let cell = collectionView.dequeueReusableSupplementaryView(ofKind: overflowKind, withReuseIdentifier: Constants.overflowReuseIdentifier, for: indexPath) as? ReaderInterestsCollectionViewCell,
+            let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout
+        else {
+            fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.overflowReuseIdentifier) with kind: \(overflowKind)")
+        }
+        
+        let remainingItems = layout.remainingItems
+        let title = string(for: remainingItems)
+
+        configure(cell: cell, with: title)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(toggleExpanded))
+        cell.addGestureRecognizer(tapGestureRecognizer)
+
+        return cell
+    }
+
+    @objc func toggleExpanded(_ sender: ReaderInterestsCollectionViewCell) {
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = !layout.isExpanded
+        layout.invalidateLayout()
+
+        delegate?.coordinator(self, didChangeState: layout.isExpanded ? .expanded: .collapsed)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return sizeForCell(title: tags[indexPath.row])
+    }
+}
+
+extension ReaderTopicCollectionViewCoordinator: ReaderInterestsCollectionViewFlowLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int?) -> CGSize {
+
+        let title = string(for: remainingItems)
+        return sizeForCell(title: title)
+    }
+}

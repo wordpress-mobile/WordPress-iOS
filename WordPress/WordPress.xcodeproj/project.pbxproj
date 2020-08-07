@@ -353,6 +353,7 @@
 		327B48C3247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C2247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift */; };
 		327B48C5247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */; };
 		329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329F8E5524DDAC61002A5311 /* DynamicHeightCollectionView.swift */; };
+		329F8E5824DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329F8E5724DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift */; };
 		32C765BA23F715E4000A7F11 /* PostSignUpInterstitialCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1A6CE23F7083500AB8CA9 /* PostSignUpInterstitialCoordinator.swift */; };
 		32C765BB23F7170C000A7F11 /* PostSignUpInterstitialCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1A6D323F7111800AB8CA9 /* PostSignUpInterstitialCoordinatorTests.swift */; };
 		32CA6EC02390C61F00B51347 /* PostListEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */; };
@@ -2772,6 +2773,7 @@
 		327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderRelativeTimeFormatterTests.swift; sourceTree = "<group>"; };
 		328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewController.swift; sourceTree = "<group>"; };
 		329F8E5524DDAC61002A5311 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
+		329F8E5724DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTopicCollectionViewCoordinator.swift; sourceTree = "<group>"; };
 		32A29A16236BC8BC009488C2 /* WordPress 93.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 93.xcdatamodel"; sourceTree = "<group>"; };
 		32C6CDDA23A1FF0D002556FF /* SiteCreationRotatingMessageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationRotatingMessageViewTests.swift; sourceTree = "<group>"; };
 		32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListEditorPresenter.swift; sourceTree = "<group>"; };
@@ -5920,6 +5922,7 @@
 			isa = PBXGroup;
 			children = (
 				329F8E5524DDAC61002A5311 /* DynamicHeightCollectionView.swift */,
+				329F8E5724DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift */,
 			);
 			path = "Tags View";
 			sourceTree = "<group>";
@@ -13257,6 +13260,7 @@
 				40EC1F102249CA8400F6785E /* OtherAndTotalViewsCount+CoreDataProperties.swift in Sources */,
 				B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
+				329F8E5824DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift in Sources */,
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
 				B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */,
 				7E4123C420F4097B00DF8486 /* FormattableContentActionCommand.swift in Sources */,
