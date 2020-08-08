@@ -1941,5 +1941,7 @@ extension ReaderStreamViewController: ReaderPostCardCellDelegate {
     }
 
     func didSelect(topic: String) {
+        let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
+        navigationController?.pushViewController(topicStreamViewController, animated: true)
     }
 }
