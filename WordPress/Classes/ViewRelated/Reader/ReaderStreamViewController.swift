@@ -305,8 +305,6 @@ import WordPressFlux
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(postCardCellHeightDidChange(_:)), name: NSNotification.Name.postCardCellHeightDidChange, object: nil)
-
         refreshImageRequestAuthToken()
 
         setupTableView()
@@ -1158,11 +1156,6 @@ import WordPressFlux
         refreshImageRequestAuthToken()
     }
 
-    @objc private func postCardCellHeightDidChange(_ notification: Foundation.Notification) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-
     // MARK: - Helpers for TableViewHandler
 
 
@@ -1210,6 +1203,12 @@ import WordPressFlux
                                                 topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn))
+
+        guard let postCardCell = cell as? ReaderPostCardCell else {
+            return
+        }
+
+        postCardCell.cardDelegate = self
 
     }
 
@@ -1932,5 +1931,15 @@ private extension ReaderStreamViewController {
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"
+    }
+}
+
+extension ReaderStreamViewController: ReaderPostCardCellDelegate {
+    func heightDidChange() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
+    func didSelect(topic: String) {
     }
 }

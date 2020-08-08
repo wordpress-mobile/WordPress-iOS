@@ -11,8 +11,9 @@ private struct Constants {
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
-extension NSNotification.Name {
-    static let postCardCellHeightDidChange = NSNotification.Name(rawValue: "PostCardCellHeightDidChange")
+protocol ReaderPostCardCellDelegate: class {
+    func didSelect(topic: String)
+    func heightDidChange()
 }
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -74,6 +75,7 @@ extension NSNotification.Name {
 
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
+    weak var cardDelegate: ReaderPostCardCellDelegate?
 
     fileprivate var featuredImageDesiredWidth = CGFloat()
 
@@ -241,6 +243,7 @@ extension NSNotification.Name {
         summaryLabel.backgroundColor = .listForeground
         commentActionButton.titleLabel?.backgroundColor = .listForeground
         likeActionButton.titleLabel?.backgroundColor = .listForeground
+        topicsCollectionView.backgroundColor = .listForeground
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
@@ -865,10 +868,10 @@ extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
         layoutIfNeeded()
 
-        NotificationCenter.default.post(name: NSNotification.Name.postCardCellHeightDidChange, object: self)
+        cardDelegate?.heightDidChange()
     }
 
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
-        print("topic selected", topic)
+        cardDelegate?.didSelect(topic: topic)
     }
 }
