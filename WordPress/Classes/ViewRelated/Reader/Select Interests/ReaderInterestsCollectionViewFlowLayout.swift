@@ -84,7 +84,10 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
                         remainingItems = numberOfItems - item + 1
 
                         // Remove the last added item and replace it with the expand item
-                        layoutAttributes.removeLast()
+                        // If there's only 1 token left, don't remove it
+                        if layoutAttributes.count > 1 {
+                            layoutAttributes.removeLast()
+                        }
 
                         // Get the frame for the item that appears before the item we just removed
                         let lastFrame = layoutAttributes.last?.frame ?? previousFrame
