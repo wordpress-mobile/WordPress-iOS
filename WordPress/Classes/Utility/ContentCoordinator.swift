@@ -35,13 +35,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
-        if FeatureFlag.readerWebview.enabled {
-            let readerViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
-            controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
-        } else {
-            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
-        }
+        let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+        controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {

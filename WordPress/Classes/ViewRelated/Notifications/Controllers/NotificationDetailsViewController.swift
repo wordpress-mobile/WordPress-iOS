@@ -70,7 +70,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// A Reader Detail VC to display post content if needed
     ///
-    private var readerDetailViewController: ReaderDetailWebviewViewController?
+    private var readerDetailViewController: ReaderDetailViewController?
 
     /// Previous NavBar Navigation Button
     ///
@@ -512,7 +512,7 @@ private extension NotificationDetailsViewController {
         }
 
         readerDetailViewController?.remove()
-        let readerDetailViewController = ReaderDetailWebviewViewController.controllerWithPostID(postID, siteID: siteID)
+        let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         add(readerDetailViewController)
         readerDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToSafeArea(readerDetailViewController.view)

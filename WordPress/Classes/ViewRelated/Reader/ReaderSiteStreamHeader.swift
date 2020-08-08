@@ -26,11 +26,10 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 @objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader {
-    @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var detailLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: PostMetaButton!
+    @IBOutlet fileprivate weak var followButton: UIButton!
     @IBOutlet fileprivate weak var followCountLabel: UILabel!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
 
@@ -46,34 +45,43 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
         WPStyleGuide.applyReaderSiteStreamCountStyle(followCountLabel)
     }
 
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+                   preferredContentSizeDidChange()
+        }
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+            }
+        }
+    }
 
     // MARK: - Configuration
 
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
-        assert(topic.isKind(of: ReaderSiteTopic.self), "Topic must be a site topic")
+        guard let siteTopic = topic as? ReaderSiteTopic else {
+            DDLogError("Topic must be a site topic")
+            return
+        }
 
-        let siteTopic = topic as! ReaderSiteTopic
+        followButton.isSelected = topic.following
+        titleLabel.text = siteTopic.title
+        descriptionLabel.text = siteTopic.siteDescription
+        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
+        detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
         configureHeaderImage(siteTopic.siteBlavatar)
 
-        titleLabel.text = siteTopic.title
-        detailLabel.text = URL(string: siteTopic.siteURL)?.host
-
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
-        followButton.isSelected = topic.following
-
-        descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
-        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
 
         if descriptionLabel.attributedText?.length > 0 {
             descriptionLabel.isHidden = false
@@ -109,19 +117,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         return str
     }
 
-    @objc func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
-        return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
-    }
-
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
         followButton.isHidden = !enable
-    }
-
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
     }
 
     func preferredContentSizeDidChange() {

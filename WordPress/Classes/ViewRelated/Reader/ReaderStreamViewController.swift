@@ -117,7 +117,7 @@ import WordPressFlux
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = tagSlug
+                title = NSLocalizedString("Topic", comment: "Topic page title")
 
                 fetchTagTopic()
             }
@@ -164,6 +164,8 @@ import WordPressFlux
             }
         }
     }
+
+    var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
         willSet {
@@ -618,7 +620,11 @@ import WordPressFlux
             return
         }
 
-        title = topic.title
+        if ReaderHelpers.isTopicTag(topic) {
+             title = NSLocalizedString("Topic", comment: "Topic page title")
+        } else {
+            title = topic.title
+        }
     }
 
 
@@ -1532,27 +1538,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        var controller: UIViewController
-
-        if FeatureFlag.readerWebview.enabled {
-            controller = ReaderDetailWebviewViewController.controllerWithPost(post)
-        } else {
-
-            if post.sourceAttributionStyle() == .post &&
-                post.sourceAttribution.postID != nil &&
-                post.sourceAttribution.blogID != nil {
-
-                controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-
-            } else if post.isCross() {
-                controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-
-            } else {
-                controller = ReaderDetailViewController.controllerWithPost(post)
-
-            }
-
-        }
+        let controller = ReaderDetailViewController.controllerWithPost(post)
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
@@ -1798,6 +1784,7 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
+        isContentFiltered = content.topicType == .tag
         hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
