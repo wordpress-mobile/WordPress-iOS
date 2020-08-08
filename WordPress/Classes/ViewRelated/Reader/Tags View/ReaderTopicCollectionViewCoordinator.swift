@@ -174,6 +174,17 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return sizeForCell(title: tags[indexPath.row])
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // We create a remote service because we need to convert the topic to a slug an this contains the
+        // code to do that
+        let service = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())
+        guard let topic = service.slug(forTopicName: tags[indexPath.row]) else {
+            return
+        }
+
+        delegate?.coordinator(self, didSelectTopic: topic)
+    }
 }
 
 extension ReaderTopicCollectionViewCoordinator: ReaderInterestsCollectionViewFlowLayoutDelegate {
