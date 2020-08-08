@@ -20,6 +20,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         static let cellCornerRadius: CGFloat = 4
         static let cellSpacing: CGFloat = 6
         static let cellHeight: CGFloat = 26
+        static let maxCellWidthMultiplier: CGFloat = 0.8
     }
 
     private struct Strings {
@@ -88,15 +89,20 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     private func sizeForCell(title: String) -> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
-             .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
-         ]
+            .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
+        ]
 
-         let title: NSString = title as NSString
 
-         var size = title.size(withAttributes: attributes)
-         size.width += (Constants.interestsLabelMargin * 2)
+        let title: NSString = title as NSString
 
-         return size
+        var size = title.size(withAttributes: attributes)
+
+        // Prevent 1 token from being too long
+        let maxWidth = collectionView.bounds.width * Constants.maxCellWidthMultiplier
+        let width = min(size.width, maxWidth)
+        size.width = width + (Constants.interestsLabelMargin * 2)
+
+        return size
     }
 
     private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
