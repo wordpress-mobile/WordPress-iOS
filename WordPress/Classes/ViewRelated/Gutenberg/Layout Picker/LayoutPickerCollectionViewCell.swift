@@ -93,10 +93,10 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
     }
 
     func styleShadowLightMode() {
-        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        layer.shadowRadius = 7.0
-        layer.shadowOpacity = 1.0
+        layer.shadowRadius = 36.0
+        layer.shadowOpacity = 0.1
         layer.masksToBounds = false
         layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: contentView.layer.cornerRadius).cgPath
         layer.backgroundColor = UIColor.clear.cgColor
