@@ -14,6 +14,11 @@ class GutenbergLayoutSection {
     }
 }
 
+struct GutenbergSelectedLayout {
+    let sectionSlug: String
+    let position: Int
+}
+
 class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBOutlet weak var headerBar: UIView!
@@ -99,9 +104,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     /// Keeps track of the selected index path for cells. This treats section as the row in the table view and item as the selected index of the layout in the category.
-    private var selectedLayoutIndexPath: IndexPath? = nil {
+    private var selectedLayout: GutenbergSelectedLayout? = nil {
         didSet {
-            layoutSelected(selectedLayoutIndexPath != nil)
+            layoutSelected(selectedLayout != nil)
         }
     }
 
@@ -321,6 +326,11 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
             self.headerView.layoutIfNeeded()
         }, completion: nil)
     }
+
+    private func containsSelectedLayout(_ layout: GutenbergSelectedLayout, atIndexPath indexPath: IndexPath) -> Bool {
+        let rowSection = sections[indexPath.row]
+        return (layout.sectionSlug == rowSection.section.slug)
+    }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
@@ -335,8 +345,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.section = (filteredSections ?? sections)[indexPath.row]
 
-        if let selectedLayoutIndexPath = selectedLayoutIndexPath, selectedLayoutIndexPath.section == indexPath.row {
-            cell.selectItemAt(selectedLayoutIndexPath.item)
+        if let selectedLayout = selectedLayout, containsSelectedLayout(selectedLayout, atIndexPath: indexPath) {
+            cell.selectItemAt(selectedLayout.position)
         }
 
         return cell
@@ -346,18 +356,30 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellDelegate {
 
     func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell) {
-        guard let cellIndexPath = tableView.indexPath(for: cell) else { return }
+        guard let cellIndexPath = tableView.indexPath(for: cell), let slug = cell.section?.section.slug else { return }
         tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
-        selectedLayoutIndexPath = IndexPath(item: position, section: cellIndexPath.row)
+
+        deselectCurrentLayout()
+        selectedLayout = GutenbergSelectedLayout(sectionSlug: slug, position: position)
     }
 
     func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell) {
-        selectedLayoutIndexPath = nil
+        selectedLayout = nil
     }
 
     func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerSectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+    }
+
+    private func deselectCurrentLayout() {
+        guard let previousSelection = selectedLayout else { return }
+
+        tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
+            if containsSelectedLayout(previousSelection, atIndexPath: indexPath) {
+                (tableView.cellForRow(at: indexPath) as? LayoutPickerSectionTableViewCell)?.deselectItems()
+            }
+        }
     }
 }
 
