@@ -17,6 +17,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        displaySelectInterestsIfNeeded()
+    }
+
     // MARK: - TableView Related
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,6 +62,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private func isTableViewAtTheTop() -> Bool {
         return tableView.contentOffset.y == 0
+    }
+
+    private func displaySelectInterestsIfNeeded() {
+        guard let readerTabBarViewController = parent as? ReaderTabViewController else {
+            return
+        }
+
+        readerTabBarViewController.displaySelectInterestsIfNeeded()
     }
 
     // MARK: - Sync

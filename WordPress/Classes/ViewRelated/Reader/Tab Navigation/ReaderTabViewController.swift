@@ -118,7 +118,7 @@ extension ReaderTabViewController {
 }
 
 // MARK: - Select Interests Display
-private extension ReaderTabViewController {
+extension ReaderTabViewController {
     func displaySelectInterestsIfNeeded() {
         guard viewModel.itemsLoaded, isViewOnScreen() else {
             return
