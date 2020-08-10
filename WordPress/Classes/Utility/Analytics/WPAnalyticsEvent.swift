@@ -52,6 +52,8 @@ import Foundation
     // Reader
     case selectInterestsShown
     case selectInterestsPicked
+    case readerDiscoverShown
+    case readerSiteShown
 
     /// A String that represents the event
     var value: String {
@@ -130,6 +132,10 @@ import Foundation
             return "select_interests_shown"
         case .selectInterestsPicked:
             return "select_interests_picked"
+        case .readerDiscoverShown:
+            return "reader_discover_shown"
+        case .readerSiteShown:
+            return "reader_site_shown"
         }
 }
 
