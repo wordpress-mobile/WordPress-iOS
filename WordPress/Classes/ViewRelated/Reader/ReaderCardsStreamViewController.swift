@@ -70,6 +70,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         }
 
         readerTabBarViewController.displaySelectInterestsIfNeeded()
+        showGhost()
     }
 
     // MARK: - Sync
