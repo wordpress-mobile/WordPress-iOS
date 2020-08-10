@@ -53,14 +53,11 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
         collectionView(collectionView, didDeselectItemAt: indexPath)
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        if !selected, let selectedItems = collectionView.indexPathsForSelectedItems {
-            selectedItems.forEach { (indexPath) in
-                deselectItem(indexPath)
-            }
+    func deselectItems() {
+        guard let selectedItems = collectionView.indexPathsForSelectedItems else { return }
+        selectedItems.forEach { (indexPath) in
+            collectionView.deselectItem(at: indexPath, animated: true)
         }
-
-        super.setSelected(selected, animated: animated)
     }
 
     func selectItemAt(_ position: Int) {
