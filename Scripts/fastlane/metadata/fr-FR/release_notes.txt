@@ -1,5 +1,9 @@
-v15.3 inclut trois grands changements :
+Nous avons beaucoup de choses à vous dire au sujet de l’éditeur de blocs dans cette mise à jour :
 
-- Tous les blocs contiennent désormais des options pour copier, couper, coller et dupliquer.
-- Vous pouvez modifier individuellement des blocs non pris en charge sur un écran séparé de l’application, à l’aide des mêmes outils disponibles dans l’éditeur Web complet. (Remarque : cela n’est pas encore disponible pour les sites auto-hébergés ou pour les sites utilisant l’éditeur classique par défaut.)
-- Effet fantôme ! Nous avons ajouté à l’éditeur cet effet visuel sympa qui affiche des zones ombrées afin que vous sachiez quand et où du contenu est chargé.
+nous disposons désormais d’un bloc Liens vers les réseaux sociaux ! Vous pouvez ajouter des liens afin de diriger vos abonnés vers vos profils sur les réseaux sociaux à partir de vos pages ou articles. Vous pouvez ajouter un seul de vos comptes ou tous. C’est comme bon vous semble !
+
+Le bloc Médias & Texte propose désormais des fonctions d’édition améliorées. Vous pouvez sélectionner des médias dans le bloc ou modifier le point focal.
+
+Le texte indicatif du bloc Bannière comporte désormais différentes couleurs d’arrière-plan afin de mieux mettre en valeur vos images !
+
+Nous avons travaillé activement à l’innovation, mais également à la correction de problèmes. Nous avons résolu le problème de l’éditeur de page qui ne se chargeait pas à partir de la page « Mon site » sous iOS versions 12.4 et antérieures.

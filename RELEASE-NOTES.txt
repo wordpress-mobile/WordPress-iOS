@@ -1,5 +1,7 @@
 15.5
 -----
+ * [***] Block Editor: New feature for WordPress.com and Jetpack sites: auto-complete username mentions. An auto-complete popup will show up when the user types the @ character in the block editor.
+
 * [*] Reader: revamped UI for your site header.
  
  * [***] Block Editor: New feature for WordPress.com and Jetpack sites: auto-complete username mentions. An auto-complete popup will show up when the user types the @ character in the block editor.

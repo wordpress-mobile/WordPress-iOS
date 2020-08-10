@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-07 06:34:53+0000 */
+/* Translation-Revision-Date: 2020-08-06 19:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li mots, %2$li caractères";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s block options";
+"%s block options" = "Options du bloc %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Bloc %s. Vide";
@@ -560,7 +560,7 @@
 "Alternatively:" = "Ou :";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
-"Always Send Crash Logs" = "Always Send Crash Logs";
+"Always Send Crash Logs" = "Toujours envoyer un journal de plantage";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Une connexion internet est obligatoire";
@@ -807,6 +807,9 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Graphique à barres représentant les visiteurs pour votre dernier article";
 
+/* No comment provided by engineer. */
+"Base" = "Base";
+
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Soyez le premier à laisser un commentaire.";
 
@@ -825,7 +828,7 @@
 
 /* Blacklist Title
    Settings: Comments Blacklist */
-"Blacklist" = "Liste noire";
+"Blacklist" = "Liste de blocage";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -835,13 +838,13 @@
 "Block This Site" = "Bloquer ce site";
 
 /* translators: displayed right after the block is copied. */
-"Block copied" = "Block copied";
+"Block copied" = "Bloc copié";
 
 /* translators: displayed right after the block is cut. */
-"Block cut" = "Block cut";
+"Block cut" = "Bloc coupé";
 
 /* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Block duplicated";
+"Block duplicated" = "Bloc dupliqué";
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Éditeur de blocs activé";
@@ -850,10 +853,13 @@
 "Block malicious login attempts" = "Bloquer les tentatives de connexions malveillantes";
 
 /* translators: displayed right after the block is pasted. */
-"Block pasted" = "Block pasted";
+"Block pasted" = "Bloc collé";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Bloc supprimé";
 
 /* No comment provided by engineer. */
-"Block settings" = "Block settings";
+"Block settings" = "Réglages du bloc";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1089,6 +1095,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Vérification des achats…";
 
+/* No comment provided by engineer. */
+"Child Blocks" = "Blocs enfants";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choisir les pages";
 
@@ -1119,8 +1128,17 @@
 /* No comment provided by engineer. */
 "Choose from device" = "Choisir depuis l’appareil";
 
+/* No comment provided by engineer. */
+"Choose image" = "Choisir une image";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "Choisir une image ou une vidéo";
+
+/* No comment provided by engineer. */
+"Choose video" = "Choisir une vidéo";
+
 /* Reader select interests subtitle label text */
-"Choose your interests" = "Choose your interests";
+"Choose your interests" = "Choisissez vos centres d’intérêts";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Choisir un site différent vous fera perdre vos modifications propres à un site, tels que les médias et les catégories. Êtes-vous sûr(e) de vouloir cela ?";
@@ -1430,13 +1448,19 @@
 "Continuing with Apple" = "Continuez avec Apple";
 
 /* No comment provided by engineer. */
-"Copied block" = "Copied block";
+"Convert to blocks" = "Convertir en blocs";
+
+/* No comment provided by engineer. */
+"Coordinated Universal Time" = "Temps universel coordonné";
+
+/* No comment provided by engineer. */
+"Copied block" = "Bloc copié";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copier le lien dans le commentaire.";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copy block";
+"Copy block" = "Copier le bloc";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Pourrait être améliorée";
@@ -1518,7 +1542,7 @@
 "Country Code" = "Code du pays";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Crash Logging";
+"Crash Logging" = "Plantage à l’enregistrement";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Rapports d’incident";
@@ -1634,7 +1658,7 @@
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personnaliser les réglages de votre site concernant les « J'aime », commentaires, abonnements et plus encore.";
 
 /* No comment provided by engineer. */
-"Cut block" = "Cut block";
+"Cut block" = "Couper le bloc";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Sombre";
@@ -1712,6 +1736,9 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Erreur de suppression du site";
 
+/* No comment provided by engineer. */
+"Delete Site Logo" = "Supprimer le logo du site";
+
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Effacer cette étiquette";
 
@@ -1776,18 +1803,16 @@
 "Discover Sites" = "Découvrez des sites ";
 
 /* Reader select interests title label text */
-"Discover and follow blogs you love" = "Discover and follow blogs you love";
+"Discover and follow blogs you love" = "Découvrez et suivez les blogs que vous aimez";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussion";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1826,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Ignorer les %@ étapes du démarrage rapide";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "Ignorer la carte nouveauté.";
 
 /* Display Name label text.
    My Profile display name label
@@ -1853,9 +1875,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "Ne pleurez pas parce que c’est fini, souriez parce que c’est arrivé.";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "Toucher deux fois et maintenir le bouton enfoncé pour modifier";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Toucher deux fois pour ajouter un bloc";
@@ -1928,7 +1947,7 @@
 "Drafts" = "Brouillons";
 
 /* No comment provided by engineer. */
-"Duplicate block" = "Duplicate block";
+"Duplicate block" = "Dupliquer le bloc";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Est";
@@ -1969,9 +1988,6 @@
 
 /* No comment provided by engineer. */
 "Edit block in web browser" = "Modifier le block dans le navigateur web";
-
-/* No comment provided by engineer. */
-"Edit media" = "Modifier le média";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Modifier les nouveaux articles et pages avec le nouvel éditeur de block.";
@@ -2050,7 +2066,7 @@
 "Enable site notifications?" = "Activer les notifications de site ?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
-"Encrypted Logs" = "Encrypted Logs";
+"Encrypted Logs" = "Journaux chiffrés";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrer en plein écran";
@@ -2083,6 +2099,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Saisissez l'identifiant";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Saisissez vos informations de compte pour %@.";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2311,6 +2330,9 @@
 
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Trouver l’adresse de votre site";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "Recherche de blogs et d’histoires que vous allez adorer...";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Trouver un lieu...";
@@ -2669,6 +2691,9 @@ translators: sample content for \"Team\" page template */
 /* Hint for image title on image settings. */
 "Image title" = "Titre de l’image";
 
+/* No comment provided by engineer. */
+"Image width" = "Largeur de l’image";
+
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Image, %@";
 
@@ -2864,10 +2889,7 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Résumé du dernier article";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "En savoir plus";
 
 /* Description of a Quick Start Tour */
@@ -3189,7 +3211,7 @@ translators: sample content for \"Services\" page template */
 
 /* Title for alert when a generic error happened when loading media
    Title for alert when access to the media library is not granted by the user */
-"Media Library" = "Bibliothèque de médias";
+"Media Library" = "Médiathèque";
 
 /* Title for action sheet with media options. */
 "Media Options" = "Options de média";
@@ -3206,6 +3228,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La taille du fichier média est trop importante pour téléverser. Le maximum autorisé est %2$@";
+
+/* No comment provided by engineer. */
+"Media preview" = "Aperçu du média";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "L’aperçu du média a échoué.";
@@ -3780,6 +3805,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Ouvrir la section « Me »";
 
+/* No comment provided by engineer. */
+"Open the block list view." = "Ouvrez la vue Liste des blocs.";
+
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Ouvre la page web dans Safari";
 
@@ -3887,6 +3915,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Mot de passe";
 
@@ -3903,7 +3932,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "Coller une URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "Paste block";
+"Paste block" = "Coller le bloc";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Coller en texte brut";
@@ -4290,9 +4319,6 @@ translators: sample content for \"Services\" page template */
 /* Menu item label for linking a project page. */
 "Projects" = "Projets";
 
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "Fournit plus d’information.";
-
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Public";
@@ -4525,7 +4551,7 @@ translators: sample content for \"Services\" page template */
 "Remove annotations" = "Retirer les annotations";
 
 /* No comment provided by engineer. */
-"Remove block" = "Remove block";
+"Remove block" = "Retirer le bloc";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Retirer des thématiques";
@@ -4556,6 +4582,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Remplacer le bloc actuel";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Remplacer l’image ou la vidéo";
+
+/* No comment provided by engineer. */
+"Replace video" = "Remplacer la vidéo";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Répond à un commentaire.";
@@ -4811,10 +4843,10 @@ translators: sample content for \"Services\" page template */
 "Search posts" = "Rechercher des publications";
 
 /* Title for placeholder in Tenor picker */
-"Search to find GIFs to add to your Media Library!" = "Chercher des images GIF gratuites pour les ajouter à votre bibliothèque de médias !";
+"Search to find GIFs to add to your Media Library!" = "Recherchez des images GIF gratuites pour les ajouter à votre médiathèque !";
 
 /* Title for placeholder in Free Photos */
-"Search to find free photos to add to your Media Library!" = "Chercher des photos gratuites pour les ajouter à votre bibliothèque de médias !";
+"Search to find free photos to add to your Media Library!" = "Recherchez des photos gratuites pour les ajouter à votre médiathèque !";
 
 /* Placeholder message when showing mentions search field */
 "Search users..." = "Recherche d’utilisateurs…";
@@ -4890,7 +4922,7 @@ translators: sample content for \"Services\" page template */
 "Select a color" = "Sélectionner une couleur";
 
 /* Reader select interests next button disabled title text */
-"Select a few to continue" = "Select a few to continue";
+"Select a few to continue" = "Sélectionnez-en quelques-uns pour continuer";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Sélectionner un média.";
@@ -4944,13 +4976,13 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "Envoyer le lien";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
-"Send Log Message" = "Send Log Message";
+"Send Log Message" = "Envoyer un message de journal";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Envoyer les pings";
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
-"Send Test Crash" = "Send Test Crash";
+"Send Test Crash" = "Envoyer un test de plantage";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Envoyez les notifications par e-mail";
@@ -5064,7 +5096,11 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Afficher les articles similaires";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* No comment provided by engineer. */
+"Show a site logo" = "Afficher un logo de site";
+
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Mot de passe affiché";
 
 /* No comment provided by engineer. */
@@ -5157,6 +5193,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "Langue du site";
 
+/* No comment provided by engineer. */
+"Site Logo" = "Logo pour votre site";
+
+/* No comment provided by engineer. */
+"Site Logo Settings" = "Réglages du logo du site";
+
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5164,6 +5206,9 @@ translators: sample content for \"Services\" page template */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirection de site";
+
+/* No comment provided by engineer. */
+"Site Tagline" = "Slogan du site";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5237,7 +5282,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Quelque chose s’est mal passé. Veuillez vérifier votre connexion et réessayez. ";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "Quelque chose s’est mal passé. Veuillez réessayer.";
 
 /* Invite Validation Alert
@@ -5626,7 +5672,7 @@ translators: sample content for \"Services\" page template */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "La connexion à Facebook ne trouve aucune page. Publicize ne peut pas se connecter aux profils, seulement au pages publiées.";
 
 /* Message shown when a GIF failed to load while trying to add it to the Media library. */
-"The GIF could not be added to the Media Library." = "Les GIF ne peuvent pas être ajoutés à la bibliothèque de médias.";
+"The GIF could not be added to the Media Library." = "Les GIF ne peuvent pas être ajoutés à la médiathèque.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Le compte Google « %@ » ne correspond pas avec le compte WordPress.com.";
@@ -5653,14 +5699,14 @@ translators: sample content for \"Services\" page template */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Le certificat de ce serveur n’est pas valide. Le serveur auquel vous vous connectez prétend être « %@ », ce qui peut constituer un risque de sécurité pour vos données confidentielles.\n\nSouhaitez-vous faire confiance au certificat malgré tout ?";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
-"The image could not be added to the Media Library." = "L’image n’a pas pu être ajoutée à la bibliothèque multimédia.";
+"The image could not be added to the Media Library." = "L’image n’a pas pu être ajoutée à la médiathèque.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "La connexion Internet semble inactive.";
 
 /* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "L’élément ne peut pas être ajouté à la bibliothèque de médias.";
+"The item could not be added to the Media Library." = "L’élément ne peut pas être ajouté à la médiathèque.";
 
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Les types de sites pouvant être créés";
@@ -5672,7 +5718,7 @@ translators: sample content for \"Services\" page template */
 "The login request has expired. Log in to WordPress.com to try again." = "La demande de connexion a expiré. Connectez-vous à WordPress.com pour réessayer.";
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
-"The media could not be added to the Media Library." = "Ce média n’a pas pu être ajouté à la bibliothèque multimédia.";
+"The media could not be added to the Media Library." = "Ce média n’a pas pu être ajouté à la médiathèque.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Le nombre d’articles à afficher par page.";
@@ -5720,7 +5766,7 @@ translators: sample content for \"Services\" page template */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Le mot de passe et l’identifiant stockés dans l'application peuvent ne pas être à jour. Veuillez saisir à nouveau votre mot de passe dans les réglages, puis réessayer.";
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
-"The video could not be added to the Media Library." = "La vidéo n’a pas pu être ajoutée à la bibliothèque multimédia.";
+"The video could not be added to the Media Library." = "La vidéo n’a pas pu être ajoutée à la médiathèque.";
 
 /* translators: sample content for \"About\" page template */
 "The way to get started is to quit talking and begin doing." = "La meilleure manière de commencer est d’arrêter de discuter et de commencer à faire.";
@@ -5849,7 +5895,7 @@ translators: sample content for \"Services\" page template */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à l'appareil photo et capturer de nouveaux médias. Pour ce faire, veuillez modifier les paramètres de confidentialité.";
 
 /* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la bibliothèque multimédia de votre appareil, afin d'ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les paramètres de confidentialité.";
+"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la médiathèque de votre appareil, afin d'ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les réglages de confidentialité.";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Cette adresse e-mail n’est pas enregistrée sur WordPress.com.";
@@ -6042,7 +6088,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "Recommencez";
 
 /* No comment provided by engineer. */
@@ -6309,6 +6356,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Téléverser une icône de site";
 
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "Chargez une image ou choisissez-en une dans votre bibliothèque de médias pour en faire le logo de votre site.";
+
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Le téléversement a échoué";
@@ -6374,6 +6424,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6833,7 +6884,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Media" = "Média WordPress";
 
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
-"WordPress Media Library" = "Bibliothèque de médias WordPress";
+"WordPress Media Library" = "Médiathèque WordPress";
 
 /* Siri Suggestion to open Notification Settings */
 "WordPress Notification Settings" = "Réglages de notification de WordPress";
@@ -7065,7 +7116,7 @@ translators: sample content for \"Services\" page template */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Votre compte n’a pas le droit de téléverser de média sur ce site. L’administrateur du site peut changer ces droits.";
 
 /* Explaining to the user why the app needs access to the device media library. */
-"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Votre app n’est pas autorisé à accéder à la bibliothèque de médias en raison d’une restriction active telle que le contrôle parental. Veuillez vérifier les réglages de contrôle parental sur cet appareil.";
+"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Votre app n’est pas autorisé à accéder à la médiathèque en raison d’une restriction active telle que le contrôle parental. Veuillez vérifier les réglages de contrôle parental sur cet appareil.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Votre identifiant actuel est « %1$@ ». À quelques exceptions près, le nom que verront les autres utilisateurs est « %2$@ ».";
@@ -7150,6 +7201,9 @@ translators: sample content for \"Services\" page template */
 
 /* The menu item to select during a guided tour. */
 "connections" = "connexions";
+
+/* No comment provided by engineer. */
+"description" = "description";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "On se sent pas mieux après avoir coché des éléments de la liste ?";
