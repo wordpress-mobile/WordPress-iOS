@@ -4,6 +4,9 @@ private var alertWorkItem: DispatchWorkItem?
 private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
+
+    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
+
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
@@ -17,6 +20,30 @@ extension BlogDetailsViewController {
                 let element = QuickStartTourElement(rawValue: index) {
                 self?.scroll(to: element)
             }
+
+            if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+                switch info {
+                case .noSuchElement:
+                    self?.additionalSafeAreaInsets = UIEdgeInsets.zero
+                case .siteIcon, .siteTitle:
+                    // handles the padding in case the element is not in the table view
+                    self?.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: BlogDetailsViewController.bottomPaddingForQuickStartNotices, right: 0)
+                case .viewSite:
+                    guard let self = self,
+                        let navigationController = self.navigationController,
+                        navigationController.visibleViewController != self else {
+                        return
+                    }
+
+                    self.dismiss(animated: true) {
+                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        self.shouldScrollToViewSite = true
+                        navigationController.popToViewController(self, animated: true)
+                    }
+                default:
+                    break
+                }
+            }
         }
     }
 
@@ -25,11 +52,18 @@ extension BlogDetailsViewController {
     }
 
     @objc func startAlertTimer() {
+        guard shouldStartAlertTimer else {
+            return
+        }
         let newWorkItem = DispatchWorkItem { [weak self] in
             self?.showNoticeOrAlertAsNeeded()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
         alertWorkItem = newWorkItem
+    }
+    // do not start alert timer if the themes modal is still being presented
+    private var shouldStartAlertTimer: Bool {
+        !((self.presentedViewController as? UINavigationController)?.visibleViewController is WebKitViewController)
     }
 
     @objc func stopAlertTimer() {

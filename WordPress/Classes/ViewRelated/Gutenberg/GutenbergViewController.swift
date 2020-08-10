@@ -345,7 +345,12 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
-        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
+        ghostView.frame = view.frame
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        ghostView.frame = view.frame
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -877,15 +882,15 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            FeatureFlag.tenor.enabled ? .tenor : nil,
+            .tenor,
             .filesApp,
         ].compactMap { $0 }
     }
 
-    func gutenbergCapabilities() -> [String: Bool]? {
+    func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
-            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
+            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
         ]
     }
 

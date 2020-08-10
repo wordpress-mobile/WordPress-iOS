@@ -1,5 +1,9 @@
-v15.3 menampilkan tiga perubahan besar:
+Ada banyak hal baru tentang editor Blok dalam pembaruan ini:
 
--- Seluruh blok kini memiliki pilihan salin, potong, tempel, dan duplikasi.
-- Anda dapat secara individual mengedit blok yang tidak didukung pada layar terpisah di aplikasi dengan menggunakan alat yang sama dengan yang tersedia di editor web lengkap. (Catatan: versi ini belum tersedia untuk situs yang di-hosting sendiri atau situs yang menggunakan editor lama sebagai editor asal.)
--- Ghost Effect! Kami menambahkan sentuhan visual yang menarik pada penyunting yang menampilkan area berwarna gelap sehingga Anda dapat mengetahui kapan dan di mana konten dimuat.
+Kini kami punya blok Tautan Sosial! Anda dapat menambah jumlah pengikut dengan mengarahkan mereka ke profil media sosial Anda dari halaman atau kiriman Anda. Anda dapat menambahkan satu akun saja, atau semua yang Anda punya. Boleh-boleh saja!
+
+Blok Media & Teks kini punya fungsi penyuntingan yang lebih baik. Anda dapat memilih media di blok, atau mengubah titik fokus.
+
+Placeholder blok Sampul kini punya warna latar yang berbeda agar gambar Anda terlihat jelas!
+
+Kami sibuk memperbaiki sembari menciptakan berbagai hal. Masalah editor halaman tidak termuat dari Halaman "Situs Saya" di iOS versi 12.4 dan di bawahnya telah diselesaikan.
