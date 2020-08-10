@@ -49,6 +49,9 @@ import Foundation
     case secondNotificationsAlertAllowTapped
     case secondNotificationsAlertNoTapped
 
+    // Reader
+    case selectInterestsShown
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -121,6 +124,9 @@ import Foundation
             return "notifications_second_alert_allow_tapped"
         case .secondNotificationsAlertNoTapped:
             return "notifications_second_alert_no_tapped"
+        // Reader
+        case .selectInterestsShown:
+            return "select_interests_shown"
     }
 }
 
