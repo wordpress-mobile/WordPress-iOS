@@ -2,11 +2,11 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 class SignupEpilogueViewController: UIViewController {
-    
+
     // MARK: - Analytics Tracking
-    
+
     let tracker = AuthenticatorAnalyticsTracker.shared
-    
+
     // MARK: - Public Properties
 
     var credentials: AuthenticatorCredentials?
@@ -50,7 +50,7 @@ class SignupEpilogueViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         if isBeingDismissed {
             tracker.track(click: .dismiss)
@@ -130,7 +130,7 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
         tracker.track(click: .editUsername)
-        
+
         epilogueUserInfo = userInfo
         performSegue(withIdentifier: SignupUsernameViewController.classNameWithoutNamespaces(), sender: self)
         WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())

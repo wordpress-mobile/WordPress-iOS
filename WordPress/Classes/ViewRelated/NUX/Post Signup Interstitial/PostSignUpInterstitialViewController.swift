@@ -49,7 +49,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     /// Closure to be executed upon dismissal.
     ///
     var onDismiss: (() -> Void)?
-    
+
     /// Analytics tracker
     ///
     private let tracker = AuthenticatorAnalyticsTracker.shared
@@ -107,7 +107,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     @IBAction func cancel(_ sender: Any) {
         onDismiss?()
-        
+
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 

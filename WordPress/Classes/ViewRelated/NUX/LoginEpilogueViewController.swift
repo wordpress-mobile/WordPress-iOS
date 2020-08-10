@@ -29,7 +29,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Links to the Epilogue TableViewController
     ///
     private var tableViewController: LoginEpilogueTableViewController?
-    
+
     /// Analytics Tracker
     ///
     private let tracker = AuthenticatorAnalyticsTracker.shared
@@ -178,7 +178,7 @@ private extension LoginEpilogueViewController {
 
     @IBAction func dismissEpilogue() {
         tracker.track(click: .continue)
-        
+
         onDismiss?()
 
         // Reset the nav style so the nav bar has the WP style, not the Auth style.
