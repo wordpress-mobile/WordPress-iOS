@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 extension NSNotification.Name {
     static let createSite = NSNotification.Name(rawValue: "PSICreateSite")
@@ -48,6 +49,10 @@ class PostSignUpInterstitialViewController: UIViewController {
     /// Closure to be executed upon dismissal.
     ///
     var onDismiss: (() -> Void)?
+    
+    /// Analytics tracker
+    ///
+    private let tracker = AuthenticatorAnalyticsTracker.shared
 
     // MARK: - View Methods
     override func viewDidLoad() {
@@ -87,6 +92,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         }
 
         WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
+        tracker.track(click: .createNewSite)
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
@@ -96,15 +102,17 @@ class PostSignUpInterstitialViewController: UIViewController {
         }
 
         WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
+        tracker.track(click: .addSelfHostedSite)
     }
 
     @IBAction func cancel(_ sender: Any) {
         onDismiss?()
-
+        
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 
         WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
+        tracker.track(click: .dismiss)
     }
 
     // MARK: - Private

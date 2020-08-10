@@ -1,9 +1,12 @@
 import SVProgressHUD
 import WordPressAuthenticator
 
-
 class SignupEpilogueViewController: UIViewController {
-
+    
+    // MARK: - Analytics Tracking
+    
+    let tracker = AuthenticatorAnalyticsTracker.shared
+    
     // MARK: - Public Properties
 
     var credentials: AuthenticatorCredentials?
@@ -46,6 +49,12 @@ class SignupEpilogueViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if isBeingDismissed {
+            tracker.track(click: .dismiss)
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -120,6 +129,8 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
     }
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
+        tracker.track(click: .editUsername)
+        
         epilogueUserInfo = userInfo
         performSegue(withIdentifier: SignupUsernameViewController.classNameWithoutNamespaces(), sender: self)
         WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
@@ -263,6 +274,7 @@ private extension SignupEpilogueViewController {
     }
 
     func dismissEpilogue() {
+        tracker.track(click: .continue)
 
         // Reset the nav style so the nav bar has the WP style, not the Auth style.
         WPStyleGuide.configureNavigationAppearance()
