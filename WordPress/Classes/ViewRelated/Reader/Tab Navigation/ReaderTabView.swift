@@ -35,7 +35,7 @@ class ReaderTabView: UIView {
             self?.toggleButtonsView()
         }
 
-        viewModel.onDidChangeTabBar { [weak self] tabItems, index in
+        viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
             self?.tabBar.items = tabItems
             self?.tabBar.setSelectedIndex(index)
             self?.configureTabBarElements()
