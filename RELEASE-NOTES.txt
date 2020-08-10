@@ -2,6 +2,8 @@
 -----
 * [*] Reader: revamped UI for your site header.
  
+ * [***] Block Editor: New feature for WordPress.com and Jetpack sites: auto-complete username mentions. An auto-complete popup will show up when the user types the @ character in the block editor.
+
 15.4
 -----
  * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below. 
