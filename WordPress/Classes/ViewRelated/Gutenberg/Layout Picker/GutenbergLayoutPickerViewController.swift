@@ -204,7 +204,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         if #available(iOS 13.0, *) {
             seperator = .separator
         } else {
-            seperator = .lightGray
+            seperator = UIColor.muriel(color: .divider)
         }
 
         [createBlankPageBtn, previewBtn].forEach { (button) in

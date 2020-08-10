@@ -13,7 +13,6 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
     }
 
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var previewLoadingView: UIActivityIndicatorView!
     @IBOutlet weak var checkmarkBackground: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView! {
         didSet {
@@ -115,17 +114,8 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
-        previewLoadingView.startAnimating()
         imageView.downloadImage(from: url, success: { _ in
-            self.stopProgressBar()
         }, failure: { _ in
-            self.stopProgressBar()
         })
-    }
-
-    func stopProgressBar() {
-        DispatchQueue.main.async {
-            self.previewLoadingView.stopAnimating()
-        }
     }
 }

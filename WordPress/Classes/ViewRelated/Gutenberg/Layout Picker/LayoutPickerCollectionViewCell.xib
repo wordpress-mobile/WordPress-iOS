@@ -26,9 +26,6 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="G2q-QQ-9Tv">
-                        <rect key="frame" x="64" y="105" width="20" height="20"/>
-                    </activityIndicatorView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apQ-T8-du2">
                         <rect key="frame" x="107" y="15" width="26" height="26"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -48,12 +45,10 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="G2q-QQ-9Tv" firstAttribute="centerY" secondItem="XpQ-DC-DLe" secondAttribute="centerY" id="5fs-5P-0SA"/>
                 <constraint firstItem="XpQ-DC-DLe" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="8aK-Nu-g20"/>
                 <constraint firstAttribute="trailing" secondItem="XpQ-DC-DLe" secondAttribute="trailing" id="BrN-ay-15v"/>
                 <constraint firstItem="apQ-T8-du2" firstAttribute="top" secondItem="hx0-n7-XEA" secondAttribute="top" constant="3" id="DMO-Ur-E0k"/>
                 <constraint firstItem="XpQ-DC-DLe" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Hly-4U-lPA"/>
-                <constraint firstItem="G2q-QQ-9Tv" firstAttribute="centerX" secondItem="XpQ-DC-DLe" secondAttribute="centerX" id="KyO-NC-DhY"/>
                 <constraint firstAttribute="trailing" secondItem="hx0-n7-XEA" secondAttribute="trailing" constant="12" id="OJx-TX-oHu"/>
                 <constraint firstItem="apQ-T8-du2" firstAttribute="bottom" secondItem="hx0-n7-XEA" secondAttribute="bottom" constant="-3" id="Od3-sV-Hqg"/>
                 <constraint firstItem="apQ-T8-du2" firstAttribute="leading" secondItem="hx0-n7-XEA" secondAttribute="leading" constant="3" id="Q9C-cP-3Ez"/>
@@ -67,7 +62,6 @@
                 <outlet property="checkmarkBackground" destination="apQ-T8-du2" id="FaX-4x-APs"/>
                 <outlet property="checkmarkImageView" destination="hx0-n7-XEA" id="Yst-6N-Qcg"/>
                 <outlet property="imageView" destination="XpQ-DC-DLe" id="j69-db-QW7"/>
-                <outlet property="previewLoadingView" destination="G2q-QQ-9Tv" id="gu9-4e-IFx"/>
             </connections>
             <point key="canvasLocation" x="239.13043478260872" y="211.60714285714286"/>
         </collectionViewCell>
