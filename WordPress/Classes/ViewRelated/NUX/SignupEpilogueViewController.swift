@@ -51,12 +51,6 @@ class SignupEpilogueViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        if isBeingDismissed {
-            tracker.track(click: .dismiss)
-        }
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setTableViewMargins(forWidth: size.width)
