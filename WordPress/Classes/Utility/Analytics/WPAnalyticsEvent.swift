@@ -55,6 +55,7 @@ import Foundation
     case readerDiscoverShown
     case readerSiteShown
     case readerDiscoverPaginated
+    case readerCardTapped
 
     /// A String that represents the event
     var value: String {
@@ -139,6 +140,8 @@ import Foundation
             return "reader_site_shown"
         case .readerDiscoverPaginated:
             return "reader_discover_paginated"
+        case .readerCardTapped:
+            return "reader_card_tapped"
         }
 }
 
