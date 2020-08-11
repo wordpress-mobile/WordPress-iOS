@@ -61,7 +61,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        styleUI()
+        styleSelectedBorderColor()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -69,53 +69,17 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                styleUI()
+                styleSelectedBorderColor()
             }
         }
     }
 
-    private func styleUI() {
-        if #available(iOS 13.0, *) {
-            styleShadow()
-        } else {
-            styleShadowLightMode()
-        }
+    private func styleSelectedBorderColor() {
         imageView.layer.borderColor = accentColor.cgColor
-    }
-
-    @available(iOS 13.0, *)
-    func styleShadow() {
-        if traitCollection.userInterfaceStyle == .dark {
-            styleShadowDarkMode()
-        } else {
-            styleShadowLightMode()
-        }
-    }
-
-    func styleShadowLightMode() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        layer.shadowRadius = 36.0
-        layer.shadowOpacity = 0.1
-        layer.masksToBounds = false
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: contentView.layer.cornerRadius).cgPath
-        layer.backgroundColor = UIColor.clear.cgColor
-    }
-
-    func styleShadowDarkMode() {
-        layer.shadowColor = nil
-        layer.shadowOffset = CGSize(width: 0, height: -3.0)
-        layer.shadowRadius = 0.0
-        layer.shadowOpacity = 0.0
-        layer.masksToBounds = true
-        layer.shadowPath = nil
-        layer.backgroundColor = UIColor.clear.cgColor
     }
 
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
-        imageView.downloadImage(from: url, success: { _ in
-        }, failure: { _ in
-        })
+        imageView.downloadImage(from: url, success: nil, failure: nil)
     }
 }
