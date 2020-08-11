@@ -103,7 +103,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    /// Keeps track of the selected index path for cells. This treats section as the row in the table view and item as the selected index of the layout in the category.
     private var selectedLayout: GutenbergSelectedLayout? = nil {
         didSet {
             layoutSelected(selectedLayout != nil)
@@ -248,19 +247,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
+        footerView.layoutIfNeeded()
 
         calculateHeaderSnapPoints()
         layoutTableViewHeader()
 
-        let fillColor: UIColor
-        if #available(iOS 13.0, *) {
-            fillColor = .systemBackground
-        } else {
-            fillColor = .white
-        }
-
-        tableView.tableHeaderView?.backgroundColor = fillColor
-//        tableView.tableFooterView?.backgroundColor = fillColor
+        tableView.tableHeaderView?.backgroundColor = .clear
         tableView.tableFooterView?.backgroundColor = .clear
     }
 
