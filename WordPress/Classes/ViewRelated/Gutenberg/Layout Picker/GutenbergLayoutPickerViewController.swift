@@ -103,7 +103,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    /// Keeps track of the selected index path for cells. This treats section as the row in the table view and item as the selected index of the layout in the category.
     private var selectedLayout: GutenbergSelectedLayout? = nil {
         didSet {
             layoutSelected(selectedLayout != nil)
