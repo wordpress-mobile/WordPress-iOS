@@ -207,6 +207,14 @@ extension UIColor {
 
         return muriel(color: .divider)
     }
+    
+    static var primaryButtonBorder: UIColor {
+           if #available(iOS 13, *) {
+               return .opaqueSeparator
+           }
+
+        return UIColor(displayP3Red: 198.0, green: 198.0, blue: 200.0, alpha: 1.0)
+    }
 
     /// WP color for table foregrounds (cells, etc)
     static var listForeground: UIColor {
@@ -265,6 +273,14 @@ extension UIColor {
         }
 
         return UIColor.neutral(.shade20)
+    }
+    
+    static var buttonIcon: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray2
+        }
+
+        return UIColor.neutral(.shade5)
     }
 
     static var filterBarBackground: UIColor {
