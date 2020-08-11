@@ -1,5 +1,9 @@
-v15.3 üç büyük değişiklik içerir:
+Bu güncellemede Blok düzenleyici hakkında size söyleyecek çok şeyimiz var:
 
-- Artık tüm bloklar kopyalama, kesme, yapıştırma ve çoğaltma seçeneklerine sahiptir.
-- Desteklenmeyen blokları, web metin düzenleyicisiyle aynı araçları kullanarak, uygulamada ayrı bir ekranda ayrı ayrı düzenleyebilirsiniz. (Not: bu henüz kendi kendine barındırılan siteler veya varsayılan olarak klasik düzenleyiciye sahip siteler için kullanılamaz.)
-- Hayalet etkisi! Metin düzenleyiciye, içeriğin ne zaman ve nerede yüklendiğini bildiren gölgeli alanları gösteren hoş bir görsel dokunuş.
+Artık bir Sosyal Bağlantılar bloğumuz var. Takipçilerinizi sayfalarınızdan veya yayınlarınızdan sosyal medya profillerinize yönlendirerek ekleyebilirsiniz. Hesaplarınızdan yalnızca birini veya istediğiniz kadarını ekleyebilirsiniz. Bizim için hiç sorun değil.
+
+Medya ve Metin bloğunda artık daha iyi düzenleme işlevleri var. Bloktan medyayı seçebilir veya odak noktasını değiştirebilirsiniz.
+
+Kapak bloğu yer tutucusunda artık görsellerinizi göz alıcı hale getiren farklı arka plan renkleri var.
+
+Bir süredir bazı şeyleri düzeltmekle ve oluşturmakla meşguldük. iOS sürüm 12.4 ve daha önceki sürümlerde sayfa düzenleyicisinin "Sitem" Sayfasından yüklenmemesine neden olan sorun çözüldü.
