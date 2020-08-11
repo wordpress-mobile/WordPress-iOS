@@ -15,6 +15,8 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     }
 
     static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
+        /// The emoji below is used as a placeholder to estimate the size of the title. We don't use the actual emoji provided by the API because this could be nil
+        /// and we want to allow space for a checkmark when the cell is selected.
         let size = "👋 \(filter.section.title)".size(withAttributes: [
             NSAttributedString.Key.font: font
         ])
