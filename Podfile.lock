@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.5.0):
+  - Automattic-Tracks-iOS (0.5.1-beta.1):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 4)
@@ -397,7 +397,7 @@ PODS:
     - WordPressKit (~> 4.14-beta)
     - WordPressShared (~> 1.10-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.14.0-beta.2):
+  - WordPressKit (4.14.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -435,7 +435,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.5.0)
+  - Automattic-Tracks-iOS (~> 0.5.1-beta.1)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - Down (~> 0.6.6)
@@ -656,7 +656,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: 89ccce073a4461831ec8aad2e6100bb77fb9d5d2
+  Automattic-Tracks-iOS: 044b34f28f6584d36faa64d1183d353198ed3bd6
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -723,7 +723,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
   WordPressAuthenticator: b70e5b8f125b3da1262e9ab7ddd7e176db85a00b
-  WordPressKit: eb32b62436777b67862e78e9b3eab51d0210e815
+  WordPressKit: dc7e501537b0f67e2bbfcdcb51ae4f71f0eee96b
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: a6fe876744bed80d54f920f5ae6f9dcdad338863
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
@@ -739,6 +739,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 3b41d9623dbd2456e9d08419952a8f258cf69ec1
+PODFILE CHECKSUM: 79686b594ead037c06efa77b426c80ee1e56cb9e
 
 COCOAPODS: 1.8.4
