@@ -405,7 +405,7 @@ PODS:
     - WordPressShared (~> 1.10-beta)
     - wpxmlrpc (= 0.8.5)
   - WordPressMocks (0.0.8)
-  - WordPressShared (1.11.0-beta.1):
+  - WordPressShared (1.11.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.7.1)
@@ -725,7 +725,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 3e4fe95df0b8e6b27eaa4b5a32a4a1620c6d6471
   WordPressKit: dcab41057f0c39af3280b7c0d17bdc36271e01ae
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
-  WordPressShared: a6fe876744bed80d54f920f5ae6f9dcdad338863
+  WordPressShared: b56046080c99d41519d097c970df663fda48e218
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: 754bc043ea42abc2eae8a07e5680c777c112666a
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
