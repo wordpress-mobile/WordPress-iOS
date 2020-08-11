@@ -21,17 +21,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="105" height="44"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Vvr-2Z-jvR">
-                                <rect key="frame" x="34" y="10" width="37.5" height="24"/>
+                                <rect key="frame" x="34" y="-3" width="37.5" height="50"/>
                                 <subviews>
-                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="FdX-4a-9fh">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="24"/>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FdX-4a-9fh">
+                                        <rect key="frame" x="0.0" y="0.0" width="20" height="50"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="JcQ-0B-dVL"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-Oy-qLj">
-                                        <rect key="frame" x="0.0" y="0.0" width="37.5" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="37.5" height="50"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -68,7 +68,4 @@
             <point key="canvasLocation" x="365.94202898550725" y="182.8125"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="checkmark" width="24" height="24"/>
-    </resources>
 </document>

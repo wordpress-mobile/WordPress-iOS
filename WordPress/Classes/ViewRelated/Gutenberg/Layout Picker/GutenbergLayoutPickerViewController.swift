@@ -260,7 +260,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
 
         tableView.tableHeaderView?.backgroundColor = fillColor
-        tableView.tableFooterView?.backgroundColor = fillColor
+//        tableView.tableFooterView?.backgroundColor = fillColor
+        tableView.tableFooterView?.backgroundColor = .clear
     }
 
     private func layoutSelected(_ isSelected: Bool) {
@@ -344,7 +345,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.section = (filteredSections ?? sections)[indexPath.row]
-
+        cell.layer.masksToBounds = false
+        cell.clipsToBounds = false
         if let selectedLayout = selectedLayout, containsSelectedLayout(selectedLayout, atIndexPath: indexPath) {
             cell.selectItemAt(selectedLayout.position)
         }

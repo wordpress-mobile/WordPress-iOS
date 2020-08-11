@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aWE-F8-w6T">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -29,7 +31,7 @@
             <objects>
                 <viewController id="6uO-HR-ECX" customClass="GutenbergLayoutPickerViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1ZG-pe-aDl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorInsetReference="fromAutomaticInsets" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eiU-pw-Xq6">
@@ -41,25 +43,25 @@
                                 </connections>
                             </tableView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sUr-lt-a0R">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="261.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="261.5"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r2i-Qw-xq3">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="261"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="261.5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <blurEffect style="regular"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uh3-j1-P0D">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a Layout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Irb-2L-Gsp">
-                                        <rect key="frame" x="236" y="18" width="128" height="20.5"/>
+                                        <rect key="frame" x="143" y="18" width="128" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=compact" hidden="NO"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jOR-Cu-uXg" userLabel="Close">
-                                        <rect key="frame" x="557" y="13" width="30" height="30"/>
+                                        <rect key="frame" x="371" y="13" width="30" height="30"/>
                                         <color key="backgroundColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" label="Close"/>
                                         <constraints>
@@ -91,10 +93,10 @@
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DTZ-MR-Eqm">
-                                <rect key="frame" x="0.0" y="56" width="600" height="205.5"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="205.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqC-YH-PXy">
-                                        <rect key="frame" x="160" y="53" width="280" height="64.5"/>
+                                        <rect key="frame" x="67" y="53" width="280" height="64.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" priority="750" constant="280" id="uXu-Ky-l0r"/>
                                         </constraints>
@@ -104,14 +106,14 @@
                                         <variation key="heightClass=compact" hidden="YES"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S74-AK-pHd">
-                                        <rect key="frame" x="177.5" y="0.0" width="245" height="41"/>
+                                        <rect key="frame" x="84.5" y="0.0" width="245" height="41"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=compact" hidden="YES"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa" customClass="GutenbergLayoutFilterBar" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="137.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="137.5" width="414" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Zmw-89-cy2"/>
@@ -125,7 +127,7 @@
                                         <cells/>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ff-7z-VN8" userLabel="Seperator">
-                                        <rect key="frame" x="0.0" y="205" width="600" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="205" width="414" height="0.5"/>
                                         <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="Gkn-GA-ugR"/>
@@ -163,37 +165,37 @@
                                 <variation key="heightClass=compact">
                                     <mask key="constraints">
                                         <exclude reference="yrU-yj-SJL"/>
-                                        <exclude reference="h5U-Rb-Tvs"/>
                                         <include reference="TWT-Wj-G1p"/>
                                         <include reference="X0m-zz-UO3"/>
                                         <exclude reference="vJ5-2N-JfP"/>
+                                        <exclude reference="h5U-Rb-Tvs"/>
                                     </mask>
                                 </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Hj-mT-YmE">
-                                <rect key="frame" x="0.0" y="504" width="600" height="76"/>
+                                <rect key="frame" x="0.0" y="732" width="414" height="110"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="23P-EU-wmp">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="76"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bI9-Jh-RnP">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="76"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                         <blurEffect style="prominent"/>
                                     </visualEffectView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4d5-b5-WY5" userLabel="Seperator">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
                                         <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="FyD-HZ-iYi"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="gS8-vY-WED">
-                                        <rect key="frame" x="20" y="16.5" width="560" height="44"/>
+                                        <rect key="frame" x="20" y="16.5" width="374" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zm3-8S-slr">
-                                                <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <state key="normal" title="Create Blank Page">
