@@ -91,8 +91,9 @@ class PostSignUpInterstitialViewController: UIViewController {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
-        tracker.track(click: .createNewSite)
+        tracker.track(click: .createNewSite, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
+        })
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
@@ -101,8 +102,9 @@ class PostSignUpInterstitialViewController: UIViewController {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
-        tracker.track(click: .addSelfHostedSite)
+        tracker.track(click: .addSelfHostedSite, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
+        })
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -111,8 +113,9 @@ class PostSignUpInterstitialViewController: UIViewController {
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
-        tracker.track(click: .dismiss)
+        tracker.track(click: .dismiss, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
+        })
     }
 
     // MARK: - Private
