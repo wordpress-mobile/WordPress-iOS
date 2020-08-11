@@ -207,7 +207,7 @@ extension UIColor {
 
         return muriel(color: .divider)
     }
-    
+
     static var primaryButtonBorder: UIColor {
            if #available(iOS 13, *) {
                return .opaqueSeparator
@@ -274,7 +274,7 @@ extension UIColor {
 
         return UIColor.neutral(.shade20)
     }
-    
+
     static var buttonIcon: UIColor {
         if #available(iOS 13, *) {
             return .systemGray2
