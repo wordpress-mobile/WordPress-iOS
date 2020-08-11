@@ -238,7 +238,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
 
         coordinator.handle(URL(string: "https://wpmobilep2.wordpress.com/2020/06/01/hello-test/")!)
 
-        expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailWebviewViewController.self))
+        expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailViewController.self))
     }
 
     /// Present an URL in a webview controller

@@ -1,5 +1,9 @@
-v15.3 includes three great changes:
+We have lots to tell you about the Block editor in this update:
 
-- All blocks now have copy, cut, paste, and duplicate options.
-- You can individually edit unsupported blocks on a separate screen in the app, using the same tools available the full web editor. (Note: this isn’t yet available for self-hosted sites, or that sites that default to the classic editor.)
-- Ghost Effect! It’s a nice visual touch we added to the editor that displays shaded areas to let you know when and where content is loading.
+We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or post. You can add just one of your accounts, or as many as you have. We don’t mind!
+
+The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
+
+The Cover block placeholder now has different background colors to make your images pop!
+
+We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.

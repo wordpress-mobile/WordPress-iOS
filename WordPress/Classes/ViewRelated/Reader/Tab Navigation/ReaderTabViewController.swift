@@ -51,7 +51,7 @@ class ReaderTabViewController: UIViewController {
 
         displaySelectInterestsIfNeeded()
 
-        viewModel.onDidChangeTabBar { [weak self] items, _ in
+        viewModel.onTabBarItemsDidChange { [weak self] items, _ in
             self?.displaySelectInterestsIfNeeded()
         }
     }

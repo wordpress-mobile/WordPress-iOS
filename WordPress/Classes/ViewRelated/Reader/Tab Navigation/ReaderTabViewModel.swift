@@ -7,7 +7,7 @@ import WordPressFlux
     /// tab bar items
     private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
-    private var didChangeTabBarItems: [(([ReaderTabItem], Int) -> Void)] = []
+    private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
 
     private var tabItems: [ReaderTabItem] {
         tabItemsStore.items
@@ -52,7 +52,7 @@ import WordPressFlux
             guard let viewModel = self else {
                 return
             }
-            viewModel.didChangeTabBarItems.forEach { $0(viewModel.tabItems, viewModel.selectedIndex) }
+            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItems, viewModel.selectedIndex) }
         }
         addNotificationsObservers()
         observeNetworkStatus()
@@ -63,8 +63,8 @@ import WordPressFlux
 // MARK: - Tab bar items
 extension ReaderTabViewModel {
 
-    func onDidChangeTabBar(completion: @escaping ([ReaderTabItem], Int) -> Void) {
-        didChangeTabBarItems.append(completion)
+    func onTabBarItemsDidChange(completion: @escaping ([ReaderTabItem], Int) -> Void) {
+        onTabBarItemsDidChange.append(completion)
     }
 
     func fetchReaderMenu() {

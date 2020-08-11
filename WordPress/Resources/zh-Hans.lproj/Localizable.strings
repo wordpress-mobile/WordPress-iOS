@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-09 12:54:09+0000 */
+/* Translation-Revision-Date: 2020-08-06 18:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -807,6 +807,9 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "描述您最近文章的访客数的柱形图";
 
+/* No comment provided by engineer. */
+"Base" = "基本";
+
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "率先发表评论。";
 
@@ -851,6 +854,9 @@
 
 /* translators: displayed right after the block is pasted. */
 "Block pasted" = "Block pasted";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "区块已删除";
 
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
@@ -1089,6 +1095,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在检查购买内容…";
 
+/* No comment provided by engineer. */
+"Child Blocks" = "子区块";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "选择页面";
 
@@ -1118,6 +1127,15 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "从设备中选择";
+
+/* No comment provided by engineer. */
+"Choose image" = "选择图像";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "选择图片或视频";
+
+/* No comment provided by engineer. */
+"Choose video" = "选择视频";
 
 /* Reader select interests subtitle label text */
 "Choose your interests" = "Choose your interests";
@@ -1430,6 +1448,12 @@
 "Continuing with Apple" = "继续使用 Apple";
 
 /* No comment provided by engineer. */
+"Convert to blocks" = "转换为区块";
+
+/* No comment provided by engineer. */
+"Coordinated Universal Time" = "世界协调时间";
+
+/* No comment provided by engineer. */
 "Copied block" = "Copied block";
 
 /* Copy link to oomment button title */
@@ -1712,6 +1736,9 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "删除站点错误";
 
+/* No comment provided by engineer. */
+"Delete Site Logo" = "删除站点徽标";
+
 /* Delete Tag confirmation action title */
 "Delete this tag" = "删除此标签";
 
@@ -1782,12 +1809,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "讨论";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1826,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "忽略 %@ 快速开始步骤";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "忽略新闻卡。";
 
 /* Display Name label text.
    My Profile display name label
@@ -1853,9 +1875,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "不要为结束而哭泣，而为曾经拥有而微笑。";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "轻点两次并按住以进行编辑";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "轻点两次以添加区块";
@@ -1970,9 +1989,6 @@
 /* No comment provided by engineer. */
 "Edit block in web browser" = "在 Web 浏览器中编辑区块";
 
-/* No comment provided by engineer. */
-"Edit media" = "Edit media";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
 
@@ -2083,6 +2099,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "输入用户名";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "输入您的 %@ 帐户信息。";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2311,6 +2330,9 @@
 
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "找到您的站点地址";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "查找您喜爱的博客和故事...";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "定位中...";
@@ -2669,6 +2691,9 @@ translators: sample content for \"Team\" page template */
 /* Hint for image title on image settings. */
 "Image title" = "图像标题";
 
+/* No comment provided by engineer. */
+"Image width" = "图片宽度";
+
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "图像，%@";
 
@@ -2864,10 +2889,7 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "了解更多";
 
 /* Description of a Quick Start Tour */
@@ -3206,6 +3228,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒体文件 (%1$@) 过大，无法上传。大小上限为 %2$@";
+
+/* No comment provided by engineer. */
+"Media preview" = "媒体预览";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Media preview failed.";
@@ -3780,6 +3805,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "打开“我”部分";
 
+/* No comment provided by engineer. */
+"Open the block list view." = "打开区块列表视图。";
+
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "在 Safari 中打开网页";
 
@@ -3887,6 +3915,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "密码";
 
@@ -4290,9 +4319,6 @@ translators: sample content for \"Services\" page template */
 /* Menu item label for linking a project page. */
 "Projects" = "项目";
 
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "提供更多信息。";
-
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "公开";
@@ -4556,6 +4582,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "替换现有区块";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "替换图片或视频";
+
+/* No comment provided by engineer. */
+"Replace video" = "替换视频";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "回复评论";
@@ -5064,7 +5096,11 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "显示相关文章";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* No comment provided by engineer. */
+"Show a site logo" = "显示站点徽标";
+
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "显示密码";
 
 /* No comment provided by engineer. */
@@ -5157,6 +5193,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "站点语言";
 
+/* No comment provided by engineer. */
+"Site Logo" = "站点徽标";
+
+/* No comment provided by engineer. */
+"Site Logo Settings" = "站点徽标设置";
+
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5164,6 +5206,9 @@ translators: sample content for \"Services\" page template */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "站点重定向";
+
+/* No comment provided by engineer. */
+"Site Tagline" = "站点标语";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5237,7 +5282,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "出错了。请检查连接并重试。";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "出现错误。请重试。";
 
 /* Invite Validation Alert
@@ -6042,7 +6088,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "重试";
 
 /* No comment provided by engineer. */
@@ -6309,6 +6356,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "上传站点图标";
 
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "上传图片或者从媒体库中选择一张图片作为您的站点徽标";
+
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "上传失败";
@@ -6374,6 +6424,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -7150,6 +7201,9 @@ translators: sample content for \"Services\" page template */
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
+
+/* No comment provided by engineer. */
+"description" = "描述";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "从列表中划掉内容的感觉是不是很棒？";
