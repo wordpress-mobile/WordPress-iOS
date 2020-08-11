@@ -63,6 +63,7 @@ import Foundation
     case followedBlogNotificationsReaderMenuOn
     case readerArticleVisited
     case itemSharedReader
+    case readerBlogBlocked
 
     /// A String that represents the event
     var value: String {
@@ -163,6 +164,8 @@ import Foundation
             return "reader_article_visited"
         case .itemSharedReader:
             return "item_shared_reader"
+        case .readerBlogBlocked:
+            return "reader_blog_blocked"
         }
 }
 
