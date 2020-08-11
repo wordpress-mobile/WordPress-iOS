@@ -82,7 +82,8 @@ final class ReaderShowMenuAction {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
+                || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
     }
