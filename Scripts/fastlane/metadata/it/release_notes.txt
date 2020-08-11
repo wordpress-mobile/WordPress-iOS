@@ -1,5 +1,9 @@
-La versione 15.3 contiene tre importanti modifiche:
+We have lots to tell you about the Block editor in this update:
 
-- Tutti i blocchi ora dispongono delle opzioni per copiare, tagliare, incollare e duplicare.
-- Puoi modificare individualmente i blocchi non supportati in una schermata separata nell'app, utilizzando gli stessi strumenti disponibili nell'editor web completo. (Nota: questa opzione non è ancora disponibile per i siti ospitati personalmente o per i siti che per impostazione predefinita utilizzano l'editor classico.)
-- Effetto fantasma! Si tratta di un bel tocco visivo che abbiamo aggiunto all'editor e mostra aree sfumate per indicarti dove e quando il contenuto è in fase di caricamento.
+We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or post. You can add just one of your accounts, or as many as you have. We don’t mind!
+
+The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
+
+The Cover block placeholder now has different background colors to make your images pop!
+
+We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.

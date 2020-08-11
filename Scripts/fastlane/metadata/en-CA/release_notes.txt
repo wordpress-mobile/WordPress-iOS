@@ -4,6 +4,6 @@ We now have a Social Links block! You can add to your followers by directing the
 
 The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
 
-The Cover block placeholder now has different background colors to make your images pop!
+The Cover block placeholder now has different background colours to make your images pop!
 
 We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.

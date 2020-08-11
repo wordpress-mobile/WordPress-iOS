@@ -1,5 +1,9 @@
-Version 15.3 beinhaltet drei große Änderungen:
+Es gibt so einiges, das wir dir über den Block-Editor in diesem Update mitteilen möchten:
 
-– Alle Blöcke verfügen jetzt über die Optionen „Kopieren“, „Ausschneiden“, „Einfügen“ und „Duplizieren“.
-– Du kannst nicht unterstützte Blöcke nun auf einem separaten Bildschirm in der App individuell bearbeiten und dafür dieselben Tools wie im Web-Editor nutzen. (Hinweis: Dies ist noch nicht für selbst gehostete Websites oder Websites, die den klassischen Editor nutzen, verfügbar.)
- Der Geister-Effekt! Ein visuelles Element, das wir dem Editor hinzugefügt haben: Es zeigt schattierte Bereiche an, damit du besser sehen kannst, wann und wo Inhalte geladen werden.
+Wir haben jetzt einen Block für Links zu sozialen Netzwerken! Du kannst die Anzahl deiner Follower erhöhen, indem du sie von deinen Seiten oder deinem Beitrag auf deine Social-Media-Profile weiterleitest. Du kannst ein ganz bestimmtes Konto oder auch all deine Konten hinzufügen. Ganz wie du willst!
+
+Der Block „Medien und Text“ verfügt jetzt über bessere Bearbeitungsfunktionen. Du kannst Medien im Block auswählen oder den Fokuspunkt ändern.
+
+Der Cover-Block-Platzhalter weist jetzt andere Hintergrundfarben auf, damit deine Bilder hervorstechen!
+
+Wir haben Fehler korrigiert und auch Neuerungen entwickelt. Das Problem, bei dem der Seiteneditor in der iOS-Version 12.4 und niedriger nicht auf der Seite „Meine Website“ geladen wurde, haben wir jetzt behoben.
