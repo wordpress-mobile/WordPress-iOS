@@ -328,7 +328,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
     }
 
     private func containsSelectedLayout(_ layout: GutenbergSelectedLayout, atIndexPath indexPath: IndexPath) -> Bool {
-        let rowSection = sections[indexPath.row]
+        let rowSection = (filteredSections ?? sections)[indexPath.row]
         return (layout.sectionSlug == rowSection.section.slug)
     }
 }
