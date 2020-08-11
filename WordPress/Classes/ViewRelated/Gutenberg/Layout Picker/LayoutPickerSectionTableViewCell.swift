@@ -46,6 +46,43 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
         super.awakeFromNib()
         collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier)
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+
+        if #available(iOS 13.0, *) {
+            styleShadow()
+        } else {
+            styleShadowLightMode()
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                styleShadow()
+            }
+        }
+    }
+
+    @available(iOS 13.0, *)
+    func styleShadow() {
+        if traitCollection.userInterfaceStyle == .dark {
+            styleShadowDarkMode()
+        } else {
+            styleShadowLightMode()
+        }
+    }
+
+    func styleShadowLightMode() {
+        collectionView.layer.shadowColor = UIColor.black.cgColor
+        collectionView.layer.shadowRadius = 36
+        collectionView.layer.shadowOffset = CGSize(width: 0, height: 3.0)
+        collectionView.layer.shadowOpacity = 0.1
+        collectionView.backgroundColor = nil
+    }
+
+    func styleShadowDarkMode() {
+        collectionView.layer.shadowColor = nil
     }
 
     private func deselectItem(_ indexPath: IndexPath) {
