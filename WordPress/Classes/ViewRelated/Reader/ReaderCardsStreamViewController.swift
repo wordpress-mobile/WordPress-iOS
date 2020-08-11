@@ -139,5 +139,6 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+        WPAnalytics.track(.readerDiscoverTopicTapped)
     }
 }
