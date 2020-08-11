@@ -73,6 +73,8 @@ final class ReaderShowMenuAction {
         } else {
             vc.present(alertController, animated: true)
         }
+
+        WPAnalytics.track(.postCardMoreTapped)
     }
 
     fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
