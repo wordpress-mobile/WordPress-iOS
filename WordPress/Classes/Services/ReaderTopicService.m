@@ -51,9 +51,22 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
+        NSArray *currentSiteTopics = [self allSiteTopics];
+        NSMutableArray *remoteFeedIds = [NSMutableArray array];
+
         for (RemoteReaderSiteInfo *siteInfo in sites) {
+            [remoteFeedIds addObject:siteInfo.feedID];
             [self siteTopicForRemoteSiteInfo:siteInfo];
         }
+
+        for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
+            // If a site fetched from Core Data isn't included in the list of sites
+            // fetched from remote, that means it's no longer being followed.
+            if (![remoteFeedIds containsObject:siteTopic.feedID]) {
+                siteTopic.following = NO;
+            }
+        }
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             if (success) {
                 success();
