@@ -243,19 +243,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
+        footerView.layoutIfNeeded()
 
         calculateHeaderSnapPoints()
         layoutTableViewHeader()
 
-        let fillColor: UIColor
-        if #available(iOS 13.0, *) {
-            fillColor = .systemBackground
-        } else {
-            fillColor = .white
-        }
-
-        tableView.tableHeaderView?.backgroundColor = fillColor
-        tableView.tableFooterView?.backgroundColor = fillColor
+        tableView.tableHeaderView?.backgroundColor = .clear
+        tableView.tableFooterView?.backgroundColor = .clear
     }
 
     private func layoutSelected(_ isSelected: Bool) {
