@@ -27,7 +27,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
-    @IBOutlet weak var categoryBar: GutenbergLayoutFilterBar!
+    @IBOutlet weak var filterBar: GutenbergLayoutFilterBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var createBlankPageBtn: UIButton!
@@ -139,13 +139,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
-        categoryBar.filterDelegate = self
+        filterBar.filterDelegate = self
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
         layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
-        categoryBar.reloadData()
+        filterBar.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -237,8 +237,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func calculateHeaderSnapPoints() {
-        minHeaderHeight = categoryBar.frame.height + minHeaderBottomSpacing.constant
-        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + categoryBar.frame.height + maxHeaderBottomSpacing.constant
+        minHeaderHeight = filterBar.frame.height + minHeaderBottomSpacing.constant
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBar.frame.height + maxHeaderBottomSpacing.constant
         _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
     }
 

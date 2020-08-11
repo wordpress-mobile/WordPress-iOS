@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aWE-F8-w6T">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -31,7 +29,7 @@
             <objects>
                 <viewController id="6uO-HR-ECX" customClass="GutenbergLayoutPickerViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1ZG-pe-aDl">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorInsetReference="fromAutomaticInsets" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eiU-pw-Xq6">
@@ -165,10 +163,10 @@
                                 <variation key="heightClass=compact">
                                     <mask key="constraints">
                                         <exclude reference="yrU-yj-SJL"/>
+                                        <exclude reference="h5U-Rb-Tvs"/>
                                         <include reference="TWT-Wj-G1p"/>
                                         <include reference="X0m-zz-UO3"/>
                                         <exclude reference="vJ5-2N-JfP"/>
-                                        <exclude reference="h5U-Rb-Tvs"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -271,10 +269,10 @@
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="categoryBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="closeButton" destination="jOR-Cu-uXg" id="JYm-hS-Ov6"/>
                         <outlet property="createBlankPageBtn" destination="zm3-8S-slr" id="KLr-3l-vzg"/>
                         <outlet property="createPageBtn" destination="CcO-r6-GJK" id="rBK-hn-WsJ"/>
+                        <outlet property="filterBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
                         <outlet property="headerBar" destination="Uh3-j1-P0D" id="1Ra-RG-uNE"/>
                         <outlet property="headerHeightConstraint" destination="yrU-yj-SJL" id="n1e-gV-ZH4"/>
