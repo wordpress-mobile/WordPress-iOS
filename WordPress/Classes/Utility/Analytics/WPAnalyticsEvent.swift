@@ -59,6 +59,8 @@ import Foundation
     case readerPullToRefresh
     case readerDiscoverTopicTapped
     case postCardMoreTapped
+    case followedBlogNotificationsReaderMenuOff
+    case followedBlogNotificationsReaderMenuOn
 
     /// A String that represents the event
     var value: String {
@@ -151,6 +153,10 @@ import Foundation
             return "reader_discover_topic_tapped"
         case .postCardMoreTapped:
             return "post_card_more_tapped"
+        case .followedBlogNotificationsReaderMenuOff:
+            return "followed_blog_notifications_reader_menu_off"
+        case .followedBlogNotificationsReaderMenuOn:
+            return "followed_blog_notifications_reader_menu_on"
         }
 }
 
