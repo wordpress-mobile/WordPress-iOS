@@ -826,6 +826,7 @@ import WordPressFlux
             return
         }
         syncHelper?.syncContentWithUserInteraction(true)
+        WPAnalytics.track(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
 
