@@ -68,7 +68,7 @@ class ReaderTabViewModelTests: XCTestCase {
         let setTabBarItemsExpectation = expectation(description: "tab bar items were set")
         store.getItemsExpectation = expectation(description: "Items were fetched")
         // When
-        viewModel.refreshTabBar { items, index in
+        viewModel.onTabBarItemsDidChange { items, index in
             setTabBarItemsExpectation.fulfill()
             XCTAssertEqual(index, 0)
             XCTAssertEqual(items.map { $0.title }, ["Following", "Following"])

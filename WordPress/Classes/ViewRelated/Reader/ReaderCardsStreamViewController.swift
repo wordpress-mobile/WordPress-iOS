@@ -11,8 +11,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
-    private var selectInterestsViewController: ReaderSelectInterestsViewController? = ReaderSelectInterestsViewController()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
@@ -21,7 +19,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         displaySelectInterestsIfNeeded()
     }
 
@@ -65,6 +62,15 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private func isTableViewAtTheTop() -> Bool {
         return tableView.contentOffset.y == 0
+    }
+
+    private func displaySelectInterestsIfNeeded() {
+        guard let readerTabBarViewController = parent as? ReaderTabViewController else {
+            return
+        }
+
+        readerTabBarViewController.displaySelectInterestsIfNeeded()
+        showGhost()
     }
 
     // MARK: - Sync
@@ -127,43 +133,5 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
-    }
-}
-
-// MARK: - Select Interests Display
-private extension ReaderCardsStreamViewController {
-    func displaySelectInterestsIfNeeded() {
-        selectInterestsViewController?.userIsFollowingTopics { [unowned self] isFollowing in
-            if isFollowing {
-                self.selectInterestsViewController = nil
-            } else {
-                self.showSelectInterestsView()
-            }
-        }
-    }
-
-    func showSelectInterestsView() {
-        guard let controller = selectInterestsViewController else {
-            return
-        }
-
-        controller.view.frame = self.view.bounds
-        self.add(controller)
-
-        controller.didSaveInterests = { [unowned self] in
-            guard let controller = self.selectInterestsViewController else {
-                return
-            }
-
-            self.displayLoadingStream()
-            self.syncIfAppropriate()
-
-            UIView.animate(withDuration: 0.2, animations: {
-                controller.view.alpha = 0
-            }) { [unowned self] _ in
-                controller.remove()
-                self.selectInterestsViewController = nil
-            }
-        }
     }
 }

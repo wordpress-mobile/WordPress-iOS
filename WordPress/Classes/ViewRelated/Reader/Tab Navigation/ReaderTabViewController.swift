@@ -4,13 +4,15 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    private let makeReaderTabView: (ReaderTabViewModel) -> UIView
+    private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
-    private lazy var readerTabView: UIView = {
+    private lazy var readerTabView: ReaderTabView = {
         return makeReaderTabView(viewModel)
     }()
 
-    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
+    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
+
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
@@ -36,10 +38,22 @@ class ReaderTabViewController: UIViewController {
             }
             viewModel.presentManage(from: self)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError(ReaderTabConstants.storyBoardInitError)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        displaySelectInterestsIfNeeded()
+
+        viewModel.onTabBarItemsDidChange { [weak self] items, _ in
+            self?.displaySelectInterestsIfNeeded()
+        }
     }
 
     func setupSearchButton() {
@@ -92,6 +106,41 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
     func setStartIndex(_ index: Int) {
         viewModel.selectedIndex = index
+    }
+}
+
+// MARK: - Notifications
+extension ReaderTabViewController {
+    // Ensure that topics and sites are synced when account changes
+    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
+        loadView()
+    }
+}
+
+// MARK: - Select Interests Display
+extension ReaderTabViewController {
+    func displaySelectInterestsIfNeeded() {
+        guard viewModel.itemsLoaded, isViewOnScreen() else {
+            return
+        }
+
+        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
+            if !isFollowing {
+                self.showSelectInterestsView()
+            }
+        }
+    }
+
+    func showSelectInterestsView() {
+        definesPresentationContext = true
+        selectInterestsViewController.modalPresentationStyle = .overCurrentContext
+        navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
+
+        selectInterestsViewController.didSaveInterests = { [unowned self] in
+            self.readerTabView.selectDiscover()
+
+            self.selectInterestsViewController.dismiss(animated: true)
+        }
     }
 }
 
