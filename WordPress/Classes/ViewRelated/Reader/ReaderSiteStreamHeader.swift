@@ -85,8 +85,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
         if siteTopic.siteDescription.isEmpty {
-            descriptionLableTopConstraint.isActive = false
-            descriptionLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 0.0).isActive = true
+            descriptionLableTopConstraint.constant = 0.0
         }
     }
 
