@@ -70,6 +70,12 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         styleSelectedBorderColor()
         imageView.layer.borderWidth = borderWith
+
+        if #available(iOS 13.0, *) {
+             styleShadow()
+         } else {
+             addShadow()
+         }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -78,8 +84,34 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
                 styleSelectedBorderColor()
+                styleShadow()
             }
         }
+    }
+
+    @available(iOS 13.0, *)
+    func styleShadow() {
+        if traitCollection.userInterfaceStyle == .dark {
+            removeShadow()
+        } else {
+            addShadow()
+        }
+    }
+
+    func addShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+
+        let scale = UIScreen.main.scale
+        let shadowRadius: CGFloat = 12 / scale
+        layer.shadowRadius = shadowRadius
+        layer.shadowOpacity = 0.16
+        layer.shadowOffset = CGSize(width: 0, height: (5/scale))
+
+        backgroundColor = nil
+    }
+
+    func removeShadow() {
+        layer.shadowColor = nil
     }
 
     private func styleSelectedBorderColor() {
