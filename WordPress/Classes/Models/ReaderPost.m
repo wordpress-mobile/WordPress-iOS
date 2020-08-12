@@ -360,7 +360,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return @[];
     }
 
-    return [self.tags componentsSeparatedByString:@", "];
+    NSArray *tags = [self.tags componentsSeparatedByString:@", "];
+
+    return [tags sortedArrayUsingSelector:@selector(localizedCompare:)];
 }
 
 - (NSString *)authorForDisplay
