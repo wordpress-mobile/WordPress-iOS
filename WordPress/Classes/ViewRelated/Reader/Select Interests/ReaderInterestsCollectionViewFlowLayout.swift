@@ -9,6 +9,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     @IBInspectable var itemSpacing: CGFloat = 6
     @IBInspectable var cellHeight: CGFloat = 40
+    @IBInspectable var allowsCentering: Bool = true
 
     // Collapsing/Expanding support
     static let overflowItemKind = "InterestsOverflowItem"
@@ -168,7 +169,8 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
 
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if collectionView?.traitCollection.horizontalSizeClass == .regular {
+        if allowsCentering,
+            collectionView?.traitCollection.horizontalSizeClass == .regular {
             return centeredLayoutAttributesForElements(in: rect)
         }
 

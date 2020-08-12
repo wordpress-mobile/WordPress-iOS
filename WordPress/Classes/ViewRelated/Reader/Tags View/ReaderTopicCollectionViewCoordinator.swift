@@ -56,11 +56,6 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     private func configureCollectionView() {
-        guard tags.count != 0 else {
-            collectionView.isHidden = true
-            return
-        }
-
         collectionView.delegate = self
         collectionView.dataSource = self
 
@@ -83,8 +78,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         layout.maxNumberOfDisplayedLines = 1
         layout.itemSpacing = Constants.cellSpacing
         layout.cellHeight = Constants.cellHeight
-
-        collectionView.isHidden = false
+        layout.allowsCentering = false
     }
 
     private func sizeForCell(title: String) -> CGSize {
