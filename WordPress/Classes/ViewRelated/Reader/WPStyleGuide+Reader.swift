@@ -296,7 +296,7 @@ extension WPStyleGuide {
         button.layer.borderColor = UIColor.primaryButtonBorder.cgColor
 
         button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
-        button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
 
         button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
         button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
@@ -543,7 +543,8 @@ extension WPStyleGuide {
             static let followBackgroundColor: UIColor = .primaryButtonBackground
             static let followTextColor: UIColor = .white
             static let followingBackgroundColor: UIColor = .clear
-            static let followingTextColor: UIColor = .buttonIcon
+            static let followingIconColor: UIColor = .buttonIcon
+            static let followingTextColor: UIColor = .textSubtle
 
             static let imageTitleSpace: CGFloat = 2.0
             static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)

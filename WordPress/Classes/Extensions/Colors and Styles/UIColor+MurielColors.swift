@@ -213,7 +213,7 @@ extension UIColor {
                return .opaqueSeparator
            }
 
-        return UIColor(displayP3Red: 198.0, green: 198.0, blue: 200.0, alpha: 1.0)
+        return muriel(color: .gray, .shade10)
     }
 
     /// WP color for table foregrounds (cells, etc)
@@ -272,7 +272,7 @@ extension UIColor {
             return .systemGray
         }
 
-        return UIColor.neutral(.shade20)
+        return .neutral(.shade20)
     }
 
     static var buttonIcon: UIColor {
