@@ -75,9 +75,9 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     func styleShadowLightMode() {
         collectionView.layer.shadowColor = UIColor.black.cgColor
-        collectionView.layer.shadowRadius = 36
-        collectionView.layer.shadowOffset = CGSize(width: 0, height: 3.0)
-        collectionView.layer.shadowOpacity = 0.1
+        collectionView.layer.shadowRadius = 12
+        collectionView.layer.shadowOffset = CGSize(width: 0, height: 5.0)
+        collectionView.layer.shadowOpacity = 0.16
         collectionView.backgroundColor = nil
     }
 
