@@ -77,6 +77,7 @@
             <connections>
                 <outlet property="avatarImageView" destination="w1n-O9-Da1" id="hV7-Pe-s6A"/>
                 <outlet property="descriptionLabel" destination="mi7-dO-TOF" id="vyT-Xy-U2P"/>
+                <outlet property="descriptionLableTopConstraint" destination="5pv-Dj-zWG" id="Owz-T7-tVl"/>
                 <outlet property="detailLabel" destination="fq2-Xh-dYx" id="ygC-Hp-5Xe"/>
                 <outlet property="followButton" destination="jvF-YL-IV0" id="EVa-VJ-sLt"/>
                 <outlet property="followCountLabel" destination="JHO-IY-cyK" id="Axc-dE-raX"/>
