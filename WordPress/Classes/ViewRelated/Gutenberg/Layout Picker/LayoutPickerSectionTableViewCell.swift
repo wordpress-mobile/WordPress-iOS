@@ -122,7 +122,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
 
 extension LayoutPickerSectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 148.0, height: 230.0)
+        return CGSize(width: 160.0, height: 230.0)
      }
 }
 
