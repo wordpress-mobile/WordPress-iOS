@@ -75,7 +75,6 @@ protocol ReaderPostCardCellDelegate: class {
 
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
-    weak var cardDelegate: ReaderPostCardCellDelegate?
 
     fileprivate var featuredImageDesiredWidth = CGFloat()
 
@@ -86,6 +85,7 @@ protocol ReaderPostCardCellDelegate: class {
     }
 
     var topicsCoordinator: ReaderTopicCollectionViewCoordinator?
+    weak var cardDelegate: ReaderPostCardCellDelegate?
 
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
@@ -265,6 +265,8 @@ protocol ReaderPostCardCellDelegate: class {
         guard
             let contentProvider = contentProvider,
             let tags = contentProvider.tagsForDisplay?()
+            let tags = contentProvider.tagsForDisplay?(),
+            tags.count != 0
         else {
             topicsCollectionView.isHidden = true
             return
@@ -274,6 +276,7 @@ protocol ReaderPostCardCellDelegate: class {
         coordinator.delegate = self
 
         self.topicsCoordinator = coordinator
+        topicsCollectionView.isHidden = false
     }
 
     fileprivate func configureHeader() {
