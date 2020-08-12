@@ -43,6 +43,7 @@ class SignupEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
         setTableViewMargins(forWidth: view.frame.width)
+        
         WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
     }
 
@@ -123,11 +124,12 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
     }
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
-        tracker.track(click: .editUsername)
-
         epilogueUserInfo = userInfo
         performSegue(withIdentifier: SignupUsernameViewController.classNameWithoutNamespaces(), sender: self)
-        WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
+        
+        tracker.track(click: .editUsername, ifTrackingNotEnabled: {
+            WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
+        })
     }
 }
 
@@ -219,9 +221,11 @@ private extension SignupEpilogueViewController {
         let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
         settingsService.changeUsername(to: newUsername, success: {
             WordPressAuthenticator.track(.signupEpilogueUsernameUpdateSucceeded, properties: self.tracksProperties())
+            
             finished()
         }) {
             WordPressAuthenticator.track(.signupEpilogueUsernameUpdateFailed, properties: self.tracksProperties())
+            
             finished()
         }
     }
