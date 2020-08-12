@@ -225,7 +225,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     private func layoutTableViewHeader() {
         let tableFooterFrame = footerView.frame
-        let bottomInset = tableFooterFrame.size.height
+        let bottomInset = tableFooterFrame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
     }
@@ -242,6 +242,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
+        footerView.setNeedsLayout()
         footerView.layoutIfNeeded()
 
         calculateHeaderSnapPoints()
