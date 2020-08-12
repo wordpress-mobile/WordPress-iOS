@@ -51,9 +51,16 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    var borderColor: UIColor {
+        return UIColor.black.withAlphaComponent(0.08)
+    }
+
+    var borderWith: CGFloat = 0.5
+
     override var isSelected: Bool {
         didSet {
-            imageView.layer.borderWidth = isSelected ? 2 : 0
+            styleSelectedBorderColor()
+            imageView.layer.borderWidth = isSelected ? 2 : borderWith
             checkmarkImageView.isHidden = !isSelected
             checkmarkBackground.isHidden = !isSelected
         }
@@ -62,6 +69,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         styleSelectedBorderColor()
+        imageView.layer.borderWidth = borderWith
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -75,7 +83,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
     }
 
     private func styleSelectedBorderColor() {
-        imageView.layer.borderColor = accentColor.cgColor
+        imageView.layer.borderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
     }
 
     func setImage(_ imageURL: String?) {
