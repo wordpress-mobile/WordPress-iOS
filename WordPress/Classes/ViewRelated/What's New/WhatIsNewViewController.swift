@@ -1,7 +1,7 @@
 
 import UIKit
 
-
+/// UIViewController for the What's New - Feature Announcements scene
 class WhatIsNewViewController: UIViewController {
 
     private lazy var whatIsNewView: UIView = {
@@ -13,7 +13,7 @@ class WhatIsNewViewController: UIViewController {
     }
 }
 
-
+/// The view that gets assigned to WhatIsNewViewController at load time
 class WhatIsNewView: UIView {
 
     lazy var continueButton: UIButton = {

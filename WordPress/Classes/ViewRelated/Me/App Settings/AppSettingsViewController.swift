@@ -305,9 +305,12 @@ class AppSettingsViewController: UITableViewController {
 
     func presentWhatIsNew() -> ImmuTableAction {
         return { [weak self] row in
+            guard let self = self else {
+                return
+            }
             let controller = WhatIsNewViewController()
-            self?.present(controller, animated: true)
-            self?.tableView.deselectSelectedRowWithAnimation(false)
+            self.present(controller, animated: true)
+            self.tableView.deselectSelectedRowWithAnimation(false)
         }
     }
 }
