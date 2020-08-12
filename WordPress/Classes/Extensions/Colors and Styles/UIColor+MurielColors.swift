@@ -280,7 +280,7 @@ extension UIColor {
             return .systemGray2
         }
 
-        return UIColor.neutral(.shade5)
+        return .neutral(.shade5)
     }
 
     static var filterBarBackground: UIColor {
