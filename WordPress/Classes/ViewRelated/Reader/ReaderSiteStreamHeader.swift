@@ -83,11 +83,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
-        if descriptionLabel.attributedText?.length > 0 {
-            descriptionLabel.isHidden = false
-        } else {
-            descriptionLabel.isHidden = true
-        }
     }
 
     @objc func configureHeaderImage(_ siteBlavatar: String?) {
