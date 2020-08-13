@@ -365,13 +365,16 @@ import WordPressFlux
             if self.isShowingResultStatusView {
                 self.resultsStatusView.updateAccessoryViewsVisibility()
             }
+
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
         })
+
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -1946,8 +1949,7 @@ private extension ReaderStreamViewController {
 
 extension ReaderStreamViewController: ReaderPostCardCellDelegate {
     func heightDidChange() {
-        WPAnalytics.track(.readerChipsMoreToggled)
-
+        // Forces the table view to layout the cells and update their heights
         tableView.beginUpdates()
         tableView.endUpdates()
     }
