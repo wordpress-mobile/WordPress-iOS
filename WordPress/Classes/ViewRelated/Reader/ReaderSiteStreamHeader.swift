@@ -32,7 +32,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var followButton: UIButton!
     @IBOutlet fileprivate weak var followCountLabel: UILabel!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-    @IBOutlet fileprivate weak var descriptionLableTopConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var descriptionLabelTopConstraint: NSLayoutConstraint!
 
     open var delegate: ReaderStreamHeaderDelegate?
     fileprivate var defaultBlavatar = "blavatar-default"
@@ -85,7 +85,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
         if siteTopic.siteDescription.isEmpty {
-            descriptionLableTopConstraint.constant = 0.0
+            descriptionLabelTopConstraint.constant = 0.0
         }
     }
 
