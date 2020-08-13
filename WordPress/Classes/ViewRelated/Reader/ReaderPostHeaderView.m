@@ -1,6 +1,8 @@
 #import "ReaderPostHeaderView.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
+
 const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
@@ -13,6 +15,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
+@property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *disclosureButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
@@ -34,6 +37,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
         [self setupLabelsStackView];
         [self setupSubtitleLabel];
         [self setupTitleLabel];
+        [self setupFollowButton];
         [self setupDisclosureButton];
         [self setupTapGesture];
     }
@@ -46,7 +50,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisHorizontal;
     stackView.distribution = UIStackViewAlignmentFill;
-    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.alignment = UIStackViewAlignmentTop;
     stackView.spacing = 8.0;
 
     [self addSubview:stackView];
@@ -87,7 +91,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     stackView.preservesSuperviewLayoutMargins = YES;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.distribution = UIStackViewAlignmentFill;
-    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.alignment = UIStackViewAlignmentLeading;
 
     [self.stackView addArrangedSubview:stackView];
     self.labelsStackView = stackView;
@@ -125,6 +129,18 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     [self.labelsStackView addArrangedSubview:label];
     self.titleLabel = label;
+}
+
+- (void)setupFollowButton
+{
+    NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
+
+    // FIXME: refine design specs later
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.titleLabel.font = [WPStyleGuide subtitleFont];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.labelsStackView addArrangedSubview:button];
+    self.followButton = button;
 }
 
 - (void)setupDisclosureButton
@@ -193,6 +209,23 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 - (void)setSubtitle:(NSString *)title
 {
     self.subtitleLabel.text = title;
+}
+
+- (void)setSubscribedToPost:(BOOL)isSubscribedToPost
+{
+    _isSubscribedToPost = isSubscribedToPost;
+    NSString *subscriptionStatusTitle = isSubscribedToPost
+        ? NSLocalizedString(@"Following conversation", @"Title for subscription status button, if the User is subscribed to the post.")
+        : NSLocalizedString(@"Follow conversation", @"Title for subscription status button, if the User is not subscribed to the post.");
+    
+    // FIXME: use correct asset
+    CGSize iconSize = CGSizeMake(18.0, 18.0);
+    UIImage *image = isSubscribedToPost
+        ? [UIImage gridiconOfType:GridiconTypeReaderFollowingConversation withSize:iconSize]
+        : [UIImage gridiconOfType:GridiconTypeReaderFollowConversation withSize:iconSize];
+
+    [self.followButton setTitle:subscriptionStatusTitle forState:UIControlStateNormal];
+    [self.followButton setImage:image forState:UIControlStateNormal];
 }
 
 #pragma mark - Recognizer Helpers
