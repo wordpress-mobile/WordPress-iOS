@@ -299,7 +299,7 @@
 
 - (void)configureLocationAccessibility
 {
-    // Menu in area: Header. 3 menu areas in this theme. Button. [hint] Expands to select a different menu location.
+    // Menu area: Header. 3 menu areas in this theme. Button. [hint] Expands to select a different menu area.
     NSString *format = NSLocalizedString(@"Menu area: %@, %@", @"Screen reader string too choose a menu area to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is an already localized string saying the number of areas in this theme.");
     self.detailView.accessibilityLabel = [NSString stringWithFormat:format,
                                           self.selectedItem.displayName,
