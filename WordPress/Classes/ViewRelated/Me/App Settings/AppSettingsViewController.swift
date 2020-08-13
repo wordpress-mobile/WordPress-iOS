@@ -302,6 +302,17 @@ class AppSettingsViewController: UITableViewController {
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
+
+    func presentWhatIsNew() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+            let controller = WhatIsNewViewController()
+            self.present(controller, animated: true)
+            self.tableView.deselectSelectedRowWithAnimation(false)
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance
@@ -461,6 +472,8 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
+        let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal"), action: presentWhatIsNew())
+
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
         if #available(iOS 10.3, *),
             UIApplication.shared.supportsAlternateIcons {
@@ -469,6 +482,10 @@ private extension AppSettingsViewController {
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
+        }
+
+        if FeatureFlag.whatIsNew.enabled {
+            rows.append(whatIsNewRow)
         }
 
         if #available(iOS 13.0, *) {
