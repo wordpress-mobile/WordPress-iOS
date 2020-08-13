@@ -196,10 +196,10 @@
     }
 }
 
+#pragma mark - Accessibility
 
 - (void)prepareForVoiceOver
 {
-    self.shouldGroupAccessibilityChildren = YES;
     self.isAccessibilityElement = YES;
     self.accessibilityTraits = UIAccessibilityTraitButton;
 }
