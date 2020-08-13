@@ -11,9 +11,6 @@
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong, readonly) UIStackView *labelsStackView;
-@property (nonatomic, strong, readonly) UILabel *titleLabel;
-@property (nonatomic, strong, readonly) UILabel *subTitleLabel;
-@property (nonatomic, strong, readonly) UIImageView *iconView;
 @property (nonatomic, strong, readonly) UIImageView *accessoryView;
 
 @end
@@ -42,6 +39,7 @@
     [self setupSubtTitleLabel];
     [self setupTitleLabel];
     [self setupAccessoryView];
+    [self prepareForVoiceOver];
 
     self.backgroundColor = [UIColor clearColor];
 
@@ -196,6 +194,14 @@
     if ([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
         [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
     }
+}
+
+
+- (void)prepareForVoiceOver
+{
+    self.shouldGroupAccessibilityChildren = YES;
+    self.isAccessibilityElement = YES;
+    self.accessibilityTraits = UIAccessibilityTraitButton;
 }
 
 @end

@@ -2,6 +2,7 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusSelectionItemView.h"
 #import "Menu+ViewDesign.h"
+#import "MenuLocation.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WordPress-Swift.h"
 
@@ -13,6 +14,7 @@
 @property (nonatomic, strong, readonly) NSMutableArray *itemViews;
 @property (nonatomic, strong) MenusSelectionItemView *addNewItemView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
+@property (nonatomic, strong, nullable) MenusSelectionItem *selectedItemLocation;
 
 @end
 
@@ -42,6 +44,8 @@
     self.detailView.delegate = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionItemObjectWasUpdatedNotification:) name:MenusSelectionViewItemUpdatedItemObjectNotification object:nil];
+
+    [self prepareForVoiceOver];
 }
 
 
@@ -63,11 +67,17 @@
 
 - (void)setSelectedItem:(MenusSelectionItem *)selectedItem
 {
+    [self setSelectedItem:selectedItem location:nil];
+}
+
+- (void)setSelectedItem:(MenusSelectionItem *)selectedItem location:(MenusSelectionItem *)location
+{
     if (_selectedItem != selectedItem) {
 
         _selectedItem.selected = NO;
         selectedItem.selected = YES;
         _selectedItem = selectedItem;
+        _selectedItemLocation = location;
 
         [self updateDetailsView];
     }
@@ -125,6 +135,7 @@
         }
 
         self.detailView.showsDesignActive = selectionItemsExpanded;
+        [self prepareForVoiceOver];
     }
 }
 
@@ -140,6 +151,37 @@
 }
 
 #pragma mark - private
+
+- (void)prepareForVoiceOver
+{
+    if ([self.selectedItem isMenuLocation]) {
+        [self configureLocationAccessibility];
+    } else if ([self.selectedItem isMenu] && self.selectedItemLocation != nil) {
+        [self configureMenuAccessibility];
+    }
+    self.detailView.accessibilityValue = self.selectionItemsExpanded ? @"Expanded" : nil;
+}
+
+- (void)configureLocationAccessibility
+{
+    // Menu in area: Header. 3 menu areas in this theme. Button. [hint] Expands to select a different menu location.
+    NSString *format = NSLocalizedString(@"Menu area: %@, %@", @"Screen reader string too choose a menu area to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is an already localized string saying the number of areas in this theme.");
+    self.detailView.accessibilityLabel = [NSString stringWithFormat:format,
+                                          self.selectedItem.displayName,
+                                          self.detailView.subTitleLabel.text];
+    self.detailView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu area", @"Screen reader hint (non-imperative) about what does the site menu area selector button does.");
+}
+
+- (void)configureMenuAccessibility
+{
+    // Menu in area Header: Primary. 3 menus available. Button. [hint] Expands to select a different menu to edit.
+    NSString *format = NSLocalizedString(@"Menu in area %@: %@, %@", @"Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. Third is an already localized string saying the number of menus available in the menu area selected.");
+    self.detailView.accessibilityLabel = [NSString stringWithFormat:format,
+                                          self.selectedItemLocation.displayName,
+                                          self.selectedItem.displayName,
+                                          self.detailView.subTitleLabel.text];
+    self.detailView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu", @"Screen reader hint (non-imperative) about what does the site menu selector button does.");
+}
 
 - (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionItem *)item
 {
@@ -182,6 +224,7 @@
 {
     if (self.selectedItem) {
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:self.selectedItem];
+        [self prepareForVoiceOver];
     }
 }
 
@@ -254,6 +297,7 @@
     if (updatedItem.selected) {
         // update the detailView
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:updatedItem];
+        [self prepareForVoiceOver];
     }
 
     // update any itemViews using this item

@@ -33,6 +33,11 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 @property (nonatomic, strong) MenusSelectionItem *selectedItem;
 
 /**
+Set the currently selected item in the UI plus its location.
+*/
+- (void)setSelectedItem:(MenusSelectionItem *)selectedItem location:(MenusSelectionItem *)location;
+
+/**
  Add a selection item to the list of available items for display.
  */
 - (void)addSelectionViewItem:(MenusSelectionItem *)selectionItem;
