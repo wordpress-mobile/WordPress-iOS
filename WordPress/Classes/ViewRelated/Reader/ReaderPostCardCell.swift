@@ -86,6 +86,7 @@ protocol ReaderPostCardCellDelegate: class {
 
     var topicsCoordinator: ReaderTopicCollectionViewCoordinator?
     weak var cardDelegate: ReaderPostCardCellDelegate?
+    var displayTopics: Bool
 
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
@@ -167,6 +168,7 @@ protocol ReaderPostCardCellDelegate: class {
 
         topicsCoordinator = nil
         imageLoader.prepareForReuse()
+        displayTopics = false
     }
 
 
@@ -263,8 +265,8 @@ protocol ReaderPostCardCellDelegate: class {
 
     func configureTopicsCollectionView() {
         guard
+            displayTopics,
             let contentProvider = contentProvider,
-            let tags = contentProvider.tagsForDisplay?()
             let tags = contentProvider.tagsForDisplay?(),
             tags.count != 0
         else {
