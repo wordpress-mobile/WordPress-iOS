@@ -1198,17 +1198,27 @@ import WordPressFlux
         postCellActions?.isLoggedIn = isLoggedIn
         postCellActions?.savedPostsDelegate = self
 
+        // Restrict the topics header to only display on
+        var displayTopics = true
+
+        if let topic = readerTopic {
+            let type = ReaderHelpers.topicType(topic)
+
+            switch type {
+            case .discover, .tag:
+                displayTopics = true
+            default:
+                displayTopics = false
+            }
+        }
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
-                                                loggedInActionVisibility: .visible(enabled: isLoggedIn))
-
-        guard let postCardCell = cell as? ReaderPostCardCell else {
-            return
-        }
-
-        postCardCell.cardDelegate = self
+                                                loggedInActionVisibility: .visible(enabled: isLoggedIn),
+                                                cardDelegate: self,
+                                                displayTopics: displayTopics)
 
     }
 
