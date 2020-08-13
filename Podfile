@@ -10,10 +10,10 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '1.9.2'
+    pod 'WordPressShared', '~> 1.11-beta'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
     #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
 
@@ -37,7 +37,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.13.0'
+    pod 'WordPressKit', '~> 4.14-beta'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -143,7 +143,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '13ad7deedd0f732a48c8e6a7ffc230879def2c25'
+    gutenberg :tag => 'v1.34.0'
 
     ## Third party libraries
     ## =====================
@@ -170,7 +170,7 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.5.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.5.1-beta.1'
     # While in PR
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
     # Local Development
@@ -186,7 +186,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.22.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.23.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

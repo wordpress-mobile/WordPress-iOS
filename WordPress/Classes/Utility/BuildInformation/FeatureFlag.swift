@@ -17,6 +17,7 @@ enum FeatureFlag: Int, CaseIterable {
     case readerImprovementsPhase2
     case gutenbergMentions
     case gutenbergModalLayoutPicker
+    case whatIsNew
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -52,9 +53,11 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerImprovementsPhase2:
             return false
         case .gutenbergMentions:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .gutenbergModalLayoutPicker:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return false
+        case .whatIsNew:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
@@ -103,6 +106,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Mentions in Gutenberg"
         case .gutenbergModalLayoutPicker:
             return "Gutenberg Modal Layout Picker"
+        case .whatIsNew:
+            return "What's New / Feature Announcement"
         }
     }
 
