@@ -24,7 +24,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     private struct Strings {
-        static let collapseButtonTitle: String = NSLocalizedString("Hide", comment: "")
+        static let collapseButtonTitle: String = NSLocalizedString("Hide", comment: "Title of a button used to collapse a group")
     }
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
@@ -148,13 +148,13 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
         else {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.overflowReuseIdentifier) with kind: \(overflowKind)")
         }
-        
+
         let remainingItems = layout.remainingItems
         let title = string(for: remainingItems)
 
         configure(cell: cell, with: title)
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(toggleExpanded))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleExpanded))
         cell.addGestureRecognizer(tapGestureRecognizer)
 
         return cell
