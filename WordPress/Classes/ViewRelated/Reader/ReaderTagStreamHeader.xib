@@ -13,8 +13,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-WX-1gb">
-                    <rect key="frame" x="187.66666666666666" y="40" width="0.0" height="0.0"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-WX-1gb">
+                    <rect key="frame" x="16" y="40" width="343" height="0.0"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -38,6 +38,8 @@
                 <constraint firstItem="yMm-WX-1gb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="8dj-78-13r"/>
                 <constraint firstItem="yMm-WX-1gb" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="S6J-qa-Lem"/>
                 <constraint firstAttribute="bottom" secondItem="gN8-Rn-2M3" secondAttribute="bottom" constant="40" id="mzP-6y-xip"/>
+                <constraint firstAttribute="trailingMargin" secondItem="yMm-WX-1gb" secondAttribute="trailing" id="tD0-cD-AwP"/>
+                <constraint firstItem="yMm-WX-1gb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="yft-9s-TNw"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
