@@ -135,9 +135,8 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 {
     NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
 
-    // FIXME: refine design specs later
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.titleLabel.font = [WPStyleGuide subtitleFont];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     [self.labelsStackView addArrangedSubview:button];
     self.followButton = button;
@@ -214,18 +213,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 - (void)setSubscribedToPost:(BOOL)isSubscribedToPost
 {
     _isSubscribedToPost = isSubscribedToPost;
-    NSString *subscriptionStatusTitle = isSubscribedToPost
-        ? NSLocalizedString(@"Following conversation", @"Title for subscription status button, if the User is subscribed to the post.")
-        : NSLocalizedString(@"Follow conversation", @"Title for subscription status button, if the User is not subscribed to the post.");
-    
-    // FIXME: use correct asset
-    CGSize iconSize = CGSizeMake(18.0, 18.0);
-    UIImage *image = isSubscribedToPost
-        ? [UIImage gridiconOfType:GridiconTypeReaderFollowingConversation withSize:iconSize]
-        : [UIImage gridiconOfType:GridiconTypeReaderFollowConversation withSize:iconSize];
-
-    [self.followButton setTitle:subscriptionStatusTitle forState:UIControlStateNormal];
-    [self.followButton setImage:image forState:UIControlStateNormal];
+    [self.followButton setSelected:isSubscribedToPost];
 }
 
 #pragma mark - Recognizer Helpers
