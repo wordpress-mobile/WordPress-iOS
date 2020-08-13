@@ -1,3 +1,7 @@
+15.6
+-----
+* [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
+
 15.5
 -----
 * [*] Reader: revamped UI for your site header.
