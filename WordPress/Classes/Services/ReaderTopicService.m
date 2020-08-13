@@ -918,7 +918,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return [title capitalizedStringWithLocale:[NSLocale currentLocale]];
 }
 
-
 /**
 Saves the specified `ReaderSiteTopics`. Any `ReaderSiteTopics` not included in the passed
 array are marked as being unfollowed in Core Data.
@@ -930,7 +929,7 @@ array are marked as being unfollowed in Core Data.
      [self.managedObjectContext performBlock:^{
          NSArray *currentSiteTopics = [self allSiteTopics];
          NSMutableArray *remoteFeedIds = [NSMutableArray array];
-         
+
          for (RemoteReaderSiteInfo *siteInfo in sites) {
              [remoteFeedIds addObject:siteInfo.feedID];
              [self siteTopicForRemoteSiteInfo:siteInfo];
@@ -943,7 +942,7 @@ array are marked as being unfollowed in Core Data.
                  siteTopic.following = NO;
              }
          }
-         
+
          [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
              if (success) {
                  success();
