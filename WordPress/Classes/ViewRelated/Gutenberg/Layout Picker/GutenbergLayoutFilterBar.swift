@@ -3,9 +3,8 @@ import UIKit
 protocol FilterBarDelegate {
     func numberOfFilters() -> Int
     func filter(forIndex: Int) -> GutenbergLayoutSection
-    func willSelectFilter(forIndex: Int)
-    func didSelectFilter(forIndex: Int)
-    func didDeselectFilter(forIndex: Int)
+    func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath])
+    func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath])
 }
 
 class GutenbergLayoutFilterBar: UICollectionView {
@@ -30,16 +29,16 @@ extension GutenbergLayoutFilterBar: UICollectionViewDelegate {
             deselectItem(indexPath)
             return false
         }
-        filterDelegate?.willSelectFilter(forIndex: indexPath.item)
         return true
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        filterDelegate?.didSelectFilter(forIndex: indexPath.item)
+        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems else { return }
+        filterDelegate?.didSelectFilter(withIndex: indexPath, withSelectedIndexes: indexPathsForSelectedItems)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        filterDelegate?.didDeselectFilter(forIndex: indexPath.item)
+        filterDelegate?.didDeselectFilter(withIndex: indexPath, withSelectedIndexes: collectionView.indexPathsForSelectedItems ?? [])
     }
 }
 

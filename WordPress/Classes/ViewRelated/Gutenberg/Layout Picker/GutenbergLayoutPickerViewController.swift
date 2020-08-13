@@ -139,6 +139,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         super.viewDidLoad()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
         filterBar.filterDelegate = self
+        filterBar.allowsMultipleSelection = true
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
@@ -387,28 +388,15 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
         return sections[index]
     }
 
-    func reloadCurrentFilterRow() {
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-    }
-
-    func willSelectFilter(forIndex index: Int) {
-        isUpdating = true
-    }
-
-    func didSelectFilter(forIndex index: Int) {
-        defer {
-            isUpdating = false
-        }
-
+    func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
         guard filteredSections == nil else {
-            filteredSections = [sections[index]]
-            reloadCurrentFilterRow()
+            insertFilterRow(withIndex: selectedIndex, withSelectedIndexes: selectedIndexes)
             return
         }
 
-        let rowsToRemove = (0..<sections.count).compactMap { ($0 == index) ? nil : IndexPath(row: $0, section: 0) }
+        let rowsToRemove = (0..<sections.count).compactMap { ($0 == selectedIndex.item) ? nil : IndexPath(row: $0, section: 0) }
 
-        filteredSections = [sections[index]]
+        filteredSections = [sections[selectedIndex.item]]
         tableView.performBatchUpdates({
             tableView.deleteRows(at: rowsToRemove, with: .fade)
         }) { _ in
@@ -416,14 +404,60 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
         }
     }
 
-    func didDeselectFilter(forIndex index: Int) {
-        guard !isUpdating else { return }
-        let currentRowSlug = filteredSections?.first?.section.slug
+    func insertFilterRow(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
 
+        var row: IndexPath? = nil
+        let sortedIndexes = selectedIndexes.sorted(by: { $0.item < $1.item })
+        for i in 0..<sortedIndexes.count {
+            if sortedIndexes[i].item == selectedIndex.item {
+                let indexPath = IndexPath(row: i, section: 0)
+                filteredSections?.insert(sections[selectedIndex.item], at: i)
+                row = indexPath
+                break
+            }
+        }
+
+        guard let rowToAdd = row else { return }
+        tableView.performBatchUpdates({
+            tableView.insertRows(at: [rowToAdd], with: .fade)
+        })
+    }
+
+    func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
+        guard selectedIndexes.count == 0 else {
+            removeFilterRow(withIndex: index)
+            return
+        }
+
+        let currentRowSlug = filteredSections?.first?.section.slug
         filteredSections = nil
         let rowsToAdd = (0..<sections.count).compactMap { (sections[$0].section.slug == currentRowSlug) ? nil : IndexPath(row: $0, section: 0) }
         tableView.performBatchUpdates({
             tableView.insertRows(at: rowsToAdd, with: .fade)
         })
+    }
+
+    func removeFilterRow(withIndex index: IndexPath) {
+        guard let filteredSections = filteredSections else { return }
+
+        var row: IndexPath? = nil
+        let rowSlug = sections[index.item].section.slug
+        for i in 0..<filteredSections.count {
+            if filteredSections[i].section.slug == rowSlug {
+                let indexPath = IndexPath(row: i, section: 0)
+                self.filteredSections?.remove(at: i)
+                row = indexPath
+                break
+            }
+        }
+
+        guard let rowToRemove = row else { return }
+        tableView.performBatchUpdates({
+            tableView.deleteRows(at: [rowToRemove], with: .fade)
+        }) { _ in
+            if (self.filteredSections?.count ?? 0) < 2 {
+                self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
+            }
+        }
     }
 }
