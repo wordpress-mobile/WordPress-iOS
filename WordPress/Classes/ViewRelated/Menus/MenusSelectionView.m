@@ -136,6 +136,8 @@
 
         self.detailView.showsDesignActive = selectionItemsExpanded;
         [self prepareForVoiceOver];
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification,
+                                        [self.stackView.arrangedSubviews firstObject]);
     }
 }
 
@@ -290,6 +292,9 @@
     }
     NSString *expandedLocalizedString = NSLocalizedString(@"Expanded", @"Screen reader text to represent the expanded state of a UI control");
     self.detailView.accessibilityValue = self.selectionItemsExpanded ? expandedLocalizedString : nil;
+    self.addNewItemView.accessibilityLabel = NSLocalizedString(@"Add new menu", @"Screen reader text for Menus button that adds a new menu to a site.");
+
+    [self configureAccessibilityGroups];
 }
 
 - (void)configureLocationAccessibility
@@ -311,6 +316,11 @@
                                           self.selectedItem.displayName,
                                           self.detailView.subTitleLabel.text];
     self.detailView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu", @"Screen reader hint (non-imperative) about what does the site menu selector button do.");
+}
+
+- (void)configureAccessibilityGroups
+{
+    self.accessibilityElements = self.selectionItemsExpanded ? self.stackView.arrangedSubviews : nil;
 }
 
 @end
