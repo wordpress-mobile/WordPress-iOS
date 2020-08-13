@@ -30,7 +30,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
     let collectionView: UICollectionView
-    let tags: [String]
+    let topics: [String]
 
     deinit {
         guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
@@ -41,9 +41,9 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         layout.invalidateLayout()
     }
 
-    init(collectionView: UICollectionView, tags: [String]) {
+    init(collectionView: UICollectionView, topics: [String]) {
         self.collectionView = collectionView
-        self.tags = tags
+        self.topics = topics
 
         super.init()
 
@@ -121,7 +121,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tags.count
+        return topics.count
     }
 }
 
@@ -133,7 +133,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
-        configure(cell: cell, with: tags[indexPath.row])
+        configure(cell: cell, with: topics[indexPath.row])
 
         return cell
     }
@@ -172,14 +172,14 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return sizeForCell(title: tags[indexPath.row])
+        return sizeForCell(title: topics[indexPath.row])
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // We create a remote service because we need to convert the topic to a slug an this contains the
         // code to do that
         let service = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())
-        guard let topic = service.slug(forTopicName: tags[indexPath.row]) else {
+        guard let topic = service.slug(forTopicName: topics[indexPath.row]) else {
             return
         }
 

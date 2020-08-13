@@ -274,7 +274,7 @@ protocol ReaderPostCardCellDelegate: class {
             return
         }
 
-        let coordinator = ReaderTopicCollectionViewCoordinator(collectionView: topicsCollectionView, tags: tags)
+        let coordinator = ReaderTopicCollectionViewCoordinator(collectionView: topicsCollectionView, topics: tags)
         coordinator.delegate = self
 
         self.topicsCoordinator = coordinator
