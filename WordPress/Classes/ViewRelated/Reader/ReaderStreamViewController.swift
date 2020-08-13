@@ -1946,6 +1946,8 @@ private extension ReaderStreamViewController {
 
 extension ReaderStreamViewController: ReaderPostCardCellDelegate {
     func heightDidChange() {
+        WPAnalytics.track(.readerChipsMoreToggled)
+
         tableView.beginUpdates()
         tableView.endUpdates()
     }

@@ -86,7 +86,7 @@ protocol ReaderPostCardCellDelegate: class {
 
     var topicsCoordinator: ReaderTopicCollectionViewCoordinator?
     weak var cardDelegate: ReaderPostCardCellDelegate?
-    var displayTopics: Bool
+    var displayTopics: Bool = false
 
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
