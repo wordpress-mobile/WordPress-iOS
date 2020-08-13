@@ -67,7 +67,11 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         filterLabel.font = LayoutPickerFilterCollectionViewCell.font
-        checkmark.image = UIImage.gridicon(.checkmark)
+        if #available(iOS 13.0, *) {
+            checkmark.image = UIImage(systemName: "checkmark")
+        } else {
+            checkmark.image = UIImage.gridicon(.checkmark)
+        }
         checkmark.tintColor = checkmarkTintColor
     }
 
