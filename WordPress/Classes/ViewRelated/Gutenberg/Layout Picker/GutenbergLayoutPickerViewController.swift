@@ -406,12 +406,11 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
             return
         }
 
-
         let rowsToRemove = (0..<sections.count).compactMap { ($0 == index) ? nil : IndexPath(row: $0, section: 0) }
 
         filteredSections = [sections[index]]
         tableView.performBatchUpdates({
-            tableView.deleteRows(at: rowsToRemove, with: .left)
+            tableView.deleteRows(at: rowsToRemove, with: .fade)
         }) { _ in
             self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
         }
@@ -424,7 +423,7 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
         filteredSections = nil
         let rowsToAdd = (0..<sections.count).compactMap { (sections[$0].section.slug == currentRowSlug) ? nil : IndexPath(row: $0, section: 0) }
         tableView.performBatchUpdates({
-            tableView.insertRows(at: rowsToAdd, with: .left)
+            tableView.insertRows(at: rowsToAdd, with: .fade)
         })
     }
 }
