@@ -268,7 +268,7 @@ protocol ReaderPostCardCellDelegate: class {
             displayTopics,
             let contentProvider = contentProvider,
             let tags = contentProvider.tagsForDisplay?(),
-            tags.count != 0
+            !tags.isEmpty
         else {
             topicsCollectionView.isHidden = true
             return

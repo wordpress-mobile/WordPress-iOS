@@ -49,7 +49,7 @@ import Foundation
     case secondNotificationsAlertAllowTapped
     case secondNotificationsAlertNoTapped
 
-    // Reader Chips
+    // Reader
     case readerChipsMoreToggled
 
     /// A String that represents the event
