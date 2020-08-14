@@ -5,6 +5,17 @@ class AuthenticationService {
 
     static let wpComLoginEndpoint = "https://wordpress.com/wp-login.php"
 
+    enum RequestAuthCookieError: Error, LocalizedError {
+        case wpcomCookieNotReturned
+
+        public var errorDescription: String? {
+            switch self {
+            case .wpcomCookieNotReturned:
+                return "Response to request for auth cookie for WP.com site failed to return cookie."
+            }
+        }
+    }
+
     // MARK: - Self Hosted
 
     func loadAuthCookiesForSelfHosted(
@@ -84,7 +95,16 @@ class AuthenticationService {
 
                 self.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
                     cookieJar.setCookies(cookies) {
-                        success()
+
+                        // Verify that the WP.com auth cookie was indeed returned by the server.
+                        cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) { hasCookie in
+                            guard hasCookie else {
+                                failure(RequestAuthCookieError.wpcomCookieNotReturned)
+                                return
+                            }
+                            success()
+                        }
+
                     }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.
