@@ -1,6 +1,11 @@
 15.4
 -----
  
+
+15.3.1
+-----
+* [***] Block Editor: Fix for editing the Classic Block in the Unsupported block editor
+
 15.3
 -----
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
