@@ -55,7 +55,7 @@
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="20" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pbj-mu-PTK" customClass="TopicsCollectionView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="16" y="16" width="288" height="0.0"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <collectionViewLayout key="collectionViewLayout" id="t6g-bE-oxG" customClass="ReaderInterestsCollectionViewFlowLayout" customModule="WordPress" customModuleProvider="target"/>
+                                <collectionViewLayout key="collectionViewLayout" id="t6g-bE-oxG"/>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xwk-ft-EDo" userLabel="Header Stack View">
                                 <rect key="frame" x="16" y="16" width="288" height="40"/>

@@ -22,6 +22,8 @@ class TopicsCollectionView: DynamicHeightCollectionView {
     }
 
     func commonInit() {
+        collectionViewLayout = ReaderInterestsCollectionViewFlowLayout()
+        
         coordinator = ReaderTopicCollectionViewCoordinator(collectionView: self, topics: topics)
         coordinator?.delegate = self
     }
