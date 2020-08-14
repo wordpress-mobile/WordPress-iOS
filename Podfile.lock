@@ -668,6 +668,9 @@ CHECKOUT OPTIONS:
     :commit: bc43b3d977aecaedffa82e97224cf7acb9aa854a
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+  RNCMaskedView:
+    :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
+    :git: https://github.com/react-native-community/react-native-masked-view.git
   RNTAztecView:
     :commit: bc43b3d977aecaedffa82e97224cf7acb9aa854a
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
