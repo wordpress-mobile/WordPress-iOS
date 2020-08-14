@@ -148,8 +148,6 @@ protocol ReaderTopicsChipsDelegate: class {
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
-
-        topicsCollectionView.topicDelegate = self
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -274,6 +272,7 @@ protocol ReaderTopicsChipsDelegate: class {
             return
         }
 
+        topicsCollectionView.topicDelegate = self
         topicsCollectionView.topics = tags
         topicsCollectionView.isHidden = false
     }
