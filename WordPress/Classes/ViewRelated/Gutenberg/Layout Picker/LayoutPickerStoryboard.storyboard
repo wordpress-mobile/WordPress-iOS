@@ -89,7 +89,6 @@
                                     <constraint firstItem="jOR-Cu-uXg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uh3-j1-P0D" secondAttribute="top" constant="13" id="J5v-Ec-gJ7"/>
                                     <constraint firstItem="Irb-2L-Gsp" firstAttribute="centerX" secondItem="Uh3-j1-P0D" secondAttribute="centerX" id="UOb-Xb-XWn"/>
                                     <constraint firstItem="jOR-Cu-uXg" firstAttribute="width" secondItem="jOR-Cu-uXg" secondAttribute="height" multiplier="1:1" id="aS9-dr-vpA"/>
-                                    <constraint firstAttribute="trailing" secondItem="jOR-Cu-uXg" secondAttribute="trailing" constant="13" id="fej-64-0cu"/>
                                     <constraint firstAttribute="bottom" secondItem="jOR-Cu-uXg" secondAttribute="bottom" constant="13" id="pUu-vg-esB"/>
                                 </constraints>
                             </view>
@@ -246,6 +245,7 @@
                             <constraint firstItem="eiU-pw-Xq6" firstAttribute="top" secondItem="ad1-6E-LbB" secondAttribute="top" id="9L6-zi-h3z"/>
                             <constraint firstAttribute="trailing" secondItem="Uh3-j1-P0D" secondAttribute="trailing" id="J6b-ze-7EX"/>
                             <constraint firstItem="2Hj-mT-YmE" firstAttribute="trailing" secondItem="1ZG-pe-aDl" secondAttribute="trailing" id="JLC-Iz-eF0"/>
+                            <constraint firstItem="ad1-6E-LbB" firstAttribute="trailing" secondItem="jOR-Cu-uXg" secondAttribute="trailing" constant="13" id="LRF-0t-d4A"/>
                             <constraint firstItem="DTZ-MR-Eqm" firstAttribute="leading" secondItem="1ZG-pe-aDl" secondAttribute="leading" id="MGa-PL-qLp"/>
                             <constraint firstItem="Uh3-j1-P0D" firstAttribute="leading" secondItem="1ZG-pe-aDl" secondAttribute="leading" id="X70-T3-BYM"/>
                             <constraint firstItem="DTZ-MR-Eqm" firstAttribute="top" secondItem="Uh3-j1-P0D" secondAttribute="bottom" id="YoB-vl-hiJ"/>
