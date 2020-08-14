@@ -95,7 +95,9 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier, for: indexPath) as? LayoutPickerCollectionViewCell else {
+            fatalError("Expected the cell with identifier \"\(LayoutPickerCollectionViewCell.cellReuseIdentifier)\" to be a LayoutPickerCollectionViewCell. Please make sure the collection view is registering the correct nib before loading the data")
+        }
         let layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
         cell.layout = layout
         cell.isAccessibilityElement = true

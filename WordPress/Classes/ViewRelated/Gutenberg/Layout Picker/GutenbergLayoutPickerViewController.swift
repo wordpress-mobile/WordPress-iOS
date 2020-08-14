@@ -329,7 +329,9 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerSectionTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier, for: indexPath) as? LayoutPickerSectionTableViewCell  else {
+            fatalError("Expected the cell with identifier \"\(LayoutPickerSectionTableViewCell.cellReuseIdentifier)\" to be a LayoutPickerSectionTableViewCell. Please make sure the table view is registering the correct nib before loading the data")
+        }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.section = sections[indexPath.row]
