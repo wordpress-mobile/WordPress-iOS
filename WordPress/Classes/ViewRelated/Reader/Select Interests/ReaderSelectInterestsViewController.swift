@@ -61,6 +61,12 @@ class ReaderSelectInterestsViewController: UIViewController {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.selectInterestsShown)
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
@@ -155,6 +161,7 @@ class ReaderSelectInterestsViewController: UIViewController {
                 return
             }
 
+            WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
             self?.stopLoading()
             self?.didSaveInterests?()
         }

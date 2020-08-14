@@ -830,6 +830,7 @@ import WordPressFlux
             return
         }
         syncHelper?.syncContentWithUserInteraction(true)
+        WPAnalytics.track(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
 
@@ -1570,6 +1571,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
+        } else {
+            WPAnalytics.track(.readerCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)

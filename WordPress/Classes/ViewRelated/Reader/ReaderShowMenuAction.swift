@@ -73,6 +73,8 @@ final class ReaderShowMenuAction {
         } else {
             vc.present(alertController, animated: true)
         }
+
+        WPAnalytics.track(.postCardMoreTapped)
     }
 
     fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
@@ -80,7 +82,8 @@ final class ReaderShowMenuAction {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
+                || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
     }

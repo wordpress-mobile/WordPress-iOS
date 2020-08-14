@@ -3,6 +3,9 @@ import Foundation
 class ReaderCardsStreamViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
 
+    /// Page number used for Analytics purpose
+    private var page = 1
+
     private var cards: [ReaderCard]? {
         content.content as? [ReaderCard]
     }
@@ -76,11 +79,15 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sync
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+        page = 1
         cardsService.fetch(isFirstPage: true, success: success, failure: failure)
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         footerView.showSpinner(true)
+
+        page += 1
+        WPAnalytics.track(.readerDiscoverPaginated, properties: ["page": page])
 
         cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
@@ -133,5 +140,6 @@ extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
     func didSelect(topic: ReaderTagTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+        WPAnalytics.track(.readerDiscoverTopicTapped)
     }
 }
