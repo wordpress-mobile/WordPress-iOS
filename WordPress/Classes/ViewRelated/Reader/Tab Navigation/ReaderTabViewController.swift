@@ -128,7 +128,7 @@ extension ReaderTabViewController {
             if !isFollowing {
                 self.showSelectInterestsView()
             } else {
-                self.selectedInterestsVisited()
+                self.markSelectedInterestsVisited()
             }
         }
     }
@@ -139,7 +139,7 @@ extension ReaderTabViewController {
         navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
 
         selectInterestsViewController.didSaveInterests = { [unowned self] in
-            self.selectedInterestsVisited()
+            self.markSelectedInterestsVisited()
 
             self.readerTabView.selectDiscover()
 
@@ -147,7 +147,7 @@ extension ReaderTabViewController {
         }
     }
 
-    private func selectedInterestsVisited() {
+    private func markSelectedInterestsVisited() {
         QuickStartTourGuide.find()?.visited(.selectInterests)
     }
 }
