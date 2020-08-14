@@ -1,5 +1,11 @@
 import Foundation
 
+/// A drop in collection view that will configure the collection view to display the topics chip group:
+/// - Overrides the layout to be `ReaderInterestsCollectionViewFlowLayout`
+/// - Creates the ReaderTopicCollectionViewCoordinator
+/// - Uses the dynamic height collection view class to automatically change its size to the content
+///
+/// When implementing you can also use the `topicDelegate` to know when the group is expanded/collapsed, or if a topic chip was selected
 class TopicsCollectionView: DynamicHeightCollectionView {
     var coordinator: ReaderTopicCollectionViewCoordinator?
 
@@ -23,7 +29,7 @@ class TopicsCollectionView: DynamicHeightCollectionView {
 
     func commonInit() {
         collectionViewLayout = ReaderInterestsCollectionViewFlowLayout()
-        
+
         coordinator = ReaderTopicCollectionViewCoordinator(collectionView: self, topics: topics)
         coordinator?.delegate = self
     }
