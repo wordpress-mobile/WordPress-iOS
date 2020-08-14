@@ -11,6 +11,11 @@ private struct Constants {
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
+protocol ReaderTopicsChipsDelegate: class {
+    func didSelect(topic: String)
+    func heightDidChange()
+}
+
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
@@ -29,6 +34,8 @@ private struct Constants {
 
     // Wrapper views
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
+
+    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     // Header realated Views
 
@@ -77,6 +84,9 @@ private struct Constants {
         return  width <= 320
     }
 
+    weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
+    var displayTopics: Bool = false
+
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
@@ -113,7 +123,6 @@ private struct Constants {
     }()
 
     // MARK: - Lifecycle Methods
-
     open override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -155,7 +164,9 @@ private struct Constants {
 
     open override func prepareForReuse() {
         super.prepareForReuse()
+
         imageLoader.prepareForReuse()
+        displayTopics = false
     }
 
 
@@ -232,11 +243,13 @@ private struct Constants {
         summaryLabel.backgroundColor = .listForeground
         commentActionButton.titleLabel?.backgroundColor = .listForeground
         likeActionButton.titleLabel?.backgroundColor = .listForeground
+        topicsCollectionView.backgroundColor = .listForeground
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
+        configureTopicsCollectionView()
         configureHeader()
         configureAvatarImageView()
         configureFeaturedImageIfNeeded()
@@ -248,10 +261,27 @@ private struct Constants {
         prepareForVoiceOver()
     }
 
+    func configureTopicsCollectionView() {
+        guard
+            displayTopics,
+            let contentProvider = contentProvider,
+            let tags = contentProvider.tagsForDisplay?(),
+            !tags.isEmpty
+        else {
+            topicsCollectionView.isHidden = true
+            return
+        }
+
+        topicsCollectionView.topicDelegate = self
+        topicsCollectionView.topics = tags
+        topicsCollectionView.isHidden = false
+    }
+
     fileprivate func configureHeader() {
         guard let contentProvider = contentProvider else {
             return
         }
+        //
 
         // Always reset
         avatarImageView.image = nil
@@ -425,11 +455,14 @@ private struct Constants {
             return false
         }
 
-        guard let contentProvider = contentProvider else {
+        guard
+            let contentProvider = contentProvider,
+            let likeCount = contentProvider.likeCount()
+        else {
             return false
         }
 
-        let hasLikes = contentProvider.likeCount().intValue > 0
+        let hasLikes = likeCount.intValue > 0
 
         guard loggedInActionVisibility.isEnabled || hasLikes else {
             return false
@@ -829,5 +862,17 @@ extension ReaderPostCardCell: GhostableView {
         headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
+    }
+}
+
+extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        layoutIfNeeded()
+
+        topicChipsDelegate?.heightDidChange()
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
+        topicChipsDelegate?.didSelect(topic: topic)
     }
 }
