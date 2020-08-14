@@ -167,11 +167,10 @@ import Foundation
             return "item_shared_reader"
         case .readerBlogBlocked:
             return "reader_blog_blocked"
-        }
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
+        }
     }
-}
 
     /**
      The default properties of the event
