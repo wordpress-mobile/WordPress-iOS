@@ -35,7 +35,7 @@ protocol ReaderPostCardCellDelegate: class {
     // Wrapper views
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
 
-    @IBOutlet weak var topicsCollectionView: UICollectionView!
+    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     // Header realated Views
 
@@ -84,7 +84,6 @@ protocol ReaderPostCardCellDelegate: class {
         return  width <= 320
     }
 
-    var topicsCoordinator: ReaderTopicCollectionViewCoordinator?
     weak var cardDelegate: ReaderPostCardCellDelegate?
     var displayTopics: Bool = false
 
@@ -149,6 +148,8 @@ protocol ReaderPostCardCellDelegate: class {
         setupSummaryLabel()
         setupAttributionView()
         adjustInsetsForTextDirection()
+
+        topicsCollectionView.topicDelegate = self
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -166,7 +167,6 @@ protocol ReaderPostCardCellDelegate: class {
     open override func prepareForReuse() {
         super.prepareForReuse()
 
-        topicsCoordinator = nil
         imageLoader.prepareForReuse()
         displayTopics = false
     }
@@ -274,10 +274,7 @@ protocol ReaderPostCardCellDelegate: class {
             return
         }
 
-        let coordinator = ReaderTopicCollectionViewCoordinator(collectionView: topicsCollectionView, topics: tags)
-        coordinator.delegate = self
-
-        self.topicsCoordinator = coordinator
+        topicsCollectionView.topics = tags
         topicsCollectionView.isHidden = false
     }
 

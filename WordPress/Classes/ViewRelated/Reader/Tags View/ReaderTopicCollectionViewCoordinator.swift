@@ -30,7 +30,11 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
     let collectionView: UICollectionView
-    let topics: [String]
+    var topics: [String] {
+        didSet {
+            reloadData()
+        }
+    }
 
     deinit {
         guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
