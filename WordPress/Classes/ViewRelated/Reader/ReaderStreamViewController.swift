@@ -1220,7 +1220,7 @@ import WordPressFlux
                                                 topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn),
-                                                cardDelegate: self,
+                                                topicChipsDelegate: self,
                                                 displayTopics: displayTopics)
 
     }
@@ -1947,7 +1947,7 @@ private extension ReaderStreamViewController {
     }
 }
 
-extension ReaderStreamViewController: ReaderPostCardCellDelegate {
+extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     func heightDidChange() {
         // Forces the table view to layout the cells and update their heights
         tableView.beginUpdates()

@@ -11,7 +11,7 @@ private struct Constants {
     static let summaryMaxNumberOfLines: NSInteger = 2
 }
 
-protocol ReaderPostCardCellDelegate: class {
+protocol ReaderTopicsChipsDelegate: class {
     func didSelect(topic: String)
     func heightDidChange()
 }
@@ -84,7 +84,7 @@ protocol ReaderPostCardCellDelegate: class {
         return  width <= 320
     }
 
-    weak var cardDelegate: ReaderPostCardCellDelegate?
+    weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
     var displayTopics: Bool = false
 
     // MARK: - Accessors
@@ -870,10 +870,10 @@ extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
         layoutIfNeeded()
 
-        cardDelegate?.heightDidChange()
+        topicChipsDelegate?.heightDidChange()
     }
 
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
-        cardDelegate?.didSelect(topic: topic)
+        topicChipsDelegate?.didSelect(topic: topic)
     }
 }

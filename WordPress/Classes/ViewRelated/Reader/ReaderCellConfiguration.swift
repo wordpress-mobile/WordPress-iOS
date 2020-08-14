@@ -34,7 +34,7 @@ final class ReaderCellConfiguration {
                                topic: ReaderAbstractTopic? = nil,
                                delegate: ReaderPostCellDelegate?,
                                loggedInActionVisibility: ReaderActionsVisibility,
-                               cardDelegate: ReaderPostCardCellDelegate? = nil,
+                               topicChipsDelegate: ReaderTopicsChipsDelegate? = nil,
                                displayTopics: Bool = true) {
         // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
         guard !post.isDeleted else {
@@ -44,7 +44,7 @@ final class ReaderCellConfiguration {
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = delegate
-        postCell.cardDelegate = cardDelegate
+        postCell.topicChipsDelegate = topicChipsDelegate
 
         postCell.loggedInActionVisibility = loggedInActionVisibility
         postCell.displayTopics = displayTopics
