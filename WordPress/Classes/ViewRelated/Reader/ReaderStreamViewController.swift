@@ -304,6 +304,7 @@ import WordPressFlux
         view.isUserInteractionEnabled = readerTopic != nil
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+
         refreshImageRequestAuthToken()
 
         setupTableView()
@@ -364,13 +365,16 @@ import WordPressFlux
             if self.isShowingResultStatusView {
                 self.resultsStatusView.updateAccessoryViewsVisibility()
             }
+
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
         })
+
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -1156,7 +1160,6 @@ import WordPressFlux
         refreshImageRequestAuthToken()
     }
 
-
     // MARK: - Helpers for TableViewHandler
 
 
@@ -1199,11 +1202,28 @@ import WordPressFlux
         postCellActions?.isLoggedIn = isLoggedIn
         postCellActions?.savedPostsDelegate = self
 
+        // Restrict the topics header to only display on
+        var displayTopics = true
+
+        if let topic = readerTopic {
+            let type = ReaderHelpers.topicType(topic)
+
+            switch type {
+            case .discover, .tag:
+                displayTopics = true
+            default:
+                displayTopics = false
+            }
+        }
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
-                                                loggedInActionVisibility: .visible(enabled: isLoggedIn))
+                                                loggedInActionVisibility: .visible(enabled: isLoggedIn),
+                                                topicChipsDelegate: self,
+                                                displayTopics: displayTopics)
+
     }
 
     @objc private func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
@@ -1907,5 +1927,18 @@ private extension ReaderStreamViewController {
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"
+    }
+}
+
+extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
+    func heightDidChange() {
+        // Forces the table view to layout the cells and update their heights
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
+    func didSelect(topic: String) {
+        let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
+        navigationController?.pushViewController(topicStreamViewController, animated: true)
     }
 }
