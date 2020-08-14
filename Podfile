@@ -110,13 +110,18 @@ def gutenberg_dependencies(options)
         'glog',
         'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
+        'react-native-safe-area-context',
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
         'react-native-linear-gradient',
         'react-native-get-random-values',
-        'react-native-blur'
+        'react-native-blur',
+        'RNScreens',
+        'RNReanimated',
+        'RNGestureHandler',
+        'RNCMaskedView'
     ]
     if options[:path]
         podspec_prefix = options[:path]

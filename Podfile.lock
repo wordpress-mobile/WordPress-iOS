@@ -303,6 +303,8 @@ PODS:
     - React
   - react-native-safe-area (0.5.1):
     - React
+  - react-native-safe-area-context (3.0.2):
+    - React
   - react-native-slider (3.0.2):
     - React
   - react-native-video (5.0.2):
@@ -368,6 +370,14 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
     - ReactCommon/turbomodule/core (= 0.61.5)
   - ReactNativeDarkMode (0.0.10):
+    - React
+  - RNCMaskedView (0.1.10):
+    - React
+  - RNGestureHandler (1.6.1):
+    - React
+  - RNReanimated (1.9.0):
+    - React
+  - RNScreens (2.8.0):
     - React
   - RNSVG (9.13.6-gb):
     - React
@@ -471,6 +481,7 @@ DEPENDENCIES:
   - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
   - react-native-linear-gradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-linear-gradient.podspec.json`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-safe-area.podspec.json`)
+  - react-native-safe-area-context (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-safe-area-context.podspec.json`)
   - react-native-slider (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-slider.podspec.json`)
   - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-video.podspec.json`)
   - React-RCTActionSheet (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/React-RCTActionSheet.podspec.json`)
@@ -484,6 +495,10 @@ DEPENDENCIES:
   - React-RCTVibration (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/React-RCTVibration.podspec.json`)
   - ReactCommon (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/ReactCommon.podspec.json`)
   - ReactNativeDarkMode (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/ReactNativeDarkMode.podspec.json`)
+  - RNCMaskedView (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNCMaskedView.podspec.json`)
+  - RNGestureHandler (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNGestureHandler.podspec.json`)
+  - RNReanimated (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNReanimated.podspec.json`)
+  - RNScreens (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNScreens.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNSVG.podspec.json`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `bc43b3d977aecaedffa82e97224cf7acb9aa854a`)
   - SimulatorStatusMagic
@@ -600,6 +615,8 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-linear-gradient.podspec.json
   react-native-safe-area:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-safe-area.podspec.json
+  react-native-safe-area-context:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-safe-area-context.podspec.json
   react-native-slider:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/react-native-slider.podspec.json
   react-native-video:
@@ -626,6 +643,14 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/ReactCommon.podspec.json
   ReactNativeDarkMode:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/ReactNativeDarkMode.podspec.json
+  RNCMaskedView:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNCMaskedView.podspec.json
+  RNGestureHandler:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNGestureHandler.podspec.json
+  RNReanimated:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNReanimated.podspec.json
+  RNScreens:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNScreens.podspec.json
   RNSVG:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bc43b3d977aecaedffa82e97224cf7acb9aa854a/third-party-podspecs/RNSVG.podspec.json
   RNTAztecView:
@@ -643,6 +668,9 @@ CHECKOUT OPTIONS:
     :commit: bc43b3d977aecaedffa82e97224cf7acb9aa854a
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+  RNCMaskedView:
+    :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
+    :git: https://github.com/react-native-community/react-native-masked-view.git
   RNTAztecView:
     :commit: bc43b3d977aecaedffa82e97224cf7acb9aa854a
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -699,6 +727,7 @@ SPEC CHECKSUMS:
   react-native-keyboard-aware-scroll-view: ffa9152671fec9a571197ed2d02e0fcb90206e60
   react-native-linear-gradient: 258ba8c61848324b1f2019bed5f460e6396137b7
   react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
+  react-native-safe-area-context: 52c73401424bae74fc89ca91b4ae5c4f2689d857
   react-native-slider: 2f186719b7ada773b78141b8dae62081d819b206
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   React-RCTActionSheet: e8f642cfaa396b6b09fd38f53378506c2d63af35
@@ -712,6 +741,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 20deb1f6f001000d1f2603722ec110c66c74796b
   ReactCommon: 48926fc48fcd7c8a629860049ffba9c23b4005dc
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
+  RNCMaskedView: 72b5012baac53b13a9ba717eaa554afd3f2930c5
+  RNGestureHandler: 82a89b0fde0a37e633c6233418f7249e2f8e59b5
+  RNReanimated: 13f7a6a22667c4f00aac217bc66f94e8560b3d59
+  RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 43c16fe501ae68907e77f71396c2ae92d214ce84
   Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
@@ -739,6 +772,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 65f7917c428f54285dbf726a3773396ad1a41805
+PODFILE CHECKSUM: f2deb5ad69357dcb995ccbd376c3d52e77e7c023
 
 COCOAPODS: 1.8.4
