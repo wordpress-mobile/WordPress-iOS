@@ -36,6 +36,9 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     ///
     @objc var onTimeStampLongPress: (() -> Void)?
 
+    /// onGravatarClick: Executed whenever the gravatar image view gets clicked
+    @objc var onGravatarClick: ((UIImageView) -> Void)?
+
     /// Comment's AttributedText Payload
     ///
     @objc var attributedCommentText: NSAttributedString? {
@@ -129,6 +132,9 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         detailsLabel.isUserInteractionEnabled = true
         detailsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(detailsWasPressed)))
         detailsLabel.longPressAction = { [weak self] in self?.onTimeStampLongPress?() }
+
+        gravatarImageView.isUserInteractionEnabled = true
+        gravatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(gravatarWasPressed)))
     }
 
 
@@ -191,5 +197,9 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
     @IBAction func detailsWasPressed() {
         onUserClick?()
+    }
+
+    @IBAction func gravatarWasPressed() {
+        onGravatarClick?(gravatarImageView)
     }
 }

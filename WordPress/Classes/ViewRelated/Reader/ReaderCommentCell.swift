@@ -7,6 +7,7 @@ import Gridicons
     func cell(_ cell: ReaderCommentCell, didTapAuthor comment: Comment)
     func cell(_ cell: ReaderCommentCell, didTapLike comment: Comment)
     func cell(_ cell: ReaderCommentCell, didTapReply comment: Comment)
+    func cell(_ cell: ReaderCommentCell, didTapGravatar comment: Comment)
 }
 
 class ReaderCommentCell: UITableViewCell {
@@ -118,6 +119,9 @@ class ReaderCommentCell: UITableViewCell {
         assert(textView.superview == nil)
 
         parentStackView.insertArrangedSubview(textView, at: 1)
+
+        avatarImageView.isUserInteractionEnabled = true
+        avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleGravatarTapped(sender:))))
     }
 
     @objc func setupReplyButton() {
@@ -286,4 +290,11 @@ class ReaderCommentCell: UITableViewCell {
         delegate?.cell(self, didTapLike: comment)
     }
 
+
+    @objc func handleGravatarTapped(sender: UITapGestureRecognizer) {
+        guard let comment = comment else {
+            return
+        }
+        delegate?.cell(self, didTapGravatar: comment)
+    }
 }
