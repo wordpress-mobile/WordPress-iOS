@@ -288,8 +288,8 @@ extension WPStyleGuide {
         button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
         // Color(s)
-        let normalColor = UIColor.neutral(.shade50)
-        let highlightedColor = UIColor.neutral(.shade40)
+        let normalColor = UIColor.primary(.shade40)
+        let highlightedColor =  UIColor.neutral
         let selectedColor = UIColor.success
 
         button.setTitleColor(normalColor, for: .normal)
