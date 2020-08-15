@@ -1206,7 +1206,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     // Define success block
     void (^successBlock)(void) = ^void() {
-        NSString *subscriptionString = newIsSubscribed ? @"subscribed to" : @"unsubscribed from";
+        NSString *subscriptionString = newIsSubscribed
+            ? NSLocalizedString(@"subscribed to", "Past tense verb + preposition. A subscription action.")
+            : NSLocalizedString(@"unsubscribed from", "Past tense verb + preposition. A subscription action.");
         NSString *successTitle = [NSString stringWithFormat: NSLocalizedString(@"Successfully %@ the post", @"The app successfully updated the subscription status for the post"), subscriptionString];
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
@@ -1217,7 +1219,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"Error toggling subscription status: %@", error);
-        NSString *subscriptionString = newIsSubscribed ? @"subscribing to" : @"unsubscribing from";
+        NSString *subscriptionString = newIsSubscribed
+            ? NSLocalizedString(@"subscribing to", "Verb + preposition. A subscription action.")
+            : NSLocalizedString(@"unsubscribing from", "Verb + preposition. A subscription action.");
         NSString *errorTitle = [NSString stringWithFormat: NSLocalizedString(@"There has been an unexpected error while %@ the post", "The app failed to update the subscription status for the post"), subscriptionString];
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeError];
