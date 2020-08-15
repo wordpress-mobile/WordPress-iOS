@@ -96,6 +96,30 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 - (void)refreshPostsForFollowedTopic;
 
 /**
+ Get the subscription status of the specified post.
+
+ @param post The reader post to fetch the subscription status.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchSubscriptionStatusForPost:(ReaderPost *)post
+                               success:(void (^)(BOOL isSubscribed))success
+                               failure:(void (^)(NSError *error))failure;
+
+/**
+ Toggle the subscription status of the specified post.
+
+ @param isSubscribed The subscription status for the reader post.
+ @param post The reader post to subscribe to/unsubscribe from.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleSubscribed:(BOOL)isSubscribed
+                 forPost:(ReaderPost *)post
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *error))failure;
+
+/**
  Toggle the liked status of the specified post.
 
  @param post The reader post to like/unlike.

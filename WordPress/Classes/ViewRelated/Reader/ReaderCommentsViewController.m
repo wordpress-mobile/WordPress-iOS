@@ -149,6 +149,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewWillAppear:animated];
 
+    [self updateSubscriptionStatus];
+
     [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleApplicationDidBecomeActive:)
@@ -287,10 +289,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
+    headerView.onFollowingConversationClick = ^{
+        [weakSelf handleFollowingConversationButtonTapped];
+    };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
-    headerView.isSubscribedToPost = NO;  // FIXME: Get subscription state
+    // headerView.isSubscribedToPost = NO;  // FIXME: Get subscription state
     [headerWrapper addSubview:headerView];
 
     // Border
@@ -576,6 +581,19 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - View Refresh Helpers
+
+- (void)updateSubscriptionStatus
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    __weak __typeof(self) weakSelf = self;
+    [service fetchSubscriptionStatusForPost:self.post success:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
+}
 
 - (void)refreshAndSync
 {
@@ -1171,6 +1189,53 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - PostHeaderView helpers
+
+- (void)handleFollowingConversationButtonTapped
+{
+    __typeof(self) __weak weakSelf = self;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
+    // Keep previous subscription status in case of failure
+    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL newIsSubscribed = !oldIsSubscribed;
+
+    // Optimistically toggle subscription status
+    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+
+    // Define success block
+    void (^successBlock)(void) = ^void() {
+        NSString *subscriptionString = newIsSubscribed ? @"subscribed to" : @"unsubscribed from";
+        NSString *successTitle = [NSString stringWithFormat: NSLocalizedString(@"Successfully %@ the post", @"The app successfully updated the subscription status for the post"), subscriptionString];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+            [weakSelf displayNoticeWithTitle:successTitle message:nil];
+        });
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"Error toggling subscription status: %@", error);
+        NSString *subscriptionString = newIsSubscribed ? @"subscribing to" : @"unsubscribing from";
+        NSString *errorTitle = [NSString stringWithFormat: NSLocalizedString(@"There has been an unexpected error while %@ the post", "The app failed to update the subscription status for the post"), subscriptionString];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeError];
+            [weakSelf displayNoticeWithTitle:errorTitle message:nil];
+
+            // If the request fails, fall back to the old subscription status
+            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+        });
+    };
+
+    // Call the remote service to toggle the subscription status
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleSubscribed:newIsSubscribed
+                      forPost:self.post
+                      success:successBlock
+                      failure:failureBlock];
+}
 
 - (void)handleHeaderTapped
 {

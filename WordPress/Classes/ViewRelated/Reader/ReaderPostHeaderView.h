@@ -11,6 +11,12 @@ typedef void (^ReaderPostHeaderCallback)(void);
 @property (nonatomic, copy) ReaderPostHeaderCallback onClick;
 
 /**
+ A ReaderPostHeaderFollowingCallback block to be executed whenever the user pressed this view.
+ */
+typedef void (^ReaderPostHeaderFollowingCallback)(void);
+@property (nonatomic, copy) ReaderPostHeaderFollowingCallback onFollowingConversationClick;
+
+/**
  A BOOL indicating whether if this view should display a disclosure indicator, or not.
  */
 @property (nonatomic, assign) BOOL showsDisclosureIndicator;

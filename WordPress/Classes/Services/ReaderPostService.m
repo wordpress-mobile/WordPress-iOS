@@ -192,6 +192,17 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
+-(void)fetchSubscriptionStatusForPost:(ReaderPost *)post
+                              success:(void (^)(BOOL isSubscribed))success
+                              failure:(void (^)(NSError *))failure
+{
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService fetchSubscriptionStatusForPost:[post.postID integerValue]
+                                         fromSite:[post.siteID integerValue]
+                                          success:success
+                                          failure:failure];
+}
+
 - (void)refreshPostsForFollowedTopic
 {
     // Do all of this work on a background thread.
@@ -208,6 +219,25 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 
 #pragma mark - Update Methods
+
+- (void)toggleSubscribed:(BOOL)isSubscribed
+                 forPost:(ReaderPost *)post
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *))failure
+{
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    if (isSubscribed) {
+        [remoteService subscribeToPost:[post.postID integerValue]
+                               forSite:[post.siteID integerValue]
+                               success:success
+                               failure:failure];
+    } else {
+        [remoteService unsubscribeFromPost:[post.postID integerValue]
+                                   forSite:[post.siteID integerValue]
+                                   success:success
+                                   failure:failure];
+    }
+}
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
