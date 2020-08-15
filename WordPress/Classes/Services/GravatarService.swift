@@ -29,6 +29,9 @@ open class GravatarService {
             profile.thumbnailUrl = remoteProfile.thumbnailUrl
             profile.name = remoteProfile.name
             profile.displayName = remoteProfile.displayName
+            profile.formattedName = remoteProfile.formattedName
+            profile.aboutMe = remoteProfile.aboutMe
+            profile.currentLocation = remoteProfile.currentLocation
             onCompletion(profile)
 
         }, failure: { error in

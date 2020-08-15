@@ -10,5 +10,7 @@ public struct GravatarProfile {
     var thumbnailUrl = ""
     var name = ""
     var displayName = ""
-
+    var formattedName = ""
+    var aboutMe = ""
+    var currentLocation = ""
 }
