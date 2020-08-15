@@ -12,6 +12,10 @@ class FormattableUserContent: NotificationTextContent {
         return URL(string: rawLink)
     }
 
+    var metaLinksEmail: String? {
+        return metaLinks?[Constants.MetaKeys.Email] as? String
+    }
+
     public var metaTitlesHome: String? {
         return metaTitles?[Constants.MetaKeys.Home] as? String
     }
@@ -56,5 +60,6 @@ private enum Constants {
         static let Titles       = "titles"
         static let Home         = "home"
         static let Links        = "links"
+        static let Email        = "email"
     }
 }

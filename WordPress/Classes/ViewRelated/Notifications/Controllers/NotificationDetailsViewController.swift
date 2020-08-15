@@ -765,7 +765,9 @@ private extension NotificationDetailsViewController {
                 guard let strongSelf = self else {
                     return
                 }
-                // TODO: Display basic profile sheet
+                BasicUserProfileViewController.present(context: strongSelf,
+                                                       view: gravatarImageView,
+                                                       email: userBlock.metaLinksEmail)
             }
         }
 

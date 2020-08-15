@@ -1110,7 +1110,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (![Feature enabled:FeatureFlagAvatarsBasicProfile]) {
         return;
     }
-    // TODO: Display basic profile sheet
+    [BasicUserProfileViewController presentWithContext:self
+                                                  view:cell.contentView
+                                                 email:comment.author_email];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
