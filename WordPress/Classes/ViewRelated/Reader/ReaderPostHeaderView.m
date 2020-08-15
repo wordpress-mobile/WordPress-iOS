@@ -13,7 +13,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
-@property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) UIButton *followConversationButton;
 @property (nonatomic, strong) UIButton *disclosureButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
@@ -35,7 +35,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
         [self setupLabelsStackView];
         [self setupSubtitleLabel];
         [self setupTitleLabel];
-        [self setupFollowButton];
+        [self setupFollowConversationButton];
         [self setupDisclosureButton];
         [self setupTapGesture];
     }
@@ -129,7 +129,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     self.titleLabel = label;
 }
 
-- (void)setupFollowButton
+- (void)setupFollowConversationButton
 {
     NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
 
@@ -137,7 +137,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     [self.labelsStackView addArrangedSubview:button];
-    self.followButton = button;
+    self.followConversationButton = button;
 }
 
 - (void)setupDisclosureButton
@@ -211,7 +211,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 - (void)setSubscribedToPost:(BOOL)isSubscribedToPost
 {
     _isSubscribedToPost = isSubscribedToPost;
-    [self.followButton setSelected:isSubscribedToPost];
+    [self.followConversationButton setSelected:isSubscribedToPost];
 }
 
 #pragma mark - Recognizer Helpers
