@@ -1231,7 +1231,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Call the remote service to toggle the subscription status
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleSubscribed:newIsSubscribed
+    [service toggleSubscribed:oldIsSubscribed
                       forPost:self.post
                       success:successBlock
                       failure:failureBlock];

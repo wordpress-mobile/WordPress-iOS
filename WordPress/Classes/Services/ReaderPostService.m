@@ -227,15 +227,15 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 {
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     if (isSubscribed) {
-        [remoteService subscribeToPost:[post.postID integerValue]
-                               forSite:[post.siteID integerValue]
-                               success:success
-                               failure:failure];
-    } else {
         [remoteService unsubscribeFromPost:[post.postID integerValue]
                                    forSite:[post.siteID integerValue]
                                    success:success
                                    failure:failure];
+    } else {
+        [remoteService subscribeToPost:[post.postID integerValue]
+                               forSite:[post.siteID integerValue]
+                               success:success
+                               failure:failure];
     }
 }
 

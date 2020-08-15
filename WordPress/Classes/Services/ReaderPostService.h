@@ -109,7 +109,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 /**
  Toggle the subscription status of the specified post.
 
- @param isSubscribed The subscription status for the reader post.
+ @param isSubscribed The current subscription status for the reader post.
  @param post The reader post to subscribe to/unsubscribe from.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
