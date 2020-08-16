@@ -149,8 +149,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewWillAppear:animated];
 
-    [self updateSubscriptionStatus];
-
     [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleApplicationDidBecomeActive:)
@@ -568,6 +566,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return self.post.commentsOpen && self.isLoggedIn;
 }
 
+- (BOOL)canFollowPost
+{
+    // FIXME: Older a8c internal P2s do not contain the isWPForTeams flag.
+    // In case we can't find a flag that marks an old P2 site as being a P2,
+    // we can assume that blogs in the Reader's Automattic tab are P2s.
+    // Note that blogs in the Reader's Automattic tab are only available to Automatticians.
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog = [service blogByBlogId:self.post.siteID];
+    return blog.isWPForTeams;
+}
+
 - (BOOL)shouldDisplayReplyTextView
 {
     return self.canComment;
@@ -581,22 +591,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - View Refresh Helpers
 
-- (void)updateSubscriptionStatus
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    __weak __typeof(self) weakSelf = self;
-    [service fetchSubscriptionStatusForPost:self.post success:^(BOOL isSubscribed) {
-        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
-    } failure:^(NSError *error) {
-        DDLogError(@"Error fetching subscription status for post: %@", error);
-    }];
-}
-
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
+    [self refreshSubscriptionStatus];
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
@@ -627,6 +625,21 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
+    
+    self.postHeaderView.showsFollowConversationButton = self.canFollowPost;
+}
+
+- (void)refreshSubscriptionStatus
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    __weak __typeof(self) weakSelf = self;
+    [service fetchSubscriptionStatusForPost:self.post success:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
 }
 
 - (void)refreshReplyTextView

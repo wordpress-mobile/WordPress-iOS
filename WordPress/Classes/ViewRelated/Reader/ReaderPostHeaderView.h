@@ -22,6 +22,11 @@ typedef void (^ReaderPostHeaderFollowingCallback)(void);
 @property (nonatomic, assign) BOOL showsDisclosureIndicator;
 
 /**
+ A BOOL indicating whether if this view should display a follow conversation button, or not.
+ */
+@property (nonatomic, assign) BOOL showsFollowConversationButton;
+
+/**
  A UIImage instance to be displayed as the User's avatar.
  */
 @property (nonatomic, strong) UIImage *avatarImage;

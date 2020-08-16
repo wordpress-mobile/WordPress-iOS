@@ -183,6 +183,12 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     self.disclosureButton.hidden = !showsDisclosure;
 }
 
+- (void)setShowsFollowConversationButton:(BOOL)showsFollowConversationButton
+{
+    _showsFollowConversationButton = showsFollowConversationButton;
+    self.followConversationButton.hidden = !showsFollowConversationButton;
+}
+
 - (UIImage *)avatarImage
 {
     return self.avatarImageView.image;
