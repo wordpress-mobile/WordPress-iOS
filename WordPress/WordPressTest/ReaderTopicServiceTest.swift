@@ -162,39 +162,36 @@ final class ReaderTopicSwiftTest: XCTestCase {
     results from the REST API.
     */
     func testUnfollowedSiteIsUnfollowedDuringSync() {
-        guard let context = context else {
-            XCTFail("Context is nil")
-            return
-        }
+        // Arrange: Setup
         let remoteSites = remoteSiteInfoForTests()
+        let service = ReaderTopicService(managedObjectContext: context!)
+        let foo = remoteSites.first as RemoteReaderSiteInfo?
 
-        // Setup
+        // Act: Save sites
         var expect = expectation(description: "sites saved expectation")
-        let service = ReaderTopicService(managedObjectContext: context)
         service.mergeFollowedSites(remoteSites, withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
-        // Sites exist in the context
+        // Assert: Sites exist in the context
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderSiteTopic.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "following = YES")
-        var count = try! context.count(for: request)
+        var count = try! context!.count(for: request)
         XCTAssertEqual(count, remoteSites.count, "Number of sites in context did not match expectations")
 
-        // Merge new set of sites
+        // Act: Merge new set of sites
         expect = expectation(description: "sites saved expectation")
-        let foo = remoteSites.first as RemoteReaderSiteInfo?
         service.mergeFollowedSites([foo!], withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
-        // Make sure the unfollowed sites were unfollowed when merged
-        count = try! context.count(for: request)
+        // Assert: Unfollowed sites were unfollowed when merged
+        count = try! context!.count(for: request)
         XCTAssertEqual(count, 1, "Number of sites in context did not match expectations")
         do {
-            let results = try context.fetch(request)
+            let results = try context!.fetch(request)
             let site = results.first as! ReaderSiteTopic
             XCTAssertEqual(site.feedID, foo?.feedID, "The site returned was not the one expected.")
         } catch let error as NSError {
