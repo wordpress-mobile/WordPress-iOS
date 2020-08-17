@@ -51,14 +51,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
-        for (RemoteReaderSiteInfo *siteInfo in sites) {
-            [self siteTopicForRemoteSiteInfo:siteInfo];
-        }
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (success) {
-                success();
-            }
-        }];
+        [self mergeFollowedSites:sites withSuccess:success];
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -923,6 +916,39 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     return [title capitalizedStringWithLocale:[NSLocale currentLocale]];
+}
+
+/**
+Saves the specified `ReaderSiteTopics`. Any `ReaderSiteTopics` not included in the passed
+array are marked as being unfollowed in Core Data.
+
+@param topics An array of `ReaderSiteTopics` to save.
+*/
+- (void)mergeFollowedSites:(NSArray *)sites withSuccess:(void (^)(void))success
+{
+     [self.managedObjectContext performBlock:^{
+         NSArray *currentSiteTopics = [self allSiteTopics];
+         NSMutableArray *remoteFeedIds = [NSMutableArray array];
+
+         for (RemoteReaderSiteInfo *siteInfo in sites) {
+             [remoteFeedIds addObject:siteInfo.feedID];
+             [self siteTopicForRemoteSiteInfo:siteInfo];
+         }
+
+         for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
+             // If a site fetched from Core Data isn't included in the list of sites
+             // fetched from remote, that means it's no longer being followed.
+             if (![remoteFeedIds containsObject:siteTopic.feedID]) {
+                 siteTopic.following = NO;
+             }
+         }
+
+         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+             if (success) {
+                 success();
+             }
+         }];
+     }];
 }
 
 /**
