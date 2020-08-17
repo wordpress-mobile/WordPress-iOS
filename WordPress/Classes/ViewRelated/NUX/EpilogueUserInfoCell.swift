@@ -134,7 +134,7 @@ private extension EpilogueUserInfoCell {
 extension EpilogueUserInfoCell: GravatarUploader {
     @IBAction func gravatarTapped() {
         AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-        
+
         guard let vcProvider = viewControllerProvider else {
             return
         }
