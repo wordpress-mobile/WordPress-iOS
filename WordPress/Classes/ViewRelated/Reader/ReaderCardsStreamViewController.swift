@@ -72,8 +72,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
-        readerTabBarViewController.displaySelectInterestsIfNeeded()
-        showGhost()
+        readerTabBarViewController.displaySelectInterestsIfNeeded { [unowned self] (isDisplaying) in
+            if isDisplaying {
+                self.showGhost()
+            }
+        }
     }
 
     // MARK: - Sync
