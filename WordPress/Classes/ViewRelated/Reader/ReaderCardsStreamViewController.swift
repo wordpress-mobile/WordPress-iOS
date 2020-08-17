@@ -103,6 +103,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         })
     }
 
+    override var topicPostsCount: Int {
+        return cards?.count ?? 0
+    }
+
     override func syncIfAppropriate() {
         // Only sync if the tableview is at the top, otherwise this will change tableview's offset
         if isTableViewAtTheTop() {
