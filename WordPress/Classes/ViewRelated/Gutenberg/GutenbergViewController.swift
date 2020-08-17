@@ -334,7 +334,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
-        ghostView.frame = view.safeAreaLayoutGuide.layoutFrame
         ghostView.startAnimation()
     }
 
@@ -342,6 +341,27 @@ class GutenbergViewController: UIViewController, PostEditor {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
+    }
+
+    override func viewLayoutMarginsDidChange() {
+        super.viewLayoutMarginsDidChange()
+        ghostView.frame = view.frame
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        ghostView.frame = view.frame
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Required to work around an issue present in iOS 14 beta 2
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+        if #available(iOS 14.0, *),
+            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+            dismiss(animated: true)
+        }
     }
 
     // MARK: - Functions
@@ -862,20 +882,25 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            FeatureFlag.tenor.enabled ? .tenor : nil,
+            .tenor,
             .filesApp,
         ].compactMap { $0 }
     }
 
-    func gutenbergCapabilities() -> [String: Bool]? {
+    func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            "mentions": post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
-            "unsupportedBlockEditor": isUnsupportedBlockEditorEnabled,
+            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+            .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
-        return !(post.blog.jetpack?.isConnected ?? false)
+        // The Unsupported Block Editor is disabled for all self-hosted sites even the one that are connected via Jetpack to a WP.com account.
+        // The option is disabled on Self-hosted sites because they can have their web editor to be set to classic and then the fallback will not work.
+        // We disable in Jetpack site because we don't have the self-hosted site's credentials which are required for us to be able to fetch the site's authentication cookie.
+        // This cookie is needed to authenticate the network request that fetches the unsupported block editor web page.
+        return ( post.blog.isAtomic() || post.blog.isHostedAtWPcom ) && post.blog.webEditor == .gutenberg
     }
 }
 

@@ -68,6 +68,10 @@ class NotificationDetailsViewController: UIViewController {
     ///
     fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
 
+    /// A Reader Detail VC to display post content if needed
+    ///
+    private var readerDetailViewController: ReaderDetailViewController?
+
     /// Previous NavBar Navigation Button
     ///
     var previousNavigationButton: UIButton!
@@ -494,6 +498,31 @@ extension NotificationDetailsViewController {
     }
 }
 
+
+
+// MARK: - Reader Helpers
+//
+private extension NotificationDetailsViewController {
+    func attachReaderViewIfNeeded() {
+        guard shouldAttachReaderView,
+            let postID = note.metaPostID,
+            let siteID = note.metaSiteID else {
+                readerDetailViewController?.remove()
+                return
+        }
+
+        readerDetailViewController?.remove()
+        let readerDetailViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+        add(readerDetailViewController)
+        readerDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(readerDetailViewController.view)
+        self.readerDetailViewController = readerDetailViewController
+    }
+
+    var shouldAttachReaderView: Bool {
+        return note.kind == .newPost
+    }
+}
 
 
 // MARK: - Suggestions View Helpers

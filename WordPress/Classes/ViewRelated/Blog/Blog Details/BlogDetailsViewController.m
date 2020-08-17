@@ -33,7 +33,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
-CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
 CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
@@ -400,7 +399,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
-        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
     } else {
         self.additionalSafeAreaInsets = UIEdgeInsetsZero;
     }
@@ -428,6 +427,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [self createUserActivity];
     [self startAlertTimer];
+
+    if (self.shouldScrollToViewSite == YES) {
+        [self scrollToElement:QuickStartTourElementViewSite];
+        self.shouldScrollToViewSite = NO;
+    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
@@ -437,10 +441,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             [((WPTabBarController *)self.tabBarController) showPostTabWithType:Post.typeDefaultIdentifier andEditType:EditPostTypeBeauvoyage];
+//            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
+//                [weakSelf startAlertTimer];
+//            }];
         } newPage:^{
-            [weakSelf dismissViewControllerAnimated:true completion:nil];
-            
-            WPTabBarController *controller = (WPTabBarController *)self.tabBarController;
+            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
             Blog *blog = [controller currentOrLastBlog];
             [controller showPageEditorForBlog:blog];
         } newItinerary:^{
@@ -788,18 +793,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([self.blog supports:BlogFeaturePlans]) {
-        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-                                                         identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
-                                                           callback:^{
-                                                               [weakSelf showPlans];
-                                                           }];
-
-        plansRow.detail = self.blog.planTitle;
-        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
-        [rows addObject:plansRow];
-    }
+// Temporarily disabled
+//    if ([self.blog supports:BlogFeaturePlans]) {
+//        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+//                                                         identifier:BlogDetailsPlanCellIdentifier
+//                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
+//                                                           callback:^{
+//                                                               [weakSelf showPlans];
+//                                                           }];
+//
+//        plansRow.detail = self.blog.planTitle;
+//        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
+//        [rows addObject:plansRow];
+//    }
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
@@ -1079,7 +1085,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                handler:nil];
+                                                handler:^(UIAlertAction *action) {
+                                                    [self startAlertTimer];
+                                                }];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
@@ -1149,6 +1157,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
         weakSelf.siteIconPickerPresenter = nil;
+        [weakSelf startAlertTimer];
     };
     self.siteIconPickerPresenter.onIconSelection = ^() {
         weakSelf.headerView.updatingIcon = YES;
@@ -1165,13 +1174,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
 }
 
-- (void)refreshSiteIcon {
+- (void)refreshSiteIcon
+{
     [self.headerView refreshIconImage];
 }
 
 - (void)toggleSpotlightForSiteTitle
 {
-    [self.headerView toggleSpotlightForSiteTitle];
+    [self.headerView toggleSpotlightOnSiteTitle];
+}
+
+- (void)toggleSpotlightOnHeaderView
+{
+    [self.headerView toggleSpotlightOnSiteTitle];
+    [self.headerView toggleSpotlightOnSiteIcon];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
@@ -1477,8 +1493,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
-
+                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
             }
@@ -1635,6 +1650,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    viewController.onWebkitViewControllerClose = ^(void) {
+        [self startAlertTimer];
+    };
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
@@ -1663,7 +1681,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
-    [self presentViewController:navController animated:YES completion:nil];
+
+    [self presentViewController:navController
+                       animated:YES
+                     completion:^(void) {
+        [self toggleSpotlightOnHeaderView];
+    }];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;

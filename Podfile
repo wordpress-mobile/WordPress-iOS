@@ -12,42 +12,19 @@ workspace 'WordPress.xcworkspace'
 def wordpress_shared
     ## for production:
     pod 'WordPressShared', '~> 1.9-beta'
-
-    ## for development:
-    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
-
-    ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => 'efe5a065f3ace331353595ef85eef502baa23497'
 end
 
 def aztec
-    ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
-    ## When using a commit number (during development) you should provide the same commit number for both pods.
-    ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.2'
+    pod 'WordPress-Editor-iOS', '~> 1.19.3'
 end
 
 def wordpress_ui
-    ## for production:
     pod 'WordPressUI', '~> 1.7.1'
-    ## for development:
-    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
-    ## while PR is in review:
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'task/bottomsheet_child_handle_dismiss'
-    # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '85b2a8cfb9d3c27194a14bdcb3c8391e13fbaa0f'
 end
 
 def wordpress_kit
-#    pod 'WordPressKit', '~> 4.0-beta.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     pod 'WordPressKit', :git => 'https://github.com/beaubateau/WordPressKit-iOS.git', :branch => 'develop'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+
 end
 
 def shared_with_all_pods
@@ -116,13 +93,18 @@ def gutenberg_dependencies(options)
         'glog',
         'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
+        'react-native-safe-area-context',
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
         'react-native-linear-gradient',
         'react-native-get-random-values',
-        'react-native-blur'
+        'react-native-blur',
+        'RNScreens',
+        'RNReanimated',
+        'RNGestureHandler',
+        'RNCMaskedView'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -149,7 +131,7 @@ target 'BeauVoyage' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'b435ab26c0cf5a8af78e7d6fefc694aef7c1a8e0'
+    gutenberg :commit => 'bd76109049d2eeead78478d20d66ffd7b1567dd3'
 
     ## Third party libraries
     ## =====================
@@ -173,9 +155,12 @@ target 'BeauVoyage' do
     wordpress_shared
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.4'
+
+    pod 'Automattic-Tracks-iOS', '~> 0.5.1-beta.1'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
+    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
+    # Local Development
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
     pod 'NSURL+IDN', '~> 0.4'
 
@@ -187,15 +172,8 @@ target 'BeauVoyage' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    # pod 'WordPressAuthenticator', '~> 1.18.0-beta.6'
-    # While in PR
     pod 'WordPressAuthenticator', :git => 'https://github.com/beaubateau/WordPressAuthenticator-iOS', :branch => 'feature/apply-beau-login'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/beaubateau/WordPressAuthenticator-iOS', :commit => '88dd13339925140b76f4387b32b4a56abfff72d0'
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-
     pod 'MediaEditor', '~> 1.2.0'
-    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec
     wordpress_ui

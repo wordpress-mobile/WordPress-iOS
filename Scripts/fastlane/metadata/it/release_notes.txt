@@ -1,12 +1,9 @@
-È un dato di fatto: le GIF rendono Internet migliore. Ora hai accesso a una libreria di GIF gratuite, tramite Tenor, da aggiungere a qualsiasi articolo o pagina usando il blocco Immagine. Vedrai anche l'animazione direttamente nell'editor mentre stai creando!
+We have lots to tell you about the Block editor in this update:
 
-L'editor a blocchi ha un'altra serie di miglioramenti:
-- Supporto per colori e sfumature definiti del tema nel blocco Copertina.
-- Possibilità di caricare video sui blocchi Copertina, anche se l'editor è chiuso.
-- Il nostro aggiornamento preferito: miglioramento della gestione di didascalie e citazioni. Premi il tasto per l'inserimento dopo aver aggiunto una didascalia in un blocco Immagine, Video, Galleria, Citazione o Citazione evidenziata e ti ritroverai automaticamente in un nuovo blocco.
+We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or post. You can add just one of your accounts, or as many as you have. We don’t mind!
 
-Insieme a tali aggiornamenti, ora puoi scegliere quali pagine utilizzare come homepage e pagina degli articoli direttamente dall'elenco Pagine ed è presente un interruttore a livello di app per scegliere tra un aspetto chiaro o scuro.
+The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
 
-Sappiamo che la data Ultimo articolo è stata calcolata in modo non corretto nella pagina Panoramica. Il problema è stato risolto.
+The Cover block placeholder now has different background colors to make your images pop!
 
-Alcuni problemi riscontrati con i tour per l'Avvio rapido che ne stavano rallentando leggermente la velocità. Abbiamo risolto alcuni problemi di flusso nei tour "Aumenta il tuo pubblico" e "Pubblica un articolo" ed eliminato un bug che impediva agli utenti di VoiceOver di ottenere aggiornamenti sulle attività di Avvio rapido completate. Premi il tasto per l'inserimento dopo aver aggiunto una didascalia in un blocco Immagine, Video, Galleria, Citazione o Citazione evidenziata e ti ritroverai automaticamente in un nuovo blocco.
+We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.

@@ -132,6 +132,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
 @property (nonatomic, strong, readonly) BlogDetailHeaderView * _Nonnull headerView;
+@property (nonatomic) BOOL shouldScrollToViewSite;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
@@ -147,5 +148,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)refreshSiteIcon;
 - (void)toggleSpotlightForSiteTitle;
+- (void)toggleSpotlightOnHeaderView;
 
 @end

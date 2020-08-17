@@ -1,12 +1,9 @@
-Es ist einfach so: GIFs machen das Internet besser. Du hast jetzt über Tenor Zugriff auf eine Bibliothek mit kostenlosen GIFs, die du jedem Beitrag oder jeder Seite mithilfe eines Bild-Blocks hinzufügen kannst. Die Animation wird sogar beim Erstellen direkt im Editor angezeigt.
+Es gibt so einiges, das wir dir über den Block-Editor in diesem Update mitteilen möchten:
 
-Der Block-Editor weist eine weitere Reihe von Verbesserungen auf:
-– Unterstützung für Theme-definierte Farben und Farbverläufe im Cover-Block
-– Die Möglichkeit, Videos zu Cover-Blocks hochzuladen, auch wenn der Editor geschlossen ist
-– Und unsere wichtigste Aktualisierung: verbesserte Verarbeitung von Beschriftungen und Zitaten Wenn du nach dem Hinzufügen von Beschriftungen in Bild-, Video-, Galerie-, Zitat- und Pullquote-Blöcken die Eingabetaste drückst, wird der Cursor automatisch in einem neuen Block positioniert.
+Wir haben jetzt einen Block für Links zu sozialen Netzwerken! Du kannst die Anzahl deiner Follower erhöhen, indem du sie von deinen Seiten oder deinem Beitrag auf deine Social-Media-Profile weiterleitest. Du kannst ein ganz bestimmtes Konto oder auch all deine Konten hinzufügen. Ganz wie du willst!
 
-Zusätzlich zu diesen Aktualisierungen kannst du jetzt direkt in der Seiten-Liste auswählen, welche Seiten du als deine Startseiten und Beitragsseite verwenden möchtest. Und es gibt einen Schalter auf App-Ebene, um zwischen hellem und dunklem Design zu wählen.
+Der Block „Medien und Text“ verfügt jetzt über bessere Bearbeitungsfunktionen. Du kannst Medien im Block auswählen oder den Fokuspunkt ändern.
 
-Wir wissen, dass das Datum der letzten Beiträge auf der Einsichten-Seite falsch berechnet wurde. Dies wurde nun behoben!
+Der Cover-Block-Platzhalter weist jetzt andere Hintergrundfarben auf, damit deine Bilder hervorstechen!
 
-Ein paar Probleme bei Schnellstart-Touren haben dazu geführt, dass diese etwas langsamer waren. Wir haben einige Vorgangsprobleme in den Touren „Zielgruppe vergrößern“ und „Einen Beitrag veröffentlichen“ behoben und einen Fehler korrigiert, der dafür sorgte, dass VoiceOver-Kunden keine Updates zu abgeschlossenen Schnellstart-Aufgaben erhielten. (Und für alle VoiceOver-Benutzer: VoiceOver wird jetzt auch vom Abschnitt „Nächste Schritte“ unterstützt.)
+Wir haben Fehler korrigiert und auch Neuerungen entwickelt. Das Problem, bei dem der Seiteneditor in der iOS-Version 12.4 und niedriger nicht auf der Seite „Meine Website“ geladen wurde, haben wir jetzt behoben.

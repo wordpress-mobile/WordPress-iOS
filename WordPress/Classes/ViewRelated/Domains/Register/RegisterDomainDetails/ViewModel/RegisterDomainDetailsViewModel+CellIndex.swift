@@ -46,7 +46,7 @@ extension RegisterDomainDetailsViewModel {
         }
 
         enum AddressField {
-            case addressLine
+            case addressLine1
             case addNewAddressLine
             case city
             case state
@@ -90,8 +90,10 @@ extension RegisterDomainDetailsViewModel {
                     return .state
                 } else if postalCodeIndex == index {
                     return .postalCode
+                } else if addressLine1 == index {
+                    return .addressLine1
                 }
-                return .addressLine
+                return .addressLine1
             }
         }
     }

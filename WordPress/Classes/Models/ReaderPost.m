@@ -171,11 +171,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.sourceAttribution = nil;
     }
 
-    if ([Feature enabled:FeatureFlagReaderWebview]) {
-        post.content = [RichContentFormatter removeForbiddenTags:remotePost.content];
-    } else {
-        post.content = [RichContentFormatter formatContentString:remotePost.content isPrivateSite:remotePost.isBlogPrivate];
-    }
+    post.content = [RichContentFormatter removeInlineStyles:[RichContentFormatter removeForbiddenTags:remotePost.content]];
 
     // assign the topic last.
     post.topic = topic;

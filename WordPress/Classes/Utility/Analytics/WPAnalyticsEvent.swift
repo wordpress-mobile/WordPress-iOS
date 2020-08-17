@@ -41,6 +41,14 @@ import Foundation
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
 
+    // Notifications Permissions
+    case pushNotificationsPrimerSeen
+    case pushNotificationsPrimerAllowTapped
+    case pushNotificationsPrimerNoTapped
+    case secondNotificationsAlertSeen
+    case secondNotificationsAlertAllowTapped
+    case secondNotificationsAlertNoTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -101,6 +109,18 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        case .pushNotificationsPrimerSeen:
+            return "notifications_primer_seen"
+        case .pushNotificationsPrimerAllowTapped:
+            return "notifications_primer_allow_tapped"
+        case .pushNotificationsPrimerNoTapped:
+            return "notifications_primer_no_tapped"
+        case .secondNotificationsAlertSeen:
+            return "notifications_second_alert_seen"
+        case .secondNotificationsAlertAllowTapped:
+            return "notifications_second_alert_allow_tapped"
+        case .secondNotificationsAlertNoTapped:
+            return "notifications_second_alert_no_tapped"
     }
 }
 

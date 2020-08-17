@@ -67,5 +67,10 @@
 /// @param suggestionsTableView the suggestion view.
 - (void)suggestionsTableViewDidTapHeader:(nonnull SuggestionsTableView *)suggestionsTableView;
 
+/// This method returns the header view minimum height.
+/// Can be used as a hit area for the user to dismiss the suggestions list.
+/// @param suggestionsTableView the suggestion view.
+- (CGFloat)suggestionsTableViewHeaderMinimumHeight:(nonnull SuggestionsTableView *)suggestionsTableView;
+
 
 @end

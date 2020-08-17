@@ -1,12 +1,9 @@
-Det är ingen tvekan: GIF-bilder gör Internet bättre. Nu får du tillgång till ett bibliotek med kostnadsfria GIF-bilder via Tenor som du snabbt kan lägga till i ett inlägg eller en sida med ett bild-block. Du kan till och med se animeringen direkt i redigeraren medan du skapar!
+Vi har massor att säga om blockredigeraren i den här uppdateringen:
 
-Blockredigeraren har en ny batch med förbättringar:
-– Stöd för temadefinierade färger och toningar i Omslagsblocket,
-– Möjlighet att ladda upp videor till Omslagsblocken, även när redigeringsprogrammet är stängt.
-– Och vår absoluta favorituppdatering: förbättringar i hantering av bildtexter och citat. Tryck Retur efter att du lagt till en bildtext i ett Bild-, Video-, Galleri- eller Citat-block så kommer du automatiskt till ett nytt block.
+Nu finns det ett block för länkar till sociala media! Nu kan du få fler följare genom att helt enkelt leda dem till dina profiler i sociala medier från dina sidor och inlägg. Lägg in någon av dina profiler, eller alla du har. Det bestämmer du helt själv!
 
-Tillsammans med de uppdateringarna kan du nu välja vilka sidor du vill använda som din startsida och inläggssida direkt från Sidor-listan. Det finns även ett reglage på appnivå för att välja mellan ljust eller mörkt utseende.
+Blocket för media + text har nu bättre redigeringsfunktioner. I blocket kan du välja mediafil eller ändra den fokuserade platsen.
 
-Vi vet att datum för senaste inlägg beräknades felaktigt på Insikter-sidan. Det har vi fixat!
+Platshållaren i omslagsblocket har nu olika bakgrundsfärger för att lyfta fram dina bilder!
 
-Några problem med Snabbstartsguiderna gjorde att de inte var riktigt så snabba som de borde. Vi åtgärdade några flödesproblem med guiderna "Väx din målgrupp" och "Publicera ett inlägg" och fixade en bugg som förhindrade VoiceOver-användare från att få uppdateringar om slutförda Snabbstartsuppgifter. (VoiceOver-användare: avsnittet Nästa steg stöder nu även VoiceOver.)
+Samtidigt som vi skapat har vi också rättat olika saker. Nu har vi t.ex. löst problemet med att sidredigereraren inte kunde laddas in från sidan ”Min webbplats” i iOS 12.4 och tidigare versioner.

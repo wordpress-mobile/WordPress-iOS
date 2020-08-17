@@ -1,12 +1,9 @@
-Es un hecho: Los GIFs hacen una Internet mejor. Ahora tienes acceso a una biblioteca de GIFs gratuitos, desde Tenor, para añadir a cualquier entrada o página usando un bloque de imagen. ¡Verás incluso la animación a la derecha del editor, mientras creas!
+En esta actualización, tenemos mucho que contarte sobre el editor de bloques:
 
-El editor de bloques tiene otro montón de mejoras:
-– Compatibilidad con los colores y gradientes definidos y por el tema del bloque de fondo,
-– Posibilidad de subir vídeos a los bloques de fondo, aunque esté cerrado el editor.
-– Y nuestra actualización favorita: mejora en la gestión de leyendas y citas. Pulsa intro después de añadir una leyenda en una imagen, vídeo, galería, cita o bloque de cita, y descubrirás que estás automáticamente en otro bloque.
+¡Ahora tenemos un bloque de enlaces sociales! Puedes añadir a tus seguidores dirigiéndolos a tus perfiles de medios sociales desde tus páginas o entradas. Puedes añadir solo una de tus cuentas o tantas como tengas. ¡No nos importa!
 
-Además de estas actualizaciones, ahora puedes elegir qué páginas usar como página de inicio y página de entradas desde la lista de páginas, y hay un conmutador en la aplicación para elegir entre el aspecto claro u oscuro.
+Ahora, el bloque de medios y texto tiene mejores funciones de edición. Puedes seleccionar medios en el bloque o cambiar el punto focal.
 
-Sabemos que la fecha de las últimas entradas se estaba calculando incorrectamente en la página de estadísticas. ¡Eso ya está corregido!
+El marcador de posición del bloque de cubierta tiene ahora diferentes colores de fondo ¡para hacer que tus imágenes destaquen!
 
-Unos pocos problemas con las visitas guiadas de inicio las hacía menos rápidas. Hemos corregido algunos problemas de flujo en las visitas de «Haz crecer tu audiencia» y «Publica una entrada»,  y se ha arreglado un fallo que evitaba que los usuarios de VoiceOver obtuviesen actualizaciones sobre las tareas del inicio rápido. (Y para los usuarios de VoiceOver: la sección de nuevos pasos ahora también es compatible con VoiceOver.)
+Hemos estado ocupados corrigiendo cosas, así como creándolas. Ha sido resuelto el problema del editor de páginas que no cargaba desde la página «Mi sitio» en las versiones 12.4 y anteriores de iOS.

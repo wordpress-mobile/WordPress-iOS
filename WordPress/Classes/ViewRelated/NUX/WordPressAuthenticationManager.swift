@@ -76,7 +76,7 @@ class WordPressAuthenticationManager: NSObject {
                                                               textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
                                                               navBarBackgroundColor: .basicBackground,
-                                                              navButtonTextColor: .barButtonItemTitle,
+                                                              navButtonTextColor: .brand,
                                                               largeTitleTextColor: .text)
 
         WordPressAuthenticator.initialize(configuration: configuration,
@@ -183,6 +183,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
+        WPStyleGuide.configureNavigationAppearance()
+
         let controller = SupportTableViewController()
         controller.sourceTag = sourceTag
 

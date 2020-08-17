@@ -1,12 +1,9 @@
-Bu bir gerçek: GIF'ler interneti daha iyi hale getiriyor. Artık bir görüntü bloğu kullanarak herhangi bir yazıya veya sayfaya eklemek için Tenor aracılığıyla ücretsiz GIF kitaplığına erişebilirsiniz. Animasyonu oluştururken doğrudan düzenleyicide bile göreceksiniz!
+Bu güncellemede Blok düzenleyici hakkında size söyleyecek çok şeyimiz var:
 
-Blok düzenleyicide başka bir iyileştirme toplu işlemi var:
-- Kapak bloğunda tema tanımlı renkler ve degradeler için destek,
-- Editör kapalı olsa bile Kapak bloklarına video yükleme yeteneği.
-- Ve bizim en sevdiğimiz güncelleme: altyazı ve alıntı işleme iyileştirme. Bir görse, video, galeri, alıntı veya tanıtım bloğuna başlık ekledikten sonra enter tuşuna bastığınızda kendinizi otomatik olarak yeni bir blokta bulacaksınız.
+Artık bir Sosyal Bağlantılar bloğumuz var. Takipçilerinizi sayfalarınızdan veya yayınlarınızdan sosyal medya profillerinize yönlendirerek ekleyebilirsiniz. Hesaplarınızdan yalnızca birini veya istediğiniz kadarını ekleyebilirsiniz. Bizim için hiç sorun değil.
 
-Bu güncellemelerin yanı sıra, doğrudan Sayfalar listesinden ana sayfanız ve yazılar sayfanız olarak hangi sayfaların kullanılacağını seçebilirsiniz ve açık veya koyu görünüm arasında seçim yapmak için uygulama düzeyinde geçiş vardır.
+Medya ve Metin bloğunda artık daha iyi düzenleme işlevleri var. Bloktan medyayı seçebilir veya odak noktasını değiştirebilirsiniz.
 
-Son gönderim tarihinin Analizler sayfasında yanlış hesaplandığını biliyoruz. Bu düzeltildi!
+Kapak bloğu yer tutucusunda artık görsellerinizi göz alıcı hale getiren farklı arka plan renkleri var.
 
-Hızlı başlangıç ​​turlarıyla ilgili birkaç sorun onları biraz daha az hızlı hale getiriyordu. "Kitlenizi büyütün" ve "Bir yazı yayınlayın" turlarında bazı akış sorunlarını düzelttik ve VoiceOver kullanıcılarının tamamlanmış hızlı başlangıç ​​görevleri hakkında güncelleme almasını engelleyen bir hatayı düzelttik. (Ve VoiceOver kullanıcıları: Sonraki adımlar bölümü artık VoiceOver'ı da destekliyor.)
+Bir süredir bazı şeyleri düzeltmekle ve oluşturmakla meşguldük. iOS sürüm 12.4 ve daha önceki sürümlerde sayfa düzenleyicisinin "Sitem" Sayfasından yüklenmemesine neden olan sorun çözüldü.

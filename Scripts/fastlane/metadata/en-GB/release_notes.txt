@@ -1,12 +1,9 @@
-It’s a fact: GIFs make the internet better. You now have access to a library of free GIFs, via Tenor, to add to any post or page using an Image block. You’ll even see the animation right in the editor as you’re creating!
+We have lots to tell you about the block editor in this update:
 
-The block editor has another batch of improvements:
-– Support for theme-defined colours and gradients in the Cover block.
-– Ability to upload videos to Cover blocks, even if the editor is closed.
-– And our favourite update: improvement to caption and citation handling. Press enter after adding a caption in an Image, Video, Gallery, Quote, or Pullquote block, and you’ll automatically find yourself in a new block.
+We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or posts. You can add just one of your accounts, or as many as you have. We don’t mind!
 
-Along with those updates, you can now choose which pages to use as your homepage and posts page right from the Pages list, and there’s an app-level toggle for choosing between light or dark appearance.
+The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
 
-We know that the Latest Post date was being calculated incorrectly on the Insights page. That’s fixed!
+The Cover block placeholder now has different background colours to make your images pop!
 
-A few issues with Quick Start tours were making them slightly less quick. We fixed up some flow issues in the “Grow Your Audience” and “Publish a Post” tours, and squashed a bug that stopped VoiceOver users from getting updates about completed Quick Start tasks. (And VoiceOver users: the Next Steps section now supports VoiceOver, too.)
+We have been busy fixing things, as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.

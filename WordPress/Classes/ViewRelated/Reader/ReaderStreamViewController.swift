@@ -23,6 +23,13 @@ import WordPressFlux
 
     // MARK: - Properties
 
+    // Select Interests
+    private lazy var interestsCoordinator: ReaderSelectInterestsCoordinator = {
+        return ReaderSelectInterestsCoordinator()
+    }()
+
+    private var selectInterestsViewController: ReaderSelectInterestsViewController?
+
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
@@ -93,8 +100,6 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
-    let news = ReaderNewsCard()
-
     /// Used for fetching content.
     private lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -112,7 +117,7 @@ import WordPressFlux
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = tagSlug
+                title = NSLocalizedString("Topic", comment: "Topic page title")
 
                 fetchTagTopic()
             }
@@ -160,6 +165,8 @@ import WordPressFlux
         }
     }
 
+    var isContentFiltered: Bool = false
+
     var contentType: ReaderContentType = .topic {
         willSet {
             if contentType == .saved && newValue != .saved {
@@ -195,7 +202,6 @@ import WordPressFlux
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
-        controller.checkNewsCardAvailability(topic: topic)
         return controller
     }
 
@@ -322,6 +328,7 @@ import WordPressFlux
             displayLoadingStream()
         }
     }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -500,7 +507,7 @@ import WordPressFlux
             return
         }
 
-        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let header = headerForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -613,7 +620,11 @@ import WordPressFlux
             return
         }
 
-        title = topic.title
+        if ReaderHelpers.isTopicTag(topic) {
+             title = NSLocalizedString("Topic", comment: "Topic page title")
+        } else {
+            title = topic.title
+        }
     }
 
 
@@ -1275,44 +1286,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
     }
 }
 
-extension ReaderStreamViewController: NewsManagerDelegate {
-    func didDismissNews() {
-        refreshTableHeaderIfNeeded()
-    }
-
-    func didSelectReadMore(_ url: URL) {
-        let readerLinkRouter = UniversalLinkRouter.shared
-        if readerLinkRouter.canHandle(url: url) {
-            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
-        } else if url.isWordPressDotComPost {
-            presentReaderDetailViewControllerWithURL(url)
-        } else {
-            presentWebViewControllerWithURL(url)
-        }
-    }
-
-    private func presentWebViewControllerWithURL(_ url: URL) {
-        let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticateWithDefaultAccount()
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true)
-    }
-
-    private func presentReaderDetailViewControllerWithURL(_ url: URL) {
-        var viewController: UIViewController
-
-        if FeatureFlag.readerWebview.enabled {
-            viewController = ReaderDetailWebviewViewController.controllerWithPostURL(url)
-        } else {
-            viewController = ReaderDetailViewController.controllerWithPostURL(url)
-        }
-
-        navigationController?.pushFullscreenViewController(viewController, animated: true)
-    }
-}
-
 // MARK: - WPContentSyncHelperDelegate
 
 extension ReaderStreamViewController: WPContentSyncHelperDelegate {
@@ -1565,27 +1538,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        var controller: UIViewController
-
-        if FeatureFlag.readerWebview.enabled {
-            controller = ReaderDetailWebviewViewController.controllerWithPost(post)
-        } else {
-
-            if post.sourceAttributionStyle() == .post &&
-                post.sourceAttribution.postID != nil &&
-                post.sourceAttribution.blogID != nil {
-
-                controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-
-            } else if post.isCross() {
-                controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-
-            } else {
-                controller = ReaderDetailViewController.controllerWithPost(post)
-
-            }
-
-        }
+        let controller = ReaderDetailViewController.controllerWithPost(post)
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
@@ -1831,6 +1784,7 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
+        isContentFiltered = content.topicType == .tag
         hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
@@ -1838,6 +1792,8 @@ extension ReaderStreamViewController: ReaderContentViewController {
             return
         }
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
+
+        displaySelectInterestsIfNeeded(content)
     }
 }
 
@@ -1863,6 +1819,65 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     }
 }
 
+
+// MARK: - Select Interests Display
+private extension ReaderStreamViewController {
+    func displaySelectInterestsIfNeeded(_ content: ReaderContent) {
+        guard FeatureFlag.readerImprovementsPhase2.enabled,
+            content.topicType == .discover else {
+            // Removes the view if we're not on the discover tab, and it exists
+            selectInterestsViewController?.remove()
+            return
+        }
+
+        if self.selectInterestsViewController != nil {
+            showSelectInterestsViewIfNeeded()
+            return
+        }
+
+        // If we're not showing the select interests view, check to see if we should
+        interestsCoordinator.shouldDisplay { [unowned self] shouldDisplay in
+            if shouldDisplay {
+                self.makeSelectInterestsViewControllerIfNeeded()
+                self.showSelectInterestsViewIfNeeded()
+            }
+        }
+    }
+
+    func showSelectInterestsViewIfNeeded() {
+        guard let controller = selectInterestsViewController else {
+            return
+        }
+
+        // Using duration zero to prevent the screen from blinking
+        UIView.animate(withDuration: 0) {
+            controller.view.frame = self.view.bounds
+            self.add(controller, asChildOf: self)
+        }
+    }
+
+    func makeSelectInterestsViewControllerIfNeeded() {
+        if selectInterestsViewController != nil {
+            return
+        }
+
+        let controller = ReaderSelectInterestsViewController()
+        controller.didSaveInterests = { [unowned self] in
+            guard let controller = self.selectInterestsViewController else {
+                return
+            }
+
+            UIView.animate(withDuration: 0.2, animations: {
+                controller.view.alpha = 0.0
+            }) { [unowned self] _ in
+                controller.remove()
+                self.selectInterestsViewController = nil
+            }
+        }
+
+        selectInterestsViewController = controller
+    }
+}
 
 // MARK: - View content types without a topic
 private extension ReaderStreamViewController {

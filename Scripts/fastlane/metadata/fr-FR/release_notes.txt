@@ -1,12 +1,9 @@
-C’est un fait : Les GIF rendent l’internet plus fun. Vous avez maintenant accès à une bibliothèque de GIF gratuites, via Tenor, pour ajouter un bloc image à n’importe quel article ou page.
+Nous avons beaucoup de choses à vous dire au sujet de l’éditeur de blocs dans cette mise à jour :
 
-L’éditeur de bloc a un autre lots d’améliorations :
-– support des couleurs et dégradés définis par le thème dans le bloc Bannière,
-– possibilité de téléverser des vidéos au bloc Bannière, même si l’éditeur est fermé.
-– et notre mise à jour favorite : amélioration de la manipulation des légendes et citations. Pressez Entrée après avoir ajouté une légende dans une image, vidéo, galerie, citation ou citation en exergue et vous vous retrouverez automatiquement dans un nouveau bloc.
+nous disposons désormais d’un bloc Liens vers les réseaux sociaux ! Vous pouvez ajouter des liens afin de diriger vos abonnés vers vos profils sur les réseaux sociaux à partir de vos pages ou articles. Vous pouvez ajouter un seul de vos comptes ou tous. C’est comme bon vous semble !
 
-En plus de ces mises à jour, vous pouvez maintenant choisir les pages à utiliser comme page d’accueil et comme page de messages directement à partir de la liste des pages, et il y a un commutateur au niveau de l’application pour choisir entre l'apparence claire ou sombre.
+Le bloc Médias & Texte propose désormais des fonctions d’édition améliorées. Vous pouvez sélectionner des médias dans le bloc ou modifier le point focal.
 
-Nous savons que la date du dernier courrier était mal calculée sur la page Thématiques. C’est réglé !
+Le texte indicatif du bloc Bannière comporte désormais différentes couleurs d’arrière-plan afin de mieux mettre en valeur vos images !
 
-Quelques problèmes avec les guides de démarrage rapide les rendaient un peu moins rapides. Nous avons corrigé quelques problèmes de flux dans les guides « Faites grandir votre audience » et « Publier un article » et dégagé un bug qui empêchait les utilisateurs de VoiceOver d’obtenir les mises à jour sur les tâches de démarrage rapide terminées. (Et pour les utilisateurs de VoiceOver : la section Prochaines étapes prend maintenant en charge VoiceOver)
+Nous avons travaillé activement à l’innovation, mais également à la correction de problèmes. Nous avons résolu le problème de l’éditeur de page qui ne se chargeait pas à partir de la page « Mon site » sous iOS versions 12.4 et antérieures.

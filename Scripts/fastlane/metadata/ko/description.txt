@@ -7,3 +7,5 @@ iOS용 워드프레스는 오픈 소스 프로젝트이므로 사용자도 개�
 iOS용 워드프레스는 워드프레스닷컴과 워드프레스 4.0 이상을 실행하는 자체 호스팅된 WordPress.org 사이트를 지원합니다.
 
 앱 사용에 도움이 필요하세요? https://ios.forums.wordpress.org/에서 포럼을 방문하거나 @WordPressiOS로 트윗하세요.
+
+캘리포니아 사용자를 위한 개인 정보 보호 알림을 https://automattic.com/privacy/#california-consumer-privacy-act-ccpa에서 보세요.

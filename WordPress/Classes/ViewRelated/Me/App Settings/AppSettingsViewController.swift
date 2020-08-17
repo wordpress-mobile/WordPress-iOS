@@ -251,6 +251,17 @@ class AppSettingsViewController: UITableViewController {
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
+
+    func presentWhatIsNew() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+            let controller = WhatIsNewViewController()
+            self.present(controller, animated: true)
+            self.tableView.deselectSelectedRowWithAnimation(false)
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance
@@ -398,7 +409,7 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
-        var rows = [settingsRow, aboutRow]
+        var rows: [ImmuTableRow] = [settingsRow, aboutRow]
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)

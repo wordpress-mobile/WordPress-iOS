@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-20 21:52:18+0000 */
+/* Translation-Revision-Date: 2020-07-28 10:26:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li palabras, %2$li caracteres";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "Ajustes de %s";
+"%s block options" = "Opciones del bloque %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Bloque %s. Vacío";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Otras opciones:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Enviar siempre los registros de fallos";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Se requiere una conexión activa a Internet";
 
@@ -804,6 +807,9 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Gráfico de barras que representa los visitantes de tu última entrada";
 
+/* No comment provided by engineer. */
+"Base" = "Base";
+
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Sé el primero en escribir un comentario.";
 
@@ -831,11 +837,29 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "Bloquear este sitio";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Bloque copiado";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Bloque cortado";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Bloque duplicado";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor de bloques activado";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Bloquear intentos de acceso malintencionados";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Bloque pegado";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Bloque eliminado";
+
+/* No comment provided by engineer. */
+"Block settings" = "Ajustes del bloque";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -904,6 +928,12 @@
 
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "No se puede solicitar el enlace";
+
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "No se puede publicar una página vacía";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "No se puede publicar una entrada vacía";
 
 /* Alert dismissal title
    Button label when canceling alert in quick start
@@ -1065,6 +1095,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Comprobando compras...";
 
+/* No comment provided by engineer. */
+"Child Blocks" = "Bloques hijo";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Elegir las páginas";
 
@@ -1094,6 +1127,18 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "Elegir del dispositivo";
+
+/* No comment provided by engineer. */
+"Choose image" = "Elegir una imagen";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "Elegir una imagen o vídeo";
+
+/* No comment provided by engineer. */
+"Choose video" = "Elegir un vídeo";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "Elige tus intereses";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Eligiendo un sitio diferente perderás la capacidad de editar algún contenido, como elementos multimedia y categorías. ¿Estás seguro?";
@@ -1257,6 +1302,9 @@
 "Completed: Publish a post" = "Completado: Publicar una entrada";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "Completado: Configurar el título de tu sitio";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Completado: Subir un icono para el sitio";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1366,6 +1414,9 @@
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Contacta con nosotros a través de %@";
 
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Estructura del contenido\nBloques: %1$li, Palabras: %2$li, Caracteres: %3$li";
+
 /* No comment provided by engineer. */
 "Content…" = "Contenido...";
 
@@ -1396,8 +1447,20 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuando con Apple";
 
+/* No comment provided by engineer. */
+"Convert to blocks" = "Convertir a bloques";
+
+/* No comment provided by engineer. */
+"Coordinated Universal Time" = "Tiempo Universal Coordinado";
+
+/* No comment provided by engineer. */
+"Copied block" = "Bloque copiado";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copiar enlace al comentario";
+
+/* No comment provided by engineer. */
+"Copy block" = "Copiar bloque";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Podría ser mejor";
@@ -1477,6 +1540,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Código de país";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Registro de fallos";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Informes de fallos";
@@ -1566,6 +1632,9 @@
    Theme Customize action title */
 "Customize" = "Personalizar";
 
+/* No comment provided by engineer. */
+"Customize Gradient" = "Personalizar el degradado";
+
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Personaliza tu sitio";
@@ -1587,6 +1656,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personaliza los ajustes de tu sitio para los «me gusta», comentarios, seguimientos y más.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Cortar bloque";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Oscuro";
@@ -1664,6 +1736,9 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Se ha producido un error al eliminar el sitio";
 
+/* No comment provided by engineer. */
+"Delete Site Logo" = "Borrar el logotipo del sitio";
+
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Borrar esta etiqueta";
 
@@ -1727,16 +1802,17 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Descubrir sitios";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Descubre y sigue los blogs que te gustan";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Comentarios";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1750,9 +1826,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Descartar %@ el paso de inicio rápido";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "Descarta la tarjeta de noticias.";
 
 /* Display Name label text.
    My Profile display name label
@@ -1794,6 +1867,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1801,9 +1875,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "No llores porque se ha acabado, sonríe porque ha pasado.";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "Toca dos veces y mantén para editar";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Toca dos veces para añadir un bloque";
@@ -1853,6 +1924,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "Toca dos veces para seleccionar el diseño";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Toca dos veces para seleccionar la opción";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Toca dos veces para cambiar el ajuste";
 
@@ -1871,6 +1945,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Borradores";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicar bloque";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Este";
@@ -1911,9 +1988,6 @@
 
 /* No comment provided by engineer. */
 "Edit block in web browser" = "Editar bloque en el navegador web";
-
-/* No comment provided by engineer. */
-"Edit media" = "Editar los medios";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edita nuevas entradas y páginas con el editor de bloques.";
@@ -1991,6 +2065,9 @@
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "¿Activamos los avisos del sitio?";
 
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Registros cifrados";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrar en pantalla completa";
 
@@ -2022,6 +2099,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Escribe usuario";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Introduce la información de tu cuenta para %@.";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2107,6 +2187,9 @@
 
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Error al actualizar los ajustes de Jetpack";
+
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Error al actualizar el título del sitio";
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Error al actualizar los ajustes de acelerar tu sitio";
@@ -2245,6 +2328,12 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Encuentra sitios que te hablen, y síguelos para recibir actualizaciones cuando publiquen.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Encuentra la dirección de tu sitio";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "Encontrar blogs e historias que te encantarán...";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Buscando tu ubicación...";
 
@@ -2367,14 +2456,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Pon tu sitio en marcha";
 
+/* View title for initial auth views. */
+"Getting Started" = "Primeros pasos";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Recuperando la información de la cuenta";
 
 /* Cancel */
 "Give Up" = "Renunciar";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Dale a tu sitio un nombre que refleje su personalidad y temática. ¡Las primeras impresiones cuentan!";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Volver";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Ir al siguiente";
@@ -2394,6 +2492,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Obteniendo la URL del sitio";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Tipo de degradado";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "¡Fantástico!\nNos encanta tener noticias de usuarios felices\n😁";
@@ -2431,6 +2532,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "Te guía a través del proceso de revisar las estadísticas de tu sitio.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Te guía a través del proceso de configurar un título para tu sitio.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "Te guía a través del proceso de configurar tu sitio.";
@@ -2586,6 +2690,9 @@ translators: sample content for \"Team\" page template */
 
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
+
+/* No comment provided by engineer. */
+"Image width" = "Ancho de la imagen";
 
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Imagen: %@";
@@ -2782,10 +2889,7 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Resumen de las últimas entradas";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Leer más";
 
 /* Description of a Quick Start Tour */
@@ -2983,7 +3087,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Acceder";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3124,6 +3229,9 @@ translators: sample content for \"Services\" page template */
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "El tamaño del medio (%1$@) es demasiado grande para subirlo. El máximo permitido es de %2$@";
 
+/* No comment provided by engineer. */
+"Media preview" = "Vista previa del medio";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Fallo en la vista previa del medio.";
 
@@ -3188,32 +3296,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Lo más popular";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "Mover %s abajo";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "Mover %s a la izquierda";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "Mover %s a la derecha";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "Mover %s arriba";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "Mover la imagen hacia atrás";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "Mover la imagen hacia delante";
 
+/* No comment provided by engineer. */
+"Move block down" = "Mover bloque abajo";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "Mover el bloque hacia abajo desde la fila %1$s a la fila %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "Mover bloque a la izquierda";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Mover el bloque a la izquierda desde la posición %1$s a la posición %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "Mover el bloque a la derecha";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "Mover el bloque a la derecha desde la posición %1$s a la posición %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "Mover bloque arriba";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Mover el bloque hacia arriba desde la fila %1$s a la fila %2$s";
@@ -3280,6 +3388,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Navegar arriba";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Navega al selector de color personalizado";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Navega para personalizar el degradado";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navega a la hoja de contenido anterior";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "¿Necesitas ayuda?";
@@ -3679,11 +3796,17 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "Abre en el navegador";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "Abrir el enlace en un navegador";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Abrir enlace en una ventana o pestaña nuevas";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Abrir la sección «Yo»";
+
+/* No comment provided by engineer. */
+"Open the block list view." = "Abre la vista de la lista de bloques.";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Abre la página web en Safari";
@@ -3794,6 +3917,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Contraseña";
 
@@ -3808,6 +3932,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Paste URL" = "Pegar URL";
+
+/* No comment provided by engineer. */
+"Paste block" = "Pegar bloque";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Pegar sin formato";
@@ -3858,6 +3985,9 @@ translators: sample content for \"Services\" page template */
 
 /* User action to play a video on the editor. */
 "Play video" = "Reproduce vídeo";
+
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Por favor, añade algo de contenido antes de tratar de publicar.";
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Por favor, revisa tu conexión a Internet e inténtalo de nuevo.";
@@ -3924,6 +4054,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "Por favor, sal de la sesión antes de conectar a otro sitio wordpress.com distinto";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Por favor, inténtalo de nuevo más tarde";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Por favor, inténtalo de nuevo más tarde.";
@@ -4188,9 +4321,6 @@ translators: sample content for \"Services\" page template */
 /* Menu item label for linking a project page. */
 "Projects" = "Proyectos";
 
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "Ofrece más información.";
-
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Pública";
@@ -4388,9 +4518,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "Eliminar";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "Eliminar %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "Borrar @%@";
@@ -4425,6 +4552,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Eliminar las notas";
 
+/* No comment provided by engineer. */
+"Remove block" = "Eliminar bloque";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Eliminar de las perspectivas";
 
@@ -4454,6 +4584,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Reemplazar el bloque actual";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Reemplazar la imagen o vídeo";
+
+/* No comment provided by engineer. */
+"Replace video" = "Reemplazar el vídeo";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Responde a un comentario.";
@@ -4509,6 +4645,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Restablecer el filtro";
+
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "Restablecer tu contraseña";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Cambiar tamaño y recortar";
@@ -4764,6 +4903,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Selecciona %@ para ver tu plan actual y otros planes disponibles.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Selecciona %@ para configurar un nuevo título.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Selecciona %@ para empezar a personalizar tu sitio";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4780,6 +4922,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Select a color" = "Seleccionar un color";
+
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Selecciona algunos para continuar";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Elige medios.";
@@ -4832,8 +4977,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Enviar enlace";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Enviar el mensaje del registro";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Enviar pingbacks";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Enviar una prueba de fallos";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Enviar avisos por correo electrónico";
@@ -4871,6 +5022,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configurar Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "Configura el título de tu sitio";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Configurar el tema";
@@ -4944,7 +5098,11 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Mostrar entradas relacionadas";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* No comment provided by engineer. */
+"Show a site logo" = "Mostrar un logotipo del sitio";
+
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Mostrar la contraseña";
 
 /* No comment provided by engineer. */
@@ -5007,6 +5165,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "Título del plugin de la barra lateral";
 
+/* View title during the sign up process. */
+"Sign Up" = "Registrarse";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Regístrate";
 
@@ -5034,6 +5195,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "Idioma del sitio";
 
+/* No comment provided by engineer. */
+"Site Logo" = "Logotipo del sitio";
+
+/* No comment provided by engineer. */
+"Site Logo Settings" = "Ajustes del logotipo del sitio";
+
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5042,8 +5209,13 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirección de sitio";
 
-/* Label for site title blog setting
+/* No comment provided by engineer. */
+"Site Tagline" = "Descripción del sitio";
+
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Título del sitio";
 
@@ -5073,6 +5245,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zona horaria del sitio (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Título del sitio cambiado correctamente";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5109,7 +5284,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Algo fue mal. Por favor, revisa tu conectividad e inténtalo de nuevo.";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "Algo ha salido mal. Por favor inténtalo de nuevo.";
 
 /* Invite Validation Alert
@@ -5505,6 +5681,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "No estás conectado a internet.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "El título del sitio solo lo puede cambiar un usuario con perfil de administrador.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "El título del sitio se muestra en la barra del título de un navegador web y se muestra en la cabecera de la mayoría de los temas.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "La URL no contiene un host válido.";
@@ -5908,7 +6090,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "Intentar de nuevo";
 
 /* No comment provided by engineer. */
@@ -6175,6 +6358,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Sube un icono para el sitio";
 
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "Sube una imagen o selecciona una desde tu biblioteca de medios para que sea el logotipo de tu sitio.";
+
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Carga fallida";
@@ -6211,6 +6397,9 @@ translators: sample content for \"Services\" page template */
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "Subiendo medios...";
 
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Subiendo entrada";
+
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Subiendo entrada…";
 
@@ -6237,6 +6426,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6939,6 +7129,9 @@ translators: sample content for \"Services\" page template */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Tu contraseña debería tener al menos seis caracteres. Para hacerla más fuerte utiliza mayúsculas y minúsculas, números y símbolos como ! \" ? $ % ^ & ).";
 
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Ahora mismo se está subiendo tu entrada. Por favor, espera hasta que se complete.";
+
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Recibirás tus entradas, páginas y ajustes por correo electrónico a %@.";
 
@@ -7010,6 +7203,9 @@ translators: sample content for \"Services\" page template */
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexiones";
+
+/* No comment provided by engineer. */
+"description" = "descripción";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "¿a que sienta bien tachar cosas de una lista?";

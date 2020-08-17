@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2020-06-25 10:54:10+0000 */
+/* Translation-Revision-Date: 2020-08-06 18:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-alpha */
+/* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li מילים, %2$li תווים";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s Settings" = "%s הגדרות";
+"%s block options" = "%s אפשרויות הבלוק";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "הבלוק %s. ריק";
@@ -559,6 +559,9 @@
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "לחלופין:";
 
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "תמיד לשלוח דוחות קריסה";
+
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "נדרש חיבור פעיל לאינטרנט";
 
@@ -804,6 +807,9 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "תרשים עמודות שמשקף את המבקרים בפוסטים האחרונים שלך";
 
+/* No comment provided by engineer. */
+"Base" = "בסיס";
+
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "נשמח לקבל תגובה ראשונה ממך.";
 
@@ -831,11 +837,29 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block This Site" = "חסימת אתר";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "הבלוק הועתק";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "הבלוק נחתך";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "הבלוק שוכפל";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "חסימת ניסיונות התחברות זדוניים";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "הבלוק הודבק";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "הבלוק הוסר";
+
+/* No comment provided by engineer. */
+"Block settings" = "הגדרות הבלוק";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -904,6 +928,12 @@
 
 /* Title of an alert letting the user know */
 "Can Not Request Link" = "לא ניתן לבקש קישור";
+
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "לא ניתן לפרסם עמוד ריק";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "לא ניתן לפרסם פוסט ריק";
 
 /* Alert dismissal title
    Button label when canceling alert in quick start
@@ -1065,6 +1095,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "בודק רכישות…";
 
+/* No comment provided by engineer. */
+"Child Blocks" = "בלוקים משניים";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "לבחור עמודים";
 
@@ -1094,6 +1127,18 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "לבחור מהמכשיר";
+
+/* No comment provided by engineer. */
+"Choose image" = "לבחור תמונה";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "לבחור תמונה או וידאו";
+
+/* No comment provided by engineer. */
+"Choose video" = "לבחור וידאו";
+
+/* Reader select interests subtitle label text */
+"Choose your interests" = "לבחור את תחומי העניין שלך";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "בבחירת אתרים שונים תאבד את היכולת לערוך תכנים\/מדיה\/קטגוריות מאתר ספציפי. האם אתה בטוח?";
@@ -1257,6 +1302,9 @@
 "Completed: Publish a post" = "הושלם: לפרסום פוסט";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Set your site title" = "הושלם: להגדיר את שם האתר שלך";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "הושלם: להעלאת סמל האתר";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1366,6 +1414,9 @@
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "ניתן ליצור אתנו קשר בכתובת %@";
 
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$l⁩i, מילים: %2$li, תווים: %3$li";
+
 /* No comment provided by engineer. */
 "Content…" = "תוכן...";
 
@@ -1396,8 +1447,20 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "להמשיך עם Apple";
 
+/* No comment provided by engineer. */
+"Convert to blocks" = "להמיר לבלוקים";
+
+/* No comment provided by engineer. */
+"Coordinated Universal Time" = "לתאם את הזמן האוניברסלי";
+
+/* No comment provided by engineer. */
+"Copied block" = "הבלוק הועתק";
+
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "העתקת הקישור לתגובה";
+
+/* No comment provided by engineer. */
+"Copy block" = "להעתיק בלוק";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "יכול להיות יותר טוב";
@@ -1477,6 +1540,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "קידומת טלפון בינלאומית";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "ליצור דוח קריסה";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "דוחות קריסה";
@@ -1566,6 +1632,9 @@
    Theme Customize action title */
 "Customize" = "התאמה אישית";
 
+/* No comment provided by engineer. */
+"Customize Gradient" = "להתאים אישית את מעבר הצבע";
+
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "התאמה אישית של האתר שלך";
@@ -1587,6 +1656,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "התאמה אישית של הגדרות האתר שלך עבור לייקים, תגובות, עוקבים ועוד.";
+
+/* No comment provided by engineer. */
+"Cut block" = "לחתוך בלוק";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "צבעים כהים";
@@ -1664,6 +1736,9 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "שגיאה במחיקת אתר";
 
+/* No comment provided by engineer. */
+"Delete Site Logo" = "למחוק את לוגו האתר";
+
 /* Delete Tag confirmation action title */
 "Delete this tag" = "מחיקת תגית זו";
 
@@ -1727,16 +1802,17 @@
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "עיון באתרים";
 
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "דיון";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1750,9 +1826,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "דילוג על שלב %@ בהתחלה המהירה";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "דחייה של כרטיסי חדשות.";
 
 /* Display Name label text.
    My Profile display name label
@@ -1794,6 +1867,7 @@
    Label on button to dismiss revisions view
    Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
+   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
    Title of the Done button on the me page */
@@ -1801,9 +1875,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "חבל לבכות כי החוויה שהסתיימה, כדאי לחייך כי החוויה התרחשה.";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "יש להקיש פעמיים ולהחזיק כדי לערוך";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "יש להקיש פעמיים כדי להוסיף בלוק";
@@ -1853,6 +1924,9 @@
 /* No comment provided by engineer. */
 "Double tap to select layout" = "יש להקיש פעמיים כדי לבחור פריסה";
 
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "יש להקיש פעמיים כדי לבחור את האפשרות";
+
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "יש להקיש פעמיים כדי לשנות את ההגדרות";
 
@@ -1871,6 +1945,9 @@
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "טיוטות";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "לשכפל בלוק";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "מזרח";
@@ -1911,9 +1988,6 @@
 
 /* No comment provided by engineer. */
 "Edit block in web browser" = "לערוך את הבלוק בדפדפן הרשת";
-
-/* No comment provided by engineer. */
-"Edit media" = "לערוך מדיה";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
@@ -1991,6 +2065,9 @@
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "האם להפעיל הודעות אתר?";
 
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "להצפין את היומנים";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "להיכנס לתצוגה של מסך מלא";
 
@@ -2022,6 +2099,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "הזן שם משתמש";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "להזין את פרטי החשבון שלך ב-%@";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2107,6 +2187,9 @@
 
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "שגיאה בעת עדכון ההגדרות של Jetpack";
+
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "שגיאה בעדכון שם האתר";
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "שגיאה בעדכון ההגדרות לשיפור המהירות באתר";
@@ -2245,6 +2328,12 @@
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "באפשרותך לחפש אתרים שמעניינים אותך ולעקוב אחריהם כדי לקבל עדכונים כשהם יפרסמו תוכן חדש.";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "למצוא את הכותרת של האתר שלך";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "למצוא בלוגים וסיפורים שימצאו חן בעיניך...";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "מחפש את מיקומך...";
 
@@ -2367,14 +2456,23 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "הפעלת האתר שלך";
 
+/* View title for initial auth views. */
+"Getting Started" = "לצאת לדרך";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "טוען פרטי חשבון";
 
 /* Cancel */
 "Give Up" = "לוותר";
 
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "כדאי לתת לאתר שלך שם שמשקף את האישיות שלו והנושאים שמוצגים בו. הרושם הראשוני חשוב!";
+
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "מעבר לעוקבים";
@@ -2394,6 +2492,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "תופס את כתובת ה-URL של האתר";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "סוג מעבר צבע";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "";
@@ -2431,6 +2532,9 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
 "Guides you through the process of reviewing statistics for your site." = "הפעולה תדריך אותך בביצוע התהליך של בדיקת הנתונים הסטטיסטיים באתר שלך.";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "הפעולה תדריך אותך בביצוע התהליך של הגדרת השם לאתר שלך.";
 
 /* This value is used to set the accessibility hint text for setting up the user's site. */
 "Guides you through the process of setting up your site." = "הפעולה תדריך אותך בביצוע התהליך של הגדרת האתר שלך.";
@@ -2586,6 +2690,9 @@ translators: sample content for \"Team\" page template */
 
 /* Hint for image title on image settings. */
 "Image title" = "כותרת התמונה";
+
+/* No comment provided by engineer. */
+"Image width" = "רוחב התמונה";
 
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "תמונה, %@";
@@ -2782,10 +2889,7 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "סיכום פוסטים אחרונים";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "מידע נוסף";
 
 /* Description of a Quick Start Tour */
@@ -2983,7 +3087,8 @@ translators: sample content for \"Services\" page template */
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "התחבר";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3124,6 +3229,9 @@ translators: sample content for \"Services\" page template */
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "גודל הקובץ (%1$@) חורג מהגודל האפשרי להעלאה. גודל ההעלאה המקסימלי הוא %2$@";
 
+/* No comment provided by engineer. */
+"Media preview" = "תצוגה מקדימה של המדיה";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "תצוגה מקדימה של פריט מדיה נכשלה.";
 
@@ -3188,32 +3296,32 @@ translators: sample content for \"Services\" page template */
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "המועד הפופולרי ביותר";
 
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Down" = "להזיז את %s למטה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Left" = "להזיז את %s שמאלה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Right" = "להזיז את %s ימינה";
-
-/* translators: %s: block title e.g: \"Paragraph\" */
-"Move %s Up" = "להזיז את %s למעלה";
-
 /* No comment provided by engineer. */
 "Move Image Backward" = "להעביר את התמונה אחורה";
 
 /* No comment provided by engineer. */
 "Move Image Forward" = "להעביר את התמונה קדימה";
 
+/* No comment provided by engineer. */
+"Move block down" = "להזיז את הבלוק למטה";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block down from row %1$s to row %2$s" = "להזיז את הבלוק למטה משורה %1$s לשורה %2$s";
+
+/* No comment provided by engineer. */
+"Move block left" = "להזיז את הבלוק שמאלה";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "להזיז את הבלוק שמאלה מהמיקום %1$s למיקום %2$s";
 
+/* No comment provided by engineer. */
+"Move block right" = "להזיז את הבלוק ימינה";
+
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block right from position %1$s to position %2$s" = "להזיז את הבלוק ימינה מהמיקום %1$s למיקום %2$s";
+
+/* No comment provided by engineer. */
+"Move block up" = "להזיז את הבלוק למעלה";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "להזיז את הבלוק למעלה משורה %1$s לשורה %2$s";
@@ -3280,6 +3388,15 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigate Up" = "לנווט למעלה";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "הפעולה מנווטת אל בורר הצבע המותאם";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "הפעולה מנווטת אל האפשרות להתאים את מעבר הצבע";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "הפעולה מנווטת אל גיליון התוכן הקודם";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "עזרה";
@@ -3679,11 +3796,17 @@ translators: sample content for \"Services\" page template */
 /* Button title to load a post in an in-app web view */
 "Open in browser" = "פתיחה בדפדפן";
 
+/* No comment provided by engineer. */
+"Open link in a browser" = "לפתוח את הקישור בדפדפן";
+
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "פתיחת קישור בחלון חדש\/כרטיסייה חדשה";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "לפתוח את המקטע 'אני'";
+
+/* No comment provided by engineer. */
+"Open the block list view." = "לפתוח את התצוגה של רשימת הבלוקים.";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "פותח את עמוד האינטרנט ב-Safari";
@@ -3794,6 +3917,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "סיסמה";
 
@@ -3808,6 +3932,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Paste URL" = "להדביק את כתובת ה-URL";
+
+/* No comment provided by engineer. */
+"Paste block" = "להדביק בלוק";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "הדבקה בלי העיצוב";
@@ -3858,6 +3985,9 @@ translators: sample content for \"Services\" page template */
 
 /* User action to play a video on the editor. */
 "Play video" = "הפעלת וידאו";
+
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "יש להוסיף תוכן לפני לחיצה על פרסום.";
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "יש לבדוק את החיבור לאינטרנט ולנסות שוב.";
@@ -3924,6 +4054,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
 "Please log out before connecting to a different wordpress.com site" = "יש להתנתק לפני ההתחברות לאתר WordPress.com שונה";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "יש לנסות שוב מאוחר יותר";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "יש לנסות שוב מאוחר יותר.";
@@ -4188,9 +4321,6 @@ translators: sample content for \"Services\" page template */
 /* Menu item label for linking a project page. */
 "Projects" = "פרויקטים";
 
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "הצגת מידע נוסף.";
-
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "ציבורי";
@@ -4388,9 +4518,6 @@ translators: sample content for \"Services\" page template */
    Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
 "Remove" = "מחק";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Remove %s" = "להסיר את %s";
-
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove @%@" = "הסרת @%@";
@@ -4425,6 +4552,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "להסיר את ההסברים";
 
+/* No comment provided by engineer. */
+"Remove block" = "להסיר בלוק";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
 
@@ -4454,6 +4584,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "יש להחליף את הבלוק הנוכחי";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "להחליף תמונה או וידאו";
+
+/* No comment provided by engineer. */
+"Replace video" = "להחליף וידאו";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "כתיבת מענה לתגובה.";
@@ -4509,6 +4645,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "לאפס את המסנן";
+
+/* The secondary call-to-action button title text, for when the user can't remember their password. */
+"Reset your password" = "יש לאפס את הסיסמה שלך";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "שינוי גודל וחיתוך";
@@ -4764,6 +4903,9 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "יש לבחור %@ כדי להציג את התוכנית הנוכחית שלך ותוכניות אחרות שזמינות.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "יש לבחור %@ כדי להגדיר שם חדש.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "יש לבחור %@ כדי להתחיל להתאים את האתר שלך";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -4780,6 +4922,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Select a color" = "לבחור צבע";
+
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "יש לבחור מספר אפשרויות כדי להמשיך";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "בחירת מדיה.";
@@ -4832,8 +4977,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "שליחת קישור";
 
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "לשלוח הודעה ליומן";
+
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "שליחת פינגבק";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "לשלוח כסף לבדיקה";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "שליחת הודעות באמצעות האימייל";
@@ -4871,6 +5022,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "הגדרת Jetpack";
+
+/* Title of a Quick Start Tour */
+"Set your site title" = "להגדיר את שם האתר שלך";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "להגדיר ערכת עיצוב";
@@ -4944,7 +5098,11 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "הצג תכנים באותו נושא";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* No comment provided by engineer. */
+"Show a site logo" = "להציג את לוגו האתר";
+
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "להציג סיסמה";
 
 /* No comment provided by engineer. */
@@ -5007,6 +5165,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Sidebar title plugin" = "תוסף לכותרת הסרגל הצדי";
 
+/* View title during the sign up process. */
+"Sign Up" = "הרשמה";
+
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "התחבר";
 
@@ -5034,6 +5195,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "שפת אתר";
 
+/* No comment provided by engineer. */
+"Site Logo" = "לוגו האתר";
+
+/* No comment provided by engineer. */
+"Site Logo Settings" = "הגדרות הלוגו של האתר";
+
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5042,8 +5209,13 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
 
-/* Label for site title blog setting
+/* No comment provided by engineer. */
+"Site Tagline" = "תיאור קצר של האתר";
+
+/* Default title for a site
+   Label for site title blog setting
    Site info. Title
+   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "כותרת אתר";
 
@@ -5073,6 +5245,9 @@ translators: sample content for \"Services\" page template */
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "אזור הזמן של האתר (UTC%1$@%2$d%3$@)";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "שם האתר שונה בהצלחה";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5109,7 +5284,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "משהו השתבש. יש לבדוק את החיבור ולנסות שוב.";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "משהו השתבש. יש לנסות שוב.";
 
 /* Invite Validation Alert
@@ -5505,6 +5681,12 @@ translators: sample content for \"Services\" page template */
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "לא נמצא חיבור לאינטרנט.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "רק משתמשים בעלי תפקיד של מנהלי מערכת יכולים לשנות את שם האתר.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "שם האתר מוצג בסרגל הכותרת של הדפדפן ובתור הכותרת עליונה ברוב ערכות העיצוב.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "בכתובת האינטרנט חסר מארח חוקי.";
@@ -5908,7 +6090,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "לנסות שוב";
 
 /* No comment provided by engineer. */
@@ -6175,6 +6358,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "העלאה של סמל לאתר";
 
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "להעלות תמונה או לבחור אחת מספריית המדיה שלך בשביל הלוגו של האתר שלך";
+
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "העלאה נכשלה";
@@ -6211,6 +6397,9 @@ translators: sample content for \"Services\" page template */
 /* Message displayed on a post's card while the post is uploading media */
 "Uploading media..." = "מעלה מדיה...";
 
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "מעלה את הפוסט";
+
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "מעלה פוסט...";
 
@@ -6237,6 +6426,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6939,6 +7129,9 @@ translators: sample content for \"Services\" page template */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "על הסיסמה להיות באורך שישה תווים לפחות. כדי להפוך אותה קשה יותר לפיצוח, כדאי להשתמש באותיות קטנות וגדולות, מספרים וסמלים כגון ! \" ? $ % ^ & ).";
 
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "הפוסט שלך מועלה כעת. יש להמתין להשלמת הפעולה.";
+
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "הפוסטים, העמודים וההגדרות שלך יישלחו באימייל לכתובת %@.";
 
@@ -7010,6 +7203,9 @@ translators: sample content for \"Services\" page template */
 
 /* The menu item to select during a guided tour. */
 "connections" = "חשבונות מקושרים";
+
+/* No comment provided by engineer. */
+"description" = "תיאור";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "שמחים שהשלמת את המטרה שהצבת לעצמך!";
