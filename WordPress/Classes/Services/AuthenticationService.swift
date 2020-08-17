@@ -96,7 +96,6 @@ class AuthenticationService {
                 self.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
                     cookieJar.setCookies(cookies) {
 
-                        // Verify that the WP.com auth cookie was indeed returned by the server.
                         cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) { hasCookie in
                             guard hasCookie else {
                                 failure(RequestAuthCookieError.wpcomCookieNotReturned)
