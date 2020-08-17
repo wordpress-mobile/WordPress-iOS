@@ -602,9 +602,9 @@ extension WPStyleGuide {
         }
 
         struct Text {
-            static let accessibilityHint = NSLocalizedString("Follows the post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a post.")
-            static let followConversationStringForDisplay =  NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow a post.")
-            static let followingConversationStringForDisplay = NSLocalizedString("Following conversation", comment: "Verb. Button title. The user is following a post.")
+            static let accessibilityHint = NSLocalizedString("Follows the comments on a post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.")
+            static let followConversationStringForDisplay =  NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
+            static let followingConversationStringForDisplay = NSLocalizedString("Following conversation", comment: "Verb. Button title. The user is following the comments on a post.")
         }
     }
 }
