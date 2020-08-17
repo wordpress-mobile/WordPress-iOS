@@ -317,8 +317,8 @@ extension WPStyleGuide {
         button.setTitle(selectedText, for: .highlighted)
 
         // Default accessibility label and hint.
-        button.accessibilityLabel = normalText
-        button.accessibilityHint = NSLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
+        button.accessibilityLabel =  button.isSelected ? selectedText : normalText
+        button.accessibilityHint = FollowConversationButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
@@ -602,7 +602,7 @@ extension WPStyleGuide {
         }
 
         struct Text {
-            static let accessibilityHint = NSLocalizedString("Follows the post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
+            static let accessibilityHint = NSLocalizedString("Follows the post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a post.")
             static let followConversationStringForDisplay =  NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow a post.")
             static let followingConversationStringForDisplay = NSLocalizedString("Following conversation", comment: "Verb. Button title. The user is following a post.")
         }
