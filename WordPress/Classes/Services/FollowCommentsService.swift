@@ -26,7 +26,7 @@ class FollowCommentsService: NSObject {
     ///
     /// - Parameters:
     ///   - success: Success block called on a successful fetch.
-    ///   - failure: Failure block  called if there is any error. `error` can be any underlying network error.
+    ///   - failure: Failure block called if there is any error.
     @objc func fetchSubscriptionStatus(success: @escaping (Bool) -> Void,
                                  failure: @escaping (Error?) -> Void) {
         remote.fetchSubscriptionStatus(forPost: postID,
@@ -40,7 +40,7 @@ class FollowCommentsService: NSObject {
     /// - Parameters:
     ///   - isSubscribed: The current subscription status for the reader post.
     ///   - success: Success block called on a successful fetch.
-    ///   - failure: Failure block  called if there is any error. `error` can be any underlying network error.
+    ///   - failure: Failure block called if there is any error.
     @objc func toggleSubscribed(_ isSubscribed: Bool,
                           success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
