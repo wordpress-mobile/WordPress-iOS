@@ -9,7 +9,7 @@ extension WPTabBarController {
 
         var version = ""
         if let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            version = NSLocalizedString("Version ", comment: "") + versionNumber
+            version = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.") + versionNumber
         }
 
         let textContent = WhatIsNewTextContent(title: NSLocalizedString("What's New in WordPress",
