@@ -106,3 +106,9 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         }
     }
 }
+
+extension LayoutPickerFilterCollectionViewCell: GhostableView {
+    func ghostAnimationWillStart() {
+        filterLabel.text = " "
+    }
+}

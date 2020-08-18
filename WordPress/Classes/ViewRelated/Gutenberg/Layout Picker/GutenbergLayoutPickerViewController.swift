@@ -118,8 +118,18 @@ class GutenbergLayoutPickerViewController: UIViewController {
             })
         }
     }
+    private var isLoading: Bool = true {
+        didSet {
+            filterBar.shouldShowGhostContent = isLoading
+            filterBar.allowsMultipleSelection = !isLoading
+            tableView.reloadData()
+            filterBar.reloadData()
+        }
+    }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
+    var blog: Blog? = nil
+
     private var isUpdating: Bool = false
 
     private func setStaticText() {
@@ -139,13 +149,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         super.viewDidLoad()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
         filterBar.filterDelegate = self
-        filterBar.allowsMultipleSelection = true
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
-        layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
-        filterBar.reloadData()
+        layouts = GutenbergPageLayouts()
+        fetchLayouts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -263,6 +272,22 @@ class GutenbergLayoutPickerViewController: UIViewController {
         previewBtn.isHidden = !isSelected
         createPageBtn.isHidden = !isSelected
     }
+
+    private func fetchLayouts() {
+        guard let blog = blog else { return }
+        isLoading = true
+        PageLayoutService.layouts(forBlog: blog) {[weak self] (results) in
+            guard let self = self else { return }
+            switch results {
+            case .success(let fetchedLayouts):
+                self.layouts = fetchedLayouts
+                self.isLoading = false
+            case .failure:
+                self.layouts = GutenbergPageLayouts(layouts: [], categories: [])
+                self.isLoading = false
+            }
+        }
+    }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDelegate {
@@ -344,6 +369,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         cell.section = (filteredSections ?? sections)[indexPath.row]
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
+        cell.collectionView.allowsSelection = !isLoading
         if let selectedLayout = selectedLayout, containsSelectedLayout(selectedLayout, atIndexPath: indexPath) {
             cell.selectItemAt(selectedLayout.position)
         }
