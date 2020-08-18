@@ -543,7 +543,7 @@ import WordPressFlux
 
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
-    func refreshTableHeaderIfNeeded() {
+    private func refreshTableHeaderIfNeeded() {
         guard let _ = readerTopic else {
             return
         }
@@ -724,7 +724,7 @@ import WordPressFlux
     }
 
 
-    private func updateStreamHeaderIfNeeded() {
+    func updateStreamHeaderIfNeeded() {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return

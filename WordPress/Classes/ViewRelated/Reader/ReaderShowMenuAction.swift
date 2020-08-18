@@ -46,7 +46,7 @@ final class ReaderShowMenuAction {
                                                         guard let vc = vc as? ReaderStreamViewController else {
                                                             return
                                                         }
-                                                        vc.refreshTableHeaderIfNeeded()
+                                                        vc.updateStreamHeaderIfNeeded()
                                                     }
                                                 }
             })
