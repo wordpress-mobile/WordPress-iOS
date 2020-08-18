@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-class FollowCommentsService {
+class FollowCommentsService: NSObject {
 
     let post: ReaderPost
 
@@ -9,7 +9,7 @@ class FollowCommentsService {
     fileprivate let siteID: UInt
     fileprivate let remote: ReaderPostServiceRemote
 
-    init?(post: ReaderPost) {
+    @objc init?(post: ReaderPost) {
         guard let postID = post.postID as? UInt, let siteID = post.siteID as? UInt else {
                 return nil
         }
@@ -27,14 +27,11 @@ class FollowCommentsService {
     /// - Parameters:
     ///   - success: Success block called on a successful fetch.
     ///   - failure: Failure block  called if there is any error. `error` can be any underlying network error.
-    func fetchSubscriptionStatus(success: @escaping (Bool) -> Void,
+    @objc func fetchSubscriptionStatus(success: @escaping (Bool) -> Void,
                                  failure: @escaping (Error?) -> Void) {
         remote.fetchSubscriptionStatus(forPost: postID,
                                        fromSite: siteID,
                                        success: success,
-
-
-
                                        failure: failure)
     }
 
@@ -44,7 +41,7 @@ class FollowCommentsService {
     ///   - isSubscribed: The current subscription status for the reader post.
     ///   - success: Success block called on a successful fetch.
     ///   - failure: Failure block  called if there is any error. `error` can be any underlying network error.
-    func toggleSubscribed(_ isSubscribed: Bool,
+    @objc func toggleSubscribed(_ isSubscribed: Bool,
                           success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
         if isSubscribed {

@@ -583,11 +583,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateSubscriptionStatus
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
     __weak __typeof(self) weakSelf = self;
-    [service fetchSubscriptionStatusForPost:self.post success:^(BOOL isSubscribed) {
+    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
+    [service fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
@@ -1207,7 +1205,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     void (^successBlock)(void) = ^void() {
         NSString *title = newIsSubscribed
             ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
-            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post")
+            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
@@ -1221,7 +1219,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
         NSString *title = newIsSubscribed
             ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
-            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post")
+            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeError];
@@ -1232,11 +1230,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         });
     };
 
-    // Call the remote service to toggle the subscription status
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    // Call the service to toggle the subscription status
+    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
     [service toggleSubscribed:oldIsSubscribed
-                      forPost:self.post
                       success:successBlock
                       failure:failureBlock];
 }
