@@ -20,6 +20,13 @@ class WhatIsNewView: UIView {
 
     lazy var versionLabel: UILabel = {
         let label = makeLabel(textContent.version)
+
+        // if there's no version, just hide the label and save that space
+        guard !textContent.version.isEmpty else {
+            label.isHidden = true
+            return label
+        }
+
         label.font = Appearance.subHeadlineFont
         label.textColor = .textSubtle
         return label
