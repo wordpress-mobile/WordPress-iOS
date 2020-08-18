@@ -285,7 +285,7 @@ extension WPStyleGuide {
         // General
         button.naturalContentHorizontalAlignment = .leading
         button.backgroundColor = .clear
-        button.titleLabel?.font = WPStyleGuide.subtitleFont()
+        button.titleLabel?.font = fontForTextStyle(.footnote)
 
         // Color(s)
         let normalColor = UIColor.primary(.shade40)
