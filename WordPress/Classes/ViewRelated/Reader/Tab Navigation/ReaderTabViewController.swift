@@ -120,7 +120,8 @@ extension ReaderTabViewController {
 // MARK: - Select Interests Display
 extension ReaderTabViewController {
     func displaySelectInterestsIfNeeded(isDisplaying: ((Bool) -> Void)? = nil) {
-        guard viewModel.itemsLoaded, isViewOnScreen() else {
+        guard viewModel.itemsLoaded, isViewOnScreen(),
+            FeatureFlag.readerImprovementsPhase2.enabled else {
             isDisplaying?(false)
             return
         }
