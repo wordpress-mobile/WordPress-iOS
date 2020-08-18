@@ -5,12 +5,12 @@ class FollowCommentsService: NSObject {
 
     let post: ReaderPost
 
-    fileprivate let postID: UInt
-    fileprivate let siteID: UInt
+    fileprivate let postID: Int
+    fileprivate let siteID: Int
     fileprivate let remote: ReaderPostServiceRemote
 
     @objc init?(post: ReaderPost) {
-        guard let postID = post.postID as? UInt, let siteID = post.siteID as? UInt else {
+        guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
                 return nil
         }
 
@@ -28,9 +28,9 @@ class FollowCommentsService: NSObject {
     ///   - success: Success block called on a successful fetch.
     ///   - failure: Failure block called if there is any error.
     @objc func fetchSubscriptionStatus(success: @escaping (Bool) -> Void,
-                                 failure: @escaping (Error?) -> Void) {
-        remote.fetchSubscriptionStatus(forPost: postID,
-                                       fromSite: siteID,
+                                       failure: @escaping (Error?) -> Void) {
+        remote.fetchSubscriptionStatus(for: postID,
+                                       from: siteID,
                                        success: success,
                                        failure: failure)
     }
@@ -42,18 +42,18 @@ class FollowCommentsService: NSObject {
     ///   - success: Success block called on a successful fetch.
     ///   - failure: Failure block called if there is any error.
     @objc func toggleSubscribed(_ isSubscribed: Bool,
-                          success: @escaping () -> Void,
-                          failure: @escaping (Error?) -> Void) {
+                                success: @escaping () -> Void,
+                                failure: @escaping (Error?) -> Void) {
         if isSubscribed {
-            remote.unsubscribe(fromPost: postID,
-                               forSite: siteID,
-                               success: success,
-                               failure: failure)
+            remote.unsubscribeFromPost(with: postID,
+                                       for: siteID,
+                                       success: success,
+                                       failure: failure)
         } else {
-            remote.subscribe(toPost: postID,
-                             forSite: siteID,
-                             success: success,
-                             failure: failure)
+            remote.subscribeToPost(with: postID,
+                                   for: siteID,
+                                   success: success,
+                                   failure: failure)
         }
     }
 
