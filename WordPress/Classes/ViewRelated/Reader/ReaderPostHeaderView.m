@@ -5,6 +5,7 @@ const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
 const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
+const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 @interface ReaderPostHeaderView()
 
@@ -13,6 +14,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
+@property (nonatomic, strong) UIButton *followConversationButton;
 @property (nonatomic, strong) UIButton *disclosureButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
@@ -34,6 +36,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
         [self setupLabelsStackView];
         [self setupSubtitleLabel];
         [self setupTitleLabel];
+        [self setupFollowConversationButton];
         [self setupDisclosureButton];
         [self setupTapGesture];
     }
@@ -46,7 +49,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisHorizontal;
     stackView.distribution = UIStackViewAlignmentFill;
-    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.alignment = UIStackViewAlignmentTop;
     stackView.spacing = 8.0;
 
     [self addSubview:stackView];
@@ -87,7 +90,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     stackView.preservesSuperviewLayoutMargins = YES;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.distribution = UIStackViewAlignmentFill;
-    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.alignment = UIStackViewAlignmentLeading;
 
     [self.stackView addArrangedSubview:stackView];
     self.labelsStackView = stackView;
@@ -125,6 +128,21 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     [self.labelsStackView addArrangedSubview:label];
     self.titleLabel = label;
+}
+
+- (void)setupFollowConversationButton
+{
+    NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
+    [NSLayoutConstraint activateConstraints:@[height]];
+    
+    [self.labelsStackView addArrangedSubview:button];
+    self.followConversationButton = button;
 }
 
 - (void)setupDisclosureButton
@@ -193,6 +211,12 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 - (void)setSubtitle:(NSString *)title
 {
     self.subtitleLabel.text = title;
+}
+
+- (void)setSubscribedToPost:(BOOL)isSubscribedToPost
+{
+    _isSubscribedToPost = isSubscribedToPost;
+    [self.followConversationButton setSelected:isSubscribedToPost];
 }
 
 #pragma mark - Recognizer Helpers

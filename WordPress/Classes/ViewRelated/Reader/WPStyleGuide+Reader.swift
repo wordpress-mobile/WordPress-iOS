@@ -281,6 +281,46 @@ extension WPStyleGuide {
         button.setTitleColor(disabledColor, for: .disabled)
     }
 
+    @objc public class func applyReaderFollowConversationButtonStyle(_ button: UIButton) {
+        // General
+        button.naturalContentHorizontalAlignment = .leading
+        button.backgroundColor = .clear
+        button.titleLabel?.font = fontForTextStyle(.footnote)
+
+        // Color(s)
+        let normalColor = UIColor.primary
+        let highlightedColor =  UIColor.neutral
+        let selectedColor = UIColor.success
+
+        button.setTitleColor(normalColor, for: .normal)
+        button.setTitleColor(selectedColor, for: .selected)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+
+        // Image(s)
+        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
+        let size = CGSize(width: side, height: side)
+        let followIcon = UIImage.gridicon(.readerFollowConversation, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowingConversation, size: size)
+
+        button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
+        button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
+        button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
+        button.imageEdgeInsets = FollowConversationButton.Style.imageEdgeInsets
+        button.contentEdgeInsets = FollowConversationButton.Style.contentEdgeInsets
+
+        // Strings
+        let normalText = FollowConversationButton.Text.followConversationStringForDisplay
+        let selectedText = FollowConversationButton.Text.followingConversationStringForDisplay
+
+        button.setTitle(normalText, for: .normal)
+        button.setTitle(selectedText, for: .selected)
+        button.setTitle(selectedText, for: .highlighted)
+
+        // Default accessibility label and hint.
+        button.accessibilityLabel =  button.isSelected ? selectedText : normalText
+        button.accessibilityHint = FollowConversationButton.Text.accessibilityHint
+    }
+
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
         let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
@@ -556,6 +596,19 @@ extension WPStyleGuide {
             static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
             static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
             static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        }
+    }
+
+    public struct FollowConversationButton {
+        struct Style {
+            static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
+            static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
+        }
+
+        struct Text {
+            static let accessibilityHint = NSLocalizedString("Follows the comments on a post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.")
+            static let followConversationStringForDisplay =  NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
+            static let followingConversationStringForDisplay = NSLocalizedString("Following conversation", comment: "Verb. Button title. The user is following the comments on a post.")
         }
     }
 }

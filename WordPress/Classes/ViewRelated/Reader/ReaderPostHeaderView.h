@@ -30,4 +30,9 @@ typedef void (^ReaderPostHeaderCallback)(void);
  */
 @property (nonatomic, strong) NSString *subtitle;
 
+/**
+ A BOOL indicating whether the User is subscribed to the post, or not.
+ */
+@property (nonatomic, assign, setter=setSubscribedToPost:) BOOL isSubscribedToPost;
+
 @end
