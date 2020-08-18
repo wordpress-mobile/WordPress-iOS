@@ -369,7 +369,6 @@ import WordPressFlux
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
         })
-
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -926,11 +925,7 @@ import WordPressFlux
     /// Returns the number of posts for the current topic
     /// This allows the count to be overriden by subclasses
     var topicPostsCount: Int {
-        guard let topic = readerTopic else {
-            return 0
-        }
-
-        return topic.posts.count
+        return readerTopic?.posts.count ?? 0
     }
     /// Used to fetch new content in response to a background refresh event.  
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
