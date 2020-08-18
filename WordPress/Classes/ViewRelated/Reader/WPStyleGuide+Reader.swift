@@ -288,7 +288,7 @@ extension WPStyleGuide {
         button.titleLabel?.font = fontForTextStyle(.footnote)
 
         // Color(s)
-        let normalColor = UIColor.primary(.shade40)
+        let normalColor = UIColor.primary
         let highlightedColor =  UIColor.neutral
         let selectedColor = UIColor.success
 
