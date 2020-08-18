@@ -54,6 +54,10 @@ class ReaderTabViewController: UIViewController {
         viewModel.onTabBarItemsDidChange { [weak self] items, _ in
             self?.displaySelectInterestsIfNeeded()
         }
+
+        if !FeatureFlag.readerImprovementsPhase2.enabled {
+            markSelectedInterestsVisited()
+        }
     }
 
     func setupSearchButton() {
