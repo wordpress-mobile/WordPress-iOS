@@ -2,26 +2,26 @@ import Foundation
 import WordPressKit
 
 class FollowCommentsService {
-    
+
     let post: ReaderPost
-    
+
     fileprivate let postID: UInt
     fileprivate let siteID: UInt
     fileprivate let remote: ReaderPostServiceRemote
-    
+
     init?(post: ReaderPost) {
         guard let postID = post.postID as? UInt, let siteID = post.siteID as? UInt else {
                 return nil
         }
-        
+
         self.post = post
         self.postID = postID
         self.siteID = siteID
-        
+
         let api = FollowCommentsService.apiForRequest()
         self.remote = ReaderPostServiceRemote(wordPressComRestApi: api)
     }
-    
+
     /// Fetches the subscription status of the specified post for the current user.
     ///
     /// - Parameters:
@@ -37,7 +37,7 @@ class FollowCommentsService {
 
                                        failure: failure)
     }
-    
+
     /// Toggles the subscription status of the specified post.
     ///
     /// - Parameters:
@@ -59,11 +59,11 @@ class FollowCommentsService {
                              failure: failure)
         }
     }
-    
+
 }
 
 extension FollowCommentsService {
-    
+
     private static func apiForRequest() -> WordPressComRestApi {
         let context = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: context)
