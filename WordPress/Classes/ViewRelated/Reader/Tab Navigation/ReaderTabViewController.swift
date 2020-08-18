@@ -119,16 +119,19 @@ extension ReaderTabViewController {
 
 // MARK: - Select Interests Display
 extension ReaderTabViewController {
-    func displaySelectInterestsIfNeeded() {
+    func displaySelectInterestsIfNeeded(isDisplaying: ((Bool) -> Void)? = nil) {
         guard viewModel.itemsLoaded, isViewOnScreen() else {
+            isDisplaying?(false)
             return
         }
 
         selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
             if !isFollowing {
                 self.showSelectInterestsView()
+                isDisplaying?(true)
             } else {
                 self.markSelectedInterestsVisited()
+                isDisplaying?(false)
             }
         }
     }

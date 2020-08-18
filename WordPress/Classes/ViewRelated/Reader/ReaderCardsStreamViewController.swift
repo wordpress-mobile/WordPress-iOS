@@ -72,8 +72,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
-        readerTabBarViewController.displaySelectInterestsIfNeeded()
-        showGhost()
+        readerTabBarViewController.displaySelectInterestsIfNeeded { [unowned self] (isDisplaying) in
+            if isDisplaying {
+                self.showGhost()
+            }
+        }
     }
 
     // MARK: - Sync
@@ -98,6 +101,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
             failure?(error as NSError)
         })
+    }
+
+    override var topicPostsCount: Int {
+        return cards?.count ?? 0
     }
 
     override func syncIfAppropriate() {

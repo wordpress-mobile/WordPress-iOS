@@ -369,7 +369,6 @@ import WordPressFlux
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
         })
-
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -904,7 +903,7 @@ import WordPressFlux
             return
         }
 
-        if ReaderHelpers.isTopicSearchTopic(topic) && topic.posts.count > 0 {
+        if ReaderHelpers.isTopicSearchTopic(topic) && topicPostsCount > 0 {
             // We only perform an initial sync if the topic has no results.
             // The rest of the time it should just support infinite scroll.
             // Normal the newly added topic will have no existing posts. The
@@ -915,13 +914,19 @@ import WordPressFlux
 
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
-        if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
+
+        if canSync() && (interval >= refreshInterval || topicPostsCount == 0) {
             syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
         }
     }
 
+    /// Returns the number of posts for the current topic
+    /// This allows the count to be overriden by subclasses
+    var topicPostsCount: Int {
+        return readerTopic?.posts.count ?? 0
+    }
     /// Used to fetch new content in response to a background refresh event.  
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
