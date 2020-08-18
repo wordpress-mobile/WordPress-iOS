@@ -1207,17 +1207,19 @@ import WordPressFlux
         postCellActions?.isLoggedIn = isLoggedIn
         postCellActions?.savedPostsDelegate = self
 
-        // Restrict the topics header to only display on
-        var displayTopics = true
+        // Restrict the topics header to only display on the Discover, and tag detail views
+        var displayTopics = false
 
-        if let topic = readerTopic {
-            let type = ReaderHelpers.topicType(topic)
+        if FeatureFlag.readerImprovementsPhase2.enabled {
+            if let topic = readerTopic {
+                let type = ReaderHelpers.topicType(topic)
 
-            switch type {
-            case .discover, .tag:
-                displayTopics = true
-            default:
-                displayTopics = false
+                switch type {
+                case .discover, .tag:
+                    displayTopics = true
+                default:
+                    displayTopics = false
+                }
             }
         }
 
