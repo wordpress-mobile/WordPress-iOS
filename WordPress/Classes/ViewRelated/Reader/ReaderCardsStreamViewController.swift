@@ -6,6 +6,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Page number used for Analytics purpose
     private var page = 1
 
+    /// Refresh counter used to for random posts on pull to refresh
+    private var refreshCount = 0
+
     private var cards: [ReaderCard]? {
         content.content as? [ReaderCard]
     }
@@ -83,7 +86,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
         page = 1
-        cardsService.fetch(isFirstPage: true, success: success, failure: failure)
+        refreshCount += 1
+        
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: success, failure: failure)
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
