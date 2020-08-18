@@ -5,13 +5,12 @@ const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
 const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
-const CGFloat PostHeadeerVerticalStackViewSpacing = 4.0;
+const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 @interface ReaderPostHeaderView()
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) CircularImageView *avatarImageView;
-@property (nonatomic, strong) UIStackView *verticalStackView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
@@ -34,7 +33,6 @@ const CGFloat PostHeadeerVerticalStackViewSpacing = 4.0;
 
         [self setupStackView];
         [self setupAvatarImageView];
-        [self setupVerticalStackView];
         [self setupLabelsStackView];
         [self setupSubtitleLabel];
         [self setupTitleLabel];
@@ -82,7 +80,7 @@ const CGFloat PostHeadeerVerticalStackViewSpacing = 4.0;
     self.avatarImageView = imageView;
 }
 
-- (void)setupVerticalStackView
+- (void)setupLabelsStackView
 {
     NSAssert(self.stackView != nil, @"stackView was nil");
 
@@ -93,27 +91,8 @@ const CGFloat PostHeadeerVerticalStackViewSpacing = 4.0;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.distribution = UIStackViewAlignmentFill;
     stackView.alignment = UIStackViewAlignmentLeading;
-    stackView.spacing = PostHeadeerVerticalStackViewSpacing;
 
     [self.stackView addArrangedSubview:stackView];
-    self.verticalStackView = stackView;
-
-    [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-}
-
-- (void)setupLabelsStackView
-{
-    NSAssert(self.verticalStackView != nil, @"verticalStackView was nil");
-
-    UIStackView *stackView = [[UIStackView alloc] init];
-    stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.layoutMarginsRelativeArrangement = YES;
-    stackView.preservesSuperviewLayoutMargins = YES;
-    stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.distribution = UIStackViewAlignmentFill;
-    stackView.alignment = UIStackViewAlignmentLeading;
-
-    [self.verticalStackView addArrangedSubview:stackView];
     self.labelsStackView = stackView;
 
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -158,7 +137,11 @@ const CGFloat PostHeadeerVerticalStackViewSpacing = 4.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.verticalStackView addArrangedSubview:button];
+    
+    NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
+    [NSLayoutConstraint activateConstraints:@[height]];
+    
+    [self.labelsStackView addArrangedSubview:button];
     self.followConversationButton = button;
 }
 
