@@ -87,7 +87,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func fetch(for topic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
         page = 1
         refreshCount += 1
-        
+
         cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: success, failure: failure)
     }
 
