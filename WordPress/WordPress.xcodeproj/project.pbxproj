@@ -5508,7 +5508,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				C293D1262490672B00251B32 /* acknowledgements.html */,
@@ -10954,7 +10954,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -14202,7 +14202,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.0.8;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14270,7 +14270,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.0.8;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14721,7 +14721,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.0.8;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -14789,7 +14789,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.0.8;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
