@@ -11,7 +11,7 @@ class FollowCommentsService: NSObject {
 
     @objc init?(post: ReaderPost) {
         guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
-                return nil
+            return nil
         }
 
         self.post = post
@@ -55,6 +55,18 @@ class FollowCommentsService: NSObject {
                                    success: success,
                                    failure: failure)
         }
+    }
+
+    /// Determines whether or not the comments on the post can be followed.
+    @objc func canFollowConversation() -> Bool {
+        // FIXME: Older a8c internal P2s do not contain the isWPForTeams flag.
+        // In case we can't find a flag that marks an old P2 site as being a P2,
+        // we can assume that blogs in the Reader's Automattic tab are P2s.
+        // Note that blogs in the Reader's Automattic tab are only available to Automatticians.
+        guard let blogID = self.post.siteID else { return false }
+        let service = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        let blog = service.blog(byBlogId: blogID)
+        return blog?.isWPForTeams() ?? false
     }
 
 }

@@ -566,18 +566,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return self.post.commentsOpen && self.isLoggedIn;
 }
 
-- (BOOL)canFollowPost
-{
-    // FIXME: Older a8c internal P2s do not contain the isWPForTeams flag.
-    // In case we can't find a flag that marks an old P2 site as being a P2,
-    // we can assume that blogs in the Reader's Automattic tab are P2s.
-    // Note that blogs in the Reader's Automattic tab are only available to Automatticians.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [service blogByBlogId:self.post.siteID];
-    return blog.isWPForTeams;
-}
-
 - (BOOL)shouldDisplayReplyTextView
 {
     return self.canComment;
@@ -626,7 +614,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         }];
     }
     
-    self.postHeaderView.showsFollowConversationButton = self.canFollowPost;
+    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
+    self.postHeaderView.showsFollowConversationButton = [service canFollowConversation];
 }
 
 - (void)refreshSubscriptionStatus
