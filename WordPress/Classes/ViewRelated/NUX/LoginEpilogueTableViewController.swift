@@ -37,6 +37,10 @@ class LoginEpilogueTableViewController: UITableViewController {
         return !wpcom.isJetpackLogin
     }
 
+    private var tracker: AuthenticatorAnalyticsTracker {
+        AuthenticatorAnalyticsTracker.shared
+    }
+
 
     // MARK: - Lifecycle
 
@@ -203,6 +207,7 @@ extension LoginEpilogueTableViewController {
             return
         }
 
+        tracker.track(click: .connectSite)
         onConnectSite?()
     }
 }

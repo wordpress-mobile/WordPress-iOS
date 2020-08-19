@@ -282,18 +282,21 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
-        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
+        let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
         let followIcon = UIImage.gridicon(.readerFollow, size: size)
         let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
-        button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
+        let followFont: UIFont = fontForTextStyle(.callout, fontWeight: .semibold)
+        let followingFont: UIFont = fontForTextStyle(.callout, fontWeight: .regular)
+        button.titleLabel?.font = button.isSelected ? followingFont : followFont
+
         button.layer.cornerRadius = 4.0
-        button.layer.borderColor = UIColor(light: .gray(.shade30), dark: .gray(.shade60)).cgColor
+        button.layer.borderColor = UIColor.primaryButtonBorder.cgColor
 
         button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
-        button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
 
         button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
         button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
@@ -539,7 +542,8 @@ extension WPStyleGuide {
         struct Style {
             static let followBackgroundColor: UIColor = .primaryButtonBackground
             static let followTextColor: UIColor = .white
-            static let followingBackgroundColor: UIColor = .basicBackground
+            static let followingBackgroundColor: UIColor = .clear
+            static let followingIconColor: UIColor = .buttonIcon
             static let followingTextColor: UIColor = .textSubtle
 
             static let imageTitleSpace: CGFloat = 2.0
