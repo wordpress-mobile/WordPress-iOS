@@ -5,6 +5,7 @@ const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
 const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
+const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 @interface ReaderPostHeaderView()
 
@@ -135,12 +136,16 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
+
     [button addTarget:self
                action:@selector(followConversationButtonTapped)
      forControlEvents:UIControlEventTouchUpInside];
 
     [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
-
+    
+    NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
+    [NSLayoutConstraint activateConstraints:@[height]];
+    
     [self.labelsStackView addArrangedSubview:button];
     self.followConversationButton = button;
 }
