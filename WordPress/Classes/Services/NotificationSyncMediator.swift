@@ -55,13 +55,9 @@ class NotificationSyncMediator {
     ///
     convenience init?() {
         let manager = ContextManager.sharedInstance()
-        let service = AccountService(managedObjectContext: manager.mainContext)
+        let api = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
 
-        guard let dotcomAPI = service.defaultWordPressComAccount()?.wordPressComRestApi else {
-            return nil
-        }
-
-        self.init(manager: manager, dotcomAPI: dotcomAPI)
+        self.init(manager: manager, dotcomAPI: api)
     }
 
     /// Initializer: Useful for Unit Testing
@@ -71,10 +67,6 @@ class NotificationSyncMediator {
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
     init?(manager: CoreDataStack, dotcomAPI: WordPressComRestApi) {
-        guard dotcomAPI.hasCredentials() else {
-            return nil
-        }
-
         contextManager = manager
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
     }
