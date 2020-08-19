@@ -331,11 +331,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Now do it for realz.
     NSDictionary *properties = @{@"tag":slug};
 
-    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error unfollowing topic: %@", NSStringFromSelector(_cmd), error);
@@ -367,12 +376,21 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error following topic by name: %@", NSStringFromSelector(_cmd), error);
@@ -979,6 +997,11 @@ array are marked as being unfollowed in Core Data.
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
+                        if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            DDLogInfo(@"Not unfollowing a locally saved topic: %@", topic.title);
+                            continue;
+                        }
+
                         // If the topic is in use just set showInMenu to false
                         // and let it be cleaned up like any other non-menu topic.
                         DDLogInfo(@"Removing topic from menu: %@", topic.title);
@@ -990,13 +1013,16 @@ array are marked as being unfollowed in Core Data.
                         // If the user adds a locally saved tag/interest prevent it from being deleted
                         // while the user is logged out.
                         if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
-                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
-                                ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+                            ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
-                                if (tagTopic.wasAddedWhileLoggedOut) {
-                                    DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
-                                    continue;
-                                }
+                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                                DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
+                                continue;
+                            }
+
+                            if (tagTopic.cards) {
+                                DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
+                                continue;
                             }
                         }
 
