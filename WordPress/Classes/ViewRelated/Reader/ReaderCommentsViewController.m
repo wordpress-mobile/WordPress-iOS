@@ -287,8 +287,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
-    headerView.onFollowingConversationClick = ^{
-        [weakSelf handleFollowingConversationButtonTapped];
+    headerView.onFollowConverationClick = ^{
+        [weakSelf handleFollowConversationButtonTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
@@ -1189,7 +1189,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - PostHeaderView helpers
 
-- (void)handleFollowingConversationButtonTapped
+- (void)handleFollowConversationButtonTapped
 {
     __typeof(self) __weak weakSelf = self;
 
