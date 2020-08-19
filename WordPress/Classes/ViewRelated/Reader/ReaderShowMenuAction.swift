@@ -42,7 +42,12 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderFollowAction().execute(with: post, context: context)
+                                                    ReaderFollowAction().execute(with: post, context: context) {
+                                                        guard let vc = vc as? ReaderStreamViewController else {
+                                                            return
+                                                        }
+                                                        vc.updateStreamHeaderIfNeeded()
+                                                    }
                                                 }
             })
         }
