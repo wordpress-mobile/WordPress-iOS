@@ -64,6 +64,14 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         collectionView.invalidateIntrinsicContentSize()
     }
 
+    func changeState(_ state: ReaderTopicCollectionViewState) {
+        guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = state == .expanded
+    }
+
     private func configureCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self

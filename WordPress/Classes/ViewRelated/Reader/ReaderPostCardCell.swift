@@ -167,8 +167,9 @@ protocol ReaderTopicsChipsDelegate: class {
 
         imageLoader.prepareForReuse()
         displayTopics = false
-    }
 
+        topicsCollectionView.collapse()
+    }
 
     // MARK: - Configuration
 
