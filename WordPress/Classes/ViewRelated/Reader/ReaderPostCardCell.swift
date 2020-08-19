@@ -167,6 +167,12 @@ protocol ReaderTopicsChipsDelegate: class {
 
         imageLoader.prepareForReuse()
         displayTopics = false
+
+        guard let layout = topicsCollectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
+            return
+        }
+
+        layout.isExpanded = false
     }
 
 
