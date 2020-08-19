@@ -67,6 +67,7 @@ extension GutenbergLayoutFilterBar: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerFilterCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerFilterCollectionViewCell
 
         if shouldShowGhostContent {
+            cell.ghostAnimationWillStart()
             cell.startGhostAnimation()
         } else {
             cell.stopGhostAnimation()

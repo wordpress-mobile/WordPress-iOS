@@ -283,8 +283,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
                 self.layouts = fetchedLayouts
                 self.isLoading = false
             case .failure:
-                self.layouts = GutenbergPageLayouts(layouts: [], categories: [])
-                self.isLoading = false
+                return
             }
         }
     }

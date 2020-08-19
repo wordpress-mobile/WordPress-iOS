@@ -73,6 +73,10 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
             checkmark.image = UIImage.gridicon(.checkmark)
         }
         checkmark.tintColor = checkmarkTintColor
+
+        filterLabel.isGhostableDisabled = true
+        checkmark.isGhostableDisabled = true
+        pillBackgroundView.layer.masksToBounds = true
     }
 
     override func prepareForReuse() {
@@ -109,6 +113,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
 extension LayoutPickerFilterCollectionViewCell: GhostableView {
     func ghostAnimationWillStart() {
-        filterLabel.text = " "
+        filterLabel.text = ""
+        pillBackgroundView.startGhostAnimation()
     }
 }
