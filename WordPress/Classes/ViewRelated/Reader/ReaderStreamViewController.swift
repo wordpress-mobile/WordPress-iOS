@@ -722,7 +722,7 @@ import WordPressFlux
     }
 
 
-    private func updateStreamHeaderIfNeeded() {
+    func updateStreamHeaderIfNeeded() {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return
