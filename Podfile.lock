@@ -395,7 +395,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.23.0-beta.x):
+  - WordPressAuthenticator (1.23.0-beta.18):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -407,7 +407,7 @@ PODS:
     - WordPressKit (~> 4.14-beta)
     - WordPressShared (~> 1.11-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.14.0):
+  - WordPressKit (4.15.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -505,8 +505,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/336-site_address_2fa`)
-  - WordPressKit (~> 4.14)
+  - WordPressAuthenticator (~> 1.23.0-beta)
+  - WordPressKit (~> 4.15.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.11-beta)
   - WordPressUI (~> 1.7.1)
@@ -555,6 +555,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -656,9 +657,6 @@ EXTERNAL SOURCES:
     :commit: bd76109049d2eeead78478d20d66ffd7b1567dd3
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressAuthenticator:
-    :branch: feature/336-site_address_2fa
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bd76109049d2eeead78478d20d66ffd7b1567dd3/third-party-podspecs/Yoga.podspec.json
 
@@ -677,9 +675,6 @@ CHECKOUT OPTIONS:
     :commit: bd76109049d2eeead78478d20d66ffd7b1567dd3
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressAuthenticator:
-    :commit: ead2fea9a33650a8e0ee0dac564fd7ed62cfa940
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -760,8 +755,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 4b05934a44a704feb9059c9d921d007914df7921
-  WordPressKit: dcab41057f0c39af3280b7c0d17bdc36271e01ae
+  WordPressAuthenticator: 0c4c065ff76bf731c6442ce45d1b74c9f8b3bbb6
+  WordPressKit: c0b0221ea81c4f1a1089b2b4bcf402b39a966738
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: b56046080c99d41519d097c970df663fda48e218
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
@@ -777,6 +772,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 7d7c933a3e0a5d900a881770cf9e5291e31912f7
+PODFILE CHECKSUM: 6d41bc213e6ebff9be66fa1a87283bf6d266c668
 
 COCOAPODS: 1.8.4

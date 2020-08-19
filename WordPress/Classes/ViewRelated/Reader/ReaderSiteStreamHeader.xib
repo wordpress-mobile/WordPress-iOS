@@ -33,20 +33,20 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jvF-YL-IV0">
-                    <rect key="frame" x="132" y="76.666666666666686" width="30" height="119.33333333333331"/>
+                    <rect key="frame" x="132" y="76.666666666666671" width="30" height="34"/>
                     <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <connections>
                         <action selector="didTapFollowButton:" destination="QDT-3t-9yR" eventType="touchUpInside" id="dRK-lH-Zga"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mi7-dO-TOF">
-                    <rect key="frame" x="16" y="235" width="343" height="0.0"/>
+                    <rect key="frame" x="16" y="149.66666666666666" width="343" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JHO-IY-cyK">
-                    <rect key="frame" x="132" y="204" width="235" height="15"/>
+                    <rect key="frame" x="132" y="118.66666666666667" width="235" height="15.000000000000014"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -63,7 +63,7 @@
                 <constraint firstItem="fq2-Xh-dYx" firstAttribute="leading" secondItem="QqV-yA-rBc" secondAttribute="leading" id="SQK-NR-gJ1"/>
                 <constraint firstItem="JHO-IY-cyK" firstAttribute="trailing" secondItem="fq2-Xh-dYx" secondAttribute="trailing" id="V3z-Dz-T7p"/>
                 <constraint firstItem="JHO-IY-cyK" firstAttribute="top" secondItem="jvF-YL-IV0" secondAttribute="bottom" constant="8" id="VoM-PV-43m"/>
-                <constraint firstAttribute="bottom" secondItem="mi7-dO-TOF" secondAttribute="bottom" constant="16" id="Zc9-ns-Y8r"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="mi7-dO-TOF" secondAttribute="bottom" constant="16" id="Zc9-ns-Y8r"/>
                 <constraint firstItem="JHO-IY-cyK" firstAttribute="leading" secondItem="fq2-Xh-dYx" secondAttribute="leading" id="bkn-wr-ADc"/>
                 <constraint firstAttribute="trailingMargin" secondItem="mi7-dO-TOF" secondAttribute="trailing" id="blt-Tr-kwH"/>
                 <constraint firstItem="mi7-dO-TOF" firstAttribute="leading" secondItem="w1n-O9-Da1" secondAttribute="leading" id="eAG-pR-tpk"/>

@@ -113,7 +113,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 
-        tracker.track(click: .dismiss, ifTrackingNotEnabled: {
+        tracker.track(click: .continue, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
         })
     }

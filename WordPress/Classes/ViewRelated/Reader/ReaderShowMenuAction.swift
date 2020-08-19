@@ -42,7 +42,12 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderFollowAction().execute(with: post, context: context)
+                                                    ReaderFollowAction().execute(with: post, context: context) {
+                                                        guard let vc = vc as? ReaderStreamViewController else {
+                                                            return
+                                                        }
+                                                        vc.updateStreamHeaderIfNeeded()
+                                                    }
                                                 }
             })
         }
@@ -73,6 +78,8 @@ final class ReaderShowMenuAction {
         } else {
             vc.present(alertController, animated: true)
         }
+
+        WPAnalytics.track(.postCardMoreTapped)
     }
 
     fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
@@ -80,7 +87,8 @@ final class ReaderShowMenuAction {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
+            return ReaderHelpers.isTopicTag(topic) || (ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.readerImprovementsPhase2.enabled)
+                || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
     }
