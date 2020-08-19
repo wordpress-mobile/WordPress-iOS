@@ -58,6 +58,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
+@property (nonatomic, strong) FollowCommentsService *followCommentsService;
 
 @end
 
@@ -533,6 +534,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
+
+    _followCommentsService = [[FollowCommentsService alloc] initWithPost:_post];
 }
 
 - (NSNumber *)siteID
@@ -633,8 +636,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshSubscriptionStatus
 {
     __weak __typeof(self) weakSelf = self;
-    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
-    [service fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
+    [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
@@ -1245,10 +1247,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     // Call the service to toggle the subscription status
-    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
-    [service toggleSubscribed:oldIsSubscribed
-                      success:successBlock
-                      failure:failureBlock];
+    [self.followCommentsService toggleSubscribed:oldIsSubscribed
+                                         success:successBlock
+                                         failure:failureBlock];
 }
 
 - (void)handleHeaderTapped
