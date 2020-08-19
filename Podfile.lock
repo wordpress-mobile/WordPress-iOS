@@ -656,10 +656,6 @@ EXTERNAL SOURCES:
     :commit: bd76109049d2eeead78478d20d66ffd7b1567dd3
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-<<<<<<< HEAD
-    :tag: v1.34.0
-=======
->>>>>>> feature/14624-hookup-subscription-endpoints
   WordPressKit:
     :branch: issue/posts-api-subscribe
     :git: https://github.com/momo-ozawa/WordPressKit-iOS.git
