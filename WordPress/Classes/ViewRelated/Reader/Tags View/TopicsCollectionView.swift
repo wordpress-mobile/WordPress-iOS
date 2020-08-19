@@ -33,6 +33,10 @@ class TopicsCollectionView: DynamicHeightCollectionView {
         coordinator = ReaderTopicCollectionViewCoordinator(collectionView: self, topics: topics)
         coordinator?.delegate = self
     }
+
+    func collapse() {
+        coordinator?.changeState(.collapsed)
+    }
 }
 
 extension TopicsCollectionView: ReaderTopicCollectionViewCoordinatorDelegate {
