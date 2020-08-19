@@ -24,6 +24,17 @@ class ReaderInterestsStyleGuide {
         label.backgroundColor = isSelected ? .muriel(color: .primary, .shade40) : .quaternaryBackground
     }
 
+    // MARK: - Compact Collection View Cell Styles
+    public class var compactCellLabelTitleFont: UIFont {
+        return WPStyleGuide.fontForTextStyle(.footnote)
+    }
+
+    public class func applyCompactCellLabelStyle(label: UILabel) {
+        label.font = Self.compactCellLabelTitleFont
+        label.textColor = .text
+        label.backgroundColor = .quaternaryBackground
+    }
+
     // MARK: - Next Button
     public class var buttonContainerViewBackgroundColor: UIColor {
         if #available(iOS 13, *) {

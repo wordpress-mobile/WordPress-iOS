@@ -19,6 +19,9 @@ protocol ReaderFollowedInterestsService: AnyObject {
                          success: @escaping ([ReaderTagTopic]?) -> Void,
                          failure: @escaping (Error) -> Void,
                          isLoggedIn: Bool)
+
+    /// Returns the API path of a given slug
+    func path(slug: String) -> String
 }
 
 // MARK: - CoreData Fetching
@@ -56,19 +59,21 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
         }
     }
 
-    private func followInterestsLocally(_ interests: [RemoteReaderInterest],
-                                        success: @escaping ([ReaderTagTopic]?) -> Void,
-                                        failure: @escaping (Error) -> Void) {
+    func path(slug: String) -> String {
         // We create a "remote" service to get an accurate path for the tag
         // https://public-api.../tags/_tag_/posts
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
+        return service.pathForTopic(slug: slug)
+    }
+
+    private func followInterestsLocally(_ interests: [RemoteReaderInterest],
+                                        success: @escaping ([ReaderTagTopic]?) -> Void,
+                                        failure: @escaping (Error) -> Void) {
+
 
         interests.forEach { interest in
-            guard let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext) else {
-                return
-            }
-
-            topic.path = service.pathForTopic(slug: interest.slug)
+            let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext, isFollowing: true)
+            topic.path = path(slug: interest.slug)
         }
 
         ContextManager.sharedInstance().save(managedObjectContext, withCompletionBlock: { [weak self] in
