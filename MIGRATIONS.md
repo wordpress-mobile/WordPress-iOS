@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 99
+
+@guarani 2020-08-24
+
+- Add a new `Autocompleter` entity
+- Add a new `UserAutocomplete` entity
+- Add a one-to-many relationship between `Autocompleter` and `UserAutocomplete`
+
 ## WordPress 98
 
 @leandrowalonso 2020-07-27

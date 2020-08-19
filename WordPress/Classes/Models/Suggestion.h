@@ -10,7 +10,5 @@ typedef void(^SuggestionAvatarFetchSuccessBlock)(UIImage* image);
 
 + (instancetype)suggestionFromDictionary:(NSDictionary *)dictionary;
 
-- (UIImage *)cachedAvatarWithSize:(CGSize)size;
-- (void)fetchAvatarWithSize:(CGSize)size success:(SuggestionAvatarFetchSuccessBlock)success;
 
 @end
