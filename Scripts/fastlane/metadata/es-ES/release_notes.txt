@@ -1,9 +1,0 @@
-En esta actualización, tenemos mucho que contarte sobre el editor de bloques:
-
-¡Ahora tenemos un bloque de enlaces sociales! Puedes añadir a tus seguidores dirigiéndolos a tus perfiles de medios sociales desde tus páginas o entradas. Puedes añadir solo una de tus cuentas o tantas como tengas. ¡No nos importa!
-
-Ahora, el bloque de medios y texto tiene mejores funciones de edición. Puedes seleccionar medios en el bloque o cambiar el punto focal.
-
-El marcador de posición del bloque de cubierta tiene ahora diferentes colores de fondo ¡para hacer que tus imágenes destaquen!
-
-Hemos estado ocupados corrigiendo cosas, así como creándolas. Ha sido resuelto el problema del editor de páginas que no cargaba desde la página «Mi sitio» en las versiones 12.4 y anteriores de iOS.

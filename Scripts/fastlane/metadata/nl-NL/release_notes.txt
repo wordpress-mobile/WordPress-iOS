@@ -1,9 +1,0 @@
-We hebben veel te vertellen over de Block editor in deze update:
-
-We hebben nu een Social Links blok! Je kan je volgers toevoegen door ze vanaf je pagina's of bericht naar je sociale media-profielen te leiden. Je kan slechts één van je accounts toevoegen, of zoveel als je hebt. We vinden het niet erg!
-
-Het Media & Text blok heeft nu betere bewerkingsfuncties. Je kan media in het blok selecteren of het focus punt wijzigen.
-
-De tijdelijke aanduiding voor het Cover blok heeft nu verschillende achtergrondkleuren om je afbeeldingen te laten opvallen!
-
-We zijn druk bezig geweest met het repareren en creëren van dingen. Het probleem van het niet laden van de pagina-editor van de "My Site" pagina op iOS-versies 12.4 en lager is opgelost.

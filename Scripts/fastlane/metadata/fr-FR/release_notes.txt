@@ -1,9 +1,0 @@
-Nous avons beaucoup de choses à vous dire au sujet de l’éditeur de blocs dans cette mise à jour :
-
-nous disposons désormais d’un bloc Liens vers les réseaux sociaux ! Vous pouvez ajouter des liens afin de diriger vos abonnés vers vos profils sur les réseaux sociaux à partir de vos pages ou articles. Vous pouvez ajouter un seul de vos comptes ou tous. C’est comme bon vous semble !
-
-Le bloc Médias & Texte propose désormais des fonctions d’édition améliorées. Vous pouvez sélectionner des médias dans le bloc ou modifier le point focal.
-
-Le texte indicatif du bloc Bannière comporte désormais différentes couleurs d’arrière-plan afin de mieux mettre en valeur vos images !
-
-Nous avons travaillé activement à l’innovation, mais également à la correction de problèmes. Nous avons résolu le problème de l’éditeur de page qui ne se chargeait pas à partir de la page « Mon site » sous iOS versions 12.4 et antérieures.

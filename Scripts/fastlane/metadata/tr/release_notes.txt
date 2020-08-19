@@ -1,9 +1,0 @@
-Bu güncellemede Blok düzenleyici hakkında size söyleyecek çok şeyimiz var:
-
-Artık bir Sosyal Bağlantılar bloğumuz var. Takipçilerinizi sayfalarınızdan veya yayınlarınızdan sosyal medya profillerinize yönlendirerek ekleyebilirsiniz. Hesaplarınızdan yalnızca birini veya istediğiniz kadarını ekleyebilirsiniz. Bizim için hiç sorun değil.
-
-Medya ve Metin bloğunda artık daha iyi düzenleme işlevleri var. Bloktan medyayı seçebilir veya odak noktasını değiştirebilirsiniz.
-
-Kapak bloğu yer tutucusunda artık görsellerinizi göz alıcı hale getiren farklı arka plan renkleri var.
-
-Bir süredir bazı şeyleri düzeltmekle ve oluşturmakla meşguldük. iOS sürüm 12.4 ve daha önceki sürümlerde sayfa düzenleyicisinin "Sitem" Sayfasından yüklenmemesine neden olan sorun çözüldü.

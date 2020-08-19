@@ -1,9 +1,0 @@
-Temos muito o que falar sobre o editor de blocos nesta atualização:
-
-Agora temos um bloco de links sociais! Você pode adicionar para os seus seguidores direcionando-os para seus perfis de mídia social a partir de suas páginas ou posts. Você pode adicionar apenas uma de suas contas ou quantas você tiver. Sem problema!
-
-O bloco Mídia e Texto agora possui melhores funções de edição. Você pode selecionar a mídia no bloco ou alterar o ponto focal.
-
-O placeholder do bloco de capa agora tem cores de fundo diferentes para fazer suas imagens aparecerem!
-
-Estivemos ocupados consertando coisas e criando. O problema do editor de página não carregando na página "Meu site" nas versões 12.4 do iOS foi resolvido.
