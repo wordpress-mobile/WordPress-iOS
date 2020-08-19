@@ -16,5 +16,6 @@ final class ReaderVisitSiteAction {
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         origin.present(navController, animated: true)
+        WPAnalytics.track(.readerArticleVisited)
     }
 }
