@@ -598,7 +598,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
-    [self refreshSubscriptionStatus];
+    [self refreshSubscriptionStatusIfNeeded];
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
@@ -633,8 +633,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
 }
 
-- (void)refreshSubscriptionStatus
+- (void)refreshSubscriptionStatusIfNeeded
 {
+    if (!self.canFollowConversation) {
+        return;
+    }
+    
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
