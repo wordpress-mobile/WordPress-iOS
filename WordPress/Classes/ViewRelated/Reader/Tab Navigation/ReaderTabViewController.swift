@@ -49,6 +49,8 @@ class ReaderTabViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        ReaderTracker.shared.start(.main)
+
         displaySelectInterestsIfNeeded()
 
         viewModel.onTabBarItemsDidChange { [weak self] items, _ in
@@ -58,6 +60,12 @@ class ReaderTabViewController: UIViewController {
         if !FeatureFlag.readerImprovementsPhase2.enabled {
             markSelectedInterestsVisited()
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        ReaderTracker.shared.stop(.main)
     }
 
     func setupSearchButton() {
