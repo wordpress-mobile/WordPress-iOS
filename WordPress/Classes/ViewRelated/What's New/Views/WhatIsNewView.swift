@@ -54,9 +54,7 @@ class WhatIsNewView: UIView {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
         tableView.separatorStyle = .none
-
         tableView.allowsSelection = false
-
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
@@ -84,7 +82,6 @@ class WhatIsNewView: UIView {
 
     // MARK: - Properties
     private let viewTitles: WhatIsNewViewTitles
-
     private let dataSource: AnnouncementsDataSource
 
     var continueAction: (() -> Void)?

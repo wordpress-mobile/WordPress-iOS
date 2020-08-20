@@ -7,10 +7,8 @@ protocol AnnouncementsDataSource: UITableViewDataSource {
 class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
     private let cellTypes: [String: UITableViewCell.Type]
-
     private let announcements: [Announcement]
-
-    private var findOutMoreLink: String
+    private let findOutMoreLink: String
 
     init(announcements: [Announcement], cellTypes: [String: UITableViewCell.Type], findOutMoreLink: String) {
         self.announcements = announcements
