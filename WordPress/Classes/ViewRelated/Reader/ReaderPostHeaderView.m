@@ -135,8 +135,13 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
     button.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [button addTarget:self
+               action:@selector(followConversationButtonTapped)
+     forControlEvents:UIControlEventTouchUpInside];
+
+    [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
     
     NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
     [NSLayoutConstraint activateConstraints:@[height]];
@@ -217,6 +222,15 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 {
     _isSubscribedToPost = isSubscribedToPost;
     [self.followConversationButton setSelected:isSubscribedToPost];
+}
+
+#pragma mark - Button Action Helpers
+
+- (void)followConversationButtonTapped
+{
+    if (self.onFollowingConversationClick) {
+        self.onFollowingConversationClick();
+    }
 }
 
 #pragma mark - Recognizer Helpers

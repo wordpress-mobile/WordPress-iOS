@@ -149,6 +149,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewWillAppear:animated];
 
+    [self updateSubscriptionStatus];
+
     [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleApplicationDidBecomeActive:)
@@ -287,10 +289,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
+    headerView.onFollowingConversationClick = ^{
+        [weakSelf handleFollowingConversationButtonTapped];
+    };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
-    headerView.isSubscribedToPost = NO;  // FIXME: Get subscription state
     [headerWrapper addSubview:headerView];
 
     // Border
@@ -576,6 +580,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - View Refresh Helpers
+
+- (void)updateSubscriptionStatus
+{
+    __weak __typeof(self) weakSelf = self;
+    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
+    [service fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
+}
 
 - (void)refreshAndSync
 {
@@ -1171,6 +1186,56 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - PostHeaderView helpers
+
+- (void)handleFollowingConversationButtonTapped
+{
+    __typeof(self) __weak weakSelf = self;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
+    // Keep previous subscription status in case of failure
+    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL newIsSubscribed = !oldIsSubscribed;
+
+    // Optimistically toggle subscription status
+    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+
+    // Define success block
+    void (^successBlock)(void) = ^void() {
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
+            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+        });
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"Error toggling subscription status: %@", error);
+
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
+            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeError];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+
+            // If the request fails, fall back to the old subscription status
+            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+        });
+    };
+
+    // Call the service to toggle the subscription status
+    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
+    [service toggleSubscribed:oldIsSubscribed
+                      success:successBlock
+                      failure:failureBlock];
+}
 
 - (void)handleHeaderTapped
 {
