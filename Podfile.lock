@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressKit:
-    :commit: dc2f69cd5b7e3a9e7dcb2ae636f2119bc9f322f9
+    :commit: a738875aea79d865711acecd2ea0f53cec15cfe6
     :git: https://github.com/momo-ozawa/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
