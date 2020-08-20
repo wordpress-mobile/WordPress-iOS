@@ -12,11 +12,33 @@ class ReaderTracker {
         case readerPost = "time_in_reader_post"
     }
 
+    var now: () -> UInt64
+    var startTime: [Section: UInt64] = [:]
+    var totalTimeInSeconds: [Section: TimeInterval] = [:]
+
+    init(now: @escaping () -> UInt64 = { return DispatchTime.now().uptimeNanoseconds }) {
+        self.now = now
+    }
+
     func data() -> [String: Double] {
         return [
-            Section.main.rawValue: 0,
-            Section.filteredList.rawValue: 0,
+            Section.main.rawValue: totalTimeInSeconds[.main] ?? 0,
+            Section.filteredList.rawValue: totalTimeInSeconds[.filteredList] ?? 0,
             Section.readerPost.rawValue: 0
         ]
+    }
+
+    func start(_ section: Section) {
+        startTime[section] = now()
+    }
+
+    func stop(_ section: Section) {
+        guard let startTime = startTime[section] else {
+            return
+        }
+
+        let nanoTime = now() - startTime
+        totalTimeInSeconds[section] = (totalTimeInSeconds[section] ?? 0) + round(Double(nanoTime) / 1_000_000_000)
+        self.startTime.removeValue(forKey: section)
     }
 }
