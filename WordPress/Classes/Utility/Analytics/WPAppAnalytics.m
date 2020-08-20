@@ -190,6 +190,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
     [WPAnalytics endSession];
+    [[ReaderTracker shared] reset];
 }
 
 /**

@@ -47,4 +47,9 @@ class ReaderTracker: NSObject {
     @objc func stopAll() {
         Section.allCases.forEach { stop($0) }
     }
+
+    @objc func reset() {
+        startTime = [:]
+        totalTimeInSeconds = [:]
+    }
 }
