@@ -38,6 +38,22 @@ class ReaderTrackerTests: XCTestCase {
         ]))
     }
 
+    /// Return 60s as the time spent in post
+    ///
+    func testTrackTimeSpentInPost() {
+        let nowMock = DispatchTimeMock(startTime: 0, endTime: 60_000_000_000)
+        let tracker = ReaderTracker(now: nowMock.now)
+        tracker.start(.readerPost)
+
+        tracker.stop(.readerPost)
+
+        expect(tracker.data()).to(equal([
+            "time_in_main_reader": 0,
+            "time_in_reader_filtered_list": 0,
+            "time_in_reader_post": 60
+        ]))
+    }
+
 }
 
 class DispatchTimeMock {

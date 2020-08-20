@@ -1,7 +1,7 @@
 import Foundation
 
 class ReaderTracker {
-    enum Section: String {
+    enum Section: String, CaseIterable {
         /// Time spent in the main Reader view (the one with the tabs)
         case main = "time_in_main_reader"
 
@@ -21,11 +21,11 @@ class ReaderTracker {
     }
 
     func data() -> [String: Double] {
-        return [
-            Section.main.rawValue: totalTimeInSeconds[.main] ?? 0,
-            Section.filteredList.rawValue: totalTimeInSeconds[.filteredList] ?? 0,
-            Section.readerPost.rawValue: 0
-        ]
+        return Section.allCases.reduce([String: Double]()) { dict, section in
+            var dict = dict
+            dict[section.rawValue] = totalTimeInSeconds[section] ?? 0
+            return dict
+        }
     }
 
     func start(_ section: Section) {
