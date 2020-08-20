@@ -154,6 +154,16 @@
 
 #pragma mark - private
 
+- (void)setAccessibilityLabel:(NSString *)accessibilityLabel
+{
+    self.detailView.accessibilityLabel = accessibilityLabel;
+}
+
+-(void)setAccessibilityHint:(NSString *)accessibilityHint
+{
+    self.detailView.accessibilityHint = accessibilityHint;
+}
+
 - (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionItem *)item
 {
     MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
@@ -285,37 +295,11 @@
 
 - (void)prepareForVoiceOver
 {
-    if ([self.selectedItem isMenuLocation]) {
-        [self configureLocationAccessibility];
-    } else if ([self.selectedItem isMenu] && self.selectedItemLocation != nil) {
-        [self configureMenuAccessibility];
-    }
     NSString *expandedLocalizedString = NSLocalizedString(@"Expanded", @"Screen reader text to represent the expanded state of a UI control");
     self.detailView.accessibilityValue = self.selectionItemsExpanded ? expandedLocalizedString : nil;
     self.addNewItemView.accessibilityLabel = NSLocalizedString(@"Add new menu", @"Screen reader text for Menus button that adds a new menu to a site.");
 
     [self configureAccessibilityGroups];
-}
-
-- (void)configureLocationAccessibility
-{
-    // Menu area: Header. 3 menu areas in this theme. Button. [hint] Expands to select a different menu area.
-    NSString *format = NSLocalizedString(@"Menu area: %@, %@", @"Screen reader string too choose a menu area to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is an already localized string saying the number of areas in this theme.");
-    self.detailView.accessibilityLabel = [NSString stringWithFormat:format,
-                                          self.selectedItem.displayName,
-                                          self.detailView.subTitleLabel.text];
-    self.detailView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu area", @"Screen reader hint (non-imperative) about what does the site menu area selector button do.");
-}
-
-- (void)configureMenuAccessibility
-{
-    // Menu in area Header: Primary. 3 menus available. Button. [hint] Expands to select a different menu to edit.
-    NSString *format = NSLocalizedString(@"Menu in area %@: %@, %@", @"Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. Third is an already localized string saying the number of menus available in the menu area selected.");
-    self.detailView.accessibilityLabel = [NSString stringWithFormat:format,
-                                          self.selectedItemLocation.displayName,
-                                          self.selectedItem.displayName,
-                                          self.detailView.subTitleLabel.text];
-    self.detailView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu", @"Screen reader hint (non-imperative) about what does the site menu selector button do.");
 }
 
 - (void)configureAccessibilityGroups
