@@ -112,7 +112,7 @@ extension FeatureFlag: OverrideableFlag {
         case .whatIsNew:
             return "What's New / Feature Announcement"
         case .avatarsBasicProfile:
-            return "Show Basic Profile from Avatars"
+            return "Show Basic Profile from Avatars on Reader Comments and Notification Details"
         }
     }
 

@@ -767,7 +767,8 @@ private extension NotificationDetailsViewController {
                 }
                 BasicUserProfileViewController.present(context: strongSelf,
                                                        view: gravatarImageView,
-                                                       email: userBlock.metaLinksEmail)
+                                                       email: userBlock.metaLinksEmail,
+                                                       avatarURL: userBlock.media.first?.mediaURL)
             }
         }
 

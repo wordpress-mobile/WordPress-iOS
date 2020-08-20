@@ -1110,9 +1110,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (![Feature enabled:FeatureFlagAvatarsBasicProfile]) {
         return;
     }
+
     [BasicUserProfileViewController presentWithContext:self
-                                                  view:cell.contentView
-                                                 email:comment.author_email];
+                                                  view:cell.avatarImageView
+                                                 email:comment.author_email
+                                             avatarURL:comment.avatarURLForDisplay];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction

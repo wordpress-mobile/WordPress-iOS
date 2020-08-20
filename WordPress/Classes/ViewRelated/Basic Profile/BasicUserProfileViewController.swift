@@ -3,7 +3,7 @@ import Foundation
 final class BasicUserProfileViewController: UIViewController, DrawerPresentable, StoryboardLoadable {
     static var defaultStoryboardName: String = "BasicUserProfile"
 
-    var expandedHeight: DrawerHeight = DrawerHeight.contentHeight(0)
+    var expandedHeight: DrawerHeight = DrawerHeight.intrinsicHeight
 
     let allowsUserTransition = false
 
@@ -12,32 +12,35 @@ final class BasicUserProfileViewController: UIViewController, DrawerPresentable,
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet private weak var locationLabel: UILabel!
     @IBOutlet private weak var aboutMeLabel: UILabel!
+    @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var sitesTableView: UITableView!
 
     var viewModel: BasicUserProfileViewModel!
 
-    @objc class func present(context: UIViewController, view: UIView, email: String?) {
-        guard let email = email else {
+    @objc class func present(context: UIViewController, view: UIView, email: String?, avatarURL: URL?) {
+        guard let viewModel = BasicUserProfileViewModel(email: email, avatarURL: avatarURL) else {
             return
         }
+
         let controller = BasicUserProfileViewController.loadFromStoryboard()
-        controller.viewModel = BasicUserProfileViewModel(email: email)
+        controller.viewModel = viewModel
 
         let bottomSheet = BottomSheetViewController(childViewController: controller)
         bottomSheet.show(from: context, sourceView: view, arrowDirections: .up)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        contentView.startGhostAnimation()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Ghost animation
-        // TODO: Accessibility
-        // TODO: Dark mode
-        // TODO: Tracking
-        // TODO: Styling
+        // TODO - BASICPROFILES: Tracking
 
-        nameLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .bold)
-        usernameLabel.font = WPStyleGuide.fontForTextStyle(.caption2)
+        nameLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        usernameLabel.font = WPStyleGuide.fontForTextStyle(.callout)
         locationLabel.font = WPStyleGuide.fontForTextStyle(.caption1)
         aboutMeLabel.font = WPStyleGuide.fontForTextStyle(.caption1)
 
@@ -52,8 +55,9 @@ final class BasicUserProfileViewController: UIViewController, DrawerPresentable,
             guard let strongSelf = self else {
                 return
             }
+
             strongSelf.nameLabel.text = profile?.formattedName
-            strongSelf.usernameLabel.text = profile?.preferredUsername
+            strongSelf.usernameLabel.text = "@\(profile?.preferredUsername ?? "")"
             if let location = profile?.currentLocation {
                 strongSelf.locationLabel.text = location
             } else {
@@ -65,11 +69,18 @@ final class BasicUserProfileViewController: UIViewController, DrawerPresentable,
                 strongSelf.aboutMeLabel.isHidden = true
             }
 
-            // TODO: Update sites
+            strongSelf.contentView.stopGhostAnimation()
+
+            // TODO - BASICPROFILES: Update sites
         }
     }
 
     private func downloadGravatarImageView() {
-        gravatarImageView.downloadGravatarWithEmail(viewModel.email)
+        if let email = viewModel.email {
+            gravatarImageView.downloadGravatarWithEmail(email)
+        } else if let url = viewModel.avatarURL {
+            let placeholder = UIImage(named: "gravatar")
+            gravatarImageView.downloadImage(from: url, placeholderImage: placeholder)
+        }
     }
 }
