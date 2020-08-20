@@ -122,6 +122,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         didSet {
             filterBar.shouldShowGhostContent = isLoading
             filterBar.allowsMultipleSelection = !isLoading
+            if isLoading {
+                tableView.startGhostAnimation()
+            } else {
+                tableView.stopGhostAnimation()
+            }
+
             tableView.reloadData()
             filterBar.reloadData()
         }
@@ -243,6 +249,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         let bottomInset = tableFooterFrame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        tableView.tableFooterView?.isGhostableDisabled = true
     }
 
     private func calculateHeaderSnapPoints() {
@@ -355,7 +362,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (filteredSections ?? sections).count
+        return isLoading ? 1 : ((filteredSections ?? sections).count)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -365,7 +372,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = (filteredSections ?? sections)[indexPath.row]
+        cell.section = isLoading ? nil : (filteredSections ?? sections)[indexPath.row]
+        cell.isGhostCell = isLoading
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
         cell.collectionView.allowsSelection = !isLoading
