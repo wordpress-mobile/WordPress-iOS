@@ -15,7 +15,7 @@ public struct GutenbergPageLayouts: Codable {
     public init(from decoder: Decoder) throws {
         let map = try decoder.container(keyedBy: CodingKeys.self)
         layouts = try map.decode([GutenbergLayout].self, forKey: .layouts)
-        categories = try map.decode([GutenbergLayoutCategory].self, forKey: .categories)
+        categories = try map.decode([GutenbergLayoutCategory].self, forKey: .categories).sorted()
         groupedLayouts = GutenbergPageLayouts.groupLayouts(layouts)
     }
 
@@ -72,7 +72,11 @@ public struct GutenbergLayout: Codable {
     }
 }
 
-public struct GutenbergLayoutCategory: Codable {
+public struct GutenbergLayoutCategory: Codable, Comparable {
+    public static func < (lhs: GutenbergLayoutCategory, rhs: GutenbergLayoutCategory) -> Bool {
+        return lhs.slug < rhs.slug
+    }
+
     public let slug: String
     public let title: String
     public let description: String
