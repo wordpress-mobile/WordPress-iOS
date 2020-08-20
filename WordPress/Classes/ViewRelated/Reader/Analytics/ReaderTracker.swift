@@ -31,6 +31,10 @@ class ReaderTracker: NSObject {
     }
 
     func start(_ section: Section) {
+        guard startTime[section] == nil else {
+            return
+        }
+
         startTime[section] = now()
     }
 
