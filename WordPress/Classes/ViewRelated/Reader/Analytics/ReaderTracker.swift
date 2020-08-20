@@ -1,6 +1,8 @@
 import Foundation
 
-class ReaderTracker {
+class ReaderTracker: NSObject {
+    @objc static let shared = ReaderTracker()
+
     enum Section: String, CaseIterable {
         /// Time spent in the main Reader view (the one with the tabs)
         case main = "time_in_main_reader"
@@ -20,7 +22,7 @@ class ReaderTracker {
         self.now = now
     }
 
-    func data() -> [String: Double] {
+    @objc func data() -> [String: Double] {
         return Section.allCases.reduce([String: Double]()) { dict, section in
             var dict = dict
             dict[section.rawValue] = totalTimeInSeconds[section] ?? 0
