@@ -1,8 +1,8 @@
-/// Titles and labels for WhatIsNewView
-struct WhatIsNewTextContent {
-    let title: String
+
+/// Labels and button titles
+struct WhatIsNewViewTitles {
+    let header: String
     let version: String
-    let moreContentButtonTitle: String
     let continueButtonTitle: String
 }
 
@@ -11,18 +11,18 @@ struct WhatIsNewTextContent {
 class WhatIsNewView: UIView {
 
     // MARK: - View elements
-    lazy var titleLabel: UILabel = {
-        let label = makeLabel(textContent.title)
+    private lazy var titleLabel: UILabel = {
+        let label = makeLabel(viewTitles.header)
         label.font = Appearance.headlineFont
         label.numberOfLines = 0
         return label
     }()
 
-    lazy var versionLabel: UILabel = {
-        let label = makeLabel(textContent.version)
+    private lazy var versionLabel: UILabel = {
+        let label = makeLabel(viewTitles.version)
 
         // if there's no version, just hide the label and save that space
-        guard !textContent.version.isEmpty else {
+        guard !viewTitles.version.isEmpty else {
             label.isHidden = true
             return label
         }
@@ -32,17 +32,17 @@ class WhatIsNewView: UIView {
         return label
     }()
 
-    lazy var continueButton: UIButton = {
+    private lazy var continueButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.titleFont = Appearance.continueButtonFont
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(textContent.continueButtonTitle, for: .normal)
+        button.setTitle(viewTitles.continueButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
 
-    lazy var continueButtonView: UIView = {
+    private lazy var continueButtonView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(continueButton)
@@ -54,20 +54,22 @@ class WhatIsNewView: UIView {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
         tableView.separatorStyle = .none
-        // TODO - WHATSNEW: needs data source
-        // TODO - WHATSNEW: remove background
-        tableView.backgroundColor = .lightGray
+
+        tableView.allowsSelection = false
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
     }()
 
-    lazy var contentStackView: UIStackView = {
+    private lazy var contentStackView: UIStackView = {
         let stackView = makeVerticalStackView(arrangedSubviews: [titleLabel, versionLabel, announcementsTableView])
         stackView.setCustomSpacing(Appearance.titleVersionSpacing, after: titleLabel)
         stackView.setCustomSpacing(Appearance.versionTableviewSpacing, after: versionLabel)
         return stackView
     }()
 
-    lazy var contentView: UIView = {
+    private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentStackView)
@@ -75,18 +77,21 @@ class WhatIsNewView: UIView {
         return view
     }()
 
-    lazy var mainStackView: UIStackView = {
+    private lazy var mainStackView: UIStackView = {
         let stackView = makeVerticalStackView(arrangedSubviews: [contentView, continueButtonView])
         return stackView
     }()
 
     // MARK: - Properties
-    private let textContent: WhatIsNewTextContent
+    private let viewTitles: WhatIsNewViewTitles
+
+    private let dataSource: AnnouncementsDataSource
 
     var continueAction: (() -> Void)?
 
-    init(textContent: WhatIsNewTextContent) {
-        self.textContent = textContent
+    init(viewTitles: WhatIsNewViewTitles, dataSource: AnnouncementsDataSource) {
+        self.viewTitles = viewTitles
+        self.dataSource = dataSource
 
         super.init(frame: .zero)
 
@@ -97,6 +102,7 @@ class WhatIsNewView: UIView {
         NSLayoutConstraint.activate([
             continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight)
         ])
+        setupTableViewDataSource()
     }
 
     required init?(coder: NSCoder) {
@@ -105,30 +111,35 @@ class WhatIsNewView: UIView {
 }
 
 
-/// Helpers
+// MARK: - Helpers
 private extension WhatIsNewView {
 
-    private func makeVerticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
+    func makeVerticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         return stackView
     }
 
-    private func makeLabel(_ text: String) -> UILabel {
+    func makeLabel(_ text: String) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = text
         return label
     }
 
-    @objc private func continueButtonTapped() {
+    func setupTableViewDataSource() {
+        announcementsTableView.dataSource = dataSource
+        dataSource.registerCells(for: announcementsTableView)
+    }
+
+    @objc func continueButtonTapped() {
         continueAction?()
     }
 }
 
 
-/// Appearance
+// MARK: - Appearance
 private extension WhatIsNewView {
 
     enum Appearance {
@@ -144,8 +155,7 @@ private extension WhatIsNewView {
 
                 return UIFont(descriptor: serifHeadlineDescriptor, size: 34)
             }
-            return UIFont(descriptor: UIFontDescriptor
-                .preferredFontDescriptor(withTextStyle: .headline), size: 34)
+            return UIFont(descriptor: .preferredFontDescriptor(withTextStyle: .headline), size: 34)
         }
         static let titleVersionSpacing: CGFloat = 16
 
@@ -153,6 +163,9 @@ private extension WhatIsNewView {
         static let subHeadlineFont = UIFont(descriptor: UIFontDescriptor
                 .preferredFontDescriptor(withTextStyle: .subheadline), size: 15)
         static let versionTableviewSpacing: CGFloat = 32
+
+        // table view
+        static let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
 
         // continue button
         static let continueButtonHeight: CGFloat = 48
