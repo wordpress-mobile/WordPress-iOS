@@ -43,4 +43,8 @@ class ReaderTracker: NSObject {
         totalTimeInSeconds[section] = (totalTimeInSeconds[section] ?? 0) + round(Double(nanoTime) / 1_000_000_000)
         self.startTime.removeValue(forKey: section)
     }
+
+    @objc func stopAll() {
+        Section.allCases.forEach { stop($0) }
+    }
 }
