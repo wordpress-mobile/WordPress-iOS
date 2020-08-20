@@ -584,7 +584,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)updateSubscriptionStatus
 {
     __weak __typeof(self) weakSelf = self;
-    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
+    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
     [service fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
     } failure:^(NSError *error) {
@@ -1231,7 +1231,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     // Call the service to toggle the subscription status
-    FollowCommentsService *service = [[FollowCommentsService alloc] initWithPost:self.post];
+    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
     [service toggleSubscribed:oldIsSubscribed
                       success:successBlock
                       failure:failureBlock];

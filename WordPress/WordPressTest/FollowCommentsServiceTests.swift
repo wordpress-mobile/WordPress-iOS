@@ -19,6 +19,51 @@ class FollowCommentsServiceTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Helpers
+
+    func seedReaderPost() -> ReaderPost {
+        let context = contextManager.mainContext
+        let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+        post.siteID = NSNumber(value: 0)
+        post.postID = NSNumber(value: 0)
+        // Note that we don't actually need to save the context,
+        // since we're just using this ReaderPost to instantiate FollowCommentsService.
+        return post
+    }
+
+    // MARK: - Tests
+
+    func testToggleSubscriptionToUnsubscribed() {
+        // Arrange
+        let remoteMock = ReaderPostServiceRemoteMock()
+        let testPost = seedReaderPost()
+        let followCommentsService = FollowCommentsService(post: testPost, remote: remoteMock)!
+        let isSubscribed = true
+
+        // Act
+        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
+
+        // Assert
+        XCTAssertFalse(remoteMock.subscribeToPostCalled, "subscribeToPost should not be called")
+        XCTAssertTrue(remoteMock.unsubscribeFromPostCalled, "unsubscribeFromPost should be called")
+
+    }
+
+    func testToggleSubscriptionToSubscribed() {
+        // Arrange
+        let remoteMock = ReaderPostServiceRemoteMock()
+        let testPost = seedReaderPost()
+        let followCommentsService = FollowCommentsService(post: testPost, remote: remoteMock)!
+        let isSubscribed = false
+
+        // Act
+        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
+
+        // Assert
+        XCTAssertTrue(remoteMock.subscribeToPostCalled, "subscribeToPost should be called")
+        XCTAssertFalse(remoteMock.unsubscribeFromPostCalled, "unsubscribeFromPost should not be called")
+    }
+
     // MARK: - Mocks / Tester
 
     class ReaderPostServiceRemoteMock: ReaderPostServiceRemote {
@@ -39,59 +84,5 @@ class FollowCommentsServiceTests: XCTestCase {
                                           failure: @escaping (Error) -> Void) {
             unsubscribeFromPostCalled = true
         }
-    }
-
-    class FollowCommentsServiceTester: FollowCommentsService {
-
-        var remote: ReaderPostServiceRemoteMock?
-
-        override func readerPostServiceRemote() -> ReaderPostServiceRemote {
-            remote = ReaderPostServiceRemoteMock()
-            return remote!
-        }
-    }
-
-
-    // MARK: - Helpers
-
-    func seedReaderPost() -> ReaderPost {
-        let context = contextManager.mainContext
-        let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
-        post.siteID = NSNumber(value: 0)
-        post.postID = NSNumber(value: 0)
-        // Note that we don't actually need to save the context,
-        // since we're just using this ReaderPost to instantiate FollowCommentsServiceTester.
-        return post
-    }
-
-    // MARK: - Tests
-
-    func testToggleSubscriptionToUnsubscribed() {
-        // Arrange
-        let testPost = seedReaderPost()
-        let followCommentsService = FollowCommentsServiceTester(post: testPost)!
-        let isSubscribed = true
-
-        // Act
-        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
-
-        // Assert
-        XCTAssertFalse(followCommentsService.remote!.subscribeToPostCalled, "subscribeToPost should not be called")
-        XCTAssertTrue(followCommentsService.remote!.unsubscribeFromPostCalled, "unsubscribeFromPost should be called")
-
-    }
-
-    func testToggleSubscriptionToSubscribed() {
-        // Arrange
-        let testPost = seedReaderPost()
-        let followCommentsService = FollowCommentsServiceTester(post: testPost)!
-        let isSubscribed = false
-
-        // Act
-        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
-
-        // Assert
-        XCTAssertTrue(followCommentsService.remote!.subscribeToPostCalled, "subscribeToPost should be called")
-        XCTAssertFalse(followCommentsService.remote!.unsubscribeFromPostCalled, "unsubscribeFromPost should not be called")
     }
 }
