@@ -194,7 +194,7 @@ target 'WordPress' do
     # pod 'WordPressAuthenticator', '~> 1.23.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '56fc153d547225f047e7ce87c229a07e1e2d54cb'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'b363ca9ad40fc80d6130965db286ca9d88cec96a'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.0'
