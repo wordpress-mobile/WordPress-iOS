@@ -55,13 +55,9 @@ class ReaderTabItemsStoreTests: XCTestCase {
         let mockTopics = [mockTopic]
 
         context.returnedObjects = mockTopics
-        context.fetchExpectation = expectation(description: "fetch request executed")
-        context.successExpectation = expectation(description: "fetch request succeeded")
-
-        service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
-        service.fetchMenuSuccessExpectation = expectation(description: "fetch from remote service succeeded")
 
         let stateChangeExpectation = expectation(description: "state change emitted")
+        stateChangeExpectation.expectedFulfillmentCount = 2
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()
@@ -86,14 +82,13 @@ class ReaderTabItemsStoreTests: XCTestCase {
         let mockTopics = [mockTopic]
 
         context.returnedObjects = mockTopics
-        context.fetchExpectation = expectation(description: "fetch request executed")
-        context.successExpectation = expectation(description: "fetch request succeeded")
 
         service.success = false
         service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
         service.fetchMenuFailureExpectation = expectation(description: "fetch from remote service failed")
 
         let stateChangeExpectation = expectation(description: "state change emitted")
+        stateChangeExpectation.expectedFulfillmentCount = 2
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()
@@ -114,14 +109,13 @@ class ReaderTabItemsStoreTests: XCTestCase {
     func testGetItemsFetchRequestFailure() {
         // Given
         context.success = false
-        context.fetchExpectation = expectation(description: "fetch request executed")
-        context.failureExpectation = expectation(description: "fetch request failed")
         context.fetchError = mockError
 
         service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
         service.fetchMenuSuccessExpectation = expectation(description: "fetch from remote service succeeded")
 
         let stateChangeExpectation = expectation(description: "state change emitted")
+        stateChangeExpectation.expectedFulfillmentCount = 2
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()
@@ -150,13 +144,11 @@ class ReaderTabItemsStoreTests: XCTestCase {
 
         context.returnedObjects = mockTopics
 
-        context.fetchExpectation = expectation(description: "fetch request executed")
-        context.successExpectation = expectation(description: "fetch request succeeded")
-
         service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
         service.fetchMenuSuccessExpectation = expectation(description: "fetch from remote service succeeded")
 
         let stateChangeExpectation = expectation(description: "state change emitted")
+        stateChangeExpectation.expectedFulfillmentCount = 2
 
         subscription = store.onChange {
             stateChangeExpectation.fulfill()

@@ -33,6 +33,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingView: UIStackView!
 
+    @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
+
     // MARK: - Data
     private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
     private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
@@ -52,6 +54,28 @@ class ReaderSelectInterestsViewController: UIViewController {
         applyStyles()
         updateNextButtonState()
         refreshData()
+
+        // If the view is being presented overCurrentContext take into account tab bar height
+        if modalPresentationStyle == .overCurrentContext {
+            bottomSpaceHeightConstraint.constant = presentingViewController?.tabBarController?.tabBar.bounds.size.height ?? 0
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.selectInterestsShown)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If this view was presented over current context and it's disappearing
+        // it means that the user switched tabs. Keeping it in the view hierarchy cause
+        // weird black screens, so we dismiss it to avoid that.
+        if modalPresentationStyle == .overCurrentContext {
+            dismiss(animated: false)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -67,6 +91,11 @@ class ReaderSelectInterestsViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func nextButtonTapped(_ sender: Any) {
         saveSelectedInterests()
+    }
+
+    // MARK: - Display logic
+    func userIsFollowingTopics(completion: @escaping (Bool) -> Void) {
+        coordinator.isFollowingInterests(completion: completion)
     }
 
     // MARK: - Private: Configuration
@@ -132,6 +161,7 @@ class ReaderSelectInterestsViewController: UIViewController {
                 return
             }
 
+            WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
             self?.stopLoading()
             self?.didSaveInterests?()
         }
@@ -150,10 +180,8 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         activityIndicatorView.startAnimating()
 
-        UIView.animate(withDuration: Constants.animationDuration) {
-            self.contentContainerView.alpha = 0
-            self.loadingView.alpha = 1
-        }
+        contentContainerView.alpha = 0
+        loadingView.alpha = 1
     }
 
     private func stopLoading() {

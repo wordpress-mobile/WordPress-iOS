@@ -41,6 +41,31 @@ import Foundation
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
 
+    // Notifications Permissions
+    case pushNotificationsPrimerSeen
+    case pushNotificationsPrimerAllowTapped
+    case pushNotificationsPrimerNoTapped
+    case secondNotificationsAlertSeen
+    case secondNotificationsAlertAllowTapped
+    case secondNotificationsAlertNoTapped
+
+    // Reader
+    case selectInterestsShown
+    case selectInterestsPicked
+    case readerDiscoverShown
+    case readerSiteShown
+    case readerDiscoverPaginated
+    case readerCardTapped
+    case readerPullToRefresh
+    case readerDiscoverTopicTapped
+    case postCardMoreTapped
+    case followedBlogNotificationsReaderMenuOff
+    case followedBlogNotificationsReaderMenuOn
+    case readerArticleVisited
+    case itemSharedReader
+    case readerBlogBlocked
+    case readerChipsMoreToggled
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -101,8 +126,51 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        case .pushNotificationsPrimerSeen:
+            return "notifications_primer_seen"
+        case .pushNotificationsPrimerAllowTapped:
+            return "notifications_primer_allow_tapped"
+        case .pushNotificationsPrimerNoTapped:
+            return "notifications_primer_no_tapped"
+        case .secondNotificationsAlertSeen:
+            return "notifications_second_alert_seen"
+        case .secondNotificationsAlertAllowTapped:
+            return "notifications_second_alert_allow_tapped"
+        case .secondNotificationsAlertNoTapped:
+            return "notifications_second_alert_no_tapped"
+        // Reader
+        case .selectInterestsShown:
+            return "select_interests_shown"
+        case .selectInterestsPicked:
+            return "select_interests_picked"
+        case .readerDiscoverShown:
+            return "reader_discover_shown"
+        case .readerSiteShown:
+            return "reader_site_shown"
+        case .readerDiscoverPaginated:
+            return "reader_discover_paginated"
+        case .readerCardTapped:
+            return "reader_card_tapped"
+        case .readerPullToRefresh:
+            return "reader_pull_to_refresh"
+        case .readerDiscoverTopicTapped:
+            return "reader_discover_topic_tapped"
+        case .postCardMoreTapped:
+            return "post_card_more_tapped"
+        case .followedBlogNotificationsReaderMenuOff:
+            return "followed_blog_notifications_reader_menu_off"
+        case .followedBlogNotificationsReaderMenuOn:
+            return "followed_blog_notifications_reader_menu_on"
+        case .readerArticleVisited:
+            return "reader_article_visited"
+        case .itemSharedReader:
+            return "item_shared_reader"
+        case .readerBlogBlocked:
+            return "reader_blog_blocked"
+        case .readerChipsMoreToggled:
+            return "reader_chips_more_toggled"
+        }
     }
-}
 
     /**
      The default properties of the event

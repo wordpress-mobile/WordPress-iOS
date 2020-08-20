@@ -316,7 +316,7 @@ private extension SupportTableViewController {
         static let viewTitle = NSLocalizedString("Support", comment: "View title for Support page.")
         static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
+        static let contactUs = NSLocalizedString("Contact Support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")

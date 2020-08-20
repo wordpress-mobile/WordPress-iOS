@@ -266,13 +266,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             return;
         }
 
-        if ([Feature enabled:FeatureFlagReaderWebview]) {
-            ReaderDetailWebviewViewController *vc = [ReaderDetailWebviewViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID isFeed:NO];
-            [self.navigationController pushFullscreenViewController:vc animated:YES];
-        } else {
-            ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID isFeed:NO];
-            [self.navigationController pushFullscreenViewController:vc animated:YES];
-        }
+        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID isFeed:NO];
+        [self.navigationController pushFullscreenViewController:vc animated:YES];
     }
 }
 

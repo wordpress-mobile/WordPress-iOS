@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 extension NSNotification.Name {
     static let createSite = NSNotification.Name(rawValue: "PSICreateSite")
@@ -49,6 +50,10 @@ class PostSignUpInterstitialViewController: UIViewController {
     ///
     var onDismiss: (() -> Void)?
 
+    /// Analytics tracker
+    ///
+    private let tracker = AuthenticatorAnalyticsTracker.shared
+
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +91,9 @@ class PostSignUpInterstitialViewController: UIViewController {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
+        tracker.track(click: .createNewSite, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
+        })
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
@@ -95,7 +102,9 @@ class PostSignUpInterstitialViewController: UIViewController {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
+        tracker.track(click: .addSelfHostedSite, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
+        })
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -104,7 +113,9 @@ class PostSignUpInterstitialViewController: UIViewController {
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 
-        WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
+        tracker.track(click: .continue, ifTrackingNotEnabled: {
+            WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
+        })
     }
 
     // MARK: - Private
