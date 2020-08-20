@@ -148,11 +148,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-<<<<<<< HEAD
     gutenberg :commit => 'ba14e5aae17278d1c9fd4a00a4b098bd13369445'
-=======
-    gutenberg :commit => 'bd76109049d2eeead78478d20d66ffd7b1567dd3'
->>>>>>> gutenberg/issue/2437-categoryBar
 
     ## Third party libraries
     ## =====================
