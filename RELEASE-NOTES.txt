@@ -1,12 +1,22 @@
-15.5
+15.6
 -----
  
+* [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
+
+15.5
+-----
+* [*] Reader: revamped UI for your site header.
+* [***] Block Editor: New feature for WordPress.com and Jetpack sites: auto-complete username mentions. An auto-complete popup will show up when the user types the @ character in the block editor.
+* [*] Block Editor: Media editing support in Cover block.
+* [*] Block Editor: Fixed a bug on the Heading block, where a heading with a link and string formatting showed a white shadow in dark mode.
+
 15.4
 -----
  * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below. 
  * [***] Block Editor: Media editing support in Media & Text block.
  * [***] Block Editor: New block: Social Icons
  * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
+ * [**] Improved support for the Classic block to give folks a smooth transition from the classic editor to the block editor
 
 15.3
 -----

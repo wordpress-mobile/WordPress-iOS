@@ -1177,17 +1177,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
-    if ([Feature enabled:FeatureFlagReaderWebview]) {
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-        ReaderDetailWebviewViewController *controller = [ReaderDetailWebviewViewController controllerWithPost:self.post];
-        controller.shouldHideComments = YES;
-        [self.navigationController pushFullscreenViewController:controller animated:YES];
-    } else {
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-        ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
-        controller.shouldHideComments = YES;
-        [self.navigationController pushFullscreenViewController:controller animated:YES];
-    }
+    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
+    controller.shouldHideComments = YES;
+    [self.navigationController pushFullscreenViewController:controller animated:YES];
 }
 
 

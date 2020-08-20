@@ -1,5 +1,9 @@
-v 15.3 innehåller tre stora förbättringar:
+Vi har massor att säga om blockredigeraren i den här uppdateringen:
 
-- Nu har alla block val för att kopiera, klippa ut, klistra in och duplicera.
-- Block som saknar stöd kan redigeras i ett eget fönster i appen med samma verktyg som finns tillgängliga i den kompletta webbredigeraren. (Obs: detta är ännu inte tillgängligt för webbplats på eget webbhotell eller om webbplatsen som standard använder den klassiska redigeraren.)
-- Suddighetseffekt! En trevlig visuell finess vi lagt till i redigeraren är skuggade områden för att visa var och när innehåll laddas in.
+Nu finns det ett block för länkar till sociala media! Nu kan du få fler följare genom att helt enkelt leda dem till dina profiler i sociala medier från dina sidor och inlägg. Lägg in någon av dina profiler, eller alla du har. Det bestämmer du helt själv!
+
+Blocket för media + text har nu bättre redigeringsfunktioner. I blocket kan du välja mediafil eller ändra den fokuserade platsen.
+
+Platshållaren i omslagsblocket har nu olika bakgrundsfärger för att lyfta fram dina bilder!
+
+Samtidigt som vi skapat har vi också rättat olika saker. Nu har vi t.ex. löst problemet med att sidredigereraren inte kunde laddas in från sidan ”Min webbplats” i iOS 12.4 och tidigare versioner.

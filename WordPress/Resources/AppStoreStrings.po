@@ -40,13 +40,9 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v15.3-whats-new"
+msgctxt "v15.5-whats-new"
 msgid ""
-"v15.3 includes three great changes:\n"
-"\n"
-"- All blocks now have copy, cut, paste, and duplicate options.\n"
-"- You can individually edit unsupported blocks on a separate screen in the app, using the same tools available the full web editor. (Note: this isn’t yet available for self-hosted sites, or that sites that default to the classic editor.)\n"
-"- Ghost Effect! It’s a nice visual touch we added to the editor that displays shaded areas to let you know when and where content is loading.\n"
+"New! Username @mentions now auto-complete in the Block Editor for WordPress.com and Jetpack sites. Type the “@” character to see a pop-up displaying usernames and make your selection! In this version, we’ve added support for media editing in the Cover block and fixed a Heading block bug where a heading with a link and string formatting displayed a white shadow in dark mode. Lastly, site headings in the WordPress.com Reader now have a modern new look.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

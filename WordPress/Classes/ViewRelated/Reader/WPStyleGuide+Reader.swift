@@ -164,22 +164,6 @@ extension WPStyleGuide {
         ]
     }
 
-    // MARK: - Stream Header Attributed Text Attributes
-
-    @objc public class func readerStreamHeaderDescriptionAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoFontForTextStyle(Cards.contentTextStyle)
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
-        paragraphStyle.alignment = .center
-
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font
-        ]
-    }
-
-
     // MARK: - Apply Card Styles
 
     @objc public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
@@ -241,17 +225,17 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        label.font = fontForTextStyle(.subheadline, fontWeight: .regular)
         label.textColor = .textSubtle
     }
 
     @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabelForNotoFont(label, textStyle: .subheadline)
+        label.font = fontForTextStyle(.body, fontWeight: .regular)
         label.textColor = .text
     }
 
     @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.contentTextStyle)
         label.textColor = .textSubtle
     }
 
@@ -298,47 +282,21 @@ extension WPStyleGuide {
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
-        let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
+        let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
         let followIcon = UIImage.gridicon(.readerFollow, size: size)
         let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
-        let normalColor = UIColor.primary
-        let highlightedColor = UIColor.primaryDark
-        let selectedColor = UIColor.success
+        let followFont: UIFont = fontForTextStyle(.callout, fontWeight: .semibold)
+        let followingFont: UIFont = fontForTextStyle(.callout, fontWeight: .regular)
+        button.titleLabel?.font = button.isSelected ? followingFont : followFont
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(normalColor)
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(selectedColor)
-        let highlightIcon = followingIcon.imageWithTintColor(highlightedColor)
-
-        button.setImage(tintedFollowIcon, for: .normal)
-        button.setImage(tintedFollowingIcon, for: .selected)
-        button.setImage(highlightIcon, for: .highlighted)
-
-        button.setTitle(FollowButton.Text.followStringForDisplay, for: UIControl.State())
-        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
-        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .highlighted)
-
-        button.setTitleColor(normalColor, for: UIControl.State())
-        button.setTitleColor(highlightedColor, for: .highlighted)
-        button.setTitleColor(selectedColor, for: .selected)
-    }
-
-
-    @objc public class func applyReaderFollowTopicButtonStyle(_ button: UIButton) {
-        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
-        let size = CGSize(width: side, height: side)
-
-        let followIcon = UIImage.gridicon(.readerFollow, size: size)
-        let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
-
-        button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
         button.layer.cornerRadius = 4.0
-        button.layer.borderColor = UIColor(light: .gray(.shade30), dark: .gray(.shade60)).cgColor
+        button.layer.borderColor = UIColor.primaryButtonBorder.cgColor
 
         button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
-        button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
 
         button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
         button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
@@ -584,7 +542,8 @@ extension WPStyleGuide {
         struct Style {
             static let followBackgroundColor: UIColor = .primaryButtonBackground
             static let followTextColor: UIColor = .white
-            static let followingBackgroundColor: UIColor = .basicBackground
+            static let followingBackgroundColor: UIColor = .clear
+            static let followingIconColor: UIColor = .buttonIcon
             static let followingTextColor: UIColor = .textSubtle
 
             static let imageTitleSpace: CGFloat = 2.0
