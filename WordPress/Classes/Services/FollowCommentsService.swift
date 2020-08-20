@@ -7,7 +7,6 @@ class FollowCommentsService: NSObject {
 
     fileprivate let postID: Int
     fileprivate let siteID: Int
-    fileprivate let remote: ReaderPostServiceRemote
 
     @objc init?(post: ReaderPost) {
         guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
@@ -17,9 +16,6 @@ class FollowCommentsService: NSObject {
         self.post = post
         self.postID = postID
         self.siteID = siteID
-
-        let api = FollowCommentsService.apiForRequest()
-        self.remote = ReaderPostServiceRemote(wordPressComRestApi: api)
     }
 
     /// Fetches the subscription status of the specified post for the current user.
@@ -29,6 +25,7 @@ class FollowCommentsService: NSObject {
     ///   - failure: Failure block called if there is any error.
     @objc func fetchSubscriptionStatus(success: @escaping (Bool) -> Void,
                                        failure: @escaping (Error?) -> Void) {
+        let remote = self.readerPostServiceRemote()
         remote.fetchSubscriptionStatus(for: postID,
                                        from: siteID,
                                        success: success,
@@ -44,6 +41,7 @@ class FollowCommentsService: NSObject {
     @objc func toggleSubscribed(_ isSubscribed: Bool,
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error?) -> Void) {
+        let remote = self.readerPostServiceRemote()
         if isSubscribed {
             remote.unsubscribeFromPost(with: postID,
                                        for: siteID,
@@ -57,11 +55,17 @@ class FollowCommentsService: NSObject {
         }
     }
 
+    /// Overridden by tests for mocking.
+    ///
+    func readerPostServiceRemote() -> ReaderPostServiceRemote {
+        let api = self.apiForRequest()
+        return ReaderPostServiceRemote(wordPressComRestApi: api)
+    }
 }
 
 extension FollowCommentsService {
 
-    private static func apiForRequest() -> WordPressComRestApi {
+    private func apiForRequest() -> WordPressComRestApi {
         let context = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: context)
         let defaultAccount = accountService.defaultWordPressComAccount()
