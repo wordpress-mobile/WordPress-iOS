@@ -4,12 +4,13 @@ import WordPressKit
 class FollowCommentsService: NSObject {
 
     let post: ReaderPost
+    let remote: ReaderPostServiceRemote
 
     fileprivate let postID: Int
     fileprivate let siteID: Int
-    fileprivate let remote: ReaderPostServiceRemote
 
-    @objc init?(post: ReaderPost) {
+    @objc required init?(post: ReaderPost,
+                         remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
         guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
             return nil
         }
@@ -17,9 +18,11 @@ class FollowCommentsService: NSObject {
         self.post = post
         self.postID = postID
         self.siteID = siteID
+        self.remote = remote
+    }
 
-        let api = FollowCommentsService.apiForRequest()
-        self.remote = ReaderPostServiceRemote(wordPressComRestApi: api)
+    @objc class func createService(with post: ReaderPost) -> FollowCommentsService? {
+        self.init(post: post)
     }
 
     /// Fetches the subscription status of the specified post for the current user.
@@ -58,14 +61,18 @@ class FollowCommentsService: NSObject {
     }
 }
 
-extension FollowCommentsService {
+/// Used to inject the ReaderPostServiceRemote as an dependency
+private extension ReaderPostServiceRemote {
 
-    private static func apiForRequest() -> WordPressComRestApi {
+    class func withDefaultApi() -> ReaderPostServiceRemote {
         let context = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: context)
         let defaultAccount = accountService.defaultWordPressComAccount()
         let token: String? = defaultAccount?.authToken
-        return WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress())
+
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token,
+                                                 userAgent: WPUserAgent.wordPress())
+
+        return ReaderPostServiceRemote(wordPressComRestApi: api)
     }
 }

@@ -535,7 +535,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.syncHelper.delegate = self;
     }
 
-    _followCommentsService = [[FollowCommentsService alloc] initWithPost:_post];
+    _followCommentsService = [FollowCommentsService createServiceWith:_post];
 }
 
 - (NSNumber *)siteID
