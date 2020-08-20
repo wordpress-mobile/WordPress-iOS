@@ -40,10 +40,15 @@ class ReaderTabViewController: UIViewController {
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError(ReaderTabConstants.storyBoardInitError)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -78,6 +83,14 @@ class ReaderTabViewController: UIViewController {
 
     override func loadView() {
         view = readerTabView
+    }
+
+    @objc func willEnterForeground() {
+        guard isViewOnScreen() else {
+            return
+        }
+
+        ReaderTracker.shared.start(.main)
     }
 }
 
