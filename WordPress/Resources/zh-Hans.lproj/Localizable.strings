@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-06 18:54:11+0000 */
+/* Translation-Revision-Date: 2020-08-20 10:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -330,7 +330,7 @@
 "About WordPress for iOS" = "About WordPress for iOS";
 
 /* Category description for page templates */
-"About pages" = "About pages";
+"About pages" = "关于页面";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -735,7 +735,7 @@
 "Authenticating" = "正在验证";
 
 /* Placeholder for the 2FA code textfield. */
-"Authentication code" = "Authentication code";
+"Authentication code" = "验证码";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "需要对主机进行验证：%@";
@@ -878,7 +878,7 @@
 "Blog Posts" = "博客文章";
 
 /* Category description for page templates */
-"Blog pages" = "Blog pages";
+"Blog pages" = "博客页面";
 
 /* Create new Blog Post button title */
 "Blog post" = "博文";
@@ -1113,7 +1113,7 @@
 "Choose Posts Page" = "选择文章页面";
 
 /* Title for the screen to pick a template for a page */
-"Choose a Layout" = "Choose a Layout";
+"Choose a Layout" = "选择布局";
 
 /* Label for Publish date picker */
 "Choose a date" = "选择日期";
@@ -1424,7 +1424,7 @@
 "Contact Us" = "联系我们";
 
 /* Category description for page templates */
-"Contact pages" = "Contact pages";
+"Contact pages" = "联系信息页面";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1564,7 +1564,7 @@
 "Create" = "创建";
 
 /* Title for button to make a blank page */
-"Create Blank Page" = "Create Blank Page";
+"Create Blank Page" = "创建空白页面";
 
 /* Create New header text */
 "Create New" = "新建";
@@ -2408,7 +2408,7 @@
 "Follows the blog." = "关注博客。";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
+"Follows the tag." = "关注标签。";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "为方便起见，我们已预先填充您的 WordPress.com 联系信息。请检查此信息，以确保这是您想在此域上使用的正确信息。";
@@ -2467,13 +2467,13 @@ translators: sample content for \"Team\" page template */
 "Get noticed: comment on posts you've read." = "敬请注意：评论您已读过的文章。";
 
 /* Prompt for the screen to pick a template for a page */
-"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "从种类繁多的预设页面布局中选择心仪的布局，开始打造自己的页面。 或者，您也可以从一个空白页面开始。";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
+"Get your notifications faster" = "更快收到通知";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "建立并运行您的站点";
@@ -2912,7 +2912,7 @@ translators: sample content for \"Team\" page template */
 "Learn More" = "了解更多";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
+"Learn about new comments, likes, and follows in seconds." = "详细了解新的评论、赞，并快速关注。";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "了解付费套餐中的营销和 SEO 工具。";
@@ -3911,10 +3911,10 @@ translators: sample content for \"Services\" page template */
 "Page scheduled" = "页面已预发布";
 
 /* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Page title. %s";
+"Page title. %s" = "“页面”标题。 %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
+"Page title. Empty" = "“页面”标题。 清空";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -3951,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "粘贴 URL";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
+"Paste block after" = "在以下位置后粘贴区块";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "不带格式粘贴";
@@ -4058,7 +4058,7 @@ translators: sample content for \"Services\" page template */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "请输入您的 WordPress.com 帐户密码，以使用 Apple ID 登录。";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "请输入验证器应用程序中的验证码，或轻点以下链接以通过短信接收验证码。";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "请输入你的验证信息";
@@ -4140,7 +4140,7 @@ translators: sample content for \"Services\" page template */
 "Portfolio" = "文件夹";
 
 /* Category description for page templates */
-"Portfolio pages" = "Portfolio pages";
+"Portfolio pages" = "文件夹页面";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "职位或职称";
@@ -5003,7 +5003,7 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "发送链接";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "通过电子邮件发送链接";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Send Log Message";
@@ -5032,7 +5032,7 @@ translators: sample content for \"Services\" page template */
 "Services" = "Services";
 
 /* Category description for page templates */
-"Services pages" = "Services pages";
+"Services pages" = "服务页面";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "设置特色图像";
@@ -5640,7 +5640,7 @@ translators: sample content for \"Services\" page template */
 "Team" = "Team";
 
 /* Category description for page templates */
-"Team pages" = "Team pages";
+"Team pages" = "团队页面";
 
 /* Section title of the teams reader section. */
 "Teams" = "团队";
@@ -6036,7 +6036,7 @@ translators: sample content for \"Services\" page template */
 "To manage them here, set them to visible." = "要在此处对其进行管理，请将其设为可见。";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Apple ID，请先使用您的 WordPress.com 密码登录。 此要求只会出现一次。";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Google 帐户，请先使用您的 WordPress.com 密码登录。此要求只会出现一次。";
@@ -6377,7 +6377,7 @@ translators: sample content for \"Services\" page template */
 "Updates the bar chart to show visitors." = "更新条形图以显示访客。";
 
 /* No comment provided by engineer. */
-"Updates the title." = "Updates the title.";
+"Updates the title." = "更新标题。";
 
 /* Describes a status of a plugin */
 "Updating" = "正在更新";
@@ -6511,7 +6511,7 @@ translators: sample content for \"Services\" page template */
 "Video caption. %s" = "视频说明。%s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Video caption. Empty";
+"Video caption. Empty" = "视频说明。 清空";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Video export canceled.";
@@ -6607,7 +6607,7 @@ translators: sample content for \"Services\" page template */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
 
 /* View title during the Google auth process. */
-"Waiting..." = "Waiting...";
+"Waiting..." = "正在等待…";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6769,13 +6769,13 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我们将通过电子邮件向您发送一个神奇链接，利用它您无需密码即可立即登录。无需再输入密码了！";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a magic link to create your new WordPress.com account." = "我们将通过电子邮件向您发送一个免密登录链接，供您创建新的 WordPress.com 帐户。";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "当您获得粉丝、评论和赞时，我们将通知您。";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?";
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "当您获得新的粉丝、评论和赞时，我们将通知您。 是否希望接收推送通知？";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "当您的设备重新联网后，我们将发布此页面。";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-06 18:54:11+0000 */
+/* Translation-Revision-Date: 2020-08-20 10:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -330,7 +330,7 @@
 "About WordPress for iOS" = "מידע לגבי WordPress עבור iOS";
 
 /* Category description for page templates */
-"About pages" = "About pages";
+"About pages" = "עמודי 'אודות'";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "תוסף Accelerated Mobile Pages (AMP)‎";
@@ -735,7 +735,7 @@
 "Authenticating" = "מאמת";
 
 /* Placeholder for the 2FA code textfield. */
-"Authentication code" = "Authentication code";
+"Authentication code" = "קוד אימות";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "נדרש אימות עבור חברת האחסון: ‎%@";
@@ -878,7 +878,7 @@
 "Blog Posts" = "פוסטים";
 
 /* Category description for page templates */
-"Blog pages" = "Blog pages";
+"Blog pages" = "עמודי בלוג";
 
 /* Create new Blog Post button title */
 "Blog post" = "פוסט בבלוג";
@@ -1113,7 +1113,7 @@
 "Choose Posts Page" = "לבחור עמוד פוסטים";
 
 /* Title for the screen to pick a template for a page */
-"Choose a Layout" = "Choose a Layout";
+"Choose a Layout" = "לבחור את הפריסה";
 
 /* Label for Publish date picker */
 "Choose a date" = "לבחור תאריך";
@@ -1424,7 +1424,7 @@
 "Contact Us" = "ליצור עימנו קשר";
 
 /* Category description for page templates */
-"Contact pages" = "Contact pages";
+"Contact pages" = "עמודים ליצירת קשר";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1564,7 +1564,7 @@
 "Create" = "ליצור";
 
 /* Title for button to make a blank page */
-"Create Blank Page" = "Create Blank Page";
+"Create Blank Page" = "ליצור עמוד ריק";
 
 /* Create New header text */
 "Create New" = "ליצור חדש";
@@ -2408,7 +2408,7 @@
 "Follows the blog." = "מעקב אחר הבלוג.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
+"Follows the tag." = "עוקב אחר התגית.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "לנוחותך, מילאנו מראש את הפרטים ליצירת קשר עמך ב-WordPress.com. יש לבדוק את הפרטים ולוודא שהמידע נכון לדומיין שבו ברצונך להשתמש.";
@@ -2467,13 +2467,13 @@ translators: sample content for \"Team\" page template */
 "Get noticed: comment on posts you've read." = "לבלוט בשטח: הוספת תגובה על פוסטים שקראת.";
 
 /* Prompt for the screen to pick a template for a page */
-"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "ניתן להתחיל באמצעות בחירה ממגוון רחב של פריסות עמוד שהוכנו מראש. או פשוט להתחיל מעמוד ריק.";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "אפשר חשיפה רבה יותר לפוסט שלך על ידי שיתוף.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
+"Get your notifications faster" = "לקבל הודעות מהר יותר";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "הפעלת האתר שלך";
@@ -2912,7 +2912,7 @@ translators: sample content for \"Team\" page template */
 "Learn More" = "מידע נוסף";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
+"Learn about new comments, likes, and follows in seconds." = "לקבל מידע על תגובות, לייקים ועוקבים חדשים בשניות.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "מידע נוסף על כלי שיווק ו-SEO בתוכניות שלנו בתשלום.";
@@ -3911,10 +3911,10 @@ translators: sample content for \"Services\" page template */
 "Page scheduled" = "העמוד תוזמן לפרסום";
 
 /* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Page title. %s";
+"Page title. %s" = "כותרת העמוד. %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
+"Page title. Empty" = "כותרת העמוד. ריק";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -3951,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "להדביק את כתובת ה-URL";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
+"Paste block after" = "להדביק את הבלוק אחרי";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "הדבקה בלי העיצוב";
@@ -4058,7 +4058,7 @@ translators: sample content for \"Services\" page template */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "עליך להזין את הסיסמה לחשבון שלך ב-WordPress.com כדי להתחבר עם ה-Apple ID שלך.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "יש להזין את קוד האימות מאפליקציית האימות או להקיש על הקישור מתחת כדי לקבל קוד באמצעות הודעת טקסט (SMS).";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "הזינו את הפרטים";
@@ -4140,7 +4140,7 @@ translators: sample content for \"Services\" page template */
 "Portfolio" = "תיק עבודות";
 
 /* Category description for page templates */
-"Portfolio pages" = "Portfolio pages";
+"Portfolio pages" = "עמודים של תיק עבודות";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "כותרת התפקיד או המשרה";
@@ -5003,7 +5003,7 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "שליחת קישור";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "לשלוח את הקישור באימייל";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "לשלוח הודעה ליומן";
@@ -5032,7 +5032,7 @@ translators: sample content for \"Services\" page template */
 "Services" = "שירותים";
 
 /* Category description for page templates */
-"Services pages" = "Services pages";
+"Services pages" = "עמודי שירותים";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "קבע תמונה ראשית";
@@ -5640,7 +5640,7 @@ translators: sample content for \"Services\" page template */
 "Team" = "צוות";
 
 /* Category description for page templates */
-"Team pages" = "Team pages";
+"Team pages" = "עמודי צוות";
 
 /* Section title of the teams reader section. */
 "Teams" = "צוותים";
@@ -6036,7 +6036,7 @@ translators: sample content for \"Services\" page template */
 "To manage them here, set them to visible." = "כדי לנהל אותם כאן, יש להגדיר אותם כ'גלויים'.";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "כדי להמשיך עם חשבון Apple ID זה, ראשית יש להתחבר עם הסיסמה שלך ב-WordPress.com. נבקש את הנתון הזה פעם אחת בלבד.";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "כדי להמשיך עם חשבון Google, ראשית יש להתחבר עם הסיסמה שלך ב-WordPress.com. נבקש את הנתון הזה פעם אחת בלבד.";
@@ -6377,7 +6377,7 @@ translators: sample content for \"Services\" page template */
 "Updates the bar chart to show visitors." = "הפעולה מעדכנת את תרשים העמודות לתצוגה של מבקרים.";
 
 /* No comment provided by engineer. */
-"Updates the title." = "Updates the title.";
+"Updates the title." = "מעדכן את שם האתר.";
 
 /* Describes a status of a plugin */
 "Updating" = "מעדכן";
@@ -6511,7 +6511,7 @@ translators: sample content for \"Services\" page template */
 "Video caption. %s" = "כיתוב לווידאו. %s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Video caption. Empty";
+"Video caption. Empty" = "כיתוב לווידאו. ריק";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "יצוא הווידאו בוטל.";
@@ -6607,7 +6607,7 @@ translators: sample content for \"Services\" page template */
 "Waiting for Google to complete…" = "ממתין להשלמת הפעולה על ידי Google...";
 
 /* View title during the Google auth process. */
-"Waiting..." = "Waiting...";
+"Waiting..." = "ממתין...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6769,13 +6769,13 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "נשלח לך קישור מיוחד להתחברות מיידית, ללא צורך בסיסמה. לא צריך לחפש או לנחש!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a magic link to create your new WordPress.com account." = "נשלח אליך אימייל עם קישור ישיר כדי ליצור את חשבון חדש ב-WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "אנחנו נודיע לך כאשר יש לך עוקבים, תגובות או לייקים חדשים.";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?";
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "אנחנו נודיע לך כאשר יהיו לך עוקבים, תגובות או לייקים חדשים. האם ברצונך לאפשר הודעות דחיפה?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "אנחנו נפרסם את העמוד כאשר המכשיר שלך יחובר שוב לאינטרנט.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-06 18:54:11+0000 */
+/* Translation-Revision-Date: 2020-08-20 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -330,7 +330,7 @@
 "About WordPress for iOS" = "Informazioni su WordPress per iOS";
 
 /* Category description for page templates */
-"About pages" = "About pages";
+"About pages" = "Pagine di informazioni";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -735,7 +735,7 @@
 "Authenticating" = "Autenticazione in corso";
 
 /* Placeholder for the 2FA code textfield. */
-"Authentication code" = "Authentication code";
+"Authentication code" = "Codice di autenticazione";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "&Egrave; richiesta l'autenticazione per l'host: %@";
@@ -878,7 +878,7 @@
 "Blog Posts" = "Articoli del blog";
 
 /* Category description for page templates */
-"Blog pages" = "Blog pages";
+"Blog pages" = "Pagine del blog";
 
 /* Create new Blog Post button title */
 "Blog post" = "Articolo del blog";
@@ -1113,7 +1113,7 @@
 "Choose Posts Page" = "Scegli la pagina degli articoli";
 
 /* Title for the screen to pick a template for a page */
-"Choose a Layout" = "Choose a Layout";
+"Choose a Layout" = "Scegli un layout";
 
 /* Label for Publish date picker */
 "Choose a date" = "Scegli una data";
@@ -1424,7 +1424,7 @@
 "Contact Us" = "Contattaci";
 
 /* Category description for page templates */
-"Contact pages" = "Contact pages";
+"Contact pages" = "Pagine di contatto";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1564,7 +1564,7 @@
 "Create" = "Crea";
 
 /* Title for button to make a blank page */
-"Create Blank Page" = "Create Blank Page";
+"Create Blank Page" = "Crea pagina vuota";
 
 /* Create New header text */
 "Create New" = "Crea nuovo";
@@ -2408,7 +2408,7 @@
 "Follows the blog." = "Segue il blog.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
+"Follows the tag." = "Segui il tag.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Per agevolarti, abbiamo precompilato le tue informazioni di contatto di WordPress.com. Rileggi per verificare che le informazioni che desideri utilizzare per questo dominio siano corrette.";
@@ -2467,13 +2467,13 @@ translators: sample content for \"Team\" page template */
 "Get noticed: comment on posts you've read." = "Fatti notare: commenta gli articoli che hai letto.";
 
 /* Prompt for the screen to pick a template for a page */
-"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Inizia scegliendo tra un'ampia varietà di layout di pagina già pronti. Altrimenti, inizia semplicemente con una pagina bianca.";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Inizia subito e aumenta le visualizzazioni sui tuoi articoli tramite la condivisione.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
+"Get your notifications faster" = "Ricevi le tue notifiche più rapidamente";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Configura il sito ed eseguilo";
@@ -2912,7 +2912,7 @@ translators: sample content for \"Team\" page template */
 "Learn More" = "Maggiori informazioni";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
+"Learn about new comments, likes, and follows in seconds." = "Scopri di più sui nuovi commenti, sui Mi piace e su chi ti segue in pochi secondi.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Scopri di più sugli strumenti di marketing e SEO nei nostri piani a pagamento.";
@@ -3911,10 +3911,10 @@ translators: sample content for \"Services\" page template */
 "Page scheduled" = "Pagina programmata";
 
 /* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Page title. %s";
+"Page title. %s" = "Titolo della pagina. %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
+"Page title. Empty" = "Titolo della pagina. Svuota";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -3951,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "Incolla URL";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
+"Paste block after" = "Incolla blocco dopo";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Incolla senza formattazione";
@@ -4058,7 +4058,7 @@ translators: sample content for \"Services\" page template */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Digita la password del tuo account WordPress.com per accedere con il tuo Apple ID.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Inserisci il codice di verifica dalla tua app Authenticator o tocca il link di seguito per ricevere un codice via SMS.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Si prega di inserire i dati di accesso";
@@ -4140,7 +4140,7 @@ translators: sample content for \"Services\" page template */
 "Portfolio" = "Portfolio";
 
 /* Category description for page templates */
-"Portfolio pages" = "Portfolio pages";
+"Portfolio pages" = "Pagine del portfolio";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Posizione o titolo professionale";
@@ -5003,7 +5003,7 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "Invia link";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "Invia link tramite e-mail";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Invia messaggio del registro";
@@ -5032,7 +5032,7 @@ translators: sample content for \"Services\" page template */
 "Services" = "Servizi";
 
 /* Category description for page templates */
-"Services pages" = "Services pages";
+"Services pages" = "Pagine dei servizi";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Imposta immagine in evidenza";
@@ -5640,7 +5640,7 @@ translators: sample content for \"Services\" page template */
 "Team" = "Team";
 
 /* Category description for page templates */
-"Team pages" = "Team pages";
+"Team pages" = "Pagine del team";
 
 /* Section title of the teams reader section. */
 "Teams" = "Team";
@@ -6036,7 +6036,7 @@ translators: sample content for \"Services\" page template */
 "To manage them here, set them to visible." = "Per amministrarli, impostali visibili.";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Per procedere con questo ID Apple, accedi prima con la tua password di WordPress.com. Sarà chiesta una volta sola.";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Per procedere con questo account Google, accedi prima con la tua password di WordPress.com. Sarà chiesta una volta sola.";
@@ -6377,7 +6377,7 @@ translators: sample content for \"Services\" page template */
 "Updates the bar chart to show visitors." = "Aggiorna il grafico a barre che mostra i visitatori.";
 
 /* No comment provided by engineer. */
-"Updates the title." = "Updates the title.";
+"Updates the title." = "Aggiorna il titolo.";
 
 /* Describes a status of a plugin */
 "Updating" = "Aggiornamento in corso";
@@ -6511,7 +6511,7 @@ translators: sample content for \"Services\" page template */
 "Video caption. %s" = "Didascalia del video. %s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Video caption. Empty";
+"Video caption. Empty" = "Didascalia del video. Svuota";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Esportazione del video annullata.";
@@ -6607,7 +6607,7 @@ translators: sample content for \"Services\" page template */
 "Waiting for Google to complete…" = "In attesa di Google per il completamento…";
 
 /* View title during the Google auth process. */
-"Waiting..." = "Waiting...";
+"Waiting..." = "In attesa...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6769,13 +6769,13 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Ti invieremo per email un link per accedere subito, senza password. Non ci sarà più bisogno di digitare la password!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a magic link to create your new WordPress.com account." = "Ti invieremo un link per e-mail per creare il tuo nuovo account WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Ti invieremo delle notifiche quando riceverai follower, commenti e like.";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?";
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Ti invieremo delle notifiche quando riceverai nuovi follower, commenti e Mi piace. Desideri consentire le notifiche push?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "Pubblicheremo la pagina quando il dispositivo sarà di nuovo online.";

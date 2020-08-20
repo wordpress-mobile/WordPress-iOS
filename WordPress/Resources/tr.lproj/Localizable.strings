@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-02 12:51:31+0000 */
+/* Translation-Revision-Date: 2020-08-20 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -330,7 +330,7 @@
 "About WordPress for iOS" = "iOS için WordPress hakkında";
 
 /* Category description for page templates */
-"About pages" = "About pages";
+"About pages" = "Hakkında sayfaları";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -735,7 +735,7 @@
 "Authenticating" = "Doğrulanıyor";
 
 /* Placeholder for the 2FA code textfield. */
-"Authentication code" = "Authentication code";
+"Authentication code" = "Kimlik doğrulama kodu";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Şu adres için doğrulama gerekli: %@";
@@ -878,7 +878,7 @@
 "Blog Posts" = "Blog yazıları";
 
 /* Category description for page templates */
-"Blog pages" = "Blog pages";
+"Blog pages" = "Blog sayfaları";
 
 /* Create new Blog Post button title */
 "Blog post" = "Blog yazısı";
@@ -1113,7 +1113,7 @@
 "Choose Posts Page" = "Yazılar Sayfasını Seç";
 
 /* Title for the screen to pick a template for a page */
-"Choose a Layout" = "Choose a Layout";
+"Choose a Layout" = "Bir Düzen Seç";
 
 /* Label for Publish date picker */
 "Choose a date" = "Tarih seçin";
@@ -1424,7 +1424,7 @@
 "Contact Us" = "Bize ulaşın";
 
 /* Category description for page templates */
-"Contact pages" = "Contact pages";
+"Contact pages" = "İletişim sayfaları";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1564,7 +1564,7 @@
 "Create" = "Oluştur";
 
 /* Title for button to make a blank page */
-"Create Blank Page" = "Create Blank Page";
+"Create Blank Page" = "Boş Sayfa Oluştur";
 
 /* Create New header text */
 "Create New" = "Yeni oluştur";
@@ -2408,7 +2408,7 @@
 "Follows the blog." = "Blogu takip eder.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
+"Follows the tag." = "Etiketi takip eder.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Size kolaylık olması için, WordPress.com iletişim bilgilerinizi önceden doldurduk. Lütfen bu bilgilerin bu alan adında kullanmak istediğiniz doğru bilgiler olduğundan emin olmak için gözden geçirin.";
@@ -2467,13 +2467,13 @@ translators: sample content for \"Team\" page template */
 "Get noticed: comment on posts you've read." = "Farkedilin: okuduğunuz yazılara yorum yapın.";
 
 /* Prompt for the screen to pick a template for a page */
-"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Önceden hazırlanmış çeşitli sayfa düzenleri arasından seçim yaparak başlayın. Veya boş bir sayfayla başlayın.";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
+"Get your notifications faster" = "Bildirimlerinizi daha hızlı alın";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Sitenizi hazır hale getirin";
@@ -2912,7 +2912,7 @@ translators: sample content for \"Team\" page template */
 "Learn More" = "Daha fazla öğren";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
+"Learn about new comments, likes, and follows in seconds." = "Yeni yorumlar, beğeniler ve takipler hakkında bilgileri saniyeler içinde edinin.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Ücretli paketlerimizdeki pazarlama ve SEO araçları hakkında bilgi edinin.";
@@ -3911,10 +3911,10 @@ translators: sample content for \"Services\" page template */
 "Page scheduled" = "Sayfa zamanlandı";
 
 /* translators: accessibility text. %s: text content of the page title. */
-"Page title. %s" = "Page title. %s";
+"Page title. %s" = "Sayfa başlığı. %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
+"Page title. Empty" = "Sayfa başlığı. Boş";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -3951,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "URL yapıştır";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
+"Paste block after" = "Sonrasına bloğu yapıştır";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Biçimlendirmeden yapıştır";
@@ -4058,7 +4058,7 @@ translators: sample content for \"Services\" page template */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Lütfen Apple ID’nizle oturum açmak için WordPress.com hesabınızın parolasını girin.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Lütfen kimlik doğrulayıcı uygulamanızdaki doğrulama kodunu girin veya SMS ile bir kod almak için aşağıdaki bağlantıya dokunun.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Lütfen giriş bilgilerinizi girin";
@@ -4140,7 +4140,7 @@ translators: sample content for \"Services\" page template */
 "Portfolio" = "Portföy";
 
 /* Category description for page templates */
-"Portfolio pages" = "Portfolio pages";
+"Portfolio pages" = "Portföy sayfaları";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Pozisyon veya iş ünvanı";
@@ -5003,7 +5003,7 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "Bağlantı gönder";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "E-posta ile Bağlantı Gönder";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Günlük mesajını gönder";
@@ -5032,7 +5032,7 @@ translators: sample content for \"Services\" page template */
 "Services" = "Hizmetler";
 
 /* Category description for page templates */
-"Services pages" = "Services pages";
+"Services pages" = "Hizmetler sayfası";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Öne çıkarılan görsel ayarla";
@@ -5640,7 +5640,7 @@ translators: sample content for \"Services\" page template */
 "Team" = "Ekip";
 
 /* Category description for page templates */
-"Team pages" = "Team pages";
+"Team pages" = "Ekip sayfaları";
 
 /* Section title of the teams reader section. */
 "Teams" = "Ekipler";
@@ -6036,7 +6036,7 @@ translators: sample content for \"Services\" page template */
 "To manage them here, set them to visible." = "Siteleri buradan yönetebilmek için, görünür olarak ayarlayın.";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Bu Apple Kimliği ile devam etmek için lütfen önce WordPress.com parolanızla giriş yapın. Bu yalnızca bir kez sorulur.";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Bu Google hesabı ile devam etmek için lütfen ilk önce WordPress.com parolanızla giriş yapın. Bu sadece bir kez sorulacak.";
@@ -6377,7 +6377,7 @@ translators: sample content for \"Services\" page template */
 "Updates the bar chart to show visitors." = "Ziyaretçileri göstermek için çubuk grafiği günceller.";
 
 /* No comment provided by engineer. */
-"Updates the title." = "Updates the title.";
+"Updates the title." = "Başlığı günceller.";
 
 /* Describes a status of a plugin */
 "Updating" = "Güncelleniyor";
@@ -6511,7 +6511,7 @@ translators: sample content for \"Services\" page template */
 "Video caption. %s" = "Video yazısı. %s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Video caption. Empty";
+"Video caption. Empty" = "Video yazısı. Boş";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Video dışa aktarımı iptal edildi.";
@@ -6607,7 +6607,7 @@ translators: sample content for \"Services\" page template */
 "Waiting for Google to complete…" = "Tamamlanması için Google bekleniyor…";
 
 /* View title during the Google auth process. */
-"Waiting..." = "Waiting...";
+"Waiting..." = "Bekliyor...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6769,7 +6769,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "E-posta ile size, anında oturum açmanızı sağlayacak ve parola gerektirmeyen sihirli bir bağlantı göndereceğiz. Artık tek tek yazmanız gerekmiyor!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a magic link to create your new WordPress.com account." = "Yeni WordPress.com hesabınızı oluşturmanız için size sihirli bir bağlantı göndereceğiz.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Takipçi, yorum ve beğeni aldığınızda sizi bilgilendireceğiz.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-18 06:08:18+0000 */
+/* Translation-Revision-Date: 2020-08-20 12:42:24+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1684,7 +1684,7 @@
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
-"Date Format" = "تنسيق التاريخ";
+"Date Format" = "صيغة التاريخ";
 
 /* Date and Time */
 "Date and Time" = "التاريخ والوقت";
@@ -2408,7 +2408,7 @@
 "Follows the blog." = "يتابع المدونة.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
+"Follows the tag." = "يتابع الوسم.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "قمنا بتعبئة معلومات جهات الاتصال الخاصة بك مسبقًا على حسابك في WordPress.com من أجل راحتك. يرجى المراجعة للتأكد من صحة المعلومات التي ترغب في استخدامها لهذا النطاق.";
@@ -2467,13 +2467,13 @@ translators: sample content for \"Team\" page template */
 "Get noticed: comment on posts you've read." = "ملاحظة: قم بالتعليق على المقالات التي قرأتها.";
 
 /* Prompt for the screen to pick a template for a page */
-"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "ابدأ بالاختيار من بين مجموعة متنوعة من تخطيطات صفحة معدة مسبقًا. أو ما عليك سوى البدء بصفحة فارغة.";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "ابدأ العمل وقم بزيادة مشاهدات مقالتك عن طريق مشاركة مقالتك.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
+"Get your notifications faster" = "تلقي تنبيهاتك بشكل أسرع";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "جعل موقعك جاهزًا للعمل وقيد التشغيل";
@@ -2912,7 +2912,7 @@ translators: sample content for \"Team\" page template */
 "Learn More" = "تعرف على المزيد";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
+"Learn about new comments, likes, and follows in seconds." = "تعرَّف على التعليقات والإعجابات والمتابعات الجديدة في غضون ثوانٍ.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "معرفة المزيد عن أدوات التسويق وتحسين محركات البحث SEO في خططنا المدفوعة.";
@@ -3519,7 +3519,7 @@ translators: sample content for \"Services\" page template */
 "No application can handle this request. Please install a Web browser." = "لا يتوفر تطبيق لمعالجة هذا الطلب. يرجى تثبيت متصفح ويب.";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "لا تتوافر مواقع ووردبريس.كوم";
+"No available WordPress.com sites" = "لا تتوافر مواقع WordPress.com";
 
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "لا توجد عناوين متاحة مطابقة لبحثك";
@@ -3914,7 +3914,7 @@ translators: sample content for \"Services\" page template */
 "Page title. %s" = "عنوان الصفحة. %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Page title. Empty";
+"Page title. Empty" = "عنوان الصفحة. فارغ";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -3951,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "لصق الرابط";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Paste block after";
+"Paste block after" = "لصق المكوِّن بعد";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "اللصق من دون تنسيق";
@@ -4058,7 +4058,7 @@ translators: sample content for \"Services\" page template */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "يرجى إدخال كلمة المرور لحساب WordPress.com الخاص بك لتسجيل الدخول باستخدام مُعرّف Apple الخاص بك.";
 
 /* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "يُرجى إدخال رمز التحقُّق من تطبيق الموثق الخاص بك، أو اضغط على الرابط أدناه لتلقي كود عبر خدمة الرسائل النصية القصيرة.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "يُرجى إدخال بيانات اعتمادك";
@@ -5003,7 +5003,7 @@ translators: sample content for \"Services\" page template */
 "Send Link" = "إرسال رابط";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "إرسال الرابط عبر البريد الإلكتروني";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "إرسال رسالة السجل";
@@ -5704,7 +5704,7 @@ translators: sample content for \"Services\" page template */
 "The GIF could not be added to the Media Library." = "تتعذر إضافة تنسيق GIF إلى مكتبة الوسائط.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
-"The Google account \"%@\" doesn't match any account on WordPress.com" = "لا يتطابق حساب غوغل \"‎%@\" مع أي حساب موجود على ووردبريس.كوم.";
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "لا يتطابق حساب غوغل \"‎%@\" مع أي حساب موجود على WordPress.com.";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "يبدو أن الاتصال بالإنترنت في وضع دون اتصال.";
@@ -5984,7 +5984,7 @@ translators: sample content for \"Services\" page template */
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
-"Time Format" = "تنسيق الوقت";
+"Time Format" = "صيغة الوقت";
 
 /* Label for the timezone setting
    Title for the time zone selector */
@@ -6036,7 +6036,7 @@ translators: sample content for \"Services\" page template */
 "To manage them here, set them to visible." = "لإدارتها هنا، قم بتعيينها إلى \"مرئية\".";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "لمتابعة استخدام معرِّف Apple هذا، يُرجى تسجيل الدخول أولاً باستخدام كلمة مرورك على WordPress.com. سيُطلب منك هذا مرة واحدة فقط.";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "للاستمرار باستخدام حساب Google هذا، يُرجى تسجيل الدخول أولاً باستخدام كلمة مرور حساب WordPress.com الخاص بك. سيُطلب منك هذا مرة واحدة فقط.";
@@ -6377,7 +6377,7 @@ translators: sample content for \"Services\" page template */
 "Updates the bar chart to show visitors." = "يقوم بتحديث المخطط الشريطي لإظهار الزائرين.";
 
 /* No comment provided by engineer. */
-"Updates the title." = "تحديث العنوان.";
+"Updates the title." = "يقوم بتحديث العنوان.";
 
 /* Describes a status of a plugin */
 "Updating" = "جاري التحديث";
@@ -6769,7 +6769,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "سنرسل إليك رسالة على البريد الإلكتروني تحتوي على ارتباط سحري يمكنك من تسجيل الدخول على الفور، دون الحاجة إلى كلمة مرور. لا توجد حاجة إلى تحديد المزيد أو النقر عليه!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a magic link to create your new WordPress.com account." = "سنرسل إليك رسالة عبر البريد الإلكتروني تتضمن رابطًا سحريًا لإنشاء حسابك الجديد على WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "سنُخطرك عندما تحصل على متابعين وتعليقات وإعجابات.";
