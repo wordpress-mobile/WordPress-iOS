@@ -50,7 +50,7 @@ class WhatIsNewView: UIView {
         return view
     }()
 
-    lazy var announcementsTableView: UITableView = {
+    private lazy var announcementsTableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
         tableView.separatorStyle = .none
