@@ -102,10 +102,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         followScrollView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        ReaderTracker.shared.start(.readerPost)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         stopFollowingScrollView()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        ReaderTracker.shared.stop(.readerPost)
     }
 
     func render(_ post: ReaderPost) {
@@ -143,6 +155,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
     }
 
+    @objc func willEnterForeground() {
+        guard isViewOnScreen() else {
+            return
+        }
+
+        ReaderTracker.shared.start(.readerPost)
+    }
+
     /// Show a given title
     ///
     /// - Parameter title: a optional String containing the title
@@ -167,6 +187,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     deinit {
         scrollObserver?.invalidate()
+        NotificationCenter.default.removeObserver(self)
     }
 
     /// Apply view styles
@@ -265,6 +286,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     ///
     private func configureNoResultsViewController() {
         noResultsViewController.delegate = self
+    }
+
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     /// Ask the coordinator to present the share sheet
