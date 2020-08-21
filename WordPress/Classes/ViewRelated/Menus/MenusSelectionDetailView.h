@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) id <MenusSelectionDetailViewDelegate> delegate;
 
-
 /**
  Updates the design indicating the detailView is active, selected, or enabled.
  */
