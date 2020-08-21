@@ -47,7 +47,7 @@ class ReaderTracker: NSObject {
         }
 
         let timeSince = now().timeIntervalSince(startTime)
-        
+
         totalTimeInSeconds[section] = (totalTimeInSeconds[section] ?? 0) + round(timeSince)
         self.startTime.removeValue(forKey: section)
     }
