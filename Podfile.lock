@@ -506,7 +506,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.23.0-beta)
-  - WordPressKit (from `https://github.com/momo-ozawa/WordPressKit-iOS.git`, branch `issue/posts-api-subscribe`)
+  - WordPressKit (~> 4.15.0-beta.2)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (from `https://github.com/momo-ozawa/WordPress-iOS-Shared.git`, branch `issue/add-toggle-follow-conversation`)
   - WordPressUI (~> 1.7.1)
@@ -556,6 +556,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressUI
     - WPMediaPicker
@@ -655,9 +656,6 @@ EXTERNAL SOURCES:
     :commit: bd76109049d2eeead78478d20d66ffd7b1567dd3
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressKit:
-    :branch: issue/posts-api-subscribe
-    :git: https://github.com/momo-ozawa/WordPressKit-iOS.git
   WordPressShared:
     :branch: issue/add-toggle-follow-conversation
     :git: https://github.com/momo-ozawa/WordPress-iOS-Shared.git
@@ -679,9 +677,6 @@ CHECKOUT OPTIONS:
     :commit: bd76109049d2eeead78478d20d66ffd7b1567dd3
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  WordPressKit:
-    :commit: a738875aea79d865711acecd2ea0f53cec15cfe6
-    :git: https://github.com/momo-ozawa/WordPressKit-iOS.git
   WordPressShared:
     :commit: 791871efe093e523a293121b9643af403f6c8952
     :git: https://github.com/momo-ozawa/WordPress-iOS-Shared.git
@@ -782,6 +777,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 2a67196fcbb388b81c62cd5870a93a96913eff1d
+PODFILE CHECKSUM: 22418541e57437e3248d9e3bb2248316e1158e7b
 
 COCOAPODS: 1.8.4
