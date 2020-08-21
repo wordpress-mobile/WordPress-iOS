@@ -22,6 +22,7 @@ class ReaderTracker: NSObject {
         self.now = now
     }
 
+    /// Returns a dictionary with a key and the time spent in that section
     @objc func data() -> [String: Double] {
         return Section.allCases.reduce([String: Double]()) { dict, section in
             var dict = dict
