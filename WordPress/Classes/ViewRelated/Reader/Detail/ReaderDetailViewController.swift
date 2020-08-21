@@ -93,6 +93,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureScrollView()
         configureNoResultsViewController()
         observeWebViewHeight()
+        configureNotifications()
         coordinator?.start()
     }
 
