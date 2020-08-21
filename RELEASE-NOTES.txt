@@ -3,6 +3,10 @@
 * [***] Block Editor: Fixed empty text fields on RTL layout. Now they are selectable and placeholders are visible.
 * [**] Block Editor: Add settings to allow changing column widths
 * [**] Block Editor: Media editing support in Gallery block.
+* [**] Updated UI when logging in with a Site Address.
+* [**] Updated UI when logging in/signing up with Apple.
+* [**] Updated UI when logging in/signing up with Google.
+* [**] Simplified Google authentication. If signup is attempted with an existing WordPress account, automatically redirects to login. If login is attempted without a matching WordPress account, automatically redirects to signup.
 * [*] Block Editor: Improved logic for creating undo levels.
 * [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
 

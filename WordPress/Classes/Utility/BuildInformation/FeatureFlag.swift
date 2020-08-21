@@ -32,13 +32,13 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedSiteAddress:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedGoogle:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedApple:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedSignup:
             return false
         case .unifiedLoginLink:
