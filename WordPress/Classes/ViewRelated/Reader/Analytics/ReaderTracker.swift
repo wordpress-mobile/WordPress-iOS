@@ -14,11 +14,11 @@ class ReaderTracker: NSObject {
         case readerPost = "time_in_reader_post"
     }
 
-    private var now: () -> UInt64
-    private var startTime: [Section: UInt64] = [:]
+    private var now: () -> Date
+    private var startTime: [Section: Date] = [:]
     private var totalTimeInSeconds: [Section: TimeInterval] = [:]
 
-    init(now: @escaping () -> UInt64 = { return DispatchTime.now().uptimeNanoseconds }) {
+    init(now: @escaping () -> Date = { return Date() }) {
         self.now = now
     }
 
@@ -46,8 +46,9 @@ class ReaderTracker: NSObject {
             return
         }
 
-        let nanoTime = now() - startTime
-        totalTimeInSeconds[section] = (totalTimeInSeconds[section] ?? 0) + round(Double(nanoTime) / 1_000_000_000)
+        let timeSince = now().timeIntervalSince(startTime)
+        
+        totalTimeInSeconds[section] = (totalTimeInSeconds[section] ?? 0) + round(timeSince)
         self.startTime.removeValue(forKey: section)
     }
 
