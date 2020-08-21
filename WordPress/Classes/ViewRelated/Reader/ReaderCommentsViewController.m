@@ -571,15 +571,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)canFollowConversation
 {
-    // FIXME: Older a8c internal P2s do not contain the isWPForTeams flag.
-    // In case we can't find a flag that marks an old P2 site as being a P2,
-    // we can assume that blogs in the Reader's Automattic tab are P2s.
-    // Note that blogs in the Reader's Automattic tab are only available to Automatticians.
-    Blog *blog = self.post.blog;
-    if (blog) {
-        return blog.isWPForTeams;
-    }
-    return NO;
+    return [self.followCommentsService canFollowConversation];
 }
 
 - (BOOL)shouldDisplayReplyTextView
