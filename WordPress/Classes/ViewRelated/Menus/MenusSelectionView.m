@@ -14,7 +14,6 @@
 @property (nonatomic, strong, readonly) NSMutableArray *itemViews;
 @property (nonatomic, strong) MenusSelectionItemView *addNewItemView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
-@property (nonatomic, strong, nullable) MenusSelectionItem *selectedItemLocation;
 
 @end
 
@@ -67,17 +66,11 @@
 
 - (void)setSelectedItem:(MenusSelectionItem *)selectedItem
 {
-    [self setSelectedItem:selectedItem location:nil];
-}
-
-- (void)setSelectedItem:(MenusSelectionItem *)selectedItem location:(MenusSelectionItem *)location
-{
     if (_selectedItem != selectedItem) {
 
         _selectedItem.selected = NO;
         selectedItem.selected = YES;
         _selectedItem = selectedItem;
-        _selectedItemLocation = location;
 
         [self updateDetailsView];
     }

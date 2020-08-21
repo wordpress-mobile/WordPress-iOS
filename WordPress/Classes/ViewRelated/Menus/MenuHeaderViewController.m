@@ -83,7 +83,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 - (void)setSelectedMenu:(Menu *)menu
 {
     MenusSelectionItem *menuItem = [self.menusView selectionItemForObject:menu];
-    [self.menusView setSelectedItem:menuItem location:self.locationsView.selectedItem];
+    [self.menusView setSelectedItem:menuItem];
     [self prepareForVoiceOver];
 }
 
