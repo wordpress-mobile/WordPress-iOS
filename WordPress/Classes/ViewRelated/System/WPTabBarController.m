@@ -566,9 +566,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([Feature enabled:FeatureFlagFloatingCreateButton] && tabIndex > WPTabReader) {
         tabOffset += 1;
     }
-    if ([Feature enabled:FeatureFlagMeMove] && tabIndex > WPTabNewPost) {
-        tabOffset += 1;
-    }
     return tabIndex + (toTabType ? -tabOffset : tabOffset);
 }
 
@@ -873,11 +870,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSUInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
 
     NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
-
-    if (newIndex == WPTabNewPost) {
-        [self showPostTabWithType:Post.typeDefaultIdentifier andEditType:EditPostTypeNormal];
-        return NO;
-    }
 
     // If we're selecting a new tab...
     if (selectedIndex != tabBarController.selectedIndex) {

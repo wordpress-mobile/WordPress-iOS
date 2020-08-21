@@ -1581,6 +1581,7 @@
 		C281495124B1EC620030FCCF /* BVCreatePostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C281495024B1EC620030FCCF /* BVCreatePostCoordinator.swift */; };
 		C2923C8724C1D97100325DC4 /* AddPostCategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */; };
 		C293D1272490672B00251B32 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = C293D1262490672B00251B32 /* acknowledgements.html */; };
+		C29B097524F001D5006EC9B8 /* BVSearchNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29B097424F001D5006EC9B8 /* BVSearchNetworking.swift */; };
 		C2C71B3024D1FBF000CC8C1C /* PostItineraryDateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C71B2F24D1FBF000CC8C1C /* PostItineraryDateViewModel.swift */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -4093,6 +4094,7 @@
 		C2923C8324C1C66C00325DC4 /* WordPress 99.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 99.xcdatamodel"; sourceTree = "<group>"; };
 		C2923C8624C1D97100325DC4 /* AddPostCategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostCategoryButton.swift; sourceTree = "<group>"; };
 		C293D1262490672B00251B32 /* acknowledgements.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html"; sourceTree = "<group>"; };
+		C29B097424F001D5006EC9B8 /* BVSearchNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BVSearchNetworking.swift; sourceTree = "<group>"; };
 		C2C71B2F24D1FBF000CC8C1C /* PostItineraryDateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItineraryDateViewModel.swift; sourceTree = "<group>"; };
 		C4842C47973677FC79B1E746 /* Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-BeauVoyageNotificationServiceExtension/Pods-BeauVoyageNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
@@ -7470,6 +7472,7 @@
 				F1450CF22437DA3E00A28BFE /* MediaRequestAuthenticator.swift */,
 				E11DA4921E03E03F00CF07A8 /* Pinghub.swift */,
 				E1C2260623901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift */,
+				C29B097424F001D5006EC9B8 /* BVSearchNetworking.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -13021,6 +13024,7 @@
 				430D50BE212B7AAE008F15F4 /* NoticeStyle.swift in Sources */,
 				B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */,
 				7E3E7A5720E44D130075D159 /* HeaderContentStyles.swift in Sources */,
+				C29B097524F001D5006EC9B8 /* BVSearchNetworking.swift in Sources */,
 				9A38DC69218899FB006A409B /* Revision.swift in Sources */,
 				403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */,
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
@@ -14202,7 +14206,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.0.9;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14270,7 +14274,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.0.9;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
@@ -14721,7 +14725,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.0.9;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -14789,7 +14793,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: beauBateau GmbH (C7B8L9KZV4)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.0.9;
 				DEVELOPMENT_TEAM = C7B8L9KZV4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;

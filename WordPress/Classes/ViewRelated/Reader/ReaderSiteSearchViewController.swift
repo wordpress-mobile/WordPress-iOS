@@ -107,20 +107,20 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderSiteSearchService(managedObjectContext: context)
-        service.performSearch(with: query,
-                              page: page,
-                              success: { [weak self] (feeds, hasMore, totalFeeds) in
-                                self?.feeds.append(contentsOf: feeds)
-                                self?.totalFeedCount = totalFeeds
-                                self?.reloadData(hasMoreResults: hasMore)
-                                success?(hasMore)
-            }, failure: { [weak self] error in
-                self?.handleFailedSearch()
-
-                if let error = error as NSError? {
-                    failure?(error)
-                }
-        })
+//        service.performSearch(with: query,
+//                              page: page,
+//                              success: { [weak self] (feeds, hasMore, totalFeeds) in
+//                                self?.feeds.append(contentsOf: feeds)
+//                                self?.totalFeedCount = totalFeeds
+//                                self?.reloadData(hasMoreResults: hasMore)
+//                                success?(hasMore)
+//            }, failure: { [weak self] error in
+//                self?.handleFailedSearch()
+//
+//                if let error = error as NSError? {
+//                    failure?(error)
+//                }
+//        })
     }
 
     private func reloadData(hasMoreResults: Bool = false) {
