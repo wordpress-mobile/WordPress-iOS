@@ -14,9 +14,9 @@ class ReaderTracker: NSObject {
         case readerPost = "time_in_reader_post"
     }
 
-    var now: () -> UInt64
-    var startTime: [Section: UInt64] = [:]
-    var totalTimeInSeconds: [Section: TimeInterval] = [:]
+    private var now: () -> UInt64
+    private var startTime: [Section: UInt64] = [:]
+    private var totalTimeInSeconds: [Section: TimeInterval] = [:]
 
     init(now: @escaping () -> UInt64 = { return DispatchTime.now().uptimeNanoseconds }) {
         self.now = now
