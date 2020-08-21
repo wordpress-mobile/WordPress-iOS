@@ -188,6 +188,12 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     self.disclosureButton.hidden = !showsDisclosure;
 }
 
+- (void)setShowsFollowConversationButton:(BOOL)showsFollowConversationButton
+{
+    _showsFollowConversationButton = showsFollowConversationButton;
+    self.followConversationButton.hidden = !showsFollowConversationButton;
+}
+
 - (UIImage *)avatarImage
 {
     return self.avatarImageView.image;
@@ -228,8 +234,8 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 - (void)followConversationButtonTapped
 {
-    if (self.onFollowingConversationClick) {
-        self.onFollowingConversationClick();
+    if (self.onFollowConverationClick) {
+        self.onFollowConverationClick();
     }
 }
 

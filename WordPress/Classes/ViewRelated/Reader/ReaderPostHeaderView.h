@@ -14,12 +14,17 @@ typedef void (^ReaderPostHeaderCallback)(void);
  A ReaderPostHeaderFollowingCallback block to be executed whenever the user pressed this view.
  */
 typedef void (^ReaderPostHeaderFollowingCallback)(void);
-@property (nonatomic, copy) ReaderPostHeaderFollowingCallback onFollowingConversationClick;
+@property (nonatomic, copy) ReaderPostHeaderFollowingCallback onFollowConverationClick;
 
 /**
  A BOOL indicating whether if this view should display a disclosure indicator, or not.
  */
 @property (nonatomic, assign) BOOL showsDisclosureIndicator;
+
+/**
+ A BOOL indicating whether if this view should display a follow conversation button, or not.
+ */
+@property (nonatomic, assign) BOOL showsFollowConversationButton;
 
 /**
  A UIImage instance to be displayed as the User's avatar.

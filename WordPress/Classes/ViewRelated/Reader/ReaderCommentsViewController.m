@@ -58,6 +58,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
+@property (nonatomic, strong) FollowCommentsService *followCommentsService;
 
 @end
 
@@ -148,8 +149,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self updateSubscriptionStatus];
 
     [self.keyboardManager startListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -289,8 +288,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
-    headerView.onFollowingConversationClick = ^{
-        [weakSelf handleFollowingConversationButtonTapped];
+    headerView.onFollowConverationClick = ^{
+        [weakSelf handleFollowConversationButtonTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
@@ -535,6 +534,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
+
+    _followCommentsService = [FollowCommentsService createServiceWith:_post];
 }
 
 - (NSNumber *)siteID
@@ -568,6 +569,19 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return self.post.commentsOpen && self.isLoggedIn;
 }
 
+- (BOOL)canFollowConversation
+{
+    // FIXME: Older a8c internal P2s do not contain the isWPForTeams flag.
+    // In case we can't find a flag that marks an old P2 site as being a P2,
+    // we can assume that blogs in the Reader's Automattic tab are P2s.
+    // Note that blogs in the Reader's Automattic tab are only available to Automatticians.
+    Blog *blog = self.post.blog;
+    if (blog) {
+        return blog.isWPForTeams;
+    }
+    return NO;
+}
+
 - (BOOL)shouldDisplayReplyTextView
 {
     return self.canComment;
@@ -581,20 +595,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - View Refresh Helpers
 
-- (void)updateSubscriptionStatus
-{
-    __weak __typeof(self) weakSelf = self;
-    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
-    [service fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
-    } failure:^(NSError *error) {
-        DDLogError(@"Error fetching subscription status for post: %@", error);
-    }];
-}
-
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
+    [self refreshSubscriptionStatusIfNeeded];
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
@@ -625,6 +629,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
+    
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+}
+
+- (void)refreshSubscriptionStatusIfNeeded
+{
+    if (!self.canFollowConversation) {
+        return;
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
 }
 
 - (void)refreshReplyTextView
@@ -1187,7 +1207,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - PostHeaderView helpers
 
-- (void)handleFollowingConversationButtonTapped
+- (void)handleFollowConversationButtonTapped
 {
     __typeof(self) __weak weakSelf = self;
 
@@ -1231,10 +1251,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     // Call the service to toggle the subscription status
-    FollowCommentsService *service = [FollowCommentsService createServiceWith:self.post];
-    [service toggleSubscribed:oldIsSubscribed
-                      success:successBlock
-                      failure:failureBlock];
+    [self.followCommentsService toggleSubscribed:oldIsSubscribed
+                                         success:successBlock
+                                         failure:failureBlock];
 }
 
 - (void)handleHeaderTapped

@@ -12,7 +12,7 @@ class FollowCommentsService: NSObject {
     @objc required init?(post: ReaderPost,
                          remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
         guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
-                return nil
+            return nil
         }
 
         self.post = post
