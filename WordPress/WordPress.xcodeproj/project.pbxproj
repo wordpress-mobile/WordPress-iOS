@@ -6125,6 +6125,7 @@
 				3F3087C324EDB7040087B548 /* AnnouncementCell.swift */,
 				3F8CBE0C24EED2CB00F71234 /* FindOutMoreCell.swift */,
 				3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */,
+				3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6234,11 +6235,10 @@
 		3F662C4824DC9F8300CAEA95 /* What's New */ = {
 			isa = PBXGroup;
 			children = (
-				3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */,
-				3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */,
-				3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */,
+				3F8CBE1224EF958700F71234 /* Dependency container */,
 				3F8CBE0E24EEF40900F71234 /* Model */,
 				3F3087C024EDB6900087B548 /* Views */,
+				3F8CBE1124EF955700F71234 /* ViewModel */,
 			);
 			path = "What's New";
 			sourceTree = "<group>";
@@ -6257,6 +6257,22 @@
 				3F8CBE0F24EEF41800F71234 /* Announcement.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3F8CBE1124EF955700F71234 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3F8CBE1224EF958700F71234 /* Dependency container */ = {
+			isa = PBXGroup;
+			children = (
+				3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */,
+			);
+			path = "Dependency container";
 			sourceTree = "<group>";
 		};
 		3FD83CBD246C74B800381999 /* Migrator */ = {

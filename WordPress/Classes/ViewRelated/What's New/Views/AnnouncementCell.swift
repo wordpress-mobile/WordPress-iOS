@@ -3,13 +3,11 @@ class AnnouncementCell: UITableViewCell {
 
     // MARK: - View elements
     private lazy var headingLabel: UILabel = {
-        let label = makeLabel(font: Appearance.headingFont)
-        return label
+        return makeLabel(font: Appearance.headingFont)
     }()
 
     private lazy var subHeadingLabel: UILabel = {
-        let label = makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
-        return label
+        return makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
     }()
 
     private lazy var descriptionStackView: UIStackView = {
@@ -20,8 +18,7 @@ class AnnouncementCell: UITableViewCell {
     }()
 
     private lazy var announcementImageView: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
+        return UIImageView()
     }()
 
     private lazy var mainStackView: UIStackView = {
