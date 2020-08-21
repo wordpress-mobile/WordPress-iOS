@@ -31,6 +31,7 @@ class ReaderTracker: NSObject {
         }
     }
 
+    /// Start counting time spent for a given section
     func start(_ section: Section) {
         guard startTime[section] == nil else {
             return
@@ -39,6 +40,7 @@ class ReaderTracker: NSObject {
         startTime[section] = now()
     }
 
+    /// Stop counting time spent for a given section
     func stop(_ section: Section) {
         guard let startTime = startTime[section] else {
             return
@@ -49,10 +51,12 @@ class ReaderTracker: NSObject {
         self.startTime.removeValue(forKey: section)
     }
 
+    /// Stop counting time for all sections
     @objc func stopAll() {
         Section.allCases.forEach { stop($0) }
     }
 
+    /// Stop counting time for all sections and reset them to zero
     @objc func reset() {
         startTime = [:]
         totalTimeInSeconds = [:]
