@@ -318,6 +318,8 @@ import WordPressFlux
 
         didSetupView = true
 
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
         guard !shouldDisplayNoTopicController else {
             return
         }
@@ -357,6 +359,8 @@ import WordPressFlux
         // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
         let mainContext = ContextManager.sharedInstance().mainContext
         NotificationCenter.default.addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
+
+        ReaderTracker.shared.stop(.filteredList)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -384,6 +388,14 @@ import WordPressFlux
         if didSetupView {
             refreshTableViewHeaderLayout()
         }
+    }
+
+    @objc func willEnterForeground() {
+        guard isViewOnScreen() else {
+            return
+        }
+
+        ReaderTracker.shared.start(.filteredList)
     }
 
 
@@ -1828,7 +1840,7 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 // MARK: - ReaderContentViewController
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
-        isContentFiltered = content.topicType == .tag
+        isContentFiltered = content.topicType == .tag || content.topicType == .site
         hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
@@ -1836,6 +1848,15 @@ extension ReaderStreamViewController: ReaderContentViewController {
             return
         }
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
+        trackFilterTime()
+    }
+
+    func trackFilterTime() {
+        if isContentFiltered {
+            ReaderTracker.shared.start(.filteredList)
+        } else {
+            ReaderTracker.shared.stop(.filteredList)
+        }
     }
 }
 
