@@ -7,7 +7,7 @@ class PageLayoutService {
         if blog.isAccessibleThroughWPCom() {
             fetchWordPressComLayouts(forBlog: blog, completion: completion)
         } else {
-            fetchSharedLayouts(forBlog: blog, completion: completion)
+            fetchSharedLayouts(completion: completion)
         }
     }
 
@@ -19,6 +19,16 @@ class PageLayoutService {
         }
 
         let urlPath = "/wpcom/v2/sites/\(blogId)/block-layouts"
+        fetchLayouts(api, urlPath, completion)
+    }
+
+    private static func fetchSharedLayouts(completion: @escaping CompletionHandler) {
+        let api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+        let urlPath = "/wpcom/v2/common-block-layouts"
+        fetchLayouts(api, urlPath, completion)
+    }
+
+    private static func fetchLayouts(_ api: WordPressComRestApi, _ urlPath: String, _ completion: @escaping CompletionHandler) {
         api.GET(urlPath, parameters: nil, success: { (responseObject, _) in
             guard let result = parseLayouts(fromResponse: responseObject) else {
                 let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Unable to parse response"])
@@ -31,12 +41,8 @@ class PageLayoutService {
         })
     }
 
-    private static func fetchSharedLayouts(forBlog blog: Blog, completion: @escaping CompletionHandler) {
-        // This will be used for self-hosted sites later which are fetched through
-    }
-
-    private static func parseLayouts(fromResponse response: AnyObject) -> GutenbergPageLayouts? {
-        guard let data = try? JSONSerialization.data(withJSONObject: response as Any) else {
+    private static func parseLayouts(fromResponse response: Any) -> GutenbergPageLayouts? {
+        guard let data = try? JSONSerialization.data(withJSONObject: response) else {
             return nil
         }
         return try? JSONDecoder().decode(GutenbergPageLayouts.self, from: data)
