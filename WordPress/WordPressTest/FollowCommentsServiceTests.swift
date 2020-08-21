@@ -21,75 +21,8 @@ class FollowCommentsServiceTests: XCTestCase {
     override func tearDown() {
         context = nil
         ContextManager.overrideSharedInstance(nil)
-
         contextManager = nil
         super.tearDown()
-    }
-
-    // MARK: - Helpers
-
-    func seedReaderListTopic() -> ReaderListTopic {
-        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
-        topic.path = "/list/topic1"
-        topic.title = "topic1"
-        topic.type = ReaderListTopic.TopicType
-
-        do {
-            try context.save()
-        } catch let error as NSError {
-            XCTAssertNil(error, "Error seeding list topic")
-        }
-
-        return topic
-    }
-
-
-    func seedReaderTeamTopic() -> ReaderTeamTopic {
-        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: context) as! ReaderTeamTopic
-         topic.path = "/a8c/topic2"
-         topic.title = "topic2"
-         topic.type = ReaderTeamTopic.TopicType
-
-        do {
-            try context.save()
-        } catch let error as NSError {
-            XCTAssertNil(error, "Error seeding team topic")
-        }
-
-        return topic
-    }
-
-    func seedReaderPostForTopic(_ topic: ReaderAbstractTopic) -> ReaderPost {
-        let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
-        post.siteID = siteID
-        post.postID = postID
-        post.topic = topic
-
-        do {
-            try context.save()
-        } catch let error as NSError {
-            XCTAssertNil(error, "Error seeding post")
-        }
-
-        return post
-    }
-
-    func seedBlog(isWPForTeams: Bool) {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.classNameWithoutNamespaces(), into: context) as! Blog
-        blog.dotComID = siteID
-        blog.xmlrpc = "http://test.blog/xmlrpc.php"
-        blog.url = "http://test.blog/"
-        blog.options = [
-            "is_wpforteams_site": [
-                "value": NSNumber(value: isWPForTeams)
-            ]
-        ]
-
-        do {
-            try context.save()
-        } catch let error as NSError {
-            XCTAssertNil(error, "Error seeding blog")
-        }
     }
 
     // MARK: - Tests
@@ -192,4 +125,70 @@ class FollowCommentsServiceTests: XCTestCase {
             unsubscribeFromPostCalled = true
         }
     }
+
+    // MARK: - Helpers
+
+       func seedReaderListTopic() -> ReaderListTopic {
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
+           topic.path = "/list/topic1"
+           topic.title = "topic1"
+           topic.type = ReaderListTopic.TopicType
+
+           do {
+               try context.save()
+           } catch let error as NSError {
+               XCTAssertNil(error, "Error seeding list topic")
+           }
+
+           return topic
+       }
+
+
+       func seedReaderTeamTopic() -> ReaderTeamTopic {
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: context) as! ReaderTeamTopic
+            topic.path = "/a8c/topic2"
+            topic.title = "topic2"
+            topic.type = ReaderTeamTopic.TopicType
+
+           do {
+               try context.save()
+           } catch let error as NSError {
+               XCTAssertNil(error, "Error seeding team topic")
+           }
+
+           return topic
+       }
+
+       func seedReaderPostForTopic(_ topic: ReaderAbstractTopic) -> ReaderPost {
+           let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+           post.siteID = siteID
+           post.postID = postID
+           post.topic = topic
+
+           do {
+               try context.save()
+           } catch let error as NSError {
+               XCTAssertNil(error, "Error seeding post")
+           }
+
+           return post
+       }
+
+       func seedBlog(isWPForTeams: Bool) {
+           let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.classNameWithoutNamespaces(), into: context) as! Blog
+           blog.dotComID = siteID
+           blog.xmlrpc = "http://test.blog/xmlrpc.php"
+           blog.url = "http://test.blog/"
+           blog.options = [
+               "is_wpforteams_site": [
+                   "value": NSNumber(value: isWPForTeams)
+               ]
+           ]
+
+           do {
+               try context.save()
+           } catch let error as NSError {
+               XCTAssertNil(error, "Error seeding blog")
+           }
+       }
 }
