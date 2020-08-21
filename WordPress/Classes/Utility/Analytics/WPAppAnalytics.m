@@ -184,9 +184,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
         analyticsProperties[WPAppAnalyticsKeyTimeInApp] = @(timeInApp);
         self.applicationOpenedTime = nil;
     }
+
+    [[ReaderTracker shared] stopAll];
+    [analyticsProperties addEntriesFromDictionary: [[ReaderTracker shared] data]];
     
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
     [WPAnalytics endSession];
+    [[ReaderTracker shared] reset];
 }
 
 /**
