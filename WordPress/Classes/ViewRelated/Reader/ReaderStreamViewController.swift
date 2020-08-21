@@ -1852,7 +1852,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
     }
 
     func trackFilterTime() {
-        if isContentFiltered{
+        if isContentFiltered {
             ReaderTracker.shared.start(.filteredList)
         } else {
             ReaderTracker.shared.stop(.filteredList)
