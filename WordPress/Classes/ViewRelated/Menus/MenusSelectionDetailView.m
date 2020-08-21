@@ -11,6 +11,9 @@
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong, readonly) UIStackView *labelsStackView;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong, readonly) UILabel *subTitleLabel;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
 @property (nonatomic, strong, readonly) UIImageView *accessoryView;
 
 @end

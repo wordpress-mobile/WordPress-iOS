@@ -14,9 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) id <MenusSelectionDetailViewDelegate> delegate;
 
-@property (nonatomic, strong, readonly) UILabel *titleLabel;
-@property (nonatomic, strong, readonly) UILabel *subTitleLabel;
-@property (nonatomic, strong, readonly) UIImageView *iconView;
 
 /**
  Updates the design indicating the detailView is active, selected, or enabled.
