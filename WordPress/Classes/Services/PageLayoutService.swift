@@ -5,13 +5,13 @@ class PageLayoutService {
 
     static func layouts(forBlog blog: Blog, completion: @escaping CompletionHandler) {
         if blog.isAccessibleThroughWPCom() {
-            fetchAuthenticatedLayouts(forBlog: blog, completion: completion)
+            fetchWordPressComLayouts(forBlog: blog, completion: completion)
         } else {
             fetchSharedLayouts(forBlog: blog, completion: completion)
         }
     }
 
-    private static func fetchAuthenticatedLayouts(forBlog blog: Blog, completion: @escaping CompletionHandler) {
+    private static func fetchWordPressComLayouts(forBlog blog: Blog, completion: @escaping CompletionHandler) {
         guard let blogId = blog.dotComID as? Int, let api = blog.wordPressComRestApi() else {
             let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
             completion(.failure(error))
