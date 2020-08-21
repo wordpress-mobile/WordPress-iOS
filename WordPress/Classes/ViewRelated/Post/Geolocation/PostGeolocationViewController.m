@@ -164,8 +164,23 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         _geoView = [[PostGeolocationView alloc] initWithFrame:frame];
         _geoView.autoresizingMask = mask;
         _geoView.backgroundColor = [UIColor whiteColor];
+        UILongPressGestureRecognizer * recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+        recognizer.minimumPressDuration = 0.5;
+        recognizer.allowableMovement = 600;
+        [_geoView.mapView addGestureRecognizer:recognizer];
     }
     return _geoView;
+}
+
+- (void)handleGesture:(UIGestureRecognizer *)gesture {
+    CGPoint point = [gesture locationInView: _geoView.mapView];
+    CLLocationCoordinate2D coordinates = [_geoView.mapView convertPoint:point toCoordinateFromView:_geoView.mapView];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinates.latitude longitude:coordinates.longitude];
+    [self.geoView setCoordinate:[[Coordinate alloc] initWithCoordinate:coordinates]];
+    self.post.geolocation = self.geoView.coordinate;
+    [self.locationService getAddressForLocation:location completion:^(CLLocation *location, NSString *address, NSError *error) {
+        self.geoView.address = [NSString stringWithFormat:@"%@]", address];
+    }];
 }
 
 - (void)removeGeolocation

@@ -817,7 +817,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     BlogDetailsRow *journeysRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Journeys", @"Noun. Title. Links to the blog's Journeys screen.")
                                              accessibilityIdentifier:@"Journeys Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypePages]
+                                                    image:[UIImage gridiconOfType:GridiconTypeGlobe]
                                                  callback:^{
         [weakSelf showJourneysFromSource:BlogDetailsNavigationSourceRow];
                                                  }];
@@ -825,7 +825,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Itinerary", @"Noun. Title. Links to the blog's Itinerary screen.")
                                   accessibilityIdentifier:@"Itinerary Row"
-                                                    image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
+                                                    image:[[UIImage gridiconOfType:GridiconTypeCalendar] imageFlippedForRightToLeftLayoutDirection]
                                                  callback:^{
         [weakSelf showItineraryFromSource:BlogDetailsNavigationSourceRow];
                                                  }]];

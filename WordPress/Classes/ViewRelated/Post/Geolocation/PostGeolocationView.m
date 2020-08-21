@@ -8,7 +8,6 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
 @interface PostGeolocationView ()
 
-@property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UILabel *addressLabel;
 @property (nonatomic, strong) PostAnnotation *annotation;
 @property (nonatomic, strong) UIImageView *chevron;

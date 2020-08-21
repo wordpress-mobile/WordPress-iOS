@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "admin-site-alt2.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

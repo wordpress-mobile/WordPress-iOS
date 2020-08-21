@@ -215,7 +215,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _journeyNavigationController = [[UINavigationController alloc] initWithRootViewController:self.journeyViewController];
     _journeyNavigationController.navigationBar.translucent = NO;
 
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-journeys"];
     _journeyNavigationController.tabBarItem.image = mySitesTabBarImage;
     _journeyNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _journeyNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
@@ -236,7 +236,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _itineraryNavigationController = [[UINavigationController alloc] initWithRootViewController:self.itineraryViewController];
     _itineraryNavigationController.navigationBar.translucent = NO;
 
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-itinerary"];
     _itineraryNavigationController.tabBarItem.image = mySitesTabBarImage;
     _itineraryNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _itineraryNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;

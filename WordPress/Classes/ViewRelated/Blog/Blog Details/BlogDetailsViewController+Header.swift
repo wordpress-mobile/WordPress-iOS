@@ -4,11 +4,11 @@ import WordPressFlux
 extension BlogDetailsViewController {
     @objc func configureHeaderView() -> BlogDetailHeaderView {
         let headerView = BlogDetailHeaderView(items: [
-            ActionRow.Item(image: .gridicon(.statsAlt), title: NSLocalizedString("Journeys", comment: "Links to Journeys screen")) { [weak self] in
+            ActionRow.Item(image: .gridicon(.globe), title: NSLocalizedString("Journeys", comment: "Links to Journeys screen")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showJourneys(from: .button)
             },
-            ActionRow.Item(image: .gridicon(.pages), title: NSLocalizedString("Itinerary", comment: "Links to Itinerary screen.")) { [weak self] in
+            ActionRow.Item(image: .gridicon(.calendar), title: NSLocalizedString("Itinerary", comment: "Links to Itinerary screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showItinerary(from: .button)
             },

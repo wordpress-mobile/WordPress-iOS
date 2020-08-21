@@ -252,5 +252,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key></key>
+	<string></string>
 </dict>
 </plist>
