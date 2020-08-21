@@ -949,7 +949,10 @@ array are marked as being unfollowed in Core Data.
          NSMutableArray *remoteFeedIds = [NSMutableArray array];
 
          for (RemoteReaderSiteInfo *siteInfo in sites) {
-             [remoteFeedIds addObject:siteInfo.feedID];
+             if (siteInfo.feedID) {
+                 [remoteFeedIds addObject:siteInfo.feedID];
+             }
+
              [self siteTopicForRemoteSiteInfo:siteInfo];
          }
 
