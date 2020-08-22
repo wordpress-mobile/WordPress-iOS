@@ -1,9 +1,1 @@
-Temos muito o que falar sobre o editor de blocos nesta atualização:
-
-Agora temos um bloco de links sociais! Você pode adicionar para os seus seguidores direcionando-os para seus perfis de mídia social a partir de suas páginas ou posts. Você pode adicionar apenas uma de suas contas ou quantas você tiver. Sem problema!
-
-O bloco Mídia e Texto agora possui melhores funções de edição. Você pode selecionar a mídia no bloco ou alterar o ponto focal.
-
-O placeholder do bloco de capa agora tem cores de fundo diferentes para fazer suas imagens aparecerem!
-
-Estivemos ocupados consertando coisas e criando. O problema do editor de página não carregando na página "Meu site" nas versões 12.4 do iOS foi resolvido.
+Novidades! Nomes de usuários com @menções são auto-completados no editor de blocos em sites no WordPress.com e Jetpack. Digite @ para ver uma janela com os nomes de usuários para selecionar. Nesta versão, adicionamos suporte a edição de mídias no bloco Cobertura e corrigimos um erro no bloco Título que exibia uma sombra no modo escuro. Para finalizar, o cabeçalho do site tem uma aparência moderna no Leitor do WordPress.com.
