@@ -64,9 +64,13 @@ class FollowCommentsService: NSObject {
                                 failure: @escaping (Error?) -> Void) {
         let successBlock = {
             let newIsSubscribed = !isSubscribed
-            let followAction: WPAppAnalytics.FollowAction = newIsSubscribed ? .followed : .unfollowed
-            let properties = WPAppAnalytics.properties(for: self.post, followAction: followAction)
-            WPAnalytics.track(.readerToggleFollowConversation, withProperties: properties)
+            let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
+
+            var properties = [String: Any]()
+            properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
+            properties[WPAppAnalyticsKeyBlogID] = self.siteID
+            WPAnalytics.track(.readerToggleFollowConversation, properties: properties)
+
             success()
         }
 
@@ -81,6 +85,11 @@ class FollowCommentsService: NSObject {
                                    success: successBlock,
                                    failure: failure)
         }
+    }
+
+    private enum FollowAction: String {
+        case followed
+        case unfollowed
     }
 }
 

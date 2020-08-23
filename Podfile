@@ -10,9 +10,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    #pod 'WordPressShared', '~> 1.11-beta'
+    pod 'WordPressShared', '~> 1.11-beta'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    pod 'WordPressShared', :git => 'https://github.com/momo-ozawa/WordPress-iOS-Shared.git', :branch => 'issue/add-toggle-follow-conversation'
+    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
     #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end

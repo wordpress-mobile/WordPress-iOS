@@ -1459,9 +1459,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderTagUnfollowed:
             eventName = @"reader_reader_tag_unfollowed";
             break;
-        case WPAnalyticsStatReaderToggleFollowConversation:
-            eventName = @"reader_toggle_follow_conversation";
-            break;
         case WPAnalyticsStatSelectedInstallJetpack:
             eventName = @"install_jetpack_selected";
             break;
