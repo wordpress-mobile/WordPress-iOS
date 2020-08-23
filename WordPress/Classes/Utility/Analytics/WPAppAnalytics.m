@@ -22,6 +22,7 @@ NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_s
 NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
+NSString * const WPAppAnalyticsKeyFollowAction                      = @"follow_action";
 NSString * const WPAppAnalyticsKeySource                            = @"source";
 NSString * const WPAppAnalyticsKeyPostType                          = @"post_type";
 

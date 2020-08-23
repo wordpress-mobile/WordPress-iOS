@@ -62,17 +62,34 @@ class FollowCommentsService: NSObject {
     @objc func toggleSubscribed(_ isSubscribed: Bool,
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error?) -> Void) {
+        let successBlock = {
+            let newIsSubscribed = !isSubscribed
+            let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
+
+            var properties = [String: Any]()
+            properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
+            properties[WPAppAnalyticsKeyBlogID] = self.siteID
+            WPAnalytics.track(.readerToggleFollowConversation, properties: properties)
+
+            success()
+        }
+
         if isSubscribed {
             remote.unsubscribeFromPost(with: postID,
                                        for: siteID,
-                                       success: success,
+                                       success: successBlock,
                                        failure: failure)
         } else {
             remote.subscribeToPost(with: postID,
                                    for: siteID,
-                                   success: success,
+                                   success: successBlock,
                                    failure: failure)
         }
+    }
+
+    private enum FollowAction: String {
+        case followed
+        case unfollowed
     }
 }
 
