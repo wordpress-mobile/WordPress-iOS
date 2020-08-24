@@ -57,6 +57,7 @@ class WhatIsNewView: UIView {
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.showsVerticalScrollIndicator = false
         tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
     }()
@@ -179,7 +180,7 @@ private extension WhatIsNewView {
 
     enum Appearance {
         // main view
-        static let mainContentInsets = UIEdgeInsets(top: 80, left: 48, bottom: 0, right: 48)
+        static let mainContentInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
 
         // title
         static var headlineFont: UIFont {
@@ -200,7 +201,7 @@ private extension WhatIsNewView {
         static let versionTableviewSpacing: CGFloat = 32
 
         // table view
-        static let headerViewInsets = UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0)
+        static let headerViewInsets = UIEdgeInsets(top: 80, left: 0, bottom: 32, right: 0)
         static let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
 
         // continue button
