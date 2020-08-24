@@ -1,3 +1,6 @@
+15.7
+-----
+ 
 15.6
 -----
 * [***] Block Editor: Fixed empty text fields on RTL layout. Now they are selectable and placeholders are visible.
