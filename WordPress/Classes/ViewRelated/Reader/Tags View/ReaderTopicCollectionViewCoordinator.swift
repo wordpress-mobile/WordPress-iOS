@@ -30,6 +30,12 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     private struct Strings {
         static let collapseButtonTitle: String = NSLocalizedString("Hide", comment: "Title of a button used to collapse a group")
+
+        static let expandButtonAccessbilityHint: String = NSLocalizedString("Tap to see all the tags for this post", comment: "VoiceOver Hint to inform the user what action the expand button performs")
+
+        static let collapseButtonAccessbilityHint: String = NSLocalizedString("Tap to collapse the post tags", comment: "Accessibility hint to inform the user what action the hide button performs")
+
+         static let accessbilityHint: String = NSLocalizedString("Tap to view posts for this tag", comment: "Accessibility hint to inform the user what action the post tag chip performs")
     }
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
@@ -73,6 +79,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     private func configureCollectionView() {
+        collectionView.isAccessibilityElement = false
         collectionView.delegate = self
         collectionView.dataSource = self
 
@@ -121,6 +128,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = title
+        cell.label.accessibilityHint = Strings.accessbilityHint
     }
 
     private func string(for remainingItems: Int?) -> String {
@@ -170,6 +178,8 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
         let title = string(for: remainingItems)
 
         configure(cell: cell, with: title)
+
+        cell.label.accessibilityHint = layout.isExpanded ? Strings.collapseButtonAccessbilityHint : Strings.expandButtonAccessbilityHint
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleExpanded))
         cell.addGestureRecognizer(tapGestureRecognizer)
