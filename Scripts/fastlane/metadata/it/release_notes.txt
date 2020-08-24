@@ -1,9 +1,1 @@
-We have lots to tell you about the Block editor in this update:
-
-We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or post. You can add just one of your accounts, or as many as you have. We don’t mind!
-
-The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
-
-The Cover block placeholder now has different background colors to make your images pop!
-
-We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.
+Novità. Ora è disponibile il completamento automatico del nome utente @citazioni nell'editor a blocchi per i siti WordPress.com e Jetpack. Digita il carattere "@" per visualizzare una finestra di pop-up con i nomi utente ed effettuare la selezione. In questa versione abbiamo aggiunto il supporto per la modifica degli elementi multimediali nel blocco Copertina e abbiamo corretto un bug del blocco Titolo che causava la visualizzazione di un'ombra bianca in Dark Mode in un titolo con un link e una formattazione a stringa. Infine, i titoli dei siti nel Reader di WordPress.com ora hanno un aspetto nuovo e moderno.
