@@ -219,6 +219,9 @@
                                                 <state key="normal" title="Create Page">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="createPage:" destination="6uO-HR-ECX" eventType="touchUpInside" id="qf8-DI-GRX"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
