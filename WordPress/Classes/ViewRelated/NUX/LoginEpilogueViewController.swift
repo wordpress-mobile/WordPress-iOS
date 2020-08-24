@@ -185,8 +185,10 @@ private extension LoginEpilogueViewController {
     func handleConnectAnotherButton() {
         onDismiss?()
 
-        navigationController?.dismiss(animated: true) {
-            NotificationCenter.default.post(name: .addSelfHosted, object: nil)
+        guard let controller = WordPressAuthenticator.signinForWPOrg() else {
+            return
         }
+
+        navigationController?.setViewControllers([controller], animated: true)
     }
 }
