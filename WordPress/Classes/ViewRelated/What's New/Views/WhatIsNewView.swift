@@ -130,7 +130,7 @@ class WhatIsNewView: UIView {
             continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor)
         ])
-        
+
         setupTableViewDataSource()
     }
 
