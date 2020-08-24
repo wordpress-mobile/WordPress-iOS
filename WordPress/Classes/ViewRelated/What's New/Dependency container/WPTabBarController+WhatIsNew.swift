@@ -41,6 +41,18 @@ extension WPTabBarController {
                                         Announcement(heading: "Try write headings that don't go beyond 2 lines",
                                                      subHeading: "If combined with three lines of subheading this is the longest an item should be.",
                                                      image: nil,
+                                                     imageUrl: nil),
+                                        Announcement(heading: "Heading with a single line",
+                                                     subHeading: "Try to write subheadings that run to a max of three lines. See how the icon is centered.",
+                                                     image: nil,
+                                                     imageUrl: nil),
+                                        Announcement(heading: "Heading with a single line",
+                                                     subHeading: "Subheading with only one line.",
+                                                     image: nil,
+                                                     imageUrl: nil),
+                                        Announcement(heading: "Try write headings that don't go beyond 2 lines",
+                                                     subHeading: "If combined with three lines of subheading this is the longest an item should be.",
+                                                     image: nil,
                                                      imageUrl: nil)]
         // TODO - WHATSNEW: to be removed when the real data come in
         static let temporaryAnnouncementsLink = "https://wordpress.com/"

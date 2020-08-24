@@ -50,11 +50,23 @@ class WhatIsNewView: UIView {
         return view
     }()
 
+    private lazy var divider: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .divider
+        return view
+    }()
+
+    private lazy var continueButtonStackView: UIStackView = {
+        let stackView = makeVerticalStackView(arrangedSubviews: [divider, continueButtonView])
+        return stackView
+    }()
+
     private lazy var systemMaterialView: UIVisualEffectView = {
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: Appearance.material))
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
         visualEffectView.contentView.addSubview(continueButton)
-        visualEffectView.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
+        visualEffectView.contentView.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
         return visualEffectView
     }()
 
@@ -83,11 +95,6 @@ class WhatIsNewView: UIView {
         return view
     }()
 
-    private lazy var mainStackView: UIStackView = {
-        let stackView = makeVerticalStackView(arrangedSubviews: [contentView, continueButtonView])
-        return stackView
-    }()
-
     // MARK: - Properties
     private let viewTitles: WhatIsNewViewTitles
     private let dataSource: AnnouncementsDataSource
@@ -101,11 +108,16 @@ class WhatIsNewView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = .basicBackground
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+        addSubview(contentView)
+        addSubview(continueButtonStackView)
+        pinSubviewToAllEdges(contentView)
 
         NSLayoutConstraint.activate([
-            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight)
+            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight),
+            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            continueButtonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            continueButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         setupTableViewDataSource()
     }
@@ -179,7 +191,7 @@ private extension WhatIsNewView {
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static var material: UIBlurEffect.Style {
             if #available(iOS 13.0, *) {
-                return .systemMaterial
+                return .systemChromeMaterial
             } else {
                 return .regular
             }
