@@ -152,6 +152,9 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - git/shallow-checkout
+      - run:
+          name: Fix CocoaPods
+          command: bundle install && bundle exec pod install && git status && git diff > ~/changes.diff && cat ~/changes.diff
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
