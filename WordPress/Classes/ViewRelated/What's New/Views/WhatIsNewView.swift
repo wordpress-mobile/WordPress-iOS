@@ -78,6 +78,7 @@ class WhatIsNewView: UIView {
         tableView.allowsSelection = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.showsVerticalScrollIndicator = false
+        tableView.contentInset = Appearance.tableViewContentInsets
         tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
     }()
@@ -222,10 +223,11 @@ private extension WhatIsNewView {
         // table view
         static let headerViewInsets = UIEdgeInsets(top: 80, left: 0, bottom: 32, right: 0)
         static let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
+        // bottom spacing is button height (48) + vertical button insets ( 2 * 16) + vertical spacing before "Find out more" (32)
+        static let tableViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
 
         // continue button
         static let continueButtonHeight: CGFloat = 48
-        static let continueButtonInset: CGFloat = 16
         static let continueButtonFont = UIFont.systemFont(ofSize: 22, weight: .medium)
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static var material: UIBlurEffect.Style {
