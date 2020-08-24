@@ -120,7 +120,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    private var isUpdating: Bool = false
 
     private func setStaticText() {
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
