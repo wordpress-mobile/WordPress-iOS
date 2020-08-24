@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.35.0
   WordPressAuthenticator:
-    :commit: 2f710f33c5358fa57b9cc22a4768686f51ce8d40
+    :commit: b652da2380fca788a738a8e66628e4e000bdbbb6
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
