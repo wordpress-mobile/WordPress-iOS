@@ -45,9 +45,17 @@ class WhatIsNewView: UIView {
     private lazy var continueButtonView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(continueButton)
-        view.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
+        view.addSubview(systemMaterialView)
+        view.pinSubviewToAllEdges(systemMaterialView)
         return view
+    }()
+
+    private lazy var systemMaterialView: UIVisualEffectView = {
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: Appearance.material))
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        visualEffectView.contentView.addSubview(continueButton)
+        visualEffectView.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
+        return visualEffectView
     }()
 
     private lazy var announcementsTableView: UITableView = {
@@ -169,6 +177,12 @@ private extension WhatIsNewView {
         static let continueButtonInset: CGFloat = 16
         static let continueButtonFont = UIFont.systemFont(ofSize: 22, weight: .medium)
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-
+        static var material: UIBlurEffect.Style {
+            if #available(iOS 13.0, *) {
+                return .systemMaterial
+            } else {
+                return .regular
+            }
+        }
     }
 }
