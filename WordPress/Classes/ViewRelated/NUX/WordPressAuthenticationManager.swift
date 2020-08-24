@@ -76,7 +76,7 @@ class WordPressAuthenticationManager: NSObject {
                                                               errorColor: .error,
                                                               textColor: .text,
                                                               textSubtleColor: .textSubtle,
-                                                              textButtonColor: .brand,
+                                                              textButtonColor: .primary,
                                                               textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
                                                               navBarBackgroundColor: .basicBackground,
