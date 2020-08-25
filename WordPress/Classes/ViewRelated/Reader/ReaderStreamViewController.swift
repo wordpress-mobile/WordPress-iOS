@@ -286,6 +286,8 @@ import WordPressFlux
             topic.inUse = false
             ContextManager.sharedInstance().save(topic.managedObjectContext!)
         }
+
+        NotificationCenter.default.removeObserver(self)
     }
 
 
