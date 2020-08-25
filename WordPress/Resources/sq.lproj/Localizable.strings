@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-16 13:36:16+0000 */
+/* Translation-Revision-Date: 2020-08-18 10:47:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESË";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = "Mbi";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Mbi WordPress për iOS";
+
+/* Category description for page templates */
+"About pages" = "Faqe “Mbi”";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Faqe Për Celular të Përshpejtuara (AMP)";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "Lejo njoftime";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Lejo njoftime <em>push<\/em>";
 
 /* No comment provided by engineer. */
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "Po bëhet mirëfilltësimi";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "Kod mirëfilltësimi";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Lypset mirëfilltësim për strehën: %@";
 
@@ -807,9 +816,6 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Grafik me Shtylla që tregon vizitorët për postimin tuaj më të ri";
 
-/* No comment provided by engineer. */
-"Base" = "Base";
-
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Bëhuni i pari që lë një koment.";
 
@@ -856,18 +862,23 @@
 "Block pasted" = "Blloku u ngjit";
 
 /* translators: displayed right after the block is removed. */
-"Block removed" = "Block removed";
+"Block removed" = "Blloku u hoq";
 
 /* No comment provided by engineer. */
 "Block settings" = "Rregullime blloku";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Postime Blogu";
+
+/* Category description for page templates */
+"Blog pages" = "Faqe blogu";
 
 /* Create new Blog Post button title */
 "Blog post" = "Postim blogu";
@@ -1095,14 +1106,14 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Po kontrollohen blerjet…";
 
-/* No comment provided by engineer. */
-"Child Blocks" = "Child Blocks";
-
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Zgjidhni Faqe";
 
 /* Title for selecting a new home page */
 "Choose Posts Page" = "Zgjidhni Faqe Postimesh";
+
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "Zgjidhni një Skemë";
 
 /* Label for Publish date picker */
 "Choose a date" = "Zgjidhni një datë";
@@ -1129,13 +1140,13 @@
 "Choose from device" = "Zgjidhni nga pajisje";
 
 /* No comment provided by engineer. */
-"Choose image" = "Choose image";
+"Choose image" = "Zgjidhni figurë";
 
 /* No comment provided by engineer. */
-"Choose image or video" = "Choose image or video";
+"Choose image or video" = "Zgjidhni figurë ose video";
 
 /* No comment provided by engineer. */
-"Choose video" = "Choose video";
+"Choose video" = "Zgjidhni video";
 
 /* Reader select interests subtitle label text */
 "Choose your interests" = "Zgjidhni ç’ju intereson";
@@ -1181,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Mbylle";
 
@@ -1395,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Lidhje";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "Kontakt";
+
 /* Support email label. */
 "Contact Email" = "Email Kontaktesh";
 
@@ -1406,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "Lidhuni Me Ne";
+
+/* Category description for page templates */
+"Contact pages" = "Faqe kontaktesh";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1446,12 +1465,6 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
-
-/* No comment provided by engineer. */
-"Convert to blocks" = "Convert to blocks";
-
-/* No comment provided by engineer. */
-"Coordinated Universal Time" = "Coordinated Universal Time";
 
 /* No comment provided by engineer. */
 "Copied block" = "Blloku u kopjua";
@@ -1549,6 +1562,9 @@
 
 /* Accessibility label for create floating action button */
 "Create" = "Krijoje";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "Krijo Faqe të Zbrazët";
 
 /* Create New header text */
 "Create New" = "Krijoni të Ri";
@@ -1735,9 +1751,6 @@
 
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Gabim Fshirje Sajti";
-
-/* No comment provided by engineer. */
-"Delete Site Logo" = "Delete Site Logo";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Fshije këtë etiketë";
@@ -2101,7 +2114,7 @@
 "Enter username" = "Jepni emër përdoruesi";
 
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
-"Enter your account information for %@." = "Enter your account information for %@.";
+"Enter your account information for %@." = "Jepni të dhënat tuaja të llogarisë për %@.";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2332,7 +2345,7 @@
 "Find your site address" = "Gjeni adresën e sajtit tuaj";
 
 /* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Finding blogs and stories you’ll love...";
+"Finding blogs and stories you’ll love..." = "Po gjenden blogje dhe artikuj që do t’i doni…";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Po gjendet vendndodhja juaj…";
@@ -2394,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Ndjek blogun.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "Ndjek etiketën.";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Që ta keni më të lehtë, kemi paraplotësuar të dhëna tuajat kontakti WordPress.com. Ju lutemi, shihini, për të qenë të sigurt se janë të dhënat e sakta që doni të përdoren për këtë përkatësi.";
 
@@ -2450,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dilni në pah: komentoni në postime që keni lexuar.";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Nisjani duke zgjedhur nga një larmi e madhe skemash të parapërgatitura faqesh. Ose thjesht fillojani me një faqe të zbrazët.";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Futjuni punës dhe shtoni parjet e postimit tuaj përmes ndarjes së tij me të tjerët.";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "Merrini më shpejtë njoftimet tuaja";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Krijojeni dhe vëreni në punë sajtin tuaj";
@@ -2691,9 +2713,6 @@ translators: sample content for \"Team\" page template */
 /* Hint for image title on image settings. */
 "Image title" = "Titull figure";
 
-/* No comment provided by engineer. */
-"Image width" = "Image width";
-
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Figurë, %@";
 
@@ -2892,6 +2911,9 @@ translators: sample content for \"Team\" page template */
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Mësoni Më Tepër";
 
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "Mësoni brenda sekondash rreth komentesh, pëlqimesh dhe ndjekjesh të reja.";
+
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Mësoni rreth mjetesh marketingu dhe SEO në planet tona me pagesë.";
 
@@ -3031,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Po ngarkohen Shtojca…";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "Po ngarkohet Postimi…";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Po ngarkohen përkatësi";
@@ -3228,9 +3247,6 @@ translators: sample content for \"Services\" page template */
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Madhësia e kartelë media (%1$@) është shumë e madhe për ngarkim. Maksimumi i lejuar është %2$@";
-
-/* No comment provided by engineer. */
-"Media preview" = "Media preview";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Paraparja e medias dështoi.";
@@ -3805,9 +3821,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Hap Ndarjen Unë";
 
-/* No comment provided by engineer. */
-"Open the block list view." = "Open the block list view.";
-
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Hapeni faqen web page në Safari";
 
@@ -3897,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Faqe e planifikuar për botim";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "Titull faqeje. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "Titull faqeje. I zbrazët";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Faqe";
@@ -3932,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "Ngjitni URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "Ngjite bllokun";
+"Paste block after" = "Ngjite bllokun pas";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Ngjite pa Formatim";
@@ -4038,6 +4057,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Ju lutemi, jepni fjalëkalimin për llogarinë tuaj te WordPress.com që të bëhet hyrja me ID-në tuaj Apple.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Ju lutemi, jepni kodin e verifikimit prej aplikacionit tuaj të mirëfilltësimeve, ose prekni lidhjen më poshtë që të merrni një kod me SMS.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Ju lutemi, jepni kredencialet tuaja";
 
@@ -4112,8 +4134,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Gjuhë popullore";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portofol";
+
+/* Category description for page templates */
+"Portfolio pages" = "Faqe Portofol";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Pozicion ose Emër Vendi Pune";
@@ -4584,10 +4611,10 @@ translators: sample content for \"Services\" page template */
 "Replace Current Block" = "Zëvendëso Bllokun e Tanishëm";
 
 /* No comment provided by engineer. */
-"Replace image or video" = "Replace image or video";
+"Replace image or video" = "Zëvendësoni figurë ose video";
 
 /* No comment provided by engineer. */
-"Replace video" = "Replace video";
+"Replace video" = "Zëvendësoni video";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Përgjigje një komenti.";
@@ -4975,6 +5002,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Dërgoje Lidhjen";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Dërgoje Lidhjen me Email";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Dërgo Mesazh Regjistri";
 
@@ -4982,7 +5012,7 @@ translators: sample content for \"Services\" page template */
 "Send Pingbacks" = "Dërgo Pingback-e";
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
-"Send Test Crash" = "Send Test Crash";
+"Send Test Crash" = "Dërgo Provë Vithisjeje";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Dërgo njoftime me email";
@@ -4996,8 +5026,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Shërbim";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "Shërbime";
+
+/* Category description for page templates */
+"Services pages" = "Faqe shërbimesh";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Vëre Si Figurë të Zgjedhur";
@@ -5096,9 +5131,6 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Shfaqni Postime të Afërta";
 
-/* No comment provided by engineer. */
-"Show a site logo" = "Show a site logo";
-
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Shfaqe fjalëkalimin";
@@ -5193,12 +5225,6 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "Gjuhë Sajti";
 
-/* No comment provided by engineer. */
-"Site Logo" = "Site Logo";
-
-/* No comment provided by engineer. */
-"Site Logo Settings" = "Site Logo Settings";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5206,9 +5232,6 @@ translators: sample content for \"Services\" page template */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Ridrejtim Sajti";
-
-/* No comment provided by engineer. */
-"Site Tagline" = "Motoja e Sajtit";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5409,7 +5432,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Gjendje";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Jini brenda gjërave";
 
 /* This is the cell title. */
@@ -5611,8 +5634,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klasifikim";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "Ekip";
+
+/* Category description for page templates */
+"Team pages" = "Faqe ekipi";
 
 /* Section title of the teams reader section. */
 "Teams" = "Ekipe";
@@ -5638,7 +5666,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "Vetëm Tekst";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Më mirë më dërgoni kod me tekst";
 
 /* Message of alert when theme activation succeeds */
@@ -6006,7 +6035,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "Që t’i administroni këtu, kalojini të dukshëm.";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Që të vazhdohet me këtë Apple ID, ju lutemi, së pari bëni hyrjen me fjalëkalimin tuaj për te WordPress.com. Kjo do t’ju kërkohet vetëm një herë.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Që të vazhdohet me këtë llogari Google, ju lutemi, së pari bëni hyrjen me fjalëkalimin tuaj për te WordPress.com. Kjo do t’ju kërkohet vetëm një herë.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -6037,6 +6069,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "Shkalla e epërme";
+
+/* Topic page title */
+"Topic" = "Temë";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "S’u gjet temë për ID-në:";
@@ -6341,6 +6376,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Përditëson grafikun me vija për t’ua shfaqur vizitorëve.";
 
+/* No comment provided by engineer. */
+"Updates the title." = "Përditëson titullin.";
+
 /* Describes a status of a plugin */
 "Updating" = "Po përditësohet";
 
@@ -6355,9 +6393,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Ngarkoni një ikonë sajti";
-
-/* No comment provided by engineer. */
-"Upload an image, or pick one from your media library, to be your site logo" = "Upload an image, or pick one from your media library, to be your site logo";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -6475,6 +6510,9 @@ translators: sample content for \"Services\" page template */
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Legjendë videoje. %s";
 
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "Legjendë videoje. E zbrazët";
+
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Eksportimi i videos u anulua.";
 
@@ -6567,6 +6605,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Po pritet që të mbarojë punë Google…";
+
+/* View title during the Google auth process. */
+"Waiting..." = "Po pritet…";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6727,8 +6768,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Do t’ju dërgojmë me email një lidhje magjike që do t’ju fusë menjëherë, pa qenë nevoja për fjalëkalim. Mjaft më me shtypje me dy gishta!";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "Do t’ju dërgojmë me email një lidhje magjike për të krijuar llogarinë tuaj të re WordPress.com.";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Do t’ju njoftojmë kur të ketë ndjekës, komente dhe pëlqime të reja.";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Do t’ju njoftojmë për ndjekës të rinj, komente dhe pëlqime. Do të donit të lejohen njoftime <em>push<\/em>?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "Do ta botojmë faqen kur pajisja juaj të jetë sërish në linjë.";
@@ -6795,9 +6842,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Do të dërgojmë përherë email-e të rëndësishëm lidhur me llogarinë tuaj, por mundeni gjithashtu të merrni ca ekstra të dobishme.";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "Do t’ju njoftojmë për ndjekës të rinj, komente dhe pëlqime. Do të donit të lejohen njoftime <em>push<\/em>?";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Do t’ju heqim udhën nëpër hapat bazë të ndërtimit dhe fuqizimit të sajtit tuaj";
@@ -7202,9 +7246,6 @@ translators: sample content for \"Services\" page template */
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
 
-/* No comment provided by engineer. */
-"description" = "description";
-
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "a s’ju kënaq t’i hiqni vizë gjërave në një listë?";
 
@@ -7214,7 +7255,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "p.sh., 44";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "example.com";
 
 /* Noun. Describes a site's follower. */
