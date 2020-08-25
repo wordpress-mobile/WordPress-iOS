@@ -151,6 +151,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private func saveSelectedInterests() {
         startLoading()
+        announceLoadingTopics()
 
         let selectedInterests = dataSource.selectedInterests.map { $0.interest }
 
@@ -194,6 +195,10 @@ class ReaderSelectInterestsViewController: UIViewController {
             self.loadingView.isHidden = true
         }
     }
+
+    private func announceLoadingTopics() {
+        UIAccessibility.post(notification: .screenChanged, argument: self.loadingLabel)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -215,6 +220,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = interest.title
+        cell.label.accessibilityTraits = interest.isSelected ? [.selected, .button] : .button
 
         return cell
     }
