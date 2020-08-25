@@ -10,7 +10,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '1.9.2'
+    pod 'WordPressShared', '~> 1.10'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -37,7 +37,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '4.13.0'
+    pod 'WordPressKit', '~> 4.14'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -143,7 +143,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.33.1'
+    gutenberg :tag => 'v1.34.1'
 
     ## Third party libraries
     ## =====================
@@ -186,10 +186,10 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.21.0'
+    pod 'WordPressAuthenticator', '~> 1.22.0'
     # While in PR
-		# pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'e7f64ab9aa7a32f1ef2d2729bd5ad5398bc2228a'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.0'

@@ -206,9 +206,11 @@ jobs:
           name: Build
           working_directory: Scripts
           command: | 
+            orig_version=`cat ../config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "../config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "../config/Version.internal.xcconfig"
             bundle exec fastlane build_for_translation_review
 
-            VERSION_NAME="all-land-build-${CIRCLE_BUILD_NUM}"
+            VERSION_NAME="all-lang-build-${CIRCLE_BUILD_NUM}"
             echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
 
             mkdir -p ../Artifacts
