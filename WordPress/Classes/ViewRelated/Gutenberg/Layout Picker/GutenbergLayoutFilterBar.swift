@@ -9,6 +9,8 @@ protocol FilterBarDelegate {
 
 class GutenbergLayoutFilterBar: UICollectionView {
     var filterDelegate: FilterBarDelegate?
+    private let defaultCellHeight: CGFloat = 44
+    private let defaultCellWidth: CGFloat = 105
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -45,11 +47,11 @@ extension GutenbergLayoutFilterBar: UICollectionViewDelegate {
 extension GutenbergLayoutFilterBar: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let filter = filterDelegate?.filter(forIndex: indexPath.item) else {
-            return CGSize(width: 105.0, height: 44.0)
+            return CGSize(width: defaultCellWidth, height: defaultCellHeight)
         }
 
         let width = LayoutPickerFilterCollectionViewCell.estimatedWidth(forFilter: filter)
-        return CGSize(width: width, height: 44.0)
+        return CGSize(width: width, height: defaultCellHeight)
      }
 }
 

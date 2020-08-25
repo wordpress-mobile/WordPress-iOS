@@ -2,18 +2,14 @@ import UIKit
 
 class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
-    static var cellReuseIdentifier: String {
-         return "LayoutPickerFilterCollectionViewCell"
-     }
-
-    static var nib: UINib {
-        return UINib(nibName: "LayoutPickerFilterCollectionViewCell", bundle: Bundle.main)
-    }
+    static let cellReuseIdentifier = "LayoutPickerFilterCollectionViewCell"
+    static let nib = UINib(nibName: "LayoutPickerFilterCollectionViewCell", bundle: Bundle.main)
 
     static var font: UIFont {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
+    private static let combinedLeftRightMargin: CGFloat = 32
     static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
         /// The emoji below is used as a placeholder to estimate the size of the title. We don't use the actual emoji provided by the API because this could be nil
         /// and we want to allow space for a checkmark when the cell is selected.
@@ -21,7 +17,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
             NSAttributedString.Key.font: font
         ])
 
-        return size.width + 32
+        return size.width + combinedLeftRightMargin
     }
 
     @IBOutlet weak var filterLabel: UILabel!
