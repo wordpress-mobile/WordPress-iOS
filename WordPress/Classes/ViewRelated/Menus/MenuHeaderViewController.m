@@ -157,7 +157,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     MenusSelectionItem *selectedItem = self.locationsView.selectedItem;
     self.locationsView.accessibilityLabel = [NSString stringWithFormat:format,
                                                         selectedItem.displayName,
-                                                        self.blog.menuLocations.count];//self.locationsView.subTitleLabel.text];
+                                                        self.blog.menuLocations.count];
     self.locationsView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu area", @"Screen reader hint (non-imperative) about what does the site menu area selector button do.");
 }
 
@@ -170,7 +170,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     self.menusView.accessibilityLabel = [NSString stringWithFormat:format,
                                                     selectedLocationItem.displayName,
                                                     selectedItem.displayName,
-                                                    self.blog.menus.count];//self.detailView.subTitleLabel.text];
+                                                    self.blog.menus.count];
     self.menusView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu", @"Screen reader hint (non-imperative) about what does the site menu selector button do.");
 }
 
