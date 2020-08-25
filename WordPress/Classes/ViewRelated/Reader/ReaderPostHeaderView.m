@@ -234,8 +234,8 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 - (void)followConversationButtonTapped
 {
-    if (self.onFollowConverationClick) {
-        self.onFollowConverationClick();
+    if (self.onFollowConversationClick) {
+        self.onFollowConversationClick();
     }
 }
 
