@@ -1,5 +1,6 @@
 15.7
 -----
+* [**] Updated UI when connecting a self-hosted site.
 * [**] You can now follow conversations for P2 sites
 
 15.6
