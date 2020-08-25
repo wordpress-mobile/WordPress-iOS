@@ -197,9 +197,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private func announceLoadingTopics() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            UIAccessibility.post(notification: .screenChanged, argument: self.loadingLabel)
-        }
+        UIAccessibility.post(notification: .screenChanged, argument: self.loadingLabel)
     }
 }
 
