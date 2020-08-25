@@ -42,7 +42,7 @@ class FollowCommentsServiceTests: XCTestCase {
         XCTAssertTrue(canFollowConversation, "Can follow comments on post if the topic is ReaderTeamTopic")
     }
 
-    func testCanFollowConverationIfWPForTeams() {
+    func testCanFollowConversationIfWPForTeams() {
         // Arrange
         let remoteMock = ReaderPostServiceRemoteMock()
         seedBlog(isWPForTeams: true)
