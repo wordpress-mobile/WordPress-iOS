@@ -57,7 +57,7 @@ class FollowCommentsServiceTests: XCTestCase {
         XCTAssertTrue(canFollowConversation, "Can follow comments on post if blog is marked as a  P2 blog")
     }
 
-    func testCannotFollowConveration() {
+    func testCannotFollowConversation() {
         // Arrange
         let remoteMock = ReaderPostServiceRemoteMock()
         seedBlog(isWPForTeams: false)
