@@ -54,9 +54,9 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            updateSelectedStyle()
             checkmark.isHidden = !isSelected
             filterLabel.text = filterTitle
+            updateSelectedStyle()
         }
     }
 
@@ -69,6 +69,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
             checkmark.image = UIImage.gridicon(.checkmark)
         }
         checkmark.tintColor = checkmarkTintColor
+        updateSelectedStyle()
     }
 
     override func prepareForReuse() {
@@ -92,7 +93,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
             let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
             pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
         } else {
-            pillBackgroundView.backgroundColor = isSelected ? .gray(.shade5) : .neutral(.shade5)
+            pillBackgroundView.backgroundColor = isSelected ? .black : .gray(.shade0)
         }
 
         if #available(iOS 13.0, *), traitCollection.userInterfaceStyle == .dark {
