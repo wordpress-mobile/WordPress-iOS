@@ -307,18 +307,6 @@ extension WPStyleGuide {
         button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
         button.imageEdgeInsets = FollowConversationButton.Style.imageEdgeInsets
         button.contentEdgeInsets = FollowConversationButton.Style.contentEdgeInsets
-
-        // Strings
-        let normalText = FollowConversationButton.Text.followConversationStringForDisplay
-        let selectedText = FollowConversationButton.Text.followingConversationStringForDisplay
-
-        button.setTitle(normalText, for: .normal)
-        button.setTitle(selectedText, for: .selected)
-        button.setTitle(selectedText, for: .highlighted)
-
-        // Default accessibility label and hint.
-        button.accessibilityLabel =  button.isSelected ? selectedText : normalText
-        button.accessibilityHint = FollowConversationButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
@@ -603,12 +591,6 @@ extension WPStyleGuide {
         struct Style {
             static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
             static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
-        }
-
-        struct Text {
-            static let accessibilityHint = NSLocalizedString("Follows the comments on a post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.")
-            static let followConversationStringForDisplay =  NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
-            static let followingConversationStringForDisplay = NSLocalizedString("Following conversation", comment: "Verb. Button title. The user is following the comments on a post.")
         }
     }
 }
