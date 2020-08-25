@@ -20,8 +20,13 @@ class PageCoordinator {
         }
         rootView.completion = completion
 
-        // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
-        navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        if #available(iOS 13.0, *) {
+            navigationController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+             navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+
         controller.present(navigationController, animated: true, completion: nil)
     }
 }
