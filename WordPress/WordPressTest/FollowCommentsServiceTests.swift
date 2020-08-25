@@ -27,7 +27,7 @@ class FollowCommentsServiceTests: XCTestCase {
 
     // MARK: - Tests
 
-    func testCanFollowConverationIfReaderTeamTopic() {
+    func testCanFollowConversationIfReaderTeamTopic() {
         // Arrange
         let remoteMock = ReaderPostServiceRemoteMock()
         seedBlog(isWPForTeams: false)
