@@ -38,7 +38,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
-            cache-prefix: ${CACHE_PREFIX}
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Install Dependencies
           command: rake dependencies
@@ -130,7 +130,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
-            cache-prefix: ${CACHE_PREFIX}
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -157,7 +157,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
-            cache-prefix: ${CACHE_PREFIX}
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run: 
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -195,7 +195,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
-            cache-prefix: ${CACHE_PREFIX}
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run: 
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
