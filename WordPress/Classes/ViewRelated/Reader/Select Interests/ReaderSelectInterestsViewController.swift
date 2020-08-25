@@ -215,6 +215,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = interest.title
+        cell.label.accessibilityTraits = interest.isSelected ? [.selected, .button] : .button
 
         return cell
     }

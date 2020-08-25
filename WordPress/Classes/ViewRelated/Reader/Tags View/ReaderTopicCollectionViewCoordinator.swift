@@ -129,6 +129,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         cell.layer.cornerRadius = Constants.cellCornerRadius
         cell.label.text = title
         cell.label.accessibilityHint = Strings.accessbilityHint
+        cell.label.accessibilityTraits = .button
     }
 
     private func string(for remainingItems: Int?) -> String {
