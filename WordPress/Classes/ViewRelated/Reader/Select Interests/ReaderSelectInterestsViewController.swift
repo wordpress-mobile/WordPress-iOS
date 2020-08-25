@@ -151,6 +151,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private func saveSelectedInterests() {
         startLoading()
+        announceLoadingTopics()
 
         let selectedInterests = dataSource.selectedInterests.map { $0.interest }
 
@@ -192,6 +193,12 @@ class ReaderSelectInterestsViewController: UIViewController {
             self.loadingView.alpha = 0
         }) { _ in
             self.loadingView.isHidden = true
+        }
+    }
+
+    private func announceLoadingTopics() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            UIAccessibility.post(notification: .screenChanged, argument: self.loadingLabel)
         }
     }
 }
