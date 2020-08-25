@@ -38,7 +38,7 @@ class FollowCommentsServiceTests: XCTestCase {
         // Act
         let canFollowConversation = followCommentsService.canFollowConversation
 
-        // Asert
+        // Assert
         XCTAssertTrue(canFollowConversation, "Can follow comments on post if the topic is ReaderTeamTopic")
     }
 
@@ -53,7 +53,7 @@ class FollowCommentsServiceTests: XCTestCase {
         // Act
         let canFollowConversation = followCommentsService.canFollowConversation
 
-        // Asert
+        // Assert
         XCTAssertTrue(canFollowConversation, "Can follow comments on post if blog is marked as a  P2 blog")
     }
 
@@ -68,7 +68,7 @@ class FollowCommentsServiceTests: XCTestCase {
         // Act
         let canFollowConversation = followCommentsService.canFollowConversation
 
-        // Asert
+        // Assert
         XCTAssertFalse(canFollowConversation, "Can't follow comments on post if the topic isn't a ReaderTeamTopic and the blog isn't marked as a P2 blog")
     }
 
