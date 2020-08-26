@@ -9,6 +9,7 @@ enum FeatureFlag: Int, CaseIterable {
     case unifiedGoogle
     case unifiedApple
     case unifiedWordPress
+    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -39,6 +40,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedApple:
             return true
         case .unifiedWordPress:
+            return false
+        case .unifiedKeychainLogin:
             return false
         case .meMove:
             return true
@@ -90,6 +93,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth - Apple"
         case .unifiedWordPress:
             return "Unified Auth - WordPress"
+        case .unifiedKeychainLogin:
+            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
