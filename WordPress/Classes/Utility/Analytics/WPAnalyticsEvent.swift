@@ -53,9 +53,9 @@ import Foundation
     case selectInterestsShown
     case selectInterestsPicked
     case readerDiscoverShown
-    case readerSiteShown
+    case readerBlogPreviewed
     case readerDiscoverPaginated
-    case readerCardTapped
+    case readerPostCardTapped
     case readerPullToRefresh
     case readerDiscoverTopicTapped
     case postCardMoreTapped
@@ -146,12 +146,12 @@ import Foundation
             return "select_interests_picked"
         case .readerDiscoverShown:
             return "reader_discover_shown"
-        case .readerSiteShown:
-            return "reader_site_shown"
+        case .readerBlogPreviewed:
+            return "reader_blog_previewed"
         case .readerDiscoverPaginated:
             return "reader_discover_paginated"
-        case .readerCardTapped:
-            return "reader_card_tapped"
+        case .readerPostCardTapped:
+            return "reader_post_card_tapped"
         case .readerPullToRefresh:
             return "reader_pull_to_refresh"
         case .readerDiscoverTopicTapped:

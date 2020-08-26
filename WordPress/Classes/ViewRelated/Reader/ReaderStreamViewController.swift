@@ -1593,7 +1593,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
-            WPAnalytics.track(.readerCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.track(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
