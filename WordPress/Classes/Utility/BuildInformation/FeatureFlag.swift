@@ -10,6 +10,7 @@ enum FeatureFlag: Int, CaseIterable {
     case unifiedApple
     case unifiedSignup
     case unifiedLoginLink
+    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -42,6 +43,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedSignup:
             return false
         case .unifiedLoginLink:
+            return false
+        case .unifiedKeychainLogin:
             return false
         case .meMove:
             return true
@@ -95,6 +98,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth - Sign Up"
         case .unifiedLoginLink:
             return "Unified Auth - Login Magic Link"
+        case .unifiedKeychainLogin:
+            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
