@@ -53,25 +53,34 @@ class WhatIsNewView: UIView {
     private lazy var announcementsTableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.showsVerticalScrollIndicator = false
         tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
     }()
 
-    private lazy var contentStackView: UIStackView = {
-        let stackView = makeVerticalStackView(arrangedSubviews: [titleLabel, versionLabel, announcementsTableView])
+    private lazy var headerStackView: UIStackView = {
+        let stackView = makeVerticalStackView(arrangedSubviews: [titleLabel, versionLabel])
         stackView.setCustomSpacing(Appearance.titleVersionSpacing, after: titleLabel)
-        stackView.setCustomSpacing(Appearance.versionTableviewSpacing, after: versionLabel)
         return stackView
+    }()
+
+    private lazy var headerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerStackView)
+        view.pinSubviewToAllEdges(headerStackView, insets: Appearance.headerViewInsets)
+        return view
     }()
 
     private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentStackView)
-        view.pinSubviewToSafeArea(contentStackView, insets: Appearance.mainContentInsets)
+        view.addSubview(announcementsTableView)
+        view.pinSubviewToSafeArea(announcementsTableView, insets: Appearance.mainContentInsets)
         return view
     }()
 
@@ -95,10 +104,14 @@ class WhatIsNewView: UIView {
         backgroundColor = .basicBackground
         addSubview(mainStackView)
         pinSubviewToAllEdges(mainStackView)
+        announcementsTableView.tableHeaderView = headerView
 
         NSLayoutConstraint.activate([
-            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight)
+            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight),
+            headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor)
         ])
+
+
         setupTableViewDataSource()
     }
 
@@ -136,12 +149,38 @@ private extension WhatIsNewView {
 }
 
 
+// MARK: - Layout
+extension WhatIsNewView {
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustTableHeaderViewLayout()
+    }
+
+    /// Resizes the `tableHeaderView` in `announcementsTableView` as necessary whenever its size changes.
+    private func adjustTableHeaderViewLayout() {
+        guard let headerView = announcementsTableView.tableHeaderView else {
+            return
+        }
+
+        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var headerFrame = headerView.frame
+
+        if height != headerFrame.size.height {
+            headerFrame.size.height = height
+            headerView.frame = headerFrame
+            announcementsTableView.tableHeaderView = headerView
+        }
+    }
+}
+
+
 // MARK: - Appearance
 private extension WhatIsNewView {
 
     enum Appearance {
         // main view
-        static let mainContentInsets = UIEdgeInsets(top: 80, left: 48, bottom: 0, right: 48)
+        static let mainContentInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
 
         // title
         static var headlineFont: UIFont {
@@ -162,6 +201,7 @@ private extension WhatIsNewView {
         static let versionTableviewSpacing: CGFloat = 32
 
         // table view
+        static let headerViewInsets = UIEdgeInsets(top: 80, left: 0, bottom: 32, right: 0)
         static let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
 
         // continue button

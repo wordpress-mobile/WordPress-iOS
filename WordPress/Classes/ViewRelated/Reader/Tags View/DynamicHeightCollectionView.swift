@@ -1,6 +1,6 @@
 import Foundation
 
-class DynamicHeightCollectionView: UICollectionView {
+class DynamicHeightCollectionView: AccessibleCollectionView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
