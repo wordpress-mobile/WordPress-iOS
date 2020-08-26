@@ -55,7 +55,7 @@ import Foundation
     case readerDiscoverShown
     case readerSiteShown
     case readerDiscoverPaginated
-    case readerCardTapped
+    case readerPostCardTapped
     case readerPullToRefresh
     case readerDiscoverTopicTapped
     case postCardMoreTapped
@@ -150,8 +150,8 @@ import Foundation
             return "reader_site_shown"
         case .readerDiscoverPaginated:
             return "reader_discover_paginated"
-        case .readerCardTapped:
-            return "reader_card_tapped"
+        case .readerPostCardTapped:
+            return "reader_post_card_tapped"
         case .readerPullToRefresh:
             return "reader_pull_to_refresh"
         case .readerDiscoverTopicTapped:
