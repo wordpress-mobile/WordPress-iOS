@@ -1,6 +1,6 @@
 15.7
 -----
-* [**] Updated UI when connecting a self-hosted site.
+* [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (https://git.io/JUU6a)
 * [**] You can now follow conversations for P2 sites
 
 15.6
