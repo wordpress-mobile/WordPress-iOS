@@ -162,10 +162,11 @@ class ReaderSelectInterestsViewController: UIViewController {
                 return
             }
 
-            WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
             self?.stopLoading()
             self?.didSaveInterests?()
         }
+
+        WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
     }
 
     // MARK: - Private: UI Helpers
