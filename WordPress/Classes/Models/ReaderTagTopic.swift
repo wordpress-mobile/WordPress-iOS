@@ -29,11 +29,19 @@ import Foundation
         showInMenu = true
     }
 
-    /// Returns an existent ReaderTagTopic or create a new one based on remote interest
-    class func createIfNeeded(from remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) -> ReaderTagTopic {
+    /// Returns an existing ReaderTagTopic or creates a new one based on remote interest
+    /// If an existing topic is returned, the title will be updated with the remote interest
+    class func createOrUpdateIfNeeded(from remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) -> ReaderTagTopic {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.classNameWithoutNamespaces())
         fetchRequest.predicate = NSPredicate(format: "slug = %@", remoteInterest.slug)
         let topics = try? context.fetch(fetchRequest) as? [ReaderTagTopic]
-        return topics?.first ?? ReaderTagTopic(remoteInterest: remoteInterest, context: context)
+
+        guard let topic = topics?.first else {
+            return ReaderTagTopic(remoteInterest: remoteInterest, context: context)
+        }
+
+        topic.title = remoteInterest.title
+
+        return topic
     }
 }

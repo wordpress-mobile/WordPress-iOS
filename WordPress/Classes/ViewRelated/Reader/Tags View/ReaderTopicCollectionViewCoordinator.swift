@@ -180,6 +180,10 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         configure(cell: cell, with: title)
 
+        if layout.isExpanded {
+            cell.label.backgroundColor = .clear
+        }
+
         cell.label.accessibilityHint = layout.isExpanded ? Strings.collapseButtonAccessbilityHint : Strings.expandButtonAccessbilityHint
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleExpanded))

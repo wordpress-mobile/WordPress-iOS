@@ -139,7 +139,7 @@ import WordPressShared
             stat = .readerFreshlyPressedLoaded
 
         } else if isTopicSite(topic) {
-            WPAnalytics.track(.readerSiteShown, properties: properties)
+            WPAnalytics.track(.readerBlogPreviewed, properties: properties)
 
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
