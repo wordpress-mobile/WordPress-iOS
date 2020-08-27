@@ -22,6 +22,7 @@ NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_s
 NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
+NSString * const WPAppAnalyticsKeyFollowAction                      = @"follow_action";
 NSString * const WPAppAnalyticsKeySource                            = @"source";
 NSString * const WPAppAnalyticsKeyPostType                          = @"post_type";
 
@@ -184,9 +185,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
         analyticsProperties[WPAppAnalyticsKeyTimeInApp] = @(timeInApp);
         self.applicationOpenedTime = nil;
     }
+
+    [[ReaderTracker shared] stopAll];
+    [analyticsProperties addEntriesFromDictionary: [[ReaderTracker shared] data]];
     
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
     [WPAnalytics endSession];
+    [[ReaderTracker shared] reset];
 }
 
 /**

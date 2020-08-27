@@ -206,6 +206,9 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override open func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard indexPath.row < layoutAttributes.count else {
+            return nil
+        }
         return layoutAttributes[indexPath.row]
     }
 }
