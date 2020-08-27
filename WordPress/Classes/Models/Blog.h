@@ -192,6 +192,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 #pragma mark - Blog information
 
 - (BOOL)isAtomic;
+- (BOOL)isWPForTeams;
 - (BOOL)isAutomatedTransfer;
 - (BOOL)isPrivate;
 - (BOOL)isPrivateAtWPCom;

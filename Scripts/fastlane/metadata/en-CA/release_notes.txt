@@ -1,9 +1,0 @@
-We have lots to tell you about the Block editor in this update:
-
-We now have a Social Links block! You can add to your followers by directing them to your social media profiles from your pages or post. You can add just one of your accounts, or as many as you have. We don’t mind!
-
-The Media & Text block now has better edit functions. You can select media in the block, or change the focal point.
-
-The Cover block placeholder now has different background colours to make your images pop!
-
-We have been busy fixing things as well as creating. The problem of the page editor not loading from the “My Site” Page on iOS versions 12.4 and below has been solved.
