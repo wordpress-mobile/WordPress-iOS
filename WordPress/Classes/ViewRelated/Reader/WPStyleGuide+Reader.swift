@@ -128,15 +128,9 @@ extension WPStyleGuide {
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Detail.titleTextStyle)
-
-        let lineHeight = font.pointSize + 10.0
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        let font = WPStyleGuide.serifFontForTextStyle(Detail.titleTextStyle, fontWeight: .semibold)
 
         return [
-            .paragraphStyle: paragraphStyle,
             .font: font
         ]
     }
@@ -562,7 +556,7 @@ extension WPStyleGuide {
     }
 
     public struct Detail {
-        public static let titleTextStyle: UIFont.TextStyle = .title1
+        public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
     }
 
