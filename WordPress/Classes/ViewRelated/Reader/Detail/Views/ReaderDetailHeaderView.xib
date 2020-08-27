@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -12,6 +12,33 @@
         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qVA-Br-hgv" customClass="ReaderDetailHeaderView" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
             <subviews>
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cjR-PP-Ed6" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="16" y="66" width="382" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Ub7-B1-GVl"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3A-FY-v8Z" customClass="ReaderSpacerView" customModule="WordPress">
+                    <rect key="frame" x="0.0" y="116" width="414" height="8"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="8" placeholder="YES" id="kRv-rm-oty"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="vvq-7F-Zcz">
+                    <rect key="frame" x="16" y="124" width="382" height="24"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZW-x2-i8F">
+                    <rect key="frame" x="0.0" y="148" width="414" height="4"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="4" id="SyW-fr-iz9"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHc-Ky-UGH">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="66"/>
                     <subviews>
@@ -76,33 +103,6 @@
                         <constraint firstItem="nBe-4U-XT8" firstAttribute="leading" secondItem="kSE-xw-mlu" secondAttribute="trailing" constant="10" id="iQ2-fQ-TJ2"/>
                         <constraint firstItem="LdR-mh-skh" firstAttribute="top" secondItem="KHc-Ky-UGH" secondAttribute="top" constant="32" id="mVJ-rr-XuT"/>
                         <constraint firstItem="nBe-4U-XT8" firstAttribute="top" secondItem="KHc-Ky-UGH" secondAttribute="top" constant="16" id="ryU-tO-9B4"/>
-                    </constraints>
-                </view>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cjR-PP-Ed6" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="16" y="66" width="382" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Ub7-B1-GVl"/>
-                    </constraints>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3A-FY-v8Z" customClass="ReaderSpacerView" customModule="WordPress">
-                    <rect key="frame" x="0.0" y="116" width="414" height="8"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="8" placeholder="YES" id="kRv-rm-oty"/>
-                    </constraints>
-                </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="vvq-7F-Zcz">
-                    <rect key="frame" x="16" y="124" width="382" height="24"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZW-x2-i8F">
-                    <rect key="frame" x="0.0" y="148" width="414" height="4"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="4" id="SyW-fr-iz9"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I9T-CD-tTH">
