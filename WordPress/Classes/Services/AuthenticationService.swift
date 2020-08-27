@@ -5,6 +5,17 @@ class AuthenticationService {
 
     static let wpComLoginEndpoint = "https://wordpress.com/wp-login.php"
 
+    enum RequestAuthCookieError: Error, LocalizedError {
+        case wpcomCookieNotReturned
+
+        public var errorDescription: String? {
+            switch self {
+            case .wpcomCookieNotReturned:
+                return "Response to request for auth cookie for WP.com site failed to return cookie."
+            }
+        }
+    }
+
     // MARK: - Self Hosted
 
     func loadAuthCookiesForSelfHosted(
@@ -84,7 +95,15 @@ class AuthenticationService {
 
                 self.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
                     cookieJar.setCookies(cookies) {
-                        success()
+
+                        cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false) { hasCookie in
+                            guard hasCookie else {
+                                failure(RequestAuthCookieError.wpcomCookieNotReturned)
+                                return
+                            }
+                            success()
+                        }
+
                     }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.
@@ -141,10 +160,13 @@ class AuthenticationService {
         headers.forEach { (key, value) in
             request.setValue(value, forHTTPHeaderField: key)
         }
+        request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
-                failure(error)
+                DispatchQueue.main.async {
+                    failure(error)
+                }
                 return
             }
 
@@ -159,7 +181,9 @@ class AuthenticationService {
             // and compare the session cookies.
             let responseCookies = self.cookies(from: response, loginURL: url)
             let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            success(cookies)
+            DispatchQueue.main.async {
+                success(cookies)
+            }
         }
 
         task.resume()

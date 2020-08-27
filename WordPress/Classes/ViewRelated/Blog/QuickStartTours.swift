@@ -208,11 +208,13 @@ struct QuickStartFollowTour: QuickStartTour {
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
+        let step2: WayPoint = (element: .selectInterests, description: NSAttributedString(string: ""))
+
         let step2DescriptionBase = NSLocalizedString("Select %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step2DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
+        let step3: WayPoint = (element: .readerSearch, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.search)))
 
-        return [step1, step2]
+        return [step1, step2, step3]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of following other sites.", comment: "This value is used to set the accessibility hint text for following the sites of other users.")
@@ -237,12 +239,12 @@ struct QuickStartSiteTitleTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    var waypoints: [WayPoint] = {
+    var waypoints: [WayPoint] {
         let descriptionBase = NSLocalizedString("Select %@ to set a new title.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let placeholder = NSLocalizedString("Site Title", comment: "The item to select during a guided tour.")
         let descriptionTarget = WPTabBarController.sharedInstance()?.currentOrLastBlog()?.title ?? placeholder
         return [(element: .siteTitle, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
-    }()
+    }
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of setting a title for your site.", comment: "This value is used to set the accessibility hint text for setting the site title.")
 }
@@ -356,12 +358,16 @@ private extension String {
 
         let resultString = NSMutableAttributedString(string: normalParts[0], attributes: [.font: Fonts.regular])
 
-        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Constants.highlightColor, .font: Fonts.highlight])
+        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Appearance.highlightColor, .font: Fonts.highlight])
 
         if let icon = icon {
             let iconAttachment = NSTextAttachment()
-            iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
-            iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
+            if #available(iOS 13.0, *) {
+                iconAttachment.image = icon.withTintColor(Appearance.highlightColor)
+            } else {
+                iconAttachment.image = icon.imageWithTintColor(Appearance.highlightColor)
+            }
+            iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Appearance.iconOffset, width: Appearance.iconSize, height: Appearance.iconSize)
             let iconStr = NSAttributedString(attachment: iconAttachment)
 
             switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
@@ -390,9 +396,11 @@ private extension String {
         static let highlight = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     }
 
-    private enum Constants {
+    private enum Appearance {
         static let iconOffset: CGFloat = 1.0
         static let iconSize: CGFloat = 16.0
-        static let highlightColor: UIColor = .white
+        static var highlightColor: UIColor {
+            .invertedLabel
+        }
     }
 }

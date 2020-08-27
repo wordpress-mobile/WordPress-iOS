@@ -178,7 +178,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .selectInterests, .readerSearch]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -198,6 +198,11 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         currentTourState = nextStep
+
+        // Don't show a notice for the step after readerTab
+        if element == .readerTab {
+            return
+        }
 
         showCurrentStep()
     }
@@ -270,8 +275,9 @@ open class QuickStartTourGuide: NSObject {
         QuickStartShareTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
-        QuickStartCheckStatsTour(),
-        QuickStartExplorePlansTour()
+        QuickStartCheckStatsTour()
+// Temporarily disabled
+//        QuickStartExplorePlansTour()
     ]
 }
 

@@ -79,6 +79,13 @@ extension RegisterDomainDetailsViewModel {
                               errorMessage: errorMessage)
     }
 
+    static func transformToLatinASCII(value: String?) -> String? {
+        let toLatinASCII = StringTransform(rawValue: "Latin-ASCII") // See http://userguide.icu-project.org/transforms/general for more options.
+        return value?.applyingTransform(toLatinASCII, reverse: false)
+    }
+
+    // MARK: - Rows
+
     static var contactInformationRows: [RowType] {
         return [
             .inlineEditable(.init(
@@ -88,7 +95,8 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.firstName,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  serverSideRule(with: Localized.ContactInformation.firstName)]
+                                  serverSideRule(with: Localized.ContactInformation.firstName)],
+                valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.lastName,
@@ -97,14 +105,16 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.lastName,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  serverSideRule(with: Localized.ContactInformation.lastName)]
+                                  serverSideRule(with: Localized.ContactInformation.lastName)],
+                valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.organization,
                 jsonKey: "organization",
                 value: nil,
                 placeholder: Localized.ContactInformation.organizationPlaceholder,
-                editingStyle: .inline
+                editingStyle: .inline,
+                valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.email,
@@ -158,7 +168,8 @@ extension RegisterDomainDetailsViewModel {
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
-            validationRules: optional ? [] : [nonEmptyRule, serverSideRule(with: Localized.Address.addressLine)]
+            validationRules: optional ? [serverSideRule(with: Localized.Address.addressLine)] : [nonEmptyRule, serverSideRule(with: Localized.Address.addressLine)],
+            valueSanitizer: transformToLatinASCII
             ))
     }
 
@@ -171,7 +182,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.city,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.city)]
+                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.city)],
+                valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.state,
@@ -179,7 +191,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.statePlaceHolder,
                 editingStyle: .multipleChoice,
-                validationRules: [serverSideRule(with: Localized.Address.state)]
+                validationRules: [serverSideRule(with: Localized.Address.state)],
+                valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.postalCode,
@@ -187,7 +200,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.postalCode,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.postalCode)]
+                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.postalCode)],
+                valueSanitizer: transformToLatinASCII
                 ))
         ]
     }

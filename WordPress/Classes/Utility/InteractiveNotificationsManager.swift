@@ -504,7 +504,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         //  -   Nuke `PushNotificationsManager`
         //
         //
-        PushNotificationsManager.shared.handleNotification(userInfo) { _ in
+        PushNotificationsManager.shared.handleNotification(userInfo, userInteraction: true) { _ in
             completionHandler()
         }
     }

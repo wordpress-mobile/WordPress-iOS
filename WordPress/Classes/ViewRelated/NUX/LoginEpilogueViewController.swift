@@ -30,6 +30,10 @@ class LoginEpilogueViewController: UIViewController {
     ///
     private var tableViewController: LoginEpilogueTableViewController?
 
+    /// Analytics Tracker
+    ///
+    private let tracker = AuthenticatorAnalyticsTracker.shared
+
     /// Closure to be executed upon dismissal.
     ///
     var onDismiss: (() -> Void)?
@@ -173,13 +177,18 @@ private extension LoginEpilogueViewController {
     // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
+        tracker.track(click: .continue)
         onDismiss?()
         navigationController?.dismiss(animated: true)
     }
 
     func handleConnectAnotherButton() {
         onDismiss?()
-        let controller = WordPressAuthenticator.signinForWPOrg()
+
+        guard let controller = WordPressAuthenticator.signinForWPOrg() else {
+            return
+        }
+
         navigationController?.setViewControllers([controller], animated: true)
     }
 }

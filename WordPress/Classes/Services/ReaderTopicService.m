@@ -51,14 +51,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
-        for (RemoteReaderSiteInfo *siteInfo in sites) {
-            [self siteTopicForRemoteSiteInfo:siteInfo];
-        }
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (success) {
-                success();
-            }
-        }];
+        [self mergeFollowedSites:sites withSuccess:success];
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -338,11 +331,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Now do it for realz.
     NSDictionary *properties = @{@"tag":slug};
 
-    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error unfollowing topic: %@", NSStringFromSelector(_cmd), error);
@@ -374,12 +376,21 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+    void (^successBlock)(void) = ^{
         [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
         if (success) {
             success();
         }
+    };
+
+    if (!ReaderHelpers.isLoggedIn) {
+        successBlock();
+        return;
+    }
+
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        successBlock();
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error following topic by name: %@", NSStringFromSelector(_cmd), error);
@@ -926,6 +937,42 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
+Saves the specified `ReaderSiteTopics`. Any `ReaderSiteTopics` not included in the passed
+array are marked as being unfollowed in Core Data.
+
+@param topics An array of `ReaderSiteTopics` to save.
+*/
+- (void)mergeFollowedSites:(NSArray *)sites withSuccess:(void (^)(void))success
+{
+     [self.managedObjectContext performBlock:^{
+         NSArray *currentSiteTopics = [self allSiteTopics];
+         NSMutableArray *remoteFeedIds = [NSMutableArray array];
+
+         for (RemoteReaderSiteInfo *siteInfo in sites) {
+             if (siteInfo.feedID) {
+                 [remoteFeedIds addObject:siteInfo.feedID];
+             }
+
+             [self siteTopicForRemoteSiteInfo:siteInfo];
+         }
+
+         for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
+             // If a site fetched from Core Data isn't included in the list of sites
+             // fetched from remote, that means it's no longer being followed.
+             if (![remoteFeedIds containsObject:siteTopic.feedID]) {
+                 siteTopic.following = NO;
+             }
+         }
+
+         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+             if (success) {
+                 success();
+             }
+         }];
+     }];
+}
+
+/**
  Saves the specified `ReaderAbstractTopics`. Any `ReaderAbstractTopics` not included in the passed
  array are removed from Core Data.
 
@@ -953,6 +1000,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
+                        if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            DDLogInfo(@"Not unfollowing a locally saved topic: %@", topic.title);
+                            continue;
+                        }
+
                         // If the topic is in use just set showInMenu to false
                         // and let it be cleaned up like any other non-menu topic.
                         DDLogInfo(@"Removing topic from menu: %@", topic.title);
@@ -961,6 +1013,22 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         // removing the topic, if it was once followed its not now.
                         topic.following = NO;
                     } else {
+                        // If the user adds a locally saved tag/interest prevent it from being deleted
+                        // while the user is logged out.
+                        if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
+                            ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+
+                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                                DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
+                                continue;
+                            }
+
+                            if (tagTopic.cards) {
+                                DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
+                                continue;
+                            }
+                        }
+
                         DDLogInfo(@"Deleting topic: %@", topic.title);
                         [self preserveSavedPostsFromTopic:topic];
                         [self.managedObjectContext deleteObject:topic];

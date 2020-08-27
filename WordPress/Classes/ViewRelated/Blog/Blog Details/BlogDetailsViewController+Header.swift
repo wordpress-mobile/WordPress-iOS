@@ -36,7 +36,9 @@ extension BlogDetailsViewController {
         controller.onValueChanged = { [weak self] value in
             self?.saveSiteTitleSettings(value)
         }
-
+        controller.onDismiss = { [weak self] in
+            self?.startAlertTimer()
+        }
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)

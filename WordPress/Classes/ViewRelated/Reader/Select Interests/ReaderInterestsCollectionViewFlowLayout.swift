@@ -1,13 +1,26 @@
 import UIKit
 
+protocol ReaderInterestsCollectionViewFlowLayoutDelegate: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath, remainingItems: Int?) -> CGSize
+}
+
 class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    @IBInspectable public var itemSpacing: CGFloat = 6
-    @IBInspectable public var cellHeight: CGFloat = 40
+    weak var delegate: ReaderInterestsCollectionViewFlowLayoutDelegate?
+
+    @IBInspectable var itemSpacing: CGFloat = 6
+    @IBInspectable var cellHeight: CGFloat = 40
+    @IBInspectable var allowsCentering: Bool = true
+
+    // Collapsing/Expanding support
+    static let overflowItemKind = "InterestsOverflowItem"
+    var maxNumberOfDisplayedLines: Int?
+    var isExpanded: Bool = false
+    var remainingItems: Int?
 
     private var layoutAttributes: [UICollectionViewLayoutAttributes] = []
 
     private var isRightToLeft: Bool {
-        let layoutDirection: UIUserInterfaceLayoutDirection  = collectionView?.effectiveUserInterfaceLayoutDirection ?? .leftToRight
+        let layoutDirection: UIUserInterfaceLayoutDirection = collectionView?.effectiveUserInterfaceLayoutDirection ?? .leftToRight
         return layoutDirection == .rightToLeft
     }
 
@@ -29,6 +42,10 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return contentSize
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout: ReaderInterestsCollectionViewFlowLayout, sizeForOverflowItem at: IndexPath) -> CGSize {
+        return .zero
+    }
+
     override func prepare() {
         guard let collectionView = collectionView else {
             return
@@ -44,10 +61,13 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         let numberOfItems: Int = collectionView.numberOfItems(inSection: 0)
 
-        for item in 0 ..< numberOfItems {
-            let indexPath: IndexPath = IndexPath(row: item, section: 0)
+        // If we're expanded we will show the 'hide' option at the end
+        let count = isExpanded ? numberOfItems + 1 : numberOfItems
 
-            let itemSize = sizeForItem(at: indexPath)
+        for item in 0 ..< count {
+            let indexPath: IndexPath = IndexPath(row: item, section: 0)
+            let isCollapseItem = item == numberOfItems
+            let itemSize = isCollapseItem ? sizeForOverflowItem(at: indexPath) : sizeForItem(at: indexPath)
             var frame: CGRect = CGRect(origin: .zero, size: itemSize)
 
             if item == 0 {
@@ -59,15 +79,50 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 // If the new X position will go off screen move it to the next row
                 let needsNewRow = isRightToLeft ? frame.origin.x < 0 : frame.maxX > maxContentWidth
                 if needsNewRow {
+                    // Cap the display to the maximum number of lines, and display the grouped item
+                    // If we're in the expanded state display all the items
+                    if let maxLines = maxNumberOfDisplayedLines, isExpanded == false, Int(currentRow) >= maxLines - 1 {
+                        remainingItems = numberOfItems - item + 1
+
+                        // Remove the last added item and replace it with the expand item
+                        // If there's only 1 token left, don't remove it
+                        if layoutAttributes.count > 1 {
+                            layoutAttributes.removeLast()
+                        }
+
+                        // Get the frame for the item that appears before the item we just removed
+                        let lastFrame = layoutAttributes.last?.frame ?? previousFrame
+                        var overflowFrame = previousFrame
+
+                        overflowFrame.size = sizeForOverflowItem(at: indexPath, remainingItems: remainingItems)
+                        overflowFrame.origin.x = isRightToLeft ? lastFrame.minX - itemSpacing - overflowFrame.width : lastFrame.maxX + itemSpacing
+
+                        let overflowAttribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: Self.overflowItemKind,
+                                                                                 with: indexPath)
+                        overflowAttribute.frame = overflowFrame
+
+                        layoutAttributes.append(overflowAttribute)
+
+                        break
+                    }
+
                     frame.origin.x = isRightToLeft ? (maxContentWidth - frame.width) : 0
                     currentRow += 1
                 }
+
                 frame.origin.y = currentRow * (cellHeight + itemSpacing) + contentInsets.top
+                remainingItems = nil
             }
 
-            let attribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attribute.frame = frame
+            let attribute: UICollectionViewLayoutAttributes
 
+            if isCollapseItem {
+                attribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: Self.overflowItemKind, with: indexPath)
+            } else {
+                attribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            }
+
+            attribute.frame = frame
             layoutAttributes.append(attribute)
 
             previousFrame = frame
@@ -75,7 +130,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         // Update content size
         contentSize.width = maxContentWidth
-        contentSize.height = currentRow * (cellHeight + itemSpacing) + contentInsets.top + contentInsets.bottom
+        contentSize.height = (currentRow + 1) * (cellHeight + itemSpacing) + contentInsets.top + contentInsets.bottom
     }
 
     override func invalidateLayout() {
@@ -100,8 +155,22 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return CGSize(width: size.width, height: cellHeight)
     }
 
+    private func sizeForOverflowItem(at indexPath: IndexPath, remainingItems: Int? = nil) -> CGSize {
+        guard
+            let collectionView = collectionView,
+            let delegate = delegate
+        else {
+            return CGSize(width: itemSize.width, height: cellHeight)
+        }
+
+        let size = delegate.collectionView(collectionView, layout: self, sizeForOverflowItem: indexPath, remainingItems: remainingItems)
+        return CGSize(width: size.width, height: cellHeight)
+    }
+
+
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if collectionView?.traitCollection.horizontalSizeClass == .regular {
+        if allowsCentering,
+            collectionView?.traitCollection.horizontalSizeClass == .regular {
             return centeredLayoutAttributesForElements(in: rect)
         }
 
@@ -137,6 +206,9 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override open func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard indexPath.row < layoutAttributes.count else {
+            return nil
+        }
         return layoutAttributes[indexPath.row]
     }
 }

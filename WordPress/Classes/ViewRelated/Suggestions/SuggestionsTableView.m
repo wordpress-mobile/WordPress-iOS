@@ -4,6 +4,7 @@
 #import "Suggestion.h"
 #import "SuggestionService.h"
 
+CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 CGFloat const STVRowHeight = 44.f;
 CGFloat const STVSeparatorHeight = 1.f;
@@ -16,6 +17,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 @property (nonatomic, strong) NSArray *suggestions;
 @property (nonatomic, strong) NSString *searchText;
 @property (nonatomic, strong) NSMutableArray *searchResults;
+@property (nonatomic, strong) NSLayoutConstraint *headerMinimumHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
 @end
@@ -58,9 +60,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
     } else {
         [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
-        [self.separatorView setBackgroundColor: [UIColor clearColor]];
+        [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
     }
-    
 }
 
 - (void)setupHeaderView
@@ -123,6 +124,16 @@ CGFloat const STVSeparatorHeight = 1.f;
                                                                  metrics:metrics
                                                                    views:views]];
 
+    // Add a height constraint to the header view which we can later adjust via the delegate
+    self.headerMinimumHeightConstraint = [NSLayoutConstraint constraintWithItem:self.headerView
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1
+                                                                constant:0.f];
+    [self addConstraint:self.headerMinimumHeightConstraint];
+
     // Add a height constraint to the table view
     self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.tableView
                                                          attribute:NSLayoutAttributeHeight
@@ -167,6 +178,13 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)updateConstraints
 {
+    // Ask the delegate for a minimum header height, otherwise use default value.
+    CGFloat minimumHeaderHeight = STVDefaultMinHeaderHeight;
+    if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewHeaderMinimumHeight:)]) {
+        minimumHeaderHeight = [self.suggestionsDelegate suggestionsTableViewHeaderMinimumHeight:self];
+    }
+    self.headerMinimumHeightConstraint.constant = minimumHeaderHeight;
+
     // Take the height of the table frame and make it so only whole results are displayed
     NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
 

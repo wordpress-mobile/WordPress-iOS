@@ -86,13 +86,32 @@ extension ReaderTabItemsStore {
             return
         }
         state = .loading
+
+        // Return the tab bar items right away to avoid waiting for the request to finish
+        fetchTabBarItems()
+
+        // Sync the reader menu
         service.fetchReaderMenu(success: { [weak self] in
-                                    self?.fetchTabBarItems()
-            },
-                                failure: { [weak self] error in
-                                    let actualError = error ?? NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
-                                    DDLogError(ReaderTopicsConstants.remoteFetchError + actualError.localizedDescription)
-                                    self?.fetchTabBarItems()
+            self?.fetchTabBarItemsAndFollowedSites()
+        }, failure: { [weak self] (error) in
+            self?.fetchTabBarItemsAndFollowedSites()
+            let actualError = error ?? ReaderTopicsConstants.remoteServiceError
+            DDLogError("Error syncing menu: \(String(describing: actualError))")
+        })
+    }
+
+    private func fetchTabBarItemsAndFollowedSites() {
+        DispatchQueue.main.async {
+            self.fetchFollowedSites()
+        }
+        fetchTabBarItems()
+    }
+
+    private func fetchFollowedSites() {
+        service.fetchFollowedSites(success: {
+        }, failure: { (error) in
+            let actualError = error ?? ReaderTopicsConstants.remoteServiceError
+            DDLogError("Could not sync sites: \(String(describing: actualError))")
         })
     }
 
@@ -101,7 +120,6 @@ extension ReaderTabItemsStore {
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
-        static let remoteFetchError = "Error syncing menu: "
         static let objectTypeError = NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil)
         static let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
     }

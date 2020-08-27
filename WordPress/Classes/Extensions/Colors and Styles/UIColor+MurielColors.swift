@@ -127,6 +127,15 @@ extension UIColor {
         return .neutral(.shade10)
     }
 
+    /// Quaternary background
+    static var quaternaryBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .quaternarySystemFill
+        }
+
+        return .neutral(.shade5)
+    }
+
     /// Default text color: high contrast
     static var text: UIColor {
         if #available(iOS 13, *) {
@@ -199,6 +208,14 @@ extension UIColor {
         return muriel(color: .divider)
     }
 
+    static var primaryButtonBorder: UIColor {
+           if #available(iOS 13, *) {
+               return .opaqueSeparator
+           }
+
+        return muriel(color: .gray, .shade10)
+    }
+
     /// WP color for table foregrounds (cells, etc)
     static var listForeground: UIColor {
         if #available(iOS 13, *) {
@@ -255,7 +272,15 @@ extension UIColor {
             return .systemGray
         }
 
-        return UIColor.neutral(.shade20)
+        return .neutral(.shade20)
+    }
+
+    static var buttonIcon: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray2
+        }
+
+        return .neutral(.shade5)
     }
 
     static var filterBarBackground: UIColor {

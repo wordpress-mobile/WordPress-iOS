@@ -7,13 +7,18 @@ enum FeatureFlag: Int, CaseIterable {
     case unifiedAuth
     case unifiedSiteAddress
     case unifiedGoogle
+    case unifiedApple
+    case unifiedWordPress
+    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
-    case tenor
-    case readerWebview
     case swiftCoreData
     case homepageSettings
+    case readerImprovementsPhase2
+    case gutenbergMentions
+    case gutenbergModalLayoutPicker
+    case whatIsNew
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -27,25 +32,35 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedAuth:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedSiteAddress:
-            return false
+            return true
         case .unifiedGoogle:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
+        case .unifiedApple:
+            return true
+        case .unifiedWordPress:
+            return false
+        case .unifiedKeychainLogin:
+            return false
         case .meMove:
             return true
         case .floatingCreateButton:
             return true
         case .newReaderNavigation:
             return true
-        case .tenor:
-            return true
-        case .readerWebview:
-            return true
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
+        case .readerImprovementsPhase2:
+            return false
+        case .gutenbergMentions:
+            return true
+        case .gutenbergModalLayoutPicker:
+            return false
+        case .whatIsNew:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
@@ -74,20 +89,30 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth - Site Address"
         case .unifiedGoogle:
             return "Unified Auth - Google"
+        case .unifiedApple:
+            return "Unified Auth - Apple"
+        case .unifiedWordPress:
+            return "Unified Auth - WordPress"
+        case .unifiedKeychainLogin:
+            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
             return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
-        case .tenor:
-            return "Tenor GIF media source"
-        case .readerWebview:
-            return "Reader content displayed in a WebView"
         case .swiftCoreData:
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
+        case .readerImprovementsPhase2:
+            return "Reader Improvements Phase 2"
+        case .gutenbergMentions:
+            return "Mentions in Gutenberg"
+        case .gutenbergModalLayoutPicker:
+            return "Gutenberg Modal Layout Picker"
+        case .whatIsNew:
+            return "What's New / Feature Announcement"
         }
     }
 
