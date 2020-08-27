@@ -100,12 +100,9 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func addShadow() {
         layer.shadowColor = UIColor.black.cgColor
-
-        let scale = UIScreen.main.scale
-        let shadowRadius: CGFloat = 12 / scale
-        layer.shadowRadius = shadowRadius
+        layer.shadowRadius = 5.0
         layer.shadowOpacity = 0.16
-        layer.shadowOffset = CGSize(width: 0, height: (5/scale))
+        layer.shadowOffset = CGSize(width: 0, height: 2.0)
 
         backgroundColor = nil
     }
