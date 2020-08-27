@@ -9,13 +9,8 @@ protocol LayoutPickerSectionTableViewCellDelegate: class {
 
 class LayoutPickerSectionTableViewCell: UITableViewCell {
 
-    static var cellReuseIdentifier: String {
-        return "LayoutPickerSectionTableViewCell"
-    }
-
-    static var nib: UINib {
-        return UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
-    }
+    static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
+    static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
