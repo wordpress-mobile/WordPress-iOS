@@ -1,5 +1,4 @@
 import UIKit
-import AMScrollingNavbar
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
@@ -82,6 +81,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return currentPreferredStatusBarStyle
     }
 
+    override var hidesBottomBarWhenPushed: Bool {
+        set { }
+        get { true }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -97,22 +100,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        followScrollView()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         ReaderTracker.shared.start(.readerPost)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        stopFollowingScrollView()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -280,7 +271,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureScrollView() {
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin + Constants.toolbarHeight, right: 0)
         scrollView.navigationBar = navigationController?.navigationBar
-        scrollView.delegate = self
     }
 
     /// Configure the NoResultsViewController
@@ -297,37 +287,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
         coordinator?.share(fromView: sender)
-    }
-
-    /// Start following the scroll view to hide nav bar and toolbar
-    /// Only if VoiceOver is not active
-    ///
-    private func followScrollView() {
-        if isFollowingScrollView,
-            UIAccessibility.isVoiceOverRunning {
-            return
-        }
-
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(scrollView, delay: Constants.delay, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
-            navigationController.shouldUpdateContentInset = false
-            isFollowingScrollView = true
-        }
-    }
-
-    /// Stop following the scroll view to hide nav bar and toolbar
-    ///
-    private func stopFollowingScrollView() {
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.stopFollowingScrollView(showingNavbar: true)
-            isFollowingScrollView = false
-        }
-    }
-
-    /// Update scroll view insets to take into account if toolbar is visible or not
-    private func updateScrollInsets(toolbarVisible: Bool) {
-        let bottomInset: CGFloat = toolbarVisible ? Constants.toolbarHeight : 0
-        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
     }
 
     /// A View Controller that displays a Post content.
@@ -475,35 +434,6 @@ private extension ReaderDetailViewController {
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
-    }
-}
-
-// MARK: - Scroll View Delegate
-
-extension ReaderDetailViewController: UIScrollViewDelegate {
-    // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
-            guard let navigationController = self.navigationController as? ScrollingNavigationController,
-                navigationController.state != .expanded else {
-                    return
-            }
-
-            stopFollowingScrollView()
-            updateScrollInsets(toolbarVisible: true)
-        } else {
-            followScrollView()
-            updateScrollInsets(toolbarVisible: false)
-        }
-    }
-
-    /// Show the nav bar when scrolling to top
-    ///
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.showNavbar(animated: true, scrollToTop: true)
-        }
-        return true
     }
 }
 
