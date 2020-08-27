@@ -57,6 +57,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureTitle()
         configureByLine()
         configureTag()
+        configureNotifications()
 
         prepareForVoiceOver()
         prepareMenuForVoiceOver()
@@ -108,6 +109,10 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         headerView.backgroundColor = .listForeground
 
         reloadGradientColors()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -272,6 +277,14 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         tagButton.isHidden = tag.count == 0
         tagButton.setTitle(tag, for: UIControl.State())
         tagButton.setTitle(tag, for: .highlighted)
+    }
+
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(preferredContentSizeChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
+    }
+
+    @objc private func preferredContentSizeChanged() {
+        configureTitle()
     }
 
     private func reloadGradientColors() {
