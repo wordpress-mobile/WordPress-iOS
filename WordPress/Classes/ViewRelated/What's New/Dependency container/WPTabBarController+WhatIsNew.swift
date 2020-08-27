@@ -19,9 +19,27 @@ extension WPTabBarController {
     }
 
     private func makeDataSource() -> AnnouncementsDataSource {
-        return FeatureAnnouncementsDataSource(announcements: WhatIsNewStrings.fakeAnnouncements,
+        return FeatureAnnouncementsDataSource(features: [],
                                               cellTypes: ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self],
                                               findOutMoreLink: WhatIsNewStrings.temporaryAnnouncementsLink)
+    }
+
+    private func makeFeatureAnnouncementService() -> FeatureAnnouncementService {
+        return FeatureAnnouncementService(remoteService: makeAnnouncementServiceRemote())
+    }
+
+    private func makeAnnouncementServiceRemote() -> AnnouncementServiceRemote {
+        return AnnouncementServiceRemote(wordPressComRestApi: makeApi())
+    }
+
+    private func makeApi() -> WordPressComRestApi {
+        let accountService = AccountService(managedObjectContext: CoreDataManager.shared.mainContext)
+        let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
+
+        return WordPressComRestApi.defaultApi(oAuthToken: token,
+                                              userAgent: WPUserAgent.wordPress(),
+                                              localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 
     private enum WhatIsNewStrings {
@@ -29,31 +47,6 @@ extension WPTabBarController {
         static let versionPrefix = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
 
-        // TODO - WHATSNEW: to be removed when the real data come in
-        static let fakeAnnouncements = [Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Try to write subheadings that run to a max of three lines. See how the icon is centered.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Subheading with only one line.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Try write headings that don't go beyond 2 lines",
-                                                     subHeading: "If combined with three lines of subheading this is the longest an item should be.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Try to write subheadings that run to a max of three lines. See how the icon is centered.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Subheading with only one line.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Try write headings that don't go beyond 2 lines",
-                                                     subHeading: "If combined with three lines of subheading this is the longest an item should be.",
-                                                     image: nil,
-                                                     imageUrl: nil)]
         // TODO - WHATSNEW: to be removed when the real data come in
         static let temporaryAnnouncementsLink = "https://wordpress.com/"
     }
