@@ -1,4 +1,5 @@
 import Foundation
+import Gutenberg
 
 class PageLayoutService {
     typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
@@ -29,7 +30,10 @@ class PageLayoutService {
     }
 
     private static func fetchLayouts(_ api: WordPressComRestApi, _ urlPath: String, _ completion: @escaping CompletionHandler) {
-        api.GET(urlPath, parameters: nil, success: { (responseObject, _) in
+        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        let supportedBlocks = Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
+        let parameters: [String: AnyObject] = ["supported_blocks": supportedBlocks as AnyObject]
+        api.GET(urlPath, parameters: parameters, success: { (responseObject, _) in
             guard let result = parseLayouts(fromResponse: responseObject) else {
                 let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Unable to parse response"])
                 completion(.failure(error))
