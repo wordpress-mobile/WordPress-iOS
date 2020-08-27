@@ -1,9 +1,1 @@
-Bu güncellemede Blok düzenleyici hakkında size söyleyecek çok şeyimiz var:
-
-Artık bir Sosyal Bağlantılar bloğumuz var. Takipçilerinizi sayfalarınızdan veya yayınlarınızdan sosyal medya profillerinize yönlendirerek ekleyebilirsiniz. Hesaplarınızdan yalnızca birini veya istediğiniz kadarını ekleyebilirsiniz. Bizim için hiç sorun değil.
-
-Medya ve Metin bloğunda artık daha iyi düzenleme işlevleri var. Bloktan medyayı seçebilir veya odak noktasını değiştirebilirsiniz.
-
-Kapak bloğu yer tutucusunda artık görsellerinizi göz alıcı hale getiren farklı arka plan renkleri var.
-
-Bir süredir bazı şeyleri düzeltmekle ve oluşturmakla meşguldük. iOS sürüm 12.4 ve daha önceki sürümlerde sayfa düzenleyicisinin "Sitem" Sayfasından yüklenmemesine neden olan sorun çözüldü.
+Yeni! Kullancı adı @mention'ları artık WordPress.com ve Jetpack siteleri için Blok Düzenleyicide otomatik olarak tamamlanıyor. Kullanıcı adlarını gösteren bir açılır pencere görmek için "@" karakterini yazın ve seçiminizi yapın. Bu sürümde, medya düzenlemek Kapak bloğuna destek ekledik, ayrıca bir bağlantı ve dize biçimlendirmesi içeren başlıkların karanlık modda beyaz gölge görüntülediği Başlık bloğu hatasını düzelttik. Son olarak, WordPress.com Reader'daki site başlıklarına modern ve yeni bir görünüm kazandırdık.

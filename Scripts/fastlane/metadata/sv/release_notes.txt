@@ -1,9 +1,1 @@
-Vi har massor att säga om blockredigeraren i den här uppdateringen:
-
-Nu finns det ett block för länkar till sociala media! Nu kan du få fler följare genom att helt enkelt leda dem till dina profiler i sociala medier från dina sidor och inlägg. Lägg in någon av dina profiler, eller alla du har. Det bestämmer du helt själv!
-
-Blocket för media + text har nu bättre redigeringsfunktioner. I blocket kan du välja mediafil eller ändra den fokuserade platsen.
-
-Platshållaren i omslagsblocket har nu olika bakgrundsfärger för att lyfta fram dina bilder!
-
-Samtidigt som vi skapat har vi också rättat olika saker. Nu har vi t.ex. löst problemet med att sidredigereraren inte kunde laddas in från sidan ”Min webbplats” i iOS 12.4 och tidigare versioner.
+Nyheter! Nu kompletteras automatiskt omnämnanden med @ i blockredigeraren för WordPress.com och webbplatser med Jetpack. När du skriver in tecknet ”@” visas en lista med användarnamn så att du kan välja! I denna version har vi lagt till stöd för redigering av media i omslagsblocket och korrigerat ett fel i rubrikblocket där en rubrik med länk och formaterad sträng hade en vit skugga i mörkt läge. Slutligen har webbplatsrubriker i läsaren för WordPress.com nu fått en modernare utformning.

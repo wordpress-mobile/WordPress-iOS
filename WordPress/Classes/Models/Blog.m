@@ -27,6 +27,7 @@ NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
+NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 @interface Blog ()
 
@@ -117,6 +118,12 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 - (BOOL)isAtomic
 {
     NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
+    return [value boolValue];
+}
+
+- (BOOL)isWPForTeams
+{
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsWPForTeams];
     return [value boolValue];
 }
 
