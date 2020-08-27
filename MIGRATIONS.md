@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 98
+
+@leandrowalonso 2020-07-27
+
+- Add a new `ReaderCard` entity
+- Add a relationship between `ReaderCard` and `ReaderPost`
+- Add a relationship between `ReaderCard` and `ReaderTagTopic`
+
 ## WordPress 97
 
 @aerych 2020-06-17
@@ -32,7 +40,7 @@ data model as well as any custom migrations.
 
 @jklausa 2019-08-19
 
-- `AbstractPost`: Addded a  `confirmedChangesHash` (`nullable` `String`)  and  `confirmedChangesTimestamp` (`nullable` `Date`)  properties. 
+- `AbstractPost`: Addded a  `confirmedChangesHash` (`nullable` `String`)  and  `confirmedChangesTimestamp` (`nullable` `Date`)  properties.
 
 @leandroalonso 2019-09-27
 
@@ -46,7 +54,7 @@ data model as well as any custom migrations.
 ## WordPress 91
 
 @aerych 2019-10-15
-- `WPAccount` added `primaryBlogID` property. 
+- `WPAccount` added `primaryBlogID` property.
 
 ## WordPress 90
 
@@ -75,8 +83,8 @@ data model as well as any custom migrations.
 * `StatsRecordValue`
 * `StatsRecord`
 
-* `AllTimeStatsRecordValue` 
-* `AnnualAndMostPopularTimeStatsRecordValue` 
+* `AllTimeStatsRecordValue`
+* `AnnualAndMostPopularTimeStatsRecordValue`
 * `ClicksStatsRecordValue`
 * `CountryStatsRecordValue`
 * `FollowersStatsRecordValue`

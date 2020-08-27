@@ -58,6 +58,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
+@property (nonatomic, strong) FollowCommentsService *followCommentsService;
 
 @end
 
@@ -286,6 +287,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] init];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
+    };
+    headerView.onFollowConversationClick = ^{
+        [weakSelf handleFollowConversationButtonTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
@@ -530,6 +534,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
+
+    _followCommentsService = [FollowCommentsService createServiceWith:_post];
 }
 
 - (NSNumber *)siteID
@@ -563,6 +569,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return self.post.commentsOpen && self.isLoggedIn;
 }
 
+- (BOOL)canFollowConversation
+{
+    return [self.followCommentsService canFollowConversation];
+}
+
 - (BOOL)shouldDisplayReplyTextView
 {
     return self.canComment;
@@ -579,6 +590,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
+    [self refreshSubscriptionStatusIfNeeded];
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
@@ -609,6 +621,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
+    
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+}
+
+- (void)refreshSubscriptionStatusIfNeeded
+{
+    if (!self.canFollowConversation) {
+        return;
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
 }
 
 - (void)refreshReplyTextView
@@ -1170,6 +1198,55 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 
 #pragma mark - PostHeaderView helpers
+
+- (void)handleFollowConversationButtonTapped
+{
+    __typeof(self) __weak weakSelf = self;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
+    // Keep previous subscription status in case of failure
+    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL newIsSubscribed = !oldIsSubscribed;
+
+    // Optimistically toggle subscription status
+    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+
+    // Define success block
+    void (^successBlock)(void) = ^void() {
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
+            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+        });
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"Error toggling subscription status: %@", error);
+
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
+            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeError];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+
+            // If the request fails, fall back to the old subscription status
+            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+        });
+    };
+
+    // Call the service to toggle the subscription status
+    [self.followCommentsService toggleSubscribed:oldIsSubscribed
+                                         success:successBlock
+                                         failure:failureBlock];
+}
 
 - (void)handleHeaderTapped
 {

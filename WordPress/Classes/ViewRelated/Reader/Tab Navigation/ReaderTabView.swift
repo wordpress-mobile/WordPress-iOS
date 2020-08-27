@@ -36,7 +36,7 @@ class ReaderTabView: UIView {
             self?.toggleButtonsView()
         }
 
-        viewModel.refreshTabBar { [weak self] tabItems, index in
+        viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
             self?.tabBar.items = tabItems
             self?.tabBar.setSelectedIndex(index)
             self?.configureTabBarElements()
@@ -48,6 +48,16 @@ class ReaderTabView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func selectDiscover() {
+        guard let discoverIndex = tabBar.items
+            .firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") }) else {
+            return
+        }
+
+        tabBar.setSelectedIndex(discoverIndex)
+        selectedTabDidChange(tabBar)
     }
 }
 
@@ -86,7 +96,6 @@ extension ReaderTabView {
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-        showGhost()
         viewModel.fetchReaderMenu()
     }
 
@@ -198,6 +207,7 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+        addContentToContainerView()
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
