@@ -82,6 +82,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return currentPreferredStatusBarStyle
     }
 
+    override var hidesBottomBarWhenPushed: Bool {
+        set {
+
+        }
+
+        get {
+            true
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
