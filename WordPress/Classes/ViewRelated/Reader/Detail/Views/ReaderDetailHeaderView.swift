@@ -4,7 +4,6 @@ import AutomatticTracks
 protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
-    func didTapTagButton()
     func didTapHeaderAvatar()
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
@@ -19,12 +18,9 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var featuredImageBottomPaddingView: ReaderSpacerView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleBottomPaddingView: UIView!
-    @IBOutlet weak var bylineView: UIView!
-    @IBOutlet weak var avatarImageView: CircularImageView!
-    @IBOutlet weak var bylineScrollView: UIScrollView!
-    @IBOutlet weak var bylineLabel: UILabel!
-    @IBOutlet weak var tagButton: UIButton!
-    @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
+    @IBOutlet weak var byLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
 
     /// The post to show details in the header
     ///
@@ -55,8 +51,9 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureBlogName()
         configureFeaturedImage()
         configureTitle()
-        configureByLine()
-        configureTag()
+        configureByLabel()
+        configureAuthorLabel()
+        configureDateLabel()
         configureNotifications()
 
         prepareForVoiceOver()
@@ -74,10 +71,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
         delegate?.didTapMenuButton(sender)
-    }
-
-    @IBAction func didTapTagButton(_ sender: Any) {
-        delegate?.didTapTagButton()
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
@@ -99,30 +92,15 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
-        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
+        
         titleLabel.backgroundColor = .basicBackground
-
-        headerView.backgroundColor = .listForeground
-
-        reloadGradientColors()
+        blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
-                reloadGradientColors()
-            }
-        }
     }
 
     private func configureSiteImage() {
@@ -227,56 +205,17 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         }
     }
 
-    private func configureByLine() {
-        // Avatar
-        let placeholder = UIImage(named: "gravatar")
-
-        if let avatarURLString = post?.authorAvatarURL,
-            let url = URL(string: avatarURLString) {
-            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        }
-
-        // Byline
-        let author = post?.authorForDisplay()
-        let dateAsString = post?.dateForDisplay()?.mediumString()
-        let byline: String
-
-        if let author = author, let date = dateAsString {
-            byline = author + " · " + date
-        } else {
-            byline = author ?? dateAsString ?? String()
-        }
-
-        bylineLabel.text = byline
-
-        flipBylineViewIfNeeded()
+    private func configureByLabel() {
+        byLabel.text = NSLocalizedString("By ", comment: "Label for the post author in the post detail.")
     }
 
-    private func flipBylineViewIfNeeded() {
-        if layoutDirection == .rightToLeft {
-            bylineScrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
-            bylineScrollView.subviews.first?.transform = CGAffineTransform(scaleX: -1, y: 1)
-
-            for gradientView in bylineGradientViews {
-                let start = gradientView.startPoint
-                let end = gradientView.endPoint
-
-                gradientView.startPoint = end
-                gradientView.endPoint = start
-            }
-        }
+    private func configureAuthorLabel() {
+        authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+        authorLabel.text = post?.author
     }
 
-    private func configureTag() {
-        var tag = ""
-        if let rawTag = post?.primaryTag {
-            if rawTag.count > 0 {
-                tag = "#\(rawTag)"
-            }
-        }
-        tagButton.isHidden = tag.count == 0
-        tagButton.setTitle(tag, for: UIControl.State())
-        tagButton.setTitle(tag, for: .highlighted)
+    private func configureDateLabel() {
+        dateLabel.text = post?.dateForDisplay()?.mediumString()
     }
 
     private func configureNotifications() {
@@ -285,13 +224,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     @objc private func preferredContentSizeChanged() {
         configureTitle()
-    }
-
-    private func reloadGradientColors() {
-        bylineGradientViews.forEach({ view in
-            view.fromColor = .basicBackground
-            view.toColor = UIColor.basicBackground.withAlphaComponent(0.0)
-        })
     }
 
     private func prepareForVoiceOver() {

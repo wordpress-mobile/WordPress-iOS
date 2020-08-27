@@ -194,14 +194,6 @@ extension WPStyleGuide {
         label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
 
-    @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
-        button.setTitleColor(.primary, for: UIControl.State())
-        button.setTitleColor(.primaryDark, for: .highlighted)
-        button.titleLabel?.allowsDefaultTighteningForTruncation = false
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
-    }
-
     @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
         guard let titleLabel = button.titleLabel else {
             return
