@@ -82,15 +82,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     override var hidesBottomBarWhenPushed: Bool {
-        set {
-
-        }
-
-        get {
-            true
-        }
+        set { }
+        get { true }
     }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
