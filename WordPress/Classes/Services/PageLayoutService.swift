@@ -2,6 +2,9 @@ import Foundation
 import Gutenberg
 
 class PageLayoutService {
+    private struct Parameters {
+    }
+
     typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
 
     static func layouts(forBlog blog: Blog, completion: @escaping CompletionHandler) {
@@ -30,10 +33,7 @@ class PageLayoutService {
     }
 
     private static func fetchLayouts(_ api: WordPressComRestApi, _ urlPath: String, _ completion: @escaping CompletionHandler) {
-        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
-        let supportedBlocks = Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
-        let parameters: [String: AnyObject] = ["supported_blocks": supportedBlocks as AnyObject]
-        api.GET(urlPath, parameters: parameters, success: { (responseObject, _) in
+        api.GET(urlPath, parameters: parameters(), success: { (responseObject, _) in
             guard let result = parseLayouts(fromResponse: responseObject) else {
                 let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Unable to parse response"])
                 completion(.failure(error))
@@ -50,5 +50,10 @@ class PageLayoutService {
             return nil
         }
         return try? JSONDecoder().decode(GutenbergPageLayouts.self, from: data)
+    }
+
+    // Parameter Generation
+    static func parameters() -> [String: AnyObject] {
+        return [:]
     }
 }
