@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw" customClass="ReaderScrollView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="812"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
-                                        <rect key="frame" x="0.0" y="0.0" width="446" height="327"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="446" height="243"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="343" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="259" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
@@ -37,7 +37,7 @@
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O4e-BA-8jp">
-                                        <rect key="frame" x="16" y="343" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="259" width="414" height="0.0"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TWq-e0-xZe">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
@@ -241,9 +241,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="0EW-ef-BfF"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="qnQ-Ld-x9K" secondAttribute="trailing" id="7q2-Rq-Wbt"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="top" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="AWw-Um-NsT"/>
+                            <constraint firstItem="Qzd-gm-oIu" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="BHA-14-Hde"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="width" secondItem="Qzd-gm-oIu" secondAttribute="width" id="D8P-Xt-kyR"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
