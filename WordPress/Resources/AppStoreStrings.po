@@ -40,9 +40,13 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v15.5-whats-new"
+msgctxt "v15.6-whats-new"
 msgid ""
-"New! Username @mentions now auto-complete in the Block Editor for WordPress.com and Jetpack sites. Type the “@” character to see a pop-up displaying usernames and make your selection! In this version, we’ve added support for media editing in the Cover block and fixed a Heading block bug where a heading with a link and string formatting displayed a white shadow in dark mode. Lastly, site headings in the WordPress.com Reader now have a modern new look.\n"
+"Block editor improvements! There’s media editing support right in the Gallery block, and the Column block includes support for changing column widths (fancy!). We also fixed the empty text fields in right-to-left layout, so they’re select-able and placeholders are visible. And we streamlined the redo/undo process — no more undoing whole sentences one character at a time.\n"
+"\n"
+"Login improvements! During login or signup, Google authentication is simpler to make sure you get to the screen you need. If you try to sign up with a Gmail address that’s associated with a WordPress account, we’ll automatically redirect you to login. And vice-versa, so if you try to login with an address that doesn’t have a matching WordPress account, we’ll send you to signup.\n"
+"\n"
+"And finally, a fix: We took care of bug that inadvertently linked the app with two social accounts, therefore making login with a social account wonky. It is wonky no more!\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
