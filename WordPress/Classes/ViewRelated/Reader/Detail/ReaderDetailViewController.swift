@@ -12,7 +12,7 @@ protocol ReaderDetailView: class {
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Content scroll view
-    @IBOutlet weak var scrollView: ReaderScrollView!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
@@ -103,7 +103,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureShareButton()
         configureHeader()
         configureToolbar()
-        configureScrollView()
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
@@ -279,13 +278,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
         }
-    }
-
-    /// Add content and scroll insets based on the toolbar height
-    ///
-    private func configureScrollView() {
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin + Constants.toolbarHeight, right: 0)
-        scrollView.navigationBar = navigationController?.navigationBar
     }
 
     /// Configure the NoResultsViewController
