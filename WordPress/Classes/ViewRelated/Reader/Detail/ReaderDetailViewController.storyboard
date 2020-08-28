@@ -72,6 +72,10 @@
                                     <constraint firstAttribute="height" constant="50" id="jvh-iQ-g9a"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERb-e0-U8L">
+                                <rect key="frame" x="0.0" y="862" width="414" height="34"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnQ-Ld-x9K">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
@@ -239,10 +243,14 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="0EW-ef-BfF"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="qnQ-Ld-x9K" secondAttribute="trailing" id="7q2-Rq-Wbt"/>
+                            <constraint firstItem="ERb-e0-U8L" firstAttribute="top" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="AWw-Um-NsT"/>
+                            <constraint firstItem="ERb-e0-U8L" firstAttribute="width" secondItem="Qzd-gm-oIu" secondAttribute="width" id="D8P-Xt-kyR"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="PNw-Cb-AvC"/>
+                            <constraint firstAttribute="bottom" secondItem="ERb-e0-U8L" secondAttribute="bottom" id="fPU-nx-gzV"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="qnQ-Ld-x9K" secondAttribute="bottom" id="jDb-2v-GlQ"/>
+                            <constraint firstItem="ERb-e0-U8L" firstAttribute="centerX" secondItem="Qzd-gm-oIu" secondAttribute="centerX" id="kuZ-bk-VtY"/>
                             <constraint firstItem="qnQ-Ld-x9K" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="mRn-49-Gms"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="p2r-l3-0Mh"/>
                             <constraint firstItem="vGc-hu-x5V" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="tF3-Q4-q8b"/>
@@ -258,6 +266,7 @@
                         <outlet property="loadingView" destination="qnQ-Ld-x9K" id="D1T-sa-IvL"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
                         <outlet property="toolbarContainerView" destination="Qzd-gm-oIu" id="Esk-Iq-Wbd"/>
+                        <outlet property="toolbarSafeAreaView" destination="ERb-e0-U8L" id="sVN-sI-9e5"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>
                     </connections>

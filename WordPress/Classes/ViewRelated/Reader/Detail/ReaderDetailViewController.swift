@@ -41,6 +41,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
+    /// A view that fills the bottom portion outside of the safe area
+    @IBOutlet weak var toolbarSafeAreaView: UIView!
+
     /// View used to show errors
     private let noResultsViewController = NoResultsViewController.controller()
 
@@ -262,6 +265,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
+        toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
