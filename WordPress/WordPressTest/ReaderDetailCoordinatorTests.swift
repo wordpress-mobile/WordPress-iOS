@@ -356,7 +356,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     }
 
     func updateHeader() {
-        
+
     }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
