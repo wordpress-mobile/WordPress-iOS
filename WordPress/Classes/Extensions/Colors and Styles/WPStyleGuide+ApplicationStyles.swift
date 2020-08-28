@@ -25,7 +25,6 @@ extension WPStyleGuide {
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .appBarTint
         navigationAppearance.barTintColor = .appBarBackground
-        navigationAppearance.barStyle = .black
 
         if #available(iOS 13.0, *) {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
@@ -41,6 +40,8 @@ extension WPStyleGuide {
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
         if FeatureFlag.newNavBarAppearance.enabled == false {
+            navigationAppearance.barStyle = .black
+
             let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
             barButtonItemAppearance.tintColor = .barButtonItemTitle
             barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
