@@ -95,6 +95,25 @@ final class ReaderTopicSwiftTest: XCTestCase {
         }
     }
 
+    func remoteSiteInfoForTests() -> [RemoteReaderSiteInfo] {
+        let foo = RemoteReaderSiteInfo()
+        foo.feedID = 1
+        foo.isFollowing = true
+        foo.postsEndpoint = "/sites/foo"
+
+        let bar = RemoteReaderSiteInfo()
+        bar.feedID = 2
+        bar.isFollowing = true
+        bar.postsEndpoint = "/sites/bar"
+
+        let baz = RemoteReaderSiteInfo()
+        baz.feedID = 3
+        baz.isFollowing = true
+        baz.postsEndpoint = "/sites/baz"
+
+        return [foo, bar, baz]
+    }
+
     func remoteTopicsForTests() -> [RemoteReaderTopic] {
         let foo = RemoteReaderTopic()
         foo.topicID = 1
@@ -137,6 +156,48 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
 
     // MARK: Tests
+
+    /**
+    Ensure that followed sites a user unfollows from are set to unfollowed in core data when merging
+    results from the REST API.
+    */
+    func testUnfollowedSiteIsUnfollowedDuringSync() {
+        // Arrange: Setup
+        let remoteSites = remoteSiteInfoForTests()
+        let service = ReaderTopicService(managedObjectContext: context!)
+        let foo = remoteSites.first as RemoteReaderSiteInfo?
+
+        // Act: Save sites
+        var expect = expectation(description: "sites saved expectation")
+        service.mergeFollowedSites(remoteSites, withSuccess: { () -> Void in
+            expect.fulfill()
+        })
+        waitForExpectations(timeout: expectationTimeout, handler: nil)
+
+        // Assert: Sites exist in the context
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderSiteTopic.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "following = YES")
+        var count = try! context!.count(for: request)
+        XCTAssertEqual(count, remoteSites.count, "Number of sites in context did not match expectations")
+
+        // Act: Merge new set of sites
+        expect = expectation(description: "sites saved expectation")
+        service.mergeFollowedSites([foo!], withSuccess: { () -> Void in
+            expect.fulfill()
+        })
+        waitForExpectations(timeout: expectationTimeout, handler: nil)
+
+        // Assert: Unfollowed sites were unfollowed when merged
+        count = try! context!.count(for: request)
+        XCTAssertEqual(count, 1, "Number of sites in context did not match expectations")
+        do {
+            let results = try context!.fetch(request)
+            let site = results.first as! ReaderSiteTopic
+            XCTAssertEqual(site.feedID, foo?.feedID, "The site returned was not the one expected.")
+        } catch let error as NSError {
+            XCTAssertNil(error, "Error executing fetch request.")
+        }
+    }
 
     /**
     Ensure that topics a user unsubscribes from are removed from core data when merging

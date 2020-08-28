@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,8 +34,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eiU-pw-Xq6">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorInsetReference="fromAutomaticInsets" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eiU-pw-Xq6">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="dataSource" destination="6uO-HR-ECX" id="hZQ-OP-mJV"/>
@@ -87,7 +89,6 @@
                                     <constraint firstItem="jOR-Cu-uXg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uh3-j1-P0D" secondAttribute="top" constant="13" id="J5v-Ec-gJ7"/>
                                     <constraint firstItem="Irb-2L-Gsp" firstAttribute="centerX" secondItem="Uh3-j1-P0D" secondAttribute="centerX" id="UOb-Xb-XWn"/>
                                     <constraint firstItem="jOR-Cu-uXg" firstAttribute="width" secondItem="jOR-Cu-uXg" secondAttribute="height" multiplier="1:1" id="aS9-dr-vpA"/>
-                                    <constraint firstAttribute="trailing" secondItem="jOR-Cu-uXg" secondAttribute="trailing" constant="13" id="fej-64-0cu"/>
                                     <constraint firstAttribute="bottom" secondItem="jOR-Cu-uXg" secondAttribute="bottom" constant="13" id="pUu-vg-esB"/>
                                 </constraints>
                             </view>
@@ -111,17 +112,17 @@
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=compact" hidden="YES"/>
                                     </label>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fhN-6z-taa" customClass="GutenbergLayoutFilterBar" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="137.5" width="414" height="44"/>
-                                        <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Zmw-89-cy2"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IPj-9L-w95">
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="12" id="IPj-9L-w95">
                                             <size key="itemSize" width="105" height="44"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <inset key="sectionInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells/>
                                     </collectionView>
@@ -152,9 +153,7 @@
                                         <variation key="widthClass=regular" constant="170"/>
                                     </constraint>
                                     <constraint firstItem="fhN-6z-taa" firstAttribute="leading" secondItem="DTZ-MR-Eqm" secondAttribute="leading" id="q90-Gh-IhP"/>
-                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP">
-                                        <variation key="heightClass=compact" constant="9"/>
-                                    </constraint>
+                                    <constraint firstAttribute="bottom" secondItem="fhN-6z-taa" secondAttribute="bottom" priority="750" constant="24" id="vJ5-2N-JfP"/>
                                     <constraint firstAttribute="height" constant="205.5" id="yrU-yj-SJL"/>
                                 </constraints>
                                 <variation key="default">
@@ -169,7 +168,7 @@
                                         <exclude reference="h5U-Rb-Tvs"/>
                                         <include reference="TWT-Wj-G1p"/>
                                         <include reference="X0m-zz-UO3"/>
-                                        <include reference="vJ5-2N-JfP"/>
+                                        <exclude reference="vJ5-2N-JfP"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -206,6 +205,21 @@
                                                     <action selector="createBlankPage:" destination="6uO-HR-ECX" eventType="touchUpInside" id="p28-fq-nCl"/>
                                                 </connections>
                                             </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yt3-Sv-2ZO">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <state key="normal" title="Preview">
+                                                    <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                </state>
+                                            </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CcO-r6-GJK">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
+                                                <color key="backgroundColor" name="Pink50"/>
+                                                <state key="normal" title="Create Page">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="5en-Io-MIm"/>
@@ -228,9 +242,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="DTZ-MR-Eqm" firstAttribute="trailing" secondItem="1ZG-pe-aDl" secondAttribute="trailing" id="6f9-t5-YPi"/>
-                            <constraint firstItem="eiU-pw-Xq6" firstAttribute="top" secondItem="1ZG-pe-aDl" secondAttribute="top" id="9L6-zi-h3z"/>
+                            <constraint firstItem="eiU-pw-Xq6" firstAttribute="top" secondItem="ad1-6E-LbB" secondAttribute="top" id="9L6-zi-h3z"/>
                             <constraint firstAttribute="trailing" secondItem="Uh3-j1-P0D" secondAttribute="trailing" id="J6b-ze-7EX"/>
                             <constraint firstItem="2Hj-mT-YmE" firstAttribute="trailing" secondItem="1ZG-pe-aDl" secondAttribute="trailing" id="JLC-Iz-eF0"/>
+                            <constraint firstItem="ad1-6E-LbB" firstAttribute="trailing" secondItem="jOR-Cu-uXg" secondAttribute="trailing" constant="13" id="LRF-0t-d4A"/>
                             <constraint firstItem="DTZ-MR-Eqm" firstAttribute="leading" secondItem="1ZG-pe-aDl" secondAttribute="leading" id="MGa-PL-qLp"/>
                             <constraint firstItem="Uh3-j1-P0D" firstAttribute="leading" secondItem="1ZG-pe-aDl" secondAttribute="leading" id="X70-T3-BYM"/>
                             <constraint firstItem="DTZ-MR-Eqm" firstAttribute="top" secondItem="Uh3-j1-P0D" secondAttribute="bottom" id="YoB-vl-hiJ"/>
@@ -257,9 +272,10 @@
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="categoryBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="closeButton" destination="jOR-Cu-uXg" id="JYm-hS-Ov6"/>
                         <outlet property="createBlankPageBtn" destination="zm3-8S-slr" id="KLr-3l-vzg"/>
+                        <outlet property="createPageBtn" destination="CcO-r6-GJK" id="rBK-hn-WsJ"/>
+                        <outlet property="filterBar" destination="fhN-6z-taa" id="SWq-vJ-HXY"/>
                         <outlet property="footerView" destination="2Hj-mT-YmE" id="q1B-dG-UTq"/>
                         <outlet property="headerBar" destination="Uh3-j1-P0D" id="1Ra-RG-uNE"/>
                         <outlet property="headerHeightConstraint" destination="yrU-yj-SJL" id="n1e-gV-ZH4"/>
@@ -268,6 +284,7 @@
                         <outlet property="largeTitleView" destination="S74-AK-pHd" id="N2V-CK-Nng"/>
                         <outlet property="maxHeaderBottomSpacing" destination="vJ5-2N-JfP" id="7Kz-K6-waN"/>
                         <outlet property="minHeaderBottomSpacing" destination="3wZ-NV-ETZ" id="OhI-lZ-ARC"/>
+                        <outlet property="previewBtn" destination="Yt3-Sv-2ZO" id="bTE-wA-RbY"/>
                         <outlet property="promptView" destination="yqC-YH-PXy" id="gxZ-Pj-Rdj"/>
                         <outlet property="subtitleToCategoryBarSpacing" destination="TWT-Wj-G1p" id="OfT-Wy-xkZ"/>
                         <outlet property="tableView" destination="eiU-pw-Xq6" id="blQ-fQ-0HC"/>
@@ -282,4 +299,9 @@
             <point key="canvasLocation" x="15.942028985507248" y="-236.38392857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Pink50">
+            <color red="0.78823529411764703" green="0.20784313725490197" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

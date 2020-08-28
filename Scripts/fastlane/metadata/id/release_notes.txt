@@ -1,9 +1,1 @@
-Ada banyak hal baru tentang editor Blok dalam pembaruan ini:
-
-Kini kami punya blok Tautan Sosial! Anda dapat menambah jumlah pengikut dengan mengarahkan mereka ke profil media sosial Anda dari halaman atau kiriman Anda. Anda dapat menambahkan satu akun saja, atau semua yang Anda punya. Boleh-boleh saja!
-
-Blok Media & Teks kini punya fungsi penyuntingan yang lebih baik. Anda dapat memilih media di blok, atau mengubah titik fokus.
-
-Placeholder blok Sampul kini punya warna latar yang berbeda agar gambar Anda terlihat jelas!
-
-Kami sibuk memperbaiki sembari menciptakan berbagai hal. Masalah editor halaman tidak termuat dari Halaman "Situs Saya" di iOS versi 12.4 dan di bawahnya telah diselesaikan.
+Baru! Penyebutan @namapengguna kini dapat dilengkapi otomatis di Penyunting Blok untuk situs WordPress.com dan Jetpack. Ketik karakter “@” untuk memunculkan pop-up nama pengguna yang dapat Anda pilih! Pada versi ini kami menambahkan dukungan untuk pengeditan media di blok Sampul dan memperbaiki bug blok Judul yang menyebabkan judul dengan format tautan dan string menampilkan bayangan putih pada mode gelap. Selain itu, judul situs di Pembaca WordPress.com kini punya tampilan baru yang modern.
