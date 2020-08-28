@@ -274,9 +274,6 @@ private extension SignupEpilogueViewController {
     func dismissEpilogue() {
         tracker.track(click: .continue)
 
-        // Reset the nav style so the nav bar has the WP style, not the Auth style.
-        WPStyleGuide.configureNavigationAppearance()
-
         guard let onContinue = self.onContinue else {
             self.navigationController?.dismiss(animated: true)
             return
