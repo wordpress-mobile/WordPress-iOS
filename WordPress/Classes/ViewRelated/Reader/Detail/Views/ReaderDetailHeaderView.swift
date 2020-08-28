@@ -108,6 +108,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
         titleLabel.backgroundColor = .basicBackground
         blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
+        blogNameButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
     }
 
     deinit {
