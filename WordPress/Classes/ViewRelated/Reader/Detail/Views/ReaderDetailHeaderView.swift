@@ -222,7 +222,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     private func configureAuthorLabel() {
         authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-        authorLabel.text = post?.author
+        authorLabel.text = post?.authorDisplayName
     }
 
     private func configureDateLabel() {
