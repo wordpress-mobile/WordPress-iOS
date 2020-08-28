@@ -72,16 +72,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

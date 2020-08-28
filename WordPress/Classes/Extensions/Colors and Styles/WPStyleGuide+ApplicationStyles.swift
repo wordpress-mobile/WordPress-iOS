@@ -2,6 +2,15 @@ import Foundation
 import WordPressShared
 
 extension WPStyleGuide {
+    @objc
+    public class var preferredStatusBarStyle: UIStatusBarStyle {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .default
+        }
+
+        return .lightContent
+    }
+
     // MARK: - styles used before Muriel colors are enabled
     public class func navigationBarBackgroundImage() -> UIImage {
         return UIImage(color: WPStyleGuide.wordPressBlue())
