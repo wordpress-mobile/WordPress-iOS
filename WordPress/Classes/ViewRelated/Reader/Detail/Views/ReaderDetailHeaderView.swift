@@ -77,6 +77,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     @IBAction func didTapFollowButton(_ sender: Any) {
+        followButton.isSelected = !followButton.isSelected
         delegate?.didTapFollowButton()
     }
 
