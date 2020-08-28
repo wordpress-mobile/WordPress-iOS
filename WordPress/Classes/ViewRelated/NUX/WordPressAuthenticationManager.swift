@@ -68,7 +68,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
-                                                navBarBackgroundColor: .appBar,
+                                                navBarBackgroundColor: .appBarBackground,
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted)
 
