@@ -1,7 +1,9 @@
-import Foundation
+import UIKit
 
 class PageLayoutService {
     private struct Parameters {
+        static let previewWidth = "preview_width"
+        static let scale = "scale"
     }
 
     typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
@@ -53,6 +55,17 @@ class PageLayoutService {
 
     // Parameter Generation
     static func parameters() -> [String: AnyObject] {
-        return [:]
+        return [
+            Parameters.previewWidth: previewWidth() as AnyObject,
+            Parameters.scale: scale() as AnyObject
+        ]
+    }
+
+    static func previewWidth() -> String {
+        return "\(UIScreen.main.nativeBounds.width)"
+    }
+
+    static func scale() -> String {
+        return "\(UIScreen.main.nativeScale)"
     }
 }
