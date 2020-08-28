@@ -3,6 +3,7 @@ import Gutenberg
 
 class PageLayoutService {
     private struct Parameters {
+        static let supportedBlocks = "supported_blocks"
     }
 
     typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
@@ -54,6 +55,13 @@ class PageLayoutService {
 
     // Parameter Generation
     static func parameters() -> [String: AnyObject] {
-        return [:]
+        return [
+            Parameters.supportedBlocks: supportedBlocks() as AnyObject
+        ]
+    }
+
+    static func supportedBlocks() -> String {
+        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
     }
 }
