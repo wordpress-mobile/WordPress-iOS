@@ -722,11 +722,6 @@ extension WordPressAppDelegate {
                        object: nil)
 
         nc.addObserver(self,
-                       selector: #selector(handleUIContentSizeCategoryDidChangeNotification(_:)),
-                       name: UIContentSizeCategory.didChangeNotification,
-                       object: nil)
-
-        nc.addObserver(self,
                        selector: #selector(saveRecentSitesForExtensions),
                        name: .WPRecentSitesChanged,
                        object: nil)
@@ -760,10 +755,6 @@ extension WordPressAppDelegate {
 
     @objc fileprivate func handleLowMemoryWarningNotification(_ notification: NSNotification) {
         WPAnalytics.track(.lowMemoryWarning)
-    }
-
-    @objc fileprivate func handleUIContentSizeCategoryDidChangeNotification(_ notification: NSNotification) {
-        customizeAppearanceForTextElements()
     }
 }
 
@@ -875,19 +866,6 @@ extension WordPressAppDelegate {
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
-
-        customizeAppearanceForTextElements()
-    }
-
-    private func customizeAppearanceForTextElements() {
-        let maximumPointSize = WPStyleGuide.maxFontSize
-
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
-                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.semibold)]
-
-        WPStyleGuide.configureSearchBarTextAppearance()
-
-        SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
 }
 
