@@ -20,23 +20,28 @@ open class GravatarService {
     open func fetchProfile(email: String, onCompletion: @escaping ((_ profile: GravatarProfile?) -> Void)) {
         let remote = gravatarServiceRemote()
         remote.fetchProfile(email, success: { remoteProfile in
-            var profile = GravatarProfile()
-            profile.profileID = remoteProfile.profileID
-            profile.hash = remoteProfile.hash
-            profile.requestHash = remoteProfile.requestHash
-            profile.profileUrl = remoteProfile.profileUrl
-            profile.preferredUsername = remoteProfile.preferredUsername
-            profile.thumbnailUrl = remoteProfile.thumbnailUrl
-            profile.name = remoteProfile.name
-            profile.displayName = remoteProfile.displayName
-            onCompletion(profile)
-
+            GravatarService.parse(remoteProfile: remoteProfile, completion: onCompletion)
         }, failure: { error in
             DDLogError(error.debugDescription)
             onCompletion(nil)
         })
     }
 
+    /// This method fetches the Gravatar profile for the specified email address hash.
+    ///
+    /// - Parameters:
+    ///     - email: The hash of the email address of the gravatar profile to fetch.
+    ///     - completion: A completion block.
+    ///
+    open func fetchProfile(hash: String, onCompletion: @escaping ((_ profile: GravatarProfile?) -> Void)) {
+        let remote = gravatarServiceRemote()
+        remote.fetchProfile(hash: hash, success: { remoteProfile in
+            GravatarService.parse(remoteProfile: remoteProfile, completion: onCompletion)
+        }, failure: { error in
+            DDLogError(error.debugDescription)
+            onCompletion(nil)
+        })
+    }
 
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
@@ -71,5 +76,21 @@ open class GravatarService {
     ///
     func gravatarServiceRemote() -> GravatarServiceRemote {
         return GravatarServiceRemote()
+    }
+
+    private static func parse(remoteProfile: RemoteGravatarProfile, completion: ((_ profile: GravatarProfile?) -> Void)) {
+        var profile = GravatarProfile()
+        profile.profileID = remoteProfile.profileID
+        profile.hash = remoteProfile.hash
+        profile.requestHash = remoteProfile.requestHash
+        profile.profileUrl = remoteProfile.profileUrl
+        profile.preferredUsername = remoteProfile.preferredUsername
+        profile.thumbnailUrl = remoteProfile.thumbnailUrl
+        profile.name = remoteProfile.name
+        profile.displayName = remoteProfile.displayName
+        profile.formattedName = remoteProfile.formattedName
+        profile.aboutMe = remoteProfile.aboutMe
+        profile.currentLocation = remoteProfile.currentLocation
+        completion(profile)
     }
 }

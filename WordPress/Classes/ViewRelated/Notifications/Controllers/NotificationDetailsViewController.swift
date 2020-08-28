@@ -760,6 +760,18 @@ private extension NotificationDetailsViewController {
             UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
         }
 
+        if FeatureFlag.avatarsBasicProfile.enabled {
+            cell.onGravatarClick = { [weak self] gravatarImageView in
+                guard let strongSelf = self else {
+                    return
+                }
+                BasicUserProfileViewController.present(context: strongSelf,
+                                                       view: gravatarImageView,
+                                                       email: userBlock.metaLinksEmail,
+                                                       avatarURL: userBlock.media.first?.mediaURL)
+            }
+        }
+
         // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)

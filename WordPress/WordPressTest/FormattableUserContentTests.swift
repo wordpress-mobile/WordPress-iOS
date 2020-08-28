@@ -15,6 +15,7 @@ final class FormattableUserContentTests: XCTestCase {
         static let metaTitlesHomeURL = URL(string: "http://someone.wordpress.com")
         static let notificationId = "11111"
         static let metaSiteId = NSNumber(integerLiteral: 136505344)
+        static let metaEmail = "someone@gmail.com"
 
         static let imageURL = URL(string: "https://2.gravatar.com/avatar/1111")!
         static let testImage = UIImage()
@@ -127,6 +128,11 @@ final class FormattableUserContentTests: XCTestCase {
     func testMetaSiteIdReturnsExpectation() {
         let id = subject?.metaSiteID
         XCTAssertEqual(id, Expectations.metaSiteId)
+    }
+
+    func testMetaLinkEmailReturnsExpectation() {
+        let id = subject?.metaLinksEmail
+        XCTAssertEqual(id, Expectations.metaEmail)
     }
 
     private func mockDictionary() -> [String: AnyObject] {

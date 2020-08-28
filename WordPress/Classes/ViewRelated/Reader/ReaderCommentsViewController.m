@@ -1133,6 +1133,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.tableView reloadData];
 }
 
+- (void)cell:(ReaderCommentCell *)cell didTapGravatar:(Comment *)comment
+{
+    if (![Feature enabled:FeatureFlagAvatarsBasicProfile]) {
+        return;
+    }
+
+    [BasicUserProfileViewController presentWithContext:self
+                                                  view:cell.avatarImageView
+                                                 email:comment.author_email
+                                             avatarURL:comment.avatarURLForDisplay];
+}
+
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
     return NO;
