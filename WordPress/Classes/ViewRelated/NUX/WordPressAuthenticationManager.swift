@@ -68,7 +68,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
-                                                navBarBackgroundColor: .appBarBackground,
+                                                navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // This is temporary while we support old style nav bars in some of the auth flows
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted)
 
@@ -79,9 +79,9 @@ class WordPressAuthenticationManager: NSObject {
                                                               textButtonColor: .brand,
                                                               textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
-                                                              navBarBackgroundColor: .basicBackground,
-                                                              navButtonTextColor: .brand,
-                                                              navTitleTextColor: .text)
+                                                              navBarBackgroundColor: .basicBackground,  // TODO: Replace with .appBarBackground once new nav bar styles are merged
+                                                              navButtonTextColor: .brand,   // TODO: Replace with .appBarTint
+                                                              navTitleTextColor: .text)     // TODO: Replace with .appBarText
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
