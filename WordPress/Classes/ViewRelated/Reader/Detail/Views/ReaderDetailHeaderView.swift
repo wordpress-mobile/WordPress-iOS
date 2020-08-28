@@ -23,7 +23,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
-    
+
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
@@ -105,7 +105,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
-        
+
         titleLabel.backgroundColor = .basicBackground
         blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
     }
