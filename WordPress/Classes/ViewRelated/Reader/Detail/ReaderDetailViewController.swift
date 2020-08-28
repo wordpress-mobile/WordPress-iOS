@@ -7,6 +7,7 @@ protocol ReaderDetailView: class {
     func showErrorWithWebAction()
     func show(title: String?)
     func scroll(to: String)
+    func updateHeader()
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -181,6 +182,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
         })
+    }
+
+    func updateHeader() {
+        header.refreshFollowButton()
     }
 
     deinit {

@@ -68,6 +68,10 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         featuredImageBottomPaddingView.isHidden = true
     }
 
+    func refreshFollowButton() {
+        configureFollowButton()
+    }
+
     @IBAction func didTapBlogName(_ sender: Any) {
         delegate?.didTapBlogName()
     }
@@ -77,7 +81,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     @IBAction func didTapFollowButton(_ sender: Any) {
-        followButton.isSelected = !followButton.isSelected
         delegate?.didTapFollowButton()
     }
 
