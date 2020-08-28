@@ -435,6 +435,10 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
     }
+
+    func didTapFollowButton() {
+        
+    }
 }
 
 // MARK: - State Restoration

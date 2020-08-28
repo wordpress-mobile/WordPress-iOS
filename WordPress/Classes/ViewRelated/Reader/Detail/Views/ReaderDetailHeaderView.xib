@@ -86,7 +86,7 @@
                                 <action selector="didTapBlogName:" destination="qVA-Br-hgv" eventType="touchUpInside" id="EEe-cO-K8a"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1v1-3D-xzR">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1v1-3D-xzR">
                             <rect key="frame" x="374" y="4" width="24" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="7u8-dA-Nsi"/>
@@ -97,6 +97,17 @@
                             </state>
                             <connections>
                                 <action selector="didTapMenuButton:" destination="qVA-Br-hgv" eventType="touchUpInside" id="haw-4k-Oh6"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EaI-jA-EG4">
+                            <rect key="frame" x="370" y="0.0" width="44" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="20k-ke-hxQ"/>
+                                <constraint firstAttribute="height" constant="40" id="DvC-fl-3Tm"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                            <connections>
+                                <action selector="didTapFollowButton:" destination="qVA-Br-hgv" eventType="touchUpInside" id="EQE-Mj-ned"/>
                             </connections>
                         </button>
                     </subviews>
@@ -112,8 +123,10 @@
                         <constraint firstAttribute="height" constant="40" id="d4f-EY-yyM"/>
                         <constraint firstItem="LdR-mh-skh" firstAttribute="leading" secondItem="kSE-xw-mlu" secondAttribute="trailing" constant="10" id="eQL-lo-SDI"/>
                         <constraint firstItem="nBe-4U-XT8" firstAttribute="leading" secondItem="kSE-xw-mlu" secondAttribute="trailing" constant="10" id="iQ2-fQ-TJ2"/>
+                        <constraint firstAttribute="trailing" secondItem="EaI-jA-EG4" secondAttribute="trailing" id="lhy-BW-geI"/>
                         <constraint firstItem="LdR-mh-skh" firstAttribute="top" secondItem="KHc-Ky-UGH" secondAttribute="top" constant="22" id="mVJ-rr-XuT"/>
                         <constraint firstItem="nBe-4U-XT8" firstAttribute="top" secondItem="KHc-Ky-UGH" secondAttribute="top" constant="2" id="ryU-tO-9B4"/>
+                        <constraint firstItem="EaI-jA-EG4" firstAttribute="centerY" secondItem="KHc-Ky-UGH" secondAttribute="centerY" id="zQS-zc-m5Y"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DqP-ww-h6l">
@@ -186,6 +199,7 @@
                 <outlet property="dateLabel" destination="CJe-cC-zGx" id="cIX-oU-7Gh"/>
                 <outlet property="featuredImageBottomPaddingView" destination="z3A-FY-v8Z" id="pOt-BD-qCE"/>
                 <outlet property="featuredImageView" destination="cjR-PP-Ed6" id="OfA-1F-NXV"/>
+                <outlet property="followButton" destination="EaI-jA-EG4" id="PMJ-Ah-b0r"/>
                 <outlet property="headerView" destination="KHc-Ky-UGH" id="eLs-Cu-7cX"/>
                 <outlet property="menuButton" destination="1v1-3D-xzR" id="12P-dV-Zzr"/>
                 <outlet property="titleBottomPaddingView" destination="VZW-x2-i8F" id="hHj-gn-v51"/>

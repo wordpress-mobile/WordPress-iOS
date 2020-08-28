@@ -5,6 +5,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
+    func didTapFollowButton()
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
@@ -21,7 +22,8 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var byLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-
+    @IBOutlet weak var followButton: UIButton!
+    
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
@@ -54,6 +56,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureByLabel()
         configureAuthorLabel()
         configureDateLabel()
+        configureFollowButton()
         configureNotifications()
 
         prepareForVoiceOver()
@@ -71,6 +74,10 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
         delegate?.didTapMenuButton(sender)
+    }
+
+    @IBAction func didTapFollowButton(_ sender: Any) {
+        delegate?.didTapFollowButton()
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
@@ -216,6 +223,13 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     private func configureDateLabel() {
         dateLabel.text = post?.dateForDisplay()?.mediumString()
+    }
+
+    private func configureFollowButton() {
+        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.accent), for: .normal)
+        followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
+
+        followButton.isSelected = post?.isFollowing() ?? false
     }
 
     private func configureNotifications() {
