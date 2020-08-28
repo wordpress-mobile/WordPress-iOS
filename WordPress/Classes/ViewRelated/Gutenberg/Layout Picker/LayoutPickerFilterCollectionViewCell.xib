@@ -19,43 +19,41 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Adq-89-2rL">
                         <rect key="frame" x="0.0" y="0.0" width="105" height="44"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Vvr-2Z-jvR">
-                                <rect key="frame" x="34" y="-3" width="37.5" height="50"/>
-                                <subviews>
-                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FdX-4a-9fh">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="50"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="JcQ-0B-dVL"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-Oy-qLj">
-                                        <rect key="frame" x="0.0" y="0.0" width="37.5" height="50"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
                         <color key="backgroundColor" systemColor="quaternarySystemFillColor" red="0.4549019608" green="0.4549019608" blue="0.50196078430000002" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerX" secondItem="Adq-89-2rL" secondAttribute="centerX" id="BrQ-Zo-Kxg"/>
-                            <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerY" secondItem="Adq-89-2rL" secondAttribute="centerY" id="Rac-cJ-KOo"/>
-                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <integer key="value" value="22"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Vvr-2Z-jvR">
+                        <rect key="frame" x="34" y="0.0" width="37.5" height="44"/>
+                        <subviews>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FdX-4a-9fh">
+                                <rect key="frame" x="0.0" y="0.0" width="20" height="44"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="JcQ-0B-dVL"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-Oy-qLj">
+                                <rect key="frame" x="0.0" y="0.0" width="37.5" height="44"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Adq-89-2rL" secondAttribute="bottom" id="8xh-74-ZmN"/>
+                <constraint firstItem="Vvr-2Z-jvR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" id="9Fx-oH-x67"/>
                 <constraint firstItem="Adq-89-2rL" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="IoE-dh-5mw"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Vvr-2Z-jvR" secondAttribute="bottom" id="WM8-xG-j4o"/>
                 <constraint firstAttribute="trailing" secondItem="Adq-89-2rL" secondAttribute="trailing" id="lxm-yX-9fj"/>
+                <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerY" secondItem="Adq-89-2rL" secondAttribute="centerY" id="um6-vS-jCs"/>
+                <constraint firstItem="Vvr-2Z-jvR" firstAttribute="centerX" secondItem="Adq-89-2rL" secondAttribute="centerX" id="vB0-lT-YyB"/>
                 <constraint firstItem="Adq-89-2rL" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="wlB-di-NLv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
