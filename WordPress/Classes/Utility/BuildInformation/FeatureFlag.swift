@@ -63,6 +63,16 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         }
     }
+
+    /// This key must match the server-side one for remote feature flagging
+    var remoteKey: String? {
+        switch self {
+            case .unifiedAuth:
+                return "wordpress_ios_unified_login_and_signup"
+            default:
+                return nil
+        }
+    }
 }
 
 /// Objective-C bridge for FeatureFlag.
