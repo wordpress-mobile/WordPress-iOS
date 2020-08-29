@@ -91,6 +91,7 @@ open class GravatarService {
         profile.formattedName = remoteProfile.formattedName
         profile.aboutMe = remoteProfile.aboutMe
         profile.currentLocation = remoteProfile.currentLocation
+        profile.urls = remoteProfile.urls
         completion(profile)
     }
 }

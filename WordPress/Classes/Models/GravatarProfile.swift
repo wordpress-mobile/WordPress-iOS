@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 public struct GravatarProfile {
 
@@ -13,4 +14,5 @@ public struct GravatarProfile {
     var formattedName = ""
     var aboutMe = ""
     var currentLocation = ""
+    var urls: [RemoteGravatarProfileUrl] = []
 }
