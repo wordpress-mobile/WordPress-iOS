@@ -117,6 +117,9 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
-        imageView.downloadImage(from: url, success: nil, failure: nil)
+        imageView.startGhostAnimation()
+        imageView.downloadImage(from: url, success: { [weak self] _ in
+            self?.imageView.stopGhostAnimation()
+        }, failure: nil)
     }
 }
