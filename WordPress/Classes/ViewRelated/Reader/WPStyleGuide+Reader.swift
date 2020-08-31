@@ -128,7 +128,8 @@ extension WPStyleGuide {
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.serifFontForTextStyle(Detail.titleTextStyle, fontWeight: .semibold)
+        let style: UIFont.TextStyle = UIDevice.isPad() ? .title1 : .title2
+        let font = WPStyleGuide.serifFontForTextStyle(style, fontWeight: .semibold)
 
         return [
             .font: font
