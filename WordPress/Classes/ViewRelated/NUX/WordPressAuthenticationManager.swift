@@ -35,7 +35,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress(),
-                                                                showLoginOptions: !FeatureFlag.unifiedWordPress.enabled,
+                                                                showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
