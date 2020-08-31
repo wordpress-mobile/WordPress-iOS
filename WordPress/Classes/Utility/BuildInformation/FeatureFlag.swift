@@ -63,7 +63,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .whatIsNew:
             return BuildConfiguration.current == .localDeveloper
         case .newNavBarAppearance:
-            return BuildConfiguration.current == .a8cBranchTest
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 }
