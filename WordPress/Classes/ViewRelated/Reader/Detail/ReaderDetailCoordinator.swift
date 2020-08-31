@@ -325,9 +325,14 @@ class ReaderDetailCoordinator {
             return
         }
 
-        ReaderFollowAction().execute(with: post, context: coreDataStack.mainContext) { [weak self] in
-            self?.view?.updateHeader()
-        }
+        ReaderFollowAction().execute(with: post,
+                                     context: coreDataStack.mainContext,
+                                     completion: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     },
+                                     failure: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     })
     }
 
     /// Given a URL presents it in a new Reader detail screen
