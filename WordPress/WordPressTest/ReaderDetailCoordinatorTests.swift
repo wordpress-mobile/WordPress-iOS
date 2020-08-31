@@ -355,6 +355,8 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallScrollToWith = to
     }
 
+    func updateHeader() { }
+
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallPresentWith = viewControllerToPresent
     }

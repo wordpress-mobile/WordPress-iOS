@@ -128,15 +128,10 @@ extension WPStyleGuide {
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Detail.titleTextStyle)
-
-        let lineHeight = font.pointSize + 10.0
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        let style: UIFont.TextStyle = UIDevice.isPad() ? .title1 : .title2
+        let font = WPStyleGuide.serifFontForTextStyle(style, fontWeight: .semibold)
 
         return [
-            .paragraphStyle: paragraphStyle,
             .font: font
         ]
     }
@@ -198,14 +193,6 @@ extension WPStyleGuide {
 
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
         label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
-    }
-
-    @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
-        button.setTitleColor(.primary, for: UIControl.State())
-        button.setTitleColor(.primaryDark, for: .highlighted)
-        button.titleLabel?.allowsDefaultTighteningForTruncation = false
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
     }
 
     @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
@@ -562,7 +549,7 @@ extension WPStyleGuide {
     }
 
     public struct Detail {
-        public static let titleTextStyle: UIFont.TextStyle = .title1
+        public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
     }
 
