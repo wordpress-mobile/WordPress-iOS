@@ -23,6 +23,8 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
+    @IBOutlet weak var iPadFollowButton: UIButton!
+
 
     /// The post to show details in the header
     ///
@@ -113,6 +115,12 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        configureFollowButton()
     }
 
     private func configureSiteImage() {
@@ -233,8 +241,14 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     private func configureFollowButton() {
         followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.accent), for: .normal)
         followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
+        WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
 
         followButton.isSelected = post?.isFollowing() ?? false
+        iPadFollowButton.isSelected = post?.isFollowing() ?? false
+
+        let isCompact = traitCollection.verticalSizeClass == .compact
+        followButton.isHidden = isCompact
+        iPadFollowButton.isHidden = !isCompact
     }
 
     private func configureNotifications() {

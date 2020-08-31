@@ -110,6 +110,12 @@
                                 <action selector="didTapFollowButton:" destination="qVA-Br-hgv" eventType="touchUpInside" id="EQE-Mj-ned"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYQ-om-wOU">
+                            <rect key="frame" x="368" y="3" width="30" height="34"/>
+                            <connections>
+                                <action selector="didTapFollowButton:" destination="qVA-Br-hgv" eventType="touchUpInside" id="tiw-jb-V5i"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <gestureRecognizers/>
@@ -120,8 +126,10 @@
                         <constraint firstAttribute="trailing" secondItem="LdR-mh-skh" secondAttribute="trailing" constant="44" id="LTM-v5-cek"/>
                         <constraint firstAttribute="trailing" secondItem="nBe-4U-XT8" secondAttribute="trailing" constant="44" id="P2W-lX-oLR"/>
                         <constraint firstAttribute="centerY" secondItem="kSE-xw-mlu" secondAttribute="centerY" id="WSf-k0-EUE"/>
+                        <constraint firstAttribute="trailing" secondItem="yYQ-om-wOU" secondAttribute="trailing" constant="16" id="Ygo-oV-pD2"/>
                         <constraint firstAttribute="height" constant="40" id="d4f-EY-yyM"/>
                         <constraint firstItem="LdR-mh-skh" firstAttribute="leading" secondItem="kSE-xw-mlu" secondAttribute="trailing" constant="10" id="eQL-lo-SDI"/>
+                        <constraint firstItem="yYQ-om-wOU" firstAttribute="centerY" secondItem="KHc-Ky-UGH" secondAttribute="centerY" id="fAJ-J7-77g"/>
                         <constraint firstItem="nBe-4U-XT8" firstAttribute="leading" secondItem="kSE-xw-mlu" secondAttribute="trailing" constant="10" id="iQ2-fQ-TJ2"/>
                         <constraint firstAttribute="trailing" secondItem="EaI-jA-EG4" secondAttribute="trailing" id="lhy-BW-geI"/>
                         <constraint firstItem="LdR-mh-skh" firstAttribute="top" secondItem="KHc-Ky-UGH" secondAttribute="top" constant="22" id="mVJ-rr-XuT"/>
@@ -201,6 +209,7 @@
                 <outlet property="featuredImageView" destination="cjR-PP-Ed6" id="OfA-1F-NXV"/>
                 <outlet property="followButton" destination="EaI-jA-EG4" id="PMJ-Ah-b0r"/>
                 <outlet property="headerView" destination="KHc-Ky-UGH" id="eLs-Cu-7cX"/>
+                <outlet property="iPadFollowButton" destination="yYQ-om-wOU" id="9W4-fb-MS4"/>
                 <outlet property="menuButton" destination="1v1-3D-xzR" id="12P-dV-Zzr"/>
                 <outlet property="titleBottomPaddingView" destination="VZW-x2-i8F" id="hHj-gn-v51"/>
                 <outlet property="titleLabel" destination="vvq-7F-Zcz" id="c17-PA-dEb"/>
