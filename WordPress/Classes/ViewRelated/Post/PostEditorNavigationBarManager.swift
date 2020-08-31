@@ -231,7 +231,13 @@ extension PostEditorNavigationBarManager {
 
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
-        static let blogPicker = Fonts.semiBold
+        static var blogPicker: UIFont {
+            if FeatureFlag.newNavBarAppearance.enabled {
+                return WPStyleGuide.navigationBarStandardFont
+            } else {
+                return semiBold
+            }
+        }
     }
 
     private enum Assets {
