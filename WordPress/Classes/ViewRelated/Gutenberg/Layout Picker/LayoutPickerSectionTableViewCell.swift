@@ -30,6 +30,8 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
         }
     }
 
+    var isGhostCell: Bool = false
+
     override func prepareForReuse() {
         section?.scrollOffset = collectionView.contentOffset
         delegate = nil
@@ -41,6 +43,8 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
         super.awakeFromNib()
         collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier)
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+        categoryTitle.layer.masksToBounds = true
+        categoryTitle.layer.cornerRadius = 4
     }
 
     private func deselectItem(_ indexPath: IndexPath) {
@@ -86,7 +90,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDelegateFlowLayout {
 
 extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30 // Static layouts currently only have one layout per category. Adding multiple in here to help test
+        return isGhostCell ? 1 : layouts.count
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -94,10 +98,15 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? LayoutPickerCollectionViewCell else {
             fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
         }
-        let layout = layouts[0] // Static layouts currently only have one layout per category. Reusing the first to help test
+        guard !isGhostCell else {
+            cell.startGhostAnimation()
+            return cell
+        }
+
+        let layout = layouts[indexPath.row]
         cell.layout = layout
         cell.isAccessibilityElement = true
-        cell.accessibilityLabel = layout.title + " \(indexPath.item)"
+        cell.accessibilityLabel = layout.slug
         return cell
     }
 }
