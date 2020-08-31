@@ -656,7 +656,6 @@ EXTERNAL SOURCES:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-    :tag: v1.35.0
   WordPressShared:
     :branch: feature/fixed-size-serifs
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -678,7 +677,6 @@ CHECKOUT OPTIONS:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-    :tag: v1.35.0
   WordPressShared:
     :commit: 35741b509fa7fb2e5f52f9d16ea20fdf87e29bf8
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -779,6 +777,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 7c4ef9eac3dd1a71d4f896f76a4a30503c2c85b2
+PODFILE CHECKSUM: ded898e3da749678e4cfdac5e70ecc4dd4fce1a5
 
 COCOAPODS: 1.9.3
