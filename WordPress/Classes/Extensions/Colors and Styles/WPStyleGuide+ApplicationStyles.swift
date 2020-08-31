@@ -11,6 +11,16 @@ extension WPStyleGuide {
         return .lightContent
     }
 
+    @objc
+    public class var navigationBarStandardFont: UIFont {
+        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+    }
+
+    @objc
+    public class var navigationBarLargeFont: UIFont {
+        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+    }
+
     // MARK: - styles used before Muriel colors are enabled
     public class func navigationBarBackgroundImage() -> UIImage {
         return UIImage(color: WPStyleGuide.wordPressBlue())
@@ -36,12 +46,19 @@ extension WPStyleGuide {
         navigationAppearance.barTintColor = .appBarBackground
         navigationAppearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
 
+        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
+        if FeatureFlag.newNavBarAppearance.enabled {
+            textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
+        }
+
+        navigationAppearance.titleTextAttributes = textAttributes
+
         if #available(iOS 13.0, *) {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .appBarBackground
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
+            appearance.titleTextAttributes = textAttributes
 
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance

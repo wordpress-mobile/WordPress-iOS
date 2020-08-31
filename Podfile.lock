@@ -508,7 +508,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.24.0-beta)
   - WordPressKit (~> 4.15.0-beta.2)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (~> 1.11)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `feature/fixed-size-serifs`)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/df6f8026b103fb0f381f738920a6cef89c7954f8/third-party-podspecs/Yoga.podspec.json`)
@@ -558,7 +558,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -657,6 +656,10 @@ EXTERNAL SOURCES:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+    :tag: v1.35.0
+  WordPressShared:
+    :branch: feature/fixed-size-serifs
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/df6f8026b103fb0f381f738920a6cef89c7954f8/third-party-podspecs/Yoga.podspec.json
 
@@ -675,6 +678,10 @@ CHECKOUT OPTIONS:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+    :tag: v1.35.0
+  WordPressShared:
+    :commit: 35741b509fa7fb2e5f52f9d16ea20fdf87e29bf8
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -741,7 +748,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 20deb1f6f001000d1f2603722ec110c66c74796b
   ReactCommon: 48926fc48fcd7c8a629860049ffba9c23b4005dc
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
-  RNCMaskedView: 72b5012baac53b13a9ba717eaa554afd3f2930c5
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: 82a89b0fde0a37e633c6233418f7249e2f8e59b5
   RNReanimated: 13f7a6a22667c4f00aac217bc66f94e8560b3d59
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
@@ -772,6 +779,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 4cc1c32126496f7c23ca9f305274ed4b94ff366a
+PODFILE CHECKSUM: 7c4ef9eac3dd1a71d4f896f76a4a30503c2c85b2
 
 COCOAPODS: 1.9.3
