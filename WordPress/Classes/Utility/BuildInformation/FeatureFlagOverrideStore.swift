@@ -6,6 +6,8 @@ import Foundation
 protocol OverrideableFlag: CustomStringConvertible {
     var enabled: Bool { get }
     var canOverride: Bool { get }
+
+    /// An optional key identifying this flag server-side. Not all flags will have this key – they may not use remote feature flagging
     var remoteKey: String? { get }
 }
 
