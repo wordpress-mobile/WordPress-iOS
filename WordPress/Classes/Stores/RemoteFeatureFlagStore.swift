@@ -3,7 +3,16 @@ import WordPressKit
 
 class RemoteFeatureFlagStore {
 
-    init() {
+    /// Alllow injecting the FeatureFlagRemote for tests (or to customize the WordPress.com API)
+    private let remote: FeatureFlagRemote
+
+    /// Create a new RemoteFeatureFlagStore, with an optionally injected FeatureFlagRemote. If none is provided, it will use  an anonymous connection to WordPress.com.
+    ///
+    /// - Parameters:
+    ///     - remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
+    ///     to authenticate with the Remote Feature Flags endpoint – this alllows customizing flags server-side on a per-user basis.
+    init(remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())) {
+        self.remote = remote
         DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
@@ -11,9 +20,6 @@ class RemoteFeatureFlagStore {
     /// - Parameters:
     ///     - callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(then callback: FetchCallback? = nil) {
-        // We currently use an anonymous connection to WordPress.com, because we don't need user state.
-        // In the future, we could provide login credentials to the endpoint, which would allow customizing flags server-side on a per-user basis.
-        let remote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())
         remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
             switch result {
                 case .success(let flags):
@@ -27,7 +33,7 @@ class RemoteFeatureFlagStore {
     }
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
-    public func hasValue(for flag: FeatureFlag) -> Bool {
+    public func hasValue(for flag: OverrideableFlag) -> Bool {
         guard let remoteKey = flag.remoteKey else {
             return false
         }
@@ -40,7 +46,7 @@ class RemoteFeatureFlagStore {
     /// If the flag exists in the local cache, the current value will be returned.  If the flag does not exist in the local cache, the compile-time default will be returned.
     /// - Parameters:
     ///     - flag: The `FeatureFlag` object associated with a remote feature flag
-    public func value(for flag: FeatureFlag) -> Bool {
+    public func value(for flag: OverrideableFlag) -> Bool {
         guard
             let remoteKey = flag.remoteKey, // Not all flags need remote keys, since they may not use remote feature flagging
             let value = cache[remoteKey]    // The value may not be in the cache if this is the first run
@@ -57,7 +63,7 @@ class RemoteFeatureFlagStore {
 }
 
 extension RemoteFeatureFlagStore {
-    private struct Constants {
+    struct Constants {
         static let DeviceIdKey = "FeatureFlagDeviceId"
         static let CachedFlagsKey = "FeatureFlagStoreCache"
     }

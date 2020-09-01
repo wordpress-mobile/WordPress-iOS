@@ -6,6 +6,7 @@ import Foundation
 protocol OverrideableFlag: CustomStringConvertible {
     var enabled: Bool { get }
     var canOverride: Bool { get }
+    var remoteKey: String? { get }
 }
 
 /// Used to override values for feature flags at runtime in debug builds
