@@ -138,6 +138,9 @@ import WordPressShared
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
 
+        } else if topicIsFollowing(topic) {
+            WPAnalytics.track(.readerFollowingShown, properties: properties)
+
         } else if isTopicSite(topic) {
             WPAnalytics.track(.readerBlogPreviewed, properties: properties)
 
