@@ -7,11 +7,9 @@ class RemoteFeatureFlagStore {
         DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
-    /**
-     Fetches remote feature flags from the server.
-
-     - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
-    */
+    /// Fetches remote feature flags from the server.
+    /// - Parameters:
+    ///     - callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(then callback: FetchCallback? = nil) {
         // We currently use an anonymous connection to WordPress.com, because we don't need user state.
         // In the future, we could provide login credentials to the endpoint, which would allow customizing flags server-side on a per-user basis.
