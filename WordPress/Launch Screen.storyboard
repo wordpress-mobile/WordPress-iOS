@@ -20,12 +20,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="FfR-yo-4a1">
-                                <rect key="frame" x="182" y="422" width="50" height="52"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beauVoyageLaunch" translatesAutoresizingMaskIntoConstraints="NO" id="FfR-yo-4a1">
+                                <rect key="frame" x="132" y="373" width="150" height="150"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="GLI-Yv-vi2"/>
+                                    <constraint firstAttribute="height" constant="150" id="a7m-z9-MTk"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" name="WordPressBlue50"/>
+                        <color key="backgroundColor" name="Blue0"/>
                         <constraints>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="T0u-ej-Kyp"/>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="a6p-Lx-MaV"/>
@@ -38,9 +42,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-wp" width="50" height="52"/>
-        <namedColor name="WordPressBlue50">
-            <color red="0.0" green="0.37647058823529411" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="beauVoyageLaunch" width="512" height="512"/>
+        <namedColor name="Blue0">
+            <color red="0.93725490196078431" green="0.95294117647058818" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
