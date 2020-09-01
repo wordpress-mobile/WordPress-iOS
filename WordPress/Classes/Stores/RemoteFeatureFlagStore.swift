@@ -27,7 +27,7 @@ class RemoteFeatureFlagStore {
     }
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
-    public func hasRemoteValueForFlag(_ flag: FeatureFlag) -> Bool {
+    public func hasValue(for flag: FeatureFlag) -> Bool {
         guard let remoteKey = flag.remoteKey else {
             return false
         }
@@ -40,7 +40,7 @@ class RemoteFeatureFlagStore {
     /// If the flag exists in the local cache, the current value will be returned.  If the flag does not exist in the local cache, the compile-time default will be returned.
     /// - Parameters:
     ///     - flag: The `FeatureFlag` object associated with a remote feature flag
-    public func valueForFlag(_ flag: FeatureFlag) -> Bool {
+    public func value(for flag: FeatureFlag) -> Bool {
         guard
             let remoteKey = flag.remoteKey, // Not all flags need remote keys, since they may not use remote feature flagging
             let value = cache[remoteKey]    // The value may not be in the cache if this is the first run
