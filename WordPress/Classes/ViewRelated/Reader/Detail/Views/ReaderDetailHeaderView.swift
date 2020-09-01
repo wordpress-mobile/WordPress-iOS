@@ -6,7 +6,6 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
     func didTapFollowButton()
-    func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable {
@@ -15,8 +14,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var blogURLLabel: UILabel!
     @IBOutlet weak var blogNameButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet weak var featuredImageBottomPaddingView: ReaderSpacerView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleBottomPaddingView: UIView!
     @IBOutlet weak var byLabel: UILabel!
@@ -29,13 +26,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
-
-    /// Image loader for the featured image
-    ///
-    private lazy var featuredImageLoader: ImageLoader = {
-        // Allow for large GIFs to animate on the detail page
-        return ImageLoader(imageView: featuredImageView, gifStrategy: .largeGIFs)
-    }()
 
     /// The user interface direction for the view's semantic content attribute.
     ///
@@ -53,7 +43,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureSiteImage()
         configureURL()
         configureBlogName()
-        configureFeaturedImage()
         configureTitle()
         configureByLabel()
         configureAuthorLabel()
@@ -64,10 +53,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         prepareForVoiceOver()
         prepareMenuForVoiceOver()
         preparePostTitleForVoiceOver()
-
-        // Hide the featured image and its padding until we know there is one to load.
-        featuredImageView.isHidden = true
-        featuredImageBottomPaddingView.isHidden = true
     }
 
     func refreshFollowButton() {
@@ -95,14 +80,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         }
 
         delegate?.didTapHeaderAvatar()
-    }
-
-    @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
-        guard gesture.state == .ended else {
-            return
-        }
-
-        delegate?.didTapFeaturedImage(featuredImageView)
     }
 
     override func awakeFromNib() {
@@ -162,59 +139,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
             let tgr = UITapGestureRecognizer(target: self, action: #selector(didTapHeaderAvatar(_:)))
             blavatarImageView.addGestureRecognizer(tgr)
         }
-    }
-
-    private func configureFeaturedImage() {
-        guard let post = post,
-            !post.contentIncludesFeaturedImage(),
-            let featuredImageURL = post.featuredImageURLForDisplay() else {
-                return
-        }
-
-        let host = MediaHost(with: post, failure: { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
-        })
-
-        let maxImageWidth = frame.width
-        let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
-        featuredImageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
-            guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
-                return
-            }
-            DispatchQueue.main.async {
-                strongSelf.configureFeaturedImageConstraints(with: size)
-                strongSelf.configureFeaturedImageGestures()
-            }
-        }) { error in
-            DDLogError("Error loading featured image in reader detail: \(String(describing: error))")
-        }
-    }
-
-    private func configureFeaturedImageConstraints(with size: CGSize) {
-        // Unhide the views
-        featuredImageView.isHidden = false
-        featuredImageBottomPaddingView.isHidden = false
-
-        // Now that we have the image, create an aspect ratio constraint for
-        // the featuredImageView
-        let ratio = size.height / size.width
-        let constraint = NSLayoutConstraint(item: featuredImageView as Any,
-                                            attribute: .height,
-                                            relatedBy: .equal,
-                                            toItem: featuredImageView!,
-                                            attribute: .width,
-                                            multiplier: ratio,
-                                            constant: 0)
-        constraint.priority = .defaultHigh
-        featuredImageView.addConstraint(constraint)
-        featuredImageView.setNeedsUpdateConstraints()
-    }
-
-    private func configureFeaturedImageGestures() {
-        // Listen for taps so we can display the image detail
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(didTapFeaturedImage(_:)))
-        featuredImageView.addGestureRecognizer(tgr)
     }
 
     private func configureTitle() {
