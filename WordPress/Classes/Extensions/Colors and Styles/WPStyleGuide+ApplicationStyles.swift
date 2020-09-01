@@ -34,6 +34,7 @@ extension WPStyleGuide {
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .appBarTint
         navigationAppearance.barTintColor = .appBarBackground
+        navigationAppearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
 
         if #available(iOS 13.0, *) {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
