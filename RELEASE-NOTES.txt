@@ -2,6 +2,7 @@
 -----
 * [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (https://git.io/JUU6a)
 * [**] You can now follow conversations for P2 sites
+* [**] Fixes issue where the stats were not updating when switching between sites in My Sites.
 
 15.6
 -----
