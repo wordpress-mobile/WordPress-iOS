@@ -54,6 +54,7 @@ import Foundation
     case selectInterestsPicked
     case readerDiscoverShown
     case readerFollowingShown
+    case readerLikedShown
     case readerBlogPreviewed
     case readerDiscoverPaginated
     case readerPostCardTapped
@@ -149,6 +150,8 @@ import Foundation
             return "reader_discover_shown"
         case .readerFollowingShown:
             return "reader_following_shown"
+        case .readerLikedShown:
+            return "reader_liked_shown"
         case .readerBlogPreviewed:
             return "reader_blog_previewed"
         case .readerDiscoverPaginated:

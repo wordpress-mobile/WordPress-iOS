@@ -141,6 +141,9 @@ import WordPressShared
         } else if topicIsFollowing(topic) {
             WPAnalytics.track(.readerFollowingShown, properties: properties)
 
+        } else if topicIsLiked(topic) {
+            WPAnalytics.track(.readerLikedShown, properties: properties)
+
         } else if isTopicSite(topic) {
             WPAnalytics.track(.readerBlogPreviewed, properties: properties)
 
