@@ -36,6 +36,7 @@
 
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateViewWasSelected)];
         [self addGestureRecognizer:tap];
+        [self prepareForVoiceOver];
     }
 
     return self;
@@ -107,6 +108,7 @@
     }
     self.label.text = item.displayName;
     self.iconImageView.hidden = !item.selected;
+    [self prepareForVoiceOver];
 }
 
 - (void)setDrawsDesignLineSeparator:(BOOL)drawsDesignLineSeparator
@@ -194,6 +196,21 @@
 - (void)itemSelectionChanged:(NSNotification *)notification
 {
     self.iconImageView.hidden = !self.item.selected;
+    [self prepareForVoiceOver];
+}
+
+#pragma mark - Accessibility
+
+- (void)prepareForVoiceOver
+{
+    self.isAccessibilityElement = YES;
+    self.accessibilityTraits = UIAccessibilityTraitButton;
+    self.accessibilityLabel = self.item.displayName;
+
+    NSString *selectedLocalizedString = NSLocalizedString(@"Selected", @"Screen reader text to represent the selected state of a button");
+    NSString *localizedHint = NSLocalizedString(@"Selects this item", @"Screen reader hint (non-imperative) about what does the menu item selection button do");
+    self.accessibilityValue = self.item.selected ? selectedLocalizedString : nil;
+    self.accessibilityHint = self.item.selected ? nil : localizedHint;
 }
 
 @end

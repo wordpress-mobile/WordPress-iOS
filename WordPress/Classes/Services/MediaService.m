@@ -57,7 +57,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
         
         if (blog.allowedFileTypes != nil) {
-            allowedFileTypes = blog.allowedFileTypes;
+            // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
+            NSMutableSet *mutableAllowedFileTypes = [blog.allowedFileTypes mutableCopy];
+            [mutableAllowedFileTypes removeObject:@"heic"];
+            allowedFileTypes = mutableAllowedFileTypes;
         }
 
         if (post != nil) {

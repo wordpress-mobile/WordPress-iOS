@@ -132,15 +132,18 @@ import WordPressShared
 
     // MARK: Analytics Helpers
 
-    @objc open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
+    class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
         var stat: WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
 
+        } else if isTopicSite(topic) {
+            WPAnalytics.track(.readerBlogPreviewed, properties: properties)
+
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
-            stat = .readerDiscoverViewed
+            WPAnalytics.track(.readerDiscoverShown, properties: properties)
 
         } else if isTopicList(topic) {
             stat = .readerListLoaded
