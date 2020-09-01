@@ -35,11 +35,11 @@ extension GravatarButtonView {
     private struct AnimationConfiguration {
         static let startAlpha: CGFloat = 0.5
         static let endAlpha: CGFloat = 1.0
-        static let aimationDuration: TimeInterval = 0.3
+        static let animationDuration: TimeInterval = 0.3
     }
     /// animates the change of opacity from the current value to AnimationConfiguration.endAlpha
     private func restoreAlpha() {
-        UIView.animate(withDuration: AnimationConfiguration.aimationDuration) {
+        UIView.animate(withDuration: AnimationConfiguration.animationDuration) {
             self.alpha = AnimationConfiguration.endAlpha
         }
     }
@@ -72,10 +72,10 @@ extension GravatarButtonView {
             }
 
             if #available(iOS 13, *) {
-                return .systemGray5
+                return .systemGray2
             }
 
-            return .gray(.shade5)
+            return .gray(.shade20)
         }
 
         static let width = CGFloat(2)
