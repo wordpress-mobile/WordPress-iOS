@@ -70,6 +70,10 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         }
         checkmark.tintColor = checkmarkTintColor
         updateSelectedStyle()
+
+        filterLabel.isGhostableDisabled = true
+        checkmark.isGhostableDisabled = true
+        pillBackgroundView.layer.masksToBounds = true
     }
 
     override func prepareForReuse() {
@@ -101,5 +105,12 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
         } else {
             filterLabel.textColor = isSelected ? .white : .darkText
         }
+    }
+}
+
+extension LayoutPickerFilterCollectionViewCell: GhostableView {
+    func ghostAnimationWillStart() {
+        filterLabel.text = ""
+        pillBackgroundView.startGhostAnimation()
     }
 }

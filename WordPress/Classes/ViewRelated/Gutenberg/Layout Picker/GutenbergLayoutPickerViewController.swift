@@ -118,8 +118,23 @@ class GutenbergLayoutPickerViewController: UIViewController {
             })
         }
     }
+    private var isLoading: Bool = true {
+        didSet {
+            filterBar.shouldShowGhostContent = isLoading
+            filterBar.allowsMultipleSelection = !isLoading
+            if isLoading {
+                tableView.startGhostAnimation()
+            } else {
+                tableView.stopGhostAnimation()
+            }
+
+            tableView.reloadData()
+            filterBar.reloadData()
+        }
+    }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
+    var blog: Blog? = nil
 
     private func setStaticText() {
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
@@ -138,13 +153,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
         super.viewDidLoad()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
         filterBar.filterDelegate = self
-        filterBar.allowsMultipleSelection = true
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
-        layouts = GutenbergPageLayoutFactory.makeDefaultPageLayouts()
-        filterBar.reloadData()
+        layouts = GutenbergPageLayouts()
+        fetchLayouts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -233,6 +247,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         let bottomInset = tableFooterFrame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        tableView.tableFooterView?.isGhostableDisabled = true
     }
 
     private func calculateHeaderSnapPoints() {
@@ -261,6 +276,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
         createBlankPageBtn.isHidden = isSelected
         previewBtn.isHidden = !isSelected
         createPageBtn.isHidden = !isSelected
+    }
+
+    private func fetchLayouts() {
+        guard let blog = blog else { return }
+        isLoading = true
+        PageLayoutService.layouts(forBlog: blog) {[weak self] (results) in
+            guard let self = self else { return }
+            switch results {
+            case .success(let fetchedLayouts):
+                self.layouts = fetchedLayouts
+                self.isLoading = false
+            case .failure:
+                return
+            }
+        }
     }
 }
 
@@ -330,7 +360,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (filteredSections ?? sections).count
+        return isLoading ? 1 : ((filteredSections ?? sections).count)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -340,9 +370,11 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = (filteredSections ?? sections)[indexPath.row]
+        cell.section = isLoading ? nil : (filteredSections ?? sections)[indexPath.row]
+        cell.isGhostCell = isLoading
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
+        cell.collectionView.allowsSelection = !isLoading
         if let selectedLayout = selectedLayout, containsSelectedLayout(selectedLayout, atIndexPath: indexPath) {
             cell.selectItemAt(selectedLayout.position)
         }
