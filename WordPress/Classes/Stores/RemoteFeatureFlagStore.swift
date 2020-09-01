@@ -28,7 +28,11 @@ class RemoteFeatureFlagStore {
 
     /// Checks if the local cache has a value for a given `FeatureFlag`
     public func hasRemoteValueForFlag(_ flag: FeatureFlag) -> Bool {
-        return flag.remoteKey != nil && cache[flag.remoteKey!] != nil
+        guard let remoteKey = flag.remoteKey else {
+            return false
+        }
+
+        return cache[remoteKey] != nil
     }
 
     /// Looks up the value for a remote feature flag.
