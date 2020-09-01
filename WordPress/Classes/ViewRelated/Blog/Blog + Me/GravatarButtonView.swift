@@ -66,7 +66,18 @@ extension GravatarButtonView {
 extension GravatarButtonView {
 
     private struct StandardBorder {
-        static let color = UIColor.white
+        static var color: UIColor {
+            guard FeatureFlag.newNavBarAppearance.enabled else {
+                return .white
+            }
+
+            if #available(iOS 13, *) {
+                return .systemGray5
+            }
+
+            return .gray(.shade5)
+        }
+
         static let width = CGFloat(2)
     }
     /// sets border color and width to the circular image view. Defaults to StandardBorder values
