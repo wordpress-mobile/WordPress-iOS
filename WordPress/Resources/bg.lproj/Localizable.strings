@@ -327,7 +327,7 @@
 "About Me" = "За мен";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Относно WordPress за iOS";
+"About beauVoyage for iOS" = "Относно beauVoyage за iOS";
 
 /* Category description for page templates */
 "About pages" = "About pages";
@@ -3928,6 +3928,8 @@ translators: sample content for \"Services\" page template */
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Категория родител";
+
+"Journeys" = "Journeys";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field

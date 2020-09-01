@@ -10,6 +10,7 @@
 @property (nonatomic) CGFloat labelMargin;
 @property (nonatomic) BOOL scrollEnabled;
 @property (nonatomic) BOOL chevronHidden;
+@property (nonatomic, strong) MKMapView *mapView;
 
 - (void)setCoordinate:(Coordinate *)coordinate region:(MKCoordinateRegion)region;
 

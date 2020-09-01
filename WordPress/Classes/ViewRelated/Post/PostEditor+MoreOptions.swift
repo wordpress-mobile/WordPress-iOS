@@ -3,13 +3,14 @@ import WordPressFlux
 
 extension PostEditor where Self: UIViewController {
 
-    func displayPostSettings() {
+    func displayPostSettings(type: EditPostType = .normal) {
         let settingsViewController: PostSettingsViewController
         if post is Page {
             settingsViewController = PageSettingsViewController(post: post)
         } else {
             settingsViewController = PostSettingsViewController(post: post)
         }
+        settingsViewController.editPostType = type.rawValue
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }

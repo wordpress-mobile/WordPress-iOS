@@ -40,10 +40,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
                                                                 enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
-                                                                enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled,
-                                                                enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
-                                                                enableUnifiedWordPress: FeatureFlag.unifiedWordPress.enabled,
-                                                                enableUnifiedKeychainLogin: FeatureFlag.unifiedKeychainLogin.enabled)
+                                                                enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -73,11 +70,11 @@ class WordPressAuthenticationManager: NSObject {
                                                 prologueTitleColor: .textInverted)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
-                                                              errorColor: .error,
+                                                              errorColor: .red,
                                                               textColor: .text,
-                                                              textSubtleColor: .textSubtle,
-                                                              textButtonColor: .primary,
-                                                              textButtonHighlightColor: .primaryDark,
+                                                              textSubtleColor: .brand,
+                                                              textButtonColor: .brand,
+                                                              textButtonHighlightColor: .brand,
                                                               viewControllerBackgroundColor: .basicBackground,
                                                               navBarBackgroundColor: .basicBackground,
                                                               navButtonTextColor: .brand,

@@ -10,38 +10,20 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.11'
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
-    #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    ## for production:
+    pod 'WordPressShared', '~> 1.9-beta'
 end
 
 def aztec
-    ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
-    ## When using a commit number (during development) you should provide the same commit number for both pods.
-    ##
-    #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
-    #pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
     pod 'WordPress-Editor-iOS', '~> 1.19.3'
 end
 
 def wordpress_ui
     pod 'WordPressUI', '~> 1.7.1'
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
-    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.15.0-beta.2'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    pod 'WordPressKit', :git => 'https://github.com/beaubateau/WordPressKit-iOS.git', :branch => 'develop'
 end
 
 def shared_with_all_pods
@@ -138,7 +120,7 @@ end
 ## WordPress iOS
 ## =============
 ##
-target 'WordPress' do
+target 'BeauVoyage' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -155,8 +137,6 @@ target 'WordPress' do
     ##
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
@@ -191,20 +171,13 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.24.0-beta'
-    # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-
+    pod 'WordPressAuthenticator', :git => 'https://github.com/beaubateau/WordPressAuthenticator-iOS', :branch => 'feature/apply-beau-login'
     pod 'MediaEditor', '~> 1.2.0'
-    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec
     wordpress_ui
 
-    target 'WordPressTest' do
+    target 'BeauVoyageTest' do
         inherit! :search_paths
 
         shared_test_pods
@@ -225,7 +198,7 @@ target 'WordPress' do
         require 'commonmarker'
 
         acknowledgements = 'Acknowledgments'
-        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
+        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-BeauVoyage/Pods-BeauVoyage-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
                          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -262,7 +235,7 @@ target 'WordPress' do
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+        File.write("#{project_root}/Pods/Target Support Files/Pods-BeauVoyage/acknowledgements.html", styled_html)
     end
 end
 
@@ -270,7 +243,7 @@ end
 ## Share Extension
 ## ===============
 ##
-target 'WordPressShareExtension' do
+target 'BeauVoyageShareExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_extension_pods
@@ -285,7 +258,7 @@ end
 ## DraftAction Extension
 ## =====================
 ##
-target 'WordPressDraftActionExtension' do
+target 'BeauVoyageDraftActionExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_extension_pods
@@ -300,7 +273,7 @@ end
 ## Today Widget
 ## ============
 ##
-target 'WordPressTodayWidget' do
+target 'BeauVoyageTodayWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -312,7 +285,7 @@ end
 ## All Time Widget
 ## ============
 ##
-target 'WordPressAllTimeWidget' do
+target 'BeauVoyageAllTimeWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -324,7 +297,7 @@ end
 ## This Week Widget
 ## ============
 ##
-target 'WordPressThisWeekWidget' do
+target 'BeauVoyageThisWeekWidget' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
@@ -336,7 +309,7 @@ end
 ## Notification Content Extension
 ## ==============================
 ##
-target 'WordPressNotificationContentExtension' do
+target 'BeauVoyageNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_kit
@@ -349,7 +322,7 @@ end
 ## Notification Service Extension
 ## ==============================
 ##
-target 'WordPressNotificationServiceExtension' do
+target 'BeauVoyageNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_kit
@@ -372,7 +345,7 @@ end
 ## Screenshot Generation
 ## ===================
 ##
-target 'WordPressScreenshotGeneration' do
+target 'BeauVoyageScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_mocks
@@ -382,7 +355,7 @@ end
 ## UI Tests
 ## ===================
 ##
-target 'WordPressUITests' do
+target 'BeauVoyageUITests' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_mocks

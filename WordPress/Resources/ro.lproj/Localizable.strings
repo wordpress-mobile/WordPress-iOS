@@ -327,7 +327,7 @@
 "About Me" = "Despre mine";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Despre WordPress pentru iOS";
+"About beauVoyage for iOS" = "Despre beauVoyage pentru iOS";
 
 /* Category description for page templates */
 "About pages" = "Pagini Despre";
@@ -3931,6 +3931,8 @@ translators: sample content for \"Services\" page template */
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Categorie părinte";
+
+"Journeys" = "Journeys";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field

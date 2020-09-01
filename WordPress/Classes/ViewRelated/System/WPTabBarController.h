@@ -5,8 +5,9 @@ extern NSString * const WPNewPostURLParamTagsKey;
 //TODO: Remove WPTabMe and WPTabNewPost when the new Me page and FAB are released
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
+    WPTabJourneys,
+    WPTabItinerary,
     WPTabReader,
-    WPTabNewPost,
     WPTabMe,
     WPTabNotifications
 };
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class ReaderTabViewModel;
 @class WPSplitViewController;
 @class QuickStartTourGuide;
+@class EditPostViewController;
 @protocol ScenePresenter;
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
@@ -50,9 +52,9 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showMySitesTab;
 - (void)showReaderTab;
 - (void)resetReaderTab;
-- (void)showPostTab;
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss;
 - (void)showPostTabForBlog:(Blog *)blog;
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type andEditType:(int)editType;
+- (void)showPostTabWithType: (NSString*)type andEditType:(int)editType;
 // will be removed when the new IA implementation completes
 - (void)showMeTab;
 - (void)showNotificationsTab;

@@ -130,6 +130,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+        MediaSettings().removeLocationSetting = false
         return true
     }
 

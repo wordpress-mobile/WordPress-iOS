@@ -38,7 +38,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return self;
 }
 
-- (Post *)createPostForBlog:(Blog *)blog {
+- (Post *)createPostForBlog:(Blog *)blog andPostType: (NSString*)type {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
     post.blog = blog;
@@ -53,15 +53,15 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
 
     post.postFormat = blog.settings.defaultPostFormat;
-    post.postType = Post.typeDefaultIdentifier;
+    post.postType = type;
 
     [[ContextManager sharedInstance] obtainPermanentIDForObject:post];
     
     return post;
 }
 
-- (Post *)createDraftPostForBlog:(Blog *)blog {
-    Post *post = [self createPostForBlog:blog];
+- (Post *)createDraftPostForBlog:(Blog *)blog andPostType: (NSString*)type {
+    Post *post = [self createPostForBlog:blog andPostType:type];
     [self initializeDraft:post];
     return post;
 }
@@ -121,7 +121,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                           if (remotePost) {
                               AbstractPost *post = [self findPostWithID:postID inBlog:blog];
                               if (!post) {
-                                  post = [self createPostForBlog:blog];
+                                  post = [self createPostForBlog:blog andPostType: Post.typeDefaultIdentifier];
                               }
                               [self updatePost:post withRemotePost:remotePost];
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -696,7 +696,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 post = [self createPageForBlog:blog];
             } else {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
-                post = [self createPostForBlog:blog];
+                post = [self createPostForBlog:blog andPostType: Post.typeDefaultIdentifier];
             }
         }
         [self updatePost:post withRemotePost:remotePost];
@@ -892,7 +892,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         remotePost.postThumbnailID = post.featuredImage.mediaID;
     }
     remotePost.password = post.password;
-    remotePost.type = @"post";
+    remotePost.type = post.postType;
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
@@ -941,9 +941,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:3];
+    NSMutableArray *metadata = [[NSMutableArray alloc] init];
     Coordinate *c = post.geolocation;
-
     /*
      This might look more complicated than it should be, but it needs to be that way.
 
@@ -953,6 +952,54 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
      - !geolocation &&  ID: delete
      - !geolocation && !ID: noop
      */
+    if (post.eventAllDay) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventAllDay";
+        dictionary[@"value"] = post.eventAllDay;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventTimezone) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventTimezone";
+        dictionary[@"value"] = post.eventTimezone;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventStartDate) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventStartDate";
+        dictionary[@"value"] = post.eventStartDate;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventStartDateUTC) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventStartDateUTC";
+        dictionary[@"value"] = post.eventStartDateUTC;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventEndDate) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventEndDate";
+        dictionary[@"value"] = post.eventEndDate;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventEndDateUTC) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventEndDateUTC";
+        dictionary[@"value"] = post.eventEndDateUTC;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventShowMap) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventShowMap";
+        dictionary[@"value"] = post.eventShowMap;
+        [metadata addObject:dictionary];
+    }
+    if (post.eventShowMapLink) {
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+        dictionary[@"key"] = @"_EventShowMapLink";
+        dictionary[@"value"] = post.eventShowMapLink;
+        [metadata addObject:dictionary];
+    }
     if (post.latitudeID || c) {
         NSMutableDictionary *latitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         if (post.latitudeID) {
@@ -1018,6 +1065,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
             category.categoryID = remoteCategory.categoryID;
             category.categoryName = remoteCategory.name;
             category.parentID = remoteCategory.parentID;
+            category.slug = remoteCategory.slug;
         }
         [categories addObject:category];
     }

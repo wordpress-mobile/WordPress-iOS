@@ -154,6 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
                                return;
                            }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
+                           newCategory.slug = receivedCategory.slug;
                            newCategory.categoryID = receivedCategory.categoryID;
                            BOOL needsSync = NO;
                            if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
@@ -207,6 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         category.categoryName = remoteCategory.name;
         category.parentID = remoteCategory.parentID;
+        category.slug = remoteCategory.slug;
         
         [categories addObject:category];
     }

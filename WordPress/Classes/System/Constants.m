@@ -10,38 +10,35 @@ NSString *const WPComDefaultAccountUrlKey                           = @"AccountD
 ///
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
 NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
-NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
-NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
-NSString *const WPAutomatticCCPAPrivacyNoticeURL                    = @"https://automattic.com/privacy/#california-consumer-privacy-act-ccpa";
+NSString *const WPAutomatticMainURL                                 = @"https://beau.voyage/";
+NSString *const WPAutomatticTermsOfServiceURL                       = @"https://beau.voyage/terms-conditions/";
+NSString *const WPAutomatticPrivacyURL                              = @"https://beau.voyage/privacy-policy/";
 NSString *const WPAutomatticCookiesURL                              = @"https://automattic.com/cookies/";
-NSString *const WPAutomatticAppsBlogURL                             = @"https://blog.wordpress.com";
-NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
-NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
-NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
-NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
-NSString *const AutomatticDomain                                    = @"automattic.com";
-NSString *const WPComDomain                                         = @"wordpress.com";
+NSString *const WPAutomatticAppsBlogURL                             = @"https://blog.beau.voyage";
+NSString *const WPGithubMainURL                                     = @"https://github.com/beaubateau/beauVoyage-iOS/";
+NSString *const WPComReferrerURL                                    = @"https://beau.voyage";
+NSString *const AutomatticDomain                                    = @"beau.voyage";
+NSString *const WPComDomain                                         = @"beau.voyage";
 
 /// Notifications Constants
 ///
 #ifdef DEBUG
-NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
+NSString *const  WPPushNotificationAppId                            = @"voyage.beau.appstore.dev";
 #else
 #ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
+NSString *const   WPPushNotificationAppId                           = @"voyage.beau.internal";
 #else
-NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
+NSString *const WPPushNotificationAppId                             = @"voyage.beau.appstore";
 #endif
 #endif
 /// Keychain Constants
 ///
 #ifdef INTERNAL_BUILD
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
+NSString *const WPAppGroupName                                      = @"group.voyage.beau.internal";
+NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.voyage.beau.internal";
 #else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
-NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
+NSString *const WPAppGroupName                                      = @"group.voyage.beau";
+NSString *const WPAppKeychainAccessGroup                            = @"C7B8L9KZV4.group.voyage.beau";
 #endif
 
 /// Notification Content Extension Constants
@@ -84,7 +81,7 @@ NSString *const WPAppleIDKeychainServiceName                        = @"AppleID"
 
 /// iTunes Constants
 ///
-NSString *const WPiTunesAppId                                       = @"335703880";
+NSString *const WPiTunesAppId                                       = @"1517718114";
 
 /// Scheme Constants
 ///

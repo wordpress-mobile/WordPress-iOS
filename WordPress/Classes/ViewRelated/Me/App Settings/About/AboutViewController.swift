@@ -169,11 +169,6 @@ open class AboutViewController: UITableViewController {
         UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
     }
 
-    fileprivate func displayTwitterAccount() {
-        let twitterURL = URL(string: WPTwitterWordPressMobileURL)!
-        UIApplication.shared.open(twitterURL)
-    }
-
     // MARK: - Nested Row Class
     fileprivate class Row {
         let title: String
@@ -199,7 +194,7 @@ open class AboutViewController: UITableViewController {
     // MARK: - Private Properties
     fileprivate lazy var footerTitleText: String = {
         let year = Calendar.current.component(.year, from: Date())
-        let localizedTitleText = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+        let localizedTitleText = NSLocalizedString("© %ld beauBateau GmbH", comment: "About View's Footer Text. The variable is the current year")
         return String(format: localizedTitleText, year)
     }()
 
@@ -223,10 +218,6 @@ open class AboutViewController: UITableViewController {
                     handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
             ],
             [
-                Row(title: NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
-                    details: WPTwitterWordPressHandle,
-                    handler: { self.displayTwitterAccount() }),
-
                 Row(title: NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
                     details: appsBlogHostname,
                     handler: { self.displayWebView(WPAutomatticAppsBlogURL) }),

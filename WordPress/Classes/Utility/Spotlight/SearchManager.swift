@@ -433,7 +433,7 @@ fileprivate extension SearchManager {
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
-        let editor = EditPostViewController.init(post: post)
+        let editor = EditPostViewController.init(post: post, type: Post.typeDefaultIdentifier)
         editor.modalPresentationStyle = .fullScreen
         WPTabBarController.sharedInstance().present(editor, animated: true)
     }

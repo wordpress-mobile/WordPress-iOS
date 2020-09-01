@@ -73,10 +73,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     fileprivate var selectedNotification: Notification? = nil
 
-    /// JetpackLoginVC being presented.
-    ///
-    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
-
     /// Timestamp of the most recent note before updates
     /// Used to count notifications to show the second notifications prompt
     ///
@@ -154,13 +150,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
-        }
-
-        if !AccountHelper.isDotcomAvailable() {
-            promptForJetpackCredentials()
-        } else {
-            jetpackLoginViewController?.view.removeFromSuperview()
-            jetpackLoginViewController?.removeFromParent()
         }
 
         showNoResultsViewIfNeeded()
@@ -1325,7 +1314,7 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
             WPTabBarController.sharedInstance().showReaderTab()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            WPTabBarController.sharedInstance().showPostTab()
+            WPTabBarController.sharedInstance().showPostTab(withType: Post.typeDefaultIdentifier, andEditType: EditPostType.normal.rawValue)
         }
     }
 }

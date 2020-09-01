@@ -103,7 +103,7 @@ private extension ReaderReblogPresenter {
                                origin: UIViewController) {
 
         // get post and put content in it
-        let post = postService.createDraftPost(for: blog)
+        let post = postService.createDraftPost(for: blog, andPostType: Post.typeDefaultIdentifier)
         // size used for photon url. Set height to 0 will preserve aspect ratio
         let photonSize = CGSize(width: min(origin.view.frame.width,
                                            origin.view.frame.height),
@@ -111,7 +111,7 @@ private extension ReaderReblogPresenter {
 
         post.prepareForReblog(with: readerPost, imageSize: photonSize)
         // instantiate & configure editor
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
+        let editor = EditPostViewController(post: post, type: Post.typeDefaultIdentifier, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
         editor.postIsReblogged = true
         // present

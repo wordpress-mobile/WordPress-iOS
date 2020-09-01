@@ -25,13 +25,13 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>${VERSION_LONG}</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-            <string>
+			<string>
                 SUBQUERY(
                 extensionItems,
                 $extensionItem,
@@ -67,7 +67,7 @@
                 ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.find-login-action"
                 || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.save-login-action"
                 ).@count == 0
-                ).@count >= 1
+                ).@count &gt;= 1
             </string>
 			<key>NSExtensionJavaScriptPreprocessingFile</key>
 			<string>WordPressShare</string>

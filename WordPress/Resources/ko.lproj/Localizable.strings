@@ -327,7 +327,7 @@
 "About Me" = "내 소개";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "WordPress for iOS에 대하여";
+"About beauVoyage for iOS" = "beauVoyage for iOS에 대하여";
 
 /* Category description for page templates */
 "About pages" = "페이지 소개";
@@ -3928,6 +3928,8 @@ translators: sample content for \"Services\" page template */
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "상위 카테고리";
+
+"Journeys" = "Journeys";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field

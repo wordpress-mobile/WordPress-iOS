@@ -140,12 +140,12 @@ import AutomatticTracks
         // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        let post = PostService(managedObjectContext: context).createDraftPost(for: blog, andPostType: Post.typeDefaultIdentifier)
         post.postTitle = title
         post.content = contentEscaped
         post.tags = tags
 
-        let postVC = EditPostViewController(post: post)
+        let postVC = EditPostViewController(post: post, type: Post.typeDefaultIdentifier)
         postVC.modalPresentationStyle = .fullScreen
 
         WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)

@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     if (self) {
         _post = post;
         _locationService = locationService;
+        _isRemoveVisible = YES;
     }
     return self;
 }
@@ -51,7 +52,9 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.view.backgroundColor = [UIColor murielNeutral5];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
-    self.navigationItem.leftBarButtonItems = @[self.removeButton];
+    if (self.isRemoveVisible) {
+        self.navigationItem.leftBarButtonItems = @[self.removeButton];
+    }
     self.navigationItem.rightBarButtonItems = @[self.doneButton];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
@@ -76,6 +79,12 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     } else {
         [self searchCurrentLocationFromUserRequest:NO];
     }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear: animated];
+    [self.delegate postGeolocationViewControllerClosed];
 }
 
 - (UIView *)searchBarTop
@@ -155,8 +164,23 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         _geoView = [[PostGeolocationView alloc] initWithFrame:frame];
         _geoView.autoresizingMask = mask;
         _geoView.backgroundColor = [UIColor whiteColor];
+        UILongPressGestureRecognizer * recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+        recognizer.minimumPressDuration = 0.5;
+        recognizer.allowableMovement = 600;
+        [_geoView.mapView addGestureRecognizer:recognizer];
     }
     return _geoView;
+}
+
+- (void)handleGesture:(UIGestureRecognizer *)gesture {
+    CGPoint point = [gesture locationInView: _geoView.mapView];
+    CLLocationCoordinate2D coordinates = [_geoView.mapView convertPoint:point toCoordinateFromView:_geoView.mapView];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinates.latitude longitude:coordinates.longitude];
+    [self.geoView setCoordinate:[[Coordinate alloc] initWithCoordinate:coordinates]];
+    self.post.geolocation = self.geoView.coordinate;
+    [self.locationService getAddressForLocation:location completion:^(CLLocation *location, NSString *address, NSError *error) {
+        self.geoView.address = [NSString stringWithFormat:@"%@]", address];
+    }];
 }
 
 - (void)removeGeolocation

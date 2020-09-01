@@ -47,7 +47,6 @@ extension RegisterDomainDetailsViewModel {
 
         enum AddressField {
             case addressLine1
-            case addressLine2
             case addNewAddressLine
             case city
             case state
@@ -94,7 +93,7 @@ extension RegisterDomainDetailsViewModel {
                 } else if addressLine1 == index {
                     return .addressLine1
                 }
-                return .addressLine2
+                return .addressLine1
             }
         }
     }

@@ -22,6 +22,7 @@ import WordPressFlux
 
     let newPost: () -> Void
     let newPage: () -> Void
+    let newItinerary: () -> Void
 
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
@@ -60,11 +61,11 @@ import WordPressFlux
 
     private weak var noticeContainerView: NoticeContainerView?
 
-    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
+    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void, newItinerary: @escaping () -> Void) {
         self.viewController = viewController
         self.newPost = newPost
         self.newPage = newPage
-
+        self.newItinerary = newItinerary
         super.init()
 
         listenForQuickStart()
@@ -124,13 +125,14 @@ import WordPressFlux
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = makePostsButton()
+        let itineraryButton = makeItineraryButton()
         let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
                                             image: .gridicon(.pages),
                                             identifier: "sitePageButton",
                                             target: self,
                                             selector: #selector(showNewPage))
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
-                                                              buttons: [postsButton, pagesButton])
+                                                              buttons: [postsButton, itineraryButton, pagesButton])
 
         setupPresentation(on: actionSheetController, for: traitCollection)
 
@@ -145,6 +147,18 @@ import WordPressFlux
                                  identifier: "blogPostButton",
                                  target: self,
                                  selector: #selector(showNewPost),
+                                 highlight: highlight)
+    }
+
+    private func makeItineraryButton() -> ActionSheetButton {
+        // TO DO LOCALIZE THIS TEXTS
+        let highlight: Bool = QuickStartTourGuide.find()?.shouldSpotlight(.newpost) ?? false
+
+        return ActionSheetButton(title: NSLocalizedString("Itinerary", comment: "Create new Blog Post button title"),
+                                 image: .gridicon(.posts),
+                                 identifier: "itineraryButton",
+                                 target: self,
+                                 selector: #selector(showItinerary),
                                  highlight: highlight)
     }
 
@@ -197,6 +211,10 @@ import WordPressFlux
 
     @objc func showNewPost() {
         newPost()
+    }
+
+    @objc func showItinerary() {
+        newItinerary()
     }
 
     @objc func showNewPage() {

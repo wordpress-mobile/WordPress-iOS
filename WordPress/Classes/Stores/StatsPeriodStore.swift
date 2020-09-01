@@ -1061,8 +1061,6 @@ private extension StatsPeriodStore {
 
     func cancelQueries() {
         operationQueue.cancelAllOperations()
-
-        statsServiceRemote?.wordPressComRestApi.cancelTasks()
         setAllFetchingStatus(.idle)
     }
 

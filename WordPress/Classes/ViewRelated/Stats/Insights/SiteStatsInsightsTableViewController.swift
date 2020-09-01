@@ -406,9 +406,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        WPTabBarController.sharedInstance().showPostTab { [weak self] in
+        WPTabBarController.sharedInstance().showPostTab(completion: { [weak self] in
             self?.refreshInsights()
-        }
+            }, type: Post.typeDefaultIdentifier, andEditType: EditPostType.normal.rawValue)
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {

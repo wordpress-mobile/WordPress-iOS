@@ -7,6 +7,8 @@
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
+#import "WordPressAuthenticator.h"
+#import <SafariServices/SafariServices.h>
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;
@@ -16,6 +18,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
 @property (nonatomic, strong) NSMutableArray *selectedCategories;
+@property (nonatomic, strong) AddPostCategoryButton *saveButton;
 @property (nonatomic, strong) NSArray *originalSelection;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, assign) CategoriesSelectionMode selectionMode;
@@ -67,6 +70,12 @@ static const CGFloat CategoryCellIndentation = 16.0;
         case (CategoriesSelectionModeParent): {
             self.title = NSLocalizedString(@"Parent Category", @"Title for selecting parent category of a category");
         } break;
+        case (CategoriesSelectionModeJourneys): {
+            self.title = NSLocalizedString(@"Journeys", @"Title for selecting parent category of a category");
+        } break;
+        case (CategoriesSelectionModeBeauVoyageAddPost): {
+            self.title = NSLocalizedString(@"Journeys", @"Title for selecting parent category of a category");
+        } break;
         case (CategoriesSelectionModePost): {
             self.title = NSLocalizedString(@"Post Categories", @"Title for selecting categories for a post");
         } break;
@@ -81,11 +90,45 @@ static const CGFloat CategoryCellIndentation = 16.0;
     [super viewWillAppear:animated];
 
     [self reloadCategoriesTableViewData];
+    [self manageBackButton];
 
     if (!self.hasInitiallySyncedCategories) {
         self.hasInitiallySyncedCategories = YES;
         [self syncCategories];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self addSaveButton];
+}
+
+- (void) addSaveButton {
+    if (self.selectionMode == CategoriesSelectionModeBeauVoyageAddPost) {
+        self.saveButton = [[AddPostCategoryButton alloc] init];
+        [self.saveButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.saveButton.layer.cornerRadius = 5;
+        self.saveButton.layer.masksToBounds = YES;
+        [self.saveButton setEnabled:NO];
+        [self.saveButton setTitle: NSLocalizedString(@"Save", comment: "Save Action") forState:UIControlStateNormal];
+        [self.tableView addSubview:self.saveButton];
+        [NSLayoutConstraint activateConstraints:@[
+            [self.saveButton.heightAnchor constraintEqualToConstant:55],
+            [self.saveButton.leadingAnchor constraintEqualToAnchor:self.tableView.safeAreaLayoutGuide.leadingAnchor constant:20],
+            [self.saveButton.trailingAnchor constraintEqualToAnchor:self.tableView.safeAreaLayoutGuide.trailingAnchor constant:-20],
+            [self.saveButton.bottomAnchor constraintEqualToAnchor:self.tableView.safeAreaLayoutGuide.bottomAnchor constant:-20],
+        ]
+        ];
+    }
+}
+
+- (void)saveAction:(UIButton *) sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)manageBackButton {
+    [self.navigationItem setHidesBackButton:self.selectionMode == CategoriesSelectionModeBeauVoyageAddPost];
 }
 
 #pragma mark - Instance Methods
@@ -157,7 +200,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
         NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
 
         [self.categoryIndentationDict setValue:[NSNumber numberWithInteger:indentationLevel]
-                                              forKey:[category.categoryID stringValue]];
+                                        forKey:[category.categoryID stringValue]];
     }
 
     // Remove any previously selected category objects that are no longer available.
@@ -260,6 +303,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     NSIndexPath *currentSelectedIndexPath = [tableView indexPathForSelectedRow];
 
     [tableView deselectRowAtIndexPath:currentSelectedIndexPath animated:YES];
@@ -296,6 +340,26 @@ static const CGFloat CategoryCellIndentation = 16.0;
             if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
                 [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
             }
+        } break;
+        case (CategoriesSelectionModeJourneys): {
+            NSString* urlString = [NSString stringWithFormat:@"%@/%@?webview=1", self.blog.url, category.slug];
+            NSURL* url = [[NSURL alloc] initWithString: [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
+            [self presentViewController:svc animated:YES completion:nil];
+        } break;
+        case (CategoriesSelectionModeBeauVoyageAddPost): {
+            if ([self.selectedCategories containsObject:category]) {
+                [self.selectedCategories removeObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+            } else {
+                [self.selectedCategories addObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+                [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+            }
+            [self.saveButton setEnabled: self.selectedCategories.count != 0];
         } break;
         case (CategoriesSelectionModeBlogDefault): {
             if ([self.selectedCategories containsObject:category]){

@@ -9,6 +9,7 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
+#import "PostCategoriesViewController.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
@@ -47,6 +48,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
+@property (nonatomic, strong) PostCategoriesViewController *journeyViewController;
+@property (nonatomic, strong) BlogListViewController *itineraryViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
@@ -54,6 +57,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
 @property (nonatomic, strong) UINavigationController *blogListNavigationController;
+@property (nonatomic, strong) UINavigationController *journeyNavigationController;
+@property (nonatomic, strong) UINavigationController *itineraryNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -178,7 +183,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
 
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"beauVoyageTab"];
     _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
@@ -194,6 +199,59 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
     
     return _blogListNavigationController;
+}
+
+- (UINavigationController *)journeyNavigationController
+{
+    if (_journeyNavigationController) {
+        return _journeyNavigationController;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+
+    self.journeyViewController = [[PostCategoriesViewController alloc] initWithBlog:blogToOpen currentSelection: [NSArray new] selectionMode: CategoriesSelectionModeJourneys];
+    _journeyNavigationController = [[UINavigationController alloc] initWithRootViewController:self.journeyViewController];
+    _journeyNavigationController.navigationBar.translucent = NO;
+
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-journeys"];
+    _journeyNavigationController.tabBarItem.image = mySitesTabBarImage;
+    _journeyNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
+    _journeyNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    _journeyNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
+    _journeyNavigationController.tabBarItem.accessibilityIdentifier = @"journeysTabButton";
+    _journeyNavigationController.tabBarItem.title = NSLocalizedString(@"Journeys", @"The accessibility value of the my site tab.");
+
+    return _journeyNavigationController;
+}
+
+- (UINavigationController *)itineraryNavigationController
+{
+    if (_itineraryNavigationController) {
+        return _itineraryNavigationController;
+    }
+
+    self.itineraryViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    _itineraryNavigationController = [[UINavigationController alloc] initWithRootViewController:self.itineraryViewController];
+    _itineraryNavigationController.navigationBar.translucent = NO;
+
+    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-itinerary"];
+    _itineraryNavigationController.tabBarItem.image = mySitesTabBarImage;
+    _itineraryNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
+    _itineraryNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    _itineraryNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Itinerary", @"The accessibility value of the my site tab.");
+    _itineraryNavigationController.tabBarItem.accessibilityIdentifier = @"itineraryTabButton";
+    _itineraryNavigationController.tabBarItem.title = NSLocalizedString(@"Itinerary", @"The accessibility value of the my site tab.");
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+    if (blogToOpen) {
+        _itineraryViewController.selectedBlog = blogToOpen;
+    }
+
+    return _itineraryNavigationController;
 }
 
 - (UINavigationController *)readerNavigationController
@@ -411,6 +469,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)reloadSplitViewControllers
 {
+    _journeyViewController = nil;
+    _journeyNavigationController = nil;
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
     _readerNavigationController = nil;
@@ -459,12 +519,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
         allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                              self.journeyNavigationController,
+                                                              self.itineraryNavigationController,
         self.readerNavigationController,
         self.newPostViewController,
         self.meSplitViewController,
         self.notificationsSplitViewController]];
     } else {
         allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                              self.journeyNavigationController,
+                                                              self.itineraryNavigationController,
         self.readerSplitViewController,
         self.newPostViewController,
         self.meSplitViewController,
@@ -502,9 +566,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([Feature enabled:FeatureFlagFloatingCreateButton] && tabIndex > WPTabReader) {
         tabOffset += 1;
     }
-    if ([Feature enabled:FeatureFlagMeMove] && tabIndex > WPTabNewPost) {
-        tabOffset += 1;
-    }
     return tabIndex + (toTabType ? -tabOffset : tabOffset);
 }
 
@@ -518,12 +579,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabReader];
 }
 
-- (void)showPostTab
+- (void)showPostTabWithType: (NSString*)type andEditType: (int) editType
 {
-    [self showPostTabWithCompletion:nil];
+    [self showPostTabWithCompletion:nil type:type andEditType:editType];
 }
 
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss type:(NSString*)type andEditType: (int) editType;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -531,7 +592,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
+        [self showPostTabAnimated:true toMedia:false blog:nil type:type andEditType:editType afterDismiss:afterDismiss];
     }
 }
 
@@ -542,7 +603,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:YES toMedia:NO blog:blog];
+        [self showPostTabAnimated:YES toMedia:NO blog:blog type:Post.typeDefaultIdentifier andEditType:EditPostTypeNormal];
     }
 }
 // will be removed when the new IA implementation completes
@@ -556,17 +617,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showTabForIndex:WPTabNotifications];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia type:(NSString*)type
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil type:type andEditType:EditPostTypeNormal];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type andEditType: (int) editType
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog afterDismiss:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog type:type andEditType:editType afterDismiss:nil];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog type:(NSString*)type andEditType: (int) editType afterDismiss:(void (^)(void))afterDismiss
 {
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -576,11 +637,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         blog = [self currentOrLastBlog];
     }
 
-    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
+    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog type:type];
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
+    editor.editType = editType;
     
     NSString *tapSource = [Feature enabled:FeatureFlagFloatingCreateButton] ? @"create_button" : @"tab_bar";
     [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
@@ -809,11 +871,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
 
-    if (newIndex == WPTabNewPost) {
-        [self showPostTab];
-        return NO;
-    }
-
     // If we're selecting a new tab...
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
@@ -990,7 +1047,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     return @[
-             [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTab) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
+             [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTabWithType:) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
              [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.")],
              [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(showReaderTab) discoverabilityTitle:NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.")],
              // will be removed when the new IA implementation completes

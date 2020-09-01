@@ -614,8 +614,6 @@ extension ValidateDomainContactInformationResponse.Messages {
         switch addressField {
         case .addressLine1:
             return address1?.first
-        case .addressLine2:
-            return address2?.first
         case .city:
             return city?.first
         case .postalCode:
