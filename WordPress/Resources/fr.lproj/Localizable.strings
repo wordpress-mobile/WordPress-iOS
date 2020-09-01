@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-06 19:54:10+0000 */
+/* Translation-Revision-Date: 2020-08-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = "À propos";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About beauVoyage for iOS" = "À propos de beauVoyage pour iOS";
+
+/* Category description for page templates */
+"About pages" = "About pages";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "Autoriser les notifications";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Autoriser notifications push";
 
 /* No comment provided by engineer. */
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "Connexion";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "Authentication code";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Authentification obligatoire pour l'hôte : %@";
 
@@ -807,9 +816,6 @@
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Graphique à barres représentant les visiteurs pour votre dernier article";
 
-/* No comment provided by engineer. */
-"Base" = "Base";
-
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Soyez le premier à laisser un commentaire.";
 
@@ -861,13 +867,18 @@
 /* No comment provided by engineer. */
 "Block settings" = "Réglages du bloc";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Articles du blog";
+
+/* Category description for page templates */
+"Blog pages" = "Blog pages";
 
 /* Create new Blog Post button title */
 "Blog post" = "Article de blog";
@@ -1095,14 +1106,14 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Vérification des achats…";
 
-/* No comment provided by engineer. */
-"Child Blocks" = "Blocs enfants";
-
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choisir les pages";
 
 /* Title for selecting a new home page */
 "Choose Posts Page" = "Choisir la page des articles";
+
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "Choose a Layout";
 
 /* Label for Publish date picker */
 "Choose a date" = "Choisir une date";
@@ -1181,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Fermer";
 
@@ -1395,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Connexions";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "Contact";
+
 /* Support email label. */
 "Contact Email" = "Adresse e-mail de contact";
 
@@ -1406,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "Contactez-nous";
+
+/* Category description for page templates */
+"Contact pages" = "Contact pages";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1446,12 +1465,6 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuez avec Apple";
-
-/* No comment provided by engineer. */
-"Convert to blocks" = "Convertir en blocs";
-
-/* No comment provided by engineer. */
-"Coordinated Universal Time" = "Temps universel coordonné";
 
 /* No comment provided by engineer. */
 "Copied block" = "Bloc copié";
@@ -1549,6 +1562,9 @@
 
 /* Accessibility label for create floating action button */
 "Create" = "Créer";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "Create Blank Page";
 
 /* Create New header text */
 "Create New" = "Créer un nouveau";
@@ -1735,9 +1751,6 @@
 
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Erreur de suppression du site";
-
-/* No comment provided by engineer. */
-"Delete Site Logo" = "Supprimer le logo du site";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Effacer cette étiquette";
@@ -2394,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Suivre le blog.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "Follows the tag.";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Pour vous faciliter la tâche, nous avons prérempli vos coordonnées WordPress.com. Veuillez vérifier qu'elles correspondent bien aux informations que vous voulez utiliser pour ce domaine.";
 
@@ -2450,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Faites vous remarquer : commentez sur les articles que vous avez lus.";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Commencez en choisissant parmi une large variété de mises en page prédéfinies. Ou commencez simplement avec une page vide.";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Lancez-vous et augmentez le nombre de vues de votre article en le partageant.";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "Get your notifications faster";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Obtenez votre site opérationnel";
@@ -2691,9 +2713,6 @@ translators: sample content for \"Team\" page template */
 /* Hint for image title on image settings. */
 "Image title" = "Titre de l’image";
 
-/* No comment provided by engineer. */
-"Image width" = "Largeur de l’image";
-
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Image, %@";
 
@@ -2892,6 +2911,9 @@ translators: sample content for \"Team\" page template */
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "En savoir plus";
 
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "Découvrez les nouveaux commentaires, les mentions J’aime et les abonnements en quelques secondes.";
+
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "En savoir plus sur les outils marketing et SEO dans nos offres payantes.";
 
@@ -3031,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Chargement des extensions en cours…";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "Chargement de l’article en cours...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Chargement des domaines";
@@ -3228,9 +3247,6 @@ translators: sample content for \"Services\" page template */
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La taille du fichier média est trop importante pour téléverser. Le maximum autorisé est %2$@";
-
-/* No comment provided by engineer. */
-"Media preview" = "Aperçu du média";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "L’aperçu du média a échoué.";
@@ -3805,9 +3821,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Ouvrir la section « Me »";
 
-/* No comment provided by engineer. */
-"Open the block list view." = "Ouvrez la vue Liste des blocs.";
-
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Ouvre la page web dans Safari";
 
@@ -3897,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Page planifiée";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "Page title. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "Page title. Empty";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Pages";
@@ -3934,7 +3953,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "Coller une URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "Coller le bloc";
+"Paste block after" = "Coller le bloc après";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Coller en texte brut";
@@ -4040,6 +4059,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Veuillez saisir le mot de passe de votre compte WordPress.com, afin de vous connecter avec votre identifiant Apple ID.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Veuillez saisir le code de vérification de votre application d’authentification ou appuyer sur le lien ci-dessous pour recevoir un code par SMS.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Veuillez saisir vos identifiants";
 
@@ -4114,8 +4136,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Langues populaires";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portfolio";
+
+/* Category description for page templates */
+"Portfolio pages" = "Portfolio pages";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Titre du poste";
@@ -4977,6 +5004,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Envoyer le lien";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Send Link by Email";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Envoyer un message de journal";
 
@@ -4998,8 +5028,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "Services";
+
+/* Category description for page templates */
+"Services pages" = "Services pages";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Régler l'image mise en avant";
@@ -5098,9 +5133,6 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Afficher les articles similaires";
 
-/* No comment provided by engineer. */
-"Show a site logo" = "Afficher un logo de site";
-
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Mot de passe affiché";
@@ -5195,12 +5227,6 @@ translators: sample content for \"Services\" page template */
 /* Title for the Language Picker View */
 "Site Language" = "Langue du site";
 
-/* No comment provided by engineer. */
-"Site Logo" = "Logo pour votre site";
-
-/* No comment provided by engineer. */
-"Site Logo Settings" = "Réglages du logo du site";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
@@ -5208,9 +5234,6 @@ translators: sample content for \"Services\" page template */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirection de site";
-
-/* No comment provided by engineer. */
-"Site Tagline" = "Slogan du site";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5411,7 +5434,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "État.";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Restez dans la boucle";
 
 /* This is the cell title. */
@@ -5613,8 +5636,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "Équipe";
+
+/* Category description for page templates */
+"Team pages" = "Team pages";
 
 /* Section title of the teams reader section. */
 "Teams" = "Équipes";
@@ -5640,7 +5668,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "Texte seul";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Envoyez-moi un code à la place.";
 
 /* Message of alert when theme activation succeeds */
@@ -6008,7 +6037,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "Pour les gérer ici, rendez-les visibles.";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Pour procéder à cette étape avec cet identifiant Apple, veuillez d’abord vous connecter avec votre mot de passe WordPress.com. Cela ne vous sera demandé qu’une seule fois.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Pour effectuer cela avec ce compte Google, veuillez d’abord vous connecter avec votre mot de passe WordPress.com. Cela sera demandé une seule fois.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -6039,6 +6071,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "Premier niveau";
+
+/* Topic page title */
+"Topic" = "Sujet";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Sujet non trouvé pour l’ID :";
@@ -6343,6 +6378,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Mise à jour du graphique à barres pour afficher les visiteurs.";
 
+/* No comment provided by engineer. */
+"Updates the title." = "Updates the title.";
+
 /* Describes a status of a plugin */
 "Updating" = "Mise à jour";
 
@@ -6357,9 +6395,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Téléverser une icône de site";
-
-/* No comment provided by engineer. */
-"Upload an image, or pick one from your media library, to be your site logo" = "Chargez une image ou choisissez-en une dans votre bibliothèque de médias pour en faire le logo de votre site.";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -6477,6 +6512,9 @@ translators: sample content for \"Services\" page template */
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Légende de la vidéo. %s";
 
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "Video caption. Empty";
+
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export de la vidéo annulé.";
 
@@ -6569,6 +6607,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "En attente de la fin du processus Google…";
+
+/* View title during the Google auth process. */
+"Waiting..." = "Waiting...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6729,8 +6770,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Nous allons vous envoyer un lien magique qui vous connectera instantanément, sans mot de passe. Fini la frappe au clavier !";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "Nous allons vous envoyer un e-mail contenant un lien magique pour créer votre nouveau compte WordPress.com.";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Nous vous notifierons lorsque vous aurez des abonnés, commentaires et « J’aime ».";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Nous vous notifierons lorsque vous aurez des abonnés, des commentaires et des mentions J’aime. Voulez-vous autoriser les notifications push ?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "Nous publierons votre page lorsque votre appareil sera de nouveau en ligne.";
@@ -6797,9 +6844,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Nous vous enverrons toujours des e-mails importants sur votre compte, mais vous pouvez aussi recevoir des conseils utiles !";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "Nous vous notifierons lorsque vous aurez des abonnés, commentaires et J’aime. Voulez-vous autoriser les notifications ?";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Nous allons vous présenter les bases de la construction et de la croissance de votre site.";
@@ -7204,9 +7248,6 @@ translators: sample content for \"Services\" page template */
 /* The menu item to select during a guided tour. */
 "connections" = "connexions";
 
-/* No comment provided by engineer. */
-"description" = "description";
-
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "On se sent pas mieux après avoir coché des éléments de la liste ?";
 
@@ -7216,7 +7257,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "ex. 44";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "exemple.com";
 
 /* Noun. Describes a site's follower. */

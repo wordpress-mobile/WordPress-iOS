@@ -6,7 +6,7 @@ class GutenbergLightNavigationController: UINavigationController {
         if #available(iOS 13.0, *) {
             return .separator
         } else {
-            return .lightGray
+            return UIColor.muriel(color: .divider)
         }
     }
 

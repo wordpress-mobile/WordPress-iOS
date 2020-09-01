@@ -24,7 +24,6 @@ end
 
 def wordpress_kit
     pod 'WordPressKit', :git => 'https://github.com/beaubateau/WordPressKit-iOS.git', :branch => 'develop'
-
 end
 
 def shared_with_all_pods
@@ -131,7 +130,7 @@ target 'BeauVoyage' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'bd76109049d2eeead78478d20d66ffd7b1567dd3'
+    gutenberg :commit => 'df6f8026b103fb0f381f738920a6cef89c7954f8'
 
     ## Third party libraries
     ## =====================
@@ -156,7 +155,7 @@ target 'BeauVoyage' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.5.1-beta.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.5.1'
     # While in PR
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
     # Local Development
@@ -387,7 +386,7 @@ pre_install do |installer|
           next
         end
         static << pod
-		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
+		pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"
