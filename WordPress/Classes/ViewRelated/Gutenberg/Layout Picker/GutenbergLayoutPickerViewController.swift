@@ -281,7 +281,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     private func fetchLayouts() {
         guard let blog = blog else { return }
         isLoading = true
-        PageLayoutService.layouts(forBlog: blog) {[weak self] (results) in
+        let expectedThumbnailSize = CGSize.zero
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
             guard let self = self else { return }
             switch results {
             case .success(let fetchedLayouts):
