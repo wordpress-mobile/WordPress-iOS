@@ -32,6 +32,16 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         prepareActionButtonsForVoiceOver()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                configureActionButtons()
+            }
+        }
+    }
+
     func configure(for post: ReaderPost, in viewController: UIViewController) {
         self.post = post
         self.viewController = viewController
