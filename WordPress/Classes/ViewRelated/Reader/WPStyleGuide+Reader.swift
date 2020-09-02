@@ -363,8 +363,8 @@ extension WPStyleGuide {
         applyReaderStreamActionButtonStyle(button)
     }
 
-    @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton) {
-        let size = Cards.actionButtonSize
+    @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton, defaultSize: Bool = false) {
+        let size = defaultSize ? Gridicon.defaultSize : Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
         let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 

@@ -149,7 +149,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(nil, for: .highlighted)
         button.setImage(nil, for: .disabled)
         button.isSelected = false
-        button.isHidden = true
         button.isEnabled = true
     }
 
@@ -163,7 +162,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(highlightedImage, for: [.highlighted, .selected])
         button.setImage(image, for: .disabled)
         button.isSelected = selected
-        button.isHidden = false
 
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
@@ -196,7 +194,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isPrivate()
-        reblogButton.isHidden = false
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
     }
 
@@ -263,9 +260,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureCommentActionButton() {
-        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
-        configureActionButton(commentButton, title: nil, image: image, highlightedImage: highlightImage, selected: false)
+        WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
         commentButton.isEnabled = shouldShowCommentActionButton
     }
 
@@ -291,7 +286,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
-        saveForLaterButton.isHidden = false
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
