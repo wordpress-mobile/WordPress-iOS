@@ -113,8 +113,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureFeaturedImage()
+
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
 
         featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -131,14 +144,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Reapply the appearance, this reset the navbar after presenting a view
         featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
 
-        guard !featuredImage.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
-        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -158,15 +163,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
         featuredImage.configure(for: post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
+        }
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
         }
     }
 
@@ -189,8 +200,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self.loadingView.alpha = 0.0
         }) { (_) in
             self.loadingView.isHidden = true
-            self.loadingView.alpha = 1.0
             self.loadingView.stopGhostAnimation()
+            self.loadingView.alpha = 1.0
         }
     }
 
@@ -357,6 +368,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureFeaturedImage() {
+        guard featuredImage.superview == nil else {
+            return
+        }
+
         featuredImage.delegate = coordinator
 
         view.insertSubview(featuredImage, belowSubview: loadingView)

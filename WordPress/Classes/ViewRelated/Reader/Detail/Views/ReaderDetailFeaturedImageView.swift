@@ -73,7 +73,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         self.navigationBar = navigationBar
 
         // Save the original appearance
-        originalNavBarAppearance = NavBarAppearance(navigationBar: navigationBar!)
+        if let navBar = navigationBar {
+            originalNavBarAppearance = NavBarAppearance(navigationBar: navBar)
+        }
 
         configureNavigationBar()
 
@@ -133,15 +135,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: Config
     private func configureNavigationBar() {
-        guard let navBar = navigationBar else {
-            return
-        }
-
-        if #available(iOS 13.0, *) {
-            navBar.standardAppearance.configureWithTransparentBackground()
-        }
-
-        NavBarAppearance.transparent.apply(navBar)
+        applyTransparentNavigationBarAppearance(to: navigationBar)
     }
 
     private func configureVisualEffectView() {
@@ -175,9 +169,16 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
 
     // MARK: - Private: Scroll Handlers
-    private func scrollViewDidScroll() {
+    private func scrollViewDidScroll () {
+        guard !isLoading else {
+            return
+        }
+
+        update()
+    }
+
+    private func update() {
         guard
-            !isLoading,
             imageView.image != nil,
             let scrollView = self.scrollView
         else {
@@ -239,6 +240,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
             self?.didFinishLoading()
+
+            self?.isLoading = false
             completion()
         }) { [weak self] error in
             self?.reset()
@@ -249,9 +252,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func didFinishLoading() {
         updateInitialHeight()
-
-        isLoading = false
-        updateUI()
+        update()
 
         isHidden = false
     }
