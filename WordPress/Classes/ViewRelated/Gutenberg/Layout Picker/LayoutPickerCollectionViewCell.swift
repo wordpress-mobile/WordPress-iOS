@@ -4,13 +4,8 @@ import Gridicons
 
 class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
-    static var cellReuseIdentifier: String {
-         return "LayoutPickerCollectionViewCell"
-     }
-
-    static var nib: UINib {
-        return UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
-    }
+    static let cellReuseIdentifier = "LayoutPickerCollectionViewCell"
+    static let nib = UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkBackground: UIView!
