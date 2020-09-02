@@ -8,8 +8,8 @@ enum FeatureFlag: Int, CaseIterable {
     case unifiedSiteAddress
     case unifiedGoogle
     case unifiedApple
-    case unifiedSignup
-    case unifiedLoginLink
+    case unifiedWordPress
+    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -39,10 +39,10 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .unifiedApple:
             return true
-        case .unifiedSignup:
+        case .unifiedWordPress:
             return false
-        case .unifiedLoginLink:
-            return false
+        case .unifiedKeychainLogin:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -91,10 +91,10 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth - Google"
         case .unifiedApple:
             return "Unified Auth - Apple"
-        case .unifiedSignup:
-            return "Unified Auth - Sign Up"
-        case .unifiedLoginLink:
-            return "Unified Auth - Login Magic Link"
+        case .unifiedWordPress:
+            return "Unified Auth - WordPress"
+        case .unifiedKeychainLogin:
+            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:

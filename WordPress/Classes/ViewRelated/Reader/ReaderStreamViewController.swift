@@ -286,6 +286,8 @@ import WordPressFlux
             topic.inUse = false
             ContextManager.sharedInstance().save(topic.managedObjectContext!)
         }
+
+        NotificationCenter.default.removeObserver(self)
     }
 
 
@@ -1591,7 +1593,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
-            WPAnalytics.track(.readerCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.track(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)

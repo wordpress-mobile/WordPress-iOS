@@ -38,6 +38,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Install Dependencies
           command: rake dependencies
@@ -129,6 +130,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -151,10 +153,15 @@ jobs:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
+      - run:
+          name: Setup Notifications
+          command: |
+            echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS failed!'" >> $BASH_ENV
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run: 
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -192,6 +199,7 @@ jobs:
       - ios/install-dependencies:
             bundle-install: true
             pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run: 
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
