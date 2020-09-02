@@ -31,10 +31,10 @@ PODS:
   - Charts (3.2.2):
     - Charts/Core (= 3.2.2)
   - Charts/Core (3.2.2)
-  - CocoaLumberjack (3.5.2):
-    - CocoaLumberjack/Core (= 3.5.2)
-  - CocoaLumberjack/Core (3.5.2)
-  - CropViewController (2.5.3)
+  - CocoaLumberjack (3.6.2):
+    - CocoaLumberjack/Core (= 3.6.2)
+  - CocoaLumberjack/Core (3.6.2)
+  - CropViewController (2.5.4)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
   - FBLazyVector (0.61.5)
@@ -419,24 +419,24 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.7.1)
-  - WPMediaPicker (1.7.0)
+  - WPMediaPicker (1.7.1)
   - wpxmlrpc (0.8.5)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (4.0.0):
     - ZendeskSDKConfigurationsSDK (~> 1.1.2)
-  - ZendeskCoreSDK (2.2.2)
+  - ZendeskCoreSDK (2.4.1)
   - ZendeskMessagingAPISDK (3.0.0):
     - ZendeskSDKConfigurationsSDK (~> 1.1.2)
   - ZendeskMessagingSDK (3.0.0):
     - ZendeskCommonUISDK (~> 4.0.0)
     - ZendeskMessagingAPISDK (~> 3.0.0)
-  - ZendeskSDKConfigurationsSDK (1.1.3)
-  - ZendeskSupportProvidersSDK (5.0.1):
-    - ZendeskCoreSDK (~> 2.2.1)
+  - ZendeskSDKConfigurationsSDK (1.1.6)
+  - ZendeskSupportProvidersSDK (5.0.5):
+    - ZendeskCoreSDK (~> 2.4.0)
   - ZendeskSupportSDK (5.0.0):
     - ZendeskMessagingSDK (~> 3.0.0)
     - ZendeskSupportProvidersSDK (~> 5.0.0)
-  - ZIPFoundation (0.9.10)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
@@ -668,9 +668,6 @@ CHECKOUT OPTIONS:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-  RNCMaskedView:
-    :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
-    :git: https://github.com/react-native-community/react-native-masked-view.git
   RNTAztecView:
     :commit: df6f8026b103fb0f381f738920a6cef89c7954f8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -687,8 +684,8 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: ac2cf9d8332fef72cf3e6de7b14012e7a0672676
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
-  CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
-  CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
+  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
+  CropViewController: 980df34ffc499db89755b2f307f20eca00cd40c6
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 47798d43f20e85af0d3cef09928b6e2d16dbbe4c
@@ -760,17 +757,17 @@ SPEC CHECKSUMS:
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: b56046080c99d41519d097c970df663fda48e218
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
-  WPMediaPicker: 754bc043ea42abc2eae8a07e5680c777c112666a
+  WPMediaPicker: 46ae5807c8f64d30a39c28812ad150837a424ed2
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
   ZendeskCommonUISDK: 3c432801e31abff97d6e30441ea102eaef6b99e2
-  ZendeskCoreSDK: 86513e62c1ab68913416c9044463d9b687ca944f
+  ZendeskCoreSDK: 2dc9457ae01d024ca02f60f6134ad1ad90136c29
   ZendeskMessagingAPISDK: 7c0cbd1d2c941f05b36f73e7db5faee5863fe8b0
   ZendeskMessagingSDK: 6f168161d834dd66668344f645f7a6b6b121b58a
-  ZendeskSDKConfigurationsSDK: 918241bc7ec30e0af9e1b16333d54a584ee8ab9e
-  ZendeskSupportProvidersSDK: e183d32abac888c448469e2005c4a5a8c3ed73f0
+  ZendeskSDKConfigurationsSDK: 2fa9413915db85c993f58ad8f7902bea0b6090a5
+  ZendeskSupportProvidersSDK: d21ce8eb3df1066338c7d3875bb818b32c3f124e
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
-  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 86a001b939441d678302de953f34fee6e8c61a5b
 
