@@ -48,11 +48,6 @@ class AnnouncementCell: UITableViewCell {
     }
 
     func configure(feature: WordPressKit.Feature) {
-        // if there's a valid image, use it, otherwise try to download it, if a valid url is passed
-//        if let image = announcement.image {
-//            announcementImageView.image = image
-//        }
-//        else
         if let url = URL(string: feature.iconUrl) {
             announcementImageView.af_setImage(withURL: url)
         }
