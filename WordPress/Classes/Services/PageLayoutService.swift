@@ -56,8 +56,8 @@ class PageLayoutService {
     // Parameter Generation
     private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
         return [
-            Parameters.scale: scale() as AnyObject
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
+            Parameters.scale: scale as AnyObject
         ]
     }
 
@@ -65,7 +65,5 @@ class PageLayoutService {
         return "\(thumbnailSize.width)"
     }
 
-    static func scale() -> String {
-        return "\(UIScreen.main.nativeScale)"
-    }
+    private static let scale = "\(UIScreen.main.nativeScale)"
 }
