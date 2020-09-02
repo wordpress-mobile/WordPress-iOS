@@ -177,7 +177,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     var showSupportNotificationIndicator: Bool {
         return ZendeskUtils.showSupportNotificationIndicator
     }
-    
+
     private var tracker: AuthenticatorAnalyticsTracker {
         AuthenticatorAnalyticsTracker.shared
     }
