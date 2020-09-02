@@ -73,10 +73,6 @@ open class QuickStartTourGuide: NSObject {
         return remainingTours.first
     }
 
-    @objc func showNotice(with blog: Blog) {
-        suggest(QuickStartFollowTour(), for: blog)
-    }
-
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
         // swallow suggestions if already suggesting or a tour is in progress
         guard currentSuggestion == nil, currentTourState == nil else {
