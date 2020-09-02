@@ -44,7 +44,7 @@
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-4" maxY="0.0"/>
+                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
                             <state key="normal" title="Reblog">
                                 <color key="titleShadowColor" red="0.50196078430000002" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
