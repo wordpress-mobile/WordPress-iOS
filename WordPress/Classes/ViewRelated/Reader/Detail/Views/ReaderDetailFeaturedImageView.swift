@@ -246,8 +246,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
         }
 
-        isHidden = false
         isLoading = false
+        scrollViewDidScroll()
+
+        isHidden = false
     }
 
     private func reset() {
