@@ -385,11 +385,12 @@
 		3F73BE5D24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */; };
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
+		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
+		3F758FD724F7445E00BBA2FC /* FeatureAnnouncementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD624F7445E00BBA2FC /* FeatureAnnouncementService.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
 		3F8CB10623A07B17007627BF /* ReaderReblogAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */; };
 		3F8CBE0B24EEB0EA00F71234 /* AnnouncementsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */; };
 		3F8CBE0D24EED2CB00F71234 /* FindOutMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CBE0C24EED2CB00F71234 /* FindOutMoreCell.swift */; };
-		3F8CBE1024EEF41800F71234 /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CBE0F24EEF41800F71234 /* Announcement.swift */; };
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */; };
 		3FD0316F24201E08005C0993 /* GravatarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0316E24201E08005C0993 /* GravatarButtonView.swift */; };
@@ -2832,11 +2833,12 @@
 		3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
+		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
+		3F758FD624F7445E00BBA2FC /* FeatureAnnouncementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureAnnouncementService.swift; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
 		3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogAction.swift; sourceTree = "<group>"; };
 		3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataSource.swift; sourceTree = "<group>"; };
 		3F8CBE0C24EED2CB00F71234 /* FindOutMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindOutMoreCell.swift; sourceTree = "<group>"; };
-		3F8CBE0F24EEF41800F71234 /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
 		3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStore.swift; sourceTree = "<group>"; };
 		3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MeBarButton.swift"; sourceTree = "<group>"; };
 		3FD0316E24201E08005C0993 /* GravatarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarButtonView.swift; sourceTree = "<group>"; };
@@ -6256,10 +6258,9 @@
 		3F662C4824DC9F8300CAEA95 /* What's New */ = {
 			isa = PBXGroup;
 			children = (
+				3F8CBE1124EF955700F71234 /* Data store */,
 				3F8CBE1224EF958700F71234 /* Dependency container */,
-				3F8CBE0E24EEF40900F71234 /* Model */,
 				3F3087C024EDB6900087B548 /* Views */,
-				3F8CBE1124EF955700F71234 /* ViewModel */,
 			);
 			path = "What's New";
 			sourceTree = "<group>";
@@ -6272,20 +6273,13 @@
 			name = Zendesk;
 			sourceTree = "<group>";
 		};
-		3F8CBE0E24EEF40900F71234 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				3F8CBE0F24EEF41800F71234 /* Announcement.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		3F8CBE1124EF955700F71234 /* ViewModel */ = {
+		3F8CBE1124EF955700F71234 /* Data store */ = {
 			isa = PBXGroup;
 			children = (
 				3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */,
+				3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */,
 			);
-			path = ViewModel;
+			path = "Data store";
 			sourceTree = "<group>";
 		};
 		3F8CBE1224EF958700F71234 /* Dependency container */ = {
@@ -8138,6 +8132,7 @@
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
 				1702BBDF1CF3034E00766A33 /* DomainsService.swift */,
+				3F758FD624F7445E00BBA2FC /* FeatureAnnouncementService.swift */,
 				FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */,
 				B5772AC31C9C7A070031F97E /* GravatarService.swift */,
 				17D9362624769579008B2205 /* HomepageSettingsService.swift */,
@@ -12381,6 +12376,7 @@
 				E12FE0741FA0CEE000F28710 /* ImmuTable+Optional.swift in Sources */,
 				1A433B1D2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift in Sources */,
 				3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */,
+				3F758FD724F7445E00BBA2FC /* FeatureAnnouncementService.swift in Sources */,
 				7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */,
 				E1E5EE37231E47A80018E9E3 /* ContextManager+ErrorHandling.swift in Sources */,
 				F52CACCC24512EA700661380 /* EmptyActionView.swift in Sources */,
@@ -12924,7 +12920,6 @@
 				08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */,
 				40E469952017FB1F0030DB5F /* PluginDirectoryViewModel.swift in Sources */,
 				F1527301243B290E00C8DC7A /* AbstractPost+Autosave.swift in Sources */,
-				3F8CBE1024EEF41800F71234 /* Announcement.swift in Sources */,
 				745A41B02065405600299D75 /* ReaderPost+Searchable.swift in Sources */,
 				E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */,
 				9A341E5321997A1F0036662E /* BlogService+BlogAuthors.swift in Sources */,
@@ -13226,6 +13221,7 @@
 				E1C2260723901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
+				3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
 				981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,
