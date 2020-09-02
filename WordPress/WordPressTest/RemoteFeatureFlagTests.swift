@@ -73,7 +73,7 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
 
     init(flags: [MockFeatureFlag] = [], shouldSucceed: Bool = true) {
         self.flags = flags
-            .compactMap { $0.toRemoteFeatureFlag }
+            .compactMap { $0.toFeatureFlag }
         super.init()
     }
 

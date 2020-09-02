@@ -101,14 +101,15 @@ enum MockFeatureFlag: OverrideableFlag {
         }
     }
 
-    var toRemoteFeatureFlag: RemoteFeatureFlag? {
+    var toFeatureFlag: WordPressKit.FeatureFlag? {
         guard
             let remoteKey = remoteKey,
             let remoteValue = remoteValue
         else {
             return nil
         }
-        return RemoteFeatureFlag(title: remoteKey, value: remoteValue)
+
+        return WordPressKit.FeatureFlag(title: remoteKey, value: remoteValue)
     }
 }
 
