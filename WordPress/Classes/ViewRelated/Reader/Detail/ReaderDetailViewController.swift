@@ -134,7 +134,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard !featuredImage.isLoaded else {
             return
         }
-        
+
         // Load the image
         featuredImage.load { [unowned self] in
             self.hideLoading()
@@ -293,7 +293,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             UIBarButtonItem.fixedSpace(24),
             configuredBrowserButton()
         ]
-        
+
         navigationItem.leftBarButtonItem = configuredBackButton()
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
@@ -366,7 +366,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             featuredImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             featuredImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
         ])
-        
+
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 

@@ -68,7 +68,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             configureNavigationBar()
             return
         }
-        
+
         // Navigation Bar
         self.navigationBar = navigationBar
 
@@ -292,7 +292,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         return min(height, superview.bounds.height * maxHeightMultiplier)
     }
-    
+
     private var statusBarHeight: CGFloat {
       return max(UIApplication.shared.statusBarFrame.size.height, UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0)
     }
@@ -322,7 +322,7 @@ struct NavBarAppearance {
     var backgroundColor: UIColor?
     var tintColor: UIColor?
     var isTranslucent: Bool = false
-    var titleTextAttributes: [NSAttributedString.Key : Any]?
+    var titleTextAttributes: [NSAttributedString.Key: Any]?
 
     func apply(_ navigationBar: UINavigationBar) {
         navigationBar.isTranslucent = isTranslucent
