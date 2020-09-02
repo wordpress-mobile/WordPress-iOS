@@ -126,24 +126,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        // Show likes if logged in, or if likes exist, but not if external
-        if (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal {
-            configureLikeActionButton()
-        }
-
-        // Show comments if logged in and comments are enabled, or if comments exist.
-        // But only if it is from wpcom (jetpack and external is not yet supported).
-        // Nesting this conditional cos it seems clearer that way
-        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
-            let commentCount = post.commentCount?.intValue ?? 0
-            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
-                configureCommentActionButton()
-            }
-        }
-        // Show reblog only if logged in
-        if ReaderHelpers.isLoggedIn(), !post.isPrivate() {
-            configureReblogButton()
-        }
+        configureLikeActionButton()
+        configureCommentActionButton()
+        configureReblogButton()
         configureSaveForLaterButton()
     }
 
@@ -175,12 +160,16 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
-        likeButton.isEnabled = ReaderHelpers.isLoggedIn()
+        guard let post = post else {
+            return
+        }
+
+        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal
         // as by design spec, only display like counts
-        let likeCount = post?.likeCount()?.intValue ?? 0
+        let likeCount = post.likeCount()?.intValue ?? 0
         let title = likeCount > 0 ? "\(likeCount)" : ""
 
-        let selected = post?.isLiked ?? false
+        let selected = post.isLiked
         let likeImage = UIImage(named: "icon-reader-like")
         let likedImage = UIImage(named: "icon-reader-liked")
 
@@ -193,6 +182,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     /// Uses the configuration in WPStyleGuide for the reblog button
     private func configureReblogButton() {
+        guard let post = post else {
+            return
+        }
+
+        reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isPrivate()
         reblogButton.isHidden = false
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
     }
@@ -268,6 +262,25 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+        commentButton.isEnabled = shouldShowCommentActionButton
+    }
+
+    private var shouldShowCommentActionButton: Bool {
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        guard let post = post else {
+            return false
+        }
+
+        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
+            let commentCount = post.commentCount?.intValue ?? 0
+            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
+                return true
+            }
+        }
+
+        return false
     }
 
     private func configureSaveForLaterButton() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -19,11 +19,11 @@
                         <constraint firstAttribute="height" constant="1" id="ikP-PI-Is1"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
-                    <rect key="frame" x="28" y="423" width="358" height="50"/>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="fillEqually" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
+                    <rect key="frame" x="28" y="436" width="358" height="24"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
-                            <rect key="frame" x="0.0" y="13" width="32" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
+                            <rect key="frame" x="0.0" y="0.0" width="77.5" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="fqQ-GT-Dks"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="sbH-ur-3hQ"/>
@@ -37,11 +37,8 @@
                                 <action selector="didTapSaveForLater:" destination="opk-iy-IwF" eventType="touchUpInside" id="PDn-1T-rlh"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p01-2J-g2A">
-                            <rect key="frame" x="48" y="0.0" width="143" height="50"/>
-                        </view>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
-                            <rect key="frame" x="207" y="13" width="40" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
+                            <rect key="frame" x="93.5" y="0.0" width="77.5" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="Z2e-Ky-bYe"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="j4t-0h-sz7"/>
@@ -54,8 +51,8 @@
                                 <action selector="didTapReblog:" destination="opk-iy-IwF" eventType="touchUpInside" id="4SX-vl-xza"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
-                            <rect key="frame" x="263" y="13" width="32" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
+                            <rect key="frame" x="187" y="0.0" width="77.5" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="GbG-ii-IcP"/>
                                 <constraint firstAttribute="height" constant="24" id="qNK-wQ-gIc"/>
@@ -69,8 +66,8 @@
                                 <action selector="didTapComment:" destination="opk-iy-IwF" eventType="touchUpInside" id="QGB-ei-h8b"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
-                            <rect key="frame" x="311" y="13" width="47" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
+                            <rect key="frame" x="280.5" y="0.0" width="77.5" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="Fio-gF-mFy"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="JqZ-KF-mxs"/>
