@@ -36,8 +36,6 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    
-
     var announcements: [WordPressKit.Announcement] {
         switch state {
         case .loading, .error:
@@ -73,4 +71,3 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
                                               localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 }
-
