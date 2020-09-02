@@ -177,6 +177,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     var showSupportNotificationIndicator: Bool {
         return ZendeskUtils.showSupportNotificationIndicator
     }
+    
+    private var tracker: AuthenticatorAnalyticsTracker {
+        AuthenticatorAnalyticsTracker.shared
+    }
 
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
@@ -190,7 +194,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
         WPStyleGuide.configureNavigationAppearance()
 
-        let controller = SupportTableViewController()
+        let controller = SupportTableViewController { [weak self] in
+            self?.tracker.track(click: .dismiss)
+        }
         controller.sourceTag = sourceTag
 
         let navController = UINavigationController(rootViewController: controller)
