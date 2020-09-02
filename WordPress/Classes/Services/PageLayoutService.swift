@@ -62,8 +62,8 @@ class PageLayoutService {
     }
 
     private static func previewWidth(_ thumbnailSize: CGSize) -> String {
-        return "\(thumbnailSize.width)"
+        return "\(thumbnailSize.width * scale)"
     }
 
-    private static let scale = "\(UIScreen.main.nativeScale)"
+    private static let scale = UIScreen.main.nativeScale
 }
