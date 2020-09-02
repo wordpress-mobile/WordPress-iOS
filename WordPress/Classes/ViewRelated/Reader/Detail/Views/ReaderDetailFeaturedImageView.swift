@@ -118,6 +118,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         NavBarAppearance.transparent.apply(navigationBar)
+        if isLoaded, imageView.image == nil {
+            navigationBar.tintColor = Styles.endTintColor
+        }
+
         updateUI()
     }
 
@@ -131,7 +135,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         appearance.apply(navBar)
     }
-
 
     // MARK: - Private: Config
     private func configureNavigationBar() {
@@ -231,6 +234,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             let imageURL = URL(string: post.featuredImage)
         else {
             reset()
+            isLoaded = true
             completion()
             return
         }

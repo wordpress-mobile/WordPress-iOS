@@ -143,7 +143,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Reapply the appearance, this reset the navbar after presenting a view
         featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
-
     }
 
     override func viewDidDisappear(_ animated: Bool) {
