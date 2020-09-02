@@ -17,7 +17,7 @@ extension WPTabBarController {
         }
         guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
         guard content == nil else {
-            showPageEditor(blog: blog, title: title, content: content)
+            showEditor(blog: blog, title: title, content: content)
             return
         }
 
@@ -25,11 +25,11 @@ extension WPTabBarController {
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: ["tap_source": source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] template in
-            self?.showPageEditor(blog: blog, title: title, content: template)
+            self?.showEditor(blog: blog, title: title, content: template)
         }
     }
 
-    private func showPageEditor(blog: Blog, title: String?, content: String?) {
+    private func showEditor(blog: Blog, title: String?, content: String?) {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
