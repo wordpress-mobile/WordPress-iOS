@@ -27,6 +27,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Public: Properties
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
     var isLoading: Bool = false
+    var isLoaded: Bool = false
 
     // MARK: - Private: Properties
 
@@ -63,8 +64,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Public: Configuration
 
     func configure(scrollView: UIScrollView, navigationBar: UINavigationBar?) {
+        guard self.navigationBar == nil, self.scrollView == nil else {
+            configureNavigationBar()
+            return
+        }
+        
         // Navigation Bar
         self.navigationBar = navigationBar
+
+        // Save the original appearance
+        originalNavBarAppearance = NavBarAppearance(navigationBar: navigationBar!)
+
         configureNavigationBar()
 
         // Scrol View
@@ -72,11 +82,27 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
             self?.scrollViewDidScroll()
         }
+
         addTapGesture()
     }
 
     func configure(for post: ReaderPost) {
         self.post = post
+    }
+
+    func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
+        guard let navigationBar = navigationBar else {
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            navigationBar.standardAppearance.configureWithTransparentBackground()
+        }
+
+        NavBarAppearance.transparent.apply(navigationBar)
+
+        // Adjust the tints/etc for the current offset
+        scrollViewDidScroll()
     }
 
     func restoreNavigationBarAppearance() {
@@ -101,9 +127,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         guard let navBar = navigationBar else {
             return
         }
-
-        // Save the original appearance
-        originalNavBarAppearance = NavBarAppearance(navigationBar: navBar)
 
         if #available(iOS 13.0, *) {
             navBar.standardAppearance.configureWithTransparentBackground()
@@ -177,13 +200,16 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
+        guard let navBar = navigationBar else {
+            return
+        }
+
         let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
 
         let tintColor = UIColor.interpolate(from: Styles.startTintColor,
                                             to: Styles.endTintColor,
                                             with: progress)
-
-        navigationBar?.tintColor = tintColor
+        navBar.tintColor = tintColor
     }
 
     // MARK: - Private: Network Helpers
@@ -198,6 +224,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         isLoading = true
+        isLoaded = true
 
         imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
             self?.didFinishLoading()
@@ -271,7 +298,7 @@ extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
 }
 
 /// Represents the appearance for a navigation bar
-private struct NavBarAppearance {
+struct NavBarAppearance {
     var backgroundImage: UIImage?
     var shadowImage: UIImage?
     var backgroundColor: UIColor?
@@ -312,7 +339,7 @@ private struct NavBarAppearance {
     }
 }
 
-extension NavBarAppearance {
+private extension NavBarAppearance {
     init(navigationBar: UINavigationBar) {
         if #available(iOS 13.0, *) {
             let appearance = navigationBar.standardAppearance

@@ -49,6 +49,11 @@ extension UIColor {
     ///   - progress: A value between 0.0 and 1.0
     /// - Returns: An
     static func interpolate(from fromColor: UIColor, to toColor: UIColor, with progress: CGFloat) -> UIColor {
+        
+        if fromColor == toColor {
+            return fromColor
+        }
+
         let components = fromColor.rgbaComponents.interpolated(to: toColor.rgbaComponents, with: progress)
 
         return UIColor(red: components.red,

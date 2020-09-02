@@ -36,6 +36,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
 
     /// The actual header
+    private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
+
+    /// The actual header
     private let header: ReaderDetailHeaderView = .loadFromNib()
 
     /// Bottom toolbar
@@ -89,12 +92,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         set { }
         get { true }
     }
+
+    /// Tracks whether the webview has called -didFinish:navigation
+    var isLoadingWebView = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureNavigationBar()
         applyStyles()
         configureWebView()
-        configureShareButton()
+        configureFeaturedImage()
         configureHeader()
         configureToolbar()
         configureNoResultsViewController()
@@ -103,10 +111,34 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        featuredImage.restoreNavigationBarAppearance()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         ReaderTracker.shared.start(.readerPost)
+
+        // Reapply the appearance, this reset the navbar after presenting a view
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+        
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -117,6 +149,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
+
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
+
+        featuredImage.configure(for: post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
@@ -136,8 +173,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Hide the ghost cells
     func hideLoading() {
-        loadingView.stopGhostAnimation()
-        loadingView.isHidden = true
+        guard !featuredImage.isLoading, !isLoadingWebView else {
+            return
+        }
+
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingView.alpha = 0.0
+        }) { (_) in
+            self.loadingView.isHidden = true
+            self.loadingView.alpha = 1.0
+            self.loadingView.stopGhostAnimation()
+        }
     }
 
     /// Shown an error
@@ -162,10 +208,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     ///
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
-        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        let titleView = UILabel()
-        titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
-        navigationItem.titleView = titleView
+
     }
 
     /// Scroll the content to a given #hash
@@ -233,17 +276,90 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    /// Adds the sahre button at the right of the nav bar
+    private func configureNavigationBar() {
+        let rightItems = [
+            UIBarButtonItem.fixedSpace(24),
+            configuredMoreButton(),
+            UIBarButtonItem.fixedSpace(24),
+            configuredShareButton(),
+            UIBarButtonItem.fixedSpace(24),
+            configuredBrowserButton()
+        ]
+        
+        navigationItem.leftBarButtonItem = configuredBackButton()
+        navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
+    }
+
+    private func configuredBackButton() -> UIBarButtonItem {
+        let image = UIImage.gridicon(.chevronLeft).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: #selector(didTapBackButton(_:)), for: .touchUpInside)
+
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+
+        return barButtonItem
+    }
+
+    @objc func didTapBackButton(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+
+    private func configuredBrowserButton() -> UIBarButtonItem? {
+        let image = UIImage.gridicon(.globe).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: #selector(didTapBrowserButton(_:)), for: .touchUpInside)
+
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+
+        return barButtonItem
+    }
+
+    private func configuredMoreButton() -> UIBarButtonItem? {
+        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
+            return nil
+        }
+
+        let image = icon.withRenderingMode(.alwaysTemplate)
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: #selector(didTapMenuButton(_:)), for: .touchUpInside)
+
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+
+        return barButtonItem
+    }
+
+    /// REtrurn the share button at the right of the nav bar
     ///
-    private func configureShareButton() {
+    private func configuredShareButton() -> UIBarButtonItem? {
         let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, for: UIControl.State())
         button.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
 
-        let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+
+        return barButtonItem
+    }
+
+    private func configureFeaturedImage() {
+        featuredImage.delegate = coordinator
+
+        view.insertSubview(featuredImage, belowSubview: loadingView)
+
+        NSLayoutConstraint.activate([
+            featuredImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            featuredImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            featuredImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+        ])
+        
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureHeader() {
@@ -288,6 +404,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
         coordinator?.share(fromView: sender)
+    }
+
+    @objc func didTapMenuButton(_ sender: UIButton) {
+        coordinator?.didTapMenuButton(sender)
+    }
+
+    @objc func didTapBrowserButton(_ sender: UIButton) {
+        coordinator?.openInBrowser()
     }
 
     /// A View Controller that displays a Post content.
@@ -382,6 +506,8 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.webView.loadMedia()
+
+        isLoadingWebView = false
         hideLoading()
     }
 
@@ -469,3 +595,12 @@ extension ReaderDetailViewController: PrefersFullscreenDisplay {}
 
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+// Helper extension to create spacing between items
+private extension UIBarButtonItem {
+    static func fixedSpace(_ spacing: CGFloat) -> UIBarButtonItem {
+        let button = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        button.width = spacing
+        return button
+    }
+}

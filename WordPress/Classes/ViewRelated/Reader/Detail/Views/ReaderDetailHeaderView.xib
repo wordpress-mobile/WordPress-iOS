@@ -18,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPG-TJ-mSj">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="16"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="6"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="4PO-aU-A3l"/>
+                        <constraint firstAttribute="height" constant="6" id="4PO-aU-A3l"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="vvq-7F-Zcz">
-                    <rect key="frame" x="16" y="16" width="382" height="103"/>
+                    <rect key="frame" x="16" y="6" width="382" height="113"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -158,7 +158,10 @@ class ReaderDetailCoordinator {
     /// Open the postURL in a separated view controller
     ///
     func openInBrowser() {
-        guard let postURL = postURL else {
+        guard
+            let permaLink = post?.permaLink,
+            let postURL = URL(string: permaLink)
+        else {
             return
         }
 
@@ -430,6 +433,7 @@ class ReaderDetailCoordinator {
     }
 }
 
+// MARK: - ReaderDetailHeaderViewDelegate
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didTapBlogName() {
         previewSite()
@@ -447,12 +451,15 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
-    func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
-        showFeaturedImage(sender)
-    }
-
     func didTapFollowButton() {
         followSite()
+    }
+}
+
+// MARK: - ReaderDetailFeaturedImageViewDelegate
+extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
+    func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
+        showFeaturedImage(sender)
     }
 }
 
