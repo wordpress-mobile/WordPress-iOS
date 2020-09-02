@@ -49,11 +49,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.viewController = viewController
 
         likeCountObserver = post.observe(\.likeCount, options: .new) { [weak self] _, _ in
-            self?.configureLikeActionButton(true)
+            self?.configureButtonTitles()
         }
 
         commentCountObserver = post.observe(\.commentCount, options: .new) { [weak self] _, _ in
-            self?.configureCommentActionButton()
+            self?.configureButtonTitles()
         }
 
         configureActionButtons()
@@ -154,6 +154,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
+        button.setTitle(title, for: UIControl.State())
+        button.setTitle(title, for: .highlighted)
+        button.setTitle(title, for: .disabled)
         button.setImage(image, for: UIControl.State())
         button.setImage(highlightedImage, for: .highlighted)
         button.setImage(highlightedImage, for: .selected)
@@ -161,12 +164,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(image, for: .disabled)
         button.isSelected = selected
         button.isHidden = false
-
-        if let title = title {
-            button.setTitle(title, for: UIControl.State())
-            button.setTitle(title, for: .highlighted)
-            button.setTitle(title, for: .disabled)
-        }
 
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
@@ -317,7 +314,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let likeCount = post.likeCount()?.intValue ?? 0
         let commentCount = post.commentCount()?.intValue ?? 0
 
-        if self.traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact {
             // remove title text
             let likeTitle = likeCount > 0 ?  String(likeCount) : ""
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
