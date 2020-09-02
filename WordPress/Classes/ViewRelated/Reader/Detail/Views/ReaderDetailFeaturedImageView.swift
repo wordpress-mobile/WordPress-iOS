@@ -72,6 +72,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
             self?.scrollViewDidScroll()
         }
+        addTapGesture()
     }
 
     func configure(for post: ReaderPost) {
@@ -121,6 +122,22 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         visualEffectView.effect = UIBlurEffect(style: effect)
+    }
+
+    // MARK: - Tap Gesture
+    private func addTapGesture() {
+        guard let scrollView = scrollView else {
+            return
+        }
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        delegate?.didTapFeaturedImage(imageView)
     }
 
     // MARK: - Private: Scroll Handlers
@@ -240,6 +257,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         return statusBarHeight + navBarHeight
     }
 
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension ReaderDetailFeaturedImageView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchPoint = touch.location(in: self)
+        let isOutsideView = !imageView.frame.contains(touchPoint)
+
+        /// Do not accept the touch if outside the featured image view
+        return isOutsideView == false
+    }
 }
 
 /// Represents the appearance for a navigation bar
