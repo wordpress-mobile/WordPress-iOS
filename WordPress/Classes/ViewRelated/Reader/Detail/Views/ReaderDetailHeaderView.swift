@@ -6,6 +6,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
     func didTapFollowButton()
+    func didSelectTopic(_ topic: String)
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable {
@@ -21,7 +22,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var iPadFollowButton: UIButton!
-
+    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     /// The post to show details in the header
     ///
@@ -49,6 +50,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureDateLabel()
         configureFollowButton()
         configureNotifications()
+        configureTopicsCollectionView()
 
         prepareForVoiceOver()
         prepareMenuForVoiceOver()
@@ -182,6 +184,21 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         NotificationCenter.default.addObserver(self, selector: #selector(preferredContentSizeChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
+    func configureTopicsCollectionView() {
+        guard
+            let post = post,
+            let tags = post.tagsForDisplay(),
+            !tags.isEmpty
+        else {
+            topicsCollectionView.isHidden = true
+            return
+        }
+
+        topicsCollectionView.topicDelegate = self
+        topicsCollectionView.topics = tags
+        topicsCollectionView.isHidden = false
+    }
+
     @objc private func preferredContentSizeChanged() {
         configureTitle()
     }
@@ -232,4 +249,14 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         titleLabel.accessibilityTraits = .staticText
     }
 
+}
+
+extension ReaderDetailHeaderView: ReaderTopicCollectionViewCoordinatorDelegate {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        self.layoutIfNeeded()
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
+        delegate?.didSelectTopic(topic)
+    }
 }
