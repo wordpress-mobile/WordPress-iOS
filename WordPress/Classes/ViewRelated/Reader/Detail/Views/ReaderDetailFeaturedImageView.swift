@@ -90,6 +90,22 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         self.post = post
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        configureVisualEffectView()
+        updateUI()
+    }
+
+    // MARK: - Public: Helpers
+    public func updateUI() {
+        scrollViewDidScroll()
+    }
+
+    public func deviceDidRotate() {
+        updateInitialHeight()
+    }
+
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
         guard let navigationBar = navigationBar else {
             return
@@ -100,9 +116,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         NavBarAppearance.transparent.apply(navigationBar)
-
-        // Adjust the tints/etc for the current offset
-        scrollViewDidScroll()
+        updateUI()
     }
 
     func restoreNavigationBarAppearance() {
@@ -116,11 +130,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         appearance.apply(navBar)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        configureVisualEffectView()
-    }
 
     // MARK: - Private: Config
     private func configureNavigationBar() {
@@ -162,6 +171,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         delegate?.didTapFeaturedImage(imageView)
     }
+
+
 
     // MARK: - Private: Scroll Handlers
     private func scrollViewDidScroll() {
@@ -237,6 +248,15 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func didFinishLoading() {
+        updateInitialHeight()
+
+        isLoading = false
+        updateUI()
+
+        isHidden = false
+    }
+
+    private func updateInitialHeight() {
         let height = featuredImageHeight() - topMargin()
 
         heightConstraint.constant = height
@@ -245,12 +265,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
             scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
         }
-
-        isLoading = false
-        scrollViewDidScroll()
-
-        isHidden = false
     }
+
 
     private func reset() {
         navigationBar?.tintColor = Styles.endTintColor
