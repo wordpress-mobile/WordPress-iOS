@@ -11,8 +11,13 @@ class RemoteFeatureFlagTests: XCTestCase {
     func testThatDeviceIdIsTheSameForEveryInstanceOfTheStore() {
         let mock = MockFeatureFlagRemote()
         var deviceId = ""
+
+        let exp = expectation(description: "deviceIdCallback must be called twice")
+        exp.expectedFulfillmentCount = 2
+
         mock.deviceIdCallback = {
             deviceId == "" ? deviceId = $0 : XCTAssertEqual(deviceId, $0)
+            exp.fulfill()
         }
 
         RemoteFeatureFlagStore(remote: mock).update()
