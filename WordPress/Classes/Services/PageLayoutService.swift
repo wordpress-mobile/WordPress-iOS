@@ -54,14 +54,14 @@ class PageLayoutService {
     }
 
     // Parameter Generation
-    static func parameters() -> [String: AnyObject] {
+    private static func parameters() -> [String: AnyObject] {
         return [
-            Parameters.supportedBlocks: supportedBlocks() as AnyObject
+            Parameters.supportedBlocks: supportedBlocks as AnyObject
         ]
     }
 
-    static func supportedBlocks() -> String {
+    private static let supportedBlocks: String = {
         let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
-    }
+    }()
 }
