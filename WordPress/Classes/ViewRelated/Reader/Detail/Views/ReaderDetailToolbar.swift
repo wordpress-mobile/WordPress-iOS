@@ -122,10 +122,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         resetActionButton(saveForLaterButton)
         resetActionButton(reblogButton)
 
-        guard let post = post else {
-            return
-        }
-
         configureLikeActionButton()
         configureCommentActionButton()
         configureReblogButton()
