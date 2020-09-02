@@ -1,5 +1,4 @@
 #import "SuggestionService.h"
-#import "Suggestion.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
