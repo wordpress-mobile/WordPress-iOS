@@ -268,7 +268,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
-
     private func reset() {
         navigationBar?.tintColor = Styles.endTintColor
 
@@ -289,9 +288,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let aspectRatio = image.size.width / image.size.height
         let height = bounds.width / aspectRatio
 
-        let maxHeightMultiplier: CGFloat = UIDevice.current.orientation.isLandscape ? 0.30 : UIDevice.isPad() ? 0.50 : 0.70
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let maxHeightMultiplier: CGFloat = isLandscape ? Constants.multipliers.maxLandscapeHeight : UIDevice.isPad() ? Constants.multipliers.maxPadPortaitHeight : Constants.multipliers.maxPortaitHeight
 
-        return min(height, superview.bounds.height * maxHeightMultiplier)
+        let result = min(height, superview.bounds.height * maxHeightMultiplier)
+
+        // Restrict the min height of the view to twice the size of the top margin
+        // This prevents high aspect ratio images from appearing too small
+        return max(result, topMargin() * 2)
     }
 
     private var statusBarHeight: CGFloat {
