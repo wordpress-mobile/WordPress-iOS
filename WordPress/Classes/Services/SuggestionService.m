@@ -155,18 +155,16 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     if (![WordPressAppDelegate shared].connectionAvailable) {
         return NO;
     }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *request = UserAutocomplete.fetchRequest;
-    NSError *error;
-    NSUInteger count = [context countForFetchRequest:request error:&error];
+
+    Autocompleter *autocomplete = [self retrieveAutocompleterForSiteID:siteID];
         
-    // if there is nothing to show
-    if (count == 0) {
+    // if the suggestion list is already retrieved and there is nothing to show
+    if (autocomplete && [autocomplete userAutocompletes].count == 0) {
         return NO;
     }
     
     // if the site is not hosted on WordPress.com
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
     return [blog supports:BlogFeatureMentions];
