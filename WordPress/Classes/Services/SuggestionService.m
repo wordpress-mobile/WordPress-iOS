@@ -68,10 +68,9 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     [[defaultAccount wordPressComRestApi] GET:suggestPath
                                    parameters:params
                                       success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-
         NSArray *restSuggestions = responseObject[@"suggestions"];
 
-        [self updateUserAutocompletesForSiteID:siteID suggestions:restSuggestions];
+        [self updateAndSaveUserAutocompletesForSiteID:siteID suggestions:restSuggestions];
 
         // remove siteID from the currently being requested list
         [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
@@ -118,7 +117,7 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     }
 }
 
-- (void)updateUserAutocompletesForSiteID:(NSNumber *)siteID suggestions:(NSArray *)suggestions
+- (void)updateAndSaveUserAutocompletesForSiteID:(NSNumber *)siteID suggestions:(NSArray *)suggestions
 {
     Autocompleter *autocompleter = [self retrieveAutocompleterForSiteID:siteID];
 
