@@ -243,7 +243,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         self.searchText = word;
         if (self.searchText.length > 1) {
             NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (username contains[c] %@)",
                                             searchQuery, searchQuery];
             self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
