@@ -40,6 +40,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
                 configureActionButtons()
             }
         }
+
+        configureButtonTitles()
     }
 
     func configure(for post: ReaderPost, in viewController: UIViewController) {
@@ -136,6 +138,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         configureCommentActionButton()
         configureReblogButton()
         configureSaveForLaterButton()
+        configureButtonTitles()
     }
 
     private func resetActionButton(_ button: UIButton) {
@@ -151,9 +154,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
-        button.setTitle(title, for: UIControl.State())
-        button.setTitle(title, for: .highlighted)
-        button.setTitle(title, for: .disabled)
         button.setImage(image, for: UIControl.State())
         button.setImage(highlightedImage, for: .highlighted)
         button.setImage(highlightedImage, for: .selected)
@@ -161,6 +161,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(image, for: .disabled)
         button.isSelected = selected
         button.isHidden = false
+
+        if let title = title {
+            button.setTitle(title, for: UIControl.State())
+            button.setTitle(title, for: .highlighted)
+            button.setTitle(title, for: .disabled)
+        }
 
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
@@ -260,14 +266,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureCommentActionButton() {
-        guard let commentCount = post?.commentCount else {
-            return
-        }
-
-        let title = commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
-        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+        configureActionButton(commentButton, title: nil, image: image, highlightedImage: highlightImage, selected: false)
         commentButton.isEnabled = shouldShowCommentActionButton
     }
 
@@ -306,6 +307,37 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
+    }
+
+    fileprivate func configureButtonTitles() {
+        guard let post = post else {
+            return
+        }
+
+        let likeCount = post.likeCount()?.intValue ?? 0
+        let commentCount = post.commentCount()?.intValue ?? 0
+
+        if self.traitCollection.horizontalSizeClass == .compact {
+            // remove title text
+            let likeTitle = likeCount > 0 ?  String(likeCount) : ""
+            let commentTitle = commentCount > 0 ? String(commentCount) : ""
+            likeButton.setTitle(likeTitle, for: .normal)
+            commentButton.setTitle(commentTitle, for: .normal)
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: false)
+
+        } else {
+            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
+            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
+
+            likeButton.setTitle(likeTitle, for: .normal)
+            commentButton.setTitle(commentTitle, for: .normal)
+
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton)
+        }
+
+
     }
 
     // MARK: - Analytics
