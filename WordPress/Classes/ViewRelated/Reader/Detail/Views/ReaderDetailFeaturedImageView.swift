@@ -15,7 +15,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     struct Styles {
         static let startTintColor: UIColor = .white
-        static let endTintColor: UIColor = UIColor(light: .black, dark: .white)
+        static let endTintColor: UIColor = .text
     }
 
     // MARK: - IBOutlets
