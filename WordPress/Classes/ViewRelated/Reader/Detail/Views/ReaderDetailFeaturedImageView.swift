@@ -20,7 +20,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - IBOutlets
     @IBOutlet weak var imageView: CachedAnimatedImageView!
-    @IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
 
@@ -54,7 +53,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureVisualEffectView()
 
         isUserInteractionEnabled = false
 
@@ -95,7 +93,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        configureVisualEffectView()
         updateUI()
     }
 
@@ -141,18 +138,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         applyTransparentNavigationBarAppearance(to: navigationBar)
     }
 
-    private func configureVisualEffectView() {
-        var effect: UIBlurEffect.Style = .extraLight
-
-        if #available(iOS 13, *) {
-            if traitCollection.userInterfaceStyle == .dark {
-                effect = .dark
-            }
-        }
-
-        visualEffectView.effect = UIBlurEffect(style: effect)
-    }
-
     // MARK: - Tap Gesture
     private func addTapGesture() {
         guard let scrollView = scrollView else {
@@ -191,7 +176,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let offsetY = scrollView.contentOffset.y
 
         updateFeaturedImageHeight(with: offsetY)
-        updateVisualEffectView(with: offsetY)
         updateNavigationBar(with: offsetY)
     }
 
@@ -204,14 +188,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         let y = height - ((offset - topMargin()) + height)
 
-        heightConstraint.constant = max(y, topMargin())
-    }
-
-    private func updateVisualEffectView(with offset: CGFloat) {
-        let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
-
-        gradientView.alpha = 1 - progress
-        visualEffectView.alpha = progress
+        heightConstraint.constant = max(y, 0)
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
@@ -221,9 +198,12 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
 
+
         let tintColor = UIColor.interpolate(from: Styles.startTintColor,
                                             to: Styles.endTintColor,
                                             with: progress)
+
+
         navBar.tintColor = tintColor
     }
 
@@ -276,7 +256,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         navigationBar?.tintColor = Styles.endTintColor
 
         heightConstraint.constant = 0
-        visualEffectView.alpha = 0
         isHidden = true
     }
 
