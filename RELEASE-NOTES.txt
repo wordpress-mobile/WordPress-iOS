@@ -10,6 +10,7 @@
 * [**] Updated UI when logging in/signing up with Apple.
 * [**] Updated UI when logging in/signing up with Google.
 * [**] Simplified Google authentication. If signup is attempted with an existing WordPress account, automatically redirects to login. If login is attempted without a matching WordPress account, automatically redirects to signup.
+* [**] Fixes issue where the stats were not updating when switching between sites in My Sites.
 * [*] Block Editor: Improved logic for creating undo levels.
 * [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
 
