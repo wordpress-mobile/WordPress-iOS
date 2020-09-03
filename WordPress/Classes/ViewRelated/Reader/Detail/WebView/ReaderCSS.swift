@@ -48,4 +48,8 @@ struct ReaderCSS {
         let timestamp = String(appending)
         return "https://wordpress.com/calypso/reader-mobile.css?\(timestamp)"
     }
+
+    func clearCache() {
+        store.removeObject(forKey: type(of: self).updatedKey)
+    }
 }

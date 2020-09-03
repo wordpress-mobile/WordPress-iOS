@@ -68,6 +68,14 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
             }),
+            ButtonRow(title: Strings.clearCSSCache, action: { [weak self] _ in
+                ReaderCSS().clearCache()
+                let alert = UIAlertController(title: NSLocalizedString("Cache cleared!", comment: "Debug message informing the user that the cache for CSS in the Reader has been cleared"),
+                                              message: nil, preferredStyle: .alert)
+                alert.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+                self?.present(alert, animated: true, completion: nil)
+                self?.tableView.deselectSelectedRowWithAnimationAfterDelay(true)
+            })
         ]
     }
 
@@ -136,5 +144,6 @@ class DebugMenuViewController: UITableViewController {
         static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
         static let crashLogging = NSLocalizedString("Crash Logging", comment: "Title of a section on the debug screen that shows a list of actions related to crash logging")
         static let encryptedLogging = NSLocalizedString("Encrypted Logs", comment: "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs")
+        static let clearCSSCache = NSLocalizedString("Clear Reader CSS Cache", comment: "Title of a row displayed on the debug screen used to clear any cached CSS for the Reader")
     }
 }
