@@ -23,21 +23,21 @@
                     </view>
                     <blurEffect style="dark"/>
                 </visualEffectView>
-                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="jUL-7Q-S12" customClass="GradientView" customModule="WordPressUI">
+                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="jUL-7Q-S12" customClass="LinearGradientView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="fromColor">
-                            <color key="value" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="toColor">
-                            <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="point" keyPath="endPoint">
                             <point key="value" x="0.0" y="0.69999999999999996"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="point" keyPath="startPoint">
                             <point key="value" x="0.0" y="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                            <color key="value" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                            <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
@@ -65,7 +65,7 @@
                 <outlet property="imageView" destination="g3L-dQ-aNo" id="jmJ-uP-SHb"/>
                 <outlet property="visualEffectView" destination="4AP-CX-pWc" id="UoI-P3-aVx"/>
             </connections>
-            <point key="canvasLocation" x="125" y="-124"/>
+            <point key="canvasLocation" x="58" y="-209"/>
         </view>
     </objects>
 </document>
