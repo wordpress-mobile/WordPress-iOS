@@ -59,7 +59,7 @@ extension ReaderTopicService {
                 }, failure)
             } else {
                 service.unsubscribeSiteNotifications(with: siteId, {
-                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOff, properties: ["blogId": siteId])
+                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOff, properties: ["blog_id": siteId])
                     successBlock()
                 }, failure)
             }
