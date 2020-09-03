@@ -202,7 +202,7 @@
                                                     <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="createBlankPage:" destination="6uO-HR-ECX" eventType="touchUpInside" id="p28-fq-nCl"/>
+                                                    <action selector="createBlankPageTapped:" destination="6uO-HR-ECX" eventType="touchUpInside" id="p28-fq-nCl"/>
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yt3-Sv-2ZO">
@@ -222,6 +222,9 @@
                                                 <state key="normal" title="Create Page">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="createPageTapped:" destination="6uO-HR-ECX" eventType="touchUpInside" id="qf8-DI-GRX"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>

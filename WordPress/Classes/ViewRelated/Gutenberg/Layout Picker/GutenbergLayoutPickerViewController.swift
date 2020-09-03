@@ -202,11 +202,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func createBlankPage(_ sender: Any) {
-        createPage(nil)
+    @IBAction func createBlankPageTapped(_ sender: Any) {
+        createPage(template: nil)
     }
 
-    private func createPage(_ template: String?) {
+    @IBAction func createPageTapped(_ sender: Any) {
+        guard let slug = selectedLayout?.sectionSlug, let position = selectedLayout?.position else {
+            createPage(template: nil)
+            return
+        }
+
+        let layout = layouts.layouts(forCategory: slug)[position]
+        createPage(template: layout.content)
+    }
+
+    private func createPage(template: String?) {
         guard let completion = completion else {
             dismiss(animated: true, completion: nil)
             return
