@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
+    case newNavBarAppearance
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -60,6 +61,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergModalLayoutPicker:
             return false
         case .whatIsNew:
+            return BuildConfiguration.current == .localDeveloper
+        case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -123,6 +126,8 @@ extension FeatureFlag {
             return "Gutenberg Modal Layout Picker"
         case .whatIsNew:
             return "What's New / Feature Announcement"
+        case .newNavBarAppearance:
+            return "New Navigation Bar Appearance"
         }
     }
 
@@ -135,6 +140,8 @@ extension FeatureFlag {
         case .newReaderNavigation:
             return false
         case .swiftCoreData:
+            return false
+        case .newNavBarAppearance:
             return false
         default:
             return true
