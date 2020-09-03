@@ -151,19 +151,19 @@ static CGFloat const DefaultCellHeight = 44.0;
         }
         newIndexPath = [self.resultsController indexPathForObject:obj];
 
-            if (i > visibleCellFrames.count) {
-                break;
-            }
-            
-            CGRect originalCellFrame = [[visibleCellFrames objectAtIndex:i] CGRectValue];
-            if (newIndexPath) {
-                // Since we still have one of the originally visible objects,
-                // preserve the original cell frame's origin, relative to the original content offset.
-                originalCellOriginOffsetDelta += originalOffset.y - originalCellFrame.origin.y;
-                break;
-            } else {
-                originalCellOriginOffsetDelta -= originalCellFrame.size.height;
-            }
+        if (i > visibleCellFrames.count) {
+            break;
+        }
+        
+        CGRect originalCellFrame = [[visibleCellFrames objectAtIndex:i] CGRectValue];
+        if (newIndexPath) {
+            // Since we still have one of the originally visible objects,
+            // preserve the original cell frame's origin, relative to the original content offset.
+            originalCellOriginOffsetDelta += originalOffset.y - originalCellFrame.origin.y;
+            break;
+        } else {
+            originalCellOriginOffsetDelta -= originalCellFrame.size.height;
+        }
         i++;
     }
 
