@@ -25,7 +25,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Public: Properties
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
+
+    /// Keeps track if the featured image is loading
     var isLoading: Bool = false
+
+    /// Keeps track of if we've loaded the image before
     var isLoaded: Bool = false
 
     // MARK: - Private: Properties
@@ -42,9 +46,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     private weak var scrollView: UIScrollView?
     private weak var navigationBar: UINavigationBar?
 
-    /// An observer of the number of likes of the post
+    /// Scrollview is scrolling observer
     private var scrollViewObserver: NSKeyValueObservation?
 
+    /// Stores the nav bar appearance before we change it to transparent
+    /// this allows us to reset it when the view disappears
     private var originalNavBarAppearance: NavBarAppearance?
 
     deinit {
@@ -202,7 +208,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let tintColor = UIColor.interpolate(from: Styles.startTintColor,
                                             to: Styles.endTintColor,
                                             with: progress)
-
 
         navBar.tintColor = tintColor
     }
