@@ -221,6 +221,14 @@ target 'WordPress' do
         it could be removed once PR with that functionality will be merged into RN'
         %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
 
+        # Remove once we sort out this RNCMaskedView business
+        puts 'Checking RNCMaskedView:'
+        if '72b5012baac53b13a9ba717eaa554afd3f2930c5' != Digest::SHA1.hexdigest(File.read('Pods/Local Podspecs/RNCMaskedView.podspec.json'))
+            abort("Unable to continue – your local version of RNCMaskedView is invalid. Please delete your Pods directory and try again.")
+        else
+            puts 'ok'
+        end
+
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
 
