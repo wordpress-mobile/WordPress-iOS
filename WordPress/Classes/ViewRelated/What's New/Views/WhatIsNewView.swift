@@ -161,6 +161,9 @@ private extension WhatIsNewView {
     func setupTableViewDataSource() {
         announcementsTableView.dataSource = dataSource
         dataSource.registerCells(for: announcementsTableView)
+        dataSource.dataDidChange = { [weak self] in
+            self?.announcementsTableView.reloadData()
+        }
     }
 
     @objc func continueButtonTapped() {

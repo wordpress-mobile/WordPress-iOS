@@ -151,6 +151,10 @@ static CGFloat const DefaultCellHeight = 44.0;
         }
         newIndexPath = [self.resultsController indexPathForObject:obj];
 
+        if (i > visibleCellFrames.count) {
+            break;
+        }
+
         CGRect originalCellFrame = [[visibleCellFrames objectAtIndex:i] CGRectValue];
         if (newIndexPath) {
             // Since we still have one of the originally visible objects,

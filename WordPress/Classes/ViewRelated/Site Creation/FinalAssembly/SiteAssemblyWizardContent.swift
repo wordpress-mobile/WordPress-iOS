@@ -52,10 +52,6 @@ final class SiteAssemblyWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-
     override func loadView() {
         super.loadView()
         view = contentView

@@ -1,7 +1,7 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable {
+enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
     case unifiedAuth
@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable {
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
+    case newNavBarAppearance
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -42,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedWordPress:
             return false
         case .unifiedKeychainLogin:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -61,6 +62,18 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .whatIsNew:
             return BuildConfiguration.current == .localDeveloper
+        case .newNavBarAppearance:
+            return BuildConfiguration.current == .localDeveloper
+        }
+    }
+
+    /// This key must match the server-side one for remote feature flagging
+    var remoteKey: String? {
+        switch self {
+            case .unifiedAuth:
+                return "wordpress_ios_unified_login_and_signup"
+            default:
+                return nil
         }
     }
 }
@@ -75,7 +88,7 @@ class Feature: NSObject {
     }
 }
 
-extension FeatureFlag: OverrideableFlag {
+extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
@@ -113,6 +126,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Gutenberg Modal Layout Picker"
         case .whatIsNew:
             return "What's New / Feature Announcement"
+        case .newNavBarAppearance:
+            return "New Navigation Bar Appearance"
         }
     }
 
@@ -125,6 +140,8 @@ extension FeatureFlag: OverrideableFlag {
         case .newReaderNavigation:
             return false
         case .swiftCoreData:
+            return false
+        case .newNavBarAppearance:
             return false
         default:
             return true

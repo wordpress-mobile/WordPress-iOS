@@ -111,18 +111,19 @@ extension WPStyleGuide {
 
     static var navigationBarButtonRect = CGRect(x: 0, y: 0, width: 30, height: 30)
 
-    static var spacingBetweeenNavbarButtons: CGFloat = 40
+    static var spacingBetweenNavbarButtons: CGFloat = 40
 
     class func buttonForBar(with image: UIImage,
                             target: Any?, selector: Selector) -> WPButtonForNavigationBar {
         let button = WPButtonForNavigationBar(frame: navigationBarButtonRect)
-        button.tintColor = .white
+        button.tintColor = .appBarTint
+
         button.setImage(image, for: .normal)
         button.addTarget(target, action: selector, for: .touchUpInside)
         button.removeDefaultLeftSpacing = true
         button.removeDefaultRightSpacing = true
-        button.rightSpacing = spacingBetweeenNavbarButtons / 2
-        button.leftSpacing = spacingBetweeenNavbarButtons / 2
+        button.rightSpacing = spacingBetweenNavbarButtons / 2
+        button.leftSpacing = spacingBetweenNavbarButtons / 2
         return button
     }
 
