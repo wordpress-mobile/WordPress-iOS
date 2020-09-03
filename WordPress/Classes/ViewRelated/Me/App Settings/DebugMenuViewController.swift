@@ -72,7 +72,7 @@ class DebugMenuViewController: UITableViewController {
                 ReaderCSS().clearCache()
                 let alert = UIAlertController(title: NSLocalizedString("Cache cleared!", comment: "Debug message informing the user that the cache for CSS in the Reader has been cleared"),
                                               message: nil, preferredStyle: .alert)
-                alert.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+                alert.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Dismisses an alert"))
                 self?.present(alert, animated: true, completion: nil)
                 self?.tableView.deselectSelectedRowWithAnimationAfterDelay(true)
             })
