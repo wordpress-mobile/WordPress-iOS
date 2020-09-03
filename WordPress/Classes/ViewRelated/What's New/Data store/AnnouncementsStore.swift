@@ -75,6 +75,7 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
 
 private extension RemoteAnnouncementsStore {
     enum Identifiers {
+        // 2 is the identifier of WordPress-iOS in the backend
         static let appId = "2"
         static var appVersion: String {
             Bundle.main.shortVersionString() ?? ""
