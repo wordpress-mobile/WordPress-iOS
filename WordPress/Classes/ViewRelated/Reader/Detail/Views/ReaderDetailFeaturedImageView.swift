@@ -211,7 +211,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     public func load(completion: @escaping () -> Void) {
         guard
             let post = self.post,
-            let imageURL = URL(string: post.featuredImage)
+            let imageURL = URL(string: post.featuredImage),
+            !post.contentIncludesFeaturedImage()
         else {
             reset()
             isLoaded = true
