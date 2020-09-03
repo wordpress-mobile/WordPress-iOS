@@ -53,9 +53,12 @@ import Foundation
     case selectInterestsShown
     case selectInterestsPicked
     case readerDiscoverShown
-    case readerSiteShown
+    case readerFollowingShown
+    case readerSavedListShown
+    case readerLikedShown
+    case readerBlogPreviewed
     case readerDiscoverPaginated
-    case readerCardTapped
+    case readerPostCardTapped
     case readerPullToRefresh
     case readerDiscoverTopicTapped
     case postCardMoreTapped
@@ -65,6 +68,7 @@ import Foundation
     case itemSharedReader
     case readerBlogBlocked
     case readerChipsMoreToggled
+    case readerToggleFollowConversation
 
     /// A String that represents the event
     var value: String {
@@ -145,12 +149,18 @@ import Foundation
             return "select_interests_picked"
         case .readerDiscoverShown:
             return "reader_discover_shown"
-        case .readerSiteShown:
-            return "reader_site_shown"
+        case .readerFollowingShown:
+            return "reader_following_shown"
+        case .readerLikedShown:
+            return "reader_liked_shown"
+        case .readerSavedListShown:
+            return "reader_saved_list_shown"
+        case .readerBlogPreviewed:
+            return "reader_blog_previewed"
         case .readerDiscoverPaginated:
             return "reader_discover_paginated"
-        case .readerCardTapped:
-            return "reader_card_tapped"
+        case .readerPostCardTapped:
+            return "reader_post_card_tapped"
         case .readerPullToRefresh:
             return "reader_pull_to_refresh"
         case .readerDiscoverTopicTapped:
@@ -169,6 +179,8 @@ import Foundation
             return "reader_blog_blocked"
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
+        case .readerToggleFollowConversation:
+            return "reader_toggle_follow_conversation"
         }
     }
 

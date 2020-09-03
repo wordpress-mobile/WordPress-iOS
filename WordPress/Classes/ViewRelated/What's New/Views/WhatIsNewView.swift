@@ -45,39 +45,64 @@ class WhatIsNewView: UIView {
     private lazy var continueButtonView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(continueButton)
-        view.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
+        view.addSubview(systemMaterialView)
+        view.pinSubviewToAllEdges(systemMaterialView)
         return view
+    }()
+
+    private lazy var divider: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .divider
+        return view
+    }()
+
+    private lazy var continueButtonStackView: UIStackView = {
+        let stackView = makeVerticalStackView(arrangedSubviews: [divider, continueButtonView])
+        return stackView
+    }()
+
+    private lazy var systemMaterialView: UIVisualEffectView = {
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: Appearance.material))
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        visualEffectView.contentView.addSubview(continueButton)
+        visualEffectView.contentView.pinSubviewToSafeArea(continueButton, insets: Appearance.continueButtonInsets)
+        return visualEffectView
     }()
 
     private lazy var announcementsTableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.showsVerticalScrollIndicator = false
+        tableView.contentInset = Appearance.tableViewContentInsets
         tableView.estimatedRowHeight = Appearance.estimatedRowHeight
         return tableView
     }()
 
-    private lazy var contentStackView: UIStackView = {
-        let stackView = makeVerticalStackView(arrangedSubviews: [titleLabel, versionLabel, announcementsTableView])
+    private lazy var headerStackView: UIStackView = {
+        let stackView = makeVerticalStackView(arrangedSubviews: [titleLabel, versionLabel])
         stackView.setCustomSpacing(Appearance.titleVersionSpacing, after: titleLabel)
-        stackView.setCustomSpacing(Appearance.versionTableviewSpacing, after: versionLabel)
         return stackView
+    }()
+
+    private lazy var headerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerStackView)
+        view.pinSubviewToAllEdges(headerStackView, insets: Appearance.headerViewInsets)
+        return view
     }()
 
     private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentStackView)
-        view.pinSubviewToSafeArea(contentStackView, insets: Appearance.mainContentInsets)
+        view.addSubview(announcementsTableView)
+        view.pinSubviewToSafeArea(announcementsTableView, insets: Appearance.mainContentInsets)
         return view
-    }()
-
-    private lazy var mainStackView: UIStackView = {
-        let stackView = makeVerticalStackView(arrangedSubviews: [contentView, continueButtonView])
-        return stackView
     }()
 
     // MARK: - Properties
@@ -93,12 +118,20 @@ class WhatIsNewView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = .basicBackground
-        addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+        addSubview(contentView)
+        addSubview(continueButtonStackView)
+        pinSubviewToAllEdges(contentView)
+        announcementsTableView.tableHeaderView = headerView
 
         NSLayoutConstraint.activate([
-            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight)
+            continueButton.heightAnchor.constraint(equalToConstant: Appearance.continueButtonHeight),
+            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            continueButtonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            continueButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor)
         ])
+
         setupTableViewDataSource()
     }
 
@@ -128,10 +161,39 @@ private extension WhatIsNewView {
     func setupTableViewDataSource() {
         announcementsTableView.dataSource = dataSource
         dataSource.registerCells(for: announcementsTableView)
+        dataSource.dataDidChange = { [weak self] in
+            self?.announcementsTableView.reloadData()
+        }
     }
 
     @objc func continueButtonTapped() {
         continueAction?()
+    }
+}
+
+
+// MARK: - Layout
+extension WhatIsNewView {
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustTableHeaderViewLayout()
+    }
+
+    /// Resizes the `tableHeaderView` in `announcementsTableView` as necessary whenever its size changes.
+    private func adjustTableHeaderViewLayout() {
+        guard let headerView = announcementsTableView.tableHeaderView else {
+            return
+        }
+
+        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var headerFrame = headerView.frame
+
+        if height != headerFrame.size.height {
+            headerFrame.size.height = height
+            headerView.frame = headerFrame
+            announcementsTableView.tableHeaderView = headerView
+        }
     }
 }
 
@@ -141,7 +203,7 @@ private extension WhatIsNewView {
 
     enum Appearance {
         // main view
-        static let mainContentInsets = UIEdgeInsets(top: 80, left: 48, bottom: 0, right: 48)
+        static let mainContentInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
 
         // title
         static var headlineFont: UIFont {
@@ -162,13 +224,21 @@ private extension WhatIsNewView {
         static let versionTableviewSpacing: CGFloat = 32
 
         // table view
+        static let headerViewInsets = UIEdgeInsets(top: 80, left: 0, bottom: 32, right: 0)
         static let estimatedRowHeight: CGFloat = 72 // image height + vertical spacing
+        // bottom spacing is button height (48) + vertical button insets ( 2 * 16) + vertical spacing before "Find out more" (32)
+        static let tableViewContentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
 
         // continue button
         static let continueButtonHeight: CGFloat = 48
-        static let continueButtonInset: CGFloat = 16
         static let continueButtonFont = UIFont.systemFont(ofSize: 22, weight: .medium)
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-
+        static var material: UIBlurEffect.Style {
+            if #available(iOS 13.0, *) {
+                return .systemChromeMaterial
+            } else {
+                return .regular
+            }
+        }
     }
 }

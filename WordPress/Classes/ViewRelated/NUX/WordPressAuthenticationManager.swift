@@ -42,8 +42,8 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
                                                                 enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled,
                                                                 enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
-                                                                enableUnifiedSignup: FeatureFlag.unifiedSignup.enabled,
-                                                                enableUnifiedLoginLink: FeatureFlag.unifiedLoginLink.enabled)
+                                                                enableUnifiedWordPress: FeatureFlag.unifiedWordPress.enabled,
+                                                                enableUnifiedKeychainLogin: FeatureFlag.unifiedKeychainLogin.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -68,7 +68,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
-                                                navBarBackgroundColor: .appBar,
+                                                navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // NEWBARS - This is temporary while we support old style nav bars in some of the auth flows
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted)
 
@@ -76,12 +76,12 @@ class WordPressAuthenticationManager: NSObject {
                                                               errorColor: .error,
                                                               textColor: .text,
                                                               textSubtleColor: .textSubtle,
-                                                              textButtonColor: .brand,
-                                                              textButtonHighlightColor: .brand,
+                                                              textButtonColor: .primary,
+                                                              textButtonHighlightColor: .primaryDark,
                                                               viewControllerBackgroundColor: .basicBackground,
-                                                              navBarBackgroundColor: .basicBackground,
-                                                              navButtonTextColor: .brand,
-                                                              navTitleTextColor: .text)
+                                                              navBarBackgroundColor: .basicBackground,  // TODO: NEWBARS -  Replace with .appBarBackground once new nav bar styles are merged
+                                                              navButtonTextColor: .brand,   // TODO: NEWBARS - Replace with .appBarTint
+                                                              navTitleTextColor: .text)     // TODO: NEWBARS - Replace with .appBarText
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,

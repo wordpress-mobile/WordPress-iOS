@@ -90,18 +90,14 @@ extension UIView {
 
 extension UINavigationBar {
     @objc func fadeOutNavigationItems(animated: Bool = true) {
-        if let barTintColor = barTintColor {
-            fadeNavigationItems(toColor: barTintColor, animated: animated)
-        }
+        fadeNavigationItems(withTintColor: .appBarBackground, textColor: .appBarBackground, animated: animated)
     }
 
     @objc func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
-        if tintColor != UIColor.white {
-            fadeNavigationItems(toColor: UIColor.white, animated: animated)
-        }
+        fadeNavigationItems(withTintColor: .appBarTint, textColor: .appBarText, animated: animated)
     }
 
-    private func fadeNavigationItems(toColor color: UIColor, animated: Bool) {
+    private func fadeNavigationItems(withTintColor tintColor: UIColor, textColor: UIColor, animated: Bool) {
         if animated {
             // We're using CAAnimation because the various navigation item properties
             // didn't seem to animate using a standard UIView animation block.
@@ -112,8 +108,11 @@ extension UINavigationBar {
             layer.add(fadeAnimation, forKey: "fadeNavigationBar")
         }
 
-        titleTextAttributes = [.foregroundColor: color]
-        tintColor = color
+        self.tintColor = tintColor
+
+        var attributes = titleTextAttributes
+        attributes?[.foregroundColor] = textColor
+        titleTextAttributes = attributes
     }
 }
 
