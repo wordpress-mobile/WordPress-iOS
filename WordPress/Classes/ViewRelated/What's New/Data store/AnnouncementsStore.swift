@@ -4,7 +4,7 @@ import WordPressKit
 /// Genric type that renders announcements upon requesting them by calling `getAnnouncements()`
 protocol AnnouncementsStore: Observable {
     var announcements: [WordPressKit.Announcement] { get }
-    func getAnnouncements(appId: String, appVersion: String)
+    func getAnnouncements()
 }
 
 
@@ -45,11 +45,11 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    func getAnnouncements(appId: String, appVersion: String) {
+    func getAnnouncements() {
         let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         state = .loading
-        service.getAnnouncements(appId: appId,
-                                 appVersion: appVersion,
+        service.getAnnouncements(appId: Identifiers.appId,
+                                 appVersion: Identifiers.appVersion,
                                  locale: Locale.current.identifier) { result in
 
             switch result {
@@ -69,5 +69,15 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
         return WordPressComRestApi.defaultApi(oAuthToken: token,
                                               userAgent: WPUserAgent.wordPress(),
                                               localeKey: WordPressComRestApi.LocaleKeyV2)
+    }
+}
+
+
+private extension RemoteAnnouncementsStore {
+    enum Identifiers {
+        static let appId = "2"
+        static var appVersion: String {
+            Bundle.main.shortVersionString() ?? ""
+        }
     }
 }
