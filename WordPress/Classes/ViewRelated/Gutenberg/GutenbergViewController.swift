@@ -851,6 +851,14 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+    var isPreview: Bool {
+        return false
+    }
+
+    var previewTemplate: String? {
+        return nil
+    }
+
     var loadingView: UIView? {
         return ghostView
     }
