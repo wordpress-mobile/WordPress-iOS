@@ -40,7 +40,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedApple:
             return true
         case .unifiedWordPress:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return false
         case .unifiedKeychainLogin:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
