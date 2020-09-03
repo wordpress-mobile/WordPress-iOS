@@ -175,8 +175,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
+        featuredImage.load { [weak self] in
+            self?.hideLoading()
         }
     }
 
