@@ -174,8 +174,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         navigationController?.isNavigationBarHidden = false
 
-        if let destination = segue.destination as? LayoutPreviewViewController {
-            destination.layout = selectedLayout
+        if let destination = segue.destination as? LayoutPreviewViewController,
+            let slug = selectedLayout?.sectionSlug,
+            let position = selectedLayout?.position {
+            destination.layout = layouts.layouts(forCategory: slug)[position]
+            destination.completion = completion
         }
 
         super.prepare(for: segue, sender: sender)

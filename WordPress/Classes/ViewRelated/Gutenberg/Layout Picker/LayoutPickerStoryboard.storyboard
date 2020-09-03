@@ -344,6 +344,9 @@
                                         <state key="normal" title="Create Page">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="createPageTapped:" destination="Ppr-up-cWw" eventType="touchUpInside" id="4Fb-M0-xWG"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

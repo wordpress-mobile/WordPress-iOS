@@ -855,10 +855,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return false
     }
 
-    var previewTemplate: String? {
-        return nil
-    }
-
     var loadingView: UIView? {
         return ghostView
     }
