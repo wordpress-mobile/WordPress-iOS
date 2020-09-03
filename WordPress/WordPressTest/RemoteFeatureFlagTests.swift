@@ -3,7 +3,7 @@ import XCTest
 
 class RemoteFeatureFlagTests: XCTestCase {
 
-    override func setUpWithError() throws {
+    override func setUp() {
         UserDefaults.standard.removeObject(forKey: RemoteFeatureFlagStore.Constants.CachedFlagsKey)
         UserDefaults.standard.removeObject(forKey: RemoteFeatureFlagStore.Constants.DeviceIdKey)
     }
@@ -22,6 +22,8 @@ class RemoteFeatureFlagTests: XCTestCase {
 
         RemoteFeatureFlagStore(remote: mock).update()
         RemoteFeatureFlagStore(remote: mock).update()
+
+        wait(for: [exp], timeout: 1.0)
     }
 
     func testThatStoreReturnsCorrectCompileTimeDefaultForColdCache() {
