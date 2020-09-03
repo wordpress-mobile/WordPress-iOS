@@ -4,6 +4,10 @@ protocol ReaderDetailFeaturedImageViewDelegate: class {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
+protocol UpdatableStatusBarStyle: UIViewController {
+    func statusBarStyleDidUpdate(to style: UIStatusBarStyle)
+}
+
 class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     struct Constants {
         struct multipliers {
@@ -45,6 +49,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     private var post: ReaderPost?
     private weak var scrollView: UIScrollView?
     private weak var navigationBar: UINavigationBar?
+
+    private var currentStatusBarStyle: UIStatusBarStyle = .lightContent {
+        didSet {
+            statusBarUpdater?.statusBarStyleDidUpdate(to: currentStatusBarStyle)
+        }
+    }
+
+    private weak var statusBarUpdater: UpdatableStatusBarStyle?
 
     /// Scrollview is scrolling observer
     private var scrollViewObserver: NSKeyValueObservation?
@@ -92,8 +104,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         addTapGesture()
     }
 
-    func configure(for post: ReaderPost) {
+    func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
+        self.statusBarUpdater = statusBarUpdater
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -176,6 +189,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             imageView.image != nil,
             let scrollView = self.scrollView
         else {
+            reset()
             return
         }
 
@@ -202,12 +216,20 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
-
+        let fullProgress = (offset / heightConstraint.constant)
+        let progress = fullProgress.clamp(min: 0, max: 1)
 
         let tintColor = UIColor.interpolate(from: Styles.startTintColor,
                                             to: Styles.endTintColor,
                                             with: progress)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .light {
+                currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
+            } else {
+                currentStatusBarStyle = .lightContent
+            }
+        }
 
         navBar.tintColor = tintColor
     }
@@ -260,9 +282,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func reset() {
         navigationBar?.tintColor = Styles.endTintColor
-
+        resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
+    }
+
+    private func resetStatusBarStyle() {
+        if #available(iOS 13.0, *) {
+            let isDark = traitCollection.userInterfaceStyle == .dark
+
+            currentStatusBarStyle = isDark ? .lightContent : .darkContent
+        }
     }
 
     // MARK: - Private: Calculations

@@ -162,7 +162,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        featuredImage.configure(for: post)
+        featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
@@ -436,6 +436,17 @@ extension ReaderDetailViewController: StoryboardLoadable {
 extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
+    }
+}
+
+// MARK: - UpdatableStatusBarStyle
+extension ReaderDetailViewController: UpdatableStatusBarStyle {
+    func statusBarStyleDidUpdate(to style: UIStatusBarStyle) {
+        guard style != currentPreferredStatusBarStyle else {
+            return
+        }
+
+        currentPreferredStatusBarStyle = style
     }
 }
 
