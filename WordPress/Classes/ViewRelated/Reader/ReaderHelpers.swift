@@ -122,7 +122,7 @@ import WordPressShared
     /// - Parameters:
     ///     - topic: A ReaderAbstractTopic
     ///
-    /// - Returns: True if the topic is for Discover
+    /// - Returns: True if the topic is for Saved For Later
     ///
     @objc open class func topicIsSavedForLater(_ topic: ReaderAbstractTopic) -> Bool {
         //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
@@ -137,6 +137,12 @@ import WordPressShared
 
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
+
+        } else if topicIsFollowing(topic) {
+            WPAnalytics.track(.readerFollowingShown, properties: properties)
+
+        } else if topicIsLiked(topic) {
+            WPAnalytics.track(.readerLikedShown, properties: properties)
 
         } else if isTopicSite(topic) {
             WPAnalytics.track(.readerBlogPreviewed, properties: properties)

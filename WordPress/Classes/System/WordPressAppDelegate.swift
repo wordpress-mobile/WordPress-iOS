@@ -34,6 +34,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var pingHubManager: PingHubManager?
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
+    private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
 
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
@@ -84,6 +85,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureReachability()
         configureSelfHostedChallengeHandler()
+        remoteFeatureFlagStore.update()
 
         window?.makeKeyAndVisible()
 

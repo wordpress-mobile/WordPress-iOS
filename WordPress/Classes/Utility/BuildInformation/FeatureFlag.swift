@@ -1,7 +1,7 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable {
+enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
     case unifiedAuth
@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedWordPress:
             return false
         case .unifiedKeychainLogin:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -63,7 +63,17 @@ enum FeatureFlag: Int, CaseIterable {
         case .whatIsNew:
             return BuildConfiguration.current == .localDeveloper
         case .newNavBarAppearance:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current == .localDeveloper
+        }
+    }
+
+    /// This key must match the server-side one for remote feature flagging
+    var remoteKey: String? {
+        switch self {
+            case .unifiedAuth:
+                return "wordpress_ios_unified_login_and_signup"
+            default:
+                return nil
         }
     }
 }
@@ -78,7 +88,7 @@ class Feature: NSObject {
     }
 }
 
-extension FeatureFlag: OverrideableFlag {
+extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {

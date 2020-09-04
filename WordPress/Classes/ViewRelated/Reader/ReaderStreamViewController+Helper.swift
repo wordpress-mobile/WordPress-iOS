@@ -176,6 +176,6 @@ extension ReaderStreamViewController {
 // MARK: - Tracks
 extension ReaderStreamViewController {
     func trackSavedListAccessed() {
-        WPAppAnalytics.track(.readerSavedListViewed, withProperties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
+        WPAnalytics.track(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
     }
 }
