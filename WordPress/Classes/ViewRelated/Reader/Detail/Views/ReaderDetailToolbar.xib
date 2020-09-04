@@ -20,12 +20,12 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
-                    <rect key="frame" x="28" y="436" width="358" height="24"/>
+                    <rect key="frame" x="28" y="426" width="358" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
-                            <rect key="frame" x="0.0" y="0.0" width="44" height="24"/>
+                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="fqQ-GT-Dks"/>
+                                <constraint firstAttribute="height" constant="44" id="fqQ-GT-Dks"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="sbH-ur-3hQ"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -38,9 +38,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
-                            <rect key="frame" x="104" y="0.0" width="46" height="24"/>
+                            <rect key="frame" x="104" y="0.0" width="46" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="Z2e-Ky-bYe"/>
+                                <constraint firstAttribute="height" constant="44" id="Z2e-Ky-bYe"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -53,10 +53,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
-                            <rect key="frame" x="210" y="0.0" width="44" height="24"/>
+                            <rect key="frame" x="210" y="0.0" width="44" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="GbG-ii-IcP"/>
-                                <constraint firstAttribute="height" constant="24" id="qNK-wQ-gIc"/>
+                                <constraint firstAttribute="height" constant="44" id="qNK-wQ-gIc"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -68,9 +68,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
-                            <rect key="frame" x="314" y="0.0" width="44" height="24"/>
+                            <rect key="frame" x="314" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="Fio-gF-mFy"/>
+                                <constraint firstAttribute="height" constant="44" id="Fio-gF-mFy"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="JqZ-KF-mxs"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
