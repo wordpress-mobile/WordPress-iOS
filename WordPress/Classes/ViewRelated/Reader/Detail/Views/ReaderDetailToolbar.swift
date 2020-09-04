@@ -313,7 +313,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             let likeTitle = likeLabel(count: likeCount)
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeButton.setTitle(likeTitle, for: .normal)
+            likeButton.setTitle(likeTitle, for: .highlighted)
             commentButton.setTitle(commentTitle, for: .normal)
+            commentButton.setTitle(commentTitle, for: .highlighted)
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
             WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: false)
 
