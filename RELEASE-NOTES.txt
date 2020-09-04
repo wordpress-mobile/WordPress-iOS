@@ -5,6 +5,7 @@
 * [**] Block Editor: Block settings now immediately reflect changes from menu sliders.
 * [**] Simplified authentication and updated UI.(https://git.io/JUsfT, https://git.io/JUsfk, https://git.io/JUsfI, https://git.io/JUsft).
        Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
+* [**] Added iCloud Keychain login functionality. (https://git.io/JUkaZ)
 * [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
 * [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
 
