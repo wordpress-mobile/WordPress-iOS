@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-21 20:14:24+0000 */
+/* Translation-Revision-Date: 2020-08-11 17:31:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s block options";
+"%s block options" = "%s blokk-alternativer";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-blokk. Tom";
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = "Om";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Om WordPress for iOS";
+
+/* Category description for page templates */
+"About pages" = "About pages";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "Tillat varslinger";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Tillat push-varslinger";
 
 /* No comment provided by engineer. */
@@ -560,7 +566,7 @@
 "Alternatively:" = "Alternativt:";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
-"Always Send Crash Logs" = "Always Send Crash Logs";
+"Always Send Crash Logs" = "Alltid send krasjlogger";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "En aktiv internettilkobling er påkrevd";
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "Autentiserer";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "Authentication code";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autentisering kreves for verten: %@";
 
@@ -835,13 +844,13 @@
 "Block This Site" = "Blokker dette nettstedet";
 
 /* translators: displayed right after the block is copied. */
-"Block copied" = "Block copied";
+"Block copied" = "Blokk kopiert";
 
 /* translators: displayed right after the block is cut. */
-"Block cut" = "Block cut";
+"Block cut" = "Blokk kuttet";
 
 /* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Block duplicated";
+"Block duplicated" = "Blokk duplisert";
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blokkredigering aktivert";
@@ -850,18 +859,26 @@
 "Block malicious login attempts" = "Blokker fiendtlige innloggingsforsøk";
 
 /* translators: displayed right after the block is pasted. */
-"Block pasted" = "Block pasted";
+"Block pasted" = "Blokk limt inn";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Blokk fjernet";
 
 /* No comment provided by engineer. */
 "Block settings" = "Blokkinnstillinger";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blogg";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Blogginnlegg";
+
+/* Category description for page templates */
+"Blog pages" = "Blog pages";
 
 /* Create new Blog Post button title */
 "Blog post" = "Blogginnlegg";
@@ -924,10 +941,10 @@
 "Can Not Request Link" = "Kan ikke forespørre lenke";
 
 /* Alert message that is shown when trying to publish empty page */
-"Can't publish an empty page" = "Can't publish an empty page";
+"Can't publish an empty page" = "Kan ikke publisere en tom side";
 
 /* Alert message that is shown when trying to publish empty post */
-"Can't publish an empty post" = "Can't publish an empty post";
+"Can't publish an empty post" = "Kan ikke publisere et tomt innlegg";
 
 /* Alert dismissal title
    Button label when canceling alert in quick start
@@ -1095,6 +1112,9 @@
 /* Title for selecting a new home page */
 "Choose Posts Page" = "Velg innleggsside";
 
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "Choose a Layout";
+
 /* Label for Publish date picker */
 "Choose a date" = "Velg en dato";
 
@@ -1119,8 +1139,17 @@
 /* No comment provided by engineer. */
 "Choose from device" = "Velg fra enheten";
 
+/* No comment provided by engineer. */
+"Choose image" = "Velg bilde";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "Velg bilde eller video";
+
+/* No comment provided by engineer. */
+"Choose video" = "Velg video";
+
 /* Reader select interests subtitle label text */
-"Choose your interests" = "Choose your interests";
+"Choose your interests" = "Velg dine interesser";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Når du velger et annet nettsted vil du miste redigeringene til nettstedsspesifikt innhold som media og kategorier. Er du sikker?";
@@ -1163,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Lukk";
 
@@ -1284,7 +1314,7 @@
 "Completed: Publish a post" = "Completed: Publish a post";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Set your site title" = "Completed: Set your site title";
+"Completed: Set your site title" = "Fullført: Sett nettstedstittelen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Upload a site icon" = "Completed: Upload a site icon";
@@ -1377,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Tilkoblinger";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "Kontakt";
+
 /* Support email label. */
 "Contact Email" = "Kontakt-epost";
 
@@ -1388,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "Kontakt oss";
+
+/* Category description for page templates */
+"Contact pages" = "Contact pages";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1430,7 +1467,7 @@
 "Continuing with Apple" = "Fortsetter med Apple";
 
 /* No comment provided by engineer. */
-"Copied block" = "Copied block";
+"Copied block" = "Kopierte blokk";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
@@ -1518,13 +1555,16 @@
 "Country Code" = "Landkode";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
-"Crash Logging" = "Crash Logging";
+"Crash Logging" = "Krasjlogging";
 
 /* Label for switch to turn on/off sending crashes info */
 "Crash reports" = "Crash reports";
 
 /* Accessibility label for create floating action button */
 "Create" = "Opprett";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "Create Blank Page";
 
 /* Create New header text */
 "Create New" = "Opprett ny";
@@ -1776,18 +1816,16 @@
 "Discover Sites" = "Oppdag nettsteder";
 
 /* Reader select interests title label text */
-"Discover and follow blogs you love" = "Discover and follow blogs you love";
+"Discover and follow blogs you love" = "Oppdag og følg blogger du liker";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1839,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Hopp over %@ hurtigstart-trinnet";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "Avvis dette nyhetskortet.";
 
 /* Display Name label text.
    My Profile display name label
@@ -1853,9 +1888,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "Don’t cry because it’s over, smile because it happened.";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "Dobbelttrykk og hold for å redigere";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Dobbelttrykk for å legge til en blokk";
@@ -1928,7 +1960,7 @@
 "Drafts" = "Kladder";
 
 /* No comment provided by engineer. */
-"Duplicate block" = "Duplicate block";
+"Duplicate block" = "Dupliser blokk";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Øst";
@@ -1948,7 +1980,7 @@
 "Edit %@" = "Rediger %@";
 
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
-"Edit %@ block" = "Edit %@ block";
+"Edit %@ block" = "Rediger %@-blokk";
 
 /* Blacklist Keyword Edition Title */
 "Edit Blacklist Word" = "Rediger svartelisteord";
@@ -1968,10 +2000,7 @@
 "Edit Post" = "Rediger innlegg";
 
 /* No comment provided by engineer. */
-"Edit block in web browser" = "Edit block in web browser";
-
-/* No comment provided by engineer. */
-"Edit media" = "Rediger media";
+"Edit block in web browser" = "Rediger blokk i nettleseren";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Rediger nye innlegg og sider med det blokkbaserte redigeringsverktøyet.";
@@ -2050,7 +2079,7 @@
 "Enable site notifications?" = "Aktivere sidevarslinger?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
-"Encrypted Logs" = "Encrypted Logs";
+"Encrypted Logs" = "Krypterte logger";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Gå inn i fullskjerm";
@@ -2083,6 +2112,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Skriv inn brukernavn";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Oppgi din kontoinformasjon for %@.";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2170,7 +2202,7 @@
 "Error updating Jetpack settings" = "Feil ved oppdatering av Jetpack-innstillinger";
 
 /* Error message informing the user that their site's title could not be changed */
-"Error updating site title" = "Error updating site title";
+"Error updating site title" = "Feil under oppdatering av nettstedstittel";
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Feil under oppdatering av sideinnstillinger";
@@ -2310,7 +2342,10 @@
 "Find sites that speak to you, and follow them to get updates when they publish." = "Finn nettsteder som snakker til deg og følg dem for å få oppdateringer når de publiserer.";
 
 /* The hint button's title text to help users find their site address. */
-"Find your site address" = "Find your site address";
+"Find your site address" = "Finn nettstedsadressen";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "Leter etter blogger og fortellinger du vil like...";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Finner plasseringen din...";
@@ -2372,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Følger nettstedet.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "Follows the tag.";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "For enkelhets skyld har vi fylt inn kontaktinformasjonen fra din WordPress.com-konto. Dobbeltsjekk om det er denne informasjonen du vil bruke for dette domenet.";
 
@@ -2428,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Få fart på spredningen og øk dine innleggsvisninger ved å dele ditt innlegg.";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "Get your notifications faster";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Få ditt nettsted opp og kjøre";
@@ -2444,7 +2488,7 @@ translators: sample content for \"Team\" page template */
 "Give Up" = "Gi opp";
 
 /* Description of a Quick Start Tour */
-"Give your site a name that reflects its personality and topic. First impressions count!" = "Give your site a name that reflects its personality and topic. First impressions count!";
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Gi nettstedet ditt et navn som gjenspeiler personligheten og emne for innholdet. Førsteinntrykk teller!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -2864,11 +2908,11 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Nyeste innleggssammendrag";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Lær mer";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "Lær mer om verktøyene for markedsføring og SEO som er inkludert i de betalte abonnementene våre.";
@@ -3009,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Laster inn utvidelser...";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "Laster innlegg...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Laster inn domener";
@@ -3371,7 +3412,7 @@ translators: sample content for \"Services\" page template */
 "Navigates to customize the gradient" = "Navigates to customize the gradient";
 
 /* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigates to the previous content sheet";
+"Navigates to the previous content sheet" = "Navigerer til det forrige innholdspanelet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hjelp?";
@@ -3772,7 +3813,7 @@ translators: sample content for \"Services\" page template */
 "Open in browser" = "Åpne i nettleser";
 
 /* No comment provided by engineer. */
-"Open link in a browser" = "Open link in a browser";
+"Open link in a browser" = "Åpne lenke i en nettleser";
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Åpne lenke i nytt vindu\/ny fane";
@@ -3869,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Side planlagt";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "Page title. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "Page title. Empty";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Sider";
@@ -3887,6 +3934,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Passord";
 
@@ -3903,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "Lim inn URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "Lim inn blokk";
+"Paste block after" = "Paste block after";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Lim inn uten formattering";
@@ -3956,7 +4004,7 @@ translators: sample content for \"Services\" page template */
 "Play video" = "Spill av video";
 
 /* Suggestion to add content before trying to publish post or page */
-"Please add some content before trying to publish." = "Please add some content before trying to publish.";
+"Please add some content before trying to publish." = "Vennligst legg til litt innhold før du prøver å publisere.";
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Vennligst sjekk din internettilkobling og prøv igjen.";
@@ -4008,6 +4056,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Vennligst oppgi passordet til WordPress.com-konto for å logge inn med din Apple-ID.";
+
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Vennligst skriv inn dine opplysninger";
@@ -4083,8 +4134,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Populære språk";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portefølje";
+
+/* Category description for page templates */
+"Portfolio pages" = "Portfolio pages";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Stilling eller yrkestittel";
@@ -4249,7 +4305,7 @@ translators: sample content for \"Services\" page template */
 "Privacy Settings" = "Personverninnstillinger";
 
 /* Link to the CCPA privacy notice for residents of California. */
-"Privacy notice for California users" = "Privacy notice for California users";
+"Privacy notice for California users" = "Personvernnotis for brukere i California";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -4289,9 +4345,6 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item label for linking a project page. */
 "Projects" = "Prosjekter";
-
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "Gir mer informasjon.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4556,6 +4609,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Erstatt nåværende blokk";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Erstatt bilde eller video";
+
+/* No comment provided by engineer. */
+"Replace video" = "Erstatt video";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Svar på en kommentar.";
@@ -4839,10 +4898,10 @@ translators: sample content for \"Services\" page template */
 "Select" = "Velg";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue" = "Select %@ to continue";
+"Select %@ to continue" = "Velg %@ for å fortsette";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Select %@ to continue.";
+"Select %@ to continue." = "Velg %@ for å fortsette.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new page." = "Trykk %@ for å lage en ny side.";
@@ -4857,7 +4916,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to look for sites with similar interests" = "Trykk %@ for å se etter nettsteder med liknende interesser";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Select %@ to preview";
+"Select %@ to preview" = "Velg %@ for å forhåndsvise";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Trykk %@ for å se hvordan nettstedet opptrer.";
@@ -4869,7 +4928,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Trykk %@ for å se gjeldende pakke og tilgjengelige pakker.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Select %@ to set a new title.";
+"Select %@ to set a new title." = "Velg %@ for å sette en ny tittel.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to start personalising your site" = "Trykk på %@ for å tilpasse nettstedet ditt";
@@ -4890,7 +4949,7 @@ translators: sample content for \"Services\" page template */
 "Select a color" = "Velg en farge";
 
 /* Reader select interests next button disabled title text */
-"Select a few to continue" = "Select a few to continue";
+"Select a few to continue" = "Velg noen for å fortsette";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Velge medier.";
@@ -4943,14 +5002,17 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "Send lenke";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Send Link by Email";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
-"Send Log Message" = "Send Log Message";
+"Send Log Message" = "Send loggmelding";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Send tilbakeping";
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
-"Send Test Crash" = "Send Test Crash";
+"Send Test Crash" = "Send testkrasj";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Send notifikasjoner med E-post";
@@ -4964,8 +5026,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Tjeneste";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "Tjenester";
+
+/* Category description for page templates */
+"Services pages" = "Services pages";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Velg fremhevet bilde";
@@ -4978,10 +5045,10 @@ translators: sample content for \"Services\" page template */
 "Set Parent" = "Sett forelder";
 
 /* Label for a button that sets the selected page as the site's Homepage */
-"Set as Homepage" = "Set as Homepage";
+"Set as Homepage" = "Sett som hjemmeside";
 
 /* Label for a button that sets the selected page as the site's Posts page */
-"Set as Posts Page" = "Set as Posts Page";
+"Set as Posts Page" = "Sett som innleggsside";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Sett opp";
@@ -5064,7 +5131,8 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Vis relaterte innlegg";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Vis passord";
 
 /* No comment provided by engineer. */
@@ -5200,7 +5268,7 @@ translators: sample content for \"Services\" page template */
 "Site timezone (UTC%@%d%@)" = "Tidssone for nettstedet (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
-"Site title changed successfully" = "Site title changed successfully";
+"Site title changed successfully" = "Nettstedstittelen ble endret";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5237,7 +5305,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Noe gikk galt. Sjekk tilkoblingen din og prøv igjen.";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "Noe gikk galt. Vennligst prøv igjen.";
 
 /* Invite Validation Alert
@@ -5363,7 +5432,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Hold deg oppdatert";
 
 /* This is the cell title. */
@@ -5472,7 +5541,7 @@ translators: sample content for \"Services\" page template */
 "Switches to the default Font Size" = "Bytter til standard-skrifttypestørrelsen";
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
-"System default" = "System default";
+"System default" = "Systemstandard";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabell viser %@";
@@ -5565,8 +5634,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klassifisering";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "Arbeidslag";
+
+/* Category description for page templates */
+"Team pages" = "Team pages";
 
 /* Section title of the teams reader section. */
 "Teams" = "Lag";
@@ -5592,7 +5666,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "Kun tekst";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Send koden på tekstmelding i stedet";
 
 /* Message of alert when theme activation succeeds */
@@ -5635,10 +5710,10 @@ translators: sample content for \"Services\" page template */
 "The Internet connection appears to be offline." = "Internettilkoblingen ser ikke ut til å virke.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
-"The Site Title can only be changed by a user with the administrator role." = "The Site Title can only be changed by a user with the administrator role.";
+"The Site Title can only be changed by a user with the administrator role." = "Nettstedstittelen kan bare bli endret av en administrator.";
 
 /* Description of the purpose of a site's title. */
-"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.";
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Nettstedstittelen vises i tittellinjen i en nettleser, og vises i toppfeltet i de fleste temaer.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-en savner en gyldig vert.";
@@ -5758,7 +5833,7 @@ translators: sample content for \"Services\" page template */
 "There has been an unexpected error while updating your comment" = "Det skjedde en feil. Klarte ikke å oppdatere din kommentar";
 
 /* Generic error alert message */
-"There has been an unexpected error." = "There has been an unexpected error.";
+"There has been an unexpected error." = "En uventet feil oppstod.";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Det er en ventende endring av din e-post til %@. Vennligst sjekk din innboks for en bekreftelseslenke.";
@@ -5960,7 +6035,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "For å behandle de herfra, sett de til synlige.";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "For å fortsette med denne Google-kontoen, vennligst logg inn med WordPress.com-passordet ditt først. Du vil kun bli spurt om dette én gang.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -5991,6 +6069,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "Toppnivå";
+
+/* Topic page title */
+"Topic" = "Emne";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Emne ikke funnet for id:";
@@ -6042,7 +6123,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "Prøv igjen";
 
 /* No comment provided by engineer. */
@@ -6294,6 +6376,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Oppdaterer søylediagrammet for å vise besøkende.";
 
+/* No comment provided by engineer. */
+"Updates the title." = "Updates the title.";
+
 /* Describes a status of a plugin */
 "Updating" = "Oppdaterer";
 
@@ -6374,6 +6459,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6423,6 +6509,9 @@ translators: sample content for \"Services\" page template */
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Bildetekst for video. %s";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "Video caption. Empty";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Videoeksport avbrutt.";
@@ -6517,6 +6606,9 @@ translators: sample content for \"Services\" page template */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Venter på at Google skal fullføre...";
 
+/* View title during the Google auth process. */
+"Waiting..." = "Waiting...";
+
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
 
@@ -6527,7 +6619,7 @@ translators: sample content for \"Services\" page template */
 "Want to work with us?" = "Vil du arbeide med oss?";
 
 /* Editing GIF alert title. */
-"Warning" = "Warning";
+"Warning" = "Advarsel";
 
 /* No comment provided by engineer. */
 "Warning Message" = "Advarsel";
@@ -6542,7 +6634,7 @@ translators: sample content for \"Services\" page template */
 "We are having trouble loading data" = "Vi har problemer med å laste inn data";
 
 /* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser.";
+"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "Vi jobber hardt for å legge til flere blokker i hver nye versjon. I mellomtiden kan du også redigere denne blokken i nettleseren til enheten din.";
 
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "Vi arbeider hardt med å legge til flere blokker i hver nye oppdatering. I mellomtiden kan du også redigere dette innlegget i nettleseren.";
@@ -6676,8 +6768,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Vi sender deg en magisk lenke som vil logge deg inn øyeblikkelig, uten behov for passord. Ikke mer bokstav-for-bokstav-skriving!";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Vi vil varsle deg når du får følgere, kommentarer og likes.";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "Vi vil publisere siden når enheten din er tilbake på nettet.";
@@ -6707,7 +6805,7 @@ translators: sample content for \"Services\" page template */
 "We'll submit your post for review when your device is back online." = "Vi vil sende ditt innlegg til gjennomgang når din enhet er tilbake på nettet.";
 
 /* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "We'll use this email address to create your new WordPress.com account.";
+"We'll use this email address to create your new WordPress.com account." = "Vi bruker denne epostadressen for å opprette din nye WordPress.com-konto.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Vi holder på den det avsluttende oppsettet—snart ferdig...";
@@ -6744,9 +6842,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vil vil alltid sende viktige meldinger om din konto, men du kan også få noen hjelpsomme esktraeposter.";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "Vi vil varsle deg når du får følgere, kommentarer og likes. Vil du tillate push-varslinger?";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Sammen med deg går vi gjennom det grunnleggende når det gjelder å bygge et nettsted og få det til å gro.";
@@ -7077,7 +7172,7 @@ translators: sample content for \"Services\" page template */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Passordet ditt bør være på minst seks tegn. For å gjøre det sterkere, bruk store og små bokstaver, tall og symboler som ! \" ? $ % ^ & ).";
 
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Your post is currently being uploaded. Please wait until this completes.";
+"Your post is currently being uploaded. Please wait until this completes." = "Innlegget ditt blir lastet opp. Vennligst vent til dette er fullført.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dine innlegg, sider og innstillinger vil bli sent til deg på epostadressen %@.";
@@ -7160,7 +7255,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "f.eks. 47";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "example.com";
 
 /* Noun. Describes a site's follower. */

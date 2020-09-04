@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-23 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-08-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = " 關於";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "關於 iOS 版 WordPress";
+
+/* Category description for page templates */
+"About pages" = "關於頁面";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速行動版網頁 (AMP)";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "允許通知";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "允許推播通知";
 
 /* No comment provided by engineer. */
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "驗證中";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "驗證碼";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "主機需要的驗證：%@";
 
@@ -852,16 +861,24 @@
 /* translators: displayed right after the block is pasted. */
 "Block pasted" = "已貼上區塊";
 
+/* translators: displayed right after the block is removed. */
+"Block removed" = "已移除區塊";
+
 /* No comment provided by engineer. */
 "Block settings" = "區塊設定";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "網誌";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "網誌文章";
+
+/* Category description for page templates */
+"Blog pages" = "網誌頁面";
 
 /* Create new Blog Post button title */
 "Blog post" = "網誌文章";
@@ -1095,6 +1112,9 @@
 /* Title for selecting a new home page */
 "Choose Posts Page" = "選擇文章頁面";
 
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "選擇一種版面配置";
+
 /* Label for Publish date picker */
 "Choose a date" = "選擇日期";
 
@@ -1118,6 +1138,15 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "從裝置中選擇";
+
+/* No comment provided by engineer. */
+"Choose image" = "選擇圖片";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "選擇圖片或視訊";
+
+/* No comment provided by engineer. */
+"Choose video" = "選擇視訊";
 
 /* Reader select interests subtitle label text */
 "Choose your interests" = "選擇你的興趣";
@@ -1163,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "關閉";
 
@@ -1377,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "連結";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "聯絡";
+
 /* Support email label. */
 "Contact Email" = "聯絡電子郵件";
 
@@ -1388,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "聯絡我們";
+
+/* Category description for page templates */
+"Contact pages" = "聯絡資訊頁面";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1525,6 +1562,9 @@
 
 /* Accessibility label for create floating action button */
 "Create" = "建立";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "建立空白頁面";
 
 /* Create New header text */
 "Create New" = "新增";
@@ -1782,12 +1822,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "討論";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1839,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "忽略 %@「快速入門」步驟";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "關閉「新聞卡片」。";
 
 /* Display Name label text.
    My Profile display name label
@@ -1853,9 +1888,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "不要因為結束而哭泣，要為曾經發生過而微笑。";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "點兩下並按住不放即可編輯";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "按兩下以新增區塊";
@@ -1970,9 +2002,6 @@
 /* No comment provided by engineer. */
 "Edit block in web browser" = "在網頁瀏覽器編輯區塊";
 
-/* No comment provided by engineer. */
-"Edit media" = "Edit media";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
 
@@ -2083,6 +2112,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "輸入使用者名稱";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "請輸入你的 %@ 帳號資訊。";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2312,6 +2344,9 @@
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "尋找你的網站位址";
 
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "尋找你會喜歡的網誌和故事…";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "正在尋找您的位置…";
 
@@ -2372,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "關注網誌。";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "關注此標籤。";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "為了方便起見，我們已預先填入你的 WordPress.com 聯絡人資訊。請檢視各項資訊，以確認這是你想要用於此網域的正確資訊。";
 
@@ -2428,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "接收通知：在已閱讀的文章上留言。";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "首先請從各種預先製作的頁面版面配置挑選。 或從空白頁面開始也可以。";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "分享你的文章，讓這些文章廣為人知，並增加文章檢視次數。";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "更快收到通知";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "讓你的網站上線運作";
@@ -2864,11 +2908,11 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新文章摘要";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "了解更多資訊";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "迅速瞭解新留言、按讚和關注情況。";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "深入瞭解付費專案中的行銷和 SEO 工具。";
@@ -3009,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "正在載入外掛程式...";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "正在載入文章...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "正在載入網域";
@@ -3869,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "頁面已排程";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "頁面標題。 %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "頁面標題。 清空";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "分頁";
@@ -3887,6 +3934,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "密碼";
 
@@ -3903,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "貼上 URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "貼上區塊";
+"Paste block after" = "將區塊貼在以下物件後方：";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "貼上並且不設定格式";
@@ -4009,6 +4057,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "請輸入 WordPress.com 帳戶的密碼，以便使用 Apple ID 登入。";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "請輸入驗證器應用程式上的驗證碼，或點選下方連結以透過簡訊接收驗證碼。";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "請輸入你的密碼";
 
@@ -4083,8 +4134,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "熱門語言";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "作品集";
+
+/* Category description for page templates */
+"Portfolio pages" = "作品集頁面";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "職位或職稱";
@@ -4289,9 +4345,6 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item label for linking a project page. */
 "Projects" = "專案";
-
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "請提供更多資訊。";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4556,6 +4609,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "取代目前區塊";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "替換圖片或視訊";
+
+/* No comment provided by engineer. */
+"Replace video" = "替換視訊";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "回覆留言。";
@@ -4943,6 +5002,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "傳送連結";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "以電子郵件傳送連結";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "傳送記錄訊息";
 
@@ -4964,8 +5026,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "服務";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "服務";
+
+/* Category description for page templates */
+"Services pages" = "服務頁面";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "設定精選圖片";
@@ -5064,7 +5131,8 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "顯示相關文章";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "顯示密碼";
 
 /* No comment provided by engineer. */
@@ -5237,7 +5305,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "發生錯誤。請檢查你的連線並再試一次。";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "發生錯誤。請再試一次。";
 
 /* Invite Validation Alert
@@ -5363,7 +5432,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "狀態";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "隨時掌握最新動態";
 
 /* This is the cell title. */
@@ -5565,8 +5634,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分類法";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "團隊";
+
+/* Category description for page templates */
+"Team pages" = "團隊頁面";
 
 /* Section title of the teams reader section. */
 "Teams" = "團隊";
@@ -5592,7 +5666,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "只顯示文字";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "請改用簡訊傳送驗證碼給我";
 
 /* Message of alert when theme activation succeeds */
@@ -5960,7 +6035,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "若要在這裡管理這些網站，請將它們設為公開。";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Apple ID，請先使用你的 WordPress.com 密碼登入。 系統只會要求你進行此操作一次。";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Google 帳號，請先使用你的 WordPress.com 密碼登入。系統只會向你要求一次。";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -5991,6 +6069,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "最上層";
+
+/* Topic page title */
+"Topic" = "主題";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "找不到 ID 的主題：";
@@ -6042,7 +6123,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "再試一次";
 
 /* No comment provided by engineer. */
@@ -6294,6 +6376,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "更新長條圖以顯示訪客人數。";
 
+/* No comment provided by engineer. */
+"Updates the title." = "更新標題。";
+
 /* Describes a status of a plugin */
 "Updating" = "正在更新";
 
@@ -6374,6 +6459,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6423,6 +6509,9 @@ translators: sample content for \"Services\" page template */
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "視訊標題。%s";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "視訊標題。 清空";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "視訊匯出已取消。";
@@ -6516,6 +6605,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
+
+/* View title during the Google auth process. */
+"Waiting..." = "等待中…";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "華特迪士尼";
@@ -6676,8 +6768,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我們會寄給你一個神奇的連結，讓你馬上就能登入，無須輸入密碼。不用再敲著兩隻手指打字了！";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "我們會透過電子郵件傳送連結給你，使用此連結即可建立新的 WordPress.com 帳號。";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "我們會在你收到關注、留言和按讚時通知你。";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "我們會在你收到關注、留言和按讚時通知你。 是否要允許推播通知？";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "我們會在裝置重新上線後發表此頁面。";
@@ -6744,9 +6842,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我們會隨時傳送與帳號資訊相關的重要電子郵件，除此之外，你也能獲得實用的額外內容。";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "我們會在你收到關注、留言和按讚時通知你。是否要允許推播通知？";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "我們會逐步說明建立及長久經營網站的基本事項";
@@ -7160,7 +7255,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "例如：44";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "example.com";
 
 /* Noun. Describes a site's follower. */

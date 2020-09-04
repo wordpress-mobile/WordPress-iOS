@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import Gridicons
+import AMScrollingNavbar
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -281,19 +282,50 @@ extension WPStyleGuide {
         button.setTitleColor(disabledColor, for: .disabled)
     }
 
-    @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+    @objc public class func applyReaderFollowConversationButtonStyle(_ button: UIButton) {
+        // General
+        button.naturalContentHorizontalAlignment = .leading
+        button.backgroundColor = .clear
+        button.titleLabel?.font = fontForTextStyle(.footnote)
+
+        // Color(s)
+        let normalColor = UIColor.primary
+        let highlightedColor =  UIColor.neutral
+        let selectedColor = UIColor.success
+
+        button.setTitleColor(normalColor, for: .normal)
+        button.setTitleColor(selectedColor, for: .selected)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+
+        // Image(s)
         let side = WPStyleGuide.fontSizeForTextStyle(.headline)
+        let size = CGSize(width: side, height: side)
+        let followIcon = UIImage.gridicon(.readerFollowConversation, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowingConversation, size: size)
+
+        button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
+        button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
+        button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
+        button.imageEdgeInsets = FollowConversationButton.Style.imageEdgeInsets
+        button.contentEdgeInsets = FollowConversationButton.Style.contentEdgeInsets
+    }
+
+    @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+        let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
         let followIcon = UIImage.gridicon(.readerFollow, size: size)
         let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
-        button.titleLabel?.font = fontForTextStyle(.headline, fontWeight: .semibold)
+        let followFont: UIFont = fontForTextStyle(.callout, fontWeight: .semibold)
+        let followingFont: UIFont = fontForTextStyle(.callout, fontWeight: .regular)
+        button.titleLabel?.font = button.isSelected ? followingFont : followFont
+
         button.layer.cornerRadius = 4.0
-        button.layer.borderColor = UIColor(light: .gray(.shade30), dark: .gray(.shade60)).cgColor
+        button.layer.borderColor = UIColor.primaryButtonBorder.cgColor
 
         button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
-        button.tintColor = button.isSelected ? FollowButton.Style.followingTextColor : FollowButton.Style.followTextColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
 
         button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
         button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
@@ -539,7 +571,8 @@ extension WPStyleGuide {
         struct Style {
             static let followBackgroundColor: UIColor = .primaryButtonBackground
             static let followTextColor: UIColor = .white
-            static let followingBackgroundColor: UIColor = .basicBackground
+            static let followingBackgroundColor: UIColor = .clear
+            static let followingIconColor: UIColor = .buttonIcon
             static let followingTextColor: UIColor = .textSubtle
 
             static let imageTitleSpace: CGFloat = 2.0
@@ -553,5 +586,18 @@ extension WPStyleGuide {
             static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
             static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
         }
+    }
+
+    public struct FollowConversationButton {
+        struct Style {
+            static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
+            static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
+        }
+    }
+}
+
+extension ScrollingNavigationController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return WPStyleGuide.preferredStatusBarStyle
     }
 }

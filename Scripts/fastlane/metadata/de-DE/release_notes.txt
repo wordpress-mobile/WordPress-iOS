@@ -1,5 +1,1 @@
-Version 15.3 beinhaltet drei große Änderungen:
-
-– Alle Blöcke verfügen jetzt über die Optionen „Kopieren“, „Ausschneiden“, „Einfügen“ und „Duplizieren“.
-– Du kannst nicht unterstützte Blöcke nun auf einem separaten Bildschirm in der App individuell bearbeiten und dafür dieselben Tools wie im Web-Editor nutzen. (Hinweis: Dies ist noch nicht für selbst gehostete Websites oder Websites, die den klassischen Editor nutzen, verfügbar.)
- Der Geister-Effekt! Ein visuelles Element, das wir dem Editor hinzugefügt haben: Es zeigt schattierte Bereiche an, damit du besser sehen kannst, wann und wo Inhalte geladen werden.
+Neu! Benutzernamen-@mentions werden jetzt im Block-Editor für WordPress.com und auf Jetpack-Websites auto-vervollständigt. Wenn du das @-Zeichen eingibst, wird dir ein Popup-Menü mit Benutzernamen angezeigt, aus denen du auswählen kannst! In dieser Version haben wir Unterstützung für die Medienbearbeitung im Cover-Block hinzugefügt und einen Fehler am Überschriftsblock behoben, der dazu führte, dass Überschriften mit einem Link und String-Formatierung im Dunkelmodus mit einem weißen Schatten angezeigt wurden. Außerdem haben Website-Überschriften im WordPress.com-Reader nun einen neuen, modernen Look.

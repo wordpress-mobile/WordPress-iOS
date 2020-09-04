@@ -317,7 +317,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBarBackground)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 

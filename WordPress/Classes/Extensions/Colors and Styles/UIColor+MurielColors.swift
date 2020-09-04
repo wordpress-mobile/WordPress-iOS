@@ -196,7 +196,29 @@ extension UIColor {
     }
 
     /// Muriel/iOS navigation color
-    static var appBar = UIColor(light: .brand, dark: .gray(.shade100))
+    static var appBarBackground: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return UIColor(light: white, dark: .gray(.shade100))
+        }
+
+        return UIColor(light: .brand, dark: .gray(.shade100))
+    }
+
+    static var appBarTint: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .primary
+        }
+
+        return .white
+    }
+
+    static var appBarText: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .text
+        }
+
+        return .white
+    }
 
     // MARK: - Table Views
 
@@ -206,6 +228,14 @@ extension UIColor {
         }
 
         return muriel(color: .divider)
+    }
+
+    static var primaryButtonBorder: UIColor {
+           if #available(iOS 13, *) {
+               return .opaqueSeparator
+           }
+
+        return muriel(color: .gray, .shade10)
     }
 
     /// WP color for table foregrounds (cells, etc)
@@ -264,7 +294,15 @@ extension UIColor {
             return .systemGray
         }
 
-        return UIColor.neutral(.shade20)
+        return .neutral(.shade20)
+    }
+
+    static var buttonIcon: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray2
+        }
+
+        return .neutral(.shade5)
     }
 
     static var filterBarBackground: UIColor {

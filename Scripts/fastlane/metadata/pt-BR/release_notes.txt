@@ -1,5 +1,1 @@
-v15.3 inclui três grandes mudanças:
-
-- Todos os blocos agora têm as opções copiar, cortar, colar e duplicar.
-- Você pode editar blocos sem suporte em uma tela separada do app, usando as mesmas ferramentas disponíveis no editor web completo. (Observação: ainda não está disponível para sites auto-hospedados ou sites com o editor clássico como padrão).
-- Efeito Fantasma! É um toque visual muito legal que incluímos no editor, que mostra áreas sombreadas para que você saiba quando o conteúdo estiver carregando.
+Novidades! Nomes de usuários com @menções são auto-completados no editor de blocos em sites no WordPress.com e Jetpack. Digite @ para ver uma janela com os nomes de usuários para selecionar. Nesta versão, adicionamos suporte a edição de mídias no bloco Cobertura e corrigimos um erro no bloco Título que exibia uma sombra no modo escuro. Para finalizar, o cabeçalho do site tem uma aparência moderna no Leitor do WordPress.com.

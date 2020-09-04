@@ -1,5 +1,1 @@
-v15.3 inclut trois grands changements :
-
-- Tous les blocs contiennent désormais des options pour copier, couper, coller et dupliquer.
-- Vous pouvez modifier individuellement des blocs non pris en charge sur un écran séparé de l’application, à l’aide des mêmes outils disponibles dans l’éditeur Web complet. (Remarque : cela n’est pas encore disponible pour les sites auto-hébergés ou pour les sites utilisant l’éditeur classique par défaut.)
-- Effet fantôme ! Nous avons ajouté à l’éditeur cet effet visuel sympa qui affiche des zones ombrées afin que vous sachiez quand et où du contenu est chargé.
+Nouveau ! Désormais, les @mentions de noms d’utilisateur se remplissent automatiquement dans l’éditeur de blocs pour les sites WordPress.com et Jetpack. Saisissez le caractère « @ » pour voir apparaître une fenêtre contextuelle affichant des noms d’utilisateur et faites votre sélection ! Dans cette version, nous avons ajouté la prise en charge de la modification de média dans le bloc Bannière et nous avons résolu un bogue dans le bloc En-tête où un en-tête avec un lien et un formatage de chaîne affichait une ombre blanche en mode sombre. Enfin, les en-têtes de site dans le Lecteur WordPress.com disposent désormais d’une apparence moderne.

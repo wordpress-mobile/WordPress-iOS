@@ -1,5 +1,1 @@
-v15.3 üç büyük değişiklik içerir:
-
-- Artık tüm bloklar kopyalama, kesme, yapıştırma ve çoğaltma seçeneklerine sahiptir.
-- Desteklenmeyen blokları, web metin düzenleyicisiyle aynı araçları kullanarak, uygulamada ayrı bir ekranda ayrı ayrı düzenleyebilirsiniz. (Not: bu henüz kendi kendine barındırılan siteler veya varsayılan olarak klasik düzenleyiciye sahip siteler için kullanılamaz.)
-- Hayalet etkisi! Metin düzenleyiciye, içeriğin ne zaman ve nerede yüklendiğini bildiren gölgeli alanları gösteren hoş bir görsel dokunuş.
+Yeni! Kullancı adı @mention'ları artık WordPress.com ve Jetpack siteleri için Blok Düzenleyicide otomatik olarak tamamlanıyor. Kullanıcı adlarını gösteren bir açılır pencere görmek için "@" karakterini yazın ve seçiminizi yapın. Bu sürümde, medya düzenlemek Kapak bloğuna destek ekledik, ayrıca bir bağlantı ve dize biçimlendirmesi içeren başlıkların karanlık modda beyaz gölge görüntülediği Başlık bloğu hatasını düzelttik. Son olarak, WordPress.com Reader'daki site başlıklarına modern ve yeni bir görünüm kazandırdık.

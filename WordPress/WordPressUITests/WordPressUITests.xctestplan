@@ -20,8 +20,18 @@
   "testTargets" : [
     {
       "skippedTests" : [
+        "EditorAztecTests\/testBasicPostPublish()",
+        "EditorAztecTests\/testLongTitle()",
+        "EditorAztecTests\/testTextPostPublish()",
+        "EditorGutenbergTests\/testBasicPostPublish()",
+        "EditorGutenbergTests\/testTextPostPublish()",
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "LoginTests\/testEmailPasswordLoginLogout()",
+        "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
+        "LoginTests\/testUnsuccessfulLogin()",
+        "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests\/testTabBarNavigation()",
         "SignupTests\/testEmailSignup()"
       ],
       "target" : {

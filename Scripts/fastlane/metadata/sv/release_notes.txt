@@ -1,5 +1,1 @@
-v 15.3 innehåller tre stora förbättringar:
-
-- Nu har alla block val för att kopiera, klippa ut, klistra in och duplicera.
-- Block som saknar stöd kan redigeras i ett eget fönster i appen med samma verktyg som finns tillgängliga i den kompletta webbredigeraren. (Obs: detta är ännu inte tillgängligt för webbplats på eget webbhotell eller om webbplatsen som standard använder den klassiska redigeraren.)
-- Suddighetseffekt! En trevlig visuell finess vi lagt till i redigeraren är skuggade områden för att visa var och när innehåll laddas in.
+Nyheter! Nu kompletteras automatiskt omnämnanden med @ i blockredigeraren för WordPress.com och webbplatser med Jetpack. När du skriver in tecknet ”@” visas en lista med användarnamn så att du kan välja! I denna version har vi lagt till stöd för redigering av media i omslagsblocket och korrigerat ett fel i rubrikblocket där en rubrik med länk och formaterad sträng hade en vit skugga i mörkt läge. Slutligen har webbplatsrubriker i läsaren för WordPress.com nu fått en modernare utformning.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-22 14:54:08+0000 */
+/* Translation-Revision-Date: 2020-08-20 10:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "כתובת";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = "אודות";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "מידע לגבי WordPress עבור iOS";
+
+/* Category description for page templates */
+"About pages" = "עמודי 'אודות'";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "תוסף Accelerated Mobile Pages (AMP)‎";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "הפעלת ההודעות";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "הפעלת האפשרות להודעות בדחיפה";
 
 /* No comment provided by engineer. */
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "מאמת";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "קוד אימות";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "נדרש אימות עבור חברת האחסון: ‎%@";
 
@@ -852,16 +861,24 @@
 /* translators: displayed right after the block is pasted. */
 "Block pasted" = "הבלוק הודבק";
 
+/* translators: displayed right after the block is removed. */
+"Block removed" = "הבלוק הוסר";
+
 /* No comment provided by engineer. */
 "Block settings" = "הגדרות הבלוק";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "אתר";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "פוסטים";
+
+/* Category description for page templates */
+"Blog pages" = "עמודי בלוג";
 
 /* Create new Blog Post button title */
 "Blog post" = "פוסט בבלוג";
@@ -1095,6 +1112,9 @@
 /* Title for selecting a new home page */
 "Choose Posts Page" = "לבחור עמוד פוסטים";
 
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "לבחור את הפריסה";
+
 /* Label for Publish date picker */
 "Choose a date" = "לבחור תאריך";
 
@@ -1118,6 +1138,15 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "לבחור מהמכשיר";
+
+/* No comment provided by engineer. */
+"Choose image" = "לבחור תמונה";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "לבחור תמונה או וידאו";
+
+/* No comment provided by engineer. */
+"Choose video" = "לבחור וידאו";
 
 /* Reader select interests subtitle label text */
 "Choose your interests" = "לבחור את תחומי העניין שלך";
@@ -1163,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "סגור";
 
@@ -1377,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "חיבורים";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "איש קשר";
+
 /* Support email label. */
 "Contact Email" = "אימייל ליצירת קשר";
 
@@ -1388,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "ליצור עימנו קשר";
+
+/* Category description for page templates */
+"Contact pages" = "עמודים ליצירת קשר";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1525,6 +1562,9 @@
 
 /* Accessibility label for create floating action button */
 "Create" = "ליצור";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "ליצור עמוד ריק";
 
 /* Create New header text */
 "Create New" = "ליצור חדש";
@@ -1782,12 +1822,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "דיון";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1839,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "דילוג על שלב %@ בהתחלה המהירה";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "דחייה של כרטיסי חדשות.";
 
 /* Display Name label text.
    My Profile display name label
@@ -1853,9 +1888,6 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "חבל לבכות כי החוויה שהסתיימה, כדאי לחייך כי החוויה התרחשה.";
-
-/* No comment provided by engineer. */
-"Double tap and hold to edit" = "יש להקיש פעמיים ולהחזיק כדי לערוך";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "יש להקיש פעמיים כדי להוסיף בלוק";
@@ -1970,9 +2002,6 @@
 /* No comment provided by engineer. */
 "Edit block in web browser" = "לערוך את הבלוק בדפדפן הרשת";
 
-/* No comment provided by engineer. */
-"Edit media" = "לערוך מדיה";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
 
@@ -2083,6 +2112,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "הזן שם משתמש";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "להזין את פרטי החשבון שלך ב-%@";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2312,6 +2344,9 @@
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "למצוא את הכותרת של האתר שלך";
 
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "למצוא בלוגים וסיפורים שימצאו חן בעיניך...";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "מחפש את מיקומך...";
 
@@ -2372,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "מעקב אחר הבלוג.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "עוקב אחר התגית.";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "לנוחותך, מילאנו מראש את הפרטים ליצירת קשר עמך ב-WordPress.com. יש לבדוק את הפרטים ולוודא שהמידע נכון לדומיין שבו ברצונך להשתמש.";
 
@@ -2428,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "לבלוט בשטח: הוספת תגובה על פוסטים שקראת.";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "ניתן להתחיל באמצעות בחירה ממגוון רחב של פריסות עמוד שהוכנו מראש. או פשוט להתחיל מעמוד ריק.";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "אפשר חשיפה רבה יותר לפוסט שלך על ידי שיתוף.";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "לקבל הודעות מהר יותר";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "הפעלת האתר שלך";
@@ -2864,11 +2908,11 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "סיכום פוסטים אחרונים";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "מידע נוסף";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "לקבל מידע על תגובות, לייקים ועוקבים חדשים בשניות.";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "מידע נוסף על כלי שיווק ו-SEO בתוכניות שלנו בתשלום.";
@@ -3009,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "טוען תוספים…";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "טוען פוסט...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "טוען דומיינים";
@@ -3869,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "העמוד תוזמן לפרסום";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "כותרת העמוד. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "כותרת העמוד. ריק";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "עמודים";
@@ -3887,6 +3934,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "סיסמה";
 
@@ -3903,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "להדביק את כתובת ה-URL";
 
 /* No comment provided by engineer. */
-"Paste block" = "להדביק בלוק";
+"Paste block after" = "להדביק את הבלוק אחרי";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "הדבקה בלי העיצוב";
@@ -4009,6 +4057,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "עליך להזין את הסיסמה לחשבון שלך ב-WordPress.com כדי להתחבר עם ה-Apple ID שלך.";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "יש להזין את קוד האימות מאפליקציית האימות או להקיש על הקישור מתחת כדי לקבל קוד באמצעות הודעת טקסט (SMS).";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "הזינו את הפרטים";
 
@@ -4083,8 +4134,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "שפות פופולאריות";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "תיק עבודות";
+
+/* Category description for page templates */
+"Portfolio pages" = "עמודים של תיק עבודות";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "כותרת התפקיד או המשרה";
@@ -4289,9 +4345,6 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item label for linking a project page. */
 "Projects" = "פרויקטים";
-
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "הצגת מידע נוסף.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4556,6 +4609,12 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "יש להחליף את הבלוק הנוכחי";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "להחליף תמונה או וידאו";
+
+/* No comment provided by engineer. */
+"Replace video" = "להחליף וידאו";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "כתיבת מענה לתגובה.";
@@ -4943,6 +5002,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "שליחת קישור";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "לשלוח את הקישור באימייל";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "לשלוח הודעה ליומן";
 
@@ -4964,8 +5026,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "שירות";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "שירותים";
+
+/* Category description for page templates */
+"Services pages" = "עמודי שירותים";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "קבע תמונה ראשית";
@@ -5064,7 +5131,8 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "הצג תכנים באותו נושא";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "להציג סיסמה";
 
 /* No comment provided by engineer. */
@@ -5237,7 +5305,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "משהו השתבש. יש לבדוק את החיבור ולנסות שוב.";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "משהו השתבש. יש לנסות שוב.";
 
 /* Invite Validation Alert
@@ -5363,7 +5432,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "סטטוס";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "להישאר בעניינים";
 
 /* This is the cell title. */
@@ -5565,8 +5634,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "טקסונומיה";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "צוות";
+
+/* Category description for page templates */
+"Team pages" = "עמודי צוות";
 
 /* Section title of the teams reader section. */
 "Teams" = "צוותים";
@@ -5592,7 +5666,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "טקסט בלבד";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "שליחת קוד במקום";
 
 /* Message of alert when theme activation succeeds */
@@ -5960,7 +6035,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "כדי לנהל אותם כאן, יש להגדיר אותם כ'גלויים'.";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "כדי להמשיך עם חשבון Apple ID זה, ראשית יש להתחבר עם הסיסמה שלך ב-WordPress.com. נבקש את הנתון הזה פעם אחת בלבד.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "כדי להמשיך עם חשבון Google, ראשית יש להתחבר עם הסיסמה שלך ב-WordPress.com. נבקש את הנתון הזה פעם אחת בלבד.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -5991,6 +6069,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "קטגוריה עליונה";
+
+/* Topic page title */
+"Topic" = "נושא";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "נושא לא נמצא למזהה:";
@@ -6042,7 +6123,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "לנסות שוב";
 
 /* No comment provided by engineer. */
@@ -6294,6 +6376,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "הפעולה מעדכנת את תרשים העמודות לתצוגה של מבקרים.";
 
+/* No comment provided by engineer. */
+"Updates the title." = "מעדכן את שם האתר.";
+
 /* Describes a status of a plugin */
 "Updating" = "מעדכן";
 
@@ -6374,6 +6459,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6423,6 +6509,9 @@ translators: sample content for \"Services\" page template */
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "כיתוב לווידאו. %s";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "כיתוב לווידאו. ריק";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "יצוא הווידאו בוטל.";
@@ -6516,6 +6605,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "ממתין להשלמת הפעולה על ידי Google...";
+
+/* View title during the Google auth process. */
+"Waiting..." = "ממתין...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -6676,8 +6768,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "נשלח לך קישור מיוחד להתחברות מיידית, ללא צורך בסיסמה. לא צריך לחפש או לנחש!";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "נשלח אליך אימייל עם קישור ישיר כדי ליצור את חשבון חדש ב-WordPress.com.";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "אנחנו נודיע לך כאשר יש לך עוקבים, תגובות או לייקים חדשים.";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "אנחנו נודיע לך כאשר יהיו לך עוקבים, תגובות או לייקים חדשים. האם ברצונך לאפשר הודעות דחיפה?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "אנחנו נפרסם את העמוד כאשר המכשיר שלך יחובר שוב לאינטרנט.";
@@ -6744,9 +6842,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "תמיד נשלח הודעות אימייל חשובות לגבי החשבון שלך, אבל אפשר לקבל גם כמה תוספות מועילות.";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "אנחנו נודיע לך כאשר יש לך עוקבים, תגובות או לייקים חדשים. האם ברצונך לאפשר הודעות דחיפה?";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "אנחנו נלווה אותך בביצוע הפעולות הבסיסיות לבנייה של האתר שלך ולהגדלתו";
@@ -7160,7 +7255,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "לדוגמה 44";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "example.com";
 
 /* Noun. Describes a site's follower. */

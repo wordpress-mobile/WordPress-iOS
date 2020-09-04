@@ -1,5 +1,1 @@
-La versione 15.3 contiene tre importanti modifiche:
-
-- Tutti i blocchi ora dispongono delle opzioni per copiare, tagliare, incollare e duplicare.
-- Puoi modificare individualmente i blocchi non supportati in una schermata separata nell'app, utilizzando gli stessi strumenti disponibili nell'editor web completo. (Nota: questa opzione non è ancora disponibile per i siti ospitati personalmente o per i siti che per impostazione predefinita utilizzano l'editor classico.)
-- Effetto fantasma! Si tratta di un bel tocco visivo che abbiamo aggiunto all'editor e mostra aree sfumate per indicarti dove e quando il contenuto è in fase di caricamento.
+Novità. Ora è disponibile il completamento automatico del nome utente @citazioni nell'editor a blocchi per i siti WordPress.com e Jetpack. Digita il carattere "@" per visualizzare una finestra di pop-up con i nomi utente ed effettuare la selezione. In questa versione abbiamo aggiunto il supporto per la modifica degli elementi multimediali nel blocco Copertina e abbiamo corretto un bug del blocco Titolo che causava la visualizzazione di un'ombra bianca in Dark Mode in un titolo con un link e una formattazione a stringa. Infine, i titoli dei siti nel Reader di WordPress.com ora hanno un aspetto nuovo e moderno.

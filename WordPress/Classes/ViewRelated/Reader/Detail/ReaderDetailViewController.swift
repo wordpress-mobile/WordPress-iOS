@@ -10,7 +10,7 @@ protocol ReaderDetailView: class {
     func scroll(to: String)
 }
 
-class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
+class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Content scroll view
     @IBOutlet weak var scrollView: ReaderScrollView!
 
@@ -72,16 +72,6 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,6 +83,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         configureScrollView()
         configureNoResultsViewController()
         observeWebViewHeight()
+        configureNotifications()
         coordinator?.start()
     }
 
@@ -102,17 +93,32 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         followScrollView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        ReaderTracker.shared.start(.readerPost)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         stopFollowingScrollView()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        ReaderTracker.shared.stop(.readerPost)
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
-        webView.loadHTMLString(post.contentForDisplay())
+
+        coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
+            self?.webView.loadHTMLString(post.contentForDisplay())
+        }
     }
 
     /// Show ghost cells indicating the content is loading
@@ -140,13 +146,22 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
     }
 
+    @objc func willEnterForeground() {
+        guard isViewOnScreen() else {
+            return
+        }
+
+        ReaderTracker.shared.start(.readerPost)
+    }
+
     /// Show a given title
     ///
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         let titleView = UILabel()
-        titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
+
+        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
         navigationItem.titleView = titleView
     }
 
@@ -164,6 +179,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
     deinit {
         scrollObserver?.invalidate()
+        NotificationCenter.default.removeObserver(self)
     }
 
     /// Apply view styles
@@ -264,6 +280,10 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
         noResultsViewController.delegate = self
     }
 
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
     /// Ask the coordinator to present the share sheet
     ///
     @objc func didTapShareButton(_ sender: UIButton) {
@@ -307,9 +327,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     /// - Parameter postID: a post identification
     /// - Parameter siteID: a site identification
     /// - Parameter isFeed: a Boolean indicating if the site is an external feed (not hosted at WPcom and not using Jetpack)
-    /// - Returns: A `ReaderDetailWebviewViewController` instance
-    @objc class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false) -> ReaderDetailWebviewViewController {
-        let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+    /// - Returns: A `ReaderDetailViewController` instance
+    @objc class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false) -> ReaderDetailViewController {
+        let controller = ReaderDetailViewController.loadFromStoryboard()
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.set(postID: postID, siteID: siteID, isFeed: isFeed)
         controller.coordinator = coordinator
@@ -321,9 +341,9 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     /// Use this method to present content for the user.
     /// - Parameter url: an URL of the post.
-    /// - Returns: A `ReaderDetailWebviewViewController` instance
-    @objc class func controllerWithPostURL(_ url: URL) -> ReaderDetailWebviewViewController {
-        let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+    /// - Returns: A `ReaderDetailViewController` instance
+    @objc class func controllerWithPostURL(_ url: URL) -> ReaderDetailViewController {
+        let controller = ReaderDetailViewController.loadFromStoryboard()
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.postURL = url
         controller.coordinator = coordinator
@@ -335,16 +355,16 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
     ///
     /// Use this method to present content for the user.
     /// - Parameter post: a Reader Post
-    /// - Returns: A `ReaderDetailWebviewViewController` instance
-    @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailWebviewViewController {
+    /// - Returns: A `ReaderDetailViewController` instance
+    @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
         if post.sourceAttributionStyle() == .post &&
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
-            return ReaderDetailWebviewViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+            return ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
         } else if post.isCross() {
-            return ReaderDetailWebviewViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
         } else {
-            let controller = ReaderDetailWebviewViewController.loadFromStoryboard()
+            let controller = ReaderDetailViewController.loadFromStoryboard()
             let coordinator = ReaderDetailCoordinator(view: controller)
             coordinator.post = post
             controller.coordinator = coordinator
@@ -362,7 +382,7 @@ class ReaderDetailWebviewViewController: UIViewController, ReaderDetailView {
 
 // MARK: - StoryboardLoadable
 
-extension ReaderDetailWebviewViewController: StoryboardLoadable {
+extension ReaderDetailViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "ReaderDetailViewController"
     }
@@ -370,7 +390,7 @@ extension ReaderDetailWebviewViewController: StoryboardLoadable {
 
 // MARK: - Reader Card Discover
 
-extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDelegate {
+extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
     }
@@ -378,7 +398,7 @@ extension ReaderDetailWebviewViewController: ReaderCardDiscoverAttributionViewDe
 
 // MARK: - Transitioning Delegate
 
-extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelegate {
+extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
@@ -390,7 +410,7 @@ extension ReaderDetailWebviewViewController: UIViewControllerTransitioningDelega
 
 // MARK: - Navigation Delegate
 
-extension ReaderDetailWebviewViewController: WKNavigationDelegate {
+extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.webView.loadMedia()
         hideLoading()
@@ -410,7 +430,7 @@ extension ReaderDetailWebviewViewController: WKNavigationDelegate {
 
 // MARK: - Error View Handling (NoResultsViewController)
 
-private extension ReaderDetailWebviewViewController {
+private extension ReaderDetailViewController {
     func displayLoadingView(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title, accessoryView: accessoryView)
         showLoadingView()
@@ -443,7 +463,7 @@ private extension ReaderDetailWebviewViewController {
 
 // MARK: - NoResultsViewControllerDelegate
 ///
-extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
+extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
     }
@@ -451,7 +471,7 @@ extension ReaderDetailWebviewViewController: NoResultsViewControllerDelegate {
 
 // MARK: - Scroll View Delegate
 
-extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
+extension ReaderDetailViewController: UIScrollViewDelegate {
     // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
@@ -480,7 +500,7 @@ extension ReaderDetailWebviewViewController: UIScrollViewDelegate {
 
 // MARK: - State Restoration
 
-extension ReaderDetailWebviewViewController: UIViewControllerRestoration {
+extension ReaderDetailViewController: UIViewControllerRestoration {
     public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                       coder: NSCoder) -> UIViewController? {
         return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
@@ -503,9 +523,9 @@ extension ReaderDetailWebviewViewController: UIViewControllerRestoration {
 // MARK: - PrefersFullscreenDisplay (iPad)
 
 // Expand this view controller to full screen if possible
-extension ReaderDetailWebviewViewController: PrefersFullscreenDisplay {}
+extension ReaderDetailViewController: PrefersFullscreenDisplay {}
 
 // MARK: - DefinesVariableStatusBarStyle (iPad)
 
 // Let's the split view know this vc changes the status bar style.
-extension ReaderDetailWebviewViewController: DefinesVariableStatusBarStyle {}
+extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}

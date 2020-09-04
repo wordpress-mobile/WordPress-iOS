@@ -1,5 +1,1 @@
-v15.3 menampilkan tiga perubahan besar:
-
--- Seluruh blok kini memiliki pilihan salin, potong, tempel, dan duplikasi.
-- Anda dapat secara individual mengedit blok yang tidak didukung pada layar terpisah di aplikasi dengan menggunakan alat yang sama dengan yang tersedia di editor web lengkap. (Catatan: versi ini belum tersedia untuk situs yang di-hosting sendiri atau situs yang menggunakan editor lama sebagai editor asal.)
--- Ghost Effect! Kami menambahkan sentuhan visual yang menarik pada penyunting yang menampilkan area berwarna gelap sehingga Anda dapat mengetahui kapan dan di mana konten dimuat.
+Baru! Penyebutan @namapengguna kini dapat dilengkapi otomatis di Penyunting Blok untuk situs WordPress.com dan Jetpack. Ketik karakter “@” untuk memunculkan pop-up nama pengguna yang dapat Anda pilih! Pada versi ini kami menambahkan dukungan untuk pengeditan media di blok Sampul dan memperbaiki bug blok Judul yang menyebabkan judul dengan format tautan dan string menampilkan bayangan putih pada mode gelap. Selain itu, judul situs di Pembaca WordPress.com kini punya tampilan baru yang modern.

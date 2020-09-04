@@ -1,5 +1,1 @@
-v15.3 bevat drie geweldige wijzigingen:
-
-- Alle blokken bevatten nu opties voor kopiëren, knippen, plakken en dupliceren.
-- Je kan niet-ondersteunde blokken individueel bewerken op een afzonderlijk scherm in de app en daarbij dezelfde tools gebruiken die beschikbaar zijn in de volledige webeditor. (Let op: dit is nog niet beschikbaar voor zelfgehoste sites of sites die de klassieke editor als standaardinstelling hebben.)
-- Spookeffect! Het is een leuke visuele toevoeging aan de editor, waarmee gemarkeerde gebieden worden aangegeven om je te laten weten wanneer en waar content wordt geladen.
+Nieuw! Gebruikersnaam @mentions worden nu automatisch aangevuld in de blok-editor voor WordPress.com- en Jetpack sites. Typ het "@" teken om een ​​pop-up te zien met gebruikersnamen en maak je keuze! In deze versie hebben we ondersteuning toegevoegd voor mediabewerking in het cover blok en een bug in het heading blok verholpen waarbij een kop met een link en string opmaak een witte schaduw vertoonde in de donkere modus. Tenslotte hebben site headers in de WordPress.com Reader nu een moderne nieuwe look.

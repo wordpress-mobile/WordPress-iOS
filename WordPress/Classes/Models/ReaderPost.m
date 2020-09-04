@@ -171,11 +171,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.sourceAttribution = nil;
     }
 
-    if ([Feature enabled:FeatureFlagReaderWebview]) {
-        post.content = [RichContentFormatter removeInlineStyles:[RichContentFormatter removeForbiddenTags:remotePost.content]];
-    } else {
-        post.content = [RichContentFormatter formatContentString:remotePost.content isPrivateSite:remotePost.isBlogPrivate];
-    }
+    post.content = [RichContentFormatter removeInlineStyles:[RichContentFormatter removeForbiddenTags:remotePost.content]];
 
     // assign the topic last.
     post.topic = topic;
@@ -352,6 +348,17 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         title = @"";
     }
     return title;
+}
+
+- (NSArray <NSString *> *)tagsForDisplay
+{
+    if (self.tags.length <= 0) {
+        return @[];
+    }
+
+    NSArray *tags = [self.tags componentsSeparatedByString:@", "];
+
+    return [tags sortedArrayUsingSelector:@selector(localizedCompare:)];
 }
 
 - (NSString *)authorForDisplay

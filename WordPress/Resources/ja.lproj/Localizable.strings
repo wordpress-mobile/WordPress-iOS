@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-07-24 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-08-15 00:12:03+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -318,7 +318,9 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "住所";
 
-/* About this app (information page title) */
+/* About page type template title
+   About this app (information page title)
+   Category name for page templates */
 "About" = "紹介";
 
 /* My Profile 'About me' label */
@@ -326,6 +328,9 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "WordPress for iOS について";
+
+/* Category description for page templates */
+"About pages" = "サイト紹介のページ";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -433,7 +438,7 @@
 "Add a shortcode…" = "ショートコードを追加…";
 
 /* No Tags View Button Label */
-"Add a site" = "Add a site";
+"Add a site" = "サイトを追加";
 
 /* No Tags View Button Label */
 "Add a tag" = "タグを追加";
@@ -448,7 +453,7 @@
 "Add any tag" = "タグを追加";
 
 /* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
+"Add image, or avatar, to represent this new account." = "この新規アカウントを表す画像またはアバターを追加します。";
 
 /* No comment provided by engineer. */
 "Add link text" = "リンク文字列を追加";
@@ -543,7 +548,8 @@
    Button label for approving our request to allow push notifications */
 "Allow notifications" = "通知を許可する";
 
-/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
+   Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "プッシュ通知を許可する";
 
 /* No comment provided by engineer. */
@@ -728,6 +734,9 @@
 /* No comment provided by engineer. */
 "Authenticating" = "認証中";
 
+/* Placeholder for the 2FA code textfield. */
+"Authentication code" = "認証コード";
+
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "ホストに必要な認証:%@";
 
@@ -852,16 +861,24 @@
 /* translators: displayed right after the block is pasted. */
 "Block pasted" = "ブロックを貼り付けました";
 
+/* translators: displayed right after the block is removed. */
+"Block removed" = "削除したブロック";
+
 /* No comment provided by engineer. */
 "Block settings" = "ブロックの設定";
 
-/* Opens the WordPress Mobile Blog
+/* Blog page type template title
+   Category name for page templates
+   Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "ブログ";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "ブログ投稿";
+
+/* Category description for page templates */
+"Blog pages" = "ブログページ";
 
 /* Create new Blog Post button title */
 "Blog post" = "ブログ投稿";
@@ -1095,6 +1112,9 @@
 /* Title for selecting a new home page */
 "Choose Posts Page" = "投稿ページを選択";
 
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "レイアウトを選択";
+
 /* Label for Publish date picker */
 "Choose a date" = "日付を選択";
 
@@ -1118,6 +1138,15 @@
 
 /* No comment provided by engineer. */
 "Choose from device" = "デバイスから選択";
+
+/* No comment provided by engineer. */
+"Choose image" = "画像を選択";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "画像または動画を選択";
+
+/* No comment provided by engineer. */
+"Choose video" = "動画を選択";
 
 /* Reader select interests subtitle label text */
 "Choose your interests" = "関心のあるものを選択";
@@ -1163,6 +1192,7 @@
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
    Dismiss the media picker for Stock Photos
+   Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "閉じる";
 
@@ -1377,6 +1407,10 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "連携";
 
+/* Category name for page templates
+   Contact page type template title */
+"Contact" = "連絡";
+
 /* Support email label. */
 "Contact Email" = "連絡先メールアドレス";
 
@@ -1388,6 +1422,9 @@
 
 /* Option in Support view to contact the support team. */
 "Contact Us" = "お問い合わせ";
+
+/* Category description for page templates */
+"Contact pages" = "お問い合わせページ";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1526,6 +1563,9 @@
 /* Accessibility label for create floating action button */
 "Create" = "作成";
 
+/* Title for button to make a blank page */
+"Create Blank Page" = "空のページを作成";
+
 /* Create New header text */
 "Create New" = "新規作成";
 
@@ -1609,7 +1649,7 @@
 "Customize" = "カスタマイズ";
 
 /* No comment provided by engineer. */
-"Customize Gradient" = "Customize Gradient";
+"Customize Gradient" = "グラデーションをカスタマイズ";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
@@ -1782,12 +1822,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "ディスカッション";
 
-/* Accessibility label for the Dismiss button on Reader's News Card
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Customize Insights button title
-   Dismiss
    Dismiss a view. Verb
    Dismiss button title.
    Dismiss the AlertView
@@ -1801,9 +1839,6 @@
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "%@ のクイックスタートステップを省略します";
-
-/* Accessibility hint for the dismiss button on Reader's News Card */
-"Dismisses the News Card." = "ニュースカードを非表示にします。";
 
 /* Display Name label text.
    My Profile display name label
@@ -1855,9 +1890,6 @@
 "Don’t cry because it’s over, smile because it happened." = "終わったと嘆くより、機会に恵まれたと喜ぼう。";
 
 /* No comment provided by engineer. */
-"Double tap and hold to edit" = "ダブルタップと長押しで編集";
-
-/* No comment provided by engineer. */
 "Double tap to add a block" = "ダブルタップしてブロックを追加";
 
 /* translators: accessibility text (hint for focusing a slider) */
@@ -1906,7 +1938,7 @@
 "Double tap to select layout" = "ダブルタップしてレイアウトを選択";
 
 /* translators: accessibility text (hint for selecting option) */
-"Double tap to select the option" = "Double tap to select the option";
+"Double tap to select the option" = "ダブルタップしてオプションを選択";
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "設定を切り替えるにはダブルタップします。";
@@ -1969,9 +2001,6 @@
 
 /* No comment provided by engineer. */
 "Edit block in web browser" = "Web ブラウザーでブロックを編集";
-
-/* No comment provided by engineer. */
-"Edit media" = "メディアを編集";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "ブロックエディターで新しい投稿やページを編集します。";
@@ -2083,6 +2112,9 @@
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "ユーザー名を入力";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "%@ のアカウント情報を入力してください。";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2312,6 +2344,9 @@
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "サイトアドレスを検索";
 
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "お気に入りのブログとストーリーを探しています...";
+
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "位置情報を検出中…";
 
@@ -2372,6 +2407,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "ブログをフォローします。";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "タグをフォローします。";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "お手間を省くため、WordPress.com 連絡先情報にはデータが事前に入力されています。このドメインに使用する正しい情報かどうか、ご確認ください。";
 
@@ -2428,8 +2466,14 @@ translators: sample content for \"Team\" page template */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "読んだ投稿についてのコメントを書いてみましょう。";
 
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "幅広く用意されたページレイアウトの中から選択して始めてみましょう。または、空白ページから始めることもできます。";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "通知をもっとすばやく受信";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "サイトを設定して稼働させる";
@@ -2450,7 +2494,7 @@ translators: sample content for \"Team\" page template */
 "Gmail" = "Gmail";
 
 /* No comment provided by engineer. */
-"Go back" = "Go back";
+"Go back" = "戻る";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "次に移動";
@@ -2864,11 +2908,11 @@ translators: sample content for \"Team\" page template */
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新の投稿概要";
 
-/* Accessibility label for the Learn More button on Reader's News Card
-   Button providing More information in the News Card
-   Learn more
-   Title of a button. Tapping allows the user to learn more about the specific error. */
+/* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "さらに詳しく";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "新しいコメント、いいね、フォロワーについての通知をすぐに受け取りましょう。";
 
 /* Description of a Quick Start Tour */
 "Learn about the marketing and SEO tools in our paid plans." = "有料プランのマーケティングおよび SEO ツールについての詳細を読む";
@@ -2891,7 +2935,7 @@ translators: sample content for \"Team\" page template */
 "Let Us Help" = "お手伝いさせてください";
 
 /* translators: sample content for \"Portfolio\" page template */
-"Let's build something together!" = "Let's build something together!";
+"Let's build something together!" = "一緒に作りあげましょう。";
 
 /* translators: sample content for \"Contact\" page template */
 "Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "詳細はご相談にて。ぜひお気軽に以下の連絡先にお問い合わせください。フォームでのご連絡もお待ちしています。";
@@ -3009,9 +3053,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "プラグインを読み込み中…";
-
-/* Text displayed while loading a post. */
-"Loading Post..." = "投稿を読み込み中...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "ドメインを読み込み中";
@@ -3869,6 +3910,12 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "ページの公開を予約しました";
 
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "ページタイトル。%s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "ページタイトル。空";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "ページ";
@@ -3887,6 +3934,7 @@ translators: sample content for \"Services\" page template */
    Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "パスワード";
 
@@ -3903,7 +3951,7 @@ translators: sample content for \"Services\" page template */
 "Paste URL" = "URL を貼り付け";
 
 /* No comment provided by engineer. */
-"Paste block" = "ブロックをペースト";
+"Paste block after" = "ブロックを後にペースト";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "フォーマットなしで貼り付け";
@@ -4009,6 +4057,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID でログインするには、WordPress.com のアカウントのパスワードを入力してください。";
 
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "認証アプリから確認コードを入力するか、下のリンクをタップして SMS でコードを受信して​​ください。";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "ログイン情報を入力してください。";
 
@@ -4083,8 +4134,13 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "人気の言語";
 
-/* translators: title for \"Portfolio\" page template */
+/* Category name for page templates
+   Portfolio page type template title
+   translators: title for \"Portfolio\" page template */
 "Portfolio" = "ポートフォリオ";
+
+/* Category description for page templates */
+"Portfolio pages" = "ポートフォリオページ";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "職位または肩書";
@@ -4289,9 +4345,6 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item label for linking a project page. */
 "Projects" = "プロジェクト";
-
-/* Accessibility hint for the Read More button on Reader's News Card */
-"Provides more information." = "詳細情報を提供します。";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4557,6 +4610,12 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Replace Current Block" = "現在のブロックを置き換え";
 
+/* No comment provided by engineer. */
+"Replace image or video" = "画像または動画を置換";
+
+/* No comment provided by engineer. */
+"Replace video" = "動画を置換";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "コメントへの返信。";
 
@@ -4613,7 +4672,7 @@ translators: sample content for \"Services\" page template */
 "Reset filter" = "フィルターをリセット";
 
 /* The secondary call-to-action button title text, for when the user can't remember their password. */
-"Reset your password" = "Reset your password";
+"Reset your password" = "パスワードをリセット";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "サイズ変更・切り抜き";
@@ -4943,6 +5002,9 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
 "Send Link" = "リンクを送信";
 
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "リンクをメールで送信";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "ログメッセージを送信";
 
@@ -4964,8 +5026,13 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "サービス";
 
-/* translators: title for \"Services\" page template */
+/* Category name for page templates
+   Services page type template title
+   translators: title for \"Services\" page template */
 "Services" = "サービス";
+
+/* Category description for page templates */
+"Services pages" = "サービスページ";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "アイキャッチ画像を設定";
@@ -5064,7 +5131,8 @@ translators: sample content for \"Services\" page template */
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "関連記事を表示";
 
-/* Accessibility label for the “Show password“ button in the login page's password field. */
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "パスワードを表示";
 
 /* No comment provided by engineer. */
@@ -5237,7 +5305,8 @@ translators: sample content for \"Services\" page template */
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "エラーが発生しました。接続を確認して、もう一度お試しください。";
 
-/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment. */
+/* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
+   Error message shown when the app fails to save user selected interests */
 "Something went wrong. Please try again." = "エラーが発生しました。もう一度お試しください。";
 
 /* Invite Validation Alert
@@ -5363,7 +5432,7 @@ translators: sample content for \"Services\" page template */
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "状態";
 
-/* Title of alert preparing users to grant permission for us to send them push notifications. */
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "常に最新情報を入手";
 
 /* This is the cell title. */
@@ -5565,8 +5634,13 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "投稿カテゴリー・タグ";
 
-/* translators: title for \"Team\" page template */
+/* Category name for page templates
+   Team page type template title
+   translators: title for \"Team\" page template */
 "Team" = "チーム";
+
+/* Category description for page templates */
+"Team pages" = "チームページ";
 
 /* Section title of the teams reader section. */
 "Teams" = "チーム";
@@ -5592,7 +5666,8 @@ translators: sample content for \"Services\" page template */
 /* Title of a button style */
 "Text Only" = "テキストのみ";
 
-/* Button title */
+/* Button title
+   The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "代わりに SMS でコードを送信する";
 
 /* Message of alert when theme activation succeeds */
@@ -5960,7 +6035,10 @@ translators: sample content for \"Services\" page template */
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
 "To manage them here, set them to visible." = "ここで管理するには、表示するよう設定してください。";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "この Apple ID で先に進むには、最初に WordPress.com パスワードを使用してログインしてください。これは一度しか尋ねられません。";
+
+/* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "この Google アカウントで先に進むには、最初に WordPress.com パスワードを使用してログインしてください。これは一度しか尋ねられません。";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
@@ -5991,6 +6069,9 @@ translators: sample content for \"Services\" page template */
 
 /* Cell title for the Top Level option case */
 "Top level" = "トップレベル";
+
+/* Topic page title */
+"Topic" = "トピック";
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "次の ID に該当するトピックは見つかりませんでした:";
@@ -6042,7 +6123,8 @@ translators: sample content for \"Services\" page template */
 
 /* Retries an Action
    Retry
-   Try Again. Action */
+   Try Again. Action
+   Try to load the list of interests again. */
 "Try Again" = "もう一度お試しください";
 
 /* No comment provided by engineer. */
@@ -6294,6 +6376,9 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "訪問者を表示するバーチャートを更新しました。";
 
+/* No comment provided by engineer. */
+"Updates the title." = "タイトルを更新します。";
+
 /* Describes a status of a plugin */
 "Updating" = "更新";
 
@@ -6346,7 +6431,7 @@ translators: sample content for \"Services\" page template */
 "Uploading media..." = "メディアをアップロード中…";
 
 /* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Uploading post";
+"Uploading post" = "投稿をアップロード中";
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "投稿をアップロード中…";
@@ -6374,6 +6459,7 @@ translators: sample content for \"Services\" page template */
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
    Username label text.
    Username placeholder */
@@ -6423,6 +6509,9 @@ translators: sample content for \"Services\" page template */
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "動画の見出しです。%s";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "動画キャプション。空";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "動画のエクスポートをキャンセルしました。";
@@ -6516,6 +6605,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google が完了するのを待機しています…";
+
+/* View title during the Google auth process. */
+"Waiting..." = "待機中…";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "ウォルト・ディズニー";
@@ -6646,7 +6738,7 @@ translators: sample content for \"Services\" page template */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "メールアドレス「%@」宛てにリンクを送信しました。お使いのメールソフトをチェックして、ログインリンクをタップしてください。";
 
 /* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
+"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "ブロックエディターを大幅に改善しました。ぜひお試しください。\n\n新規投稿とページに対して有効化していますが、旧エディターに変更する場合は「自分のサイト」→「サイトの設定」に移動してください。";
 
 /* translators: sample content for \"Services\" page template */
 "We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "受講者の目標に合わせて、さまざまなレッスンをご用意しています。必要なサービスや費用がわからない場合は、お客様に適切なサービスや価格についてご説明いたします。以下からお問い合わせください。";
@@ -6676,8 +6768,14 @@ translators: sample content for \"Services\" page template */
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "パスワードなしですぐにログインできるマジックリンクのメールをお送りします。面倒なタイピングとはさよならです。";
 
+/* Instruction text on the Sign Up screen. */
+"We'll email you a magic link to create your new WordPress.com account." = "新しい WordPress.com アカウントを作成するためのマジックリンクをメールでお送りします。";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "フォロワー、コメント、いいねが追加されたときに通知します。";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "新しくフォロワー、コメント、いいねが追加されたときに通知します。プッシュ通知を許可しますか ?";
 
 /* Text displayed in notice after a page if published while offline. */
 "We'll publish the page when your device is back online." = "デバイスが再びオンラインになると、ページが公開されます。";
@@ -6707,7 +6805,7 @@ translators: sample content for \"Services\" page template */
 "We'll submit your post for review when your device is back online." = "デバイスが再びオンラインになると、レビュー投稿が送信されます。";
 
 /* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "このメールアドレスは新しい WordPress.com アカウントの作成に使用します。";
+"We'll use this email address to create your new WordPress.com account." = "このメールアドレスを新しい WordPress.com アカウントの作成に使用します。";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "最終設定を実行しています。しばらくお待ちください。";
@@ -6744,9 +6842,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "アカウントに関する重要なお知らせは常にメールでお送りしますが、役に立つ追加情報を受け取ることもできます。";
-
-/* Body text of alert preparing users to grant permission for us to send them push notifications. */
-"We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?" = "フォロワー、コメント、いいねが追加されたときに通知します。プッシュ通知を許可しますか ?";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "サイトの構築と訪問者を増やす方法の基本について紹介します。";
@@ -6943,7 +7038,7 @@ translators: sample content for \"Services\" page template */
 "You are already following this site." = "そのサイトはすでにフォローしています。";
 
 /* Alert message. */
-"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.";
+"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "ユーザー名を %@ に変更します。ユーザー名を変更すると、Gravatar プロフィールと IntenseDebate プロフィールのアドレスも変更されます。変更後のユーザー名を確認して続行してください。";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "メディアをアップロードしています。完了するまでしばらくお待ちください。";
@@ -7032,7 +7127,7 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "最近この投稿に変更を加えましたが、それを保存していません。読み込むバージョンを選択してください。\n\nこの端末から\n%1$@に保存\n\n別の端末から\n%2$@に保存\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "このコメントに返信しました。";
@@ -7160,7 +7255,8 @@ translators: sample content for \"Services\" page template */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "例「44」";
 
-/* Site Address placeholder */
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
 "example.com" = "example.com";
 
 /* Noun. Describes a site's follower. */
@@ -7182,7 +7278,7 @@ translators: sample content for \"Services\" page template */
 "in \"Upgrade\"" = "「アップグレード」カテゴリー";
 
 /* Relative time format */
-"just now" = "just now";
+"just now" = "ついさっき";
 
 /* Later today */
 "later today" = "今日あとで";
