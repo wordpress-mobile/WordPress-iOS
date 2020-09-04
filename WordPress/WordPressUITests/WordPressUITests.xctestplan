@@ -31,6 +31,7 @@
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests\/testTabBarNavigation()",
         "SignupTests\/testEmailSignup()"
       ],
       "target" : {
