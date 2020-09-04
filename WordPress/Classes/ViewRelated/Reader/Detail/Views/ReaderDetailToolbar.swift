@@ -308,28 +308,25 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let likeCount = post.likeCount()?.intValue ?? 0
         let commentCount = post.commentCount()?.intValue ?? 0
 
+        let likeTitle = likeLabel(count: likeCount)
+        let commentTitle: String = commentLabel(count: commentCount)
+        let showTitle: Bool = traitCollection.horizontalSizeClass != .compact
+
+        likeButton.setTitle(likeTitle, for: .normal)
+        likeButton.setTitle(likeTitle, for: .highlighted)
+
+        commentButton.setTitle(commentTitle, for: .normal)
+        commentButton.setTitle(commentTitle, for: .highlighted)
+
+        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: showTitle)
+        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: showTitle)
+    }
+
+    private func commentLabel(count: Int) -> String {
         if traitCollection.horizontalSizeClass == .compact {
-            // remove title text
-            let likeTitle = likeLabel(count: likeCount)
-            let commentTitle = commentCount > 0 ? String(commentCount) : ""
-            likeButton.setTitle(likeTitle, for: .normal)
-            likeButton.setTitle(likeTitle, for: .highlighted)
-            commentButton.setTitle(commentTitle, for: .normal)
-            commentButton.setTitle(commentTitle, for: .highlighted)
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: false)
-
+            return count > 0 ? String(count) : ""
         } else {
-            let likeTitle = likeLabel(count: likeCount)
-            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-
-            likeButton.setTitle(likeTitle, for: .normal)
-            likeButton.setTitle(likeTitle, for: .highlighted)
-            commentButton.setTitle(commentTitle, for: .normal)
-            commentButton.setTitle(commentTitle, for: .highlighted)
-
-            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton)
+            return WPStyleGuide.commentCountForDisplay(count)
         }
     }
 
