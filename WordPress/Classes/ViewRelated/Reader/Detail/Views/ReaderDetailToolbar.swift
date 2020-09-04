@@ -49,11 +49,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.viewController = viewController
 
         likeCountObserver = post.observe(\.likeCount, options: .new) { [weak self] _, _ in
-            self?.configureButtonTitles()
+            self?.configureLikeActionButton(true)
         }
 
         commentCountObserver = post.observe(\.commentCount, options: .new) { [weak self] _, _ in
-            self?.configureButtonTitles()
+            self?.configureCommentActionButton()
         }
 
         configureActionButtons()
@@ -174,7 +174,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal
         // as by design spec, only display like counts
         let likeCount = post.likeCount()?.intValue ?? 0
-        let title = likeCount > 0 ? "\(likeCount)" : ""
+        let title = likeLabel(count: likeCount)
 
         let selected = post.isLiked
         let likeImage = UIImage(named: "icon-reader-like")
@@ -310,7 +310,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         if traitCollection.horizontalSizeClass == .compact {
             // remove title text
-            let likeTitle = likeCount > 0 ?  String(likeCount) : ""
+            let likeTitle = likeLabel(count: likeCount)
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeButton.setTitle(likeTitle, for: .normal)
             commentButton.setTitle(commentTitle, for: .normal)
@@ -318,7 +318,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: false)
 
         } else {
-            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
+            let likeTitle = likeLabel(count: likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
 
             likeButton.setTitle(likeTitle, for: .normal)
@@ -329,8 +329,14 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
             WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton)
         }
+    }
 
-
+    private func likeLabel(count: Int) -> String {
+        if traitCollection.horizontalSizeClass == .compact {
+            return count > 0 ? String(count) : ""
+        } else {
+            return WPStyleGuide.likeCountForDisplay(count)
+        }
     }
 
     // MARK: - Analytics
