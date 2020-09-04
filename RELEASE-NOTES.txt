@@ -2,6 +2,8 @@
 -----
 * [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (https://git.io/JUU6a)
 * [**] You can now follow conversations for P2 sites
+* [**] Block Editor: Block settings now immediately reflect changes from menu sliders.
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
 
 15.6
 -----

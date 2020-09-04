@@ -101,7 +101,7 @@ class WPSplitViewController: UISplitViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return WPStyleGuide.preferredStatusBarStyle
     }
 
     override var childForStatusBarStyle: UIViewController? {

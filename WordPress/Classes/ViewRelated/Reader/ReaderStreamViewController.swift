@@ -377,10 +377,6 @@ import WordPressFlux
         })
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
