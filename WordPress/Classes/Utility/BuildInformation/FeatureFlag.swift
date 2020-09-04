@@ -55,7 +55,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .homepageSettings:
             return true
         case .readerImprovementsPhase2:
-            return false
+            return true
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
