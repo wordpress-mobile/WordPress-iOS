@@ -58,7 +58,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private weak var statusBarUpdater: UpdatableStatusBarStyle?
 
-    /// Scrollview is scrolling observer
+    /// Listens for contentOffset changes to track when the user scrolls
     private var scrollViewObserver: NSKeyValueObservation?
 
     /// Stores the nav bar appearance before we change it to transparent
