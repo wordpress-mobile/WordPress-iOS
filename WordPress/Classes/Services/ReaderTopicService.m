@@ -1023,7 +1023,7 @@ array are marked as being unfollowed in Core Data.
                                 continue;
                             }
 
-                            if (tagTopic.cards) {
+                            if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards) {
                                 DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
                                 continue;
                             }
