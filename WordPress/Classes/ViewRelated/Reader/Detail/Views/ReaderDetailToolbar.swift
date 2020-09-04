@@ -199,10 +199,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     private func playLikeButtonAnimation() {
         let likeImageView = likeButton.imageView!
-        let frame = likeButton.convert(likeImageView.frame, from: likeImageView)
 
         let imageView = UIImageView(image: UIImage(named: "icon-reader-liked"))
-        imageView.frame = frame
         likeButton.addSubview(imageView)
 
         let animationDuration = 0.3
@@ -211,7 +209,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
             let mask = UIView(frame: frame)
             mask.backgroundColor = backgroundColor
-            likeButton.addSubview(mask)
+            likeImageView.addSubview(mask)
+            likeImageView.pinSubviewToAllEdges(mask)
+            mask.translatesAutoresizingMaskIntoConstraints = false
             likeButton.bringSubviewToFront(imageView)
 
             // Configure starting state
