@@ -9,8 +9,6 @@ protocol AnnouncementsCache {
 /// UserDefaults-based cache for feature announcements
 struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
 
-    private static let currentAnnouncementsKey = "currentAnnouncements"
-
     var announcements: [Announcement]? {
         get {
             guard let announcements = UserDefaults.standard.announcements, versionIsValid(for: announcements) else {
@@ -30,6 +28,7 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
             let targetVersions = announcements.first?.appVersionTargets,   // so we might as well choose the first
             let version = Bundle.main.shortVersionString(),
             ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)) else { // if version has changed, clean up the announcements cache
+                UserDefaults.standard.announcements = nil
                 return false
         }
         return true
@@ -51,7 +50,8 @@ private extension UserDefaults {
         }
 
         set {
-            guard let encodedAnnouncements = try? PropertyListEncoder().encode(newValue) else {
+            guard let announcements = newValue, let encodedAnnouncements = try? PropertyListEncoder().encode(announcements) else {
+                removeObject(forKey: UserDefaults.currentAnnouncementsKey)
                 return
             }
             set(encodedAnnouncements, forKey: UserDefaults.currentAnnouncementsKey)
