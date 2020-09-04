@@ -15,6 +15,7 @@
 
     if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         button.tintColor = [UIColor murielAppBarText];
+        button.titleLabel.font = [WPStyleGuide navigationBarStandardFont];
     }
 
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
