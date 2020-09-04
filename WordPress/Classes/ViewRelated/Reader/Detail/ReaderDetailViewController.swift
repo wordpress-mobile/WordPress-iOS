@@ -441,7 +441,7 @@ extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate 
 
 // MARK: - UpdatableStatusBarStyle
 extension ReaderDetailViewController: UpdatableStatusBarStyle {
-    func statusBarStyleDidUpdate(to style: UIStatusBarStyle) {
+    func updateStatusBarStyle(to style: UIStatusBarStyle) {
         guard style != currentPreferredStatusBarStyle else {
             return
         }

@@ -5,7 +5,7 @@ protocol ReaderDetailFeaturedImageViewDelegate: class {
 }
 
 protocol UpdatableStatusBarStyle: UIViewController {
-    func statusBarStyleDidUpdate(to style: UIStatusBarStyle)
+    func updateStatusBarStyle(to style: UIStatusBarStyle)
 }
 
 class ReaderDetailFeaturedImageView: UIView, NibLoadable {
@@ -52,7 +52,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private var currentStatusBarStyle: UIStatusBarStyle = .lightContent {
         didSet {
-            statusBarUpdater?.statusBarStyleDidUpdate(to: currentStatusBarStyle)
+            statusBarUpdater?.updateStatusBarStyle(to: currentStatusBarStyle)
         }
     }
 
