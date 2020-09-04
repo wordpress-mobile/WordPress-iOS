@@ -6,6 +6,19 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+    override open var childForStatusBarStyle: UIViewController? {
+        guard
+            let topViewController = readerNavigationController?.topViewController,
+            ((topViewController as? DefinesVariableStatusBarStyle) != nil)
+        else {
+            return nil
+        }
+        return topViewController
+    }
 
     var readerTabViewController: ReaderTabViewController? {
         readerNavigationController?.topViewController as? ReaderTabViewController
