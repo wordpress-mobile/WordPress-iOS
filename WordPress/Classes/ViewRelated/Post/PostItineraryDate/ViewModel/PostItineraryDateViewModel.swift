@@ -15,6 +15,7 @@ import Foundation
 
 @objc protocol PostItineraryDateViewModel: AnyObject {
     var delegate: PostItineraryDateViewModelDelegate? { get set }
+    var post: Post { get }
     var title: String { get }
     var allDayTitle: String { get }
     var saveButtonTitle: String { get }
@@ -70,7 +71,7 @@ final class PostItineraryDateViewModelImpl: NSObject, PostItineraryDateViewModel
         return formatter
     }()
 
-    private let post: Post
+    let post: Post
 
     @objc public init(post: Post) {
         self.post = post

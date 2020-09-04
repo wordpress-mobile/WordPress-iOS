@@ -29,6 +29,7 @@
 #import "EditCommentViewController.h"
 
 #import "LocalCoreDataService.h"
+#import "PostCategoriesViewController.h"
 
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"

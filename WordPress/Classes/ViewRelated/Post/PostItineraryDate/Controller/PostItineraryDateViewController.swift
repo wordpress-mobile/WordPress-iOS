@@ -59,7 +59,12 @@ final class PostItineraryDateViewController: UIViewController {
     }
 
     @objc func save() {
-        navigationController?.popToRootViewController(animated: true)
+        if let controller = PostCategoriesViewController(blog: viewModel.post.blog,
+                                                         currentSelection: viewModel.post.categories?.map({ $0 }) ?? [],
+                                                      selectionMode: CategoriesSelectionModeBeauVoyageAddPost) {
+            controller.delegate = self
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     @objc func handleStartDatePicker(sender: UIDatePicker) {
@@ -68,6 +73,16 @@ final class PostItineraryDateViewController: UIViewController {
 
     @objc func handleEndDatePicker(sender: UIDatePicker) {
         viewModel.changeEndDate(date: sender.date)
+    }
+
+}
+
+extension PostItineraryDateViewController: PostCategoriesViewControllerDelegate {
+
+    func postCategoriesViewController(_ controller: PostCategoriesViewController!, didUpdateSelectedCategories categories: Set<AnyHashable>!) {
+        if let categories = categories as? Set<PostCategory>? {
+            viewModel.post.categories = categories
+        }
     }
 
 }
