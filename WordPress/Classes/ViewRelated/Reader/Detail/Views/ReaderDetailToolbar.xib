@@ -19,7 +19,7 @@
                         <constraint firstAttribute="height" constant="1" id="ikP-PI-Is1"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
                     <rect key="frame" x="28" y="426" width="358" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
@@ -38,7 +38,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
-                            <rect key="frame" x="104" y="0.0" width="46" height="44"/>
+                            <rect key="frame" x="100.5" y="0.0" width="48" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Z2e-Ky-bYe"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
@@ -53,7 +53,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
-                            <rect key="frame" x="210" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="205.5" y="0.0" width="44" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="GbG-ii-IcP"/>
                                 <constraint firstAttribute="height" constant="44" id="qNK-wQ-gIc"/>
@@ -68,7 +68,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
-                            <rect key="frame" x="314" y="0.0" width="44" height="44"/>
+                            <rect key="frame" x="306" y="0.0" width="52" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Fio-gF-mFy"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="JqZ-KF-mxs"/>
