@@ -34,7 +34,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return true
         case .unifiedSiteAddress:
-            return true
+            return false
         case .unifiedGoogle:
             return true
         case .unifiedApple:
