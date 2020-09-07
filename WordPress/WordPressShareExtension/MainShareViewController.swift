@@ -82,8 +82,13 @@ private extension MainShareViewController {
 
     func loadAndPresentNavigationVC() {
         editorController.context = self.extensionContext
-        editorController.dismissalCompletionBlock = {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        editorController.dismissalCompletionBlock = { (exitSharing) in
+            if exitSharing {
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            } else {
+                let error = NSError(domain: "com.wordpress.sharing", code: 0, userInfo: nil)
+                self.extensionContext?.cancelRequest(withError: error)
+            }
         }
 
         let shareNavController = UINavigationController(rootViewController: editorController)
