@@ -9,29 +9,28 @@ protocol AnnouncementsDataSource: UITableViewDataSource {
 
 class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
-    let store = RemoteAnnouncementsStore()
+    private let store: AnnouncementsStore
 
     private var subscription: Receipt?
 
     private let cellTypes: [String: UITableViewCell.Type]
     private var features: [WordPressKit.Feature] {
-        // TODO - WHATSNEW: this is only to test data coming in from the endpoint. Will change
-        store.announcements[safe: 0]?.features ?? []
+        store.announcements.reduce(into: [WordPressKit.Feature](), {
+            $0.append(contentsOf: $1.features)
+        })
     }
-    private let findOutMoreLink: String
 
     var dataDidChange: (() -> Void)?
 
-    init(features: [WordPressKit.Feature], cellTypes: [String: UITableViewCell.Type], findOutMoreLink: String) {
+    init(store: AnnouncementsStore, cellTypes: [String: UITableViewCell.Type]) {
+        self.store = store
         self.cellTypes = cellTypes
-        self.findOutMoreLink = findOutMoreLink
         super.init()
 
         subscription = store.onChange {
             self.dataDidChange?()
         }
-        // TODO - WHATSNEW: the hardcoded arguments are only to test data coming in from the endpoint. Will change
-        store.getAnnouncements(appId: "3", appVersion: "15.2")
+        store.getAnnouncements()
     }
 
     func registerCells(for tableView: UITableView) {
@@ -52,7 +51,7 @@ class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
         guard indexPath.row <= features.count - 1 else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "findOutMoreCell", for: indexPath) as? FindOutMoreCell ?? FindOutMoreCell()
-            cell.configure(with: URL(string: findOutMoreLink))
+            cell.configure(with: URL(string: store.announcements.first?.detailsUrl ?? ""))
             return cell
         }
 
