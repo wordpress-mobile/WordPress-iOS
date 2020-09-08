@@ -10,7 +10,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.12.0-beta.1'
+    pod 'WordPressShared', '~> 1.12.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -37,7 +37,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.16.0-beta'
+    pod 'WordPressKit', '~> 4.16.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -148,7 +148,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.36.0'
+    gutenberg :commit => '1416f46ace4454b1d1e0291cd86b1993a4a6fda1'
 
     ## Third party libraries
     ## =====================
@@ -191,7 +191,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    pod 'WordPressAuthenticator', '~> 1.24.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.24.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
