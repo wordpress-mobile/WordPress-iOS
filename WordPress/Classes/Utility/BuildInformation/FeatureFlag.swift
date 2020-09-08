@@ -100,7 +100,7 @@ extension FeatureFlag {
         case .debugMenu:
             return "Debug menu"
         case .readerCSS:
-            return "Always fetches a fresh Reader CSS"
+            return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
         case .unifiedSiteAddress:
