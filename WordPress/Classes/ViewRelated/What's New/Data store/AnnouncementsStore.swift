@@ -55,21 +55,23 @@ class CachedAnnouncementsStore: AnnouncementsStore {
     func getAnnouncements() {
         state = .loading
         if let announcements = cache.announcements {
-            self.state = .ready(announcements)
+            state = .ready(announcements)
             return
         }
 
         let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         service.getAnnouncements(appId: Identifiers.appId,
                                  appVersion: Identifiers.appVersion,
-                                 locale: Locale.current.identifier) { result in
+                                 locale: Locale.current.identifier) { [weak self] result in
 
             switch result {
             case .success(let announcements):
-                self.state = .ready(announcements)
-                self.cache.announcements = announcements
+                DispatchQueue.global().async {
+                    self?.cache.announcements = announcements
+                }
+                self?.state = .ready(announcements)
             case .failure(let error):
-                self.state = .error(error)
+                self?.state = .error(error)
             }
         }
     }
