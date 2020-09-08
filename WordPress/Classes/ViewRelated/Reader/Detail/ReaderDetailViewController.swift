@@ -111,7 +111,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
-        navigationController?.interactivePopGestureRecognizer?.delegate = self;
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
