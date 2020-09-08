@@ -1,7 +1,16 @@
+15.8
+-----
+ 
 15.7
 -----
-* [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (https://git.io/JUU6a)
+* [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (#14742)
 * [**] You can now follow conversations for P2 sites
+* [**] Block Editor: Block settings now immediately reflect changes from menu sliders.
+* [**] Simplified authentication and updated UI.(#14845, #14831, #14825, #14817).
+       Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
+* [**] Added iCloud Keychain login functionality. (#14770)
+* [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
 
 15.6
 -----
@@ -12,6 +21,7 @@
 * [**] Updated UI when logging in/signing up with Apple.
 * [**] Updated UI when logging in/signing up with Google.
 * [**] Simplified Google authentication. If signup is attempted with an existing WordPress account, automatically redirects to login. If login is attempted without a matching WordPress account, automatically redirects to signup.
+* [**] Fixes issue where the stats were not updating when switching between sites in My Sites.
 * [*] Block Editor: Improved logic for creating undo levels.
 * [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
 

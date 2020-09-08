@@ -41,9 +41,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedApple:
             return true
         case .unifiedWordPress:
-            return false
+            return true
         case .unifiedKeychainLogin:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -55,7 +55,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .homepageSettings:
             return true
         case .readerImprovementsPhase2:
-            return false
+            return true
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
