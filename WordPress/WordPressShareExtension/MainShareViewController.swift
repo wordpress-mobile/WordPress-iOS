@@ -13,6 +13,10 @@ fileprivate extension OriginatingExtension {
     }
 }
 
+enum SharingErrors: Error {
+    case canceled
+}
+
 class MainShareViewController: UIViewController {
 
     fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
@@ -81,13 +85,12 @@ private extension MainShareViewController {
     }
 
     func loadAndPresentNavigationVC() {
-        editorController.context = self.extensionContext
-        editorController.dismissalCompletionBlock = { (exitSharing) in
+        editorController.context = extensionContext
+        editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
             if exitSharing {
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+                self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             } else {
-                let error = NSError(domain: "com.wordpress.sharing", code: 0, userInfo: nil)
-                self.extensionContext?.cancelRequest(withError: error)
+                self?.extensionContext?.cancelRequest(withError: SharingErrors.canceled)
             }
         }
 
