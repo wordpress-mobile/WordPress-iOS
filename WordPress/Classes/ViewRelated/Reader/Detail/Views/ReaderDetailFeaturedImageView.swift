@@ -4,6 +4,10 @@ protocol ReaderDetailFeaturedImageViewDelegate: class {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
+protocol UpdatableStatusBarStyle: UIViewController {
+    func updateStatusBarStyle(to style: UIStatusBarStyle)
+}
+
 class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     struct Constants {
         struct multipliers {
@@ -15,18 +19,21 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     struct Styles {
         static let startTintColor: UIColor = .white
-        static let endTintColor: UIColor = UIColor(light: .black, dark: .white)
+        static let endTintColor: UIColor = .text
     }
 
     // MARK: - IBOutlets
     @IBOutlet weak var imageView: CachedAnimatedImageView!
-    @IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
 
     // MARK: - Public: Properties
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
+
+    /// Keeps track if the featured image is loading
     var isLoading: Bool = false
+
+    /// Keeps track of if we've loaded the image before
     var isLoaded: Bool = false
 
     // MARK: - Private: Properties
@@ -43,9 +50,19 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     private weak var scrollView: UIScrollView?
     private weak var navigationBar: UINavigationBar?
 
-    /// An observer of the number of likes of the post
+    private var currentStatusBarStyle: UIStatusBarStyle = .lightContent {
+        didSet {
+            statusBarUpdater?.updateStatusBarStyle(to: currentStatusBarStyle)
+        }
+    }
+
+    private weak var statusBarUpdater: UpdatableStatusBarStyle?
+
+    /// Listens for contentOffset changes to track when the user scrolls
     private var scrollViewObserver: NSKeyValueObservation?
 
+    /// Stores the nav bar appearance before we change it to transparent
+    /// this allows us to reset it when the view disappears
     private var originalNavBarAppearance: NavBarAppearance?
 
     deinit {
@@ -54,7 +71,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureVisualEffectView()
 
         isUserInteractionEnabled = false
 
@@ -88,14 +104,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         addTapGesture()
     }
 
-    func configure(for post: ReaderPost) {
+    func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
+        self.statusBarUpdater = statusBarUpdater
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        configureVisualEffectView()
         updateUI()
     }
 
@@ -118,6 +134,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         NavBarAppearance.transparent.apply(navigationBar)
+        if isLoaded, imageView.image == nil {
+            navigationBar.tintColor = Styles.endTintColor
+        }
+
         updateUI()
     }
 
@@ -132,22 +152,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         appearance.apply(navBar)
     }
 
-
     // MARK: - Private: Config
     private func configureNavigationBar() {
         applyTransparentNavigationBarAppearance(to: navigationBar)
-    }
-
-    private func configureVisualEffectView() {
-        var effect: UIBlurEffect.Style = .extraLight
-
-        if #available(iOS 13, *) {
-            if traitCollection.userInterfaceStyle == .dark {
-                effect = .dark
-            }
-        }
-
-        visualEffectView.effect = UIBlurEffect(style: effect)
     }
 
     // MARK: - Tap Gesture
@@ -182,13 +189,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             imageView.image != nil,
             let scrollView = self.scrollView
         else {
+            reset()
             return
         }
 
         let offsetY = scrollView.contentOffset.y
 
         updateFeaturedImageHeight(with: offsetY)
-        updateVisualEffectView(with: offsetY)
         updateNavigationBar(with: offsetY)
     }
 
@@ -201,14 +208,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         let y = height - ((offset - topMargin()) + height)
 
-        heightConstraint.constant = max(y, topMargin())
-    }
-
-    private func updateVisualEffectView(with offset: CGFloat) {
-        let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
-
-        gradientView.alpha = 1 - progress
-        visualEffectView.alpha = progress
+        heightConstraint.constant = max(y, 0)
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
@@ -216,11 +216,21 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        let progress = (offset / heightConstraint.constant).clamp(min: 0, max: 1)
+        let fullProgress = (offset / heightConstraint.constant)
+        let progress = fullProgress.clamp(min: 0, max: 1)
 
         let tintColor = UIColor.interpolate(from: Styles.startTintColor,
                                             to: Styles.endTintColor,
                                             with: progress)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .light {
+                currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
+            } else {
+                currentStatusBarStyle = .lightContent
+            }
+        }
+
         navBar.tintColor = tintColor
     }
 
@@ -228,9 +238,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     public func load(completion: @escaping () -> Void) {
         guard
             let post = self.post,
-            let imageURL = URL(string: post.featuredImage)
+            let imageURL = URL(string: post.featuredImage),
+            !post.contentIncludesFeaturedImage()
         else {
             reset()
+            isLoaded = true
             completion()
             return
         }
@@ -270,10 +282,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func reset() {
         navigationBar?.tintColor = Styles.endTintColor
-
+        resetStatusBarStyle()
         heightConstraint.constant = 0
-        visualEffectView.alpha = 0
         isHidden = true
+    }
+
+    private func resetStatusBarStyle() {
+        if #available(iOS 13.0, *) {
+            let isDark = traitCollection.userInterfaceStyle == .dark
+
+            currentStatusBarStyle = isDark ? .lightContent : .darkContent
+        }
     }
 
     // MARK: - Private: Calculations

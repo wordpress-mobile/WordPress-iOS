@@ -143,7 +143,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Reapply the appearance, this reset the navbar after presenting a view
         featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
-
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -163,7 +162,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        featuredImage.configure(for: post)
+        featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
@@ -176,8 +175,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
+        featuredImage.load { [weak self] in
+            self?.hideLoading()
         }
     }
 
@@ -293,78 +292,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 self?.webViewHeight.constant = min(height, webViewHeight)
             })
         }
-    }
-
-    private func configureNavigationBar() {
-        let rightItems = [
-            UIBarButtonItem.fixedSpace(24),
-            configuredMoreButton(),
-            UIBarButtonItem.fixedSpace(24),
-            configuredShareButton(),
-            UIBarButtonItem.fixedSpace(24),
-            configuredBrowserButton()
-        ]
-
-        navigationItem.leftBarButtonItem = configuredBackButton()
-        navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
-    }
-
-    private func configuredBackButton() -> UIBarButtonItem {
-        let image = UIImage.gridicon(.chevronLeft).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: #selector(didTapBackButton(_:)), for: .touchUpInside)
-
-        let barButtonItem = UIBarButtonItem(customView: button)
-        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-
-        return barButtonItem
-    }
-
-    @objc func didTapBackButton(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
-    }
-
-    private func configuredBrowserButton() -> UIBarButtonItem? {
-        let image = UIImage.gridicon(.globe).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: #selector(didTapBrowserButton(_:)), for: .touchUpInside)
-
-        let barButtonItem = UIBarButtonItem(customView: button)
-        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-
-        return barButtonItem
-    }
-
-    private func configuredMoreButton() -> UIBarButtonItem? {
-        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
-            return nil
-        }
-
-        let image = icon.withRenderingMode(.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: #selector(didTapMenuButton(_:)), for: .touchUpInside)
-
-        let barButtonItem = UIBarButtonItem(customView: button)
-        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-
-        return barButtonItem
-    }
-
-    /// REtrurn the share button at the right of the nav bar
-    ///
-    private func configuredShareButton() -> UIBarButtonItem? {
-        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
-
-        let barButtonItem = UIBarButtonItem(customView: button)
-        barButtonItem.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-
-        return barButtonItem
     }
 
     private func configureFeaturedImage() {
@@ -512,6 +439,17 @@ extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate 
     }
 }
 
+// MARK: - UpdatableStatusBarStyle
+extension ReaderDetailViewController: UpdatableStatusBarStyle {
+    func updateStatusBarStyle(to style: UIStatusBarStyle) {
+        guard style != currentPreferredStatusBarStyle else {
+            return
+        }
+
+        currentPreferredStatusBarStyle = style
+    }
+}
+
 // MARK: - Transitioning Delegate
 
 extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
@@ -577,6 +515,76 @@ private extension ReaderDetailViewController {
         static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
 
+}
+
+// MARK: - Navigation Bar Configuration
+private extension ReaderDetailViewController {
+    struct Strings {
+        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
+        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
+    }
+
+    func configureNavigationBar() {
+        let rightItems = [
+            moreButtonItem(),
+            shareButtonItem(),
+            UIBarButtonItem.fixedSpace(19), // Visually it's 24px
+            safariButtonItem()
+        ]
+
+        navigationItem.leftBarButtonItem = backButtonItem()
+        navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
+    }
+
+    func backButtonItem() -> UIBarButtonItem {
+        let button = barButtonItem(with: .gridicon(.chevronLeft), action: #selector(didTapBackButton(_:)))
+        button.accessibilityLabel = Strings.backButtonAccessibilityLabel
+
+        return button
+    }
+
+    @objc func didTapBackButton(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+
+    func safariButtonItem() -> UIBarButtonItem? {
+        let button = barButtonItem(with: .gridicon(.globe), action: #selector(didTapBrowserButton(_:)))
+        button.accessibilityLabel = Strings.safariButtonAccessibilityLabel
+
+        return button
+    }
+
+    func moreButtonItem() -> UIBarButtonItem? {
+        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
+            return nil
+        }
+
+        let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)), customWidth: 33)
+        button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
+
+        return button
+    }
+
+    func shareButtonItem() -> UIBarButtonItem? {
+        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapBrowserButton(_:)))
+        button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
+
+        return button
+    }
+
+    func barButtonItem(with image: UIImage, action: Selector, customWidth: CGFloat? = nil) -> UIBarButtonItem {
+        let image = image.withRenderingMode(.alwaysTemplate)
+
+        let width = customWidth ?? image.size.width
+
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: width, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: action, for: .touchUpInside)
+
+        return UIBarButtonItem(customView: button)
+    }
 }
 
 // MARK: - NoResultsViewControllerDelegate
