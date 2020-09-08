@@ -11,13 +11,13 @@
         <!--Reader Detail View Controller-->
         <scene sceneID="gjG-xz-jMc">
             <objects>
-                <viewController storyboardIdentifier="ReaderDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ene-ma-Cpi" customClass="ReaderDetailViewController" customModule="WordPress" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReaderDetailViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ene-ma-Cpi" customClass="ReaderDetailViewController" customModule="WordPress" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HkO-UB-8qv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="812"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="768"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
                                         <rect key="frame" x="0.0" y="0.0" width="446" height="243"/>
@@ -64,6 +64,9 @@
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="eXr-4k-Adq"/>
+                                <connections>
+                                    <outlet property="delegate" destination="HkO-UB-8qv" id="IYT-YI-eUs"/>
+                                </connections>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzd-gm-oIu">
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
@@ -77,10 +80,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnQ-Ld-x9K">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vGc-hu-x5V">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="135"/>
+                                        <rect key="frame" x="0.0" y="44" width="414" height="135"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeJ-N0-e8Q">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="66"/>
@@ -110,7 +113,7 @@
                                                     <constraint firstItem="wMZ-jx-Iu5" firstAttribute="height" secondItem="Mdc-5J-YVM" secondAttribute="height" id="eET-vx-maV"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="urB-nS-vfS">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Post Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="urB-nS-vfS">
                                                 <rect key="frame" x="0.0" y="70" width="414" height="41"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
@@ -188,7 +191,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EKd-IB-Upn">
-                                        <rect key="frame" x="0.0" y="167" width="414" height="213.5"/>
+                                        <rect key="frame" x="0.0" y="211" width="414" height="213.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i7W-OY-6MY">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="20.5"/>
@@ -232,11 +235,12 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="EKd-IB-Upn" firstAttribute="width" secondItem="vGc-hu-x5V" secondAttribute="width" id="aRu-Sg-NTM"/>
-                                    <constraint firstItem="vGc-hu-x5V" firstAttribute="top" secondItem="qnQ-Ld-x9K" secondAttribute="top" id="kf9-7G-BWF"/>
+                                    <constraint firstItem="vGc-hu-x5V" firstAttribute="top" secondItem="EtS-rx-pLc" secondAttribute="top" id="kf9-7G-BWF"/>
                                     <constraint firstItem="EKd-IB-Upn" firstAttribute="centerX" secondItem="vGc-hu-x5V" secondAttribute="centerX" id="mCt-mM-2bL"/>
                                     <constraint firstItem="EKd-IB-Upn" firstAttribute="top" secondItem="vGc-hu-x5V" secondAttribute="bottom" constant="32" id="p5l-dZ-qKp"/>
                                     <constraint firstItem="vGc-hu-x5V" firstAttribute="centerX" secondItem="qnQ-Ld-x9K" secondAttribute="centerX" id="pMy-9R-nWF"/>
                                 </constraints>
+                                <viewLayoutGuide key="safeArea" id="EtS-rx-pLc"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -245,7 +249,7 @@
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="top" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="AWw-Um-NsT"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="BHA-14-Hde"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="width" secondItem="Qzd-gm-oIu" secondAttribute="width" id="D8P-Xt-kyR"/>
-                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="JMy-49-ddC"/>
+                            <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="PNw-Cb-AvC"/>
                             <constraint firstAttribute="bottom" secondItem="ERb-e0-U8L" secondAttribute="bottom" id="fPU-nx-gzV"/>
@@ -256,7 +260,7 @@
                             <constraint firstItem="vGc-hu-x5V" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="tF3-Q4-q8b"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="9JA-VQ-zzw" secondAttribute="trailing" id="u3i-rm-kZv"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="Qzd-gm-oIu" secondAttribute="trailing" id="zR2-IL-BwU"/>
-                            <constraint firstItem="qnQ-Ld-x9K" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="zgv-gp-j1Q"/>
+                            <constraint firstItem="qnQ-Ld-x9K" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="zgv-gp-j1Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                     </view>
@@ -273,7 +277,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aGx-LJ-atS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140.57971014492756" y="99.776785714285708"/>
+            <point key="canvasLocation" x="148" y="32"/>
         </scene>
     </scenes>
     <resources>

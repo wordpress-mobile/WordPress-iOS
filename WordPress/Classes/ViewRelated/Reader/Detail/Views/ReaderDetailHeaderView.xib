@@ -17,21 +17,15 @@
         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qVA-Br-hgv" customClass="ReaderDetailHeaderView" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
             <subviews>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cjR-PP-Ed6" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="16" y="0.0" width="382" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Ub7-B1-GVl"/>
-                    </constraints>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3A-FY-v8Z" customClass="ReaderSpacerView" customModule="WordPress">
-                    <rect key="frame" x="0.0" y="50" width="414" height="8"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPG-TJ-mSj">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="6"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="8" placeholder="YES" id="kRv-rm-oty"/>
+                        <constraint firstAttribute="height" constant="6" id="4PO-aU-A3l"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="vvq-7F-Zcz">
-                    <rect key="frame" x="16" y="58" width="382" height="61"/>
+                    <rect key="frame" x="16" y="6" width="382" height="113"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -186,12 +180,7 @@
                 <constraint firstAttribute="trailing" secondItem="dMP-sD-Xuf" secondAttribute="trailing" constant="16" id="9eO-Rp-2dJ"/>
                 <constraint firstItem="9pz-cp-bwp" firstAttribute="leading" secondItem="qVA-Br-hgv" secondAttribute="leading" id="G5t-Sf-gmz"/>
                 <constraint firstAttribute="trailing" secondItem="9pz-cp-bwp" secondAttribute="trailing" id="Jf3-x1-ED8"/>
-                <constraint firstAttribute="trailing" secondItem="z3A-FY-v8Z" secondAttribute="trailing" id="LjD-1Q-l8s"/>
-                <constraint firstItem="z3A-FY-v8Z" firstAttribute="leading" secondItem="qVA-Br-hgv" secondAttribute="leading" id="U84-tx-kYP"/>
-                <constraint firstItem="vvq-7F-Zcz" firstAttribute="top" secondItem="cjR-PP-Ed6" secondAttribute="bottom" constant="8" symbolic="YES" placeholder="YES" id="ZFt-Ko-j4K"/>
                 <constraint firstItem="VZW-x2-i8F" firstAttribute="leading" secondItem="qVA-Br-hgv" secondAttribute="leading" id="jFa-IF-qGe"/>
-                <constraint firstItem="cjR-PP-Ed6" firstAttribute="leading" secondItem="qVA-Br-hgv" secondAttribute="leading" constant="16" id="m5m-4Q-kM5"/>
-                <constraint firstAttribute="trailing" secondItem="cjR-PP-Ed6" secondAttribute="trailing" constant="16" id="sZt-ms-Qk5"/>
                 <constraint firstAttribute="trailing" secondItem="vvq-7F-Zcz" secondAttribute="trailing" constant="16" id="tTY-SF-4qB"/>
                 <constraint firstItem="dMP-sD-Xuf" firstAttribute="leading" secondItem="qVA-Br-hgv" secondAttribute="leading" constant="16" id="vQH-5F-dZg"/>
                 <constraint firstAttribute="trailing" secondItem="KHc-Ky-UGH" secondAttribute="trailing" id="vfN-ya-w0j"/>
@@ -205,8 +194,6 @@
                 <outlet property="blogURLLabel" destination="LdR-mh-skh" id="Jpq-BT-i1D"/>
                 <outlet property="byLabel" destination="jmd-NR-EOk" id="MiZ-ih-Gdl"/>
                 <outlet property="dateLabel" destination="CJe-cC-zGx" id="cIX-oU-7Gh"/>
-                <outlet property="featuredImageBottomPaddingView" destination="z3A-FY-v8Z" id="pOt-BD-qCE"/>
-                <outlet property="featuredImageView" destination="cjR-PP-Ed6" id="OfA-1F-NXV"/>
                 <outlet property="followButton" destination="EaI-jA-EG4" id="PMJ-Ah-b0r"/>
                 <outlet property="headerView" destination="KHc-Ky-UGH" id="eLs-Cu-7cX"/>
                 <outlet property="iPadFollowButton" destination="yYQ-om-wOU" id="9W4-fb-MS4"/>
@@ -214,7 +201,7 @@
                 <outlet property="titleBottomPaddingView" destination="VZW-x2-i8F" id="hHj-gn-v51"/>
                 <outlet property="titleLabel" destination="vvq-7F-Zcz" id="c17-PA-dEb"/>
             </connections>
-            <point key="canvasLocation" x="836" y="-118"/>
+            <point key="canvasLocation" x="720" y="-107"/>
         </stackView>
     </objects>
     <resources>
