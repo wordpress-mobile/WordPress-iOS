@@ -234,12 +234,18 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         navBar.tintColor = tintColor
     }
 
+    static func shouldDisplayFeaturedImage(with post: ReaderPost) -> Bool {
+        let imageURL = URL(string: post.featuredImage)
+
+        return imageURL != nil && !post.contentIncludesFeaturedImage()
+    }
+
     // MARK: - Private: Network Helpers
     public func load(completion: @escaping () -> Void) {
         guard
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
-            !post.contentIncludesFeaturedImage()
+            Self.shouldDisplayFeaturedImage(with: post)
         else {
             reset()
             isLoaded = true

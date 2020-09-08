@@ -267,6 +267,11 @@ class ReaderDetailCoordinator {
         ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
     }
 
+    private func showTopic(_ topic: String) {
+        let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
+    }
+
     /// Show a list with posts contianing this tag
     ///
     private func showTag() {
@@ -453,6 +458,10 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 
     func didTapFollowButton() {
         followSite()
+    }
+
+    func didSelectTopic(_ topic: String) {
+        showTopic(topic)
     }
 }
 
