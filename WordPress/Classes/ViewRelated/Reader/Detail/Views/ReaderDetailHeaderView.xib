@@ -18,26 +18,26 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPG-TJ-mSj">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="10"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="16"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="10" id="4PO-aU-A3l"/>
+                        <constraint firstAttribute="height" constant="16" id="4PO-aU-A3l"/>
                     </constraints>
                 </view>
                 <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="20" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="hs4-NA-2lr" customClass="TopicsCollectionView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="16" y="10" width="382" height="0.0"/>
+                    <rect key="frame" x="16" y="16" width="382" height="0.0"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <collectionViewLayout key="collectionViewLayout" id="Ucj-vS-mRR"/>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PfO-Ue-G3x">
-                    <rect key="frame" x="0.0" y="10" width="414" height="10"/>
+                    <rect key="frame" x="0.0" y="16" width="414" height="8"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="10" id="icJ-zH-xxc"/>
+                        <constraint firstAttribute="height" constant="8" id="icJ-zH-xxc"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="vvq-7F-Zcz">
-                    <rect key="frame" x="16" y="20" width="382" height="99"/>
+                    <rect key="frame" x="16" y="24" width="382" height="95"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -207,6 +207,7 @@
                 <outlet property="blogNameButton" destination="nBe-4U-XT8" id="XDf-iB-EKh"/>
                 <outlet property="blogURLLabel" destination="LdR-mh-skh" id="Jpq-BT-i1D"/>
                 <outlet property="byLabel" destination="jmd-NR-EOk" id="MiZ-ih-Gdl"/>
+                <outlet property="collectionViewPaddingView" destination="QPG-TJ-mSj" id="IxN-dx-KTC"/>
                 <outlet property="dateLabel" destination="CJe-cC-zGx" id="cIX-oU-7Gh"/>
                 <outlet property="followButton" destination="EaI-jA-EG4" id="PMJ-Ah-b0r"/>
                 <outlet property="headerView" destination="KHc-Ky-UGH" id="eLs-Cu-7cX"/>

@@ -22,6 +22,8 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var iPadFollowButton: UIButton!
+
+    @IBOutlet weak var collectionViewPaddingView: UIView!
     @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     /// The post to show details in the header
@@ -191,8 +193,12 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
             !tags.isEmpty
         else {
             topicsCollectionView.isHidden = true
+            collectionViewPaddingView.isHidden = true
             return
         }
+
+        let featuredImageIsDisplayed = ReaderDetailFeaturedImageView.shouldDisplayFeaturedImage(with: post)
+        collectionViewPaddingView.isHidden = !featuredImageIsDisplayed
 
         topicsCollectionView.topicDelegate = self
         topicsCollectionView.topics = tags
