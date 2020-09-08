@@ -130,7 +130,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         // Update content size
         contentSize.width = maxContentWidth
-        contentSize.height = (currentRow + 1) * (cellHeight + itemSpacing) + contentInsets.top + contentInsets.bottom
+        contentSize.height = (currentRow + 1) * cellHeight + contentInsets.top + contentInsets.bottom + (currentRow * itemSpacing)
     }
 
     override func invalidateLayout() {
