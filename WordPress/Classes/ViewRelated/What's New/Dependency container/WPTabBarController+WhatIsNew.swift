@@ -21,7 +21,11 @@ extension WPTabBarController {
     }
 
     private func makeAnnouncementStore() -> AnnouncementsStore {
-        return RemoteAnnouncementsStore()
+        return CachedAnnouncementsStore(cache: makeCache())
+    }
+
+    private func makeCache() -> AnnouncementsCache {
+        return UserDefaultsAnnouncementsCache()
     }
 
     private func makeApi() -> WordPressComRestApi {
