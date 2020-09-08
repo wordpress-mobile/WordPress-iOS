@@ -3,8 +3,7 @@ protocol ReaderContentViewController: UIViewController {
     func setContent(_ content: ReaderContent)
 }
 
-
-// MARK: - Reader Factory
+// MARK: - DefinesVariableStatusBarStyle Support
 extension WPTabBarController {
     override open var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -19,7 +18,10 @@ extension WPTabBarController {
         }
         return topViewController
     }
+}
 
+// MARK: - Reader Factory
+extension WPTabBarController {
     var readerTabViewController: ReaderTabViewController? {
         readerNavigationController?.topViewController as? ReaderTabViewController
     }
