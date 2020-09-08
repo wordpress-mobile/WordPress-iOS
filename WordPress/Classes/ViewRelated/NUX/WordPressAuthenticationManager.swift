@@ -42,7 +42,8 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
                                                                 enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled,
                                                                 enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
-                                                                enableUnifiedSignup: FeatureFlag.unifiedSignup.enabled)
+                                                                enableUnifiedSignup: FeatureFlag.unifiedSignup.enabled,
+                                                                enableUnifiedLoginLink: FeatureFlag.unifiedLoginLink.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -177,6 +178,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return ZendeskUtils.showSupportNotificationIndicator
     }
 
+    private var tracker: AuthenticatorAnalyticsTracker {
+        AuthenticatorAnalyticsTracker.shared
+    }
+
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
@@ -189,7 +194,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
         WPStyleGuide.configureNavigationAppearance()
 
-        let controller = SupportTableViewController()
+        let controller = SupportTableViewController { [weak self] in
+            self?.tracker.track(click: .dismiss)
+        }
         controller.sourceTag = sourceTag
 
         let navController = UINavigationController(rootViewController: controller)
