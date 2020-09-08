@@ -4,9 +4,25 @@ import WordPressAuthenticator
 private struct PrepublishingOption {
     let id: PrepublishingIdentifier
     let title: String
+    let type: PrepublishingCellType
 }
 
-private enum PrepublishingIdentifier {
+private enum PrepublishingCellType {
+    case value
+    case textField
+
+    var cellType: UITableViewCell.Type {
+        switch self {
+        case .value:
+            return WPTableViewCell.self
+        case .textField:
+            return WPTextFieldTableViewCell.self
+        }
+    }
+}
+
+enum PrepublishingIdentifier {
+    case title
     case schedule
     case visibility
     case tags
@@ -30,11 +46,7 @@ class PrepublishingViewController: UITableViewController {
 
     private let completion: (AbstractPost) -> ()
 
-    private let options: [PrepublishingOption] = [
-        PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
-        PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
-    ]
+    private let options: [PrepublishingOption]
 
     private var didTapPublish = false
 
@@ -45,8 +57,11 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
-    init(post: Post, completion: @escaping (AbstractPost) -> ()) {
+    init(post: Post, identifiers: [PrepublishingIdentifier] = [.visibility, .schedule, .tags], completion: @escaping (AbstractPost) -> ()) {
         self.post = post
+        self.options = identifiers.map { identifier in
+            return PrepublishingViewController.option(for: identifier)
+        }
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -65,6 +80,7 @@ class PrepublishingViewController: UITableViewController {
         setupPublishButton()
         setupFooterSeparator()
 
+        updatePublishButtonLabel()
         announcePublishButton()
     }
 
@@ -98,21 +114,30 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: WPTableViewCell = {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
-                return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
-            }
-            return cell
-        }()
+
+        let option = options[indexPath.row]
+
+        let cell = dequeueCell(for: option.type, indexPath: indexPath)
 
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = .zero
         cell.layoutMargins = Constants.cellMargins
 
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = options[indexPath.row].title
+        switch option.type {
+        case .textField:
+            if let cell = cell as? WPTextFieldTableViewCell {
+                setupTextFieldCell(cell)
+            }
+        case .value:
+            cell.accessoryType = .disclosureIndicator
+            cell.textLabel?.text = option.title
+        }
 
-        switch options[indexPath.row].id {
+        switch option.id {
+        case .title:
+            if let cell = cell as? WPTextFieldTableViewCell {
+                configureTitleCell(cell)
+            }
         case .tags:
             configureTagCell(cell)
         case .visibility:
@@ -124,8 +149,25 @@ class PrepublishingViewController: UITableViewController {
         return cell
     }
 
+    private func dequeueCell(for type: PrepublishingCellType, indexPath: IndexPath) -> WPTableViewCell {
+        switch type {
+        case .textField:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.textFieldReuseIdentifier) as? WPTextFieldTableViewCell else {
+                return WPTextFieldTableViewCell.init(style: .default, reuseIdentifier: Constants.textFieldReuseIdentifier)
+            }
+            return cell
+        case .value:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
+                return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
+            }
+            return cell
+        }
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch options[indexPath.row].id {
+        case .title:
+            break
         case .tags:
             didTapTagCell()
         case .visibility:
@@ -137,6 +179,32 @@ class PrepublishingViewController: UITableViewController {
 
     private func reloadData() {
         tableView.reloadData()
+    }
+
+    private static func option(for identifier: PrepublishingIdentifier) -> PrepublishingOption {
+        switch identifier {
+        case .title:
+            return PrepublishingOption(id: .title, title: Constants.titlePlaceholder, type: .textField)
+        case .schedule:
+            return PrepublishingOption(id: .schedule, title: Constants.publishDateLabel, type: .value)
+        case .visibility:
+            return PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
+        case .tags:
+            return PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+        }
+    }
+
+    private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
+        WPStyleGuide.configureTableViewTextCell(cell)
+        cell.delegate = self
+    }
+
+    // MARK: - Titls
+
+    private func configureTitleCell(_ cell: WPTextFieldTableViewCell) {
+        cell.textField.text = post.postTitle
+        cell.textField.textColor = .text
+        cell.textField.placeholder = "Title"
     }
 
     // MARK: - Tags
@@ -182,6 +250,11 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(visbilitySelectorViewController, animated: true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize = tableView.contentSize
     }
 
     // MARK: - Schedule
@@ -241,6 +314,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     private func updatePublishButtonLabel() {
+        publishButton.isEnabled = post.postTitle?.isEmpty == false
         publishButton.setTitle(post.isScheduled() ? Constants.scheduleNow : Constants.publishNow, for: .normal)
     }
 
@@ -296,6 +370,7 @@ class PrepublishingViewController: UITableViewController {
 
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
+        static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
@@ -303,6 +378,7 @@ class PrepublishingViewController: UITableViewController {
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
         static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
+        static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
         static let headerHeight: CGFloat = 70
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
@@ -324,5 +400,18 @@ extension PrepublishingViewController: PrepublishingDismissible {
         }
 
         post.status = originalStatus
+    }
+}
+
+extension PrepublishingViewController: WPTextFieldTableViewCellDelegate {
+    func cellWants(toSelectNextField cell: WPTextFieldTableViewCell!) {
+
+    }
+
+    func cellTextDidChange(_ cell: WPTextFieldTableViewCell!) {
+        WPAnalytics.track(.editorPostTitleChanged, properties: Constants.analyticsDefaultProperty)
+        publishButton.isEnabled = true
+        post.postTitle = cell.textField.text
+        updatePublishButtonLabel()
     }
 }

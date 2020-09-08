@@ -1,0 +1,154 @@
+{
+  "providers": [
+    {
+      "name": "kanvas",
+      "base_url": "https://d1d7t1ygvx8siu.cloudfront.net/SDK-Assets/"
+    }
+  ],
+  "stickers": [
+    {
+      "title": "Tis The Season",
+      "keyword": "stamps.tistheseason",
+      "order": 16,
+      "count": 28,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Face Features",
+      "keyword": "stamps.facefeatures",
+      "order": 17,
+      "count": 24,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Memphis",
+      "keyword": "stamps.memphis",
+      "order": 18,
+      "count": 34,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Halloween",
+      "keyword": "stamps.halloween",
+      "order": 19,
+      "count": 11,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Food",
+      "keyword": "stamps.food",
+      "order": 20,
+      "count": 20,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "America",
+      "keyword": "stamps.america",
+      "order": 30,
+      "count": 21,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "HuffPost",
+      "keyword": "stamps.huffpost",
+      "order": 40,
+      "count": 22,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Words 3",
+      "keyword": "stamps.words3",
+      "order": 50,
+      "count": 24,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Words 2",
+      "keyword": "stamps.words2",
+      "order": 60,
+      "count": 24,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Cucumber",
+      "keyword": "stamps.rabtuscucumber",
+      "order": 70,
+      "count": 24,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Kurikinton",
+      "keyword": "stamps.kurikinton",
+      "order": 80,
+      "count": 40,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Words",
+      "keyword": "stamps.words",
+      "order": 90,
+      "count": 16,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Animals",
+      "keyword": "stamps.animals",
+      "order": 100,
+      "count": 15,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Mustaches",
+      "keyword": "stamps.mustaches",
+      "order": 110,
+      "count": 17,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Head",
+      "keyword": "stamps.headwear",
+      "order": 120,
+      "count": 16,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Head 2",
+      "keyword": "stamps.headwear2",
+      "order": 130,
+      "count": 16,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Smiles",
+      "keyword": "stamps.smiles",
+      "order": 140,
+      "count": 16,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    },
+    {
+      "title": "Love",
+      "keyword": "stamps.love",
+      "order": 150,
+      "count": 16,
+      "provider": "kanvas",
+      "thumb_url": "pack.png"
+    }
+  ]
+}

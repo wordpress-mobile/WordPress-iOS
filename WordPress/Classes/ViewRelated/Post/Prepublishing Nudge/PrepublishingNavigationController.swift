@@ -33,7 +33,7 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .contentHeight(Constants.height)
+        return .intrinsicHeight
     }
 
     var scrollableView: UIScrollView? {

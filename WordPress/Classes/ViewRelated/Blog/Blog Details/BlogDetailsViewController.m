@@ -445,6 +445,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
             Blog *blog = [controller currentOrLastBlog];
             [controller showPageEditorForBlog:blog];
+        } newStory:^{
+            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
+            Blog *blog = [controller currentOrLastBlog];
+            [controller showStoryEditorForBlog:blog];
         }];
     }
     

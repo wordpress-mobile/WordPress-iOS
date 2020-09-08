@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '11.0'
+platform :ios, '12.0'
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
@@ -42,6 +42,15 @@ def wordpress_kit
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+end
+
+def kanvas
+  #pod 'Kanvas', ''
+  #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :tag => ''
+  pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :branch => 'multi-frame'
+  #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :commit => ''
+  #pod 'Kanvas', :path => '../Kanvas-iOS'
+  #pod 'Kanvas', :path => '../orangina/Components/KanvasCamera'
 end
 
 def shared_with_all_pods
@@ -172,6 +181,7 @@ target 'WordPress' do
     ##
     wordpress_kit
     wordpress_shared
+    kanvas
 
     # Production
 

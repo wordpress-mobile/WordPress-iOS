@@ -22,6 +22,7 @@ import WordPressFlux
 
     let newPost: () -> Void
     let newPage: () -> Void
+    let newStory: () -> Void
 
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
@@ -60,10 +61,11 @@ import WordPressFlux
 
     private weak var noticeContainerView: NoticeContainerView?
 
-    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
+    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void, newStory: @escaping () -> Void) {
         self.viewController = viewController
         self.newPost = newPost
         self.newPage = newPage
+        self.newStory = newStory
 
         super.init()
 
@@ -124,13 +126,10 @@ import WordPressFlux
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = makePostsButton()
-        let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-                                            image: .gridicon(.pages),
-                                            identifier: "sitePageButton",
-                                            target: self,
-                                            selector: #selector(showNewPage))
+        let pagesButton = makePagesButton()
+        let storiesButton = makeStoriesButton()
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
-                                                              buttons: [postsButton, pagesButton])
+                                                              buttons: [postsButton, pagesButton, storiesButton])
 
         setupPresentation(on: actionSheetController, for: traitCollection)
 
@@ -146,6 +145,24 @@ import WordPressFlux
                                  target: self,
                                  selector: #selector(showNewPost),
                                  highlight: highlight)
+    }
+
+    // MARK: Button Constructors
+
+    private func makePagesButton() -> ActionSheetButton {
+        return ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
+                                            image: .gridicon(.pages),
+                                            identifier: "sitePageButton",
+                                            target: self,
+                                            selector: #selector(showNewPage))
+    }
+
+    private func makeStoriesButton() -> ActionSheetButton {
+        return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
+                                            image: .gridicon(.book),
+                                            identifier: "storyButton",
+                                            target: self,
+                                            selector: #selector(showNewStory))
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
@@ -201,6 +218,10 @@ import WordPressFlux
 
     @objc func showNewPage() {
         newPage()
+    }
+
+    @objc func showNewStory() {
+        newStory()
     }
 
     // MARK: - Quick Start
