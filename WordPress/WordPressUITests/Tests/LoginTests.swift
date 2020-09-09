@@ -25,10 +25,10 @@ class LoginTests: XCTestCase {
             .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
             .logoutToPrologue()
-        
+
         XCTAssert(prologueScreen.isLoaded())
     }
-    
+
     // Old email login/out
     // TODO: remove when unifiedAuth is permanent.
     func testEmailPasswordLoginLogout() {
@@ -72,10 +72,10 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-        
+
         XCTAssert(MySiteScreen().isLoaded())
     }
-    
+
     // Old WordPress.com login/out
     // TODO: remove when unifiedAuth is permanent.
     func testWpcomUsernamePasswordLogin() {
@@ -100,10 +100,10 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelectedSite()
             .removeSelfHostedSite()
-        
+
         XCTAssert(PrologueScreen().isLoaded())
     }
-    
+
     // Old self hosted login/out
     // TODO: remove when unifiedAuth is permanent.
     func testSelfHostedUsernamePasswordLoginLogout() {
@@ -126,7 +126,7 @@ class LoginTests: XCTestCase {
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
     }
-    
+
     // Old email login fail
     // TODO: remove when unifiedAuth is permanent.
     func testUnsuccessfulLogin() {

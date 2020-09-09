@@ -12,7 +12,7 @@ class PasswordScreen: BaseScreen {
     let navBar: XCUIElement
     let passwordTextField: XCUIElement
     let continueButton: XCUIElement
-    
+
     init() {
         let app = XCUIApplication()
         navBar = app.navigationBars[ElementStringIDs.navBar]
@@ -37,7 +37,7 @@ class PasswordScreen: BaseScreen {
         }
         return self
     }
-    
+
     func verifyLoginError() -> PasswordScreen {
         let errorLabel = app.cells[ElementStringIDs.errorLabel]
         _ = errorLabel.waitForExistence(timeout: 2)
@@ -45,7 +45,7 @@ class PasswordScreen: BaseScreen {
         XCTAssertTrue(errorLabel.exists)
         return self
     }
-    
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
     }

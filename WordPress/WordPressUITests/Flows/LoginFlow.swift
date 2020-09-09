@@ -11,7 +11,7 @@ class LoginFlow {
             .proceedWith(username: username, password: password)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-        
+
         // TODO: remove when unifiedAuth is permanent.
         // Leaving here for now in case unifiedAuth is disabled.
 //        return WelcomeScreen().selectLogin()

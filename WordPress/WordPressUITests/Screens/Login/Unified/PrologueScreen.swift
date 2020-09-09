@@ -25,10 +25,10 @@ class PrologueScreen: BaseScreen {
 
     func selectSiteAddress() -> LoginSiteAddressScreen {
         siteAddressButton.tap()
-        
+
         return LoginSiteAddressScreen()
     }
-    
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
     }

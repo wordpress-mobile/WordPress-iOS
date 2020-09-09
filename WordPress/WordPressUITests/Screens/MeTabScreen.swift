@@ -41,7 +41,7 @@ class MeTabScreen: BaseScreen {
 
         return WelcomeScreen()
     }
-    
+
     func logoutToPrologue() -> PrologueScreen {
         app.cells["logOutFromWPcomButton"].tap()
 
