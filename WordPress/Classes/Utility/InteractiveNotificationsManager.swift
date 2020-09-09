@@ -197,6 +197,21 @@ final class InteractiveNotificationsManager: NSObject {
 
         return true
     }
+
+    func handleAuthorizationAction(withResponse response: UNNotificationResponse, callback: @escaping () -> Void) {
+        // Handle 2FA Notifications
+        guard AccountHelper.isDotcomAvailable() else {
+            return
+        }
+
+        guard let token = response.notification.request.content.userInfo["push_auth_token"] as? String else {
+            return
+        }
+
+        PushAuthenticationService(managedObjectContext: context).authorizeLogin(token) { successful in
+            callback()
+        }
+    }
 }
 
 
@@ -293,6 +308,7 @@ private extension InteractiveNotificationsManager {
         case postUploadFailure      = "post-upload-failure"
         case shareUploadSuccess     = "share-upload-success"
         case shareUploadFailure     = "share-upload-failure"
+        case login                  = "push_auth"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -316,6 +332,8 @@ private extension InteractiveNotificationsManager {
                 return [.shareEditPost]
             case .shareUploadFailure:
                 return []
+            case .login:
+                return [.approveLogin, .denyLogin]
             }
         }
 
@@ -335,7 +353,7 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login]
         static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
     }
 
@@ -352,6 +370,8 @@ private extension InteractiveNotificationsManager {
         case postRetry        = "POST_RETRY"
         case postView         = "POST_VIEW"
         case shareEditPost    = "SHARE_EDIT_POST"
+        case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
+        case denyLogin        = "DENY_LOGIN_ATTEMPT"
 
         var description: String {
             switch self {
@@ -371,10 +391,18 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
             case .shareEditPost:
                 return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
+            case .approveLogin:
+                return NSLocalizedString("Approve", comment: "Approve login attempt")
+            case .denyLogin:
+                return NSLocalizedString("Deny", comment: "Deny login attempt")
             }
         }
 
         var destructive: Bool {
+            if self == .denyLogin {
+                return true
+            }
+
             return false
         }
 
@@ -383,6 +411,10 @@ private extension InteractiveNotificationsManager {
         }
 
         var requiresAuthentication: Bool {
+            if self == .approveLogin {
+                return true
+            }
+
             return false
         }
 
@@ -474,10 +506,21 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         }
     }
 
+    func isLoginResponse(_ response: UNNotificationResponse) -> Bool {
+        let definition = NoteActionDefinition(rawValue: response.actionIdentifier)
+        return definition == .approveLogin || definition == .denyLogin
+    }
+
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
+
+        if isLoginResponse(response) {
+            handleAuthorizationAction(withResponse: response, callback: completionHandler)
+            return
+        }
+
         let textInputResponse = response as? UNTextInputNotificationResponse
 
         // Analytics

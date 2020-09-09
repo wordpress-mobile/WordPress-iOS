@@ -11,6 +11,7 @@ struct NotificationActionParser: FormattableContentActionParser {
         case editComment = "edit-comment"
         case spam = "spam-comment"
         case trash = "trash-comment"
+        case login = "push_auth"
         case none = "none"
 
         static func matching(value: String) -> Action {
@@ -46,6 +47,8 @@ struct NotificationActionParser: FormattableContentActionParser {
             return editCommentAction(on: on)
         case .trash:
             return trashAction(on: on)
+        case .login:
+            return notFoundAction(on: on)
         case .none:
             return notFoundAction(on: on)
         }

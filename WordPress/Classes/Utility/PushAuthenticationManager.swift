@@ -19,9 +19,8 @@ class PushAuthenticationManager {
     fileprivate let pushAuthenticationService: PushAuthenticationService
 
 
-    convenience init() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = PushAuthenticationService(managedObjectContext: context)
+    convenience init(managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+        let service = PushAuthenticationService(managedObjectContext: managedObjectContext)
         self.init(pushAuthenticationService: service)
     }
 

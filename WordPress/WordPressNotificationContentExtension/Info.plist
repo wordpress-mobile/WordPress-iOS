@@ -33,16 +33,17 @@
 				<string>automattcher</string>
 				<string>comment_like</string>
 				<string>like</string>
+				<string>push_auth</string>
 			</array>
 			<key>UNNotificationExtensionDefaultContentHidden</key>
 			<true/>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
-			<real>0.1</real>
+			<real>0.10000000000000001</real>
 		</dict>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).NotificationViewController</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.content-extension</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).NotificationViewController</string>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>

@@ -1,0 +1,7 @@
+{
+    "aps": {
+        "alert": "Test",
+        "category": "push_auth"
+    },
+    "Simulator Target Bundle": "org.wordpress"
+}

@@ -245,6 +245,10 @@ class NotificationActionsService: LocalCoreDataService {
             completion?(false)
         })
     }
+
+    func approveLoginAttemptWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)? = nil) {
+
+    }
 }
 
 
@@ -285,5 +289,9 @@ private extension NotificationActionsService {
 
     var siteService: ReaderSiteService {
         return ReaderSiteService(managedObjectContext: managedObjectContext)
+    }
+
+    var pushAuthenticationManager: PushAuthenticationService {
+        return PushAuthenticationService(managedObjectContext: managedObjectContext)
     }
 }
