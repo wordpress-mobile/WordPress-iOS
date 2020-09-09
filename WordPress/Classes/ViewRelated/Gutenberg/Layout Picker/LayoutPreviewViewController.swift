@@ -58,7 +58,7 @@ class LayoutPreviewViewController: UIViewController {
         }
 
         dismiss(animated: true) {
-            completion(layout.content)
+            completion(layout.title, layout.content)
         }
     }
 }
