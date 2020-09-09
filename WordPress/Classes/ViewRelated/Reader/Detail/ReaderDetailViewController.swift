@@ -72,16 +72,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -170,7 +160,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func show(title: String?) {
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         let titleView = UILabel()
-        titleView.attributedText = NSAttributedString.init(string: title ?? placeholder, attributes: UINavigationBar.appearance().titleTextAttributes)
+
+        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
         navigationItem.titleView = titleView
     }
 

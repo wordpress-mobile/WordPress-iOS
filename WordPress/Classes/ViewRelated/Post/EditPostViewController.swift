@@ -110,7 +110,7 @@ class EditPostViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return WPStyleGuide.preferredStatusBarStyle
     }
 
     fileprivate func postToEdit() -> Post {
