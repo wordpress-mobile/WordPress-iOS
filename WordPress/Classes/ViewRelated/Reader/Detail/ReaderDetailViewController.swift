@@ -572,7 +572,7 @@ private extension ReaderDetailViewController {
 
         let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
-
+        button.width = 44
         return button
     }
 
