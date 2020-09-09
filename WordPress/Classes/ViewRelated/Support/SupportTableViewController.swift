@@ -14,6 +14,11 @@ class SupportTableViewController: UITableViewController {
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserDefaults.standard
 
+    /// This closure is called when this VC is about to be dismissed due to the user
+    /// tapping the dismiss button.
+    ///
+    private var dismissTapped: (() -> ())?
+
     // MARK: - Init
 
     override init(style: UITableView.Style) {
@@ -24,8 +29,9 @@ class SupportTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required convenience init() {
+    required convenience init(dismissTapped: (() -> ())? = nil) {
         self.init(style: .grouped)
+        self.dismissTapped = dismissTapped
     }
 
     // MARK: - View
@@ -69,6 +75,7 @@ class SupportTableViewController: UITableViewController {
     // MARK: - Button Actions
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
+        dismissTapped?()
         dismiss(animated: true)
     }
 

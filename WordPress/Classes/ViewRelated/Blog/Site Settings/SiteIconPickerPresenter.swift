@@ -36,7 +36,7 @@ class SiteIconPickerPresenter: NSObject {
         options.allowMultipleSelection = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
 

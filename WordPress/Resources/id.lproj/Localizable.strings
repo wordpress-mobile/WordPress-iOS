@@ -1,13 +1,13 @@
-/* Translation-Revision-Date: 2020-08-20 10:54:09+0000 */
+/* Translation-Revision-Date: 2020-08-28 08:00:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
-"\nPlease send us an email to have your content cleared out." = "\nPlease send us an email to have your content cleared out.";
+"\nPlease send us an email to have your content cleared out." = "\nSilakan kirim email kepada kami untuk menghapus konten Anda.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
-"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
+"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nUntuk konfirmasi, silakan masukkan kembali alamat situs Anda sebelum menghapus.\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
@@ -639,7 +639,7 @@
 "Appearance" = "Tampilan";
 
 /* Message shown when Apple authentication fails. */
-"Apple authentication failed." = "Autentikasi Apple gagal.";
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentikasi Apple gagal.\nPastikan Anda masuk ke iCloud dengan ID Apple yang menggunakan autentikasi dua faktor.";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Terapkan";
@@ -656,7 +656,7 @@
 "Are you sure you want to cancel and discard changes?" = "Anda yakin ingin membatalkan dan membuang perubahan?";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Are you sure you want to continue?\n All site data for %@ will be removed from your %@.";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Anda yakin ingin melanjutkan?\nSemua data situs untuk %1$@ akan dihapus dari %2$@ Anda.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "Anda yakin ingin melanjutkan?\n Semua data situs akan dihapus dari %@ Anda.";
@@ -699,7 +699,7 @@
 "Are you sure you want to remove %1$@?" = "Anda yakin ingin menghapus %1$@?";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.";
+"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Yakin ingin memundurkan kembali situs Anda ke %@?\nIni akan menghapus semua konten dan pilihan yang dibuat atau diubah sejak saat itu.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Anda yakin ingin menyimpan sebagai konsep?";
@@ -734,7 +734,8 @@
 /* No comment provided by engineer. */
 "Authenticating" = "Mengotentikasi";
 
-/* Placeholder for the 2FA code textfield. */
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
 "Authentication code" = "Kode autentikasi";
 
 /* Popup title to ask for user credentials. */
@@ -922,7 +923,7 @@
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
-"By setting up Jetpack you agree to our\n%@" = "By setting up Jetpack you agree to our\n%@";
+"By setting up Jetpack you agree to our\n%@" = "Dengan menyiapkan Jetpack, Anda menyetujui\n&@";
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Dengan mendaftar, berarti Anda menyetujui _Ketentuan Layanan_ kami.";
@@ -1009,10 +1010,10 @@
 "Cancel sharing" = "Batalkan berbagi";
 
 /* The action was canceled */
-"Canceled" = "Canceled";
+"Canceled" = "Dibatalkan";
 
 /* A short message that informs the user the share extension is being canceled. */
-"Canceling..." = "Canceling...";
+"Canceling..." = "Membatalkan...";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -1055,7 +1056,7 @@
 "Change Username" = "Ubah Nama Pengguna";
 
 /* Button title to edit visibility of sites. */
-"Change Visibility" = "Ubah Kenampakan";
+"Change Visibility" = "Ubah Visibilitas";
 
 /* Description of a Quick Start Tour */
 "Change colors, fonts, and images for a perfectly personalized site." = "Ubah warna, font, dan gambar untuk mendapatkan situs yang dipersonalisasikan dengan sempurna.";
@@ -1085,8 +1086,11 @@
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Kesalahan Pemeriksaan Pembelian";
 
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Periksa e-mail Anda di perangkat ini, dan klik tautan pada e-mail yang Anda terima dari WordPress.com";
+
 /* Instructional text on how to open the email containing a magic link. */
-"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder.";
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Periksa e-mail Anda di perangkat ini, dan klik tautan pada e-mail yang Anda terima dari WordPress.com\n\nTidak melihat e-mailnya? Periksa folder Spam atau Sampah.";
 
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Periksa email Anda!";
@@ -1225,9 +1229,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Kumpulkan informasi";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Pengaturan Kolom";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Komik";
@@ -1395,7 +1396,7 @@
 
 /* Message to show when Publicize authorization is canceled
    Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Connection canceled";
+"Connection canceled" = "Koneksi dibatalkan";
 
 /* Message to show when Publicize authorization failed
    Message to show when Publicize connect failed */
@@ -1417,11 +1418,9 @@
 /* Button label for contacting support
    Button to contact support on Start Over settings page
    Contact Support button title
-   If a user taps this label, the app will navigate to the Support view. */
+   If a user taps this label, the app will navigate to the Support view.
+   Option in Support view to contact the support team. */
 "Contact Support" = "Hubungi Dukungan";
-
-/* Option in Support view to contact the support team. */
-"Contact Us" = "Hubungi Kami";
 
 /* Category description for page templates */
 "Contact pages" = "Halaman kontak";
@@ -1442,7 +1441,8 @@
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
-   The default Jetpack view button title */
+   The default Jetpack view button title
+   Title for the continue button in the What's New page. */
 "Continue" = "Lanjutkan";
 
 /* Menus alert button title to continue making changes. */
@@ -1524,7 +1524,7 @@
 "Couldn't connect. Required XML-RPC methods are missing on the server." = "Tidak dapat terhubung. Metode XML-RPC yang diperlukan tidak ditemukan di server.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
-"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem.";
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Tidak dapat terhubung. Kami menerima error 403 saat mencoba mengakses titik akhir XMLRPC situs Anda. Aplikasi ini memerlukannya agar dapat berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Tidak dapat terhubung. Host Anda memblokir permintaan POST, dan aplikasi memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
@@ -1563,6 +1563,9 @@
 /* Accessibility label for create floating action button */
 "Create" = "Buat";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Ciptakan Akun";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "Buat Halaman Kosong";
 
@@ -1572,7 +1575,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "Buat Situs Baru";
 
-/* Button title, encourages users to create their first page on their blog. */
+/* Button title, encourages users to create their first page on their blog.
+   Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Buat Halaman";
 
 /* Button title, encourages users to create post on their blog.
@@ -1659,7 +1663,7 @@
 "Customize the message" = "Sesuaikan pesan";
 
 /* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
+"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Sesuaikan pesan yang ingin Anda bagikan.\nJika Anda tidak menambahkan teks Anda sendiri di sini, kami akan menggunakan judul tulisan sebagai pesan.";
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "Menyesuaikan pengaturan situs yang Anda ikuti untuk Pos dan Komentar baru";
@@ -1811,6 +1815,9 @@
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Memutuskan akun ini berarti pos yang diterbitkan tidak akan lagi otomatis dibagikan ke %@";
+
+/* Discover tab name */
+"Discover" = "Temukan";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Temukan Situs";
@@ -2018,7 +2025,7 @@
 "Editor" = "Penyunting";
 
 /* Edit Action Spoken hint. */
-"Edits a comment" = "Sunting komentar";
+"Edits a comment" = "Edit komentar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Menyunting komentar.";
@@ -2163,7 +2170,7 @@
 "Error loading plugins" = "Terjadi error saat memuat plugin";
 
 /* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Error occurred\nduring loading";
+"Error occurred\nduring loading" = "Terjadi eror\nsaat memuat";
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "Terjadi kesalahan\nselama menyimpan";
@@ -2270,10 +2277,10 @@
 "Failed" = "Gagal";
 
 /* Error message to show to use when media insertion on a post fails */
-"Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
+"Failed to insert media.\n Please tap for options." = "Gagal memasukkan media.\nHarap ketuk untuk melihat pilihan.";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
+"Failed to insert media.\nPlease tap for options." = "Gagal memasukkan media.\nHarap ketuk untuk melihat pilihan.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Gagal menyambungkan permintaan ke REST API.";
@@ -2337,6 +2344,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Penyaring";
+
+/* Title for the find out more button in the What's New page. */
+"Find out more" = "Cari tahu selengkapnya";
 
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Temukan situs yang menarik dan ikuti untuk mendapatkan pemberitahuan saat mereka memublikasikan sesuatu.";
@@ -2494,7 +2504,7 @@ translators: sample content for \"Team\" page template */
 "Gmail" = "Gmail";
 
 /* No comment provided by engineer. */
-"Go back" = "Go back";
+"Go back" = "Kembali";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Buka yang Diikuti";
@@ -2519,7 +2529,7 @@ translators: sample content for \"Team\" page template */
 "Gradient Type" = "Jenis Gradasi";
 
 /* This is the text we display to the user after they've indicated they like the app */
-"Great!\n We love to hear from happy users \n😁" = "";
+"Great!\n We love to hear from happy users \n😁" = "Hebat!\nKami senang mendengar dari pengguna yang bahagia\n😁";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
 "Great! Could you leave us a nice review?\n\nIt really helps." = "Bagus! Dapatkah Anda memberi kami ulasan yang menarik?\n\nIni benar-benar membantu.";
@@ -2627,7 +2637,8 @@ translators: sample content for \"Team\" page template */
    Text for privacy settings: Hidden */
 "Hidden" = "Tersembunyi";
 
-/* Hides a site from the site picker list */
+/* Hides a site from the site picker list
+   Title of a button used to collapse a group */
 "Hide" = "Sembunyikan";
 
 /* Hide All */
@@ -2660,7 +2671,7 @@ translators: sample content for \"Team\" page template */
 "Homepage successfully updated" = "Halaman beranda berhasil diperbarui";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
-"Hooray!\nAlmost done" = "Hooray!\nAlmost done";
+"Hooray!\nAlmost done" = "Horeee!\nHampir selesai";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Saya Menyukainya";
@@ -3180,7 +3191,7 @@ translators: sample content for \"Services\" page template */
 "Manage site" = "Kelola situs";
 
 /* shown in promotional screens during first launch */
-"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "Manage your Jetpack-powered site on the go — you've got WordPress in your pocket.";
+"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "Kelola situs Anda yang didukung oleh Jetpack di mana saja — WordPress selalu ada di saku Anda.";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "Offset Manual";
@@ -3358,7 +3369,7 @@ translators: sample content for \"Services\" page template */
 "Move up" = "Geser atas";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
-"Moves the comment to the Trash." = "Moves the comment to the Trash.";
+"Moves the comment to the Trash." = "Pindahkan komentar ke Tempat Sampah";
 
 /* No comment provided by engineer. */
 "My Document Setting Panel" = "Panel Pengaturan Dokumen Saya";
@@ -3566,17 +3577,17 @@ translators: sample content for \"Services\" page template */
 "No internet connection" = "Tidak ada koneksi internet";
 
 /* Error message shown when the user is browsing Site Comments without an internet connection. */
-"No internet connection. Some comments may be unavailable while offline." = "No internet connection. Some comments may be unavailable while offline.";
+"No internet connection. Some comments may be unavailable while offline." = "Tidak ada koneksi internet. Beberapa komentar mungkin tidak tersedia saat offline.";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
    Error message shown when the user is browsing Reader without an internet connection. */
-"No internet connection. Some content may be unavailable while offline." = "No internet connection. Some content may be unavailable while offline.";
+"No internet connection. Some content may be unavailable while offline." = "Tidak ada koneksi internet. Beberapa konten mungkin tidak tersedia saat offline.";
 
 /* Error message shown when the user is browsing Site Pages without an internet connection. */
-"No internet connection. Some pages may be unavailable while offline." = "No internet connection. Some pages may be unavailable while offline.";
+"No internet connection. Some pages may be unavailable while offline." = "Tidak ada koneksi internet. Beberapa halaman mungkin tidak tersedia saat offline.";
 
 /* Error message shown when the user is browsing Site Posts without an internet connection. */
-"No internet connection. Some posts may be unavailable while offline." = "No internet connection. Some posts may be unavailable while offline.";
+"No internet connection. Some posts may be unavailable while offline." = "Tidak ada koneksi internet. Beberapa pos mungkin tidak tersedia saat offline.";
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Belum ada suka";
@@ -3679,6 +3690,12 @@ translators: sample content for \"Services\" page template */
 /* Title for a button that when tapped cancels the site creation process */
 "Not right now" = "Jangan sekarang";
 
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "Tidak melihat e-mailnya? Periksa folder Spam atau Sampah.";
+
+/* No comment provided by engineer. */
+"Note: Column layout may vary between themes and screen sizes" = "Catatan: Tata letak kolom dapat bervariasi antara tema dan ukuran layar";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Tidak ditemukan apa-apa.";
 
@@ -3716,9 +3733,6 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field Number */
 "Number" = "Nomor";
-
-/* No comment provided by engineer. */
-"Number of columns" = "Jumlah kolom";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Daftar Bernomor";
@@ -3768,6 +3782,9 @@ translators: sample content for \"Services\" page template */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
 
+/* Accessibility label for 1 password button */
+"One Password button" = "Tombol One Password";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Hanya lihat statistik yang paling relevan. Tambahkan wawasan untuk menyesuaikan dengan kebutuhan Anda.";
 
@@ -3791,7 +3808,8 @@ translators: sample content for \"Services\" page template */
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Buka Pengaturan Perangkat";
 
-/* Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Buka Email";
 
 /* Go to the settings app */
@@ -3820,6 +3838,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Buka Bagian Me";
+
+/* Accessibility hint for 1 password button */
+"Opens One Password manager" = "Buka pengelola One Password";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Buka halaman web di Safari";
@@ -4264,7 +4285,8 @@ translators: sample content for \"Services\" page template */
 "Preparing..." = "Menyiapkan...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview */
+   Section title for related posts section preview
+   Title for button to preview a selected layout */
 "Preview" = "Pratampil";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4381,7 +4403,7 @@ translators: sample content for \"Services\" page template */
 /* Label for a button that publishes the post
    Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Terbitkan sekarang";
+"Publish Now" = "Publikasikan Sekarang";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publikasikan Pos";
@@ -4550,9 +4572,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Singkirkan Gambar Terfitur";
 
-/* No comment provided by engineer. */
-"Remove Image" = "Hapus Gambar";
-
 /* Label action for removing a link from the editor */
 "Remove Link" = "Buang Tautan";
 
@@ -4617,7 +4636,7 @@ translators: sample content for \"Services\" page template */
 "Replace video" = "Ganti video";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
-"Replies to a comment." = "Replies to a comment.";
+"Replies to a comment." = "Balas komentar";
 
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Membalas komentar Anda";
@@ -4777,7 +4796,7 @@ translators: sample content for \"Services\" page template */
 
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
-"Save as Draft" = "Simpan sebagai Draf";
+"Save as Draft" = "Simpan sebagai Konsep";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Simpan konsep pos pada:";
@@ -4861,7 +4880,7 @@ translators: sample content for \"Services\" page template */
 "Search WordPress" = "Cari di WordPress";
 
 /* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
+"Search WordPress\nfor a site or post" = "Cari WordPress\nuntuk situs atau tulisan";
 
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Cari halaman";
@@ -4950,6 +4969,9 @@ translators: sample content for \"Services\" page template */
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Pilih beberapa untuk melanjutkan";
+
+/* No comment provided by engineer. */
+"Select a layout" = "Pilih Tata Letak";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Pilih media.";
@@ -5151,7 +5173,7 @@ translators: sample content for \"Services\" page template */
 "Showing just my posts" = "Menampilkan hanya pos saya";
 
 /* Label on Post Stats view indicating which post the stats are for. */
-"Showing stats for:" = "Showing stats for:";
+"Showing stats for:" = "Menampilkan statistik untuk:";
 
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Ditampilkan";
@@ -5466,7 +5488,7 @@ translators: sample content for \"Services\" page template */
 "Stub" = "Stub";
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
-"Submit for Review" = "Kirimkan untuk Diulas";
+"Submit for Review" = "Kirim untuk Ditinjau";
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Mengirim untuk Ditinjau...";
@@ -6033,7 +6055,7 @@ translators: sample content for \"Services\" page template */
 "To install plugins, you need to have a custom domain associated with your site." = "Untuk menginstal plugin, Anda harus memiliki domain kustom yang terkait dengan situs Anda.";
 
 /* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "Untuk mengelolanya, atur agar menjadi terlihat.";
+"To manage them here, set them to visible." = "Untuk mengelolanya di sini, atur agar situs terlihat.";
 
 /* Instructional text shown when requesting the user's password for Apple login. */
 "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Untuk melanjutkan dengan ID Apple ini, harap login terlebih dahulu dengan kata sandi WordPress.com Anda. Hal ini hanya akan ditanyakan sekali.";
@@ -6494,9 +6516,12 @@ translators: sample content for \"Services\" page template */
    Label in Support view displaying the app version. */
 "Version" = "Versi";
 
+/* Description for the version label in the What's new page. */
+"Version " = "Versi:";
+
 /* Version of a plugin to install
    Version of an installed plugin */
-"Version %@" = "Version %@";
+"Version %@" = "Versi %@";
 
 /* Message to show what version is currently installed when a new plugin version is available */
 "Version %@ installed" = "Versi %@ telah diinstal";
@@ -6514,7 +6539,7 @@ translators: sample content for \"Services\" page template */
 "Video caption. Empty" = "Keterangan video. Kosong";
 
 /* Message shown if a video export is canceled by the user. */
-"Video export canceled." = "Video export canceled.";
+"Video export canceled." = "Ekspor video dibatalkan.";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -6687,7 +6712,7 @@ translators: sample content for \"Services\" page template */
 "We couldn't publish this private post, but we'll try again later." = "Kami tidak dapat memublikasikan pos pribadi ini, namun kami akan mencoba lagi nanti.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
-"We couldn't retrieve this media.\nPlease tap to retry." = "We couldn't retrieve this media.\nPlease tap to retry.";
+"We couldn't retrieve this media.\nPlease tap to retry." = "Kami tidak dapat mengambil media ini.\nHarap ketuk untuk mencoba lagi.";
 
 /* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
 "We couldn't schedule this page, but we'll try again later." = "Kami tidak dapat menjadwalkan halaman ini, namun kami akan mencoba lagi nanti.";
@@ -6738,7 +6763,7 @@ translators: sample content for \"Services\" page template */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Kami baru saja mengirim tautan ke email %@. Harap periksa aplikasi email Anda dan ketuk tautan untuk login.";
 
 /* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
+"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kami membuat peningkatan besar untuk penyunting blok dan merasa itu layak dicoba!\n\nKami mengaktifkannya untuk pos dan halaman baru tetapi jika Anda ingin mengganti ke penyunting klasik, buka 'Situs Saya' > 'Pengaturan Situs'.";
 
 /* translators: sample content for \"Services\" page template */
 "We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "Kami menawarkan berbagai macam layanan untuk membantu Anda mencapai hasil yang diinginkan. Tidak yakin dengan apa yang Anda butuhkan, atau berapa biayanya? Kami dapat menjelaskan layanan yang tepat untuk Anda dan memberikan info lebih lanjut tentang biayanya. Hubungi di bawah ini.";
@@ -6828,6 +6853,9 @@ translators: sample content for \"Services\" page template */
 /* Title of Weeks stats filter. */
 "Weeks" = "Minggu";
 
+/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Selamat datang di Reader. Temukan jutaan blog di ujung jari Anda.";
+
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Selamat Datang di WordPress";
 
@@ -6849,6 +6877,9 @@ translators: sample content for \"Services\" page template */
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kami telah menambahkan lebih banyak tugas untuk membantu Anda menumbuhkan audiens.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kami telah mengirimi Anda e-mail berisi tautan pendaftaran untuk membuat akun WordPress.com baru. Periksa e-mail Anda di perangkat ini, dan ketuk tautan dalam e-mail yang Anda terima dari WordPress.com";
+
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Kami telah melakukan beberapa perubahan pada daftar periksa Anda";
 
@@ -6863,6 +6894,10 @@ translators: sample content for \"Services\" page template */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Apa yang baru?";
+
+/* Opens the What's New / Feature Announcement modal
+   Title of the What's new page. */
+"What's New in WordPress" = "Apa yang Baru di WordPress";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Apa alamat situs saya?";
@@ -7038,7 +7073,7 @@ translators: sample content for \"Services\" page template */
 "You are already following this site." = "Anda sudah mengikuti situs ini.";
 
 /* Alert message. */
-"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.";
+"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Anda mengubah nama pengguna menjadi %@. Mengubah nama pengguna juga akan memengaruhi profil Gravatar dan alamat profil IntenseDebate.\nKonfirmasikan nama pengguna Anda untuk melanjutkan.";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "Saat ini Anda sedang mengunggah media. Harap tunggu hingga selesai.";
@@ -7119,15 +7154,18 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Anda dapat membuat daftar putih untuk alamat IP atau serangkaian alamat agar tidak diblokir oleh Jetpack. IPv4 dan IPv6 diterima. Untuk menentukan rentang, masukkan nilai rendah dan nilai tinggi yang dipisahkan oleh tanda hubung. Misalnya: 12.12.12.1-12.12.12.100.";
 
+/* A suggestion of topics the user might */
+"You might like" = "Anda mungkin suka";
+
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Anda harus masuk ke akun WordPress.com untuk melakukan tindakan ini.";
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
+"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Anda perlu melakukan verifikasi akun Anda sebelum dapat mempublikasikan pos.\nJangan khawatir, pos Anda aman dan akan disimpan sebagai draft.";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Anda baru-baru ini melakukan perubahan pada postingan ini tetapi tidak menyimpannya. Pilih versi untuk dimuat:\n\nDari perangkat ini\nDisimpan pada %1$@\n\nDari perangkat lain\nDisimpan pada %2$@\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "Anda membalas komentar ini.";

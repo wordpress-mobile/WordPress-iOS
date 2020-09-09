@@ -15,7 +15,7 @@ final class MediaLibraryPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = dataSource
