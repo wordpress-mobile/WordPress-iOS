@@ -65,6 +65,12 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     /// this allows us to reset it when the view disappears
     private var originalNavBarAppearance: NavBarAppearance?
 
+    private var navBarTintColor: UIColor = Styles.endTintColor {
+        didSet {
+            navigationBar?.setItemTintColor(navBarTintColor)
+        }
+    }
+
     deinit {
         scrollViewObserver?.invalidate()
     }
@@ -135,7 +141,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         NavBarAppearance.transparent.apply(navigationBar)
         if isLoaded, imageView.image == nil {
-            navigationBar.tintColor = Styles.endTintColor
+            navBarTintColor = Styles.endTintColor
         }
 
         updateUI()
@@ -212,7 +218,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
-        guard let navBar = navigationBar else {
+        guard navigationBar != nil else {
             return
         }
 
@@ -231,7 +237,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             }
         }
 
-        navBar.tintColor = tintColor
+        navBarTintColor = tintColor
     }
 
     static func shouldDisplayFeaturedImage(with post: ReaderPost) -> Bool {
@@ -287,7 +293,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func reset() {
-        navigationBar?.tintColor = Styles.endTintColor
+        navigationBar?.setItemTintColor(Styles.endTintColor)
+
         resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
@@ -356,7 +363,7 @@ struct NavBarAppearance {
 
     func apply(_ navigationBar: UINavigationBar) {
         navigationBar.isTranslucent = isTranslucent
-        navigationBar.tintColor = tintColor ?? nil
+        navigationBar.setItemTintColor(tintColor)
         navigationBar.titleTextAttributes = titleTextAttributes ?? nil
 
         if #available(iOS 13.0, *) {
@@ -403,5 +410,25 @@ private extension NavBarAppearance {
         isTranslucent = navigationBar.isTranslucent
         tintColor = navigationBar.tintColor
         titleTextAttributes = navigationBar.titleTextAttributes
+    }
+}
+
+
+// MARK: - UINavigationBar Tint Color Helper Extension
+private extension UINavigationBar {
+    func setItemTintColor(_ color: UIColor?) {
+        tintColor = color
+
+        items?.forEach { $0.setTintColor(color) }
+    }
+}
+
+private extension UINavigationItem {
+    /// Forcibly sets the tint color of all the button items
+    func setTintColor(_ color: UIColor?) {
+        leftBarButtonItem?.tintColor = color
+        leftBarButtonItems?.forEach { $0.tintColor = color }
+        rightBarButtonItem?.tintColor = color
+        rightBarButtonItems?.forEach { $0.tintColor = color }
     }
 }
