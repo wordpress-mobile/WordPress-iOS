@@ -109,6 +109,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
         coordinator?.start()
+
+        // Fixes swipe to go back not working when leftBarButtonItem is set
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -428,6 +431,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "ReaderDetailViewController"
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension ReaderDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
