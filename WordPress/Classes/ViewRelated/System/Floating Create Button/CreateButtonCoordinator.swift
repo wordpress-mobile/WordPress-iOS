@@ -128,8 +128,9 @@ import WordPressFlux
         let postsButton = makePostsButton()
         let pagesButton = makePagesButton()
         let storiesButton = makeStoriesButton()
+        let buttons = Feature.enabled(.stories) ? [postsButton, pagesButton, storiesButton] : [postsButton, pagesButton]
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
-                                                              buttons: [postsButton, pagesButton, storiesButton])
+                                                              buttons: buttons)
 
         setupPresentation(on: actionSheetController, for: traitCollection)
 
