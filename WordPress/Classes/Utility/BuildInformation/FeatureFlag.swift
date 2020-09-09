@@ -1,9 +1,10 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable {
+enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
+    case readerCSS
     case unifiedAuth
     case unifiedSiteAddress
     case unifiedGoogle
@@ -19,6 +20,7 @@ enum FeatureFlag: Int, CaseIterable {
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
+    case newNavBarAppearance
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -31,6 +33,8 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .readerCSS:
+            return false
         case .unifiedAuth:
             return true
         case .unifiedSiteAddress:
@@ -40,9 +44,9 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedApple:
             return true
         case .unifiedWordPress:
-            return false
+            return true
         case .unifiedKeychainLogin:
-            return false
+            return true
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -54,13 +58,25 @@ enum FeatureFlag: Int, CaseIterable {
         case .homepageSettings:
             return true
         case .readerImprovementsPhase2:
-            return false
+            return true
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
             return false
         case .whatIsNew:
             return BuildConfiguration.current == .localDeveloper
+        case .newNavBarAppearance:
+            return BuildConfiguration.current == .localDeveloper
+        }
+    }
+
+    /// This key must match the server-side one for remote feature flagging
+    var remoteKey: String? {
+        switch self {
+            case .unifiedAuth:
+                return "wordpress_ios_unified_login_and_signup"
+            default:
+                return nil
         }
     }
 }
@@ -75,7 +91,7 @@ class Feature: NSObject {
     }
 }
 
-extension FeatureFlag: OverrideableFlag {
+extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
@@ -83,6 +99,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
+        case .readerCSS:
+            return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
         case .unifiedSiteAddress:
@@ -113,6 +131,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Gutenberg Modal Layout Picker"
         case .whatIsNew:
             return "What's New / Feature Announcement"
+        case .newNavBarAppearance:
+            return "New Navigation Bar Appearance"
         }
     }
 
@@ -125,6 +145,8 @@ extension FeatureFlag: OverrideableFlag {
         case .newReaderNavigation:
             return false
         case .swiftCoreData:
+            return false
+        case .newNavBarAppearance:
             return false
         default:
             return true

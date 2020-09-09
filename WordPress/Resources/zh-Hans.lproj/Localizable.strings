@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-20 10:54:09+0000 */
+/* Translation-Revision-Date: 2020-09-02 12:54:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -639,7 +639,7 @@
 "Appearance" = "外观";
 
 /* Message shown when Apple authentication fails. */
-"Apple authentication failed." = "Apple 验证失败。";
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 验证失败。\n请确保通过使用双因素验证的 Apple ID 登录 iCloud。";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "应用";
@@ -734,7 +734,8 @@
 /* No comment provided by engineer. */
 "Authenticating" = "正在验证";
 
-/* Placeholder for the 2FA code textfield. */
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
 "Authentication code" = "验证码";
 
 /* Popup title to ask for user credentials. */
@@ -1085,6 +1086,9 @@
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "检查购买内容时出错";
 
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
+
 /* Instructional text on how to open the email containing a magic link. */
 "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder.";
 
@@ -1225,9 +1229,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "收集信息";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "栏目设置";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "漫画";
@@ -1417,11 +1418,9 @@
 /* Button label for contacting support
    Button to contact support on Start Over settings page
    Contact Support button title
-   If a user taps this label, the app will navigate to the Support view. */
+   If a user taps this label, the app will navigate to the Support view.
+   Option in Support view to contact the support team. */
 "Contact Support" = "联系支持人员";
-
-/* Option in Support view to contact the support team. */
-"Contact Us" = "联系我们";
 
 /* Category description for page templates */
 "Contact pages" = "联系信息页面";
@@ -1442,7 +1441,8 @@
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
-   The default Jetpack view button title */
+   The default Jetpack view button title
+   Title for the continue button in the What's New page. */
 "Continue" = "继续";
 
 /* Menus alert button title to continue making changes. */
@@ -1563,6 +1563,9 @@
 /* Accessibility label for create floating action button */
 "Create" = "创建";
 
+/* The button title text for creating a new account. */
+"Create Account" = "创建账号";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "创建空白页面";
 
@@ -1572,7 +1575,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "创建新站点";
 
-/* Button title, encourages users to create their first page on their blog. */
+/* Button title, encourages users to create their first page on their blog.
+   Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Create Page";
 
 /* Button title, encourages users to create post on their blog.
@@ -1811,6 +1815,9 @@
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "断开与此帐户的连接意味着已发布的文章将无法自动分享至 %@";
+
+/* Discover tab name */
+"Discover" = "发现";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "发现站点";
@@ -2338,6 +2345,9 @@
 /* Title of the filter button in the Reader */
 "Filter" = "Filter";
 
+/* Title for the find out more button in the What's New page. */
+"Find out more" = "了解更多";
+
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "查找并关注您中意的站点，在其发布新内容时获取更新。";
 
@@ -2627,7 +2637,8 @@ translators: sample content for \"Team\" page template */
    Text for privacy settings: Hidden */
 "Hidden" = "隐藏";
 
-/* Hides a site from the site picker list */
+/* Hides a site from the site picker list
+   Title of a button used to collapse a group */
 "Hide" = "隐藏";
 
 /* Hide All */
@@ -3679,6 +3690,12 @@ translators: sample content for \"Services\" page template */
 /* Title for a button that when tapped cancels the site creation process */
 "Not right now" = "现在不行";
 
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "没有看到电子邮件？ 请检查您的垃圾邮件文件夹。";
+
+/* No comment provided by engineer. */
+"Note: Column layout may vary between themes and screen sizes" = "注意：主题和屏幕尺寸之间的分栏布局可能会有所不同";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "没有找到。";
 
@@ -3716,9 +3733,6 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field Number */
 "Number" = "号码";
-
-/* No comment provided by engineer. */
-"Number of columns" = "栏目数";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "编号列表";
@@ -3768,6 +3782,9 @@ translators: sample content for \"Services\" page template */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
 
+/* Accessibility label for 1 password button */
+"One Password button" = "一个密码按钮";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "仅查看相关性较大的统计信息。添加数据分析以符合您的需求。";
 
@@ -3791,7 +3808,8 @@ translators: sample content for \"Services\" page template */
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open Device Settings";
 
-/* Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "打开邮件";
 
 /* Go to the settings app */
@@ -3820,6 +3838,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "打开“我”部分";
+
+/* Accessibility hint for 1 password button */
+"Opens One Password manager" = "打开一个密码管理器";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "在 Safari 中打开网页";
@@ -4264,7 +4285,8 @@ translators: sample content for \"Services\" page template */
 "Preparing..." = "准备中...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview */
+   Section title for related posts section preview
+   Title for button to preview a selected layout */
 "Preview" = "预览";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4549,9 +4571,6 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "移除推荐图片";
-
-/* No comment provided by engineer. */
-"Remove Image" = "删除图片";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "移除链接";
@@ -4950,6 +4969,9 @@ translators: sample content for \"Services\" page template */
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Select a few to continue";
+
+/* No comment provided by engineer. */
+"Select a layout" = "选择布局";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "选择媒体。";
@@ -6494,6 +6516,9 @@ translators: sample content for \"Services\" page template */
    Label in Support view displaying the app version. */
 "Version" = "版本";
 
+/* Description for the version label in the What's new page. */
+"Version " = "版本";
+
 /* Version of a plugin to install
    Version of an installed plugin */
 "Version %@" = "版本 %@";
@@ -6828,6 +6853,9 @@ translators: sample content for \"Services\" page template */
 /* Title of Weeks stats filter. */
 "Weeks" = "周";
 
+/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "欢迎使用阅读器。 动动手指即可发现数百万个博客。";
+
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "欢迎来到 WordPress";
 
@@ -6849,6 +6877,9 @@ translators: sample content for \"Services\" page template */
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "我们添加了更多的任务，以帮助您增加受众。";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送一个注册链接，供您创建新的 WordPress.com 帐户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
+
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "我们对您的清单进行了一些修改";
 
@@ -6863,6 +6894,10 @@ translators: sample content for \"Services\" page template */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
+
+/* Opens the What's New / Feature Announcement modal
+   Title of the What's new page. */
+"What's New in WordPress" = "WordPress 的新变化";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "我的站点地址是什么？";
@@ -7118,6 +7153,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "您可以将一个 IP 地址或一系列地址加入白名单，以防止 Jetpack 将其屏蔽。IPv4 和 IPv6 都可以。若要指定范围，请输入最小值和最大值，并用短破折号隔开。示例：12.12.12.1-12.12.12.100。";
+
+/* A suggestion of topics the user might */
+"You might like" = "您可能会喜欢";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "您必须登录 WordPress.com 帐户才能执行此操作。";

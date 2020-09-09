@@ -243,5 +243,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @interface ReaderTopicService (Tests)
 - (void)mergeFollowedSites:(NSArray *)sites withSuccess:(void (^)(void))success;
 - (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success;
+- (void)mergeMenuTopics:(NSArray *)topics isLoggedIn:(BOOL)isLoggedIn withSuccess:(void (^)(void))success;
 - (NSString *)formatTitle:(NSString *)str;
 @end

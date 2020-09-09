@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-15 06:30:33+0000 */
+/* Translation-Revision-Date: 2020-08-26 20:50:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -639,7 +639,7 @@
 "Appearance" = "Utseende";
 
 /* Message shown when Apple authentication fails. */
-"Apple authentication failed." = "Autentiseringen via Apple misslyckades.";
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentisering via Apple-ID misslyckades.\nSe till att du är inloggad till iCloud med ett Apple-ID som använder tvåfaktorsautentisering.";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Tillämpa";
@@ -734,7 +734,8 @@
 /* No comment provided by engineer. */
 "Authenticating" = "Autentiserar";
 
-/* Placeholder for the 2FA code textfield. */
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
 "Authentication code" = "Autentiseringskod";
 
 /* Popup title to ask for user credentials. */
@@ -1085,6 +1086,9 @@
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Fel vid kontroll av inköp";
 
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Öppna e-posten på din enhet och tryck på länken i meddelandet du fått från WordPress.com.";
+
 /* Instructional text on how to open the email containing a magic link. */
 "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Kontrollera din e-post på den här enheten och tryck på länken du just fått i ett meddelande från WordPress.com.\n\nOm du inte hittar e-postmeddelandet kan du kolla om det hamnat bland skräpposten.";
 
@@ -1225,9 +1229,6 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Samla in information";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Kolumninställningar";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Serier";
@@ -1417,11 +1418,9 @@
 /* Button label for contacting support
    Button to contact support on Start Over settings page
    Contact Support button title
-   If a user taps this label, the app will navigate to the Support view. */
+   If a user taps this label, the app will navigate to the Support view.
+   Option in Support view to contact the support team. */
 "Contact Support" = "Kontakta support";
-
-/* Option in Support view to contact the support team. */
-"Contact Us" = "Kontakta oss";
 
 /* Category description for page templates */
 "Contact pages" = "Kontaktsidor";
@@ -1442,7 +1441,8 @@
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
-   The default Jetpack view button title */
+   The default Jetpack view button title
+   Title for the continue button in the What's New page. */
 "Continue" = "Fortsätt";
 
 /* Menus alert button title to continue making changes. */
@@ -1563,6 +1563,9 @@
 /* Accessibility label for create floating action button */
 "Create" = "Skapa";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Skapa Konto";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "Skapa en tom sida";
 
@@ -1572,7 +1575,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "Skapa ny webbplats";
 
-/* Button title, encourages users to create their first page on their blog. */
+/* Button title, encourages users to create their first page on their blog.
+   Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Skapa sida";
 
 /* Button title, encourages users to create post on their blog.
@@ -1811,6 +1815,9 @@
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Frånkoppling av detta konto innebär att publicerade inlägg inte längre automatiskt kommer att delas till %@";
+
+/* Discover tab name */
+"Discover" = "Upptäck";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Upptäck webbplatser";
@@ -2338,6 +2345,9 @@
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrera";
 
+/* Title for the find out more button in the What's New page. */
+"Find out more" = "Ta reda på mer";
+
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Hitta webbplatser som tilltalar dig och följ dem för att få uppdateringar när de publicerar.";
 
@@ -2627,7 +2637,8 @@ translators: sample content for \"Team\" page template */
    Text for privacy settings: Hidden */
 "Hidden" = "Dold";
 
-/* Hides a site from the site picker list */
+/* Hides a site from the site picker list
+   Title of a button used to collapse a group */
 "Hide" = "Dölj";
 
 /* Hide All */
@@ -3679,6 +3690,12 @@ translators: sample content for \"Services\" page template */
 /* Title for a button that when tapped cancels the site creation process */
 "Not right now" = "Inte just nu";
 
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "Hittar du inte meddelandet? Kolla i mappen för skräppost eller reklam.";
+
+/* No comment provided by engineer. */
+"Note: Column layout may vary between themes and screen sizes" = "Obs: Kolumnlayouten kan variera mellan olika teman och skärmstorlekar";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Inget hittades.";
 
@@ -3716,9 +3733,6 @@ translators: sample content for \"Services\" page template */
 
 /* Register Domain - Address information field Number */
 "Number" = "Nummer";
-
-/* No comment provided by engineer. */
-"Number of columns" = "Antal kolumner";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Numrerad lista";
@@ -3768,6 +3782,9 @@ translators: sample content for \"Services\" page template */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
 
+/* Accessibility label for 1 password button */
+"One Password button" = "Knapp för ”One Password”";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Visa bara den statistik som är mest relevat. Lägger till insikter som passar dina behov.";
 
@@ -3791,7 +3808,8 @@ translators: sample content for \"Services\" page template */
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Öppna inställningar för enheten";
 
-/* Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Öppna Mail";
 
 /* Go to the settings app */
@@ -3820,6 +3838,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Öppna sektionen om mig";
+
+/* Accessibility hint for 1 password button */
+"Opens One Password manager" = "Öppnar hanteraren för ”One Password”";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Öppnar webbplatsen i Safari";
@@ -4264,7 +4285,8 @@ translators: sample content for \"Services\" page template */
 "Preparing..." = "Förbereder...";
 
 /* Displays the Post Preview Interface
-   Section title for related posts section preview */
+   Section title for related posts section preview
+   Title for button to preview a selected layout */
 "Preview" = "Visa";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4549,9 +4571,6 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Ta bort utvald bild";
-
-/* No comment provided by engineer. */
-"Remove Image" = "Ta bort bild";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Ta bort länk";
@@ -4950,6 +4969,9 @@ translators: sample content for \"Services\" page template */
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Välj några för att fortsätta";
+
+/* No comment provided by engineer. */
+"Select a layout" = "Välj en layout";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Välj media.";
@@ -6494,6 +6516,9 @@ translators: sample content for \"Services\" page template */
    Label in Support view displaying the app version. */
 "Version" = "Version";
 
+/* Description for the version label in the What's new page. */
+"Version " = "Version ";
+
 /* Version of a plugin to install
    Version of an installed plugin */
 "Version %@" = "Version %@";
@@ -6828,6 +6853,9 @@ translators: sample content for \"Services\" page template */
 /* Title of Weeks stats filter. */
 "Weeks" = "Veckor";
 
+/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Välkommen till läsaren. Upptäck miljontals bloggar som finns smidigt tillgängliga.";
+
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Välkommen till WordPress";
 
@@ -6849,6 +6877,9 @@ translators: sample content for \"Services\" page template */
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Vi har lagt till några extra åtgärder som hjälper dig att hitta fler läsare.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Vi har skickat en registreringslänk som låter dig skapa ditt nya konto hos WordPress.com. Öppna e-posten på din enhet och tryck på länken i meddelandet du fått från WordPress.com.";
+
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Vi har gjort några ändringar i din checklista";
 
@@ -6863,6 +6894,10 @@ translators: sample content for \"Services\" page template */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Vad är nytt?";
+
+/* Opens the What's New / Feature Announcement modal
+   Title of the What's new page. */
+"What's New in WordPress" = "Nyheter i WordPress";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "Vilken adress har min webbplats?";
@@ -7118,6 +7153,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan vitlista en IP-adress eller en rad adresser så att de aldrig någonsin blockeras av Jetpack. Både IPv4- IPv6-adresser accepteras. Ange ett intervall genom att mata in den lägsta och den högsta adressen med bindestreck mellan. Exampel: 12.12.12.1-12.12.12.100.";
+
+/* A suggestion of topics the user might */
+"You might like" = "Du kanske gillar";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Du måste vara inloggad på ett WordPress.com-konto för att kunna utföra den här åtgärden.";

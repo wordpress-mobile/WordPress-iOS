@@ -130,4 +130,9 @@
     static func murielListIcon() -> UIColor {
         return .listIcon
     }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielAppBarText() -> UIColor {
+        return .appBarText
+    }
 }

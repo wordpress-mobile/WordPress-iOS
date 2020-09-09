@@ -31,7 +31,7 @@ markComment: >
    * It hasn’t been labeled `[Pri] Blocker`, `[Pri] High`, or `good first issue`.
   
   Please comment with an update if you believe this issue is still valid or if it can be closed.
-  This issue will also be reviewed for validity and priority (cc @designsimply).
+  This issue will also be reviewed for validity and priority during regularly scheduled triage sessions.
 
 # Limit the number of actions per hour, from 1-30. Default is 30
 limitPerRun: 2

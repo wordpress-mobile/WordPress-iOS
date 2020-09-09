@@ -495,7 +495,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [WPStyleGuide preferredStatusBarStyle];
 }
 
 - (void)configureStackView
