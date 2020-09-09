@@ -8,9 +8,12 @@ protocol AnnouncementsStore: Observable {
 }
 
 
-class RemoteAnnouncementsStore: AnnouncementsStore {
+/// Announcement store with a local cache of "some sort"
+class CachedAnnouncementsStore: AnnouncementsStore {
 
     let changeDispatcher = Dispatcher<Void>()
+
+    var cache: AnnouncementsCache
 
     enum State {
         case loading
@@ -45,18 +48,30 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
         }
     }
 
+    init(cache: AnnouncementsCache) {
+        self.cache = cache
+    }
+
     func getAnnouncements() {
-        let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         state = .loading
+        if let announcements = cache.announcements {
+            state = .ready(announcements)
+            return
+        }
+
+        let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         service.getAnnouncements(appId: Identifiers.appId,
                                  appVersion: Identifiers.appVersion,
-                                 locale: Locale.current.identifier) { result in
+                                 locale: Locale.current.identifier) { [weak self] result in
 
             switch result {
             case .success(let announcements):
-                self.state = .ready(announcements)
+                DispatchQueue.global().async {
+                    self?.cache.announcements = announcements
+                }
+                self?.state = .ready(announcements)
             case .failure(let error):
-                self.state = .error(error)
+                self?.state = .error(error)
             }
         }
     }
@@ -73,7 +88,7 @@ class RemoteAnnouncementsStore: AnnouncementsStore {
 }
 
 
-private extension RemoteAnnouncementsStore {
+private extension CachedAnnouncementsStore {
     enum Identifiers {
         // 2 is the identifier of WordPress-iOS in the backend
         static let appId = "2"

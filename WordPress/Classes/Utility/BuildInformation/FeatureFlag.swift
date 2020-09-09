@@ -4,6 +4,7 @@
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
+    case readerCSS
     case unifiedAuth
     case unifiedSiteAddress
     case unifiedGoogle
@@ -32,6 +33,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .readerCSS:
+            return false
         case .unifiedAuth:
             return true
         case .unifiedSiteAddress:
@@ -96,6 +99,8 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
+        case .readerCSS:
+            return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
         case .unifiedSiteAddress:
