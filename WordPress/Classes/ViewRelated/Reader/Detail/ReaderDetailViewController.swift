@@ -530,7 +530,6 @@ private extension ReaderDetailViewController {
         let rightItems = [
             moreButtonItem(),
             shareButtonItem(),
-            UIBarButtonItem.fixedSpace(19), // Visually it's 24px
             safariButtonItem()
         ]
 
@@ -561,7 +560,7 @@ private extension ReaderDetailViewController {
             return nil
         }
 
-        let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)), customWidth: 33)
+        let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
 
         return button
@@ -574,16 +573,10 @@ private extension ReaderDetailViewController {
         return button
     }
 
-    func barButtonItem(with image: UIImage, action: Selector, customWidth: CGFloat? = nil) -> UIBarButtonItem {
+    func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
         let image = image.withRenderingMode(.alwaysTemplate)
 
-        let width = customWidth ?? image.size.width
-
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: action, for: .touchUpInside)
-
-        return UIBarButtonItem(customView: button)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
     }
 }
 
@@ -626,12 +619,3 @@ extension ReaderDetailViewController: PrefersFullscreenDisplay {}
 
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
-
-// Helper extension to create spacing between items
-private extension UIBarButtonItem {
-    static func fixedSpace(_ spacing: CGFloat) -> UIBarButtonItem {
-        let button = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        button.width = spacing
-        return button
-    }
-}
