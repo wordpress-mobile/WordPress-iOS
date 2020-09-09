@@ -3,7 +3,6 @@ import XCTest
 
 private struct ElementStringIDs {
     static let navBar = "WordPressAuthenticator.LoginSelfHostedView"
-    static let nextButton = "submitButton"
 
     // TODO: clean up comments when unifiedSiteAddress is permanently enabled.
 
@@ -11,10 +10,12 @@ private struct ElementStringIDs {
     // Leaving here for now in case unifiedSiteAddress is disabled.
     // static let usernameTextField = "usernameField"
     // static let passwordTextField = "passwordField"
+    // static let nextButton = "submitButton"
 
     // For unified Site Address. This matches TextFieldTableViewCell.accessibilityIdentifier.
     static let usernameTextField = "Username"
     static let passwordTextField = "Password"
+    static let nextButton = "Continue Button"
 }
 
 class LoginUsernamePasswordScreen: BaseScreen {
