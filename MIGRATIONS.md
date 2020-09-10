@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 99
+
+@deco354 2020-09-10
+
+- Add `hasVersionConflict` entity
+
 ## WordPress 98
 
 @leandrowalonso 2020-07-27
