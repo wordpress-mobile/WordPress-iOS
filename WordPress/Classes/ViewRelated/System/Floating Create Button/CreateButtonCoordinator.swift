@@ -93,8 +93,14 @@ import WordPressFlux
         }
     }
 
+    // Only one blog is associated at a time since there is only one button shown at any given time.
+    private var currentBlog: Blog?
+
     /// Button must be manually shown _after_ adding using `showCreateButton`
-    @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
+    @objc func add(to view: UIView, for blog: Blog, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
+
+        currentBlog = blog
+
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
 
@@ -117,18 +123,19 @@ import WordPressFlux
         guard let viewController = viewController else {
             return
         }
-        let actionSheetVC = actionSheetController(for: viewController.traitCollection)
+        let actionSheetVC = actionSheetController(for: currentBlog, with: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
             QuickStartTourGuide.find()?.visited(.newpost)
         })
     }
 
-    private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
+    private func actionSheetController(for blog: Blog?, with traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = makePostsButton()
         let pagesButton = makePagesButton()
         let storiesButton = makeStoriesButton()
-        let buttons = Feature.enabled(.stories) ? [postsButton, pagesButton, storiesButton] : [postsButton, pagesButton]
+        let shouldShowStories = Feature.enabled(.stories) && blog?.supports(.stories) == true
+        let buttons = shouldShowStories ? [postsButton, pagesButton, storiesButton] : [postsButton, pagesButton]
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
                                                               buttons: buttons)
 
