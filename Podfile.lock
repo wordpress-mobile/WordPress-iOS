@@ -505,7 +505,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/nux-button`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `93e6dc6`)
   - WordPressKit (~> 4.17.0-beta)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.12.0)
@@ -657,7 +657,7 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :branch: fix/nux-button
+    :commit: 93e6dc6
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1416f46ace4454b1d1e0291cd86b1993a4a6fda1/third-party-podspecs/Yoga.podspec.json
@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :commit: a08956abc2ac4576dc7ca7a77b943b247ca2c8e3
+    :commit: 93e6dc6
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -777,6 +777,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 36f029727fb1327f765cb073843c76b8ce1ff7bd
+PODFILE CHECKSUM: 5570ea63b29d6a5d55ad6cdd6ceea383e469e88d
 
 COCOAPODS: 1.9.3
