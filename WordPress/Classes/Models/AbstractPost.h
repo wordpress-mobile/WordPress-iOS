@@ -58,6 +58,8 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 @property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
+@property (nonatomic) BOOL hasVersionConflict;
+
 // Revision management
 - (AbstractPost *)createRevision;
 - (void)deleteRevision;

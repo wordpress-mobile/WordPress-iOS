@@ -38,6 +38,7 @@
 @dynamic autosaveTitle;
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
+@dynamic hasVersionConflict;
 
 @synthesize restorableStatus;
 
