@@ -786,6 +786,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
+    post.hasVersionConflict = post.hasRevision;
+    post.revision.hasVersionConflict = post.hasRevision;
     
     if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
