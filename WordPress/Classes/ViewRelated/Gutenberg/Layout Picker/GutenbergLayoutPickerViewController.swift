@@ -162,7 +162,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
         super.viewWillAppear(animated)
     }
 
