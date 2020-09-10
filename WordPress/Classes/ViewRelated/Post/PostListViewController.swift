@@ -406,8 +406,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         var predicates = [NSPredicate]()
 
         if let blog = blog {
-            // Show all original posts without a revision & revision posts.
-            let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+            let allowedPostStatusesForCurrentTab = filterSettings.currentPostListFilter().statuses
+            // Show revision posts and original posts without a revision within the current tab
+            let query = "blog = %@ && (revision = nil || hasVersionConflict = true && NOT (revision.status IN (%@) ))"
+            let basePredicate = NSPredicate(format: query, blog, allowedPostStatusesForCurrentTab.strings)
             predicates.append(basePredicate)
         }
 
