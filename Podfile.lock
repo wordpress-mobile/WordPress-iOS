@@ -505,7 +505,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `d3c4a34c50aa2f4130569a9f74470cb257b07e61`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `999f81b74a436de71ddba7c3d17787616c10f697`)
   - WordPressKit (~> 4.16.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.12.0)
@@ -657,7 +657,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.36.0
   WordPressAuthenticator:
-    :commit: d3c4a34c50aa2f4130569a9f74470cb257b07e61
+    :commit: 999f81b74a436de71ddba7c3d17787616c10f697
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.36.0/third-party-podspecs/Yoga.podspec.json
@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.36.0
   WordPressAuthenticator:
-    :commit: d3c4a34c50aa2f4130569a9f74470cb257b07e61
+    :commit: 999f81b74a436de71ddba7c3d17787616c10f697
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -746,7 +746,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 20deb1f6f001000d1f2603722ec110c66c74796b
   ReactCommon: 48926fc48fcd7c8a629860049ffba9c23b4005dc
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCMaskedView: 72b5012baac53b13a9ba717eaa554afd3f2930c5
   RNGestureHandler: 82a89b0fde0a37e633c6233418f7249e2f8e59b5
   RNReanimated: 13f7a6a22667c4f00aac217bc66f94e8560b3d59
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
@@ -777,6 +777,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 7743cf253e87ef0e7b9f6ce3e0632014d45787fe
+PODFILE CHECKSUM: 2c467a6fba22b923545dcf4cae8f5c0be0e53b20
 
 COCOAPODS: 1.9.3
