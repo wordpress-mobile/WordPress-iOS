@@ -27,10 +27,31 @@ class LayoutPreviewViewController: UIViewController {
         return Gutenberg(dataSource: self, extraModules: [])
     }()
 
+    let ghostView: GutenGhostView = {
+        let ghost = GutenGhostView()
+        ghost.hidesToolbar = true
+        return ghost
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         styleButtons()
         setupGutenbergView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ghostView.startAnimation()
+    }
+
+    override func viewLayoutMarginsDidChange() {
+        super.viewLayoutMarginsDidChange()
+        ghostView.frame = previewContainer.frame
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        ghostView.frame = previewContainer.frame
     }
 
     private func setupGutenbergView() {
@@ -66,6 +87,10 @@ class LayoutPreviewViewController: UIViewController {
 extension LayoutPreviewViewController: GutenbergBridgeDataSource {
     func gutenbergInitialContent() -> String? {
         return layout?.content
+    }
+
+    var loadingView: UIView? {
+        return ghostView
     }
 
     func gutenbergInitialTitle() -> String? {
