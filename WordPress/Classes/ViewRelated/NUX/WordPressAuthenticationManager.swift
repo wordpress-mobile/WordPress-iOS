@@ -194,8 +194,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
         WPStyleGuide.configureNavigationAppearance()
 
+        // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
+        // when this VC is dismissed.  This means the tracking flow isn't reset properly, so we'll need to do
+        // it here manually.
+        let flow = tracker.state.lastFlow
+        
         let controller = SupportTableViewController { [weak self] in
             self?.tracker.track(click: .dismiss)
+            self?.tracker.set(flow: flow)
         }
         controller.sourceTag = sourceTag
 
