@@ -464,6 +464,25 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.setFocusOnTitle()
     }
 
+    private func handleMissingBlockAlertButtonPressed() {
+        let blog = post.blog
+        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+        if (JetpackSSOEnabled == false) {
+            let controller = JetpackSecuritySettingsViewController(blog: blog)
+            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDismissed))
+            let navController = UINavigationController(rootViewController: controller)
+            present(navController, animated: true)
+        }
+    }
+
+    @objc private func jetpackSettingsControllerDismissed() {
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.gutenberg.updateCapabilities()
+            }
+        }
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -799,6 +818,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             withSupportButton: false
         )
     }
+
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
@@ -825,8 +845,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
         return gutenbergSettings.starterPageTemplatesTooltipShown
     }
+
     func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
         gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
+    }
+
+    func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
+        switch buttonType {
+            case .missingBlockAlertActionButton:
+                handleMissingBlockAlertButtonPressed()
+        }
     }
 }
 
@@ -908,6 +936,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+            .unsupportedBlockEditorSwitch: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
