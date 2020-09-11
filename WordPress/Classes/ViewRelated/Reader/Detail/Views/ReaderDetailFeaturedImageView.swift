@@ -26,6 +26,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     @IBOutlet weak var imageView: CachedAnimatedImageView!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loadingView: UIView!
 
     // MARK: - Public: Properties
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
@@ -81,6 +82,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        loadingView.backgroundColor = .placeholderElement
         isUserInteractionEnabled = false
 
         reset()
@@ -159,6 +161,15 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
 
         appearance.apply(navBar)
+    }
+
+    private func hideLoading() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingView.alpha = 0.0
+        }) { (_) in
+            self.loadingView.isHidden = true
+            self.loadingView.alpha = 1.0
+        }
     }
 
     // MARK: - Private: Config
@@ -252,6 +263,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Network Helpers
     public func load(completion: @escaping () -> Void) {
         guard
+            !isLoading,
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
             Self.shouldDisplayFeaturedImage(with: post)
@@ -261,6 +273,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completion()
             return
         }
+
+        loadingView.isHidden = false
 
         isLoading = true
         isLoaded = true
@@ -290,6 +304,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
                     completionHandler(size)
                 }
             }
+
+            self?.hideLoading()
+
         }) { [weak self] error in
             self?.reset()
             self?.isLoading = false
@@ -321,6 +338,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
+
+        loadingView.isHidden = true
     }
 
     private func resetStatusBarStyle() {
@@ -361,7 +380,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let navBarHeight = navigationBar?.frame.height ?? 0
         return statusBarHeight + navBarHeight
     }
-
 }
 
 // MARK: - UIGestureRecognizerDelegate
