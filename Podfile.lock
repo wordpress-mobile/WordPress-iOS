@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :commit: 609262e97ba9c2a0d554fe4fd2d119506c6c269f
+    :commit: 26df367e3897e5fbaec4ac59770a5ace42f7a2b6
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
