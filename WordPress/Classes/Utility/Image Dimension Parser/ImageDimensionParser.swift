@@ -180,8 +180,8 @@ class ImageDimensionParser {
                 let heightOffset = i + JPEGConstants.heightOffset
                 let widthOffset = heightOffset + valueSize
 
-                let height = CFSwapInt16(UInt16(data[heightOffset]) as UInt16)
-                let width = CFSwapInt16(UInt16(data[widthOffset]) as UInt16)
+                let height = CFSwapInt16(data[heightOffset, valueSize] as UInt16)
+                let width = CFSwapInt16(data[widthOffset, valueSize] as UInt16)
 
                 return CGSize(width: Int(width), height: Int(height))
             }
