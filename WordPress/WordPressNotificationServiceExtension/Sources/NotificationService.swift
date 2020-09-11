@@ -34,7 +34,7 @@ class NotificationService: UNNotificationServiceExtension {
         tracks.trackExtensionLaunched(token != nil)
 
         guard let notificationContent = self.bestAttemptContent,
-            let apsAlert = notificationContent.apsAlert,
+            let apsAlert = notificationContent.alertString,
             let noteID = notificationContent.noteID,
             let notificationType = notificationContent.type,
             let notificationKind = NotificationKind(rawValue: notificationType),
