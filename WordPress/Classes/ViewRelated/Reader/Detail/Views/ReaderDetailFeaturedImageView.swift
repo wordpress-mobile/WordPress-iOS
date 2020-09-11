@@ -71,6 +71,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
+    private var imageSize: CGSize?
+
+    // MARK: - View Methods
     deinit {
         scrollViewObserver?.invalidate()
     }
@@ -192,7 +195,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func update() {
         guard
-            imageView.image != nil,
+            imageSize != nil,
             let scrollView = self.scrollView
         else {
             reset()
@@ -262,11 +265,31 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         isLoading = true
         isLoaded = true
 
-        imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
-            self?.didFinishLoading()
+        let completionHandler: (CGSize) -> Void = { [weak self] size in
+            guard let self = self else {
+                return
+            }
 
-            self?.isLoading = false
+            self.imageSize = size
+            self.didFinishLoading()
+            self.isLoading = false
+
             completion()
+        }
+
+        imageLoader.imageDimensionsHandler = { _, size in
+            completionHandler(size)
+        }
+
+        imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
+            // If we haven't loaded the image size yet
+            // trigger the handler to update the height, etc.
+            if self?.imageSize == nil {
+                if let size = self?.imageView.image?.size {
+                    self?.imageSize = size
+                    completionHandler(size)
+                }
+            }
         }) { [weak self] error in
             self?.reset()
             self?.isLoading = false
@@ -311,13 +334,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Calculations
     private func featuredImageHeight() -> CGFloat {
         guard
-            let image = imageView.image,
+            let imageSize = self.imageSize,
             let superview = self.superview
         else {
             return 0
         }
 
-        let aspectRatio = image.size.width / image.size.height
+        let aspectRatio = imageSize.width / imageSize.height
         let height = bounds.width / aspectRatio
 
         let isLandscape = UIDevice.current.orientation.isLandscape
