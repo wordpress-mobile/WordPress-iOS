@@ -200,7 +200,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let step = tracker.state.lastStep
 
         tracker.track(step: .help)
-        
+
         let controller = SupportTableViewController { [weak self] in
             self?.tracker.track(click: .dismiss)
             self?.tracker.set(step: step)
