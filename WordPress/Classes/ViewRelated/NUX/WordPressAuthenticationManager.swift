@@ -195,13 +195,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         WPStyleGuide.configureNavigationAppearance()
 
         // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
-        // when this VC is dismissed.  This means the tracking flow isn't reset properly, so we'll need to do
-        // it here manually.
-        let flow = tracker.state.lastFlow
+        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
+        // it here manually before tracking the new step.
+        let step = tracker.state.lastStep
+
+        tracker.track(step: .help)
         
         let controller = SupportTableViewController { [weak self] in
             self?.tracker.track(click: .dismiss)
-            self?.tracker.set(flow: flow)
+            self?.tracker.set(step: step)
         }
         controller.sourceTag = sourceTag
 
