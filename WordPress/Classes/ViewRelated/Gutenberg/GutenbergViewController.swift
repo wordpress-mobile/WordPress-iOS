@@ -329,6 +329,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
         fetchEditorTheme()
+        presentNewPageNoticeIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -445,6 +446,18 @@ class GutenbergViewController: UIViewController, PostEditor {
             return
         }
         gutenberg.setFocusOnTitle()
+    }
+
+    private func presentNewPageNoticeIfNeeded() {
+        guard FeatureFlag.gutenbergModalLayoutPicker.enabled else { return }
+
+        // Validate if the post is a newly created page or not.
+        guard post is Page,
+            post.isDraft(),
+            post.remoteStatus == AbstractPostRemoteStatus.local else { return }
+
+        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
+        gutenberg.showNotice(message)
     }
 
     // MARK: - Event handlers
