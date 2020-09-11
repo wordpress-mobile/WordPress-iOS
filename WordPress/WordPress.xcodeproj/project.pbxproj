@@ -333,6 +333,15 @@
 		319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8019E44C680013871C /* SuggestionsTableView.m */; };
 		319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */; };
 		31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */; };
+		32110547250BFC3E0048446F /* ImageDimensionParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32110546250BFC3E0048446F /* ImageDimensionParserTests.swift */; };
+		3211055A250C027D0048446F /* invalid-jpeg-header.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 32110552250C027B0048446F /* invalid-jpeg-header.jpg */; };
+		3211055B250C027D0048446F /* valid-jpeg-header.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 32110553250C027B0048446F /* valid-jpeg-header.jpg */; };
+		3211055C250C027D0048446F /* valid-gif-header.gif in Resources */ = {isa = PBXBuildFile; fileRef = 32110554250C027B0048446F /* valid-gif-header.gif */; };
+		3211055D250C027D0048446F /* 100x100.gif in Resources */ = {isa = PBXBuildFile; fileRef = 32110555250C027C0048446F /* 100x100.gif */; };
+		32110560250C027D0048446F /* invalid-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 32110558250C027C0048446F /* invalid-gif.gif */; };
+		32110561250C027D0048446F /* 100x100.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 32110559250C027C0048446F /* 100x100.jpg */; };
+		32110569250C0E960048446F /* 100x100-png in Resources */ = {isa = PBXBuildFile; fileRef = 32110568250C0E960048446F /* 100x100-png */; };
+		3211056B250C0F750048446F /* valid-png-header in Resources */ = {isa = PBXBuildFile; fileRef = 3211056A250C0F750048446F /* valid-png-header */; };
 		321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321955BE24BE234C00E3F316 /* ReaderInterestsCoordinator.swift */; };
 		321955C124BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321955C024BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift */; };
 		321955C324BF77E400E3F316 /* ReaderTopicService+FollowedInterests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321955C224BF77E400E3F316 /* ReaderTopicService+FollowedInterests.swift */; };
@@ -2772,6 +2781,15 @@
 		31EC15061A5B6675009FC8B3 /* WPStyleGuide+Suggestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Suggestions.h"; sourceTree = "<group>"; };
 		31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Suggestions.m"; sourceTree = "<group>"; };
 		31FA16CC1A49B3C0003E1887 /* WordPress 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 25.xcdatamodel"; sourceTree = "<group>"; };
+		32110546250BFC3E0048446F /* ImageDimensionParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDimensionParserTests.swift; sourceTree = "<group>"; };
+		32110552250C027B0048446F /* invalid-jpeg-header.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "invalid-jpeg-header.jpg"; sourceTree = "<group>"; };
+		32110553250C027B0048446F /* valid-jpeg-header.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "valid-jpeg-header.jpg"; sourceTree = "<group>"; };
+		32110554250C027B0048446F /* valid-gif-header.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "valid-gif-header.gif"; sourceTree = "<group>"; };
+		32110555250C027C0048446F /* 100x100.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 100x100.gif; sourceTree = "<group>"; };
+		32110558250C027C0048446F /* invalid-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "invalid-gif.gif"; sourceTree = "<group>"; };
+		32110559250C027C0048446F /* 100x100.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 100x100.jpg; sourceTree = "<group>"; };
+		32110568250C0E960048446F /* 100x100-png */ = {isa = PBXFileReference; lastKnownFileType = file; path = "100x100-png"; sourceTree = "<group>"; };
+		3211056A250C0F750048446F /* valid-png-header */ = {isa = PBXFileReference; lastKnownFileType = file; path = "valid-png-header"; sourceTree = "<group>"; };
 		321955BE24BE234C00E3F316 /* ReaderInterestsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderInterestsCoordinator.swift; sourceTree = "<group>"; };
 		321955C024BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSelectInterestsCoordinatorTests.swift; sourceTree = "<group>"; };
 		321955C224BF77E400E3F316 /* ReaderTopicService+FollowedInterests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTopicService+FollowedInterests.swift"; sourceTree = "<group>"; };
@@ -5921,6 +5939,30 @@
 				3F29EB6D24042093005313DE /* My Profile */,
 			);
 			path = Me;
+			sourceTree = "<group>";
+		};
+		32110548250BFC5A0048446F /* Image Dimension Parser */ = {
+			isa = PBXGroup;
+			children = (
+				32110549250BFD4E0048446F /* Test Images */,
+				32110546250BFC3E0048446F /* ImageDimensionParserTests.swift */,
+			);
+			name = "Image Dimension Parser";
+			sourceTree = "<group>";
+		};
+		32110549250BFD4E0048446F /* Test Images */ = {
+			isa = PBXGroup;
+			children = (
+				32110568250C0E960048446F /* 100x100-png */,
+				32110555250C027C0048446F /* 100x100.gif */,
+				32110559250C027C0048446F /* 100x100.jpg */,
+				32110558250C027C0048446F /* invalid-gif.gif */,
+				32110552250C027B0048446F /* invalid-jpeg-header.jpg */,
+				32110554250C027B0048446F /* valid-gif-header.gif */,
+				32110553250C027B0048446F /* valid-jpeg-header.jpg */,
+				3211056A250C0F750048446F /* valid-png-header */,
+			);
+			path = "Test Images";
 			sourceTree = "<group>";
 		};
 		3236F79F24B61B780088E8F3 /* Select Interests */ = {
@@ -10008,6 +10050,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				32110548250BFC5A0048446F /* Image Dimension Parser */,
 				7EC9FE0822C6275900C5A888 /* Analytics */,
 				572FB3FE223A800500933C76 /* Classes */,
 				FF9A6E6F21F9359200D36D14 /* Gutenberg */,
@@ -11539,7 +11582,9 @@
 				7E4A772520F7C5E5001C706D /* activity-log-theme-content.json in Resources */,
 				D848CBF720FEEE7F00A9038F /* notifications-text-content.json in Resources */,
 				D848CC0F20FF2D9B00A9038F /* notifications-comment-range.json in Resources */,
+				3211055A250C027D0048446F /* invalid-jpeg-header.jpg in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
+				3211056B250C0F750048446F /* valid-png-header in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
 				7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */,
 				F127FFD824213B5600B9D41A /* atomic-get-authentication-cookie-success.json in Resources */,
@@ -11564,6 +11609,7 @@
 				D88A64AA208D974D008AE9BC /* thumbnail-collection.json in Resources */,
 				08B832421EC130D60079808D /* test-gif.gif in Resources */,
 				D821C819210037F8002ED995 /* activity-log-activity-content.json in Resources */,
+				3211055D250C027D0048446F /* 100x100.gif in Resources */,
 				748437EB1F1D4A4800E8DDAF /* gallery-reader-post-private.json in Resources */,
 				D848CBFB20FEFA4800A9038F /* notifications-comment-content.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
@@ -11571,10 +11617,13 @@
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */,
+				32110560250C027D0048446F /* invalid-gif.gif in Resources */,
 				D848CC0B20FF2D5D00A9038F /* notifications-user-range.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
+				32110569250C0E960048446F /* 100x100-png in Resources */,
 				D848CC1320FF31BB00A9038F /* notifications-blockquote-range.json in Resources */,
 				D848CC0D20FF2D7C00A9038F /* notifications-post-range.json in Resources */,
+				32110561250C027D0048446F /* 100x100.jpg in Resources */,
 				748437F11F1D4ECC00E8DDAF /* notifications-last-seen.json in Resources */,
 				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
@@ -11587,11 +11636,13 @@
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
+				3211055C250C027D0048446F /* valid-gif-header.gif in Resources */,
 				D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */,
+				3211055B250C027D0048446F /* valid-jpeg-header.jpg in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */,
 				7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */,
@@ -13924,6 +13975,7 @@
 				8BC6020D2390412000EFE3D0 /* NullBlogPropertySanitizerTests.swift in Sources */,
 				57B71D4E230DB5F200789A68 /* BlogBuilder.swift in Sources */,
 				D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */,
+				32110547250BFC3E0048446F /* ImageDimensionParserTests.swift in Sources */,
 				E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */,
 				8B7F51CB24EED8A8008CF5B5 /* ReaderTrackerTests.swift in Sources */,
 				D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */,
