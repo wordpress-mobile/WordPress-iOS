@@ -33,15 +33,28 @@ class LayoutPreviewViewController: UIViewController {
         return ghost
     }()
 
+    private var defaultBrackgroundColor: UIColor {
+        if #available(iOS 13, *) {
+            return .systemBackground
+        }
+        return .white
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         styleButtons()
         setupGutenbergView()
+        view.backgroundColor = defaultBrackgroundColor
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ghostView.startAnimation()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        ghostView.frame = previewContainer.frame
     }
 
     override func viewLayoutMarginsDidChange() {
