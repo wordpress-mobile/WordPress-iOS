@@ -4,7 +4,13 @@ class ImageDimensionParser {
     private(set) var format: ImageDimensionFormat?
     private(set) var imageSize: CGSize? = nil
 
-    private var data: Data = Data()
+    private var data: Data
+
+    init(with data: Data = Data()) {
+        self.data = data
+
+        parse()
+    }
 
     public func append(bytes: Data) {
         data.append(contentsOf: bytes)
@@ -25,8 +31,6 @@ class ImageDimensionParser {
         guard imageSize != nil else {
             return
         }
-
-        print("Finished parsing:", data.count / 1024, "kb")
     }
 
     // MARK: - Dimension Calculating
@@ -43,88 +47,141 @@ class ImageDimensionParser {
     // MARK: - PNG Parsing
     private func pngSize(with data: Data) -> CGSize? {
         // Bail out if the data size is too small to read the header
-        guard data.count >= 25 else {
+        let chunkSize = PNGConstants.chunkSize
+        let ihdrStart = PNGConstants.headerSize + chunkSize
+
+        // The min length needed to read the width / height
+        let minLength = ihdrStart + chunkSize * 3
+
+        guard data.count >= minLength else {
             return nil
         }
-
-        // https://www.w3.org/TR/PNG/#11IHDR
-        let validHeader = "IHDR".data(using: .ascii)
 
         // Validate the header to make sure the width/height is in the correct spot
-        // This can happen if the image has been
-        guard data.subdata(in: NSRange(location: 12, length: 4)) == validHeader else {
+        guard data.subdata(start: ihdrStart, length: chunkSize) == PNGConstants.IHDR else {
             return nil
         }
+
+        // Width is immediately after the IHDR header
+        let widthOffset = ihdrStart + chunkSize
+
+        // Height is after the width
+        let heightOffset = widthOffset + chunkSize
 
         // Height and width are stored as 32 bit ints
         // http://www.libpng.org/pub/png/spec/1.0/PNG-Chunks.html
         // ^ The maximum for each is (2^31)-1 in order to accommodate languages that have difficulty with unsigned 4-byte values.
-        let width = CFSwapInt32(data[16, 4] as UInt32)
-        let height = CFSwapInt32(data[20, 4] as UInt32)
+        let width = CFSwapInt32(data[widthOffset, chunkSize] as UInt32)
+        let height = CFSwapInt32(data[heightOffset, chunkSize] as UInt32)
 
         return CGSize(width: Int(width), height: Int(height))
+    }
+
+    private struct PNGConstants {
+        // PNG header size is 8 bytes
+        static let headerSize = 8
+
+        // PNG is broken up into 4 byte chunks, except for the header
+        static let chunkSize = 4
+
+        // IHDR header: // https://www.w3.org/TR/PNG/#11IHDR
+        static let IHDR = Data([0x49, 0x48, 0x44, 0x52])
     }
 
     // MARK: - GIF Parsing
     private func gifSize(with data: Data) -> CGSize? {
         // Bail out if the data size is too small to read the header
-        guard data.count >= 11 else {
+        let valueSize = GIFConstants.valueSize
+        let headerSize = GIFConstants.headerSize
+
+        // Min length we need to read is the header size + 4 bytes
+        let minLength = headerSize + valueSize * 3
+
+        guard data.count >= minLength else {
             return nil
         }
 
-        // http://www.matthewflickinger.com/lab/whatsinagif/bits_and_bytes.asp
-        // Reads the "logical screen descriptor" which appears after the Gif header block
-        let width: UInt16 = data[6, 2]
-        let height: UInt16 = data[8, 2]
+        // The width appears directly after the header, and the height after that.
+        let widthOffset = headerSize
+        let heightOffset = widthOffset
+
+        // Reads the "logical screen descriptor" which appears after the GIF header block
+        let width: UInt16 = data[widthOffset, valueSize]
+        let height: UInt16 = data[heightOffset, valueSize]
 
         return CGSize(width: Int(width), height: Int(height))
     }
 
+    private struct GIFConstants {
+        // http://www.matthewflickinger.com/lab/whatsinagif/bits_and_bytes.asp
+
+        // The GIF header size is 6 bytes
+        static let headerSize = 6
+
+        // The height and width are stored as 2 byte values
+        static let valueSize = 2
+    }
+
     // MARK: - JPEG Parsing
+    private struct JPEGConstants {
+        static let blockSize: UInt16 = 256
+
+        // 16 bytes skips the header and the first block
+        static let minDataCount = 16
+
+        static let valueSize = 2
+        static let heightOffset = 5
+
+        // JFIF{NULL}
+        static let jfifHeader = Data([0x4A, 0x46, 0x49, 0x46, 0x00])
+    }
+
     private func jpegSize(with data: Data) -> CGSize? {
         // Bail out if the data size is too small to read the header
-        guard data.count >= 12 else {
-            return nil
-        }
-        // https://web.archive.org/web/20131016210645/http://www.64lines.com/jpeg-width-height
-        var i: Int = 0
-        // Check for valid JPEG image
-        guard data[i] == 0xFF && data[i+1] == 0xD8 && data[i+2] == 0xFF && data[i+3] == 0xE0 else {
+        guard data.count > JPEGConstants.minDataCount else {
             return nil
         }
 
-        i += 4
+        // Adapted from:
+        // - https://web.archive.org/web/20131016210645/http://www.64lines.com/jpeg-width-height
 
-        // Check for valid JPEG header (null terminated JFIF)
-        let jfifHeader = "JFIF\0".data(using: .ascii)
-        guard data.subdata(in: NSRange(location: i+2, length: 5)) == jfifHeader else {
-            return nil
-        }
+        var i = JPEGConstants.jfifHeader.count - 1
 
-        let blockSize: UInt16 = 256
+        let blockSize: UInt16 = JPEGConstants.blockSize
+
         // Retrieve the block length of the first block since the first block will not contain the size of file
         var block_length = UInt16(data[i]) * blockSize + UInt16(data[i+1])
 
         while i < data.count {
-
             i += Int(block_length)
 
-            // Check to protect against segmentation faults
+            // Protect again out of bounds issues
+            // 10 = the max size we need to read all the values from below
             if i + 10 >= data.count {
                 return nil
             }
 
-            //Check that we are truly at the start of another block
+            // Check that we are truly at the start of another block
             if data[i] != 0xFF {
                 return nil
             }
 
-            // SOF0, SOF1, SOF2 markers
-            // https://help.accusoft.com/ImageGear/v18.2/Windows/ActiveX/IGAX-10-12.html
-            if data[i+1] >= 0xC0 && data[i+1] <= 0xC3 {
+            // SOFn marker
+            let marker = data[i+1]
+
+            let isValidMarker = (marker >= 0xC0 && marker <= 0xC3) ||
+                                (marker >= 0xC5 && marker <= 0xC7) ||
+                                (marker >= 0xC9 && marker <= 0xCB) ||
+                                (marker >= 0xCD && marker <= 0xCF)
+
+            if isValidMarker {
                 // "Start of frame" marker which contains the file size
-                let height = CFSwapInt16(data[i + 5, 2] as UInt16)
-                let width = CFSwapInt16(data[i + 7, 2] as UInt16)
+                let valueSize = JPEGConstants.valueSize
+                let heightOffset = i + JPEGConstants.heightOffset
+                let widthOffset = heightOffset + valueSize
+
+                let height = CFSwapInt16(UInt16(data[heightOffset]) as UInt16)
+                let width = CFSwapInt16(UInt16(data[widthOffset]) as UInt16)
 
                 return CGSize(width: Int(width), height: Int(height))
             }
@@ -136,7 +193,6 @@ class ImageDimensionParser {
 
         return nil
     }
-
 }
 
 // MARK: - ImageFormat
@@ -173,6 +229,7 @@ enum ImageDimensionFormat {
         static let png = Data([0x89, 0x50, 0x4E, 0x47])
 
         // https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format
+        // FFD8 = SOI, APP0 marker
         static let jpeg = Data([0xFF, 0xD8, 0xFF])
 
         // https://en.wikipedia.org/wiki/GIF
@@ -185,7 +242,7 @@ enum ImageDimensionFormat {
 // MARK: - Private: Extensions
 private extension Data {
     func headerData(with length: Int) -> Data {
-        return subdata(in: NSRange(location: 0, length: length))
+        return subdata(start: 0, length: length)
     }
 
     func headerIsEqual(to value: Data) -> Bool {
@@ -199,8 +256,8 @@ private extension Data {
         return header == value
     }
 
-    func subdata(in range: NSRange) -> Data {
-        return subdata(in: range.location ..< range.location + range.length)
+    func subdata(start: Int, length: Int) -> Data {
+        return subdata(in: start ..< start + length)
     }
 
     subscript<UInt16>(range: Range<Data.Index>) -> UInt16 {
