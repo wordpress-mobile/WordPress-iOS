@@ -8,15 +8,15 @@ extension NSNotification.Name {
     public static let suggestionListUpdated = NSNotification.Name.suggestionListUpdated
 }
 
-// NSCache works with classes such as NSArray, not structs such as Suggestion or [Suggestion].
-public class Wrapper<T>: NSObject {
-    let value: T
-    init(_ value: T) {
-        self.value = value
-    }
-}
-
 @objc public class SuggestionService: NSObject {
+
+    // NSCache works with classes such as NSArray, not structs such as Suggestion or [Suggestion].
+    private class Wrapper<T>: NSObject {
+        let value: T
+        init(_ value: T) {
+            self.value = value
+        }
+    }
 
     private let suggestionsCache = NSCache<NSNumber, Wrapper<[Suggestion]>>()
     private var siteIDsCurrentlyBeingRequested = [NSNumber]()
@@ -29,6 +29,13 @@ public class Wrapper<T>: NSObject {
 
     private override init() {}
 
+    /**
+    Returns the cached @mention suggestions (if any) for a given siteID.  Calls
+    updateSuggestionsForSiteID if no suggestions for the site have been cached.
+
+    @param siteID ID of the blog/site to retrieve suggestions for
+    @return An array of suggestions
+    */
     @objc public func suggestions(for siteID: NSNumber) -> [Suggestion]? {
         if let cachedSuggestions = suggestionsCache.object(forKey: siteID) {
             return cachedSuggestions.value
@@ -37,6 +44,11 @@ public class Wrapper<T>: NSObject {
         return nil
     }
 
+    /**
+    Performs a REST API request for the siteID given.
+
+    @param siteID ID of the blog/site to retrieve suggestions for
+    */
     private func updateSuggestions(for siteID: NSNumber) {
 
         // if there is already a request in place for this siteID, just wait
@@ -74,6 +86,12 @@ public class Wrapper<T>: NSObject {
         })
     }
 
+    /**
+    Tells the caller if it is a good idea to show suggestions right now for a given siteID.
+
+    @param siteID ID of the blog/site to check for
+    @return BOOL Whether the caller should show suggestions
+    */
     @objc func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
         guard let siteID = siteID, let appDelegate = WordPressAppDelegate.shared else {
             return false
@@ -82,8 +100,7 @@ public class Wrapper<T>: NSObject {
         let suggestions = suggestionsCache.object(forKey: siteID)?.value
 
         // if the device is offline and suggestion list is not yet retrieved
-
-        if (!appDelegate.connectionAvailable && suggestions == nil) {
+        if !appDelegate.connectionAvailable && suggestions == nil {
             return false
         }
 
