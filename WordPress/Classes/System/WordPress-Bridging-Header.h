@@ -74,7 +74,6 @@
 #import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "StatsViewController.h"
-#import "SuggestionService.h"
 #import "SuggestionsTableView.h"
 #import "SVProgressHUD+Dismiss.h"
 
@@ -92,6 +91,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAuthTokenIssueSolver.h"
+#import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
 #import "WPUploadStatusButton.h"
