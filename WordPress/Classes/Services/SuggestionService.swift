@@ -23,7 +23,7 @@ extension NSNotification.Name {
 
     private static let shared = SuggestionService()
 
-    @objc public static func sharedInstance() -> SuggestionService {
+    @objc static func sharedInstance() -> SuggestionService {
         return shared
     }
 
@@ -36,7 +36,7 @@ extension NSNotification.Name {
     @param siteID ID of the blog/site to retrieve suggestions for
     @return An array of suggestions
     */
-    @objc public func suggestions(for siteID: NSNumber) -> [Suggestion]? {
+    @objc func suggestions(for siteID: NSNumber) -> [Suggestion]? {
         if let cachedSuggestions = suggestionsCache.object(forKey: siteID) {
             return cachedSuggestions.value
         }
