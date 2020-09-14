@@ -63,11 +63,8 @@ class PostCardStatusViewModel: NSObject {
             return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
-        } else if post.hasVersionConflict {
+        } else if post.hasVersionConflict || !post.hasLocalChanges() && post.hasAutosaveRevision {
             return StatusMessages.versionConflict
-        }
-        else if !post.hasLocalChanges() && post.hasAutosaveRevision {
-            return StatusMessages.hasUnsavedChanges
         } else {
             return post.statusForDisplay()
         }
@@ -111,12 +108,8 @@ class PostCardStatusViewModel: NSObject {
             return (autoUploadAction == .upload || post.wasAutoUploadCancelled) ? .warning : .error
         }
 
-        if post.hasVersionConflict {
+        if post.hasVersionConflict || post.hasAutosaveRevision {
             return .error(.shade50)
-        }
-
-        if post.hasAutosaveRevision {
-            return .warning(.shade40)
         }
 
         switch status {
@@ -269,8 +262,6 @@ class PostCardStatusViewModel: NSObject {
                                                             comment: "Message displayed on a post's card when the post has failed to upload")
         static let localChanges = NSLocalizedString("Local changes",
                                                             comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-        static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
-                                                            comment: "Message displayed on a post's card when the post has unsaved changes")
         static let versionConflict = NSLocalizedString("Version Conflict", comment: "Message displayed when the post has a version conflict from a remote update")
     }
 }
