@@ -63,6 +63,11 @@ class PostBuilder {
         return self
     }
 
+    func hasVersionConflict() -> PostBuilder {
+        post.hasVersionConflict = true
+        return self
+    }
+
     func autosaved() -> PostBuilder {
         post.autosaveTitle = "a"
         post.autosaveExcerpt = "b"
