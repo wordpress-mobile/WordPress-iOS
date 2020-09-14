@@ -11,12 +11,16 @@ class ImageDimensionsFetcher: NSObject, URLSessionDataDelegate {
     // Internal use properties
     private let request: URLRequest
     private var task: URLSessionDataTask? = nil
-    private let parser: ImageDimensionParser = ImageDimensionParser()
+    private let parser: ImageDimensionParser
 
-    init(request: URLRequest, success: @escaping CompletionHandler, error: ErrorHandler? = nil) {
+    init(request: URLRequest,
+         success: @escaping CompletionHandler,
+         error: ErrorHandler? = nil,
+         imageParser: ImageDimensionParser = ImageDimensionParser()) {
         self.request = request
         self.completionHandler = success
         self.errorHandler = error
+        self.parser = imageParser
 
         super.init()
     }
