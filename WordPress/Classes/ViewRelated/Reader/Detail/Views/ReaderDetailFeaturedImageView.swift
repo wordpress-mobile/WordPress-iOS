@@ -288,7 +288,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         if let scrollView = self.scrollView {
             scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
-            scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
+
+            // Only reset offset if the user has scrolled just a little bit
+            if scrollView.contentOffset.y < 0 {
+                scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
+            }
         }
     }
 
