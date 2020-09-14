@@ -490,13 +490,22 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
-    func testShowsUnsavedChangesMessageWhenPostHasAutosave() {
+    func testShowsVersionConflictMessageWhenPostHasRemoteAutosave() {
         let post = PostBuilder(context).with(remoteStatus: .sync).autosaved().build()
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("You've made unsaved changes to this post")))
-        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning(.shade40)))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Version Conflict")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error(.shade50)))
+    }
+
+    func testShowsVersionConflictMessageWhenPostHasLocalAutosaveAndRemoteUpdate() {
+        let post = PostBuilder(context).with(remoteStatus: .sync).revision().hasVersionConflict().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Version Conflict")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error(.shade50)))
     }
 
     private func postCellFromNib() -> PostCardCell {
