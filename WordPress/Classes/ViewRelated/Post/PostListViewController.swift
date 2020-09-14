@@ -412,6 +412,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         predicates.append(antiDuplicatePredicate())
+        predicates.append(outdatedDraftPredicate())
 
         let searchText = currentSearchTerm() ?? ""
         let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
@@ -456,6 +457,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let isLatestLocalVersion = "revision = nil"
         let isRemoteStatusUpdate = "hasVersionConflict = true && NOT (revision.status IN (%@))"
         let query = "\(isLatestLocalVersion) || \(isRemoteStatusUpdate)"
+        return NSPredicate(format: query, allowedPostStatusesForCurrentTab.strings)
+    }
+
+    /// Removes locally autosaved drafts from draft tab when that post was published remotely.
+    ///
+    /// When there's a remote update that changes the status of the original post the remotely published original is shown
+    /// instead of the local autosave revision.
+    private func outdatedDraftPredicate() -> NSPredicate {
+        let allowedPostStatusesForCurrentTab = filterSettings.currentPostListFilter().statuses
+        let isOriginal = "original = nil"
+        let originalDidntHaveStatusUpdatedRemotely = "original.status IN %@"
+        let query = "\(isOriginal) || \(originalDidntHaveStatusUpdatedRemotely)"
         return NSPredicate(format: query, allowedPostStatusesForCurrentTab.strings)
     }
 
