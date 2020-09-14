@@ -1,6 +1,8 @@
 15.8
 -----
 * [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
+* [***] Block Editor: Full-width and wide alignment support for Group, Cover and Image block
+* [**] Block Editor: Add support for rounded style in Image block
 
 15.7
 -----
