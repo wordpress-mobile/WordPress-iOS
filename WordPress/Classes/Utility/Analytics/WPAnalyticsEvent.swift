@@ -69,6 +69,7 @@ import Foundation
     case readerBlogBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
+    case readerPostReported
 
     /// A String that represents the event
     var value: String {
@@ -181,6 +182,8 @@ import Foundation
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
             return "reader_toggle_follow_conversation"
+        case .readerPostReported:
+            return "reader_post_reported"
         }
     }
 
