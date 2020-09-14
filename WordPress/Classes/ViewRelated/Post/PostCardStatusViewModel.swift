@@ -91,6 +91,10 @@ class PostCardStatusViewModel: NSObject {
             return .neutral(.shade70)
         }
 
+        if post.hasVersionConflict || post.hasAutosaveRevision {
+            return .error(.shade50)
+        }
+
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return .neutral(.shade30)
         }
@@ -106,10 +110,6 @@ class PostCardStatusViewModel: NSObject {
         if post.isFailed {
             let autoUploadAction = autoUploadInteractor.autoUploadAction(for: post)
             return (autoUploadAction == .upload || post.wasAutoUploadCancelled) ? .warning : .error
-        }
-
-        if post.hasVersionConflict || post.hasAutosaveRevision {
-            return .error(.shade50)
         }
 
         switch status {
