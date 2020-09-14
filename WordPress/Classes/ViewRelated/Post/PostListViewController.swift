@@ -406,12 +406,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         var predicates = [NSPredicate]()
 
         if let blog = blog {
-            let allowedPostStatusesForCurrentTab = filterSettings.currentPostListFilter().statuses
-            // Show revision posts and original posts without a revision within the current tab
-            let query = "blog = %@ && (revision = nil || hasVersionConflict = true && NOT (revision.status IN (%@) ))"
-            let basePredicate = NSPredicate(format: query, blog, allowedPostStatusesForCurrentTab.strings)
+            let query = "blog = %@"
+            let basePredicate = NSPredicate(format: query, blog)
             predicates.append(basePredicate)
         }
+
+        predicates.append(antiDuplicatePredicate())
 
         let searchText = currentSearchTerm() ?? ""
         let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
@@ -441,6 +441,22 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         return predicate
+    }
+
+    /// Show revision posts and original posts without a revision within the current tab
+    ///
+    /// Original posts are only shown instead of their local autosave revisions when the local autosave
+    /// has the wrong status for the current tab.
+    ///
+    /// This happens when a remote update changes the status of the original post
+    /// e.g. publishing a locally autosaved draft from another device
+    private func antiDuplicatePredicate() -> NSPredicate {
+        let allowedPostStatusesForCurrentTab = filterSettings.currentPostListFilter().statuses
+
+        let isLatestLocalVersion = "revision = nil"
+        let isRemoteStatusUpdate = "hasVersionConflict = true && NOT (revision.status IN (%@))"
+        let query = "\(isLatestLocalVersion) || \(isRemoteStatusUpdate)"
+        return NSPredicate(format: query, allowedPostStatusesForCurrentTab.strings)
     }
 
     // MARK: - Table View Handling
