@@ -72,6 +72,11 @@ class ReaderInterestsDataSource {
         }
     }
 
+    /// Reset all selected interests
+    public func reset() {
+        interests.forEach { $0.isSelected = false }
+    }
+
     /// Returns a reader interest for the specified row
     /// - Parameter row: The index of the item you want to return
     /// - Returns: A reader interest model

@@ -61,6 +61,12 @@ class ReaderSelectInterestsViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        resetSelectedInterests()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -142,6 +148,11 @@ class ReaderSelectInterestsViewController: UIViewController {
         startLoading(hideLabel: true)
 
         dataSource.reload()
+    }
+
+    private func resetSelectedInterests() {
+        dataSource.reset()
+        refreshData()
     }
 
     private func reloadData() {
