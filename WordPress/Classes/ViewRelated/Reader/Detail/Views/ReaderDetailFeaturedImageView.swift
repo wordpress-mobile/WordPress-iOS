@@ -127,10 +127,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     public func deviceDidRotate() {
-        let contentOffset = scrollView?.contentOffset.y ?? 0
-        let isFeaturedImageVisible = contentOffset < 0
-
-        updateInitialHeight(resetContentOffset: isFeaturedImageVisible)
+        updateInitialHeight(resetContentOffset: false)
     }
 
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
