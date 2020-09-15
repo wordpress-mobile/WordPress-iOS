@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '1416f46ace4454b1d1e0291cd86b1993a4a6fda1'
+    gutenberg :commit => '93db884b5563c8df0b47aae3365a9b3263a799ca'
 
     ## Third party libraries
     ## =====================
@@ -192,9 +192,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.1'
 
-    # pod 'WordPressAuthenticator', '~> 1.25.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.25.0-beta'
     # While in PR
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/456-prologue_buttons_ipad'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 

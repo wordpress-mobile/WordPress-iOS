@@ -10,10 +10,11 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     let authenticator: RequestAuthenticator?
     private let url: URL
     private let progressView = WebProgressView()
+    private let userId: String
 
     init(with post: AbstractPost, block: Block) throws {
         authenticator = GutenbergRequestAuthenticator(blog: post.blog)
-        let userId = "\(post.blog.userID ?? 1)"
+        userId = "\(post.blog.userID ?? 1)"
 
         guard
             let siteURL = post.blog.homeURL,
@@ -63,6 +64,27 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     override func getRequest(for webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
         authenticatedRequest(for: url, on: webView) { (request) in
             completion(request)
+        }
+    }
+
+    override func onPageLoadScripts() -> [WKUserScript] {
+        return [
+            loadCustomScript(named: "extra-localstorage-entries", with: userId)
+        ].compactMap { $0 }
+    }
+
+    override func onGutenbergReadyScripts() -> [WKUserScript] {
+        return [
+            loadCustomScript(named: "remove-nux")
+        ].compactMap { $0 }
+    }
+
+    private func loadCustomScript(named name: String, with argument: String? = nil) -> WKUserScript? {
+        do {
+            return try SourceFile(name: name, type: .js).jsScript(with: argument)
+        } catch {
+            assertionFailure("Failed to load `\(name)` JS script for Unsupported Block Editor: \(error)")
+            return nil
         }
     }
 

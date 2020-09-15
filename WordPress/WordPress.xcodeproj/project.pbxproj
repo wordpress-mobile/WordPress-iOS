@@ -5675,7 +5675,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -11178,7 +11178,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11964,11 +11964,14 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/gutenberg-observer.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/extra-localstorage-entries.js",
+				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/remove-nux.js",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
@@ -11993,11 +11996,14 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gridicons.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/content-functions.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor-style-overrides.css",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gutenberg-observer.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/inject-css.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/insert-block.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/local-storage-overrides.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/prevent-autosaves.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wp-bar-override.css",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/extra-localstorage-entries.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/remove-nux.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
