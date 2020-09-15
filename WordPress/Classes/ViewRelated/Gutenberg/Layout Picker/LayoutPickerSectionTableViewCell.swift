@@ -11,6 +11,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
     static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
+    static let expectedTumbnailSize = CGSize(width: 160.0, height: 230.0)
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -84,7 +85,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
 
 extension LayoutPickerSectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 160.0, height: 230.0)
+        return LayoutPickerSectionTableViewCell.expectedTumbnailSize
      }
 }
 

@@ -1,6 +1,7 @@
 15.8
 -----
- 
+* [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
+
 15.7
 -----
 * [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (#14742)
