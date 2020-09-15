@@ -303,6 +303,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
+        guard isViewOnScreen() else {
+            return
+        }
+
         tableView.reloadSections([0], with: .automatic)
 
         updateGhostableTableViewOptions()
