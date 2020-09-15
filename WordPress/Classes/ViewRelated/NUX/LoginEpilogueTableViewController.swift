@@ -208,6 +208,7 @@ extension LoginEpilogueTableViewController {
         }
 
         tracker.track(click: .connectSite)
+        tracker.set(flow: .loginWithSiteAddress)
         onConnectSite?()
     }
 }
