@@ -218,7 +218,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [50])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
