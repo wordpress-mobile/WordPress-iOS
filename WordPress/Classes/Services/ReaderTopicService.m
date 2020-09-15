@@ -360,7 +360,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+            NSDictionary *properties = @{@"tag":topicName};
+            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -377,7 +378,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+        NSDictionary *properties = @{@"tag":slug};
+        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
         if (success) {
             success();
         }
