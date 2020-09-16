@@ -55,7 +55,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     textField.textColor = [UIColor murielText];
     textField.tintColor = [UIColor murielListIcon];
     textField.adjustsFontForContentSizeCategory = YES;
-    textField.accessibilityLabel = NSLocalizedString(@"Menu name", @"");
+    textField.accessibilityLabel = NSLocalizedString(@"Menu name", @"Screen Reader: Description for text filed that edits the menu name.");
     [self updateTextFieldFont];
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
@@ -80,7 +80,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     trashButton.backgroundColor = [UIColor clearColor];
     trashButton.adjustsImageWhenHighlighted = YES;
-    trashButton.accessibilityLabel = NSLocalizedString(@"Delete menu", @"");
+    trashButton.accessibilityLabel = NSLocalizedString(@"Delete menu", @"Screen Reader: Button that deletes a menu.");
 }
 
 - (void)setupTextFieldDesignViews
