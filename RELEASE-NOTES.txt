@@ -14,6 +14,7 @@
 * [**] Added iCloud Keychain login functionality. (#14770)
 * [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
 * [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
+* [**] Block Editor: Fixed Dark Mode transition for editor menus.
 
 15.6
 -----

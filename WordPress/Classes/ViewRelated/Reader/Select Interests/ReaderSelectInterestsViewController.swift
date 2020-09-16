@@ -173,8 +173,15 @@ class ReaderSelectInterestsViewController: UIViewController {
                 return
             }
 
+            self?.trackEvents(with: selectedInterests)
             self?.stopLoading()
             self?.didSaveInterests?()
+        }
+    }
+
+    private func trackEvents(with selectedInterests: [RemoteReaderInterest]) {
+        selectedInterests.forEach {
+            WPAnalytics.track(.readerTagFollowed, withProperties: ["tag": $0.slug])
         }
 
         WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
