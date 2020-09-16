@@ -15,10 +15,10 @@ parameters:
     default: all-lang
 
 commands:
-  fix-path:
+  fix-image:
     steps:
       - run:
-          name: Fix $PATH
+          name: Fix CI Image
           command: |
             # Add `/usr/local/bin` to the Xcode 11.2 image's $PATH in order to be able to use dependencies
 
@@ -28,13 +28,16 @@ commands:
               echo $PATH
             fi
 
+            chruby ruby-2.6.6
+            gem install bundler
+
 jobs:
   Build Tests:
     executor:
       name: ios/default
       xcode-version: "12.0.0"
     steps:
-      - run: echo 'chruby system' >> ~/.bash_profile
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -57,8 +60,7 @@ jobs:
       name: ios/default
       xcode-version: "12.0.0"
     steps:
-      - run: echo 'chruby system' >> ~/.bash_profile
-      - fix-path
+      - fix-image
       - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "12.0.0"
@@ -87,7 +89,7 @@ jobs:
       name: ios/default
       xcode-version: "12.0.0"
     steps:
-      - fix-path
+      - fix-image
       - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "12.0.0"
@@ -128,6 +130,7 @@ jobs:
       name: ios/default
       xcode-version: "12.0.0"
     steps:
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -155,6 +158,7 @@ jobs:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
+      - fix-image
       - run:
           name: Setup Notifications
           command: |
@@ -197,6 +201,7 @@ jobs:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -305,4 +310,3 @@ workflows:
     when: << pipeline.parameters.translation_review_build >>
     jobs:
       - translation-review-build
-
