@@ -43,9 +43,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		00F2E3F8166EEF9800D0527C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
-		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
-		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
 		02761EC222700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */; };
 		02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */; };
@@ -1896,8 +1893,6 @@
 		E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */; };
 		E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */; };
 		E12FE0741FA0CEE000F28710 /* ImmuTable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FE0731FA0CEE000F28710 /* ImmuTable+Optional.swift */; };
-		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
-		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
 		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
 		E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */; };
 		E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E135965C1E7152D1006C6606 /* RecentSitesServiceTests.swift */; };
@@ -1939,7 +1934,6 @@
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A76F01FC4758300A661E3 /* JetpackSiteRef.swift */; };
 		E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A76F21FC4766900A661E3 /* CredentialsService.swift */; };
-		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */; };
 		E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
@@ -1951,25 +1945,6 @@
 		E180BD4E1FB4681E00D0D781 /* MockCookieJar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */; };
 		E18165FD14E4428B006CE885 /* loader.html in Resources */ = {isa = PBXBuildFile; fileRef = E18165FC14E4428B006CE885 /* loader.html */; };
 		E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */; };
-		E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
-		E183EC9D16B2160200C2EB11 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
-		E183ECA216B2179B00C2EB11 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; };
-		E183ECA316B2179B00C2EB11 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */; };
-		E183ECA416B2179B00C2EB11 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835E2402126E66E50085940B /* AssetsLibrary.framework */; };
-		E183ECA516B2179B00C2EB11 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
-		E183ECA616B2179B00C2EB11 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C714DB05C300954CF8 /* AVFoundation.framework */; };
-		E183ECA716B2179B00C2EB11 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
-		E183ECA816B2179B00C2EB11 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
-		E183ECA916B2179B00C2EB11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
-		E183ECAA16B2179B00C2EB11 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C914DB05F700954CF8 /* CoreMedia.framework */; };
-		E183ECAB16B2179B00C2EB11 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
-		E183ECAC16B2179B00C2EB11 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
-		E183ECAD16B2179B00C2EB11 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
-		E183ECAE16B2179B00C2EB11 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
-		E183ECAF16B2179B00C2EB11 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */; };
-		E183ECB016B2179B00C2EB11 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
-		E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
-		E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; };
 		E185042F1EE6ABD9005C234C /* Restorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E185042E1EE6ABD9005C234C /* Restorer.swift */; };
 		E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E185474D1DED8D8800D875D7 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E18549D9230EED73003C620E /* BlogService+Deduplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18549D8230EED73003C620E /* BlogService+Deduplicate.swift */; };
@@ -5184,31 +5159,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */,
-				E183EC9D16B2160200C2EB11 /* MobileCoreServices.framework in Frameworks */,
-				E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */,
-				E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */,
-				E183ECA216B2179B00C2EB11 /* Accounts.framework in Frameworks */,
-				E183ECA316B2179B00C2EB11 /* AddressBook.framework in Frameworks */,
-				E183ECA416B2179B00C2EB11 /* AssetsLibrary.framework in Frameworks */,
-				E183ECA516B2179B00C2EB11 /* AudioToolbox.framework in Frameworks */,
-				E183ECA616B2179B00C2EB11 /* AVFoundation.framework in Frameworks */,
-				E183ECA716B2179B00C2EB11 /* CFNetwork.framework in Frameworks */,
-				E183ECA816B2179B00C2EB11 /* CoreData.framework in Frameworks */,
-				00F2E3F8166EEF9800D0527C /* CoreGraphics.framework in Frameworks */,
-				E183ECA916B2179B00C2EB11 /* CoreLocation.framework in Frameworks */,
-				E183ECAA16B2179B00C2EB11 /* CoreMedia.framework in Frameworks */,
-				E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */,
-				E183ECAB16B2179B00C2EB11 /* ImageIO.framework in Frameworks */,
-				E183ECAC16B2179B00C2EB11 /* libiconv.dylib in Frameworks */,
-				E183ECAD16B2179B00C2EB11 /* libz.dylib in Frameworks */,
-				E183ECAE16B2179B00C2EB11 /* MapKit.framework in Frameworks */,
-				E183ECAF16B2179B00C2EB11 /* MediaPlayer.framework in Frameworks */,
-				E183ECB016B2179B00C2EB11 /* MessageUI.framework in Frameworks */,
-				00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */,
-				E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */,
-				E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */,
-				00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */,
 				E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
