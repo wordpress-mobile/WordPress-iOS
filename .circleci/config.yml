@@ -32,8 +32,9 @@ jobs:
   Build Tests:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
+      - run: echo 'chruby system' >> ~/.bash_profile
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -54,12 +55,13 @@ jobs:
   Unit Tests:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
+      - run: echo 'chruby system' >> ~/.bash_profile
       - fix-path
       - git/shallow-checkout
       - ios/boot-simulator:
-          xcode-version: "11.2.1"
+          xcode-version: "12.0.0"
           device: iPhone 11
       - attach_workspace:
           at: ./
@@ -83,12 +85,12 @@ jobs:
         default: false
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
       - fix-path
       - git/shallow-checkout
       - ios/boot-simulator:
-          xcode-version: "11.2.1"
+          xcode-version: "12.0.0"
           device: << parameters.device >>
       - attach_workspace:
           at: ./
@@ -124,7 +126,7 @@ jobs:
   Installable Build:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
       - git/shallow-checkout
       - ios/install-dependencies:
@@ -149,7 +151,7 @@ jobs:
   Release Build:
     executor: 
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -191,7 +193,7 @@ jobs:
   translation-review-build:
     executor: 
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
