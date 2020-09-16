@@ -505,7 +505,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `fix/rtl-textlinkbutton`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/rtl-textlinkbutton`)
   - WordPressKit (~> 4.16.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.12.0)
@@ -657,7 +657,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.36.1
   WordPressAuthenticator:
-    :commit: fix/rtl-textlinkbutton
+    :branch: fix/rtl-textlinkbutton
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.36.1/third-party-podspecs/Yoga.podspec.json
@@ -678,7 +678,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.36.1
   WordPressAuthenticator:
-    :commit: fix/rtl-textlinkbutton
+    :commit: 7bdaa9a2790436c688d0ff89c75f86830aaafaa0
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -777,6 +777,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: dbfdca11193f314d55f42b3dd1e75595c5022615
+PODFILE CHECKSUM: 9f96aa8316d2eb32e426a048758e559010f08329
 
 COCOAPODS: 1.9.3
