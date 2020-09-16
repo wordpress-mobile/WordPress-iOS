@@ -22,6 +22,8 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTabViewController.configureRestoration(on: self)
 
+        ReaderCardService().removeAllCards()
+
         viewModel.filterTapped = { [weak self] (fromView, completion) in
             guard let self = self else {
                 return
