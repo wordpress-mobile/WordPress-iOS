@@ -1,8 +1,8 @@
 15.8
 -----
 * [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
-* [***] Block Editor: Full-width and wide alignment support for Group, Cover and Image block
-* [**] Block Editor: Add support for rounded style in Image block
+* [***] Block Editor: Full-width and wide alignment support for Group, Cover and Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2559]
+* [**] Block Editor: Add support for rounded style in Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2591]
 
 15.7
 -----
