@@ -52,7 +52,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="POV-pe-wu8">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="POV-pe-wu8">
                                                 <rect key="frame" x="16" y="153" width="294" height="17"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -285,12 +285,12 @@
                             <constraint firstItem="33v-Uz-9S6" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="84P-oH-EZa"/>
                             <constraint firstAttribute="trailing" secondItem="kcO-mG-FcD" secondAttribute="trailing" id="AEy-Bg-FgQ"/>
                             <constraint firstAttribute="trailing" secondItem="9eW-ex-CSu" secondAttribute="trailing" id="HUj-hh-Ili"/>
-                            <constraint firstAttribute="trailing" secondItem="JqA-of-VBn" secondAttribute="trailing" id="MY8-mP-ASa"/>
+                            <constraint firstAttribute="trailing" secondItem="JqA-of-VBn" secondAttribute="trailing" priority="999" id="MY8-mP-ASa"/>
                             <constraint firstAttribute="bottom" secondItem="JqA-of-VBn" secondAttribute="bottom" priority="999" id="NwA-tt-aRf"/>
                             <constraint firstItem="kcO-mG-FcD" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="WNn-kw-WAj"/>
                             <constraint firstItem="sev-PH-HG8" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="Yrw-8m-Cu0"/>
                             <constraint firstAttribute="bottom" secondItem="9eW-ex-CSu" secondAttribute="bottom" id="a2Y-qy-DA8"/>
-                            <constraint firstItem="JqA-of-VBn" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="bPW-Sv-fZu"/>
+                            <constraint firstItem="JqA-of-VBn" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" priority="999" id="bPW-Sv-fZu"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="16" id="hLL-be-nDD"/>
                             <constraint firstItem="A8f-pJ-oKt" firstAttribute="top" secondItem="kcO-mG-FcD" secondAttribute="bottom" id="rKR-Zt-Tm7"/>
                             <constraint firstAttribute="trailing" secondItem="sev-PH-HG8" secondAttribute="trailing" id="uus-mZ-ErN"/>
