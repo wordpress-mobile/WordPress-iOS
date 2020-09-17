@@ -830,6 +830,11 @@ extension WordPressAppDelegate {
         window?.backgroundColor = .black
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
+        // iOS 14 started rendering backgrounds for stack views, when previous versions
+        // of iOS didn't show them. This is a little hacky, but ensures things keep
+        // looking the same on newer versions of iOS.
+        UIStackView.appearance().backgroundColor = .clear
+
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureDefaultTint()
@@ -857,7 +862,6 @@ extension WordPressAppDelegate {
         let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
         UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
-
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         cellAppearance.loadingBackgroundColor = .listBackground
