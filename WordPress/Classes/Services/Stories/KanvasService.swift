@@ -1,5 +1,5 @@
 import Foundation
-import Kanvas
+import KanvasCamera
 import Photos
 
 protocol CameraHandlerDelegate: class {
@@ -25,14 +25,13 @@ class KanvasService {
         settings.features.editorMedia = true
         settings.features.editorDrawing = true
         settings.features.mediaPicking = true
-        settings.features.editorPosting = true
-        settings.features.editorSaving = true
+        settings.features.editorPublishing = true
         settings.features.editorPostOptions = false
         settings.features.newCameraModes = true
         settings.features.gifs = true
-//        settings.features.multipleExports = true
-        settings.enabledModes = [.photo, .normal]
-        settings.defaultMode = .photo
+        settings.features.multipleExports = true
+        settings.enabledModes = [.normal]
+        settings.defaultMode = .normal
         return settings
     }
 

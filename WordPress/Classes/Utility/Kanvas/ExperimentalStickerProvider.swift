@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import Kanvas
+import KanvasCamera
 
 /// Constants for ExperimentalStickerProvider
 private struct Constants {

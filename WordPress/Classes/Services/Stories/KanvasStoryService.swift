@@ -1,4 +1,4 @@
-import Kanvas
+import KanvasCamera
 
 class KanvasStoryService: CameraHandlerDelegate {
 

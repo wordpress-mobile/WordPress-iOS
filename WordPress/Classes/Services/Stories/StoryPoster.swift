@@ -87,6 +87,8 @@ class StoryPoster {
             """
 
             post.content = content
+            post.status = .publish
+            coordinator.save(post)
             completion(Result.success(post))
         }
     }

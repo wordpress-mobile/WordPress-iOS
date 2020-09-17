@@ -1,6 +1,6 @@
 import AVFoundation
 import Foundation
-import Kanvas
+import KanvasCamera
 
 final public class KanvasCameraAnalyticsStub: NSObject, KanvasCameraAnalyticsProvider {
 

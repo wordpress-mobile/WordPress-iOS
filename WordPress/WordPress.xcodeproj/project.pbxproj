@@ -5671,7 +5671,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -10791,6 +10791,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
+				CDF20F743497BF94E6F5A4AC /* [CP] Prepare Artifacts */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
@@ -11184,7 +11185,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11700,6 +11701,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${PODS_ROOT}/ZendeskCommonUISDK/CommonUISDK.framework",
 				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework",
@@ -11976,7 +11978,6 @@
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Kanvas/KanvasCamera.bundle",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
@@ -12006,7 +12007,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/local-storage-overrides.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/prevent-autosaves.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wp-bar-override.css",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/KanvasCamera.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
@@ -12140,6 +12140,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
+		};
+		CDF20F743497BF94E6F5A4AC /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
+				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

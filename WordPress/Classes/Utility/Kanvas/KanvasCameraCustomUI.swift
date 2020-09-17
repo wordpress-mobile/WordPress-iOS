@@ -1,5 +1,5 @@
 import Foundation
-import Kanvas
+import KanvasCamera
 
 /// Contains custom colors and fonts for the KanvasCamera framework
 public class KanvasCameraCustomUI {
