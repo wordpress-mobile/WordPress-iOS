@@ -61,7 +61,7 @@ public protocol CameraControllerDelegate : AnyObject {
   func didEndDragInteraction()
   func openAppSettings(completion: ((Swift.Bool) -> ())?)
 }
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate, UIKit.UIImagePickerControllerDelegate, UIKit.UINavigationControllerDelegate {
+@objc public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate, UIKit.UIImagePickerControllerDelegate, UIKit.UINavigationControllerDelegate {
   weak public var delegate: KanvasCamera.CameraControllerDelegate?
   convenience public init(settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider?, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider?, quickBlogSelectorCoordinator: KanvasCamera.KanvasQuickBlogSelectorCoordinating?)
   @available(*, unavailable, message: "use init(settings:) instead")
@@ -173,7 +173,7 @@ public struct CameraFeatures {
   public var gifs: Swift.Bool
   public var multipleExports: Swift.Bool
 }
-@_inheritsConvenienceInitializers @objc final public class CameraSettings : ObjectiveC.NSObject {
+@objc final public class CameraSettings : ObjectiveC.NSObject {
   final public var enabledModes: Swift.Set<KanvasCamera.CameraMode> {
     get
     set
@@ -331,7 +331,7 @@ public protocol EditorControllerDelegate : AnyObject {
 extension EditorControllerDelegate {
   public func shouldExport() -> Swift.Bool
 }
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class EditorViewController : UIKit.UIViewController {
+@objc final public class EditorViewController : UIKit.UIViewController {
   weak final public var delegate: KanvasCamera.EditorControllerDelegate?
   @available(*, unavailable, message: "use init(settings:, segments:) instead")
   @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
