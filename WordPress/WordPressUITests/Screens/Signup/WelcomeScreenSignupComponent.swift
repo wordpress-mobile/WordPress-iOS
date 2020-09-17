@@ -1,6 +1,8 @@
 import Foundation
 import XCTest
 
+// TODO: remove when unifiedAuth is permanent.
+
 private struct ElementStringIDs {
     static let emailSignupButton = "Sign up with Email Button"
 }

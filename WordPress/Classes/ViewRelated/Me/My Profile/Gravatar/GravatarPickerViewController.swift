@@ -106,7 +106,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         options.preferFrontCamera = true
         options.allowMultipleSelection = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
         pickerViewController.delegate = self
@@ -128,7 +128,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return WPStyleGuide.preferredStatusBarStyle
     }
 
     override var childForStatusBarStyle: UIViewController? {

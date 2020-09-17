@@ -1,20 +1,36 @@
+import WordPressFlux
+
 
 protocol AnnouncementsDataSource: UITableViewDataSource {
     func registerCells(for tableView: UITableView)
+    var dataDidChange: (() -> Void)? { get set }
 }
 
 
 class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
-    private let cellTypes: [String: UITableViewCell.Type]
-    private let announcements: [Announcement]
-    private let findOutMoreLink: String
+    private let store: AnnouncementsStore
 
-    init(announcements: [Announcement], cellTypes: [String: UITableViewCell.Type], findOutMoreLink: String) {
-        self.announcements = announcements
+    private var subscription: Receipt?
+
+    private let cellTypes: [String: UITableViewCell.Type]
+    private var features: [WordPressKit.Feature] {
+        store.announcements.reduce(into: [WordPressKit.Feature](), {
+            $0.append(contentsOf: $1.features)
+        })
+    }
+
+    var dataDidChange: (() -> Void)?
+
+    init(store: AnnouncementsStore, cellTypes: [String: UITableViewCell.Type]) {
+        self.store = store
         self.cellTypes = cellTypes
-        self.findOutMoreLink = findOutMoreLink
         super.init()
+
+        subscription = store.onChange {
+            self.dataDidChange?()
+        }
+        store.getAnnouncements()
     }
 
     func registerCells(for tableView: UITableView) {
@@ -28,19 +44,19 @@ class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return announcements.count + 1
+        return features.count + 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard indexPath.row <= announcements.count - 1 else {
+        guard indexPath.row <= features.count - 1 else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "findOutMoreCell", for: indexPath) as? FindOutMoreCell ?? FindOutMoreCell()
-            cell.configure(with: URL(string: findOutMoreLink))
+            cell.configure(with: URL(string: store.announcements.first?.detailsUrl ?? ""))
             return cell
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "announcementCell", for: indexPath) as? AnnouncementCell ?? AnnouncementCell()
-        cell.configure(announcement: announcements[indexPath.row])
+        cell.configure(feature: features[indexPath.row])
         return cell
     }
 }
