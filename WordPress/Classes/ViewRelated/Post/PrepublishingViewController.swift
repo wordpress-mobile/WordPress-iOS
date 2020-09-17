@@ -10,6 +10,7 @@ private enum PrepublishingIdentifier {
     case schedule
     case visibility
     case tags
+    case categories
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -33,6 +34,7 @@ class PrepublishingViewController: UITableViewController {
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
+        PrepublishingOption(id: .tags, title: NSLocalizedString("Categories", comment: "Label for Categories")),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
@@ -119,6 +121,9 @@ class PrepublishingViewController: UITableViewController {
             configureVisibilityCell(cell)
         case .schedule:
             configureScheduleCell(cell)
+        case .categories:
+            //TODO update to configureCategoryCell(cell)
+            configureTagCell(cell)
         }
 
         return cell
@@ -132,6 +137,10 @@ class PrepublishingViewController: UITableViewController {
             didTapVisibilityCell()
         case .schedule:
             didTapSchedule(indexPath)
+        case .categories:
+            //TODO update to didTapCategoryCell()
+            didTapTagCell()
+            
         }
     }
 
@@ -143,6 +152,12 @@ class PrepublishingViewController: UITableViewController {
 
     private func configureTagCell(_ cell: WPTableViewCell) {
         cell.detailTextLabel?.text = post.tags
+    }
+    
+    private func configureCategoriesCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = post.categories.flatMap {
+            
+        }
     }
 
     private func didTapTagCell() {
