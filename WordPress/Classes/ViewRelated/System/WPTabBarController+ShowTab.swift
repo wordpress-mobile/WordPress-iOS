@@ -36,6 +36,22 @@ extension WPTabBarController {
         }
     }
     private func showEditor(blog: Blog, title: String?, content: String?) {
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let page = postService.createDraftPage(for: blog)
+        page.postTitle = title
+        page.content = content
+
+        let editorFactory = EditorFactory()
+
+        let pageViewController = editorFactory.instantiateEditor(
+            for: page,
+            replaceEditor: { [weak self] (editor, replacement) in
+                self?.replaceEditor(editor: editor, replacement: replacement)
+        })
+
+        show(pageViewController)
+    }
 
     /// Show the story editor
     /// - Parameter inBlog: Blog to a add a story to. Uses the current or last blog if not provided
@@ -77,24 +93,6 @@ extension WPTabBarController {
         })
         kanvasService.delegate = storyService
         present(controller, animated: true, completion: nil)
-    }
-
-    private func showPageEditor(blog: Blog, title: String?, content: String?, template: String?) {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let page = postService.createDraftPage(for: blog)
-        page.postTitle = title
-        page.content = content
-
-        let editorFactory = EditorFactory()
-
-        let pageViewController = editorFactory.instantiateEditor(
-            for: page,
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        show(pageViewController)
     }
 
     private func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
