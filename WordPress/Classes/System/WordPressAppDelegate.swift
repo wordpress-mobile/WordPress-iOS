@@ -107,17 +107,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
-        let queue = DispatchQueue(label: "asd", qos: .background)
-        let deviceInformation = TracksDeviceInformation()
-
-        queue.async {
-            let height = deviceInformation.statusBarHeight
-            let orientation = deviceInformation.orientation!
-
-            print("Height: \(height); orientation: \(orientation)")
-        }
-
-
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
