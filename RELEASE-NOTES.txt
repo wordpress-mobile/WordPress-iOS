@@ -5,6 +5,7 @@
 * [**] Block Editor: Add support for rounded style in Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2591]
 * [*] Fixed an issue where the username didn't display on the Signup Epilogue after signing up with Apple and hiding the email address. [#14882]
 * [*] Login: display correct error message when the max number of failed login attempts is reached. [#14914]
+* [**] Block Editor: Fixed a case where adding a block made the toolbar jump [https://github.com/WordPress/gutenberg/pull/24573]
 
 15.7
 -----
