@@ -9,8 +9,8 @@ struct PostListEditorPresenter {
     static func handle(post: Post, in postListViewController: PostListViewController) {
 
         // Autosaves are ignored for posts with local changes.
-        if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
-            let autosaveViewController = autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { loadAutosaveRevision in
+        if !post.hasLocalChanges(), post.hasAutosaveRevision {
+            let autosaveViewController = autosaveOptionsViewController(for: post, didTapOption: { loadAutosaveRevision in
                 openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision, in: postListViewController)
             })
             postListViewController.present(autosaveViewController, animated: true)
@@ -40,17 +40,19 @@ struct PostListEditorPresenter {
         return formatter
     }()
 
-    private static func dateAndTime(for date: Date) -> String {
+    private static func dateAndTime(for date: Date?) -> String {
+        guard let date = date else {
+            return "Unknown Date"
+        }
         return dateFormatter.string(from: date) + " @ " + timeFormatter.string(from: date)
     }
 
     /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
-    private static func autosaveOptionsViewController(forSaveDate saveDate: Date, autosaveDate: Date, didTapOption: @escaping (_ loadAutosaveRevision: Bool) -> Void) -> UIAlertController {
-
+    private static func autosaveOptionsViewController(for post: Post, didTapOption: @escaping (_ loadAutosaveRevision: Bool) -> Void) -> UIAlertController {
         let title = NSLocalizedString("Resolve sync conflict", comment: "Title displayed in popup when user has to resolve a verion conflict due to unsaved/autosaved changes")
 
-        let saveDateFormatted = dateAndTime(for: saveDate)
-        let autosaveDateFormatted = dateAndTime(for: autosaveDate)
+        let saveDateFormatted = dateAndTime(for: post.dateModified)
+        let autosaveDateFormatted = dateAndTime(for: post.autosaveModifiedDate)
 
         let alertMessageText = """
     This post has two versions that are in conflict. Select the version you would like to keep:
