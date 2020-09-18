@@ -303,18 +303,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        guard isViewOnScreen() else {
-            return
-        }
-
-        tableView.reloadSections([0], with: .automatic)
-
         updateGhostableTableViewOptions()
-        ghostableTableView.reloadSections([0], with: .automatic)
 
         postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
         postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
         postsViewButtonItem.image = postViewIcon
+
+        if isViewOnScreen() {
+            tableView.reloadSections([0], with: .automatic)
+            ghostableTableView.reloadSections([0], with: .automatic)
+        }
     }
 
     // Mark - Layout Methods
