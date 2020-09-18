@@ -1,7 +1,7 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
 
-#import "PostCategoriesViewController.h"
+//#import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
 #import "Media.h"

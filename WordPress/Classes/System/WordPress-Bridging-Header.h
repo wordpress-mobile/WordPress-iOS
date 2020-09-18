@@ -43,6 +43,7 @@
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"
 #import "PostCategory.h"
+#import "PostCategoryService.h"
 #import "PostContentProvider.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
@@ -111,6 +112,10 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPLogger.h"
 #import "WPException.h"
+
+//#import "PostCategoriesViewController.h"
+#import "WPAddPostCategoryViewController.h"
+#import "WPCategoryTree.h"
 
 
 // Pods

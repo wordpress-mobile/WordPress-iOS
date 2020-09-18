@@ -122,8 +122,7 @@ class PrepublishingViewController: UITableViewController {
         case .schedule:
             configureScheduleCell(cell)
         case .categories:
-            //TODO update to configureCategoryCell(cell)
-            configureTagCell(cell)
+            break
         }
 
         return cell
@@ -138,9 +137,7 @@ class PrepublishingViewController: UITableViewController {
         case .schedule:
             didTapSchedule(indexPath)
         case .categories:
-            //TODO update to didTapCategoryCell()
-            didTapTagCell()
-            
+            didTapCategoriesCell()
         }
     }
 
@@ -152,12 +149,6 @@ class PrepublishingViewController: UITableViewController {
 
     private func configureTagCell(_ cell: WPTableViewCell) {
         cell.detailTextLabel?.text = post.tags
-    }
-    
-    private func configureCategoriesCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.categories.flatMap {
-            
-        }
     }
 
     private func didTapTagCell() {
@@ -171,6 +162,25 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
+    }
+    
+    private func didTapCategoriesCell() {
+        //let controller = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories), selectionMode: .)
+//        PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
+//                                                                                        currentSelection:[self.post.categories allObjects]
+//                                                                                           selectionMode:CategoriesSelectionModePost];
+//           controller.delegate = self;
+//           [self.navigationController pushViewController:controller animated:YES];
+//        let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
+//
+//        tagPickerViewController.onValueChanged = { [weak self] tags in
+//            WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
+//
+//            self?.post.tags = tags
+//            self?.reloadData()
+//        }
+//
+//        navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
     // MARK: - Visibility
