@@ -88,7 +88,7 @@ class ReaderTopicsCardCell: UITableViewCell {
     private func applyStyles() {
         containerView.backgroundColor = .listForeground
 
-        tableView.backgroundColor = .none
+        tableView.backgroundColor = .listForeground
         tableView.separatorColor = .placeholderElement
 
         backgroundColor = .none
@@ -120,7 +120,7 @@ extension ReaderTopicsCardCell: UITableViewDataSource {
         cell.textLabel?.text = topics[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         cell.separatorInset = UIEdgeInsets.zero
-        cell.backgroundColor = .none
+        cell.backgroundColor = .listForeground
         return cell
     }
 
