@@ -699,7 +699,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 post = [self createPostForBlog:blog];
             }
         }
-        [self updatePost:post withRemotePost:remotePost];
+        // Only update post if its been modified
+        if (post.dateModified != remotePost.dateModified) {
+            [self updatePost:post withRemotePost:remotePost];
+        }
         [posts addObject:post];
     }
     
