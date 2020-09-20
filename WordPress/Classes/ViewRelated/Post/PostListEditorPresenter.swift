@@ -47,34 +47,34 @@ struct PostListEditorPresenter {
         return dateFormatter.string(from: date) + " @ " + timeFormatter.string(from: date)
     }
 
-    /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
+    /// A dialog giving the user the choice between loading the local version or the remote version when there's a version conflict
     private static func autosaveOptionsViewController(for post: Post, didTapOption: @escaping (_ loadAutosaveRevision: Bool) -> Void) -> UIAlertController {
         let title = NSLocalizedString("Resolve sync conflict", comment: "Title displayed in popup when user has to resolve a verion conflict due to unsaved/autosaved changes")
 
-        let saveDateFormatted = dateAndTime(for: post.dateModified)
-        let autosaveDateFormatted = dateAndTime(for: post.autosaveModifiedDate)
+        let localFormattedDate = dateAndTime(for: post.dateModified)
+        let remoteFormattedDate = dateAndTime(for: post.autosaveModifiedDate)
 
         let alertMessageText = """
     This post has two versions that are in conflict. Select the version you would like to keep:
 
     Local
-    Saved on \(saveDateFormatted)
+    Saved on \(localFormattedDate)
 
     Remote
-    Saved on \(autosaveDateFormatted)
+    Saved on \(remoteFormattedDate)
 
     """
 
-        let message = NSLocalizedString(alertMessageText, comment: "Message displayed in popup when user has the option to load unsaved changes")
+        let message = NSLocalizedString(alertMessageText, comment: "Message displayed in popup displayed to resolve version conflict")
 
-        let loadSaveButtonTitle = NSLocalizedString("Keep Local", comment: "Button title displayed in popup indicating date of change on device")
-        let fromAutosaveButtonTitle = NSLocalizedString("Keep Remote", comment: "Button title displayed in popup indicating date of change on another device")
+        let localButtonTitle = NSLocalizedString("Keep Local", comment: "Button title displayed in popup indicating date of change on device")
+        let remoteButtonTitle = NSLocalizedString("Keep Remote", comment: "Button title displayed in popup indicating date of change on another device")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: loadSaveButtonTitle, style: .default) { _ in
+        alertController.addAction(UIAlertAction(title: localButtonTitle, style: .default) { _ in
             didTapOption(false)
         })
-        alertController.addAction(UIAlertAction(title: fromAutosaveButtonTitle, style: .default) { _ in
+        alertController.addAction(UIAlertAction(title: remoteButtonTitle, style: .default) { _ in
             didTapOption(true)
         })
 
