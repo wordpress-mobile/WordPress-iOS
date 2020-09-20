@@ -1,10 +1,10 @@
 import Foundation
 
-class CategoryTree {
+class WPCategoryTree: NSObject {
     var parent: PostCategory?
-    var children = [CategoryTree]()
+    var children = [WPCategoryTree]()
     
-    init(parent: PostCategory?) {
+    @objc init(parent: PostCategory?) {
         self.parent = parent
     }
     
@@ -15,7 +15,7 @@ class CategoryTree {
             }
 
             if isParentChild(category: category, parent: parent) {
-                let child  = CategoryTree(parent: category)
+                let child  = WPCategoryTree(parent: category)
                 child.getChildrenFromObjects(collection)
                 children.append(child)
             }

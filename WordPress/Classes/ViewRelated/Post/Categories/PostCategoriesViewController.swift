@@ -104,7 +104,7 @@ import Foundation
 
         var categoryDict = [NSNumber: PostCategory]()
         // Sort categories by parent/child relationship
-        let tree = CategoryTree(parent: nil)
+        let tree = WPCategoryTree(parent: nil)
         if let sortedCategories = blog.sortedCategories() {
             tree.getChildrenFromObjects(sortedCategories)
         }

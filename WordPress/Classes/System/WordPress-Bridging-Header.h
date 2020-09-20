@@ -113,10 +113,7 @@
 #import "WPLogger.h"
 #import "WPException.h"
 
-//#import "PostCategoriesViewController.h"
 #import "WPAddPostCategoryViewController.h"
-#import "WPCategoryTree.h"
-
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
