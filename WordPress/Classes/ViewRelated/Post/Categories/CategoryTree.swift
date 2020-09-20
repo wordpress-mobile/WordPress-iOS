@@ -13,7 +13,8 @@ class CategoryTree {
             guard let category = $0 as? PostCategory else {
                 return
             }
-            if category.parentID.intValue == parent?.categoryID.intValue {
+
+            if isParentChild(category: category, parent: parent) {
                 let child  = CategoryTree(parent: category)
                 child.getChildrenFromObjects(collection)
                 children.append(child)
@@ -31,5 +32,9 @@ class CategoryTree {
             allObjects.append(contentsOf: $0.getAllObjects())
         }
         return allObjects
+    }
+    
+    private func isParentChild(category: PostCategory, parent: PostCategory?) -> Bool {
+        return parent == nil ? category.parentID == 0 : parent!.categoryID == category.parentID
     }
 }

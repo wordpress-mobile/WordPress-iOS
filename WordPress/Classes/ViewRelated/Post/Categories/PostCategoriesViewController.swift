@@ -1,8 +1,8 @@
 import Foundation
 
 @objc protocol PostCategoriesViewControllerDelegate {
-    @objc optional func didSelectCategory(viewController: PostCategoriesViewController, category: PostCategory)
-    @objc optional func didUpdateSelectedCategories(viewController: PostCategoriesViewController, categories: NSSet)
+    @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didSelectCategory category: PostCategory)
+    @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet)
 }
 
 @objc enum CategoriesSelectionMode: Int {
@@ -122,17 +122,22 @@ import Foundation
         }
 
         var didUpdateSelectedCategories = false
-        for (index, category) in selectedCategories!.enumerated() {
-            if  let sortedCategories = blog.sortedCategories() as? [PostCategory], !sortedCategories.contains(category) || category.isDeleted {
-                selectedCategories!.remove(at: index)
+        let updatedSelectedCategories = selectedCategories
+        self.selectedCategories = updatedSelectedCategories?.filter { category in
+            if let sortedCategories = blog.sortedCategories() as? [PostCategory], sortedCategories.contains(category), !category.isDeleted {
+                return true
+            } else {
                 didUpdateSelectedCategories = true
+                return false
             }
         }
         
         // Notify the delegate of any changes for selectedCategories.
         if didUpdateSelectedCategories {
-            delegate?.didUpdateSelectedCategories?(viewController: self, categories: NSSet(array: selectedCategories!))
+            delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
         }
+        
+        tableView.reloadData()
     }
     
     private func indentationLevelForCategory(parentID: NSNumber, categoryCollection: [NSNumber: PostCategory]) -> Int {
@@ -216,24 +221,25 @@ import Foundation
             if indexPath.row > 0 {
                 category = categories[row - 1]
             }
-             // If we're choosing a parent category then we're done.
+            // If we're choosing a parent category then we're done.
             if let category = category {
-                delegate?.didSelectCategory?(viewController: self, category: category)
+                delegate?.postCategoriesViewController?(self, didSelectCategory: category)
+                navigationController?.popViewController(animated: true)
             }
         case .post:
             category = categories[row]
             if let category = category, selectedCategories != nil {
                 if selectedCategories!.contains(category) {
-                    selectedCategories!.remove(at: row)
+                    selectedCategories!.remove(at: selectedCategories!.firstIndex(of: category)!)
                     tableView.cellForRow(at: indexPath)?.accessoryType = .none
                 } else {
                     selectedCategories?.append(category)
                     tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 }
                 
-                delegate?.didUpdateSelectedCategories?(viewController: self, categories: NSSet(array: selectedCategories!))
+                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
             }
-           
+            
         case .blogDefault:
             category = categories[row]
             if let category = category, selectedCategories != nil {
@@ -243,7 +249,7 @@ import Foundation
                 selectedCategories!.removeAll()
                 selectedCategories!.append(category)
                 tableView.reloadData()
-                delegate?.didSelectCategory?(viewController: self, category: category)
+                delegate?.postCategoriesViewController?(self, didSelectCategory: category)
             }
         }
     }
@@ -262,12 +268,14 @@ extension PostCategoriesViewController: WPAddPostCategoryViewControllerDelegate 
         case .post, .parent:
             selectedCategories?.append(category)
             if let selectedCategories = selectedCategories {
-                delegate?.didUpdateSelectedCategories?(viewController: self, categories: NSSet(array: selectedCategories))
+                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
             }
         case .blogDefault:
             selectedCategories?.removeAll()
             selectedCategories?.append(category)
-            delegate?.didSelectCategory?(viewController: self, category: category)
+            delegate?.postCategoriesViewController?(self, didSelectCategory: category)
         }
+
+        reloadCategories()
     }
 }
