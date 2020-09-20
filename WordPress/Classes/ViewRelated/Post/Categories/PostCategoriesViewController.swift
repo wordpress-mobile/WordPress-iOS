@@ -15,7 +15,7 @@ import Foundation
     @objc var delegate: PostCategoriesViewControllerDelegate?
     private var selectionMode: CategoriesSelectionMode
     private var blog: Blog
-    private var originalSelection: Array<PostCategory>
+    private var originalSelection: [PostCategory]
     private var selectedCategories: [PostCategory]?
     private var saveButtonItem: UIBarButtonItem?
     private var categories = [PostCategory]()
