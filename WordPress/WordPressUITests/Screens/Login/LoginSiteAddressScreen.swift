@@ -44,7 +44,7 @@ class LoginSiteAddressScreen: BaseScreen {
 
         return GetStartedScreen()
     }
-    
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
     }
