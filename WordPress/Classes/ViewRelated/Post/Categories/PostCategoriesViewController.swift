@@ -15,14 +15,14 @@ import Foundation
     @objc var delegate: PostCategoriesViewControllerDelegate?
     private var selectionMode: CategoriesSelectionMode
     private var blog: Blog
-    private var originalSelection: [PostCategory]
+    private var originalSelection: [PostCategory]?
     private var selectedCategories: [PostCategory]?
     private var saveButtonItem: UIBarButtonItem?
     private var categories = [PostCategory]()
     private var categoryIndentationDict = [String: NSNumber]()
     private var hasSyncedCategories = false
 
-    @objc init(blog: Blog, currentSelection: Array<PostCategory>, selectionMode: CategoriesSelectionMode) {
+    @objc init(blog: Blog, currentSelection: [PostCategory]?, selectionMode: CategoriesSelectionMode) {
         self.blog = blog
         self.selectionMode = selectionMode
         self.originalSelection = currentSelection
