@@ -27,7 +27,7 @@ class WPCategoryTree: NSObject {
         if let parent = parent {
             allObjects.append(parent)
         }
-        
+
         children.forEach {
             allObjects.append(contentsOf: $0.getAllObjects())
         }
