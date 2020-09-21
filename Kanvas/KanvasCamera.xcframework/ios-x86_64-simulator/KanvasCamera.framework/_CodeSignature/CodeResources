@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/KanvasCamera-Swift.h</key>
 		<data>
-		xyxKGruFClkzd46AOYSFm8hlMTY=
+		+4bid3Yr+DtiyKZilICfxTUDTwI=
 		</data>
 		<key>Headers/KanvasCamera-umbrella.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>KanvasCamera.bundle/Assets.car</key>
 		<data>
-		4QIpgddG0IsUgmAncZKWbxMMp7Y=
+		4srkxbHdxoHsx+yDgAcaFHwbXDI=
 		</data>
 		<key>KanvasCamera.bundle/Info.plist</key>
 		<data>
@@ -106,7 +106,7 @@
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeDirectory</key>
 		<data>
-		XsUbSJMOIcvL6kyjMeTYqfs79XY=
+		kyZAeUmtY3/vrOSNNgaX24I2OcU=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -114,11 +114,11 @@
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		UkZpb85PtMjVZv0KDA3sLNSIP1E=
+		2fgIv2utMjhmSjc6X5mIrh+2/OM=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeResources</key>
 		<data>
-		t96As4x5fe2DUgw21Bt7cLylPCk=
+		OqYogX/eUQxlJWVbz+k/t4vLaCc=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeSignature</key>
 		<data>
@@ -138,7 +138,7 @@
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		+4y7nhdoFKgdou75JQJPQ9fgVSo=
+		U9SwxtdTL1oCj21k0bdhdxURqao=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -150,7 +150,7 @@
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		+4y7nhdoFKgdou75JQJPQ9fgVSo=
+		U9SwxtdTL1oCj21k0bdhdxURqao=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -163,7 +163,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			3Ng5PJwmjOb1T43wAFVj3cEkwsjAderJsywK3Hvu1e0=
+			hz3Yic8KXeDF/sEFEghAWrEKnh0/d77tPRYsmJ/VUR8=
 			</data>
 		</dict>
 		<key>Headers/KanvasCamera-umbrella.h</key>
@@ -177,7 +177,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rP3RjmO0PXHv/KQY7pUKEE/xv3rkwc5mKc2s08BqG0Y=
+			UahkmB3i2Le7g1mY4SMmzcLHsz/yEXmP7MQS3/mAuqE=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/Info.plist</key>
@@ -331,7 +331,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			BdkJ5FnlswyCTCosJ4e9cwQsZjELhpghhu0vanXSHkA=
+			QBR7XgT2qTPnTfsBEt9J/RGQllHC56tl8wBIA5qOYmQ=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements</key>
@@ -345,14 +345,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			V3BB5wkUGrT9qK7BUKxprpLsDKMKYtaZI+8w5U2Nfko=
+			PZa8koWB9q/QWXW2zXzETZcFkesj2bUtY+Z+4ugEOFU=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Dy0SvrBA7dq+gvBpKmuwBXmJ+q77O/PVQx8WXKz1IFk=
+			yZw7ND53Alu2/lI8yjm2+isnP52cqp3SHkNOUPPXUok=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeSignature</key>
@@ -387,7 +387,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RWdCj6dI146k4/I+jONzKnXAL1rPoTSxSA0WqCJjBh4=
+			xZCGX6ACdLiLrCgA5nEStU7sAFxPhSMuQU4I+7M7WB8=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftdoc</key>
@@ -408,7 +408,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RWdCj6dI146k4/I+jONzKnXAL1rPoTSxSA0WqCJjBh4=
+			xZCGX6ACdLiLrCgA5nEStU7sAFxPhSMuQU4I+7M7WB8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

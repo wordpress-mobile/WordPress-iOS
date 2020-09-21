@@ -10837,7 +10837,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
-				964AEB0F4128135897D0DA8D /* [CP] Prepare Artifacts */,
+				93EA3DDD45BE51D2E8689A31 /* [CP] Prepare Artifacts */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
@@ -12077,7 +12077,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		964AEB0F4128135897D0DA8D /* [CP] Prepare Artifacts */ = {
+		93EA3DDD45BE51D2E8689A31 /* [CP] Prepare Artifacts */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

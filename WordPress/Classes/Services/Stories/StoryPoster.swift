@@ -53,7 +53,7 @@ class StoryPoster {
 
         let coordinator = PostCoordinator.shared
 
-        coordinator.save(post, forceDraftIfCreating: false) { result in
+        coordinator.save(post, forceDraftIfCreating: true) { result in
 
             let uploadedPost: AbstractPost
 
