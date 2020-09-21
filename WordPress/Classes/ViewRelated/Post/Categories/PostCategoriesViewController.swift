@@ -53,7 +53,7 @@ import Foundation
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.categoryCellIdentifier)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
-    
+
     private func configureView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         refreshControl = UIRefreshControl()
@@ -74,7 +74,7 @@ import Foundation
     @objc private func refreshCategoriesWithInteraction() {
         syncCategories()
     }
-    
+
     @objc private func showAddNewCategory() {
         let addCategoriesViewController = WPAddPostCategoryViewController(blog: blog)
         addCategoriesViewController!.delegate = self
@@ -82,7 +82,7 @@ import Foundation
         navigationController?.modalPresentationStyle = .formSheet
         present(addCategoriesNavigationControlloer, animated: true, completion: nil)
     }
-    
+
     private func syncCategories() {
         guard let context = blog.managedObjectContext else {
             return
@@ -96,7 +96,7 @@ import Foundation
             self?.refreshControl?.endRefreshing()
         }
     }
-    
+
     private func reloadCategories() {
         if selectedCategories == nil {
             selectedCategories = originalSelection
@@ -131,7 +131,7 @@ import Foundation
                 return false
             }
         }
-        
+
         // Notify the delegate of any changes for selectedCategories.
         if didUpdateSelectedCategories {
             delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
