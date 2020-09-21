@@ -558,7 +558,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func editPost(apost: AbstractPost) {
-        guard let post = apost as? Post else {
+        guard var post = apost as? Post else {
             return
         }
         guard !PostCoordinator.shared.isUploading(post: post) else {
@@ -566,6 +566,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
+        if let originalPost = post.original as? Post {
+            post = originalPost
+        }
         PostListEditorPresenter.handle(post: post, in: self)
     }
 
