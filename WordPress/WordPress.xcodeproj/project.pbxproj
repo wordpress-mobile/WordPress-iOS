@@ -395,7 +395,7 @@
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
 		3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */; };
-		3F73BE5D24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */; };
+		3F73BE5D24EB38E200BE99FF /* WhatIsNewScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */; };
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
@@ -2856,7 +2856,7 @@
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
 		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
-		3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
+		3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewScenePresenter.swift; sourceTree = "<group>"; };
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
@@ -6287,7 +6287,7 @@
 			isa = PBXGroup;
 			children = (
 				3F8CBE1124EF955700F71234 /* Data store */,
-				3F8CBE1224EF958700F71234 /* Dependency container */,
+				3F8CBE1224EF958700F71234 /* Presenter */,
 				3F3087C024EDB6900087B548 /* Views */,
 			);
 			path = "What's New";
@@ -6319,12 +6319,12 @@
 			path = "Data store";
 			sourceTree = "<group>";
 		};
-		3F8CBE1224EF958700F71234 /* Dependency container */ = {
+		3F8CBE1224EF958700F71234 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */,
+				3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */,
 			);
-			path = "Dependency container";
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 		3FD83CBD246C74B800381999 /* Migrator */ = {
@@ -13372,7 +13372,7 @@
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				C81CCD7E243BF7A600A83E27 /* TenorMedia.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
-				3F73BE5D24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift in Sources */,
+				3F73BE5D24EB38E200BE99FF /* WhatIsNewScenePresenter.swift in Sources */,
 				912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */,
 				D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */,
 				4349BFF7221205740084F200 /* BlogDetailsSectionHeaderView.swift in Sources */,
@@ -14547,6 +14547,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 15.9;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -14611,6 +14612,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 15.9;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -15467,6 +15469,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 15.9;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -15955,6 +15958,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 15.9;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",

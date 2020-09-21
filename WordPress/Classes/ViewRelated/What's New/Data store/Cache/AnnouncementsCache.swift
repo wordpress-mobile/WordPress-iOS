@@ -12,8 +12,9 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
     var announcements: [Announcement]? {
         get {
             guard let announcements = UserDefaults.standard.announcements, versionIsValid(for: announcements) else {
-                    UserDefaults.standard.announcements = nil
-                    return nil
+                UserDefaults.standard.announcements = nil
+                UserDefaults.standard.shouldHideAnnouncements = false
+                return nil
             }
             return announcements
         }
@@ -28,7 +29,6 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
             let targetVersions = announcements.first?.appVersionTargets,   // so we might as well choose the first
             let version = Bundle.main.shortVersionString(),
             ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)) else { // if version has changed, clean up the announcements cache
-                UserDefaults.standard.announcements = nil
                 return false
         }
         return true
@@ -36,9 +36,10 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
 }
 
 
-private extension UserDefaults {
+extension UserDefaults {
 
     static let currentAnnouncementsKey = "currentAnnouncements"
+    static let shouldHideAnnouncementsKey = "shouldHideAnnouncementsKey"
 
     var announcements: [Announcement]? {
         get {
@@ -55,6 +56,20 @@ private extension UserDefaults {
                 return
             }
             set(encodedAnnouncements, forKey: UserDefaults.currentAnnouncementsKey)
+        }
+    }
+
+    var shouldHideAnnouncements: Bool {
+        get {
+            // do not display announcements in a fresh install
+            if object(forKey: UserDefaults.shouldHideAnnouncementsKey) == nil {
+                set(true, forKey: UserDefaults.shouldHideAnnouncementsKey)
+                return true
+            }
+            return bool(forKey: UserDefaults.shouldHideAnnouncementsKey)
+        }
+        set {
+            set(newValue, forKey: UserDefaults.shouldHideAnnouncementsKey)
         }
     }
 }
