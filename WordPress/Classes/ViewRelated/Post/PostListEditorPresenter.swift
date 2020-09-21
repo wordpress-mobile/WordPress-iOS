@@ -72,10 +72,24 @@ struct PostListEditorPresenter {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: localButtonTitle, style: .default) { _ in
-            didTapOption(false)
+            if post.hasVersionConflict {
+                post.applyRevision()
+                post.deleteRevision()
+                ContextManager.sharedInstance().saveContextAndWait(post.managedObjectContext!)
+                post.hasVersionConflict = false
+            } else {
+                didTapOption(false)
+            }
         })
         alertController.addAction(UIAlertAction(title: remoteButtonTitle, style: .default) { _ in
-            didTapOption(true)
+            if post.hasVersionConflict {
+                post.deleteRevision()
+                ContextManager.sharedInstance().saveContextAndWait(post.managedObjectContext!)
+                post.hasVersionConflict = false
+            }
+            else {
+                didTapOption(true)
+            }
         })
 
         alertController.view.accessibilityIdentifier = "autosave-options-alert"
