@@ -830,7 +830,6 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureLightNavigationBarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
-        UIToolbar.appearance().barTintColor = .primary
         UISwitch.appearance().onTintColor = .primary
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
