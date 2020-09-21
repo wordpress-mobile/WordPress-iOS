@@ -10,7 +10,6 @@ private enum PrepublishingIdentifier {
     case schedule
     case visibility
     case tags
-    case categories
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -34,7 +33,6 @@ class PrepublishingViewController: UITableViewController {
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Categories", comment: "Label for Categories")),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
@@ -121,8 +119,6 @@ class PrepublishingViewController: UITableViewController {
             configureVisibilityCell(cell)
         case .schedule:
             configureScheduleCell(cell)
-        case .categories:
-            break
         }
 
         return cell
@@ -136,8 +132,6 @@ class PrepublishingViewController: UITableViewController {
             didTapVisibilityCell()
         case .schedule:
             didTapSchedule(indexPath)
-        case .categories:
-            didTapCategoriesCell()
         }
     }
 
@@ -162,25 +156,6 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
-    }
-
-    private func didTapCategoriesCell() {
-        //let controller = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories), selectionMode: .)
-//        PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
-//                                                                                        currentSelection:[self.post.categories allObjects]
-//                                                                                           selectionMode:CategoriesSelectionModePost];
-//           controller.delegate = self;
-//           [self.navigationController pushViewController:controller animated:YES];
-//        let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
-//
-//        tagPickerViewController.onValueChanged = { [weak self] tags in
-//            WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
-//
-//            self?.post.tags = tags
-//            self?.reloadData()
-//        }
-//
-//        navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
     // MARK: - Visibility
