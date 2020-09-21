@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/KanvasCamera-Swift.h</key>
 		<data>
-		56OkOx3BIi5v5GHSk0LdlIjqBUY=
+		xyxKGruFClkzd46AOYSFm8hlMTY=
 		</data>
 		<key>Headers/KanvasCamera-umbrella.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>KanvasCamera.bundle/Assets.car</key>
 		<data>
-		H614mcwO97dY8cKfnnPHmrP3lV0=
+		4QIpgddG0IsUgmAncZKWbxMMp7Y=
 		</data>
 		<key>KanvasCamera.bundle/Info.plist</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>KanvasCamera.bundle/MetalShaders/shaders.metal</key>
 		<data>
-		PizsBkol+njEz46JLEDDUUdzc8U=
+		XBBF350RYGWooK70HPeAm7tTx/U=
 		</data>
 		<key>KanvasCamera.bundle/OpenGLShaders/alpha_blend.glsl</key>
 		<data>
@@ -106,7 +106,7 @@
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeDirectory</key>
 		<data>
-		//nKmCIMIL8iv8J8NdpYt7dROHk=
+		XsUbSJMOIcvL6kyjMeTYqfs79XY=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -114,11 +114,11 @@
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		mHZD8y/1h9GaeR38JRbg/2J6I4E=
+		UkZpb85PtMjVZv0KDA3sLNSIP1E=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeResources</key>
 		<data>
-		KpNRyTG5eW11OAWCFSuz8FDyAcM=
+		t96As4x5fe2DUgw21Bt7cLylPCk=
 		</data>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeSignature</key>
 		<data>
@@ -130,27 +130,27 @@
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		XN9Xg6ydqIkd4WCN5hXVKxaz4oI=
+		ORAHqM/0R1Q80WTKE7d61Ru5nVE=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		B4vSFegmVL4ua0VddPPPqnvn3hU=
+		XsFbgtYExWuFFWgoDFX91c0f5BM=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Agz/fG5reBcZ8rybOF2cS8iFW/A=
+		+4y7nhdoFKgdou75JQJPQ9fgVSo=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		XN9Xg6ydqIkd4WCN5hXVKxaz4oI=
+		ORAHqM/0R1Q80WTKE7d61Ru5nVE=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		B4vSFegmVL4ua0VddPPPqnvn3hU=
+		XsFbgtYExWuFFWgoDFX91c0f5BM=
 		</data>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		Agz/fG5reBcZ8rybOF2cS8iFW/A=
+		+4y7nhdoFKgdou75JQJPQ9fgVSo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -163,7 +163,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			BaqX4oXkdeAJCSTiAApGv3BQJcd31qtNDkSZLIyyX2k=
+			3Ng5PJwmjOb1T43wAFVj3cEkwsjAderJsywK3Hvu1e0=
 			</data>
 		</dict>
 		<key>Headers/KanvasCamera-umbrella.h</key>
@@ -177,7 +177,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			owbBRbRQbhxq4G6fcQAU6uithM6U+WsweyUXLzai3qE=
+			rP3RjmO0PXHv/KQY7pUKEE/xv3rkwc5mKc2s08BqG0Y=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/Info.plist</key>
@@ -191,7 +191,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NUJ5DcDYE2g07ENGNb73XWK9Ba7Bf9SGno6iAXHMet4=
+			QhwShWR/RhTjlNGH1GzV9zoy9NDYRHkVDYYqNi1YZkY=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/OpenGLShaders/alpha_blend.glsl</key>
@@ -331,7 +331,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			V4N1LKq+J3RK3+IaZxu0fPCK3eV8k0kIHMYgIxpiK68=
+			BdkJ5FnlswyCTCosJ4e9cwQsZjELhpghhu0vanXSHkA=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeRequirements</key>
@@ -345,14 +345,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			eUXinFLPNIhytP/NwNrxCg8OKPfzxcr2wffVsF0P0NI=
+			V3BB5wkUGrT9qK7BUKxprpLsDKMKYtaZI+8w5U2Nfko=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Q7jxoLeDYawtej7rz8L+aUftW9YGz3vCAzRnRLG3AcA=
+			Dy0SvrBA7dq+gvBpKmuwBXmJ+q77O/PVQx8WXKz1IFk=
 			</data>
 		</dict>
 		<key>KanvasCamera.bundle/_CodeSignature/CodeSignature</key>
@@ -373,42 +373,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			gmyQ2xsc6jG9SWvlULWQj1iaYeGE7clVfWho0GcIxxU=
+			92B3AFDpreeRIl+ivMIAOK5OjYPGh46Fg+hassNJaEc=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Icq+9zqaB10M0uzLLOX8hGXzdcCvTAs7QT5ivPOFokE=
+			QOc8jyeOJkc5lOwAa2ZYmIgSEpzzA8tRIpebZYzkl8Q=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gcUW+LVKVT1Gbx6u33eZrex9z+yXSKaKf4gDZybOqzM=
+			RWdCj6dI146k4/I+jONzKnXAL1rPoTSxSA0WqCJjBh4=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gmyQ2xsc6jG9SWvlULWQj1iaYeGE7clVfWho0GcIxxU=
+			92B3AFDpreeRIl+ivMIAOK5OjYPGh46Fg+hassNJaEc=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Icq+9zqaB10M0uzLLOX8hGXzdcCvTAs7QT5ivPOFokE=
+			QOc8jyeOJkc5lOwAa2ZYmIgSEpzzA8tRIpebZYzkl8Q=
 			</data>
 		</dict>
 		<key>Modules/KanvasCamera.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gcUW+LVKVT1Gbx6u33eZrex9z+yXSKaKf4gDZybOqzM=
+			RWdCj6dI146k4/I+jONzKnXAL1rPoTSxSA0WqCJjBh4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

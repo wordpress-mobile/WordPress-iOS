@@ -528,3 +528,15 @@ kernel void em_interference(texture2d<float, access::read> inTexture [[ texture(
     float4 outColor = float4(float3(col1.x, col2.y, col3.z) + noise, 1.0);
     outTexture.write(outColor, gid);
 }
+
+kernel void alpha_blend(texture2d<float, access::read> inTexture [[ texture(0) ]],
+                        texture2d<float, access::write> outTexture [[ texture(1) ]],
+                        texture2d<float, access::read> overlayTexture [[ texture(2) ]],
+                        constant ShaderContext &shaderContext [[ buffer(0) ]],
+                        uint2 gid [[ thread_position_in_grid ]])
+{
+    float4 inColor = inTexture.read(gid);
+    float4 overlay = overlayTexture.read(gid);
+    float4 outColor = float4(mix(inColor.rgb, overlay.rgb, overlay.a), inColor.a);
+    outTexture.write(outColor, gid);
+}

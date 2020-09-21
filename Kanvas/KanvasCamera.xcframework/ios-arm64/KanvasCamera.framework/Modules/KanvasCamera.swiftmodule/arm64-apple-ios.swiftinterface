@@ -5,6 +5,7 @@ import AVFoundation
 import AVFoundation/*.AVMakeRect*/
 import Accelerate
 import CoreGraphics
+import CoreImage
 import CoreMedia
 import CoreServices
 import CoreVideo
@@ -56,12 +57,11 @@ public protocol CameraControllerDelegate : AnyObject {
   func editorShouldShowColorSelectorTooltip() -> Swift.Bool
   func didEndStrokeSelectorAnimation()
   func editorShouldShowStrokeSelectorAnimation() -> Swift.Bool
-  func provideMediaPickerThumbnail(targetSize: CoreGraphics.CGSize, completion: @escaping (UIKit.UIImage?) -> Swift.Void)
   func didBeginDragInteraction()
   func didEndDragInteraction()
   func openAppSettings(completion: ((Swift.Bool) -> ())?)
 }
-@objc public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate, UIKit.UIImagePickerControllerDelegate, UIKit.UINavigationControllerDelegate {
+@objc public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate {
   weak public var delegate: KanvasCamera.CameraControllerDelegate?
   convenience public init(settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider?, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider?, quickBlogSelectorCoordinator: KanvasCamera.KanvasQuickBlogSelectorCoordinating?)
   @available(*, unavailable, message: "use init(settings:) instead")
@@ -93,15 +93,10 @@ public protocol CameraControllerDelegate : AnyObject {
   public func didDismissColorSelectorTooltip()
   public func editorShouldShowStrokeSelectorAnimation() -> Swift.Bool
   public func didEndStrokeSelectorAnimation()
-  @objc public func imagePickerController(_ picker: UIKit.UIImagePickerController, didFinishPickingMediaWithInfo info: [UIKit.UIImagePickerController.InfoKey : Any])
-  @objc public func imagePickerControllerDidCancel(_ picker: UIKit.UIImagePickerController)
   public func cleanup()
+  public func resetState()
   public func onPostOptionsDismissed()
   @objc deinit
-}
-extension CameraController : Photos.PHPhotoLibraryChangeObserver {
-  @objc dynamic public func photoLibraryDidChange(_ changeInstance: Photos.PHChange)
-  public func resetState()
 }
 public enum ImagePreviewMode {
   case on
@@ -194,34 +189,11 @@ public struct CameraFeatures {
   final public var topButtonsSwapped: Swift.Bool
   final public var crossIconInEditor: Swift.Bool
   final public var showTagButtonInEditor: Swift.Bool
+  final public func editorShouldStartGIFMaker(mode: KanvasCamera.CameraMode?) -> Swift.Bool
+  final public func setEditorShouldStartGIFMaker(_ newValue: Swift.Bool)
+  final public var gifCameraShouldStartGIFMaker: Swift.Bool
   @objc override dynamic public init()
   @objc deinit
-}
-extension CameraSettings {
-  final public var enablePhotoMode: Swift.Bool {
-    get
-    set
-  }
-  final public var enableLoopMode: Swift.Bool {
-    get
-    set
-  }
-  final public var enableStopMotionMode: Swift.Bool {
-    get
-    set
-  }
-  final public var enableNormalMode: Swift.Bool {
-    get
-    set
-  }
-  final public var enableStitchMode: Swift.Bool {
-    get
-    set
-  }
-  final public var enableGifMode: Swift.Bool {
-    get
-    set
-  }
 }
 public struct KanvasDevice {
   public static let isRunningInSimulator: Swift.Bool
@@ -453,7 +425,7 @@ public struct GLU {
   }
 }
 @objc public enum KanvasMediaType : Swift.Int {
-  case image, video, frames
+  case image, video, frames, livePhoto
   public func string() -> Swift.String
   public typealias RawValue = Swift.Int
   public init?(rawValue: Swift.Int)
@@ -560,6 +532,11 @@ public protocol KanvasQuickBlogSelectorCoordinating {
   func dismiss()
   func touchDidMoveToPoint(_ location: CoreGraphics.CGPoint)
   func avatarView(frame: CoreGraphics.CGRect) -> UIKit.UIView?
+}
+public class LivePhotoLoader {
+  public init(asset: Photos.PHAsset)
+  public func pairedVideo(completion: @escaping (Foundation.URL?) -> Swift.Void)
+  @objc deinit
 }
 public typealias MediaInfo = KanvasCamera.MediaInfoSimple
 public struct MediaInfoSimple {

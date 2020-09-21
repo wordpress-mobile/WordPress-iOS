@@ -190,7 +190,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
-@import Photos;
 @import QuartzCore;
 @import UIKit;
 #endif
@@ -224,10 +223,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 @class NSCoder;
 @class NSBundle;
-@class UIImagePickerController;
 
 SWIFT_CLASS("_TtC12KanvasCamera16CameraController")
-@interface CameraController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CameraController : UIViewController
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE_MSG("use init(settings:) instead");
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE_MSG("use init(settings:) instead");
 @property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
@@ -236,14 +234,6 @@ SWIFT_CLASS("_TtC12KanvasCamera16CameraController")
 - (void)loadView;
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
-- (void)imagePickerController:(UIImagePickerController * _Nonnull)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> * _Nonnull)info;
-- (void)imagePickerControllerDidCancel:(UIImagePickerController * _Nonnull)picker;
-@end
-
-@class PHChange;
-
-@interface CameraController (SWIFT_EXTENSION(KanvasCamera)) <PHPhotoLibraryChangeObserver>
-- (void)photoLibraryDidChange:(PHChange * _Nonnull)changeInstance;
 @end
 
 
@@ -283,8 +273,6 @@ SWIFT_CLASS("_TtC12KanvasCamera14CameraSettings")
 @interface CameraSettings : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
-
-
 
 
 
@@ -578,6 +566,7 @@ typedef SWIFT_ENUM(NSInteger, KanvasMediaType, open) {
   KanvasMediaTypeImage = 0,
   KanvasMediaTypeVideo = 1,
   KanvasMediaTypeFrames = 2,
+  KanvasMediaTypeLivePhoto = 3,
 };
 
 typedef SWIFT_ENUM(NSInteger, KanvasTextAlignment, open) {
@@ -608,10 +597,6 @@ typedef SWIFT_ENUM(NSInteger, KanvasTextFont, open) {
 ///
 + (UIColor * _Nonnull)colorWithHex:(NSUInteger)hex SWIFT_WARN_UNUSED_RESULT;
 @end
-
-
-
-
 
 
 

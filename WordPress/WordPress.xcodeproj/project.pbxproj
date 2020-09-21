@@ -10837,7 +10837,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
-				CDF20F743497BF94E6F5A4AC /* [CP] Prepare Artifacts */,
+				964AEB0F4128135897D0DA8D /* [CP] Prepare Artifacts */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
@@ -12077,6 +12077,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		964AEB0F4128135897D0DA8D /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
+				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9879533A2135D77500743763 /* Zendesk Strip Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -12192,24 +12210,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
-		};
-		CDF20F743497BF94E6F5A4AC /* [CP] Prepare Artifacts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
-				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
-			);
-			name = "[CP] Prepare Artifacts";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

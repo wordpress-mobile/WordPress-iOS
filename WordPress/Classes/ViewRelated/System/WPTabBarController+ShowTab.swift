@@ -70,7 +70,7 @@ extension WPTabBarController {
 
         let controller = kanvasService.controller()
 
-        storyService = KanvasStoryService(blog: blog, posted: { [weak self] result in
+        storyService = KanvasStoryService(blog: blog, posted: { [weak self, weak controller] result in
 
             switch result {
             case .success(let post):
@@ -80,7 +80,9 @@ extension WPTabBarController {
                 }
                 let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
                 let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
-                bottomSheet.show(from: controller.topmostPresentedViewController, sourceView: controller.view)
+                if let controller = controller {
+                    bottomSheet.show(from: controller.topmostPresentedViewController, sourceView: controller.view)
+                }
             case .failure(let error):
                 self?.dismiss(animated: true, completion: nil)
                 let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
