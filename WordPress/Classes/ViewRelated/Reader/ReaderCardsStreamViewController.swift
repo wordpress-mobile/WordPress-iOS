@@ -21,6 +21,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+        observeDisplayContext()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +81,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
                 self.showGhost()
             }
         }
+    }
+
+    @objc private func reload(_ notification: Foundation.Notification) {
+        tableView.reloadData()
     }
 
     // MARK: - Sync
@@ -143,6 +148,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let controller = ReaderCardsStreamViewController()
         controller.readerTopic = topic
         return controller
+    }
+
+    /// Observe the managedObjectContext for changes (likes, saves) and reload the tableView
+    private func observeDisplayContext() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reload(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext())
     }
 }
 

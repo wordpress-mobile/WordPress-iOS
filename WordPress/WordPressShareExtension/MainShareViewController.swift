@@ -75,8 +75,8 @@ private extension MainShareViewController {
 
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
-        navigationBarAppearace.tintColor = .white
-        navigationBarAppearace.barTintColor = .appBar
+        navigationBarAppearace.tintColor = .appBarTint
+        navigationBarAppearace.barTintColor = .appBarBackground
         navigationBarAppearace.barStyle = .default
     }
 

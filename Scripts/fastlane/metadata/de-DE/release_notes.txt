@@ -1,5 +1,11 @@
-Verbesserungen beim Block-Editor! Du findest direkt im Galerieblock Unterstützung für Medienbearbeitung und der Spaltenblock enthält Unterstützung für das Ändern von Spaltenbreiten. Wir haben auch die leeren Textfelder im Rechts-nach-Links-Layout korrigiert, sodass sie ausgewählt werden können, und Platzhalter sind sichtbar. Und wir haben den Prozess für Wiederholen/Rückgängigmachen optimiert: Du brauchst ganze Sätze jetzt nicht mehr Zeichen für Zeichen rückgängig zu machen.
+Dein Reader-Erlebnis kann ab sofort ganz auf deine Bedürfnisse abgestimmt werden – mit einem neuen Discover-Feed, der deine ausgewählten Interessen widerspiegelt.
 
-Verbesserungen bei der Anmeldung! Bei der Anmeldung oder Registrierung ist die Google-Authentifizierung einfacher, um sicherzustellen, dass du zu dem Bildschirm gelangst, den du brauchst. Wenn du versuchst, dich mit einer Gmail-Adresse zu registrieren, die mit einem WordPress-Konto verknüpft ist, wirst du automatisch zur Anmeldung weitergeleitet. Und umgekehrt. Wenn du also versuchst, dich mit einer Adresse anzumelden, zu der kein WordPress-Konto gehört, leiten wir dich zur Registrierung weiter.
+Die Block-Einstellungen im Block-Editor spiegeln nun alle Änderungen, die in den Menü-Slidern vorgenommen wurden, unmittelbar wider.
 
-Und zum Schluss eine Fehlerbehebung: Wir haben den Bug behoben, bei dem die App versehentlich mit zwei Social Media-Konten verknüpft wurde, was dazu führte, dass die Anmeldung mit einem Social Media-Konto schiefging. Jetzt geht nichts mehr schief!
+Verbessertes Registrierungs- und Anmeldeerlebnis – durch Anleitung für den Benutzer zu den entsprechenden Schritten und Verbindung einer selbst-gehosteten Website.
+
+Es gibt außerdem eine brandneue Möglichkeit zur Anmeldung über den iCloud-Schlüsselbund, einem Passwortmanager, der deine WP.com-Konten und -Passwörter speichert.
+
+Bleib immer auf dem Laufenden! Ab sofort kannst du Unterhaltungen auf P2-Websites folgen.
+
+Außerdem wurde die Speichernutzung bei der Markierung eines Bildes reduziert, damit die Bearbeitung von Medien keine Abstürze verursacht.

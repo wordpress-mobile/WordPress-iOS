@@ -47,15 +47,12 @@ class AnnouncementCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(announcement: Announcement) {
-        // if there's a valid image, use it, otherwise try to download it, if a valid url is passed
-        if let image = announcement.image {
-            announcementImageView.image = image
-        } else if let urlString = announcement.imageUrl, let url = URL(string: urlString) {
+    func configure(feature: WordPressKit.Feature) {
+        if let url = URL(string: feature.iconUrl) {
             announcementImageView.af_setImage(withURL: url)
         }
-        headingLabel.text = announcement.heading
-        subHeadingLabel.text = announcement.subHeading
+        headingLabel.text = feature.title
+        subHeadingLabel.text = feature.subtitle
         // TODO - WHATSNEW: - remove when images will be passed
         announcementImageView.backgroundColor = .accent
     }

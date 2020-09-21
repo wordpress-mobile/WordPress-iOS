@@ -73,13 +73,6 @@ class PostSignUpInterstitialViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // Reset the nav style so the nav bar has the WP style, not the Auth style.
-        WPStyleGuide.configureNavigationAppearance()
-    }
-
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
@@ -113,7 +106,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
 
-        tracker.track(click: .continue, ifTrackingNotEnabled: {
+        tracker.track(click: .dismiss, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
         })
     }

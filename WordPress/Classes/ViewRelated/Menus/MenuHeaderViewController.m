@@ -77,12 +77,14 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 {
     MenusSelectionItem *locationItem = [self.locationsView selectionItemForObject:location];
     [self.locationsView setSelectedItem:locationItem];
+    [self prepareForVoiceOver];
 }
 
 - (void)setSelectedMenu:(Menu *)menu
 {
     MenusSelectionItem *menuItem = [self.menusView selectionItemForObject:menu];
     [self.menusView setSelectedItem:menuItem];
+    [self prepareForVoiceOver];
 }
 
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu
@@ -109,6 +111,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     self.textLabel.backgroundColor = [UIColor clearColor];
     self.textLabel.textColor = [UIColor murielNeutral];
     self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
+    self.textLabel.isAccessibilityElement = NO;
 }
 
 #pragma mark - MenusSelectionViewDelegate
@@ -137,6 +140,38 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 {
     [self.delegate headerViewControllerSelectedForCreatingNewMenu:self];
     [self contractSelectionsIfNeeded];
+}
+
+#pragma mark - accessibility
+
+- (void)prepareForVoiceOver
+{
+    [self configureLocationAccessibility];
+    [self configureMenuAccessibility];
+}
+
+- (void)configureLocationAccessibility
+{
+    // Menu area: Header. 3 menu areas available. Button. [hint] Expands to select a different menu area.
+    NSString *format = NSLocalizedString(@"Menu area: %@, %d menu areas available", @"Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available.");
+    MenusSelectionItem *selectedItem = self.locationsView.selectedItem;
+    self.locationsView.accessibilityLabel = [NSString stringWithFormat:format,
+                                                        selectedItem.displayName,
+                                                        self.blog.menuLocations.count];
+    self.locationsView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu area", @"Screen reader hint (non-imperative) about what does the site menu area selector button do.");
+}
+
+- (void)configureMenuAccessibility
+{
+    // Menu in area Header: Primary. 3 menus available. Button. [hint] Expands to select a different menu to edit.
+    NSString *format = NSLocalizedString(@"Menu in area %@: %@, %d menus available", @"Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area.");
+    MenusSelectionItem *selectedItem = self.menusView.selectedItem;
+    MenusSelectionItem *selectedLocationItem = self.locationsView.selectedItem;
+    self.menusView.accessibilityLabel = [NSString stringWithFormat:format,
+                                                    selectedLocationItem.displayName,
+                                                    selectedItem.displayName,
+                                                    self.blog.menus.count];
+    self.menusView.accessibilityHint = NSLocalizedString(@"Expands to select a different menu", @"Screen reader hint (non-imperative) about what does the site menu selector button do.");
 }
 
 @end

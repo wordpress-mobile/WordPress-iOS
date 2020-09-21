@@ -1,5 +1,0 @@
-Block editor improvements! There’s media editing support right in the Gallery block, and the Column block includes support for changing column widths (fancy!). We also fixed the empty text fields in right-to-left layout, so they’re selectable, and placeholders are visible. And we streamlined the redo/undo process – no more undoing whole sentences, one character at a time.
-
-Login improvements! During login or signup, Google authentication is simpler, to make sure you get to the screen you need. If you try to sign up with a Gmail address that’s associated with a WordPress account, we’ll automatically redirect you to login. And vice-versa, so if you try to log in with an address that doesn’t have a matching WordPress account, we’ll send you to signup.
-
-And finally, a fix: we took care of a bug that inadvertently linked the app with two social accounts, therefore making login with a social account wonky. It is wonky no more!

@@ -1,6 +1,18 @@
-15.7
+15.8
 -----
  
+15.7
+-----
+* [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (#14742)
+* [**] You can now follow conversations for P2 sites
+* [**] Block Editor: Block settings now immediately reflect changes from menu sliders.
+* [**] Simplified authentication and updated UI.(#14845, #14831, #14825, #14817).
+       Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
+* [**] Added iCloud Keychain login functionality. (#14770)
+* [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
+* [**] Block Editor: Fixed Dark Mode transition for editor menus.
+
 15.6
 -----
 * [***] Block Editor: Fixed empty text fields on RTL layout. Now they are selectable and placeholders are visible.
@@ -23,7 +35,7 @@
 
 15.4
 -----
- * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below. 
+ * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below.
  * [***] Block Editor: Media editing support in Media & Text block.
  * [***] Block Editor: New block: Social Icons
  * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
@@ -34,14 +46,14 @@
 * [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
 * [***] Block Editor: Users can now individually edit unsupported blocks found in posts or pages. Not available on selfhosted sites or sites defaulting to classic editor.
 * [*] Block Editor: Improved editor loading experience with Ghost Effect.
- 
+
 15.2
 ----
 * [*] Block editor: Display content metrics information (blocks, words, characters count).
 * [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
 * [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
 * [**] A site's title can now be changed by tapping on the title in the site detail screen.
-* [**] Added a new Quick Start task to set a title for a new site. 
+* [**] Added a new Quick Start task to set a title for a new site.
 * [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
 
 -----
