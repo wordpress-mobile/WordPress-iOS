@@ -699,10 +699,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 post = [self createPostForBlog:blog];
             }
         }
-        // Only update post if its been modified
-        if (post.dateModified != remotePost.dateModified || post.dateModified != remotePost.autosave.modifiedDate) {
-            [self updatePost:post withRemotePost:remotePost];
-        }
+
+        [self updatePost:post withRemotePost:remotePost];
         [posts addObject:post];
     }
     
@@ -778,6 +776,12 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
+
+    if (post.dateModified != remotePost.dateModified) {
+        post.hasVersionConflict = post.hasRevision;
+        post.revision.hasVersionConflict = post.hasRevision;
+    }
+
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
@@ -789,8 +793,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
-    post.hasVersionConflict = post.hasRevision;
-    post.revision.hasVersionConflict = post.hasRevision;
     
     if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
