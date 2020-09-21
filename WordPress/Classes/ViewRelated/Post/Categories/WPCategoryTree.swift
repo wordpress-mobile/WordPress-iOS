@@ -3,11 +3,11 @@ import Foundation
 class WPCategoryTree: NSObject {
     var parent: PostCategory?
     var children = [WPCategoryTree]()
-    
+
     @objc init(parent: PostCategory?) {
         self.parent = parent
     }
-    
+
     @objc func getChildrenFromObjects(_ collection: [Any]) {
         collection.forEach {
             guard let category = $0 as? PostCategory else {
@@ -21,7 +21,7 @@ class WPCategoryTree: NSObject {
             }
         }
     }
-    
+
     @objc func getAllObjects() -> [PostCategory] {
         var allObjects = [PostCategory]()
         if let parent = parent {
@@ -33,7 +33,7 @@ class WPCategoryTree: NSObject {
         }
         return allObjects
     }
-    
+
     private func isParentChild(category: PostCategory, parent: PostCategory?) -> Bool {
         return parent == nil ? category.parentID == 0 : parent!.categoryID == category.parentID
     }

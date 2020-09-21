@@ -21,24 +21,24 @@ import Foundation
     private var categories = [PostCategory]()
     private var categoryIndentationDict = [String: NSNumber]()
     private var hasSyncedCategories = false
-    
+
     @objc init(blog: Blog, currentSelection: Array<PostCategory>, selectionMode: CategoriesSelectionMode) {
         self.blog = blog
         self.selectionMode = selectionMode
         self.originalSelection = currentSelection
         super.init(style: .grouped)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
         configureView()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadCategories()
@@ -46,7 +46,7 @@ import Foundation
             syncCategories()
         }
     }
-    
+
     private func configureTableView() {
         tableView.accessibilityIdentifier = "CategoriesList"
         tableView.cellLayoutMarginsFollowReadableWidth = true
@@ -136,28 +136,28 @@ import Foundation
         if didUpdateSelectedCategories {
             delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
         }
-        
+
         tableView.reloadData()
     }
-    
+
     private func indentationLevelForCategory(parentID: NSNumber, categoryCollection: [NSNumber: PostCategory]) -> Int {
         if parentID.intValue == 0 {
             return 0
         }
-        
+
         if let category = categoryCollection[parentID] {
             return indentationLevelForCategory(parentID: category.parentID, categoryCollection: categoryCollection) + 1
         } else {
             return 0
         }
     }
-    
+
     //tableView
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var result = categories.count
         if selectionMode == .parent {
@@ -165,16 +165,16 @@ import Foundation
         }
         return result
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.categoryCellIdentifier, for: indexPath) as? WPTableViewCell else {
             return UITableViewCell()
         }
-        
+
         var row = indexPath.row
         // When showing this VC in mode CategoriesSelectionModeParent, we want the first item to be
         // "No Category" and come up in red, to allow the user to select no category at all.
-        
+
         if selectionMode == .parent {
             if row == 0 {
                 WPStyleGuide.configureTableViewDestructiveActionCell(cell)
@@ -190,7 +190,7 @@ import Foundation
                 row = row - 1
             }
         }
-        
+
         let category = categories[row]
         let indentationLevel = categoryIndentationDict[category.categoryID .stringValue]?.intValue
         cell.indentationLevel = indentationLevel ?? 0
@@ -207,12 +207,12 @@ import Foundation
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let currentSelectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: currentSelectedIndexPath, animated: true)
         }
-        
+
         var category: PostCategory?
         let row = indexPath.row
 
@@ -236,10 +236,10 @@ import Foundation
                     selectedCategories?.append(category)
                     tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 }
-                
+
                 delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
             }
-            
+
         case .blogDefault:
             category = categories[row]
             if let category = category, selectedCategories != nil {
@@ -258,7 +258,7 @@ import Foundation
 private extension PostCategoriesViewController {
     struct Constants {
         static let categoryCellIdentifier = "CategoryCellIdentifier"
-        static let categoryCellIndentation = CGFloat(16.0);
+        static let categoryCellIndentation = CGFloat(16.0)
     }
 }
 

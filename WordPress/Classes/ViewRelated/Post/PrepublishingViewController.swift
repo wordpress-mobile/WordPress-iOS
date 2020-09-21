@@ -163,7 +163,7 @@ class PrepublishingViewController: UITableViewController {
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
-    
+
     private func didTapCategoriesCell() {
         //let controller = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories), selectionMode: .)
 //        PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
