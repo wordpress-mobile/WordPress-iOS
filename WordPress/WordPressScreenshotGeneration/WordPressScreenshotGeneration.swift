@@ -81,7 +81,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         TabNavComponent()
             .gotoNotificationsScreen()
-            .dismissNotificationMessageIfNeeded()
+            .dismissNotificationAlertIfNeeded()
 
         snapshot("3-Notifications")
     }
