@@ -10,6 +10,7 @@ private enum PrepublishingIdentifier {
     case schedule
     case visibility
     case tags
+    case categories
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -33,7 +34,8 @@ class PrepublishingViewController: UITableViewController {
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
+        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags")),
+        PrepublishingOption(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"))
     ]
 
     private var didTapPublish = false
@@ -119,6 +121,8 @@ class PrepublishingViewController: UITableViewController {
             configureVisibilityCell(cell)
         case .schedule:
             configureScheduleCell(cell)
+        case .categories:
+            break
         }
 
         return cell
@@ -132,6 +136,8 @@ class PrepublishingViewController: UITableViewController {
             didTapVisibilityCell()
         case .schedule:
             didTapSchedule(indexPath)
+        case .categories:
+            didTapCategoriesCell()
         }
     }
 
@@ -157,6 +163,12 @@ class PrepublishingViewController: UITableViewController {
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
+    
+    private func didTapCategoriesCell() {
+        let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: post.categories?.array, selectionMode: .post)
+        categoriesViewController.delegate = self
+        navigationController?.pushViewController(categoriesViewController, animated: true)
+       }
 
     // MARK: - Visibility
 
@@ -324,5 +336,14 @@ extension PrepublishingViewController: PrepublishingDismissible {
         }
 
         post.status = originalStatus
+    }
+}
+extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
+    
+}
+
+extension Set {
+    var array: [Element] {
+        return Array(self)
     }
 }
