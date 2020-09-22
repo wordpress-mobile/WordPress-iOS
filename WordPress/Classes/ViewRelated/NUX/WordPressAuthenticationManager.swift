@@ -39,7 +39,6 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
-                                                                enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
                                                                 enableUnifiedWordPress: FeatureFlag.unifiedWordPress.enabled,
                                                                 enableUnifiedKeychainLogin: FeatureFlag.unifiedKeychainLogin.enabled)
 
