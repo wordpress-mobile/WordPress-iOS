@@ -1,4 +1,5 @@
-source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
+# source 'https://cdn.cocoapods.org/'
 
 inhibit_all_warnings!
 use_frameworks!
@@ -149,7 +150,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '95a79a4628273f5621b03a27e041ac010a2b6479'
+    gutenberg :commit => 'dc7e71044260fecc928234bc8696f3d622154243'
 
     ## Third party libraries
     ## =====================
