@@ -29,5 +29,13 @@ class GetStartedScreen: BaseScreen {
         return PasswordScreen()
     }
 
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
+    }
+
+    static func isEmailEntered() -> Bool {
+        let emailTextField = XCUIApplication().textFields[ElementStringIDs.emailTextField]
+        return emailTextField.value != nil
+    }
 
 }
