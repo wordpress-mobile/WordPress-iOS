@@ -1,8 +1,7 @@
 15.9
 -----
- * [internal] Removed feature flags for unified Site Address and Google views. Could cause regressions. [#14954, #14969]
+ * [internal] Modified feature flags that show unified Site Address, Google, and Apple views. Could cause regressions. [#14954, #14969, #14970]
 
- 
 15.8
 -----
 * [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
