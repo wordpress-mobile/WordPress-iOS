@@ -172,9 +172,9 @@ import Foundation
         }
 
         var row = indexPath.row
+
         // When showing this VC in mode CategoriesSelectionModeParent, we want the first item to be
         // "No Category" and come up in red, to allow the user to select no category at all.
-
         if selectionMode == .parent {
             if row == 0 {
                 WPStyleGuide.configureTableViewDestructiveActionCell(cell)
