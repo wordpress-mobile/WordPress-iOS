@@ -13,6 +13,10 @@ fileprivate extension OriginatingExtension {
     }
 }
 
+enum SharingErrors: Error {
+    case canceled
+}
+
 class MainShareViewController: UIViewController {
 
     fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
@@ -81,9 +85,13 @@ private extension MainShareViewController {
     }
 
     func loadAndPresentNavigationVC() {
-        editorController.context = self.extensionContext
-        editorController.dismissalCompletionBlock = {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        editorController.context = extensionContext
+        editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
+            if exitSharing {
+                self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            } else {
+                self?.extensionContext?.cancelRequest(withError: SharingErrors.canceled)
+            }
         }
 
         let shareNavController = UINavigationController(rootViewController: editorController)

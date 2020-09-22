@@ -29,7 +29,7 @@ class ReaderCommentCell: UITableViewCell {
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
-    @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
+    @IBOutlet var leadingContentConstraint: NSLayoutConstraint?
 
     private let textView: WPRichContentView = {
         let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
@@ -235,7 +235,7 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func updateLeadingContentConstraint() {
-        leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+        leadingContentConstraint?.constant = CGFloat(indentationLevel) * indentationWidth
     }
 
 
