@@ -467,7 +467,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private func handleMissingBlockAlertButtonPressed() {
         let blog = post.blog
         let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
-        if (JetpackSSOEnabled == false) {
+        if JetpackSSOEnabled == false {
             let controller = JetpackSecuritySettingsViewController(blog: blog)
             controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDismissed))
             let navController = UINavigationController(rootViewController: controller)
