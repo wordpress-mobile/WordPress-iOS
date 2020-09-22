@@ -1,5 +1,11 @@
-Miglioramenti all'editor a blocchi. Il supporto per la modifica degli elementi multimediali si trova proprio nel blocco Galleria e il blocco Colonna comprende il supporto per la modifica delle larghezze delle colonne. Abbiamo anche corretto i campi di testo vuoti nel layout da destra a sinistra, quindi sono selezionabili e i segnaposto sono visibili. Inoltre, abbiamo semplificato il processo di annullamento/ripristino: niente più annullamenti di intere frasi un carattere alla volta.
+La tua esperienza del Reader può essere ora su misura per te, con un nuovo feed di Discover che riflette gli interessi scelti.
 
-Miglioramenti alla procedura di accesso. Durante la procedura di accesso o iscrizione, l'autenticazione di Google è più semplice per garantirti di arrivare alla schermata necessaria. Se provi ad iscriverti con un indirizzo Gmail associato a un account WordPress, ti reindirizzeremo automaticamente alla procedura di accesso. Allo stesso modo, se provi ad accedere con un indirizzo che non corrisponde a un account WordPress, ti rimanderemo alla procedura di iscrizione.
+Le impostazioni del blocco nell'editor a blocchi riflettono qualsiasi modifica effettuata negli slider del menu.
 
-Infine, una correzione: abbiamo risolto un bug che involontariamente collegava l'app a due account social, rendendo inaffidabile l'accesso con un account social. Problema risolto.
+Esperienza di registrazione e accesso migliorata nel guidare l'utente durante i passaggi e nella connettere un sito ospitato personalmente.
+
+Esiste anche un nuovo modo per accedere con la funzionalità Portachiavi di iCloud: un gestore di password che ricorda i tuoi account e le password di WP.com.
+
+Non perderti nulla. Ora puoi seguire le conversazioni sui siti P2.
+
+Abbiamo anche ridotto l'utilizzo della memoria durante il markup di un'immagine. In questo modo la modifica dei contenuti multimediali non causerà un arresto anomalo.

@@ -76,7 +76,7 @@ extension WPStyleGuide {
             barButtonItemAppearance.tintColor = .barButtonItemTitle
             barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
 
-            let buttonBarAppearance = UIBarButtonItem.appearance()
+            let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
             buttonBarAppearance.tintColor = .white
             buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
                                                         NSAttributedString.Key.foregroundColor: UIColor.white],

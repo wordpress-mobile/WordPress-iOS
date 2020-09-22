@@ -112,3 +112,12 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         ])
     }
 }
+
+extension GutenbergWebViewController {
+    override func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        super.webView(webView, didCommit: navigation)
+        if webView.url?.absoluteString.contains("reauth=1") ?? false {
+            removeCoverViewAnimated()
+        }
+    }
+}
