@@ -281,6 +281,7 @@ class ReaderDetailCoordinator {
     /// Given a URL presents it the best way possible.
     ///
     /// If it's an image, shows it fullscreen.
+    /// If it's a fullscreen Story link, open it in the webview controller
     /// If it's a post, open a new detail screen.
     /// If it's a regular URL, open it in the webview controller
     ///
@@ -290,6 +291,8 @@ class ReaderDetailCoordinator {
             view?.scroll(to: hash)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
+        } else if url.query?.contains("wp-story") ?? false {
+            presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
         } else if url.isWordPressDotComPost {
