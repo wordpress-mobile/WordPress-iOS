@@ -11,7 +11,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
     private let store: AnnouncementsStore
 
     private var shouldPresentWhatIsNew: Bool {
-        AppRatingUtility.shared.didUpgradeVersion && !UserDefaults.standard.whatIsNewWasDisplayed
+        AppRatingUtility.shared.didUpgradeVersion && UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString()
     }
 
     init(store: AnnouncementsStore) {
@@ -34,7 +34,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
             let controller = self.makeWhatIsNewViewController()
 
             viewController.present(controller, animated: true) {
-                UserDefaults.standard.whatIsNewWasDisplayed = true
+                UserDefaults.standard.announcementsVersionDisplayed = Bundle.main.shortVersionString()
             }
         }
         store.getAnnouncements()
@@ -75,14 +75,15 @@ private extension WhatIsNewScenePresenter {
 
 private extension UserDefaults {
 
-    static let whatIsNewWasDisplayedKey = "whatIsNewWasDisplayed"
+    static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
 
-    var whatIsNewWasDisplayed: Bool {
+    var announcementsVersionDisplayed: String? {
         get {
-            bool(forKey: UserDefaults.whatIsNewWasDisplayedKey)
+            string(forKey: UserDefaults.announcementsVersionDisplayedKey)
         }
         set {
-            set(newValue, forKey: UserDefaults.whatIsNewWasDisplayedKey)
+            set(newValue, forKey: UserDefaults.announcementsVersionDisplayedKey)
         }
     }
 }
+
