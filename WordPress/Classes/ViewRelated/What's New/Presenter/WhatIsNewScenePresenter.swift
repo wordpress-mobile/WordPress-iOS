@@ -1,22 +1,48 @@
+import WordPressFlux
 
 class WhatIsNewScenePresenter: ScenePresenter {
 
     var presentedViewController: UIViewController?
 
+    private var subscription: Receipt?
+
+    private var startPresenting: (() -> Void)?
+
+    private let store: AnnouncementsStore
+
+    private var isFreshInstall: Bool {
+        UserDefaults.standard.object(forKey: "lastSavedStateVersionKey") == nil
+    }
+
+    init(store: AnnouncementsStore) {
+        self.store = store
+        subscription = store.onChange { [weak self] in
+            self?.startPresenting?()
+        }
+    }
+
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        let controller = makeWhatIsNewViewController()
-        guard ((viewController is AppSettingsViewController) || !UserDefaults.standard.shouldHideAnnouncements),
-            viewController.isViewOnScreen() else {
+
+        guard !isFreshInstall else {
+            store.updateAnnouncementsVersion()
             return
         }
 
-        viewController.present(controller, animated: true) { [weak viewController] in
-            // if accessed via settings, do not influence the app update behavior
-            guard !(viewController is AppSettingsViewController) else {
+        guard ((viewController is AppSettingsViewController) || store.announcementsVersionHasChanged) else {
+            return
+        }
+
+        startPresenting = { [weak viewController, weak self] in
+            guard let self = self, let viewController = viewController, viewController.isViewOnScreen() else {
                 return
             }
-            UserDefaults.standard.shouldHideAnnouncements = true
+            let controller = self.makeWhatIsNewViewController()
+
+            viewController.present(controller, animated: true) {
+                self.store.updateAnnouncementsVersion()
+            }
         }
+        store.getAnnouncements()
     }
 }
 
@@ -27,7 +53,7 @@ private extension WhatIsNewScenePresenter {
         return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView)
     }
 
-    private func makeWhatIsNewView() -> WhatIsNewView {
+    func makeWhatIsNewView() -> WhatIsNewView {
 
         let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
                                              version: WhatIsNewStrings.version,
@@ -37,26 +63,8 @@ private extension WhatIsNewScenePresenter {
     }
 
     func makeDataSource() -> AnnouncementsDataSource {
-        return FeatureAnnouncementsDataSource(store: makeAnnouncementStore(),
+        return FeatureAnnouncementsDataSource(store: self.store,
                                               cellTypes: ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self])
-    }
-
-    func makeAnnouncementStore() -> AnnouncementsStore {
-        return CachedAnnouncementsStore(cache: makeCache())
-    }
-
-    func makeCache() -> AnnouncementsCache {
-        return UserDefaultsAnnouncementsCache()
-    }
-
-    func makeApi() -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: CoreDataManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
-
-        return WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress(),
-                                              localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 
     enum WhatIsNewStrings {
@@ -65,25 +73,6 @@ private extension WhatIsNewScenePresenter {
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
         static var version: String {
             Bundle.main.shortVersionString() != nil ? versionPrefix + Bundle.main.shortVersionString() : ""
-        }
-    }
-}
-
-
-extension WPTabBarController {
-
-    private func makeWhatIsNewPresenter() -> ScenePresenter {
-        return WhatIsNewScenePresenter()
-    }
-
-    @objc func presentWhatIsNew(on viewController: UIViewController) {
-
-        DispatchQueue.main.async { [weak viewController] in
-            guard let viewController = viewController else {
-                return
-            }
-            let presenter = self.makeWhatIsNewPresenter()
-            presenter.present(on: viewController, animated: true, completion: nil)
         }
     }
 }

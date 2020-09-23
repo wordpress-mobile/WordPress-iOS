@@ -4,16 +4,19 @@ import WordPressKit
 /// Genric type that renders announcements upon requesting them by calling `getAnnouncements()`
 protocol AnnouncementsStore: Observable {
     var announcements: [WordPressKit.Announcement] { get }
+    var announcementsVersionHasChanged: Bool { get }
     func getAnnouncements()
+    func updateAnnouncementsVersion()
 }
 
 
 /// Announcement store with a local cache of "some sort"
 class CachedAnnouncementsStore: AnnouncementsStore {
 
-    let changeDispatcher = Dispatcher<Void>()
+    private let api: WordPressComRestApi
+    private var cache: AnnouncementsCache
 
-    var cache: AnnouncementsCache
+    let changeDispatcher = Dispatcher<Void>()
 
     enum State {
         case loading
@@ -48,17 +51,22 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    init(cache: AnnouncementsCache) {
+    init(cache: AnnouncementsCache, api: WordPressComRestApi) {
         self.cache = cache
+        self.api = api
     }
 
     func getAnnouncements() {
+
+        guard !state.isLoading else {
+            return
+        }
+
         state = .loading
         if let announcements = cache.announcements {
             state = .ready(announcements)
             return
         }
-
         let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         service.getAnnouncements(appId: Identifiers.appId,
                                  appVersion: Identifiers.appVersion,
@@ -76,14 +84,16 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    private var api: WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: CoreDataManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
+    var announcementsVersionHasChanged: Bool {
+        UserDefaults.standard.lastKnownAnnouncementsVersion != nil &&
+            Bundle.main.shortVersionString() != nil &&
+            UserDefaults.standard.lastKnownAnnouncementsVersion != Bundle.main.shortVersionString()
+    }
 
-        return WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress(),
-                                              localeKey: WordPressComRestApi.LocaleKeyV2)
+    func updateAnnouncementsVersion() {
+        if let newVersion = Bundle.main.shortVersionString() {
+            UserDefaults.standard.lastKnownAnnouncementsVersion = newVersion
+        }
     }
 }
 
@@ -94,6 +104,21 @@ private extension CachedAnnouncementsStore {
         static let appId = "2"
         static var appVersion: String {
             Bundle.main.shortVersionString() ?? ""
+        }
+    }
+}
+
+
+private extension UserDefaults {
+
+    static let lastKnownAnnouncementsVersionKey = "lastKnownAnnouncementsVersion"
+
+    var lastKnownAnnouncementsVersion: String? {
+        get {
+            string(forKey: UserDefaults.lastKnownAnnouncementsVersionKey)
+        }
+        set {
+            set(newValue, forKey: UserDefaults.lastKnownAnnouncementsVersionKey)
         }
     }
 }
