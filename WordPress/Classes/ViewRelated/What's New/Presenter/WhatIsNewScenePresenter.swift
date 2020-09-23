@@ -23,7 +23,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
 
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
 
-        guard ((viewController is AppSettingsViewController) || shouldPresentWhatIsNew) else {
+        guard viewController is AppSettingsViewController || shouldPresentWhatIsNew else {
             return
         }
 
@@ -86,4 +86,3 @@ private extension UserDefaults {
         }
     }
 }
-
