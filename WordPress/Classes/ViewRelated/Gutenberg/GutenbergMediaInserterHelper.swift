@@ -69,6 +69,7 @@ class GutenbergMediaInserterHelper: NSObject {
         options.deliveryMode = .fastFormat
         options.version = .current
         options.resizeMode = .fast
+        options.isNetworkAccessAllowed = true
         let mediaUploadID = media.gutenbergUploadID
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
