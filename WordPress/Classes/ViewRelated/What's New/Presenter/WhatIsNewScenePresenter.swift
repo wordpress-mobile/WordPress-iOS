@@ -10,8 +10,8 @@ class WhatIsNewScenePresenter: ScenePresenter {
 
     private let store: AnnouncementsStore
 
-    private var isFreshInstall: Bool {
-        UserDefaults.standard.object(forKey: "lastSavedStateVersionKey") == nil
+    private var shouldPresentWhatIsNew: Bool {
+        AppRatingUtility.shared.didUpgradeVersion && !UserDefaults.standard.whatIsNewWasDisplayed
     }
 
     init(store: AnnouncementsStore) {
@@ -23,12 +23,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
 
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
 
-        guard !isFreshInstall else {
-            store.updateAnnouncementsVersion()
-            return
-        }
-
-        guard ((viewController is AppSettingsViewController) || store.announcementsVersionHasChanged) else {
+        guard ((viewController is AppSettingsViewController) || shouldPresentWhatIsNew) else {
             return
         }
 
@@ -39,7 +34,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
             let controller = self.makeWhatIsNewViewController()
 
             viewController.present(controller, animated: true) {
-                self.store.updateAnnouncementsVersion()
+                UserDefaults.standard.whatIsNewWasDisplayed = true
             }
         }
         store.getAnnouncements()
@@ -73,6 +68,21 @@ private extension WhatIsNewScenePresenter {
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
         static var version: String {
             Bundle.main.shortVersionString() != nil ? versionPrefix + Bundle.main.shortVersionString() : ""
+        }
+    }
+}
+
+
+private extension UserDefaults {
+
+    static let whatIsNewWasDisplayedKey = "whatIsNewWasDisplayed"
+
+    var whatIsNewWasDisplayed: Bool {
+        get {
+            bool(forKey: UserDefaults.whatIsNewWasDisplayedKey)
+        }
+        set {
+            set(newValue, forKey: UserDefaults.whatIsNewWasDisplayedKey)
         }
     }
 }

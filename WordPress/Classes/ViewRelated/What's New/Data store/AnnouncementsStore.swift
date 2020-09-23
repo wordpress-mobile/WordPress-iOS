@@ -4,9 +4,7 @@ import WordPressKit
 /// Genric type that renders announcements upon requesting them by calling `getAnnouncements()`
 protocol AnnouncementsStore: Observable {
     var announcements: [WordPressKit.Announcement] { get }
-    var announcementsVersionHasChanged: Bool { get }
     func getAnnouncements()
-    func updateAnnouncementsVersion()
 }
 
 
@@ -83,16 +81,6 @@ class CachedAnnouncementsStore: AnnouncementsStore {
             }
         }
     }
-
-    var announcementsVersionHasChanged: Bool {
-        UserDefaults.standard.lastKnownAnnouncementsVersion != Bundle.main.shortVersionString()
-    }
-
-    func updateAnnouncementsVersion() {
-        if let newVersion = Bundle.main.shortVersionString() {
-            UserDefaults.standard.lastKnownAnnouncementsVersion = newVersion
-        }
-    }
 }
 
 
@@ -102,21 +90,6 @@ private extension CachedAnnouncementsStore {
         static let appId = "2"
         static var appVersion: String {
             Bundle.main.shortVersionString() ?? ""
-        }
-    }
-}
-
-
-private extension UserDefaults {
-
-    static let lastKnownAnnouncementsVersionKey = "lastKnownAnnouncementsVersion"
-
-    var lastKnownAnnouncementsVersion: String? {
-        get {
-            string(forKey: UserDefaults.lastKnownAnnouncementsVersionKey)
-        }
-        set {
-            set(newValue, forKey: UserDefaults.lastKnownAnnouncementsVersionKey)
         }
     }
 }
