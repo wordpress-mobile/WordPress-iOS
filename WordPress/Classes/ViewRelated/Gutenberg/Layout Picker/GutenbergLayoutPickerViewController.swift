@@ -293,13 +293,15 @@ class GutenbergLayoutPickerViewController: UIViewController {
         isLoading = true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
         PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
-            guard let self = self else { return }
-            switch results {
-            case .success(let fetchedLayouts):
-                self.layouts = fetchedLayouts
-                self.isLoading = false
-            case .failure:
-                return
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch results {
+                case .success(let fetchedLayouts):
+                    self.layouts = fetchedLayouts
+                    self.isLoading = false
+                case .failure:
+                    return
+                }
             }
         }
     }
