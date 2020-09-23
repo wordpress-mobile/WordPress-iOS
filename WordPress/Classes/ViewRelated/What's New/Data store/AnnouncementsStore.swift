@@ -85,9 +85,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
     }
 
     var announcementsVersionHasChanged: Bool {
-        UserDefaults.standard.lastKnownAnnouncementsVersion != nil &&
-            Bundle.main.shortVersionString() != nil &&
-            UserDefaults.standard.lastKnownAnnouncementsVersion != Bundle.main.shortVersionString()
+        UserDefaults.standard.lastKnownAnnouncementsVersion != Bundle.main.shortVersionString()
     }
 
     func updateAnnouncementsVersion() {
