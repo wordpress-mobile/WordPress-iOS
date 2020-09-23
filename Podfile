@@ -194,7 +194,7 @@ target 'WordPress' do
 
     pod 'WordPressAuthenticator', '~> 1.26.0-beta'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''    
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
