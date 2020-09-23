@@ -549,7 +549,7 @@ import "./ScreenshotFastfile"
     match(
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress.alpha",
                        "org.wordpress.alpha.WordPressShare",
                        "org.wordpress.alpha.WordPressDraftAction",
@@ -564,7 +564,7 @@ import "./ScreenshotFastfile"
     match(
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress.internal",
                        "org.wordpress.internal.WordPressShare",
                        "org.wordpress.internal.WordPressDraftAction",
@@ -579,7 +579,7 @@ import "./ScreenshotFastfile"
     match(
       type: "appstore",
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress",
                        "org.wordpress.WordPressShare",
                        "org.wordpress.WordPressDraftAction",

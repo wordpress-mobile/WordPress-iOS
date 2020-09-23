@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-02 12:54:56+0000 */
+/* Translation-Revision-Date: 2020-09-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -318,9 +318,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = "关于";
 
 /* My Profile 'About me' label */
@@ -328,9 +326,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "About WordPress for iOS";
-
-/* Category description for page templates */
-"About pages" = "关于页面";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -466,6 +461,9 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "将菜单项添加至子网页";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "添加新菜单";
 
 /* Title of button to add a new site. */
 "Add new site" = "添加新站点";
@@ -616,6 +614,9 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "发生了未知错误。请重试。";
+
+/* No comment provided by engineer. */
+"Angle" = "角度";
 
 /* No comment provided by engineer. */
 "Annotations Sidebar" = "注释边栏";
@@ -868,18 +869,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "博客";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "博客文章";
-
-/* Category description for page templates */
-"Blog pages" = "博客页面";
 
 /* Create new Blog Post button title */
 "Blog post" = "博文";
@@ -917,6 +913,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "作者是 %@。";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "继续即表示您同意我们的_服务条款_。";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "注册此域即表示，您同意我们的<a>条款和条件<\/a>。";
@@ -1408,10 +1407,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "连接";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "联系";
-
 /* Support email label. */
 "Contact Email" = "联系电子邮件地址";
 
@@ -1421,9 +1416,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "联系支持人员";
-
-/* Category description for page templates */
-"Contact pages" = "联系信息页面";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1449,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continue with Google";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "继续使用 WordPress.com";
 
 /* Title of a Quick Start Tour */
@@ -2038,7 +2031,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-mail";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "电子邮件地址";
 
 /* Notification Settings Channel */
@@ -2123,9 +2118,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "输入您的 %@ 帐户信息。";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "输入您的电子邮件地址以登录或创建 WordPress.com 帐户。";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "改为输入密码。";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "输入您的站点地址";
 
 /* Generic error alert title
    Generic error.
@@ -2235,7 +2236,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "退出全屏";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展开";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2246,6 +2248,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "展开已完成任务的列表。";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "展开以选择其他菜单";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "展开以选择其他菜单区域";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "描述该站点。";
@@ -2372,6 +2380,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "关注站点";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "关注对话";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "关注其他站点";
 
@@ -2408,6 +2419,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "已关注 %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "正在关注对话";
+
 /* Filters Follows Notifications */
 "Follows" = "关注";
 
@@ -2416,6 +2430,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "关注博客。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "关注文章评论。";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "关注标签。";
@@ -2463,6 +2480,12 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "正在生成预览";
 
+/* View title for initial auth views. */
+"Get Started" = "开始";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "通过电子邮件获取登录链接";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "活跃起来吧！积极评论您关注的博客中的文章。";
 
@@ -2487,9 +2510,6 @@ translators: sample content for \"Team\" page template */
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "建立并运行您的站点";
-
-/* View title for initial auth views. */
-"Getting Started" = "开始使用";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "获取账户信息";
@@ -2688,6 +2708,9 @@ translators: sample content for \"Team\" page template */
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "如果删除该粉丝，则此人将不会再收到关于此站点的通知，除非其重新关注此站点。";
 
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 帐户，则需要创建一个帐户，并同意我们的_服务条款_。";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "删除 %1$@ 后，此用户将无法再访问此站点，但是 %2$@ 创建的所有内容仍会保留在此站点上。";
 
@@ -2829,6 +2852,9 @@ translators: sample content for \"Team\" page template */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL 无效，请检查您输入的网址是否有效。";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "端点无效";
 
 /* No comment provided by engineer. */
 "Invalid username" = "无效用户名";
@@ -3276,6 +3302,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "菜单名称";
+
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "菜单区域：%1$@，%2$d 个可用菜单区域";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "%1$@区域的菜单：%2$@，%3$d 个可用菜单";
 
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
@@ -3854,6 +3886,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "要包括在邀请中的可选消息。";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "或";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或通过 _输入您的站点地址_ 登录。";
 
@@ -4155,13 +4190,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "热门语言";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "文件夹";
-
-/* Category description for page templates */
-"Portfolio pages" = "文件夹页面";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "职位或职称";
@@ -4358,9 +4388,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "继续当前操作会将所有 WordPress.com 数据从此设备中移除，并删除本地保存的所有草稿。您不会丢失已保存在 WordPress.com 博客中的任何内容。";
-
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "正在处理帐户";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "项目名称";
@@ -4690,7 +4717,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "重置过滤器";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
 
 /* Screen title. Resize and crop an image. */
@@ -5003,6 +5030,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "选择要在站点选择器中显示哪些站点。";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "已选择";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "所选媒体不是视频。";
 
@@ -5017,6 +5047,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "选择此域以用于您的站点。";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "选择此项目";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "发送反馈";
@@ -5048,13 +5081,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "服务";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "Services";
-
-/* Category description for page templates */
-"Services pages" = "服务页面";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "设置特色图像";
@@ -5502,6 +5530,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "已成功安装 %@。";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "已成功订阅评论";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "已成功取消订阅评论";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "建议";
@@ -5628,6 +5662,9 @@ translators: sample content for \"Services\" page template */
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "点按即可取消上传。";
 
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "轻点以折叠文章标签";
+
 /* Accessibility hint */
 "Tap to customize insights" = "轻点可自定义数据分析";
 
@@ -5640,6 +5677,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "轻点以隐藏键盘";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "轻点以查看此文章的所有标签";
+
 /* Accessibility hint */
 "Tap to select the next period" = "Tap to select the next period";
 
@@ -5649,6 +5689,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "轻点以选择用于发表文章的博客";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "轻点以查看此标签的文章";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "轻点可以管理您关注的站点。";
@@ -5656,13 +5699,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分类";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Category description for page templates */
-"Team pages" = "团队页面";
 
 /* Section title of the teams reader section. */
 "Teams" = "团队";
@@ -5847,6 +5885,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "订阅评论时发生意外错误";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "取消订阅评论时发生意外错误";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新“通知设置”时发生意外错误";
@@ -6794,7 +6838,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我们将通过电子邮件向您发送一个神奇链接，利用它您无需密码即可立即登录。无需再输入密码了！";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "我们将通过电子邮件向您发送一个免密登录链接，供您创建新的 WordPress.com 帐户。";
+"We'll email you a signup link to create your new WordPress.com account." = "我们将通过电子邮件向您发送注册链接，供您创建新的 WordPress.com 帐户。";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "当您获得粉丝、评论和赞时，我们将通知您。";
@@ -6838,6 +6882,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "我们无法连接到该 URL 指向的 Jetpack 站点。请联系我们获取帮助。";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送了注册链接，供您创建新的 WordPress.com 帐户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased.";
 
@@ -6876,9 +6923,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "我们添加了更多的任务，以帮助您增加受众。";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送一个注册链接，供您创建新的 WordPress.com 帐户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "我们对您的清单进行了一些修改";

@@ -318,9 +318,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADDRESS";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = "Om";
 
 /* My Profile 'About me' label */
@@ -328,9 +326,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "About WordPress for iOS";
-
-/* Category description for page templates */
-"About pages" = "About pages";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -466,6 +461,9 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Add menu item to children";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "Add new menu";
 
 /* Title of button to add a new site. */
 "Add new site" = "Add new site";
@@ -616,6 +614,9 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "An unknown error occurred. Please try again.";
+
+/* No comment provided by engineer. */
+"Angle" = "Angle";
 
 /* No comment provided by engineer. */
 "Annotations Sidebar" = "Annotations Sidebar";
@@ -868,18 +869,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Blogindlæg";
-
-/* Category description for page templates */
-"Blog pages" = "Blog pages";
 
 /* Create new Blog Post button title */
 "Blog post" = "Blog post";
@@ -917,6 +913,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "By %@.";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "By continuing, you agree to our _Terms of Service_.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>.";
@@ -1408,10 +1407,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Connections";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "Kontakt";
-
 /* Support email label. */
 "Contact Email" = "Contact Email";
 
@@ -1421,9 +1416,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "Contact Support";
-
-/* Category description for page templates */
-"Contact pages" = "Contact pages";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1449,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continue with Google";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "Continue with WordPress.com";
 
 /* Title of a Quick Start Tour */
@@ -2038,7 +2031,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-mail";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-mailadresse";
 
 /* Notification Settings Channel */
@@ -2123,9 +2118,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "Enter your account information for %@.";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Enter your email address to log in or create a WordPress.com account.";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Enter your password instead.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "Enter your site address";
 
 /* Generic error alert title
    Generic error.
@@ -2235,7 +2236,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Exit Full Screen";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanded";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2246,6 +2248,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "Expands the list of completed tasks.";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "Expands to select a different menu";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "Expands to select a different menu area";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explain what this site is about.";
@@ -2372,6 +2380,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "Follow Site";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Follow conversation";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Follow other sites";
 
@@ -2408,6 +2419,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Following %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "Following conversation";
+
 /* Filters Follows Notifications */
 "Follows" = "Follows";
 
@@ -2416,6 +2430,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Follows the blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "Follows the comments on a post.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Follows the tag.";
@@ -2463,6 +2480,12 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generating Preview";
 
+/* View title for initial auth views. */
+"Get Started" = "Get Started";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Get a login link by email";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Get active! Comment on posts from blogs you follow.";
 
@@ -2487,9 +2510,6 @@ translators: sample content for \"Team\" page template */
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Get your site up and running";
-
-/* View title for initial auth views. */
-"Getting Started" = "Getting Started";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Getting account information";
@@ -2688,6 +2708,9 @@ translators: sample content for \"Team\" page template */
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "If removed, this follower will stop receiving notifications about this site, unless they re-follow.";
 
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_.";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site.";
 
@@ -2829,6 +2852,9 @@ translators: sample content for \"Team\" page template */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Invalid URL, please check if you wrote a valid site address.";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Invalid endpoint";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Ugyldigt brugernavn";
@@ -3276,6 +3302,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Menu Name";
+
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "Menu area: %@, %d menu areas available";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "Menu in area %@: %@, %d menus available";
 
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
@@ -3854,6 +3886,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "Optional message to be included in the invitation.";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "Or";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Or log in by _entering your site address_.";
 
@@ -4155,13 +4190,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Populære sprog";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portfolio";
-
-/* Category description for page templates */
-"Portfolio pages" = "Portfolio pages";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Position or Job Title";
@@ -4358,9 +4388,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).";
-
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "Processing Account";
 
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Project Name";
@@ -4690,7 +4717,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Reset filter";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
 
 /* Screen title. Resize and crop an image. */
@@ -5003,6 +5030,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "Select which sites will be shown in the site picker.";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "Selected";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Selected media is not a video.";
 
@@ -5017,6 +5047,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Selects this domain to use for your site.";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "Selects this item";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Send Feedback";
@@ -5048,13 +5081,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "Services";
-
-/* Category description for page templates */
-"Services pages" = "Services pages";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Set Featured Image";
@@ -5502,6 +5530,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Successfully installed %@.";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "Successfully subscribed to the comments";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "Successfully unsubscribed from the comments";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Suggestions";
@@ -5628,6 +5662,9 @@ translators: sample content for \"Services\" page template */
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tap to cancel uploading.";
 
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "Tap to collapse the post tags";
+
 /* Accessibility hint */
 "Tap to customize insights" = "Tap to customize insights";
 
@@ -5640,6 +5677,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Tap to hide the keyboard";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "Tap to see all the tags for this post";
+
 /* Accessibility hint */
 "Tap to select the next period" = "Tap to select the next period";
 
@@ -5649,6 +5689,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Tap to select which blog to post to";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "Tap to view posts for this tag";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "Tapping lets you manage the sites you follow.";
@@ -5656,13 +5699,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Category description for page templates */
-"Team pages" = "Team pages";
 
 /* Section title of the teams reader section. */
 "Teams" = "Teams";
@@ -5847,6 +5885,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "There has been an unexpected error while subscribing to the comments";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "There has been an unexpected error while unsubscribing from the comments";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Der er sket en uventet fejl under opdateringen af notifikationsindstillingerne";
@@ -6794,7 +6838,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "We'll email you a magic link to create your new WordPress.com account.";
+"We'll email you a signup link to create your new WordPress.com account." = "We'll email you a signup link to create your new WordPress.com account.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "We'll notify you when you get followers, comments, and likes.";
@@ -6838,6 +6882,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased.";
 
@@ -6876,9 +6923,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "We’ve added more tasks to help you grow your audience.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "We’ve made some changes to your checklist";
