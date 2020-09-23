@@ -157,6 +157,6 @@ extension PageLayoutService {
         let request: NSFetchRequest<PageTemplateCategory> = PageTemplateCategory.fetchRequest()
         request.predicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.slug)) IN %@", categoryList)
         let fetchedCategories = try context.fetch(request)
-        layout.addToCategories(NSSet(object: fetchedCategories))
+        layout.categories = Set(fetchedCategories)
     }
 }

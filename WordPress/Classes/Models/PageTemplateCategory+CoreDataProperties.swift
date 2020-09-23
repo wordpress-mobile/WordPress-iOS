@@ -11,7 +11,7 @@ extension PageTemplateCategory {
     @NSManaged public var emoji: String?
     @NSManaged public var slug: String?
     @NSManaged public var title: String?
-    @NSManaged public var layouts: NSSet?
+    @NSManaged public var layouts: Set<PageTemplateLayout>?
 
 }
 
@@ -25,10 +25,10 @@ extension PageTemplateCategory {
     @NSManaged public func removeFromLayouts(_ value: PageTemplateLayout)
 
     @objc(addLayouts:)
-    @NSManaged public func addToLayouts(_ values: NSSet)
+    @NSManaged public func addToLayouts(_ values: Set<PageTemplateLayout>)
 
     @objc(removeLayouts:)
-    @NSManaged public func removeFromLayouts(_ values: NSSet)
+    @NSManaged public func removeFromLayouts(_ values: Set<PageTemplateLayout>)
 
 }
 

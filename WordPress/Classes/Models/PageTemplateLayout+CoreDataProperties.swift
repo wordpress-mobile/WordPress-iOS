@@ -11,7 +11,7 @@ extension PageTemplateLayout {
     @NSManaged public var preview: String?
     @NSManaged public var slug: String?
     @NSManaged public var title: String?
-    @NSManaged public var categories: NSSet?
+    @NSManaged public var categories: Set<PageTemplateCategory>?
 
 }
 
@@ -25,10 +25,10 @@ extension PageTemplateLayout {
     @NSManaged public func removeFromCategories(_ value: PageTemplateCategory)
 
     @objc(addCategories:)
-    @NSManaged public func addToCategories(_ values: NSSet)
+    @NSManaged public func addToCategories(_ values: Set<PageTemplateCategory>)
 
     @objc(removeCategories:)
-    @NSManaged public func removeFromCategories(_ values: NSSet)
+    @NSManaged public func removeFromCategories(_ values: Set<PageTemplateCategory>)
 }
 
 extension PageTemplateLayout {
