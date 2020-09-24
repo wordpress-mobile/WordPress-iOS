@@ -11,6 +11,7 @@ final class ReaderShowMenuAction {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
+
         // Block button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
@@ -18,6 +19,17 @@ final class ReaderShowMenuAction {
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                }
+            })
+        }
+
+        // Report button
+        if shouldShowReportPostMenuItem(readerTopic: readerTopic) {
+            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPost,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderReportPostAction().execute(with: post, context: context, origin: vc)
                                                 }
             })
         }
@@ -91,5 +103,9 @@ final class ReaderShowMenuAction {
                 || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
+    }
+
+    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
+        return shouldShowBlockSiteMenuItem(readerTopic: readerTopic)
     }
 }

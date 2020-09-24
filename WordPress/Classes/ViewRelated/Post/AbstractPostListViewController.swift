@@ -808,7 +808,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        ghostableTableView.startGhostAnimation()
+        if isViewOnScreen() {
+            ghostableTableView.startGhostAnimation()
+        }
         ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }

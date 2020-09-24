@@ -166,6 +166,7 @@ extension LoginEpilogueTableViewController {
 
         cell.accessibilityIdentifier = "siteListHeaderCell"
         cell.accessibilityLabel = cell.titleLabel?.text
+        cell.contentView.backgroundColor = .basicBackground
         cell.accessibilityHint = NSLocalizedString("A list of sites on this account.", comment: "Accessibility hint for My Sites list.")
 
         return cell
@@ -208,6 +209,7 @@ extension LoginEpilogueTableViewController {
         }
 
         tracker.track(click: .connectSite)
+        tracker.set(flow: .loginWithSiteAddress)
         onConnectSite?()
     }
 }
