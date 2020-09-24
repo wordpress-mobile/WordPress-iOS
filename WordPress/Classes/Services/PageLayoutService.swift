@@ -67,7 +67,7 @@ class PageLayoutService {
     // Parameter Generation
     private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
         return [
-//            Parameters.supportedBlocks: supportedBlocks as AnyObject,
+            Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
             Parameters.scale: scale as AnyObject
         ]
@@ -87,14 +87,14 @@ class PageLayoutService {
 
 extension PageLayoutService {
 
-    static func resultsController() -> NSFetchedResultsController<PageTemplateCategory> {
+    static func resultsController(delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<PageTemplateCategory> {
         let context = ContextManager.shared.mainContext
         let request: NSFetchRequest<PageTemplateCategory> = PageTemplateCategory.fetchRequest()
         let sort = NSSortDescriptor(key: "title", ascending: true)
         request.sortDescriptors = [sort]
 
         let resultsController = NSFetchedResultsController<PageTemplateCategory>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-
+        resultsController.delegate = delegate
         do {
             try resultsController.performFetch()
         } catch {

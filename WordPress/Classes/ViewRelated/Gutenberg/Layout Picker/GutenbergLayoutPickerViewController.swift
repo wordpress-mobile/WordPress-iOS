@@ -7,10 +7,11 @@ class GutenbergLayoutSection {
     var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
 
-    init(section: PageTemplateCategory, layouts: [PageTemplateLayout], scrollOffset: CGPoint = .zero) {
+    init(_ section: PageTemplateCategory) {
+        let layouts = Array(section.layouts ?? []).sorted()
         self.section = section
         self.layouts = layouts
-        self.scrollOffset = scrollOffset
+        self.scrollOffset = .zero
     }
 }
 
@@ -106,8 +107,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
-    var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
-        let controller = PageLayoutService.resultsController()
+    lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
+        let controller = PageLayoutService.resultsController(delegate: self)
+        sections = makeSectionData(with: controller)
         return controller
     }()
 
@@ -150,7 +152,6 @@ class GutenbergLayoutPickerViewController: UIViewController {
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
-        sections = makeSectionData() ?? []
         fetchLayouts()
     }
 
@@ -306,11 +307,10 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    private func makeSectionData() -> [GutenbergLayoutSection]? {
-        return resultsController.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
-            let layouts = Array(category.layouts ?? []).sorted()
-            return GutenbergLayoutSection(section: category, layouts: layouts)
-        })
+    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
+        return controller.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
+            return GutenbergLayoutSection(category)
+        }) ?? []
     }
 }
 
@@ -517,5 +517,14 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
                 self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
             }
         }
+    }
+}
+
+extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        sections = makeSectionData(with: resultsController)
+        tableView.reloadData()
+        filterBar.reloadData()
     }
 }
