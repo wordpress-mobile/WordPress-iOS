@@ -71,11 +71,10 @@ extension WPTabBarController {
         let controller = kanvasService.controller()
 
         storyService = KanvasStoryService(blog: blog, posted: { [weak self, weak controller] result in
-
             switch result {
             case .success(let post):
                 let prepublishing = PrepublishingViewController(post: post, identifiers: [.title, .visibility, .schedule, .tags]) { [weak self] post in
-//                    publishAction()
+                    storyService?.poster?.update(post: post)
                     self?.dismiss(animated: true, completion: nil)
                 }
                 let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)

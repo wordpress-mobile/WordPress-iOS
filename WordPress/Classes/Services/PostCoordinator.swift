@@ -116,7 +116,7 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ post: AbstractPost, automatedRetry: Bool = false,
+    func prepareToSave(_ post: AbstractPost, automatedRetry: Bool = false,
                                then completion: @escaping (Result<AbstractPost, Error>) -> ()) {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 

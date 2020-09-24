@@ -16,11 +16,11 @@ class KanvasService {
 //        settings.features.metalFilters = true
         settings.features.openGLPreview = true
         settings.features.openGLCapture = true
-        settings.features.cameraFilters = true
+        settings.features.cameraFilters = false
         settings.features.experimentalCameraFilters = true
         settings.features.editor = true
-        settings.features.editorGIFMaker = true
-        settings.features.editorFilters = true
+        settings.features.editorGIFMaker = false
+        settings.features.editorFilters = false
         settings.features.editorText = true
         settings.features.editorMedia = true
         settings.features.editorDrawing = true
@@ -28,7 +28,7 @@ class KanvasService {
         settings.features.editorPublishing = true
         settings.features.editorPostOptions = false
         settings.features.newCameraModes = true
-        settings.features.gifs = true
+        settings.features.gifs = false
         settings.features.multipleExports = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
@@ -36,7 +36,7 @@ class KanvasService {
     }
 
     func controller() -> CameraController {
-        let controller = CameraController(settings: cameraSettings, stickerProvider: ExperimentalStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
+        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve

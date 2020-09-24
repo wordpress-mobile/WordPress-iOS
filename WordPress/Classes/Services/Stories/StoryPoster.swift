@@ -43,7 +43,6 @@ class StoryPoster {
     func post(media: [Media], title: String, date: Date = Date(), to blog: Blog, completion: @escaping (Result<Post, Error>) -> Void) {
 
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        post.postTitle = title
         post.content = ""
 
         media.forEach { item in
@@ -51,45 +50,32 @@ class StoryPoster {
             MediaCoordinator.shared.addMedia(from: asset, to: post)
         }
 
-        let coordinator = PostCoordinator.shared
+        completion(.success(post))
+    }
 
-        coordinator.save(post, forceDraftIfCreating: true) { result in
-
-            let uploadedPost: AbstractPost
-
-            switch result {
-            case .success(let post):
-                uploadedPost = post
-            case .failure(let error):
-                print("Kanvas Upload ERROR: \(error)")
-                completion(Result.failure(error))
-                return
-            }
-
-            let mediaItems: [MediaItem] = uploadedPost.media.compactMap { item in
-                return MediaItem(alt: item.alt ?? "",
-                                 caption: item.caption ?? "",
-                                 id: item.mediaID?.doubleValue ?? 0,
-                                 link: item.remoteURL ?? "",
-                                 mime: item.mimeType() ?? "",
-                                 type: String(item.mimeType()?.split(separator: "/").first ?? ""),
-                                 url: item.remoteURL ?? "")
-            }
-            let story = Story(mediaFiles: mediaItems)
-            let encoder = JSONEncoder()
-            let json = String(data: (try! encoder.encode(story)), encoding: .utf8) ?? ""
-            let content = """
-            <!-- wp:jetpack/story
-            \(json)
-            -->
-            <div class="wp-story wp-block-jetpack-story"></div>
-            <!-- /wp:jetpack/story -->
-            """
-
-            post.content = content
-            post.status = .publish
-            coordinator.save(post)
-            completion(Result.success(post))
+    func update(post: AbstractPost) {
+        let mediaItems: [MediaItem] = post.media.compactMap { item in
+            return MediaItem(alt: item.alt ?? "",
+                             caption: item.caption ?? "",
+                             id: item.mediaID?.doubleValue ?? 0,
+                             link: item.remoteURL ?? "",
+                             mime: item.mimeType() ?? "",
+                             type: String(item.mimeType()?.split(separator: "/").first ?? ""),
+                             url: item.remoteURL ?? "")
         }
+        let story = Story(mediaFiles: mediaItems)
+        let encoder = JSONEncoder()
+        let json = String(data: (try! encoder.encode(story)), encoding: .utf8) ?? ""
+        let content = """
+        <!-- wp:jetpack/story
+        \(json)
+        -->
+        <div class="wp-story wp-block-jetpack-story"></div>
+        <!-- /wp:jetpack/story -->
+        """
+
+        post.content = content
+        post.status = .publish
+        PostCoordinator.shared.save(post)
     }
 }
