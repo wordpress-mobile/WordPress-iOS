@@ -146,8 +146,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchLayouts()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
+        fetchLayouts()
         filterBar.filterDelegate = self
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
