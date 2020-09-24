@@ -67,7 +67,7 @@ class PageLayoutService {
     // Parameter Generation
     private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
         return [
-            Parameters.supportedBlocks: supportedBlocks as AnyObject,
+//            Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
             Parameters.scale: scale as AnyObject
         ]

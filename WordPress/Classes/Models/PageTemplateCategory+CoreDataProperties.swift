@@ -9,8 +9,8 @@ extension PageTemplateCategory {
 
     @NSManaged public var desc: String?
     @NSManaged public var emoji: String?
-    @NSManaged public var slug: String?
-    @NSManaged public var title: String?
+    @NSManaged public var slug: String
+    @NSManaged public var title: String
     @NSManaged public var layouts: Set<PageTemplateLayout>?
 
 }

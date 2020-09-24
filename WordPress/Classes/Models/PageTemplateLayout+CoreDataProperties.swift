@@ -7,9 +7,9 @@ extension PageTemplateLayout {
         return NSFetchRequest<PageTemplateLayout>(entityName: "PageTemplateLayout")
     }
 
-    @NSManaged public var content: String?
-    @NSManaged public var preview: String?
-    @NSManaged public var slug: String?
+    @NSManaged public var content: String
+    @NSManaged public var preview: String
+    @NSManaged public var slug: String
     @NSManaged public var title: String?
     @NSManaged public var categories: Set<PageTemplateCategory>?
 
@@ -35,16 +35,26 @@ extension PageTemplateLayout {
 
     convenience init(context: NSManagedObjectContext, layout: GutenbergLayout) {
         self.init(context: context)
-        preview = layout.preview
-        content = layout.content
+        preview = layout.preview ?? ""
+        content = layout.content ?? ""
         title = layout.title
         slug = layout.slug
     }
 
     func update(with layout: GutenbergLayout) {
-        preview = layout.preview
-        content = layout.content
+        preview = layout.preview ?? ""
+        content = layout.content ?? ""
         title = layout.title
         slug = layout.slug
+    }
+}
+
+extension PageTemplateLayout: Comparable {
+    public static func < (lhs: PageTemplateLayout, rhs: PageTemplateLayout) -> Bool {
+        return lhs.slug.compare(rhs.slug) == .orderedDescending
+    }
+
+    public static func > (lhs: PageTemplateLayout, rhs: PageTemplateLayout) -> Bool {
+        return lhs.slug.compare(rhs.slug) == .orderedAscending
     }
 }
