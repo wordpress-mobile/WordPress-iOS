@@ -6,8 +6,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case unifiedWordPress
-    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -33,10 +31,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .readerCSS:
             return false
         case .unifiedAuth:
-            return true
-        case .unifiedWordPress:
-            return true
-        case .unifiedKeychainLogin:
             return true
         case .meMove:
             return true
@@ -94,10 +88,6 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .unifiedWordPress:
-            return "Unified Auth - WordPress"
-        case .unifiedKeychainLogin:
-            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
