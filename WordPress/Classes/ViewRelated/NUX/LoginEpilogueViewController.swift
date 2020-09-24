@@ -33,7 +33,7 @@ class LoginEpilogueViewController: UIViewController {
         if #available(iOS 13.0, *) {
             return .systemChromeMaterial
         }
-        
+
         return .regular
     }
 
