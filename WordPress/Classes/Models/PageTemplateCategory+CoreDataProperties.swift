@@ -41,11 +41,4 @@ extension PageTemplateCategory {
         desc = category.description
         emoji = category.emoji
     }
-
-    func update(with category: GutenbergLayoutCategory) {
-        slug = category.slug
-        title = category.title
-        desc = category.description
-        emoji = category.emoji
-    }
 }

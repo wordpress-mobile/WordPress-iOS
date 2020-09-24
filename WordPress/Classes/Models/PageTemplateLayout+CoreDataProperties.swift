@@ -40,13 +40,6 @@ extension PageTemplateLayout {
         title = layout.title
         slug = layout.slug
     }
-
-    func update(with layout: GutenbergLayout) {
-        preview = layout.preview ?? ""
-        content = layout.content ?? ""
-        title = layout.title
-        slug = layout.slug
-    }
 }
 
 extension PageTemplateLayout: Comparable {

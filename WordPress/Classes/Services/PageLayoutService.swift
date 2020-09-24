@@ -120,44 +120,19 @@ extension PageLayoutService {
     }
 
     private static func persistCategoriesToCoreData(_ categories: [GutenbergLayoutCategory], context: NSManagedObjectContext) throws {
-        let allCategories = context.allObjects(ofType: PageTemplateCategory.self)
-        var categoriesToDelete = Set(allCategories)
-
-        categories.forEach { (category) in
-
-            let request: NSFetchRequest<PageTemplateCategory> = PageTemplateCategory.fetchRequest()
-            request.predicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.slug)) = %@", category.slug)
-
-            if let localCategory = try? context.fetch(request).first {
-                categoriesToDelete.remove(localCategory)
-                localCategory.update(with: category)
-            } else {
-                let _ = PageTemplateCategory(context: context, category: category)
-            }
+        context.deleteAllObjects(ofType: PageTemplateCategory.self)
+        for category in categories {
+            let _ = PageTemplateCategory(context: context, category: category)
         }
-
-        categoriesToDelete.forEach ({ context.delete($0) })
     }
 
     private static func persistLayoutsToCoreData(_ layouts: [GutenbergLayout], context: NSManagedObjectContext) throws {
-        let allLayouts = context.allObjects(ofType: PageTemplateLayout.self)
-        var layoutsToDelete = Set(allLayouts)
+        context.deleteAllObjects(ofType: PageTemplateLayout.self)
 
         for layout in layouts {
-            let request: NSFetchRequest<PageTemplateLayout> = PageTemplateLayout.fetchRequest()
-            request.predicate = NSPredicate(format: "\(#keyPath(PageTemplateLayout.slug)) = %@", layout.slug)
-
-            if let localLayout = try? context.fetch(request).first {
-                layoutsToDelete.remove(localLayout)
-                localLayout.update(with: layout)
-                try associate(layout: localLayout, toCategories: layout.categories, context: context)
-            } else {
-                let localLayout = PageTemplateLayout(context: context, layout: layout)
-                try associate(layout: localLayout, toCategories: layout.categories, context: context)
-            }
+            let localLayout = PageTemplateLayout(context: context, layout: layout)
+            try associate(layout: localLayout, toCategories: layout.categories, context: context)
         }
-
-        layoutsToDelete.forEach ({ context.delete($0) })
     }
 
     private static func associate(layout: PageTemplateLayout, toCategories categories: [GutenbergLayoutCategory], context: NSManagedObjectContext) throws {
