@@ -24,7 +24,7 @@ extension WPTabBarController {
         let blogID = blog.dotComID?.intValue ?? 0 as Any
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: ["tap_source": source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
 
-        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] template in
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (title, template) in
             self?.showEditor(blog: blog, title: title, content: template)
         }
     }

@@ -14,6 +14,23 @@ class LoginTests: XCTestCase {
         super.tearDown()
     }
 
+    // Unified email login/out
+    // Replaces testEmailPasswordLoginLogout
+    func testWordPressLoginLogout() {
+        let prologueScreen = PrologueScreen().selectContinue()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+            .tabBar.gotoMeScreen()
+            .logoutToPrologue()
+
+        XCTAssert(prologueScreen.isLoaded())
+    }
+
+    // Old email login/out
+    // TODO: remove when unifiedAuth is permanent.
     func testEmailPasswordLoginLogout() {
         let welcomeScreen = WelcomeScreen().selectLogin()
             .selectEmailLogin()
@@ -46,6 +63,22 @@ class LoginTests: XCTestCase {
         XCTAssert(welcomeScreen.isLoaded())
     }
 
+    // Unified WordPress.com login/out
+    // Replaces testWpcomUsernamePasswordLogin
+    func testWpcomLogin() {
+        _ = PrologueScreen().selectSiteAddress()
+            .proceedWithWP(siteUrl: "https://wordpress.com")
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+
+        XCTAssert(MySiteScreen().isLoaded())
+    }
+
+    // Old WordPress.com login/out
+    // TODO: remove when unifiedAuth is permanent.
     func testWpcomUsernamePasswordLogin() {
         _ = WelcomeScreen().selectLogin()
             .selectEmailLogin()
@@ -59,6 +92,21 @@ class LoginTests: XCTestCase {
         XCTAssert(MySiteScreen().isLoaded())
     }
 
+    // Unified self hosted login/out
+    // Replaces testSelfHostedUsernamePasswordLoginLogout
+    func testSelfHostedLoginLogout() {
+        _ = PrologueScreen().selectSiteAddress()
+            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .continueWithSelectedSite()
+            .removeSelfHostedSite()
+
+        XCTAssert(PrologueScreen().isLoaded())
+    }
+
+    // Old self hosted login/out
+    // TODO: remove when unifiedAuth is permanent.
     func testSelfHostedUsernamePasswordLoginLogout() {
         _ = WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
@@ -71,6 +119,17 @@ class LoginTests: XCTestCase {
         XCTAssert(WelcomeScreen().isLoaded())
     }
 
+    // Unified email login fail
+    // Replaces testUnsuccessfulLogin
+    func testWordPressUnsuccessfulLogin() {
+        _ = PrologueScreen().selectContinue()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .tryProceed(password: "invalidPswd")
+            .verifyLoginError()
+    }
+
+    // Old email login fail
+    // TODO: remove when unifiedAuth is permanent.
     func testUnsuccessfulLogin() {
         _ = WelcomeScreen().selectLogin()
             .selectEmailLogin()
