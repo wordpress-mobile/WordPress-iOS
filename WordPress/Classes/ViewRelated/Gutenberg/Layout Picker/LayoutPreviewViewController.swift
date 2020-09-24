@@ -42,6 +42,7 @@ class LayoutPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WPFontManager.loadNotoFontFamily()
         styleButtons()
         setupGutenbergView()
         view.backgroundColor = defaultBrackgroundColor
