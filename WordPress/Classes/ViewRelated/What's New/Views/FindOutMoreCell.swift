@@ -46,6 +46,7 @@ private extension FindOutMoreCell {
         guard let url = self.findOutMoreUrl else {
             return
         }
+        // TODO - WHATSNEW: we should probably present the post in a WebView
         UIApplication.shared.open(url)
     }
 }

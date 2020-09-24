@@ -16,7 +16,7 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         case showModularSitePicker
     }
 
-    typealias CompletionBlock = () -> Void
+    typealias CompletionBlock = (_ exitSharing: Bool) -> Void
 
     // MARK: - Cache
 
@@ -138,7 +138,7 @@ extension ShareExtensionAbstractViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
             self.cleanUpSharedContainerAndCache()
-            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            self.dismissalCompletionBlock?(false)
         }
 
         alertController.addAction(alertAction)

@@ -1,1 +1,11 @@
-¡Nuevo! Las @menciones a nombres de usuario ahora se completan automáticamente en el editor de bloques en WordPress.com y los sitios con Jetpack. Teclea el carácter «@» para ver una ventana emergente con el nombre de usuario y ¡haz tu selección!. En esta versión hemos añadido compatibilidad para la edición de medios en el bloque de fondo y hemos corregido un fallo en el bloque de encabezado con un enlace y un formato de cadena que mostraban una sombra blanca en el modo oscuro. Por último, ahora los encabezados del sitio en el lector de WordPress.com tienen un nuevo aspecto moderno.
+Ahora, tu experiencia con el Lector puede ser adaptada para ti, con un nuevo feed de «Descubrir» que refleja los intereses que elijas.
+
+Ahora, los ajustes de los bloques en el editor de bloques reflejan inmediatamente cualquier cambio realizado en los controles deslizantes del menú.
+
+Mejorada la experiencia de registro y acceso, dirigiendo al usuario en los pasos y la conexión de un sitio autoalojado.
+
+También hay una nueva forma de acceder con la característica del llavero de iCloud: un gestor de contraseñas que recuerda tus cuentas y contraseñas de WP.com.
+
+¡No te pierdas nada! Ahora puedes seguir las conversaciones de los sitios P2.
+
+También hemos reducido el uso de la memoria al marcar una imagen para que la edición de medios no cause un error.

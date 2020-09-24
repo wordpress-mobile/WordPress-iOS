@@ -22,6 +22,10 @@
       "skippedTests" : [
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
+        "LoginTests\/testEmailPasswordLoginLogout()",
+        "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
+        "LoginTests\/testUnsuccessfulLogin()",
+        "LoginTests\/testWpcomUsernamePasswordLogin()",
         "SignupTests\/testEmailSignup()"
       ],
       "target" : {

@@ -35,6 +35,12 @@ class ReaderTopicsCardCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupTableView()
         applyStyles()
+
+        // iOS 14 puts the contentView in the top of the view hierarchy
+        // This conflicts with the tableView interaction, so we disable it
+        if #available(iOS 14, *) {
+            contentView.isUserInteractionEnabled = false
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -82,7 +88,7 @@ class ReaderTopicsCardCell: UITableViewCell {
     private func applyStyles() {
         containerView.backgroundColor = .listForeground
 
-        tableView.backgroundColor = .none
+        tableView.backgroundColor = .listForeground
         tableView.separatorColor = .placeholderElement
 
         backgroundColor = .none
@@ -114,7 +120,7 @@ extension ReaderTopicsCardCell: UITableViewDataSource {
         cell.textLabel?.text = topics[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         cell.separatorInset = UIEdgeInsets.zero
-        cell.backgroundColor = .none
+        cell.backgroundColor = .listForeground
         return cell
     }
 

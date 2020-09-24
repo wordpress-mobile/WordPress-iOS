@@ -131,6 +131,8 @@ import "./ScreenshotFastfile"
       "app_store_screenshot-3" => File.join(source_metadata_folder, "promo_screenshot_3.txt"),
       "app_store_screenshot-4" => File.join(source_metadata_folder, "promo_screenshot_4.txt"),
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt"),
+      "app_store_screenshot-6" => File.join(source_metadata_folder, "promo_screenshot_6.txt"),
+      "app_store_screenshot-7" => File.join(source_metadata_folder, "promo_screenshot_7.txt"),
     }
 
     ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
@@ -547,7 +549,7 @@ import "./ScreenshotFastfile"
     match(
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress.alpha",
                        "org.wordpress.alpha.WordPressShare",
                        "org.wordpress.alpha.WordPressDraftAction",
@@ -562,7 +564,7 @@ import "./ScreenshotFastfile"
     match(
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress.internal",
                        "org.wordpress.internal.WordPressShare",
                        "org.wordpress.internal.WordPressDraftAction",
@@ -577,7 +579,7 @@ import "./ScreenshotFastfile"
     match(
       type: "appstore",
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
-      readonly: options[:readonly] || is_ci,
+      readonly: true,
       app_identifier: ["org.wordpress",
                        "org.wordpress.WordPressShare",
                        "org.wordpress.WordPressDraftAction",

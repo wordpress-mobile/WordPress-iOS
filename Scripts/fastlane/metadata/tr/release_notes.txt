@@ -1,1 +1,11 @@
-Yeni! Kullancı adı @mention'ları artık WordPress.com ve Jetpack siteleri için Blok Düzenleyicide otomatik olarak tamamlanıyor. Kullanıcı adlarını gösteren bir açılır pencere görmek için "@" karakterini yazın ve seçiminizi yapın. Bu sürümde, medya düzenlemek Kapak bloğuna destek ekledik, ayrıca bir bağlantı ve dize biçimlendirmesi içeren başlıkların karanlık modda beyaz gölge görüntülediği Başlık bloğu hatasını düzelttik. Son olarak, WordPress.com Reader'daki site başlıklarına modern ve yeni bir görünüm kazandırdık.
+Reader deneyiminiz, seçtiğiniz ilgi alanlarını yansıtan yeni bir Keşfet akışıyla artık yalnızca size özle şekilde uyarlanabilir.
+
+Blok Düzenleyici'deki engelleme ayarları artık menü kaydırıcılarında yapılan değişiklikleri anında yansıtır.
+
+İyileştirilmiş kayıt ve oturum açma deneyimiyle kullanıcı hem adımlar konusunda hem de kendi kendine barındırılan bir siteyi bağlama konusunda yönlendirilir.
+
+WP.com hesaplarınızı ve parolalarınızı hatırlayan bir parola yöneticisi olan iCloud Anahtar Zinciri özelliğiyle oturum açmada yepyeni bir yol da sunulur.
+
+Hiçbir şeyi kaçırmayın. Artık P2 sitelerindeki konuşmaları takip edebilirsiniz.
+
+Bir görseli işaretlerken bellek kullanımı azaltıldığından ortam düzenleme işlemleri kilitlenmeye neden olmaz.

@@ -54,12 +54,14 @@ public struct GutenbergLayout: Codable {
     public let slug: String
     public let title: String
     public let preview: String?
+    public let content: String?
     public let categories: [GutenbergLayoutCategory]
 
     enum CodingKeys: String, CodingKey {
         case slug
         case title
         case preview
+        case content
         case categories
     }
 
@@ -68,6 +70,7 @@ public struct GutenbergLayout: Codable {
         slug = try map.decode(String.self, forKey: .slug)
         title = try map.decode(String.self, forKey: .title)
         preview = try? map.decode(String.self, forKey: .preview)
+        content = try? map.decode(String.self, forKey: .content)
         categories = try map.decode([GutenbergLayoutCategory].self, forKey: .categories)
     }
 }

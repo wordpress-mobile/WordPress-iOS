@@ -1,1 +1,11 @@
-Neu! Benutzernamen-@mentions werden jetzt im Block-Editor für WordPress.com und auf Jetpack-Websites auto-vervollständigt. Wenn du das @-Zeichen eingibst, wird dir ein Popup-Menü mit Benutzernamen angezeigt, aus denen du auswählen kannst! In dieser Version haben wir Unterstützung für die Medienbearbeitung im Cover-Block hinzugefügt und einen Fehler am Überschriftsblock behoben, der dazu führte, dass Überschriften mit einem Link und String-Formatierung im Dunkelmodus mit einem weißen Schatten angezeigt wurden. Außerdem haben Website-Überschriften im WordPress.com-Reader nun einen neuen, modernen Look.
+Dein Reader-Erlebnis kann ab sofort ganz auf deine Bedürfnisse abgestimmt werden – mit einem neuen Discover-Feed, der deine ausgewählten Interessen widerspiegelt.
+
+Die Block-Einstellungen im Block-Editor spiegeln nun alle Änderungen, die in den Menü-Slidern vorgenommen wurden, unmittelbar wider.
+
+Verbessertes Registrierungs- und Anmeldeerlebnis – durch Anleitung für den Benutzer zu den entsprechenden Schritten und Verbindung einer selbst-gehosteten Website.
+
+Es gibt außerdem eine brandneue Möglichkeit zur Anmeldung über den iCloud-Schlüsselbund, einem Passwortmanager, der deine WP.com-Konten und -Passwörter speichert.
+
+Bleib immer auf dem Laufenden! Ab sofort kannst du Unterhaltungen auf P2-Websites folgen.
+
+Außerdem wurde die Speichernutzung bei der Markierung eines Bildes reduziert, damit die Bearbeitung von Medien keine Abstürze verursacht.
