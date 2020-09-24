@@ -596,12 +596,14 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         updateViewState(for: pickerDataSource.numberOfAssets())
     }
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
-        let nserror = error as NSError
-        if let mediaLibrary = self.blog.media, !mediaLibrary.isEmpty {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error?) -> Bool {
+        if let error = error,
+           let mediaLibrary = self.blog.media, !mediaLibrary.isEmpty {
+            let nsError = error as NSError
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            WPError.showNetworkingNotice(title: title, error: nserror)
+            WPError.showNetworkingNotice(title: title, error: nsError)
         }
+
         return true
     }
 }
