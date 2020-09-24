@@ -32,9 +32,9 @@ class LoginEpilogueViewController: UIViewController {
     private var blurEffect: UIBlurEffect.Style {
         if #available(iOS 13.0, *) {
             return .systemChromeMaterial
-        } else {
-            return .regular
         }
+        
+        return .regular
     }
 
     /// Links to the Epilogue TableViewController
