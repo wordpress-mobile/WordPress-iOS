@@ -11,7 +11,7 @@ class PageLayoutService {
 
     typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
 
-    static func layouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: @escaping CompletionHandler) {
+    static func layouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
         if blog.isAccessibleThroughWPCom() {
             fetchWordPressComLayouts(forBlog: blog, withThumbnailSize: thumbnailSize, completion: completion)
         } else {
@@ -19,10 +19,10 @@ class PageLayoutService {
         }
     }
 
-    private static func fetchWordPressComLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: @escaping CompletionHandler) {
+    private static func fetchWordPressComLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler?) {
         guard let blogId = blog.dotComID as? Int, let api = blog.wordPressComRestApi() else {
             let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
-            completion(.failure(error))
+            completion?(.failure(error))
             return
         }
 
@@ -30,30 +30,30 @@ class PageLayoutService {
         fetchLayouts(thumbnailSize, api, urlPath, completion)
     }
 
-    private static func fetchSharedLayouts(_ thumbnailSize: CGSize, completion: @escaping CompletionHandler) {
+    private static func fetchSharedLayouts(_ thumbnailSize: CGSize, completion: CompletionHandler?) {
         let api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
         let urlPath = "/wpcom/v2/common-block-layouts"
         fetchLayouts(thumbnailSize, api, urlPath, completion)
     }
 
-    private static func fetchLayouts(_ thumbnailSize: CGSize, _ api: WordPressComRestApi, _ urlPath: String, _ completion: @escaping CompletionHandler) {
+    private static func fetchLayouts(_ thumbnailSize: CGSize, _ api: WordPressComRestApi, _ urlPath: String, _ completion: CompletionHandler?) {
         api.GET(urlPath, parameters: parameters(thumbnailSize), success: { (responseObject, _) in
             guard let result = parseLayouts(fromResponse: responseObject) else {
                 let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Unable to parse response"])
-                completion(.failure(error))
+                completion?(.failure(error))
                 return
             }
 
             persistToCoreData(result) { (persistanceResult) in
                 switch persistanceResult {
                 case .success:
-                    completion(.success(result))
+                    completion?(.success(result))
                 case .failure(let error):
-                    completion(.failure(error))
+                    completion?(.failure(error))
                 }
             }
         }, failure: { (error, _) in
-            completion(.failure(error))
+            completion?(.failure(error))
         })
     }
 

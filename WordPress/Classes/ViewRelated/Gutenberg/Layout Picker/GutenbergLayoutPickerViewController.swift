@@ -294,17 +294,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         guard let blog = blog else { return }
         isLoading = resultsController.isEmpty()
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch results {
-                case .success:
-                    self.isLoading = false
-                case .failure:
-                    return
-                }
-            }
-        }
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
     }
 
     private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
@@ -524,6 +514,7 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
+        isLoading = resultsController.isEmpty()
         tableView.reloadData()
         filterBar.reloadData()
     }
