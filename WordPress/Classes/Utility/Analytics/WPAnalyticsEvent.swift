@@ -70,6 +70,11 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerPostReported
+    // What's New
+    case whatIsNewShownOnAppUpdate
+    case whatIsNewShownFromAppSettings
+    case whatIsNewContinueTapped
+    case whatIsNewFindOutMoreTapped
 
     /// A String that represents the event
     var value: String {
@@ -131,6 +136,7 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
         case .pushNotificationsPrimerAllowTapped:
@@ -184,6 +190,15 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
+        // What's New
+        case .whatIsNewShownOnAppUpdate:
+            return "whatsnew_shown_on_app_update"
+        case .whatIsNewShownFromAppSettings:
+            return "whatsnew_shown_from_app_settings"
+        case .whatIsNewContinueTapped:
+            return "whatsnew_continue_tapped"
+        case .whatIsNewFindOutMoreTapped:
+            return "whatsnew_find_out_more_tapped"
         }
     }
 

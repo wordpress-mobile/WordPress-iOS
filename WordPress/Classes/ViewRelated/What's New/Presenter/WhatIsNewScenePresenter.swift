@@ -33,11 +33,21 @@ class WhatIsNewScenePresenter: ScenePresenter {
             }
             let controller = self.makeWhatIsNewViewController()
 
+            self.trackAccess(from: viewController)
             viewController.present(controller, animated: true) {
                 UserDefaults.standard.announcementsVersionDisplayed = Bundle.main.shortVersionString()
             }
         }
         store.getAnnouncements()
+    }
+
+    // analytics
+    private func trackAccess(from viewController: UIViewController) {
+        if viewController is AppSettingsViewController {
+            WPAnalytics.track(.whatIsNewShownFromAppSettings)
+        } else {
+            WPAnalytics.track(.whatIsNewShownOnAppUpdate)
+        }
     }
 }
 

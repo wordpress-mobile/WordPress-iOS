@@ -43,6 +43,8 @@ private extension FindOutMoreCell {
     }
 
     @objc func buttonTapped() {
+        WPAnalytics.track(.whatIsNewFindOutMoreTapped)
+
         guard let url = self.findOutMoreUrl else {
             return
         }
