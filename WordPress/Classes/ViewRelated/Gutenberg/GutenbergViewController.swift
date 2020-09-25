@@ -940,7 +940,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
-            .unsupportedBlockEditorSwitch: post.blog.jetpack?.isConnected ?? false,
+            .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
