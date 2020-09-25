@@ -69,7 +69,7 @@ class SuggestionService: NSObject {
             guard let payload = responseObject as? [String: Any] else { return }
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
-            let suggestions = restSuggestions.map { Suggestion(dictionary: $0) }
+            let suggestions = restSuggestions.compactMap { Suggestion(dictionary: $0) }
             self.suggestionsCache.setObject(Wrapper(suggestions), forKey: siteID)
 
             // send the siteID with the notification so it could be filtered out
