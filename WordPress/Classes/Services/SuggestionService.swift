@@ -11,15 +11,7 @@ extension NSNotification.Name {
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {
 
-    // NSCache works with classes such as NSArray, not structs like Swift arrays (e.g. [Suggestion]).
-    private class Wrapper<T>: NSObject {
-        let value: T
-        init(_ value: T) {
-            self.value = value
-        }
-    }
-
-    private let suggestionsCache = NSCache<NSNumber, Wrapper<[Suggestion]>>()
+    private let suggestionsCache = NSCache<NSNumber, NSArray>()
     private var siteIDsCurrentlyBeingRequested = [NSNumber]()
 
     private static let shared = SuggestionService()
@@ -37,7 +29,7 @@ class SuggestionService {
     */
     func suggestions(for siteID: NSNumber) -> [Suggestion]? {
         if let cachedSuggestions = suggestionsCache.object(forKey: siteID) {
-            return cachedSuggestions.value
+            return cachedSuggestions as? [Suggestion]
         }
         updateSuggestions(for: siteID)
         return nil
@@ -68,7 +60,7 @@ class SuggestionService {
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
             let suggestions = restSuggestions.compactMap { Suggestion(dictionary: $0) }
-            self.suggestionsCache.setObject(Wrapper(suggestions), forKey: siteID)
+            self.suggestionsCache.setObject(suggestions as NSArray, forKey: siteID)
 
             // send the siteID with the notification so it could be filtered out
             NotificationCenter.default.post(name: .suggestionListUpdated, object: siteID)
@@ -96,7 +88,7 @@ class SuggestionService {
             return false
         }
 
-        let suggestions = suggestionsCache.object(forKey: siteID)?.value
+        let suggestions = suggestionsCache.object(forKey: siteID) as? [Suggestion]
 
         // if the device is offline and suggestion list is not yet retrieved
         if !ReachabilityUtils.isInternetReachable() && suggestions == nil {
