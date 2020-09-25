@@ -947,9 +947,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     private var isUnsupportedBlockEditorEnabled: Bool {
         // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
-        // The option is disabled on Self-hosted sites because they can have their web editor to be set to classic and then the fallback will not work.
-        // Jetpack sites with SSO disabled also have Unsupported Block Editor disabled, since we won't be able to authenticate to their self-hosted site.
-        // Atomic sites can also have SSO disabled (though is an opt-out option).
+        // This is because they can have their web editor to be set to classic and then the fallback will not work.
 
         let blog = post.blog
         let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
