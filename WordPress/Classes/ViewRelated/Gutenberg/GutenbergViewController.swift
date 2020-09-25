@@ -919,9 +919,9 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         // Atomic sites can also have SSO disabled (though is an opt-out option).
 
         let blog = post.blog
-        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return ( blog.isHostedAtWPcom || JetpackSSOEnabled ) && blog.webEditor == .gutenberg
+        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
     }
 }
 
