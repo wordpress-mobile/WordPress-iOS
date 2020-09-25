@@ -469,13 +469,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
         if JetpackSSOEnabled == false {
             let controller = JetpackSecuritySettingsViewController(blog: blog)
-            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDismissed))
+            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
             let navController = UINavigationController(rootViewController: controller)
             present(navController, animated: true)
         }
     }
 
-    @objc private func jetpackSettingsControllerDismissed() {
+    @objc private func jetpackSettingsControllerDoneButtonPressed() {
         if presentedViewController != nil {
             dismiss(animated: true) { [weak self] in
                 self?.gutenberg.updateCapabilities()
