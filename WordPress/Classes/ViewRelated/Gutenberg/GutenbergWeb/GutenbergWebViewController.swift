@@ -101,7 +101,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             target: self,
             action: #selector(onSaveButtonPressed)
         )
-        navigationItem.rightBarButtonItem?.isEnabled = false 
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     private func startObservingWebView() {
