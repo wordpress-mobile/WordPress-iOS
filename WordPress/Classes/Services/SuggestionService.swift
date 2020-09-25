@@ -9,9 +9,9 @@ extension NSNotification.Name {
 }
 
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
-class SuggestionService: NSObject {
+class SuggestionService {
 
-    // NSCache works with classes such as NSArray, not structs such as Suggestion or [Suggestion].
+    // NSCache works with classes such as NSArray, not structs like Swift arrays (e.g. [Suggestion]).
     private class Wrapper<T>: NSObject {
         let value: T
         init(_ value: T) {
@@ -27,8 +27,6 @@ class SuggestionService: NSObject {
     static func sharedInstance() -> SuggestionService {
         return shared
     }
-
-    private override init() {}
 
     /**
     Returns the cached @mention suggestions (if any) for a given siteID.  Calls
