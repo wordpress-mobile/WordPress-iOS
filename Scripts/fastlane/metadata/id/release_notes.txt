@@ -1,5 +1,11 @@
-Peningkatan editor blok! Ada dukungan pengeditan media tepat di blok Galeri, dan blok Kolom menyertakan dukungan untuk mengubah lebar kolom (keren!). Kami juga memperbaiki bidang teks kosong di tata letak kanan-ke-kiri, sehingga dapat dipilih dan placeholder sekarang terlihat. Dan kami menyederhanakan proses redo/undo - tidak lagi membatalkan seluruh kalimat dengan satu per satu karakter.
+Pengalaman Pembaca kini dapat disesuaikan khusus untuk Anda dengan feed Jelajah baru yang menampilkan minat yang Anda pilih.
 
-Peningkatan login! Selama login atau pendaftaran, autentikasi Google lebih sederhana untuk memastikan Anda mendapatkan layar yang Anda butuhkan. Jika Anda mencoba mendaftar dengan alamat Gmail yang terkait dengan akun WordPress, kami akan mengarahkan Anda secara otomatis untuk login. Begitu pula sebaliknya, jadi jika Anda mencoba masuk dengan alamat yang tidak memiliki akun WordPress, kami akan mengirim Anda untuk mendaftar.
+Pengaturan Blok di Penyunting Blok kini langsung menampilkan perubahan yang dilakukan di slider menu.
 
-Dan akhirnya, sebuah perbaikan: Kami menangani bug yang secara tidak sengaja menautkan aplikasi dengan dua akun sosial, oleh karena itu membuat login dengan akun sosial miring. Ini tidak miring lagi!
+Pengalaman daftar dan login ditingkatkan — baik dengan mengarahkan pengguna langkah demi langkah maupun menghubungkan situs hosting sendiri.
+
+Ada cara baru untuk login dengan fitur iCloud Keychain — pengelola kata sandi yang mengingat akun dan kata sandi WP.com Anda.
+
+Jangan lewatkan apa pun! Kini Anda dapat mengikuti percakapan di situs P2.
+
+Kami juga telah mengurangi penggunaan memori saat menandai gambar, sehingga penyuntingan media tidak akan menyebabkan crash.

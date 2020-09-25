@@ -11,6 +11,7 @@ class GutenGhostView: UIView {
         commonInit()
     }
 
+    @IBOutlet var toolbarViews: [UIView]!
     @IBOutlet weak var toolbarTopBorderView: UIView! {
         didSet {
             if #available(iOS 12.0, *) {
@@ -57,6 +58,12 @@ class GutenGhostView: UIView {
         didSet {
             toolbarBackgroundView.isGhostableDisabled = true
             toolbarBackgroundView.backgroundColor = .ghostToolbarBackground
+        }
+    }
+
+    var hidesToolbar: Bool = false {
+        didSet {
+            toolbarViews.forEach({ $0.isHidden = hidesToolbar })
         }
     }
 

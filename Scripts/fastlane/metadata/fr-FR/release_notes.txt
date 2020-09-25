@@ -1,5 +1,11 @@
-Améliorations de l’éditeur de blocs : il y a le support d’édition des médias directement dans le bloc Galerie, et le bloc de Colonne inclut la prise en charge pour changer les largeurs de colonne (Classe !). Nous avons aussi corriger les champs de texte vide dans les mises en page de droite à gauche, donc ils sont sélectionnable et les textes indicatifs sont visibles. Et nous avons rationalisé le processus Annuler/Rétablir, plus question d’annuler une phrase entière, un caractère à la fois.
+Votre expérience du Lecteur peut désormais être personnalisée grâce à un nouveau flux Découvrir qui reflète vos intérêts.
 
-Améliorations de la connexion ! Pendant la connexion ou l’inscription, l’authentification Google est plus simple pour être sûr d’obtenir l’écran dont vous avez besoin. Si vous essayez de vous inscrire avec une adresse Gmail qui est associée avec votre compte WordPress, nous vous redirigerons automatiquement vers la page de connexion. Et vice et versa, donc si vous tentez de vous connecter avec une adresse qui ne correspond pas avec un compte WordPress, nous cous redirigerons vers la page d’inscription.
+Les réglages du bloc dans l’éditeur de blocs reflètent désormais immédiatement les modifications apportées aux curseurs du menu.
 
-Et finalement un correctif : nous nous sommes occupé d’un bug qui a par inadvertance lié l’application avec deux comptes sociaux.
+L’expérience d'inscription et de connexion est améliorée grâce aux indications guidant l’utilisateur durant la procédure et à la connexion d’un site auto-hébergé.
+
+Une nouvelle façon de se connecter grâce à la fonctionnalité Trousseau d’accès iCloud est désormais disponible : un gestionnaire de mots de passe qui se rappelle vos comptes et mots de passe WP.com.
+
+Ne ratez rien ! Vous pouvez désormais suivre des conversations sur des sites P2.
+
+Nous avons également réduit l'utilisation de la mémoire lors du marquage d'une image. L’édition de médias ne provoque plus de plantage.

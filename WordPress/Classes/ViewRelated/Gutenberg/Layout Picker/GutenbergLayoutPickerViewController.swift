@@ -162,7 +162,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
         super.viewWillAppear(animated)
     }
 
@@ -173,6 +173,14 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         navigationController?.isNavigationBarHidden = false
+
+        if let destination = segue.destination as? LayoutPreviewViewController,
+            let slug = selectedLayout?.sectionSlug,
+            let position = selectedLayout?.position {
+            destination.layout = layouts.layouts(forCategory: slug)[position]
+            destination.completion = completion
+        }
+
         super.prepare(for: segue, sender: sender)
     }
 
@@ -198,27 +206,27 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     @IBAction func createBlankPageTapped(_ sender: Any) {
-        createPage(template: nil)
+        createPage(title: nil, template: nil)
     }
 
     @IBAction func createPageTapped(_ sender: Any) {
         guard let slug = selectedLayout?.sectionSlug, let position = selectedLayout?.position else {
-            createPage(template: nil)
+            createPage(title: nil, template: nil)
             return
         }
 
         let layout = layouts.layouts(forCategory: slug)[position]
-        createPage(template: layout.content)
+        createPage(title: layout.title, template: layout.content)
     }
 
-    private func createPage(template: String?) {
+    private func createPage(title: String?, template: String?) {
         guard let completion = completion else {
             dismiss(animated: true, completion: nil)
             return
         }
 
         dismiss(animated: true) {
-            completion(template)
+            completion(title, template)
         }
     }
 
@@ -291,7 +299,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     private func fetchLayouts() {
         guard let blog = blog else { return }
         isLoading = true
-        PageLayoutService.layouts(forBlog: blog) {[weak self] (results) in
+        let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
             guard let self = self else { return }
             switch results {
             case .success(let fetchedLayouts):

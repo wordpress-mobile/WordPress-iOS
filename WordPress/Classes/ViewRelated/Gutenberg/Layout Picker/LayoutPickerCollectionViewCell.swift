@@ -4,13 +4,8 @@ import Gridicons
 
 class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
-    static var cellReuseIdentifier: String {
-         return "LayoutPickerCollectionViewCell"
-     }
-
-    static var nib: UINib {
-        return UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
-    }
+    static let cellReuseIdentifier = "LayoutPickerCollectionViewCell"
+    static let nib = UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkBackground: UIView!
@@ -117,6 +112,9 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
-        imageView.downloadImage(from: url, success: nil, failure: nil)
+        imageView.startGhostAnimation()
+        imageView.downloadImage(from: url, success: { [weak self] _ in
+            self?.imageView.stopGhostAnimation()
+        }, failure: nil)
     }
 }
