@@ -580,7 +580,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)shouldDisplaySuggestionsTableView
 {
-    return self.shouldDisplayReplyTextView && [[SuggestionService sharedInstance] shouldShowSuggestionsFor:self.post.siteID];
+    return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
 

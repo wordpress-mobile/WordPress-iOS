@@ -309,7 +309,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];    
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -347,7 +347,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     // only reload if the suggestion list is updated for the current site
     if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
-        self.suggestions = [[SuggestionService sharedInstance] suggestionsFor:self.siteID];
+        self.suggestions = [self suggestionsFor:self.siteID];
         [self showSuggestionsForWord:self.searchText];
     }
 }
@@ -355,7 +355,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        _suggestions = [[SuggestionService sharedInstance] suggestionsFor:self.siteID];
+        _suggestions = [self suggestionsFor:self.siteID];
     }
     return _suggestions;
 }

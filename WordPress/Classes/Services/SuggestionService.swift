@@ -8,7 +8,8 @@ extension NSNotification.Name {
     public static let suggestionListUpdated = NSNotification.Name.suggestionListUpdated
 }
 
-@objc public class SuggestionService: NSObject {
+/// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
+class SuggestionService: NSObject {
 
     // NSCache works with classes such as NSArray, not structs such as Suggestion or [Suggestion].
     private class Wrapper<T>: NSObject {
@@ -23,7 +24,7 @@ extension NSNotification.Name {
 
     private static let shared = SuggestionService()
 
-    @objc static func sharedInstance() -> SuggestionService {
+    static func sharedInstance() -> SuggestionService {
         return shared
     }
 
@@ -36,7 +37,7 @@ extension NSNotification.Name {
     @param siteID ID of the blog/site to retrieve suggestions for
     @return An array of suggestions
     */
-    @objc func suggestions(for siteID: NSNumber) -> [Suggestion]? {
+    func suggestions(for siteID: NSNumber) -> [Suggestion]? {
         if let cachedSuggestions = suggestionsCache.object(forKey: siteID) {
             return cachedSuggestions.value
         }
@@ -92,15 +93,15 @@ extension NSNotification.Name {
     @param siteID ID of the blog/site to check for
     @return BOOL Whether the caller should show suggestions
     */
-    @objc func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID, let appDelegate = WordPressAppDelegate.shared else {
+    func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
+        guard let siteID = siteID else {
             return false
         }
 
         let suggestions = suggestionsCache.object(forKey: siteID)?.value
 
         // if the device is offline and suggestion list is not yet retrieved
-        if !appDelegate.connectionAvailable && suggestions == nil {
+        if !ReachabilityUtils.isInternetReachable() && suggestions == nil {
             return false
         }
 

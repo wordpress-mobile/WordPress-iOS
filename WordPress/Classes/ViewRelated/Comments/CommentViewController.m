@@ -698,7 +698,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return [[SuggestionService sharedInstance] shouldShowSuggestionsFor:self.comment.blog.dotComID];
+    return [self shouldShowSuggestionsFor:self.comment.blog.dotComID];
 }
 
 - (void)reloadData
