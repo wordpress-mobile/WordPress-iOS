@@ -9,8 +9,8 @@ struct MockAnnouncementsCache: AnnouncementsCache {
     var announcements: [Announcement]?
 
     private let localAnnouncements = [Announcement(appVersionName: "0.0",
-                                           minimumAppVersion: "0.0",
-                                           maximumAppVersion: "infinity",
+                                           minimumAppVersion: "1.0",
+                                           maximumAppVersion: "3.0",
                                            appVersionTargets: [],
                                            detailsUrl: "http://wordpress.org",
                                            announcementVersion: "1.0",
@@ -62,6 +62,11 @@ class MockAnnouncementsService: AnnouncementServiceRemote {
     }
 }
 
+struct MockVersionProvider: AnnouncementsVersionProvider {
+
+    var version: String? = "2.0"
+}
+
 
 class AnnouncementsDataStoreTests: XCTestCase {
 
@@ -72,7 +77,8 @@ class AnnouncementsDataStoreTests: XCTestCase {
         // Given
         let cache = MockAnnouncementsCache()
         let service = MockAnnouncementsService()
-        let store = CachedAnnouncementsStore(cache: cache, service: service)
+        let versionProvider = MockVersionProvider()
+        let store = CachedAnnouncementsStore(cache: cache, service: service, versionProvider: versionProvider)
         let stateChangeExpectation = expectation(description: "state change emitted")
 
         subscription = store.onChange {
@@ -93,9 +99,11 @@ class AnnouncementsDataStoreTests: XCTestCase {
     /// local cache not found and remote announcements retrieved correctly
     func testRemoteAnnouncementsSuccess() {
         // Given
-        let cache = MockAnnouncementsCache(localCacheIsValid: false)
+        let cache = MockAnnouncementsCache()
         let service = MockAnnouncementsService()
-        let store = CachedAnnouncementsStore(cache: cache, service: service)
+        var versionProvider = MockVersionProvider()
+        versionProvider.version = "4.0" // out of version range -> invalid
+        let store = CachedAnnouncementsStore(cache: cache, service: service, versionProvider: versionProvider)
         let stateChangeExpectation = expectation(description: "state change emitted")
 
         subscription = store.onChange {
@@ -119,7 +127,8 @@ class AnnouncementsDataStoreTests: XCTestCase {
         let cache = MockAnnouncementsCache(localCacheIsValid: false)
         let service = MockAnnouncementsService()
         service.getAnnouncementsSucceeds = false
-        let store = CachedAnnouncementsStore(cache: cache, service: service)
+        let versionProvider = MockVersionProvider()
+        let store = CachedAnnouncementsStore(cache: cache, service: service, versionProvider: versionProvider)
         let stateChangeExpectation = expectation(description: "state change emitted")
 
         subscription = store.onChange {
