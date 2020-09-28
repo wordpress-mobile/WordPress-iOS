@@ -1,8 +1,7 @@
 #import "SuggestionsTableView.h"
 #import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
-#import "Suggestion.h"
-#import "SuggestionService.h"
+#import "WordPress-Swift.h"
 
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
@@ -151,7 +150,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(suggestionListUpdated:)
-                                                 name:SuggestionListUpdatedNotification
+                                                 name:NSNotification.suggestionListUpdated
                                                object:nil];
         
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -310,7 +309,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];    
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -348,7 +347,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     // only reload if the suggestion list is updated for the current site
     if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
-        self.suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
+        self.suggestions = [self suggestionsFor:self.siteID];
         [self showSuggestionsForWord:self.searchText];
     }
 }
@@ -356,7 +355,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
+        _suggestions = [self suggestionsFor:self.siteID];
     }
     return _suggestions;
 }
@@ -366,13 +365,13 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)loadAvatarForSuggestion:(Suggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
-    UIImage *image = [suggestion cachedAvatarWithSize:imageSize];
+    UIImage *image = [suggestion cachedAvatarWith:imageSize];
     if (image) {
         success(image);
         return;
     }
 
-    [suggestion fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+    [suggestion fetchAvatarWith:imageSize success:^(UIImage *image) {
         if (!image) {
             return;
         }

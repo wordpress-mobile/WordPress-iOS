@@ -38,7 +38,7 @@ end
 
 def wordpress_kit
 
-    pod 'WordPressKit', '~> 4.17.0'
+    pod 'WordPressKit', '~> 4.18.0-beta'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'c16e62d1a254cbb4d0ee863757ae7808e4143d1b'
+    gutenberg :commit => 'a0a5353efe8560ccca572b6a15165b5608df7ee1'
 
     ## Third party libraries
     ## =====================
