@@ -362,7 +362,7 @@ private extension FullScreenCommentReplyViewController {
             return false
         }
 
-        return SuggestionService.sharedInstance().shouldShowSuggestions(for: siteID)
+        return SuggestionService.shared.shouldShowSuggestions(for: siteID)
     }
 
     // This should be moved elsewhere

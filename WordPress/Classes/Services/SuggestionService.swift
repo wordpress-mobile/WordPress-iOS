@@ -14,11 +14,7 @@ class SuggestionService {
     private let suggestionsCache = NSCache<NSNumber, NSArray>()
     private var siteIDsCurrentlyBeingRequested = [NSNumber]()
 
-    private static let shared = SuggestionService()
-
-    static func sharedInstance() -> SuggestionService {
-        return shared
-    }
+    static let shared = SuggestionService()
 
     /**
     Returns the cached @mention suggestions (if any) for a given siteID.  Calls

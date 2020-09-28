@@ -2,6 +2,6 @@ import Foundation
 
 @objc public extension SuggestionsTableView {
     func suggestions(for siteID: NSNumber) -> [Suggestion]? {
-        return SuggestionService.sharedInstance().suggestions(for: siteID)
+        return SuggestionService.shared.suggestions(for: siteID)
     }
 }
