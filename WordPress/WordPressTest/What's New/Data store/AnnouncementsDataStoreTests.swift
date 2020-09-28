@@ -66,10 +66,6 @@ class MockAnnouncementsService: AnnouncementServiceRemote {
 class AnnouncementsDataStoreTests: XCTestCase {
 
     private var subscription: Receipt?
-//    private var service: MockAnnouncementsService!
-//    private var cache: MockAnnouncementsCache!
-//    private var store: CachedAnnouncementsStore!
-
 
     /// local cache contains valid announcements
     func testLocalAnnouncementsRetrieved() {
