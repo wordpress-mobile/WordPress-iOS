@@ -382,6 +382,7 @@
 		3F29EB7224042276005313DE /* MeViewController+UIViewControllerRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */; };
 		3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3087C324EDB7040087B548 /* AnnouncementCell.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
+		3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */; };
 		3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
@@ -2844,6 +2845,7 @@
 		3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeViewController+UIViewControllerRestoration.swift"; sourceTree = "<group>"; };
 		3F3087C324EDB7040087B548 /* AnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementCell.swift; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
+		3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataStoreTests.swift; sourceTree = "<group>"; };
 		3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotlightable.swift; sourceTree = "<group>"; };
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
 		3F43603023F31E09001DEE70 /* MeScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScenePresenter.swift; sourceTree = "<group>"; };
@@ -6190,6 +6192,22 @@
 				3FD0316E24201E08005C0993 /* GravatarButtonView.swift */,
 			);
 			path = "Blog + Me";
+			sourceTree = "<group>";
+		};
+		3F3D8548251E63DF001CA4D2 /* What's New */ = {
+			isa = PBXGroup;
+			children = (
+				3F3D8549251E6406001CA4D2 /* Data store */,
+			);
+			path = "What's New";
+			sourceTree = "<group>";
+		};
+		3F3D8549251E6406001CA4D2 /* Data store */ = {
+			isa = PBXGroup;
+			children = (
+				3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */,
+			);
+			path = "Data store";
 			sourceTree = "<group>";
 		};
 		3F43602D23F31C06001DEE70 /* Presenter */ = {
@@ -10088,6 +10106,7 @@
 				59B48B601B99E0B0008EBB84 /* TestUtilities */,
 				852416D01A12ED2D0030700C /* Utility */,
 				BE20F5E11B2F738E0020694C /* ViewRelated */,
+				3F3D8548251E63DF001CA4D2 /* What's New */,
 				FF9839A71CD3960600E85258 /* WordPressAPI */,
 			);
 			name = Tests;
@@ -14027,6 +14046,7 @@
 				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
 				E1B642131EFA5113001DC6D7 /* ModelTestHelper.swift in Sources */,
 				FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */,
+				3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */,
 				F11023A1231863CE00C4E84A /* MediaServiceTests.swift in Sources */,
 				730354BA21C867E500CD18C2 /* SiteCreatorTests.swift in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTests.swift in Sources */,

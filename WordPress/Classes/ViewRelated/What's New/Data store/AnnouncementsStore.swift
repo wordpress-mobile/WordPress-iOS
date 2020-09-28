@@ -11,7 +11,7 @@ protocol AnnouncementsStore: Observable {
 /// Announcement store with a local cache of "some sort"
 class CachedAnnouncementsStore: AnnouncementsStore {
 
-    private let api: WordPressComRestApi
+    private let service: AnnouncementServiceRemote
     private var cache: AnnouncementsCache
 
     let changeDispatcher = Dispatcher<Void>()
@@ -31,7 +31,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    var state: State = .ready([]) {
+    private(set) var state: State = .ready([]) {
         didSet {
             guard !state.isLoading else {
                 return
@@ -49,9 +49,9 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    init(cache: AnnouncementsCache, api: WordPressComRestApi) {
+    init(cache: AnnouncementsCache, service: AnnouncementServiceRemote) {
         self.cache = cache
-        self.api = api
+        self.service = service
     }
 
     func getAnnouncements() {
@@ -65,7 +65,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
             state = .ready(announcements)
             return
         }
-        let service = AnnouncementServiceRemote(wordPressComRestApi: api)
+
         service.getAnnouncements(appId: Identifiers.appId,
                                  appVersion: Identifiers.appVersion,
                                  locale: Locale.current.identifier) { [weak self] result in
