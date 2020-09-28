@@ -97,7 +97,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     // MARK: - Public methods
 
     override open func display(_ layer: CALayer) {
-        super.display(layer)
+        if UIImageView.instancesRespond(to: #selector(display(_:))) {
+            super.display(layer)
+        }
 
         updateImageIfNeeded()
     }
