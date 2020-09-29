@@ -308,10 +308,7 @@ class AppSettingsViewController: UITableViewController {
             guard let self = self else {
                 return
             }
-            let controller = WPTabBarController.sharedInstance().makeWhatIsNewViewController()
-
-            self.present(controller, animated: true)
-            self.tableView.deselectSelectedRowWithAnimation(false)
+            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
         }
     }
 }

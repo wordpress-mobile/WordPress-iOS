@@ -11,9 +11,10 @@ protocol AnnouncementsStore: Observable {
 /// Announcement store with a local cache of "some sort"
 class CachedAnnouncementsStore: AnnouncementsStore {
 
-    let changeDispatcher = Dispatcher<Void>()
+    private let api: WordPressComRestApi
+    private var cache: AnnouncementsCache
 
-    var cache: AnnouncementsCache
+    let changeDispatcher = Dispatcher<Void>()
 
     enum State {
         case loading
@@ -48,17 +49,22 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
-    init(cache: AnnouncementsCache) {
+    init(cache: AnnouncementsCache, api: WordPressComRestApi) {
         self.cache = cache
+        self.api = api
     }
 
     func getAnnouncements() {
+
+        guard !state.isLoading else {
+            return
+        }
+
         state = .loading
         if let announcements = cache.announcements {
             state = .ready(announcements)
             return
         }
-
         let service = AnnouncementServiceRemote(wordPressComRestApi: api)
         service.getAnnouncements(appId: Identifiers.appId,
                                  appVersion: Identifiers.appVersion,
@@ -74,16 +80,6 @@ class CachedAnnouncementsStore: AnnouncementsStore {
                 self?.state = .error(error)
             }
         }
-    }
-
-    private var api: WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: CoreDataManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
-
-        return WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress(),
-                                              localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 }
 

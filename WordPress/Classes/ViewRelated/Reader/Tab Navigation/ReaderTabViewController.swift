@@ -67,6 +67,10 @@ class ReaderTabViewController: UIViewController {
         if !FeatureFlag.readerImprovementsPhase2.enabled {
             markSelectedInterestsVisited()
         }
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
