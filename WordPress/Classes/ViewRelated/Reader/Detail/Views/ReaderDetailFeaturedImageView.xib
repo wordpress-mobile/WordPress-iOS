@@ -15,6 +15,10 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3L-dQ-aNo" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="psH-HG-Bd4">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="jUL-7Q-S12" customClass="LinearGradientView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,11 +41,15 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="jUL-7Q-S12" firstAttribute="top" secondItem="3ME-FR-9gA" secondAttribute="top" id="AGY-8k-KlY"/>
+                <constraint firstAttribute="bottom" secondItem="psH-HG-Bd4" secondAttribute="bottom" id="IjQ-Jm-92U"/>
+                <constraint firstItem="psH-HG-Bd4" firstAttribute="leading" secondItem="3ME-FR-9gA" secondAttribute="leading" id="Nzn-y7-7VD"/>
                 <constraint firstAttribute="trailing" secondItem="jUL-7Q-S12" secondAttribute="trailing" id="Rcc-Ng-nPp"/>
                 <constraint firstItem="g3L-dQ-aNo" firstAttribute="top" secondItem="3ME-FR-9gA" secondAttribute="top" id="VeT-YY-RXS"/>
                 <constraint firstItem="g3L-dQ-aNo" firstAttribute="leading" secondItem="3ME-FR-9gA" secondAttribute="leading" id="WbY-1R-a9N"/>
                 <constraint firstAttribute="trailing" secondItem="g3L-dQ-aNo" secondAttribute="trailing" id="et6-bo-VIT"/>
                 <constraint firstAttribute="height" constant="233" id="m8s-lI-vbl"/>
+                <constraint firstAttribute="trailing" secondItem="psH-HG-Bd4" secondAttribute="trailing" id="mGb-A8-fqN"/>
+                <constraint firstItem="psH-HG-Bd4" firstAttribute="top" secondItem="3ME-FR-9gA" secondAttribute="top" id="ojD-Qy-nJn"/>
                 <constraint firstItem="jUL-7Q-S12" firstAttribute="leading" secondItem="3ME-FR-9gA" secondAttribute="leading" id="tj2-9u-jcw"/>
                 <constraint firstAttribute="bottom" secondItem="g3L-dQ-aNo" secondAttribute="bottom" id="yqT-Lf-oU9"/>
                 <constraint firstAttribute="bottom" secondItem="jUL-7Q-S12" secondAttribute="bottom" id="yzT-CN-GIv"/>
@@ -51,6 +59,7 @@
                 <outlet property="gradientView" destination="jUL-7Q-S12" id="whu-sb-l49"/>
                 <outlet property="heightConstraint" destination="m8s-lI-vbl" id="ozk-yh-EF4"/>
                 <outlet property="imageView" destination="g3L-dQ-aNo" id="jmJ-uP-SHb"/>
+                <outlet property="loadingView" destination="psH-HG-Bd4" id="iot-aN-g2U"/>
             </connections>
             <point key="canvasLocation" x="58" y="-209"/>
         </view>

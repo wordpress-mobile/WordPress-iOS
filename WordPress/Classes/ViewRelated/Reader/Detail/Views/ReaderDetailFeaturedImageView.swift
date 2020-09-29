@@ -15,6 +15,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             static let maxPadPortaitHeight: CGFloat = 0.50
             static let maxLandscapeHeight: CGFloat = 0.30
         }
+
+        static let imageLoadingTimeout: TimeInterval = 4
     }
 
     struct Styles {
@@ -26,6 +28,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     @IBOutlet weak var imageView: CachedAnimatedImageView!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loadingView: UIView!
 
     // MARK: - Public: Properties
     weak var delegate: ReaderDetailFeaturedImageViewDelegate?
@@ -71,6 +74,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
+    private var imageSize: CGSize?
+    private var timeoutTimer: Timer?
+
+    // MARK: - View Methods
     deinit {
         scrollViewObserver?.invalidate()
     }
@@ -78,6 +85,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        loadingView.backgroundColor = .placeholderElement
         isUserInteractionEnabled = false
 
         reset()
@@ -158,6 +166,15 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         appearance.apply(navBar)
     }
 
+    private func hideLoading() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingView.alpha = 0.0
+        }) { (_) in
+            self.loadingView.isHidden = true
+            self.loadingView.alpha = 1.0
+        }
+    }
+
     // MARK: - Private: Config
     private func configureNavigationBar() {
         applyTransparentNavigationBarAppearance(to: navigationBar)
@@ -192,7 +209,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func update() {
         guard
-            imageView.image != nil,
+            imageSize != nil,
             let scrollView = self.scrollView
         else {
             reset()
@@ -249,6 +266,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Network Helpers
     public func load(completion: @escaping () -> Void) {
         guard
+            !isLoading,
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
             Self.shouldDisplayFeaturedImage(with: post)
@@ -259,23 +277,65 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
+        loadingView.isHidden = false
+
         isLoading = true
         isLoaded = true
 
-        imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
-            self?.didFinishLoading()
+        var timedOut = false
 
-            self?.isLoading = false
+        let completionHandler: (CGSize) -> Void = { [weak self] size in
+            guard let self = self else {
+                return
+            }
+
+            self.timeoutTimer?.invalidate()
+            self.timeoutTimer = nil
+
+            self.imageSize = size
+            self.didFinishLoading(timedOut: timedOut)
+            self.isLoading = false
+
             completion()
-        }) { [weak self] error in
+        }
+
+        let failureHandler: () -> Void = { [weak self] in
             self?.reset()
             self?.isLoading = false
             completion()
         }
+
+        // Times out if the loading is taking too long
+        // this prevents the user from being stuck on the loading view for too long
+        timeoutTimer = Timer.scheduledTimer(withTimeInterval: Constants.imageLoadingTimeout, repeats: false, block: { _ in
+            timedOut = true
+            failureHandler()
+        })
+
+        self.imageLoader.imageDimensionsHandler = { _, size in
+            completionHandler(size)
+        }
+
+        self.imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
+            // If we haven't loaded the image size yet
+            // trigger the handler to update the height, etc.
+            if self?.imageSize == nil {
+                if let size = self?.imageView.image?.size {
+                    self?.imageSize = size
+                    completionHandler(size)
+                }
+            }
+
+            self?.hideLoading()
+        }) { _ in
+            failureHandler()
+        }
     }
 
-    private func didFinishLoading() {
-        updateInitialHeight()
+    private func didFinishLoading(timedOut: Bool = false) {
+        // Don't reset the scroll position if we timed out to prevent a jump
+        // if the user has started reading / scrolling
+        updateInitialHeight(resetContentOffset: !timedOut)
         update()
 
         isHidden = false
@@ -301,6 +361,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
+
+        loadingView.isHidden = true
     }
 
     private func resetStatusBarStyle() {
@@ -314,13 +376,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Calculations
     private func featuredImageHeight() -> CGFloat {
         guard
-            let image = imageView.image,
+            let imageSize = self.imageSize,
             let superview = self.superview
         else {
             return 0
         }
 
-        let aspectRatio = image.size.width / image.size.height
+        let aspectRatio = imageSize.width / imageSize.height
         let height = bounds.width / aspectRatio
 
         let isLandscape = UIDevice.current.orientation.isLandscape
@@ -341,7 +403,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let navBarHeight = navigationBar?.frame.height ?? 0
         return statusBarHeight + navBarHeight
     }
-
 }
 
 // MARK: - UIGestureRecognizerDelegate
