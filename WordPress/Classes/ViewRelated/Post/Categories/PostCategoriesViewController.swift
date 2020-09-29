@@ -117,7 +117,7 @@ import Foundation
         let tree = WPCategoryTree(parent: nil)
         tree.getChildrenFromObjects(blog.sortedCategories() ?? [])
         categories = tree.getAllObjects()
-        
+
         var categoryDict = [Int: PostCategory]()
         categoryIndentationDict = [:]
 
@@ -148,7 +148,7 @@ import Foundation
         tableView.reloadData()
     }
 
-    private func indentationLevelForCategory(parentID: Int, categoryCollection: [Int    : PostCategory]) -> Int {
+    private func indentationLevelForCategory(parentID: Int, categoryCollection: [Int: PostCategory]) -> Int {
         guard parentID != 0, let category = categoryCollection[parentID] else {
             return 0
         }
