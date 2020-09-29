@@ -40,19 +40,15 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v15.7-whats-new"
+msgctxt "v15.8-whats-new"
 msgid ""
-"Your Reader experience can now be tailored just for you — with a new Discover feed reflecting your chosen interests.\n"
+"Take a peek at what’s new in this release:\n"
 "\n"
-"Block settings in the Block Editor now immediately reflect any changes made in the menu sliders.\n"
-"\n"
-"Improved signup and login experience — both with directing the user on the steps and connecting a self-hosted site.\n"
-"\n"
-"There is also a brand new way to login with the iCloud Keychain feature — a password manager that remembers your WP.com accounts and passwords.\n"
-"\n"
-"Don’t miss anything! You can now follow conversations on P2 sites.\n"
-"\n"
-"We have also reduced memory usage when marking up an image, so media editing won’t cause a crash.\n"
+"- Support for full-width and wide alignment for the Group, Cover, and Image blocks (with support for more blocks to come).\n"
+"- Love rounded corners on your images? We’ve also added support for the Rounded style in the Image block.\n"
+"- Some people may have experienced a misbehaving toolbar when adding a new block, but we’ve fixed this issue.\n"
+"- We also noticed that in Image Preview, images were not positioned correctly after changing device orientation, but this has been addressed, too.\n"
+"- We resolved a few other issues around signup and login, including a username display issue after signing up with Apple, and an incorrect error message that displayed when you reach a maximum number of failed login attempts.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -82,41 +78,49 @@ msgstr ""
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
-msgid ""
-"Enjoy your\n"
-"favorite sites\n"
+msgid "The world’s most popular website builder"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
-msgid ""
-"Get notified\n"
-"in real-time\n"
+msgid "Create a site or start a blog"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
-msgid ""
-"Manage your site\n"
-"everywhere you go\n"
+msgid "Discover new reads"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
-msgid ""
-"Share your ideas\n"
-"with the world\n"
+msgid "Build an audience"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
-msgid ""
-"All the stats\n"
-"in your hand\n"
+msgid "Keep tabs on your site"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-6"
+msgid "Reply in real time"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-7"
+msgid "Upload on the go"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-8"
+msgid "Write without compromises"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.

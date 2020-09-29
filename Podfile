@@ -38,7 +38,7 @@ end
 
 def wordpress_kit
 
-    pod 'WordPressKit', '~> 4.17.0'
+    pod 'WordPressKit', '~> 4.18.0-beta'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'c16e62d1a254cbb4d0ee863757ae7808e4143d1b'
+    gutenberg :commit => 'a0a5353efe8560ccca572b6a15165b5608df7ee1'
 
     ## Third party libraries
     ## =====================
@@ -195,7 +195,7 @@ target 'WordPress' do
     # pod 'WordPressAuthenticator', '~> 1.26.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/13807-sms-code-throttled'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '48693d7'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '1960791'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.1'
