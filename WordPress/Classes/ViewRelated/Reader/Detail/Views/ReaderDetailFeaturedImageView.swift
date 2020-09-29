@@ -132,7 +132,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     public func deviceDidRotate() {
-        updateInitialHeight()
+        updateInitialHeight(resetContentOffset: false)
     }
 
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
@@ -321,14 +321,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         isHidden = false
     }
 
-    private func updateInitialHeight() {
+    private func updateInitialHeight(resetContentOffset: Bool = true) {
         let height = featuredImageHeight() - topMargin()
 
         heightConstraint.constant = height
 
         if let scrollView = self.scrollView {
             scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
-            scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
+
+            if resetContentOffset {
+                scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
+            }
         }
     }
 
