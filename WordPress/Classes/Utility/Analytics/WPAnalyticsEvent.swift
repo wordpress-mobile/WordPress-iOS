@@ -70,11 +70,9 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerPostReported
-    // What's New
-    case whatIsNewShownOnAppUpdate
-    case whatIsNewShownFromAppSettings
-    case whatIsNewContinueTapped
-    case whatIsNewFindOutMoreTapped
+    // What's New - Feature announcements
+    case featureAnnouncementShown
+    case featureAnnouncementButtonTapped
 
     /// A String that represents the event
     var value: String {
@@ -190,15 +188,11 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
-        // What's New
-        case .whatIsNewShownOnAppUpdate:
-            return "whatsnew_shown_on_app_update"
-        case .whatIsNewShownFromAppSettings:
-            return "whatsnew_shown_from_app_settings"
-        case .whatIsNewContinueTapped:
-            return "whatsnew_continue_tapped"
-        case .whatIsNewFindOutMoreTapped:
-            return "whatsnew_find_out_more_tapped"
+        // What's New - Feature announcements
+        case .featureAnnouncementShown:
+            return "feature_announcement_shown"
+        case .featureAnnouncementButtonTapped:
+            return "feature_announcement_button_tapped"
         }
     }
 

@@ -44,9 +44,9 @@ class WhatIsNewScenePresenter: ScenePresenter {
     // analytics
     private func trackAccess(from viewController: UIViewController) {
         if viewController is AppSettingsViewController {
-            WPAnalytics.track(.whatIsNewShownFromAppSettings)
+            WPAnalytics.track(.featureAnnouncementShown, properties: ["source": "app_settings"])
         } else {
-            WPAnalytics.track(.whatIsNewShownOnAppUpdate)
+            WPAnalytics.track(.featureAnnouncementShown, properties: ["source": "app_upgrade"])
         }
     }
 }
