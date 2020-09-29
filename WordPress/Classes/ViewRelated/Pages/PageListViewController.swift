@@ -450,58 +450,25 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func createPage(_ title: String? = nil, _ template: String? = nil) {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let page = postService.createDraftPage(for: blog)
-        page.content = template
-        page.postTitle = title
-        self.showEditor(post: page)
+        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: template)
+        present(editorViewController, animated: false)
 
         QuickStartTourGuide.find()?.visited(.newPage)
     }
 
-    fileprivate func editPage(_ apost: AbstractPost) {
-        guard !PostCoordinator.shared.isUploading(post: apost) else {
+    fileprivate func editPage(_ page: Page) {
+        guard !PostCoordinator.shared.isUploading(post: page) else {
             presentAlertForPageBeingUploaded()
             return
         }
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
-        showEditor(post: apost)
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
+
+        let editorViewController = EditPageViewController(page: page)
+        present(editorViewController, animated: false)
     }
 
     fileprivate func retryPage(_ apost: AbstractPost) {
         PostCoordinator.shared.save(apost)
-    }
-
-    fileprivate func showEditor(post: AbstractPost) {
-        let editorFactory = EditorFactory()
-
-        let postViewController = editorFactory.instantiateEditor(
-            for: post,
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        show(postViewController)
-    }
-
-    private func show(_ editorViewController: EditorViewController) {
-        editorViewController.onClose = { [weak self, weak editorViewController] _, _ in
-            self?._tableViewHandler.isSearching = false
-            editorViewController?.dismiss(animated: true)
-        }
-
-        let navController = UINavigationController(rootViewController: editorViewController)
-        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
-        navController.modalPresentationStyle = .fullScreen
-
-        present(navController, animated: true, completion: nil)
-    }
-
-    func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
-        editor.dismiss(animated: true) { [weak self] in
-            self?.show(replacement)
-        }
     }
 
     // MARK: - Alert
