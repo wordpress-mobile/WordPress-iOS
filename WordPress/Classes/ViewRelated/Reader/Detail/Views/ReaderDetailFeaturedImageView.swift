@@ -15,6 +15,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             static let maxPadPortaitHeight: CGFloat = 0.50
             static let maxLandscapeHeight: CGFloat = 0.30
         }
+
+        static let imageLoadingTimeout: TimeInterval = 4
     }
 
     struct Styles {
@@ -73,6 +75,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private var imageSize: CGSize?
+    private var timeoutTimer: Timer?
 
     // MARK: - View Methods
     deinit {
@@ -279,23 +282,41 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         isLoading = true
         isLoaded = true
 
+        var timedOut = false
+
         let completionHandler: (CGSize) -> Void = { [weak self] size in
             guard let self = self else {
                 return
             }
 
+            self.timeoutTimer?.invalidate()
+            self.timeoutTimer = nil
+
             self.imageSize = size
-            self.didFinishLoading()
+            self.didFinishLoading(timedOut: timedOut)
             self.isLoading = false
 
             completion()
         }
 
-        imageLoader.imageDimensionsHandler = { _, size in
+        let failureHandler: () -> Void = { [weak self] in
+            self?.reset()
+            self?.isLoading = false
+            completion()
+        }
+
+        // Times out if the loading is taking too long
+        // this prevents the user from being stuck on the loading view for too long
+        timeoutTimer = Timer.scheduledTimer(withTimeInterval: Constants.imageLoadingTimeout, repeats: false, block: { _ in
+            timedOut = true
+            failureHandler()
+        })
+
+        self.imageLoader.imageDimensionsHandler = { _, size in
             completionHandler(size)
         }
 
-        imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
+        self.imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
             // If we haven't loaded the image size yet
             // trigger the handler to update the height, etc.
             if self?.imageSize == nil {
@@ -306,16 +327,15 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             }
 
             self?.hideLoading()
-
-        }) { [weak self] error in
-            self?.reset()
-            self?.isLoading = false
-            completion()
+        }) { _ in
+            failureHandler()
         }
     }
 
-    private func didFinishLoading() {
-        updateInitialHeight()
+    private func didFinishLoading(timedOut: Bool = false) {
+        // Don't reset the scroll position if we timed out to prevent a jump
+        // if the user has started reading / scrolling
+        updateInitialHeight(resetContentOffset: !timedOut)
         update()
 
         isHidden = false
