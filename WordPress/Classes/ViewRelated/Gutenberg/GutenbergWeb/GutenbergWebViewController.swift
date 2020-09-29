@@ -79,6 +79,11 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         ].compactMap { $0 }
     }
 
+    override func onGutenbergReady() {
+        super.onGutenbergReady()
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+
     private func loadCustomScript(named name: String, with argument: String? = nil) -> WKUserScript? {
         do {
             return try SourceFile(name: name, type: .js).jsScript(with: argument)
@@ -96,6 +101,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             target: self,
             action: #selector(onSaveButtonPressed)
         )
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     private func startObservingWebView() {

@@ -1,6 +1,7 @@
 15.9
 -----
- * [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
+* [*] Fixed issue that caused duplicate views to be displayed when requesting a login link. [#14975]
+* [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
 
 15.8
 -----
