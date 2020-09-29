@@ -54,12 +54,15 @@ platform :ios do
 
     puts languages
 
-    capture_ios_screenshots(
-      test_without_building: true,
-      derived_data_path: derived_data_path,
-      languages: languages,
-      clear_previous_screenshots: should_clear_previous_screenshots,
-    )
+    [true, false].each { | dark_mode_enabled |
+      capture_ios_screenshots(
+        test_without_building: true,
+        derived_data_path: derived_data_path,
+        languages: languages,
+        clear_previous_screenshots: should_clear_previous_screenshots,
+        dark_mode: dark_mode_enabled
+      )
+    }
   end
 
   #####################################################################################

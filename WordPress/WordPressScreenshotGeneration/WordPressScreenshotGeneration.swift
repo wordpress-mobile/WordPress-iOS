@@ -46,10 +46,10 @@ class WordPressScreenshotGeneration: XCTestCase {
         let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
         if isIpad {
-            snapshot("1-Editor")
+            thenTakeScreenshot(1, named: "Editor")
         } else {
             BlockEditorScreen().openBlockPicker()
-            snapshot("1-Editor-With-BlockPicker")
+            thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
             BlockEditorScreen().closeBlockPicker()
         }
         postEditorScreenshot.close()
@@ -64,7 +64,7 @@ class WordPressScreenshotGeneration: XCTestCase {
                 .selectPost(withSlug: "easy-blueberry-muffins")
                 BlockEditorScreen().selectBlock(containingText: "Ingredients")
             sleep(imagesWaitTime) // wait for post images to load
-            snapshot("7-Editor-With-Keyboard")
+            thenTakeScreenshot(7, named: "Editor-With-Keyboard")
             ipadScreenshot.close()
         } else {
             postList.pop()
@@ -74,12 +74,12 @@ class WordPressScreenshotGeneration: XCTestCase {
         let mySite = MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
-        snapshot("4-MySite")
+        thenTakeScreenshot(4, named: "MySite")
 
         // Get Media screenshot
         _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
-        snapshot("6-Media")
+        thenTakeScreenshot(6, named: "Media")
 
         if !isIpad {
             postList.pop()
@@ -90,14 +90,14 @@ class WordPressScreenshotGeneration: XCTestCase {
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
-        snapshot("3-Stats")
+        thenTakeScreenshot(3, named: "Stats")
 
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
         TabNavComponent()
             .gotoReaderScreen()
             .openDiscover()
-        snapshot("2-Discover")
+        thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
         let notificationList = TabNavComponent()
@@ -107,6 +107,15 @@ class WordPressScreenshotGeneration: XCTestCase {
             notificationList.openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
             .replyToNotification()
         }
-        snapshot("5-Notifications")
+        thenTakeScreenshot(5, named: "Notifications")
+    }
+}
+
+extension XCTestCase {
+    func thenTakeScreenshot(_ index: Int, named title: String) {
+        let mode = isDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
     }
 }
