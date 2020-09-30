@@ -54,16 +54,26 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            styleSelectedBorderColor()
-            imageView.layer.borderWidth = isSelected ? 2 : borderWith
-            checkmarkImageView.isHidden = !isSelected
-            checkmarkBackground.isHidden = !isSelected
+            let borderWidth = isSelected ? 2 : borderWith
+            let isHidden = !isSelected
+            let borderColor = selectedBorderColor
+
+            UIView.animate(withDuration: 0.1) {
+                self.imageView.layer.borderColor = borderColor
+                self.imageView.layer.borderWidth = borderWidth
+                self.checkmarkImageView.isHidden = isHidden
+                self.checkmarkBackground.isHidden = isHidden
+            }
         }
+    }
+
+    private var selectedBorderColor: CGColor {
+        return isSelected ? accentColor.cgColor : borderColor.cgColor
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        styleSelectedBorderColor()
+        imageView.layer.borderColor = selectedBorderColor
         imageView.layer.borderWidth = borderWith
 
         if #available(iOS 13.0, *) {
@@ -78,7 +88,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                styleSelectedBorderColor()
+                imageView.layer.borderColor = selectedBorderColor
                 styleShadow()
             }
         }
@@ -104,10 +114,6 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func removeShadow() {
         layer.shadowColor = nil
-    }
-
-    private func styleSelectedBorderColor() {
-        imageView.layer.borderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
     }
 
     func setImage(_ imageURL: String?) {

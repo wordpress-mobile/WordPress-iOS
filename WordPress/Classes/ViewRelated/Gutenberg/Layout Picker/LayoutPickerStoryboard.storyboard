@@ -46,12 +46,15 @@
                             </tableView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sUr-lt-a0R">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="261.5"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r2i-Qw-xq3">
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r2i-Qw-xq3">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="261.5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
-                                <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
-                                <blurEffect style="regular"/>
+                                <color key="tintColor" systemColor="systemBackgroundColor"/>
+                                <vibrancyEffect style="fill">
+                                    <blurEffect style="systemChromeMaterial"/>
+                                </vibrancyEffect>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uh3-j1-P0D">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
@@ -179,12 +182,15 @@
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="23P-EU-wmp">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bI9-Jh-RnP">
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bI9-Jh-RnP">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         </view>
-                                        <blurEffect style="prominent"/>
+                                        <color key="tintColor" systemColor="systemBackgroundColor"/>
+                                        <vibrancyEffect style="fill">
+                                            <blurEffect style="systemChromeMaterial"/>
+                                        </vibrancyEffect>
                                     </visualEffectView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4d5-b5-WY5" userLabel="Seperator">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
@@ -400,9 +406,6 @@
         </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="secondarySystemFillColor">
-            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="separatorColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
