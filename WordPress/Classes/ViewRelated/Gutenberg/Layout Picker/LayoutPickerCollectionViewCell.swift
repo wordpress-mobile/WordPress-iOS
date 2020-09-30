@@ -54,27 +54,14 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            let borderWidth = isSelected ? 2 : borderWith
-            let isHidden = !isSelected
-            let borderColor = selectedBorderColor
-
-            UIView.animate(withDuration: 0.1) {
-                self.imageView.layer.borderColor = borderColor
-                self.imageView.layer.borderWidth = borderWidth
-                self.checkmarkImageView.isHidden = isHidden
-                self.checkmarkBackground.isHidden = isHidden
-            }
+            checkmarkHidden(!isSelected, animated: true)
+            styleSelectedBorder(animated: true)
         }
-    }
-
-    private var selectedBorderColor: CGColor {
-        return isSelected ? accentColor.cgColor : borderColor.cgColor
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        imageView.layer.borderColor = selectedBorderColor
-        imageView.layer.borderWidth = borderWith
+        styleSelectedBorder()
 
         if #available(iOS 13.0, *) {
              styleShadow()
@@ -88,7 +75,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                imageView.layer.borderColor = selectedBorderColor
+                styleSelectedBorder()
                 styleShadow()
             }
         }
@@ -114,6 +101,54 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     func removeShadow() {
         layer.shadowColor = nil
+    }
+
+    private func styleSelectedBorder(animated: Bool = false) {
+        let imageBorderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
+        let imageBorderWidth = isSelected ? 2 : borderWith
+        guard animated else {
+            imageView.layer.borderColor = imageBorderColor
+            imageView.layer.borderWidth = imageBorderWidth
+            return
+        }
+
+        let borderWidthAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
+        borderWidthAnimation.fromValue = imageView.layer.borderWidth
+        borderWidthAnimation.toValue = imageBorderWidth
+        borderWidthAnimation.duration = 0.1
+
+        let borderColorAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
+        borderColorAnimation.fromValue = imageView.layer.borderColor
+        borderColorAnimation.toValue = imageBorderColor
+        borderColorAnimation.duration = 0.1
+
+        imageView.layer.add(borderColorAnimation, forKey: "borderColor")
+        imageView.layer.add(borderWidthAnimation, forKey: "borderWidth")
+        imageView.layer.borderColor = imageBorderColor
+        imageView.layer.borderWidth = imageBorderWidth
+    }
+
+    private func checkmarkHidden(_ isHidden: Bool, animated: Bool = false) {
+        guard animated else {
+            checkmarkImageView.isHidden = isHidden
+            checkmarkBackground.isHidden = isHidden
+            return
+        }
+
+        checkmarkImageView.isHidden = false
+        checkmarkBackground.isHidden = false
+
+        // Set the inverse of the animation destination
+        checkmarkImageView.alpha = isHidden ? 1 : 0
+        checkmarkBackground.alpha = isHidden ? 1 : 0
+
+        UIView.animate(withDuration: 0.1) {
+            self.checkmarkImageView.alpha = isHidden ? 0 : 1
+            self.checkmarkBackground.alpha = isHidden ? 0 : 1
+        } completion: { (_) in
+            self.checkmarkImageView.isHidden = isHidden
+            self.checkmarkBackground.isHidden = isHidden
+        }
     }
 
     func setImage(_ imageURL: String?) {

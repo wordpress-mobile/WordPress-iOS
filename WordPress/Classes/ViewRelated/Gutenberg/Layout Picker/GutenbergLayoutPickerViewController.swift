@@ -29,6 +29,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var createBlankPageBtn: UIButton!
     @IBOutlet weak var previewBtn: UIButton!
     @IBOutlet weak var createPageBtn: UIButton!
+    @IBOutlet weak var buttonStackView: UIStackView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -101,7 +102,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     private var selectedLayout: IndexPath? = nil {
         didSet {
-            layoutSelected(selectedLayout != nil)
+            if !(oldValue != nil && selectedLayout != nil) {
+                layoutSelected(selectedLayout != nil)
+            }
         }
     }
 
@@ -300,9 +303,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutSelected(_ isSelected: Bool) {
-        createBlankPageBtn.isHidden = isSelected
-        previewBtn.isHidden = !isSelected
-        createPageBtn.isHidden = !isSelected
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: []) {
+            self.previewBtn.isHidden = !isSelected
+            self.createBlankPageBtn.isHidden = isSelected
+            self.createPageBtn.isHidden = !isSelected
+            self.buttonStackView.layoutIfNeeded()
+        }
     }
 
     private func fetchLayouts() {
