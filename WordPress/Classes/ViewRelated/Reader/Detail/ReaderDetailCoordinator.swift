@@ -61,6 +61,15 @@ class ReaderDetailCoordinator {
     /// If the site is an external feed (not hosted at WPcom and not using Jetpack)
     private(set) var isFeed: Bool?
 
+    /// The perma link URL for the loaded post
+    private var permaLinkURL: URL? {
+        guard let postURLString = post?.permaLink else {
+            return nil
+        }
+
+        return URL(string: postURLString)
+    }
+
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
@@ -173,8 +182,7 @@ class ReaderDetailCoordinator {
     /// - Parameter completion: a completion block
     func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
         guard let authenticator = authenticator,
-            let postURLString = post?.permaLink,
-            let postURL = URL(string: postURLString) else {
+            let postURL = permaLinkURL else {
             completion()
             return
         }
@@ -212,7 +220,7 @@ class ReaderDetailCoordinator {
         service.fetchPost(at: url,
                           success: { [weak self] post in
                             self?.post = post
-                            self?.renderPostAndBumpStats()
+                            self?.renderPostAndBumpStats(with: url)
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
@@ -221,14 +229,30 @@ class ReaderDetailCoordinator {
         })
     }
 
-    private func renderPostAndBumpStats() {
+    private func renderPostAndBumpStats(with url: URL? = nil) {
         guard let post = post else {
             return
         }
 
         view?.render(post)
+        scrollToHashIfNeeded(with: url)
+
         bumpStats()
         bumpPageViewsForPost()
+    }
+
+    /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
+    /// once it loads
+    ///
+    private func scrollToHashIfNeeded(with url: URL? = nil) {
+        guard
+            let url = url,
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment
+        else {
+            return
+        }
+
+        view?.scroll(to: hash)
     }
 
     /// Shows the current post site posts in a new screen
@@ -286,7 +310,13 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment {
+        // If the URL has an anchor (#)
+        // and the URL is equal to the current post URL
+        if
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
+            let postURL = permaLinkURL,
+            postURL.isHostAndPathEqual(to: url)
+        {
             view?.scroll(to: hash)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
@@ -333,8 +363,7 @@ class ReaderDetailCoordinator {
     private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
-            if let postURLString = post?.permaLink {
-                let postURL = URL(string: postURLString)
+            if let postURL = permaLinkURL {
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
