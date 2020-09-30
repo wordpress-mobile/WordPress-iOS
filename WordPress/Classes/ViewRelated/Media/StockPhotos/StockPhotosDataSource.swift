@@ -140,8 +140,10 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
 extension StockPhotosDataSource {
     private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
-        observers.forEach {
-            $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
+        DispatchQueue.main.async {
+            self.observers.forEach {
+                $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
+            }
         }
     }
 }
@@ -165,7 +167,7 @@ extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
             onStopLoading?()
         }
 
-        guard media.count > 0 && searchQuery.count > 0 else {
+        guard media.count > 0, searchQuery.count > 0 else {
             clearSearch(notifyObservers: true)
             return
         }
@@ -176,7 +178,6 @@ extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
             appendMedia(with: media)
         }
     }
-
     private func overwriteMedia(with media: [StockPhotosMedia]) {
         photosMedia = media
         notifyObservers(incremental: false)

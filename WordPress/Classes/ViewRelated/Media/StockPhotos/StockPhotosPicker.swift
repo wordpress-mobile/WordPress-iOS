@@ -6,7 +6,11 @@ protocol StockPhotosPickerDelegate: AnyObject {
 
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
-    var allowMultipleSelection = true
+    var allowMultipleSelection = true {
+        didSet {
+            pickerOptions.allowMultipleSelection = allowMultipleSelection
+        }
+    }
 
     private lazy var dataSource: StockPhotosDataSource = {
         return StockPhotosDataSource(service: stockPhotosService)
@@ -66,9 +70,10 @@ final class StockPhotosPicker: NSObject {
             self?.updateHintView()
         }
         dataSource.onStartLoading = { [weak self] in
-            if let searchHint = self?.searchHint {
-                NoResultsStockPhotosConfiguration.configureAsLoading(searchHint)
+            guard let strongSelf = self else {
+                return
             }
+            NoResultsStockPhotosConfiguration.configureAsLoading(strongSelf.searchHint)
         }
         dataSource.onStopLoading = { [weak self] in
             self?.updateHintView()
