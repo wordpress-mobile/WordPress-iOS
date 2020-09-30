@@ -101,7 +101,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
             fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
         }
         guard !isGhostCell else {
-            cell.startGhostAnimation()
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
             return cell
         }
 

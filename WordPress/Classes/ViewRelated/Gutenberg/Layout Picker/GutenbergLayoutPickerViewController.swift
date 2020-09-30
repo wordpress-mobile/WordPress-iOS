@@ -121,7 +121,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
             filterBar.shouldShowGhostContent = isLoading
             filterBar.allowsMultipleSelection = !isLoading
             if isLoading {
-                tableView.startGhostAnimation()
+                tableView.startGhostAnimation(style: GhostCellStyle.muriel)
             } else {
                 tableView.stopGhostAnimation()
             }
