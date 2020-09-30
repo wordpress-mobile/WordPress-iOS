@@ -155,6 +155,30 @@ import Foundation
 
         return indentationLevelForCategory(parentID: category.parentID.intValue, categoryCollection: categoryCollection) + 1
     }
+    
+    private func configureNoCategoryRow(cell: WPTableViewCell) {
+        WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+        cell.textLabel?.textAlignment = .natural
+        cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
+        if selectedCategories.isEmpty {
+            cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
+        }  else {
+            cell.accessoryType = .none
+        }
+    }
+    
+    private func configureRow(for category: PostCategory, cell: WPTableViewCell) {
+        let indentationLevel = categoryIndentationDict[category.categoryID.intValue]
+        cell.indentationLevel = indentationLevel ?? 0
+        cell.indentationWidth = Constants.categoryCellIndentation
+        cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
+        WPStyleGuide.configureTableViewCell(cell)
+        if selectedCategories.contains(category) {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+    }
 
     //tableView
 
@@ -181,14 +205,7 @@ import Foundation
         // "No Category" and come up in red, to allow the user to select no category at all.
         if selectionMode == .parent {
             if row == 0 {
-                WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-                cell.textLabel?.textAlignment = .natural
-                cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
-                if selectedCategories.isEmpty {
-                    cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
-                }  else {
-                    cell.accessoryType = .none
-                }
+                configureNoCategoryRow(cell: cell)
                 return cell
             } else {
                 row = row - 1
@@ -196,17 +213,7 @@ import Foundation
         }
 
         let category = categories[row]
-        let indentationLevel = categoryIndentationDict[category.categoryID.intValue]
-        cell.indentationLevel = indentationLevel ?? 0
-        cell.indentationWidth = Constants.categoryCellIndentation
-        cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
-        WPStyleGuide.configureTableViewCell(cell)
-        if selectedCategories.contains(category) {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
-
+        configureRow(for: category, cell: cell)
         return cell
     }
 
