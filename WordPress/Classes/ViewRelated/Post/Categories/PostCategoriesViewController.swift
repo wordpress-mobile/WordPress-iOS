@@ -155,7 +155,7 @@ import Foundation
 
         return indentationLevelForCategory(parentID: category.parentID.intValue, categoryCollection: categoryCollection) + 1
     }
-    
+
     private func configureNoCategoryRow(cell: WPTableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
         cell.textLabel?.textAlignment = .natural
