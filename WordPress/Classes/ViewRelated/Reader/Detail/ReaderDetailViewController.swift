@@ -23,9 +23,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
-    /// Wrapper for the attribution view
-    @IBOutlet weak var attributionViewContainer: UIStackView!
-
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
@@ -33,7 +30,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var loadingView: UIView!
 
     /// Attribution view for Discovery posts
-    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
+    @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
     /// The actual header
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
@@ -52,9 +49,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
-
-    /// If we're following the scrollview to hide/show nav and toolbar
-    private var isFollowingScrollView = false
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -335,11 +329,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             attributionView.isHidden = true
         } else {
             attributionView.displayAsLink = true
-            attributionViewContainer.addSubview(attributionView)
-            attributionViewContainer.pinSubviewToAllEdges(attributionView)
             attributionView.translatesAutoresizingMaskIntoConstraints = false
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
+            attributionView.backgroundColor = view.backgroundColor
         }
     }
 
