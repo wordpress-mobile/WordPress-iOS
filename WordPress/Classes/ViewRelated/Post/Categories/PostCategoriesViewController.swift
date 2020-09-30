@@ -166,7 +166,7 @@ import Foundation
             cell.accessoryType = .none
         }
     }
-    
+
     private func configureRow(for category: PostCategory, cell: WPTableViewCell) {
         let indentationLevel = categoryIndentationDict[category.categoryID.intValue]
         cell.indentationLevel = indentationLevel ?? 0
