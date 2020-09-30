@@ -30,38 +30,7 @@ extension WPTabBarController {
     }
 
     private func showEditor(blog: Blog, title: String?, content: String?) {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let page = postService.createDraftPage(for: blog)
-        page.postTitle = title
-        page.content = content
-
-        let editorFactory = EditorFactory()
-
-        let pageViewController = editorFactory.instantiateEditor(
-            for: page,
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        show(pageViewController)
-    }
-
-    private func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
-        editor.dismiss(animated: true) { [weak self] in
-            self?.show(replacement)
-        }
-    }
-
-    private func show(_ editorViewController: EditorViewController) {
-        editorViewController.onClose = { [weak editorViewController] _, _ in
-            editorViewController?.dismiss(animated: true)
-        }
-
-        let navController = UINavigationController(rootViewController: editorViewController)
-        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
-        navController.modalPresentationStyle = .fullScreen
-
-        present(navController, animated: true, completion: nil)
+        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: content)
+        present(editorViewController, animated: false)
     }
 }
