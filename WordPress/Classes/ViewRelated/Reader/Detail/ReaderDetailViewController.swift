@@ -72,6 +72,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    /// Tracks whether the webview has called -didFinish:navigation
+    private var isLoadingWebView = true
+
+    /// If the scroll(to:) has been called before the webview content has been loaded
+    /// the hash will be stored in this variable, and scrolled to once the content is loaded
+    private var pendingHashString: String? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -115,6 +122,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureDiscoverAttribution(post)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+
+        if let postURLString = post.permaLink,
+           let postURL = URL(string: postURLString) {
+            webView.postURL = postURL
+        }
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
@@ -165,15 +177,26 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         navigationItem.titleView = titleView
     }
 
+
     /// Scroll the content to a given #hash
     ///
     func scroll(to hash: String) {
+        scroll(to: hash, animated: true)
+    }
+
+    func scroll(to hash: String, animated: Bool = true) {
+        // If we're still loading, save the hash so it can be loaded once we're done loading
+        guard !isLoadingWebView else {
+            pendingHashString = hash
+            return
+        }
+
         webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [unowned self] height, _ in
             guard let height = height as? CGFloat else {
                 return
             }
 
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: animated)
         })
     }
 
@@ -412,6 +435,15 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        isLoadingWebView = false
+
+        if let hash = pendingHashString {
+            // This fixes an issue where sometimes jumping to the anchor would go to the wrong place
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.scroll(to: hash)
+            }
+        }
+
         self.webView.loadMedia()
         hideLoading()
     }
