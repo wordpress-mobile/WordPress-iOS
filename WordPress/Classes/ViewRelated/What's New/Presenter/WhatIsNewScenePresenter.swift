@@ -21,7 +21,10 @@ class WhatIsNewScenePresenter: ScenePresenter {
     init(store: AnnouncementsStore) {
         self.store = store
         subscription = store.onChange { [weak self] in
-            self?.startPresenting?()
+            guard let self = self, !self.store.announcements.isEmpty else {
+                return
+            }
+            self.startPresenting?()
         }
     }
 
