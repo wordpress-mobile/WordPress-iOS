@@ -45,8 +45,7 @@ extension XCTestCase {
         continueAfterFailure = false
 
         let app = XCUIApplication()
-        //DON'T COMMIT THIS!
- //       app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations"]
+        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations"]
         app.launchArguments = ["-no-animations"]
         app.activate()
 
