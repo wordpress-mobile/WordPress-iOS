@@ -63,7 +63,7 @@ public protocol CameraControllerDelegate : AnyObject {
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate {
   weak public var delegate: KanvasCamera.CameraControllerDelegate?
-  convenience public init(settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider?, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider?, quickBlogSelectorCoordinator: KanvasCamera.KanvasQuickBlogSelectorCoordinating?)
+  convenience public init(settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider?, fonts: KanvasCamera.KanvasCameraFonts, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider?, quickBlogSelectorCoordinator: KanvasCamera.KanvasQuickBlogSelectorCoordinating?)
   @available(*, unavailable, message: "use init(settings:) instead")
   @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
   @available(*, unavailable, message: "use init(settings:) instead")
@@ -309,9 +309,9 @@ extension EditorControllerDelegate {
   @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
   @available(*, unavailable, message: "use init(settings:, segments:) instead")
   @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  public static func createEditor(for image: UIKit.UIImage, settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider) -> KanvasCamera.EditorViewController
-  public static func createEditor(for videoURL: Foundation.URL, settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider) -> KanvasCamera.EditorViewController
-  public static func createEditor(forGIF url: Foundation.URL, info: KanvasCamera.MediaInfo, settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider, completion: @escaping (KanvasCamera.EditorViewController) -> Swift.Void)
+  public static func createEditor(for image: UIKit.UIImage, settings: KanvasCamera.CameraSettings, fonts: KanvasCamera.KanvasCameraFonts, stickerProvider: KanvasCamera.StickerProvider, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider) -> KanvasCamera.EditorViewController
+  public static func createEditor(for videoURL: Foundation.URL, settings: KanvasCamera.CameraSettings, fonts: KanvasCamera.KanvasCameraFonts, stickerProvider: KanvasCamera.StickerProvider) -> KanvasCamera.EditorViewController
+  public static func createEditor(forGIF url: Foundation.URL, info: KanvasCamera.MediaInfo, settings: KanvasCamera.CameraSettings, fonts: KanvasCamera.KanvasCameraFonts, stickerProvider: KanvasCamera.StickerProvider, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider, completion: @escaping (KanvasCamera.EditorViewController) -> Swift.Void)
   @objc override final public func viewWillAppear(_ animated: Swift.Bool)
   @objc override final public func viewDidLoad()
   @objc override final public var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
@@ -380,16 +380,6 @@ public struct GLU {
 @objc public enum KanvasDrawingAction : Swift.Int {
   case tap, fill, stroke
   public func string() -> Swift.String
-  public typealias RawValue = Swift.Int
-  public init?(rawValue: Swift.Int)
-  public var rawValue: Swift.Int {
-    get
-  }
-}
-@objc public enum KanvasTextFont : Swift.Int {
-  case regular, script
-  public func string() -> Swift.String
-  public static func from(font: UIKit.UIFont?) -> KanvasCamera.KanvasTextFont?
   public typealias RawValue = Swift.Int
   public init?(rawValue: Swift.Int)
   public var rawValue: Swift.Int {
@@ -476,10 +466,10 @@ public struct GLU {
   @objc func logEditorDrawingConfirm()
   @objc func logEditorTextAdd()
   @objc func logEditorTextEdit()
-  @objc func logEditorTextConfirm(isNew: Swift.Bool, font: KanvasCamera.KanvasTextFont, alignment: KanvasCamera.KanvasTextAlignment, highlighted: Swift.Bool)
+  @objc func logEditorTextConfirm(isNew: Swift.Bool, font: UIKit.UIFont, alignment: KanvasCamera.KanvasTextAlignment, highlighted: Swift.Bool)
   @objc func logEditorTextMove()
   @objc func logEditorTextRemove()
-  @objc func logEditorTextChange(font: KanvasCamera.KanvasTextFont)
+  @objc func logEditorTextChange(font: UIKit.UIFont)
   @objc func logEditorTextChange(alignment: KanvasCamera.KanvasTextAlignment)
   @objc func logEditorTextChange(highlighted: Swift.Bool)
   @objc func logEditorTextChange(color: Swift.Bool)
@@ -887,9 +877,6 @@ extension KanvasCamera.KanvasColorSelectionTool : Swift.RawRepresentable {}
 extension KanvasCamera.KanvasDrawingAction : Swift.Equatable {}
 extension KanvasCamera.KanvasDrawingAction : Swift.Hashable {}
 extension KanvasCamera.KanvasDrawingAction : Swift.RawRepresentable {}
-extension KanvasCamera.KanvasTextFont : Swift.Equatable {}
-extension KanvasCamera.KanvasTextFont : Swift.Hashable {}
-extension KanvasCamera.KanvasTextFont : Swift.RawRepresentable {}
 extension KanvasCamera.KanvasTextAlignment : Swift.Equatable {}
 extension KanvasCamera.KanvasTextAlignment : Swift.Hashable {}
 extension KanvasCamera.KanvasTextAlignment : Swift.RawRepresentable {}

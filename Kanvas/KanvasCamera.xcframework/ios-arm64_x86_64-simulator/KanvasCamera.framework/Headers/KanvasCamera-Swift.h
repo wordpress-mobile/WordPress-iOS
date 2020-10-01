@@ -331,7 +331,7 @@ typedef SWIFT_ENUM(NSInteger, KanvasBrushType, open) {
 enum KanvasMediaType : NSInteger;
 enum KanvasColorSelectionTool : NSInteger;
 enum KanvasDrawingAction : NSInteger;
-enum KanvasTextFont : NSInteger;
+@class UIFont;
 enum KanvasTextAlignment : NSInteger;
 enum KanvasDashboardOpenAction : NSInteger;
 enum KanvasDashboardDismissAction : NSInteger;
@@ -448,7 +448,7 @@ SWIFT_PROTOCOL("_TtP12KanvasCamera29KanvasCameraAnalyticsProvider_")
 ///
 /// \param highlighted whether the text is highlighted or not
 ///
-- (void)logEditorTextConfirmWithIsNew:(BOOL)isNew font:(enum KanvasTextFont)font alignment:(enum KanvasTextAlignment)alignment highlighted:(BOOL)highlighted;
+- (void)logEditorTextConfirmWithIsNew:(BOOL)isNew font:(UIFont * _Nonnull)font alignment:(enum KanvasTextAlignment)alignment highlighted:(BOOL)highlighted;
 /// Logs an event when a text overlay is moved
 - (void)logEditorTextMove;
 /// Logs an event when a text overlay is removed
@@ -456,7 +456,7 @@ SWIFT_PROTOCOL("_TtP12KanvasCamera29KanvasCameraAnalyticsProvider_")
 /// Logs an event when the font is changed
 /// \param font the font
 ///
-- (void)logEditorTextChangeWithFont:(enum KanvasTextFont)font;
+- (void)logEditorTextChangeWithFont:(UIFont * _Nonnull)font;
 /// Logs an event when the text alignment is changed
 /// \param alignment the text alignment
 ///
@@ -567,11 +567,6 @@ typedef SWIFT_ENUM(NSInteger, KanvasTextAlignment, open) {
   KanvasTextAlignmentLeft = 0,
   KanvasTextAlignmentCenter = 1,
   KanvasTextAlignmentRight = 2,
-};
-
-typedef SWIFT_ENUM(NSInteger, KanvasTextFont, open) {
-  KanvasTextFontRegular = 0,
-  KanvasTextFontScript = 1,
 };
 
 
@@ -943,7 +938,7 @@ typedef SWIFT_ENUM(NSInteger, KanvasBrushType, open) {
 enum KanvasMediaType : NSInteger;
 enum KanvasColorSelectionTool : NSInteger;
 enum KanvasDrawingAction : NSInteger;
-enum KanvasTextFont : NSInteger;
+@class UIFont;
 enum KanvasTextAlignment : NSInteger;
 enum KanvasDashboardOpenAction : NSInteger;
 enum KanvasDashboardDismissAction : NSInteger;
@@ -1060,7 +1055,7 @@ SWIFT_PROTOCOL("_TtP12KanvasCamera29KanvasCameraAnalyticsProvider_")
 ///
 /// \param highlighted whether the text is highlighted or not
 ///
-- (void)logEditorTextConfirmWithIsNew:(BOOL)isNew font:(enum KanvasTextFont)font alignment:(enum KanvasTextAlignment)alignment highlighted:(BOOL)highlighted;
+- (void)logEditorTextConfirmWithIsNew:(BOOL)isNew font:(UIFont * _Nonnull)font alignment:(enum KanvasTextAlignment)alignment highlighted:(BOOL)highlighted;
 /// Logs an event when a text overlay is moved
 - (void)logEditorTextMove;
 /// Logs an event when a text overlay is removed
@@ -1068,7 +1063,7 @@ SWIFT_PROTOCOL("_TtP12KanvasCamera29KanvasCameraAnalyticsProvider_")
 /// Logs an event when the font is changed
 /// \param font the font
 ///
-- (void)logEditorTextChangeWithFont:(enum KanvasTextFont)font;
+- (void)logEditorTextChangeWithFont:(UIFont * _Nonnull)font;
 /// Logs an event when the text alignment is changed
 /// \param alignment the text alignment
 ///
@@ -1179,11 +1174,6 @@ typedef SWIFT_ENUM(NSInteger, KanvasTextAlignment, open) {
   KanvasTextAlignmentLeft = 0,
   KanvasTextAlignmentCenter = 1,
   KanvasTextAlignmentRight = 2,
-};
-
-typedef SWIFT_ENUM(NSInteger, KanvasTextFont, open) {
-  KanvasTextFontRegular = 0,
-  KanvasTextFontScript = 1,
 };
 
 

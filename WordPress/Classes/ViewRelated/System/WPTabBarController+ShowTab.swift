@@ -74,7 +74,10 @@ extension WPTabBarController {
             switch result {
             case .success(let post):
                 let prepublishing = PrepublishingViewController(post: post, identifiers: [.title, .visibility, .schedule, .tags]) { [weak self] post in
-                    storyService?.poster?.update(post: post)
+                    let coordinator = PostCoordinator.shared
+                    coordinator.save(post, forceDraftIfCreating: true) { result in
+                        storyService?.poster?.update(post: post)
+                    }
                     self?.dismiss(animated: true, completion: nil)
                 }
                 let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)

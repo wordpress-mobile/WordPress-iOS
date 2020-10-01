@@ -148,8 +148,8 @@ final public class KanvasCameraAnalyticsStub: NSObject, KanvasCameraAnalyticsPro
         logString(string: "logEditorTextEdit")
     }
 
-    public func logEditorTextConfirm(isNew: Bool, font: KanvasTextFont, alignment: KanvasTextAlignment, highlighted: Bool) {
-        logString(string: "logEditorTextConfirm new:\(isNew) font:\(font.string()) alignment:\(alignment.string()) highlighted:\(highlighted)")
+    public func logEditorTextConfirm(isNew: Bool, font: UIFont, alignment: KanvasTextAlignment, highlighted: Bool) {
+        logString(string: "logEditorTextConfirm new:\(isNew) font:\(font.fontName) alignment:\(alignment.string()) highlighted:\(highlighted)")
     }
 
     public func logEditorTextMove() {
@@ -160,8 +160,8 @@ final public class KanvasCameraAnalyticsStub: NSObject, KanvasCameraAnalyticsPro
         logString(string: "logEditorTextRemove")
     }
 
-    public func logEditorTextChange(font: KanvasTextFont) {
-        logString(string: "logEditorTextChangeFont font:\(font.string())")
+    public func logEditorTextChange(font: UIFont) {
+        logString(string: "logEditorTextChangeFont font:\(font.fontName)")
     }
 
     public func logEditorTextChange(alignment: KanvasTextAlignment) {

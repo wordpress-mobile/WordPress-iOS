@@ -4,7 +4,7 @@ import KanvasCamera
 /// Contains custom colors and fonts for the KanvasCamera framework
 public class KanvasCameraCustomUI {
 
-   public static let shared = KanvasCameraCustomUI()
+    public static let shared = KanvasCameraCustomUI()
 
     private static let brightBlue = UIColor.tumblrBrightBlue
     private static let brightPurple = UIColor.tumblrBrightPurple
@@ -94,9 +94,10 @@ public class KanvasCameraCustomUI {
                 return nil
             }
         }
+        let editorFonts: [UIFont] = [.libreBaskerville(fontSize: 20), .nunitoBold(fontSize: 24), .pacifico(fontSize: 24), .shrikhand(fontSize: 22), .spaceMonoBold(fontSize: 20), .oswaldUpper(fontSize: 22)]
         return KanvasCameraFonts(permissions: Self.cameraPermissions,
                                  drawer: Self.drawer,
-                                 editorFonts: [.fairwater(fontSize: 48), UIFont.favoritTumblr85(fontSize: 48)],
+                                 editorFonts: editorFonts,
                                  playbackCellFont: .guavaMedium(),
                                  mediaClipsFont: UIFont.favoritTumblrMedium(fontSize: 9.5),
                                  modeButtonFont: UIFont.favoritTumblr85(fontSize: 18.5),
@@ -112,9 +113,120 @@ public class KanvasCameraCustomUI {
     }
 }
 
+enum KanvasFonts: CaseIterable {
+    case libreBaskerville
+    case nunitoBold
+    case pacifico
+    case oswaldUpper
+    case shrikhand
+    case spaceMonoBold
+
+    struct Shadow {
+        let radius: CGFloat
+        let offset: CGPoint
+        let color: UIColor
+    }
+
+    var name: String {
+        switch self {
+        case .libreBaskerville:
+            return "LibreBaskerville-Regular"
+        case .nunitoBold:
+            return "Nunito-Bold"
+        case .pacifico:
+            return "Pacifico-Regular"
+        case .oswaldUpper:
+            return "Oswald-Regular"
+        case .shrikhand:
+            return "Shrikhand-Regular"
+        case .spaceMonoBold:
+            return "SpaceMono-Bold"
+        }
+    }
+
+    var size: Int {
+        switch self {
+        case .libreBaskerville:
+            return 20
+        case .nunitoBold:
+            return 24
+        case .pacifico:
+            return 24
+        case .oswaldUpper:
+            return 22
+        case .shrikhand:
+            return 22
+        case .spaceMonoBold:
+            return 20
+        }
+    }
+
+    var shadow: Shadow? {
+        switch self {
+        case .libreBaskerville:
+            return nil
+        case .nunitoBold:
+            return Shadow(radius: 1, offset: CGPoint(x: 0, y: 2), color: UIColor.black.withAlphaComponent(75))
+        case .pacifico:
+            return Shadow(radius: 5, offset: .zero, color: UIColor.white.withAlphaComponent(50))
+        case .oswaldUpper:
+            return nil
+        case .shrikhand:
+            return Shadow(radius: 1, offset: CGPoint(x: 1, y: 2), color: UIColor.black.withAlphaComponent(75))
+        case .spaceMonoBold:
+            return nil
+        }
+    }
+
+//    var spacing: CGFloat {
+//
+//    }
+}
+
 extension UIFont {
-    static func fairwater(fontSize: CGFloat) -> UIFont {
-        let font = UIFont(name: "Fairwater Script", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+
+    static func libreBaskerville(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "LibreBaskerville-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if UIFont.isDynamicTypeEnabled {
+            return UIFontMetrics.default.scaledFont(for: font)
+        }
+        return font
+    }
+
+    static func nunitoBold(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "Nunito-Bold", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if UIFont.isDynamicTypeEnabled {
+            return UIFontMetrics.default.scaledFont(for: font)
+        }
+        return font
+    }
+
+    static func pacifico(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "Pacifico-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if UIFont.isDynamicTypeEnabled {
+            return UIFontMetrics.default.scaledFont(for: font)
+        }
+        return font
+    }
+
+    static func oswaldUpper(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "Oswald-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if UIFont.isDynamicTypeEnabled {
+            return UIFontMetrics.default.scaledFont(for: font)
+        }
+        return font
+    }
+
+    static func shrikhand(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "Shrikhand-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if UIFont.isDynamicTypeEnabled {
+            return UIFontMetrics.default.scaledFont(for: font)
+        }
+        return font
+    }
+
+    static func spaceMonoBold(fontSize: CGFloat) -> UIFont {
+        let font = UIFont(name: "SpaceMono-Bold", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .medium)
         if UIFont.isDynamicTypeEnabled {
             return UIFontMetrics.default.scaledFont(for: font)
         }
@@ -129,5 +241,4 @@ extension UIFont {
         }
         return UIFont(descriptor: modifiedDescriptor, size: pointSize)
     }
-
 }

@@ -2179,6 +2179,12 @@
 		F543AF5923A84F200022F595 /* SchedulingCalendarViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */; };
 		F551E7F523F6EA3100751212 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7F423F6EA3100751212 /* FloatingActionButton.swift */; };
 		F551E7F723FC9A5C00751212 /* Collection+RotateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */; };
+		F55BEFB72524F60B00E7F0FC /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BEFB62524F60B00E7F0FC /* Nunito-Bold.ttf */; };
+		F55BEFD42524F63700E7F0FC /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BEFD32524F63700E7F0FC /* Pacifico-Regular.ttf */; };
+		F55BEFE32524F64C00E7F0FC /* SpaceMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BEFE22524F64C00E7F0FC /* SpaceMono-Bold.ttf */; };
+		F55BEFF22524F65800E7F0FC /* LibreBaskerville-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BEFF12524F65800E7F0FC /* LibreBaskerville-Regular.ttf */; };
+		F55BF0012524F66800E7F0FC /* Shrikhand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BF0002524F66700E7F0FC /* Shrikhand-Regular.ttf */; };
+		F55BF0032524F67F00E7F0FC /* oswald_upper.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55BF0022524F67F00E7F0FC /* oswald_upper.ttf */; };
 		F565190323CF6D1D003FACAF /* WKCookieJarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F565190223CF6D1D003FACAF /* WKCookieJarTests.swift */; };
 		F5660D03235CF73800020B1E /* SchedulingCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660CFF235CE82100020B1E /* SchedulingCalendarViewController.swift */; };
 		F5660D07235D114500020B1E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660D06235D114500020B1E /* CalendarCollectionView.swift */; };
@@ -4907,6 +4913,12 @@
 		F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingCalendarViewControllerTests.swift; sourceTree = "<group>"; };
 		F551E7F423F6EA3100751212 /* FloatingActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButton.swift; sourceTree = "<group>"; };
 		F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RotateTests.swift"; sourceTree = "<group>"; };
+		F55BEFB62524F60B00E7F0FC /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		F55BEFD32524F63700E7F0FC /* Pacifico-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pacifico-Regular.ttf"; sourceTree = "<group>"; };
+		F55BEFE22524F64C00E7F0FC /* SpaceMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpaceMono-Bold.ttf"; sourceTree = "<group>"; };
+		F55BEFF12524F65800E7F0FC /* LibreBaskerville-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LibreBaskerville-Regular.ttf"; sourceTree = "<group>"; };
+		F55BF0002524F66700E7F0FC /* Shrikhand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Shrikhand-Regular.ttf"; sourceTree = "<group>"; };
+		F55BF0022524F67F00E7F0FC /* oswald_upper.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = oswald_upper.ttf; sourceTree = "<group>"; };
 		F565190223CF6D1D003FACAF /* WKCookieJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKCookieJarTests.swift; sourceTree = "<group>"; };
 		F5660CFF235CE82100020B1E /* SchedulingCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingCalendarViewController.swift; sourceTree = "<group>"; };
 		F5660D06235D114500020B1E /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
@@ -7957,6 +7969,7 @@
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				F55BEFC52524F61500E7F0FC /* Kanvas */,
 				E6B42CBE1D9DA6270043E228 /* Noticons.ttf */,
 			);
 			name = Fonts;
@@ -10676,6 +10689,19 @@
 			path = "Floating Create Button";
 			sourceTree = "<group>";
 		};
+		F55BEFC52524F61500E7F0FC /* Kanvas */ = {
+			isa = PBXGroup;
+			children = (
+				F55BF0022524F67F00E7F0FC /* oswald_upper.ttf */,
+				F55BF0002524F66700E7F0FC /* Shrikhand-Regular.ttf */,
+				F55BEFF12524F65800E7F0FC /* LibreBaskerville-Regular.ttf */,
+				F55BEFE22524F64C00E7F0FC /* SpaceMono-Bold.ttf */,
+				F55BEFD32524F63700E7F0FC /* Pacifico-Regular.ttf */,
+				F55BEFB62524F60B00E7F0FC /* Nunito-Bold.ttf */,
+			);
+			path = Kanvas;
+			sourceTree = "<group>";
+		};
 		F57402A5235FF71F00374346 /* Scheduling */ = {
 			isa = PBXGroup;
 			children = (
@@ -10840,7 +10866,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
-				DD6D8C688363EE72301B7DE2 /* [CP] Prepare Artifacts */,
+				A62E374F294B5BB42280451A /* [CP] Prepare Artifacts */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
@@ -11298,6 +11324,7 @@
 				98B11B8B2216536C00B7F2D7 /* StatsChildRowsView.xib in Resources */,
 				17E363E022C4280A000E0C79 /* pride_icon_60pt.png in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
+				F55BF0012524F66800E7F0FC /* Shrikhand-Regular.ttf in Resources */,
 				17DC4C5822C5E6D60059CA11 /* open_source_icon_20pt@3x.png in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
@@ -11308,6 +11335,7 @@
 				17E3630222C41725000E0C79 /* wordpress_dark_icon_20pt.png in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
+				F55BEFB72524F60B00E7F0FC /* Nunito-Bold.ttf in Resources */,
 				8BB185CC24B6058600A4CCE8 /* reader-cards-success.json in Resources */,
 				17E3639B22C41DBA000E0C79 /* hot_pink_icon_20pt@2x.png in Resources */,
 				17DC4C3922C5E6910059CA11 /* open_source_dark_icon_29pt@2x.png in Resources */,
@@ -11373,10 +11401,12 @@
 				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
+				F55BEFE32524F64C00E7F0FC /* SpaceMono-Bold.ttf in Resources */,
 				469EB16624D8B12700C764CB /* LayoutPickerFilterCollectionViewCell.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
 				9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */,
 				3249615323F20111004C7733 /* PostSignUpInterstitialViewController.xib in Resources */,
+				F55BEFF22524F65800E7F0FC /* LibreBaskerville-Regular.ttf in Resources */,
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */,
@@ -11391,6 +11421,7 @@
 				82A062DC2017BC220084CE7C /* ActivityListSectionHeaderView.xib in Resources */,
 				17E363E522C4280A000E0C79 /* pride_icon_40pt@2x.png in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
+				F55BF0032524F67F00E7F0FC /* oswald_upper.ttf in Resources */,
 				17E3639822C41DBA000E0C79 /* hot_pink_icon_60pt@3x.png in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				431EF35A21F7D4000017BE16 /* QuickStartListTitleCell.xib in Resources */,
@@ -11434,6 +11465,7 @@
 				17E363E822C4280A000E0C79 /* pride_icon_29pt.png in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				17E363E122C4280A000E0C79 /* pride_icon_76pt@2x.png in Resources */,
+				F55BEFD42524F63700E7F0FC /* Pacifico-Regular.ttf in Resources */,
 				17E3630B22C41725000E0C79 /* wordpress_dark_icon_40pt.png in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				17E3630922C41725000E0C79 /* wordpress_dark_icon_29pt.png in Resources */,
@@ -12138,6 +12170,24 @@
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
 			showEnvVarsInLog = 0;
 		};
+		A62E374F294B5BB42280451A /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
+				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BAE780768320204E29A6FE5B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -12195,24 +12245,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
-		};
-		DD6D8C688363EE72301B7DE2 /* [CP] Prepare Artifacts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
-				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
-			);
-			name = "[CP] Prepare Artifacts";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
