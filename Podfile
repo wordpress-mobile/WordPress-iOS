@@ -218,7 +218,10 @@ target 'WordPress' do
 
         puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
         it could be removed once PR with that functionality will be merged into RN'
-        %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
+        %x(patch "#{project_root}/Pods/React-CoreModules/RCTActionSheetManager.mm" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
+        puts 'Patching FBReactNativeSpec to add possibility to disable action sheet buttons -
+        it could be removed once PR with that functionality will be merged into RN'
+        %x(patch "#{project_root}/Pods/FBReactNativeSpec/FBReactNativeSpec/FBReactNativeSpec.h" < "#{project_root}/patches/FBReactNativeSpec.patch")
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
