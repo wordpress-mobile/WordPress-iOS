@@ -115,6 +115,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             let orientation = deviceInformation.orientation!
 
             print("Height: \(height); orientation: \(orientation)")
+
+            let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+            fonts?.forEach({ url in
+                CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+            })
         }
 
 
