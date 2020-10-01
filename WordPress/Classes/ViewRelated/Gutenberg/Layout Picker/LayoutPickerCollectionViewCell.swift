@@ -142,13 +142,13 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         checkmarkImageView.alpha = isHidden ? 1 : 0
         checkmarkBackground.alpha = isHidden ? 1 : 0
 
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.1, animations: {
             self.checkmarkImageView.alpha = isHidden ? 0 : 1
             self.checkmarkBackground.alpha = isHidden ? 0 : 1
-        } completion: { (_) in
+        }, completion: { (_) in
             self.checkmarkImageView.isHidden = isHidden
             self.checkmarkBackground.isHidden = isHidden
-        }
+        })
     }
 
     func setImage(_ imageURL: String?) {

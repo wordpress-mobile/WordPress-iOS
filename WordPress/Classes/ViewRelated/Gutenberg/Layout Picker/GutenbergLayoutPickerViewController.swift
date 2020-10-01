@@ -303,12 +303,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutSelected(_ isSelected: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: []) {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: [], animations: {
             self.previewBtn.isHidden = !isSelected
             self.createBlankPageBtn.isHidden = isSelected
             self.createPageBtn.isHidden = !isSelected
             self.buttonStackView.layoutIfNeeded()
-        }
+        })
     }
 
     private func fetchLayouts() {
