@@ -70,7 +70,10 @@ class ReaderWebView: WKWebView {
             })
 
             // Make all images tappable
-            document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+            // Exception for images in Stories, which have their own link structure
+            document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
+                el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`
+            })
 
             // Only display images after they have fully loaded, to have a native feel
             document.querySelectorAll('img').forEach((el) => {
