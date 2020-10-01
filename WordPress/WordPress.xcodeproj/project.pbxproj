@@ -10866,7 +10866,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
-				A62E374F294B5BB42280451A /* [CP] Prepare Artifacts */,
+				1E779584249A52A1E9C7B7A1 /* [CP] Prepare Artifacts */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
@@ -11735,6 +11735,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1E779584249A52A1E9C7B7A1 /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
+				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2D007B2B2850683878B2D4F1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -12168,24 +12186,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
-			showEnvVarsInLog = 0;
-		};
-		A62E374F294B5BB42280451A /* [CP] Prepare Artifacts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh",
-				"${PODS_ROOT}/../Kanvas/KanvasCamera.xcframework",
-			);
-			name = "[CP] Prepare Artifacts";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-artifacts.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BAE780768320204E29A6FE5B /* [CP] Check Pods Manifest.lock */ = {
