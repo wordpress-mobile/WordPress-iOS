@@ -86,18 +86,6 @@ class MySiteScreen: BaseScreen {
         return ActionSheetComponent()
     }
 
-    func gotoReaderScreen() -> ReaderScreen {
-        readerButton.tap()
-        return ReaderScreen()
-
-    }
-
-    func gotoEditorScreen() -> EditorScreen {
-        postsButton.tap()
-        return EditorScreen()
-
-    }
-
     static func isLoaded() -> Bool {
         return XCUIApplication().tables[ElementStringIDs.blogTable].exists
     }

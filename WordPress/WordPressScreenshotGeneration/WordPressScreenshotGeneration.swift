@@ -24,7 +24,6 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-
         LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
@@ -48,11 +47,11 @@ class WordPressScreenshotGeneration: XCTestCase {
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let blockPickerScreenshot = postList.selectPost(withSlug: "summer-band-jam")
+        let postEditorScreenshot = postList.selectPost(withSlug: "summer-band-jam")
         BlockEditorScreen().openBlockPicker()
         snapshot("1-BlockPicker")
         BlockEditorScreen().closeBlockPicker()
-        blockPickerScreenshot.close()
+        postEditorScreenshot.close()
 
         // Get a screenshot of the full-screen editor
         if isIpad {

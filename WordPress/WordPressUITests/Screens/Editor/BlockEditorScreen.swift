@@ -17,6 +17,7 @@ class BlockEditorScreen: BaseScreen {
     let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
     // Image block
     let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
+    let offBlockPickerCoordinate = BlockEditorScreen().editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
 
     // Toolbar
     let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
@@ -143,12 +144,12 @@ class BlockEditorScreen: BaseScreen {
     }
     @discardableResult
     func openBlockPicker() -> BlockEditorScreen {
-            addBlockButton.tap()
+        addBlockButton.tap()
         return BlockEditorScreen()
     }
     @discardableResult
     func closeBlockPicker() -> BlockEditorScreen {
-        editorCloseButton.swipeDown()
+        offBlockPickerCoordinate.tap()
         return BlockEditorScreen()
     }
 }
