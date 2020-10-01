@@ -24,6 +24,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
+
         LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
@@ -36,22 +37,22 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     func testGenerateScreenshots() {
 
+        // Get My Site screenshot
         let mySite = MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "infocusphotographers.com")
+        snapshot("4-MySite")
 
+        // Get BlockPicker screenshot
         let postList = mySite
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let firstPostEditorScreenshot = postList.selectPost(withSlug: "summer-band-jam")
-        snapshot("1-PostEditor")
-        firstPostEditorScreenshot.close()
-
-        // Get a screenshot of the drafts feature
-        let secondPostEditorScreenshot = postList.selectPost(withSlug: "ideas")
-        snapshot("5-DraftEditor")
-        secondPostEditorScreenshot.close()
+        let blockPickerScreenshot = postList.selectPost(withSlug: "summer-band-jam")
+        BlockEditorScreen().openBlockPicker()
+        snapshot("1-BlockPicker")
+        BlockEditorScreen().closeBlockPicker()
+        blockPickerScreenshot.close()
 
         // Get a screenshot of the full-screen editor
         if isIpad {
@@ -64,25 +65,33 @@ class WordPressScreenshotGeneration: XCTestCase {
             postList.pop()
         }
 
+        // Get Media screenshot
         _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
-        snapshot("4-Media")
+        snapshot("6-Media")
 
         if !isIpad {
             postList.pop()
         }
+
         // Get Stats screenshot
         let statsScreen = mySite.gotoStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .years)
+        snapshot("3-Stats")
 
-        snapshot("2-Stats")
+        // Get Discover screenshot
+        // Currently, the view includes the "You Might Like" section
+        TabNavComponent()
+            .gotoReaderScreen()
+            .openDiscover()
+        snapshot("2-Discover")
 
+        // Get Notifications screenshot
         TabNavComponent()
             .gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
-
-        snapshot("3-Notifications")
+        snapshot("5-Notifications")
     }
 }
