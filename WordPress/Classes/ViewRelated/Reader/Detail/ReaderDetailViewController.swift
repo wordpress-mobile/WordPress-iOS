@@ -440,7 +440,7 @@ extension ReaderDetailViewController: WKNavigationDelegate {
         if let hash = pendingHashString {
             // This fixes an issue where sometimes jumping to the anchor would go to the wrong place
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.scroll(to: hash)
+                self.scroll(to: hash, animated: false)
             }
         }
 
