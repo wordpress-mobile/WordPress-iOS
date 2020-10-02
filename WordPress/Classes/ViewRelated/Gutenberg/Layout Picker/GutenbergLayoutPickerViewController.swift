@@ -213,6 +213,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
         let layout = sections[sectionIndex].layouts[position]
         createPage(title: layout.title, template: layout.content)
+        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
     }
 
     private func createPage(title: String?, template: String?) {

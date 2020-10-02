@@ -8,4 +8,7 @@ class LayoutPickerAnalyticsEvent {
         WPAnalytics.track(.editorSessionTemplatePreview, withProperties: [templateTrackingKey: slug])
     }
 
+    static func templateApplied(slug: String) {
+        WPAnalytics.track(.editorSessionTemplateApply, withProperties: [templateTrackingKey: slug])
+    }
 }
