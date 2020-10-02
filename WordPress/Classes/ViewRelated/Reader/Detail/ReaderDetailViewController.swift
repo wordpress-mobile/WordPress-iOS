@@ -29,6 +29,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var loadingView: UIView!
 
+    /// The loading view, which contains all the ghost views
+    @IBOutlet weak var actionStackView: UIStackView!
+
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
@@ -40,6 +43,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
+
+    /// Comment view, add action bar
+    private let commentAction: ReaderDetailCommentsView = .loadFromNib()
 
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
@@ -102,6 +108,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
+        configureCommentAction()
+
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -162,6 +170,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        commentAction.configure(for: post, in: self)
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
@@ -322,6 +331,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
+    }
+
+    private func configureCommentAction() {
+        actionStackView.insertArrangedSubview(commentAction, at: 0)
+        commentAction.backgroundColor = view.backgroundColor
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
