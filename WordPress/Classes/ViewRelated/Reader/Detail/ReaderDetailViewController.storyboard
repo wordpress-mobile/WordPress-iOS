@@ -107,7 +107,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnQ-Ld-x9K">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vGc-hu-x5V">
                                         <rect key="frame" x="0.0" y="44" width="414" height="135"/>
@@ -281,7 +281,7 @@
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="PNw-Cb-AvC"/>
                             <constraint firstAttribute="bottom" secondItem="ERb-e0-U8L" secondAttribute="bottom" id="fPU-nx-gzV"/>
-                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="qnQ-Ld-x9K" secondAttribute="bottom" id="jDb-2v-GlQ"/>
+                            <constraint firstAttribute="bottom" secondItem="qnQ-Ld-x9K" secondAttribute="bottom" id="jDb-2v-GlQ"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="centerX" secondItem="Qzd-gm-oIu" secondAttribute="centerX" id="kuZ-bk-VtY"/>
                             <constraint firstItem="qnQ-Ld-x9K" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="mRn-49-Gms"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="p2r-l3-0Mh"/>
@@ -292,6 +292,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actionStackView" destination="O4e-BA-8jp" id="Ro3-aL-ekY"/>
                         <outlet property="attributionView" destination="Ewc-f7-89P" id="Pwq-Hm-VfQ"/>
                         <outlet property="headerContainerView" destination="Xyq-y6-zPR" id="duy-5z-Fdl"/>
                         <outlet property="loadingView" destination="qnQ-Ld-x9K" id="D1T-sa-IvL"/>
