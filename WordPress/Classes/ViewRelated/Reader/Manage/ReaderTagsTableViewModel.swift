@@ -115,11 +115,11 @@ extension ReaderTagsTableViewModel {
                 self?.scrollToTag(tag)
             }
         }, failure: { (error) in
-            DDLogError("Could not follow tag named \(tagName) : \(String(describing: error))")
+            DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")
 
             generator.notificationOccurred(.error)
 
-            let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
@@ -136,7 +136,7 @@ extension ReaderTagsTableViewModel {
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
-            let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
