@@ -70,6 +70,9 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerPostReported
+    // What's New - Feature announcements
+    case featureAnnouncementShown
+    case featureAnnouncementButtonTapped
 
     /// A String that represents the event
     var value: String {
@@ -131,6 +134,7 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
         case .pushNotificationsPrimerAllowTapped:
@@ -184,6 +188,11 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
+        // What's New - Feature announcements
+        case .featureAnnouncementShown:
+            return "feature_announcement_shown"
+        case .featureAnnouncementButtonTapped:
+            return "feature_announcement_button_tapped"
         }
     }
 

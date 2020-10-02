@@ -145,6 +145,24 @@ extension URL {
         let components = pathComponents.filter({ $0 != "/" })
         return components.count == 4 && isHostedAtWPCom
     }
+
+
+    /// Does a quick test to see if 2 urls are equal to each other by
+    /// using just the hosts and paths. This ignores any query items, or hashes
+    /// on the urls
+    func isHostAndPathEqual(to url: URL) -> Bool {
+        guard
+            let components1 = URLComponents(url: self, resolvingAgainstBaseURL: true),
+            let components2 = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        else {
+            return false
+        }
+
+        let check1 = (components1.host ?? "") + components1.path
+        let check2 = (components2.host ?? "") + components2.path
+
+        return check1 == check2
+    }
 }
 
 extension NSURL {

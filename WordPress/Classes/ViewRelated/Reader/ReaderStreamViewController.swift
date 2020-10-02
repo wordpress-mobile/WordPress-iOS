@@ -1030,6 +1030,8 @@ import WordPressFlux
     func fetch(for topic: ReaderAbstractTopic, success: @escaping ((_ count: Int, _ hasMore: Bool) -> Void), failure: @escaping ((_ error: Error?) -> Void)) {
         if ReaderHelpers.isTopicSearchTopic(topic) {
             service.fetchPosts(for: topic, atOffset: 0, deletingEarlier: false, success: success, failure: failure)
+        } else if let topic = topic as? ReaderTagTopic {
+            service.fetchPostsV2(for: topic, success: success, failure: failure)
         } else {
             service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
         }
@@ -1151,6 +1153,8 @@ import WordPressFlux
         if ReaderHelpers.isTopicSearchTopic(topic) {
             let offset = UInt(content.contentCount)
             service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
+        } else if let topic = topic as? ReaderTagTopic {
+            service.fetchPostsV2(for: topic, isFirstPage: false, success: success, failure: failure)
         } else {
             let earlierThan = sortDate
             service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)

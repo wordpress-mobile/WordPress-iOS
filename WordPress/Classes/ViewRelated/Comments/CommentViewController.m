@@ -9,7 +9,7 @@
 #import "PostService.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
+#import "WordPress-Swift.h"
 #import <WordPressUI/WordPressUI.h>
 
 
@@ -698,7 +698,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
+    return [self shouldShowSuggestionsFor:self.comment.blog.dotComID];
 }
 
 - (void)reloadData
