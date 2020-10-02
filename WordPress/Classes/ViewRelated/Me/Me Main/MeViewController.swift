@@ -87,14 +87,6 @@ class MeViewController: UITableViewController {
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
 
-        // After we've reloaded the view model we should maintain the current
-        // table row selection, or if the split view we're in is not compact
-        // then we'll just select the first item in the table.
-
-        // First, we'll grab the appropriate index path so we can reselect it
-        // after reloading the table
-        let selectedIndexPath = tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)
-
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn)
     }
