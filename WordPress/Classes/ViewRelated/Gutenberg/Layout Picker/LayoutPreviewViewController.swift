@@ -95,7 +95,7 @@ class LayoutPreviewViewController: UIViewController {
         LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
 
         dismiss(animated: true) {
-            completion(layout.title, layout.content)
+            completion(layout)
         }
     }
 }
