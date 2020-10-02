@@ -335,7 +335,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureCommentAction() {
         actionStackView.insertArrangedSubview(commentAction, at: 0)
-        commentAction.backgroundColor = view.backgroundColor
+        commentAction.backgroundColor = .clear
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -346,7 +346,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             attributionView.translatesAutoresizingMaskIntoConstraints = false
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
-            attributionView.backgroundColor = view.backgroundColor
+            attributionView.backgroundColor = .clear
         }
     }
 
