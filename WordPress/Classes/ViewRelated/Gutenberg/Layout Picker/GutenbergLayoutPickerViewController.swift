@@ -171,7 +171,9 @@ class GutenbergLayoutPickerViewController: UIViewController {
         if let destination = segue.destination as? LayoutPreviewViewController,
             let sectionIndex = selectedLayout?.section,
             let position = selectedLayout?.item {
-            destination.layout = sections[sectionIndex].layouts[position]
+            let layout = sections[sectionIndex].layouts[position]
+            LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
+            destination.layout = layout
             destination.completion = completion
         }
 
