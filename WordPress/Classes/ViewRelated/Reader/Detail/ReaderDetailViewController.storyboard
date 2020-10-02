@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,11 +21,11 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="768"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
-                                        <rect key="frame" x="0.0" y="0.0" width="446" height="243"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="446" height="222.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="259" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
@@ -37,14 +38,40 @@
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O4e-BA-8jp">
-                                        <rect key="frame" x="16" y="259" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="238.5" width="414" height="20.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TWq-e0-xZe">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ewc-f7-89P" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="20.5"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="NEe-UN-zaj" customClass="CircularImageView" customModule="WordPress">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" priority="999" constant="20" id="LME-RR-daf"/>
+                                                            <constraint firstAttribute="width" constant="20" id="NrG-FK-J1s"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7G-k1-H0E">
+                                                        <rect key="frame" x="28" y="0.0" width="386" height="20.5"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" id="dx7-H0-Hns"/>
+                                                    <constraint firstItem="NEe-UN-zaj" firstAttribute="leading" secondItem="Ewc-f7-89P" secondAttribute="leading" id="GKo-Xg-pwk"/>
+                                                    <constraint firstAttribute="trailing" secondItem="D7G-k1-H0E" secondAttribute="trailing" id="Hwq-jr-GrU"/>
+                                                    <constraint firstItem="D7G-k1-H0E" firstAttribute="top" secondItem="Ewc-f7-89P" secondAttribute="top" id="WUy-M3-Hb6"/>
+                                                    <constraint firstItem="D7G-k1-H0E" firstAttribute="height" relation="greaterThanOrEqual" secondItem="NEe-UN-zaj" secondAttribute="height" id="iqj-BZ-ezI"/>
+                                                    <constraint firstItem="NEe-UN-zaj" firstAttribute="top" secondItem="Ewc-f7-89P" secondAttribute="top" id="lFz-U6-ykF"/>
+                                                    <constraint firstItem="D7G-k1-H0E" firstAttribute="leading" secondItem="NEe-UN-zaj" secondAttribute="trailing" constant="8" id="wYe-dA-TcC"/>
+                                                    <constraint firstAttribute="bottom" secondItem="D7G-k1-H0E" secondAttribute="bottom" id="xYY-66-i2k"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outlet property="imageView" destination="NEe-UN-zaj" id="9sM-RI-9rU"/>
+                                                    <outlet property="textLabel" destination="D7G-k1-H0E" id="437-Ec-cHF"/>
+                                                </connections>
                                             </view>
                                         </subviews>
                                     </stackView>
@@ -77,10 +104,10 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERb-e0-U8L">
                                 <rect key="frame" x="0.0" y="862" width="414" height="34"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnQ-Ld-x9K">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vGc-hu-x5V">
                                         <rect key="frame" x="0.0" y="44" width="414" height="135"/>
@@ -98,7 +125,7 @@
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMZ-jx-Iu5">
                                                         <rect key="frame" x="42" y="17" width="372" height="32"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -221,7 +248,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="Jvg-nM-lV9" secondAttribute="bottom" id="05b-PA-2Gv"/>
                                                     <constraint firstItem="Jvg-nM-lV9" firstAttribute="top" secondItem="xrm-JQ-hpv" secondAttribute="top" id="2sk-af-ZIb"/>
@@ -232,7 +259,8 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <viewLayoutGuide key="safeArea" id="EtS-rx-pLc"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="EKd-IB-Upn" firstAttribute="width" secondItem="vGc-hu-x5V" secondAttribute="width" id="aRu-Sg-NTM"/>
                                     <constraint firstItem="vGc-hu-x5V" firstAttribute="top" secondItem="EtS-rx-pLc" secondAttribute="top" id="kf9-7G-BWF"/>
@@ -240,10 +268,10 @@
                                     <constraint firstItem="EKd-IB-Upn" firstAttribute="top" secondItem="vGc-hu-x5V" secondAttribute="bottom" constant="32" id="p5l-dZ-qKp"/>
                                     <constraint firstItem="vGc-hu-x5V" firstAttribute="centerX" secondItem="qnQ-Ld-x9K" secondAttribute="centerX" id="pMy-9R-nWF"/>
                                 </constraints>
-                                <viewLayoutGuide key="safeArea" id="EtS-rx-pLc"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="qnQ-Ld-x9K" secondAttribute="trailing" id="7q2-Rq-Wbt"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="top" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="AWw-Um-NsT"/>
@@ -253,7 +281,7 @@
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="PNw-Cb-AvC"/>
                             <constraint firstAttribute="bottom" secondItem="ERb-e0-U8L" secondAttribute="bottom" id="fPU-nx-gzV"/>
-                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="qnQ-Ld-x9K" secondAttribute="bottom" id="jDb-2v-GlQ"/>
+                            <constraint firstAttribute="bottom" secondItem="qnQ-Ld-x9K" secondAttribute="bottom" id="jDb-2v-GlQ"/>
                             <constraint firstItem="ERb-e0-U8L" firstAttribute="centerX" secondItem="Qzd-gm-oIu" secondAttribute="centerX" id="kuZ-bk-VtY"/>
                             <constraint firstItem="qnQ-Ld-x9K" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="mRn-49-Gms"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="p2r-l3-0Mh"/>
@@ -262,10 +290,10 @@
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="Qzd-gm-oIu" secondAttribute="trailing" id="zR2-IL-BwU"/>
                             <constraint firstItem="qnQ-Ld-x9K" firstAttribute="top" secondItem="HkO-UB-8qv" secondAttribute="top" id="zgv-gp-j1Q"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                     </view>
                     <connections>
-                        <outlet property="attributionViewContainer" destination="TWq-e0-xZe" id="0Bb-jI-gSy"/>
+                        <outlet property="actionStackView" destination="O4e-BA-8jp" id="Ro3-aL-ekY"/>
+                        <outlet property="attributionView" destination="Ewc-f7-89P" id="Pwq-Hm-VfQ"/>
                         <outlet property="headerContainerView" destination="Xyq-y6-zPR" id="duy-5z-Fdl"/>
                         <outlet property="loadingView" destination="qnQ-Ld-x9K" id="D1T-sa-IvL"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
@@ -283,5 +311,8 @@
     <resources>
         <image name="gravatar" width="85" height="85"/>
         <image name="post-blavatar-placeholder" width="32" height="32"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

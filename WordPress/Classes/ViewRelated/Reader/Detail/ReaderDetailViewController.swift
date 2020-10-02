@@ -23,17 +23,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
-    /// Wrapper for the attribution view
-    @IBOutlet weak var attributionViewContainer: UIStackView!
-
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var loadingView: UIView!
 
+    /// The loading view, which contains all the ghost views
+    @IBOutlet weak var actionStackView: UIStackView!
+
     /// Attribution view for Discovery posts
-    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
+    @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
     /// The actual header
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
@@ -44,6 +44,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
+    /// Comment view, add action bar
+    private let commentAction: ReaderDetailCommentsView = .loadFromNib()
+
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
 
@@ -52,9 +55,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
-
-    /// If we're following the scrollview to hide/show nav and toolbar
-    private var isFollowingScrollView = false
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -108,6 +108,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
+        configureCommentAction()
+
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -168,6 +170,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        commentAction.configure(for: post, in: self)
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
@@ -330,16 +333,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
     }
 
+    private func configureCommentAction() {
+        actionStackView.insertArrangedSubview(commentAction, at: 0)
+    }
+
     private func configureDiscoverAttribution(_ post: ReaderPost) {
         if post.sourceAttributionStyle() == .none {
             attributionView.isHidden = true
         } else {
             attributionView.displayAsLink = true
-            attributionViewContainer.addSubview(attributionView)
-            attributionViewContainer.pinSubviewToAllEdges(attributionView)
             attributionView.translatesAutoresizingMaskIntoConstraints = false
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
+            attributionView.backgroundColor = .clear
         }
     }
 
