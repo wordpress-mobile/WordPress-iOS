@@ -2,12 +2,10 @@
 
 extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
-//TODO: Remove WPTabMe and WPTabNewPost when the new Me page and FAB are released
+
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
     WPTabReader,
-    WPTabNewPost,
-    WPTabMe,
     WPTabNotifications
 };
 
