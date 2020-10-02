@@ -335,7 +335,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureCommentAction() {
         actionStackView.insertArrangedSubview(commentAction, at: 0)
-        commentAction.backgroundColor = .clear
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
