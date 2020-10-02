@@ -220,7 +220,8 @@ class ReaderDetailCoordinator {
         service.fetchPost(at: url,
                           success: { [weak self] post in
                             self?.post = post
-                            self?.renderPostAndBumpStats(with: url)
+                            self?.renderPostAndBumpStats()
+                            self?.scrollToHashIfNeeded(with: url)
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
@@ -229,13 +230,12 @@ class ReaderDetailCoordinator {
         })
     }
 
-    private func renderPostAndBumpStats(with url: URL? = nil) {
+    private func renderPostAndBumpStats() {
         guard let post = post else {
             return
         }
 
         view?.render(post)
-        scrollToHashIfNeeded(with: url)
 
         bumpStats()
         bumpPageViewsForPost()
