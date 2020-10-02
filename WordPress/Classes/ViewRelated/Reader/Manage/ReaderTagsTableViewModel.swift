@@ -29,7 +29,7 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
         return ReaderTagTopic.tagsFetchRequest
     }
 
-    /// Disable highlighting for all rows but "Add a tag" this allows the rows to be "flashed" but not show taps
+    /// Disable highlighting for all rows but "Add a Topic" this allows the rows to be "flashed" but not show taps
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let adjustedPath = tableViewHandler.adjusted(indexPath: indexPath)
         return adjustedPath == nil
@@ -65,15 +65,15 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for subscribing to a new tag.
     private func showAddTag() {
 
-        let placeholder = NSLocalizedString("Add any tag", comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe.")
+        let placeholder = NSLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
-        controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
+        controller.title = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
         controller.onValueChanged = { [weak self] value in
             self?.follow(tagName: value)
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
-        controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
+        controller.actionText = NSLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
         controller.onActionPress = { [weak self] in
             self?.dismissModal()
         }

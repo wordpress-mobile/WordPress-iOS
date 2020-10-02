@@ -374,9 +374,9 @@ import WordPressShared
     /// Presents a new view controller for subscribing to a new tag.
     ///
     @objc func showAddTag() {
-        let placeholder = NSLocalizedString("Add any tag", comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe.")
+        let placeholder = NSLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
-        controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
+        controller.title = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
         controller.onValueChanged = { value in
             if value.trim().count > 0 {
                 self.followTagNamed(value.trim())
@@ -384,7 +384,7 @@ import WordPressShared
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
-        controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
+        controller.actionText = NSLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
         controller.onActionPress = {
             self.dismissModal()
         }
