@@ -48,13 +48,20 @@ class AnnouncementCell: UITableViewCell {
     }
 
     func configure(feature: WordPressKit.Feature) {
-        if let url = URL(string: feature.iconUrl) {
+
+        if let iconBase64Components = feature.iconBase64,
+            !iconBase64Components.isEmpty,
+            let base64Image = iconBase64Components.components(separatedBy: ";base64,")[safe: 1],
+            let imageData = Data(base64Encoded: base64Image, options: .ignoreUnknownCharacters),
+            let icon = UIImage(data: imageData) {
+                announcementImageView.image = icon
+        }
+
+        else if let url = URL(string: feature.iconUrl) {
             announcementImageView.af_setImage(withURL: url)
         }
         headingLabel.text = feature.title
         subHeadingLabel.text = feature.subtitle
-        // TODO - WHATSNEW: - remove when images will be passed
-        announcementImageView.backgroundColor = .accent
     }
 }
 
