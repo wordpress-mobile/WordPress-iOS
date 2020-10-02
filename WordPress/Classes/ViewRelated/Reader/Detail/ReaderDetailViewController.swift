@@ -174,16 +174,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Scroll the content to a given #hash
     ///
     func scroll(to hash: String) {
-        scroll(to: hash, animated: true)
-    }
-
-    func scroll(to hash: String, animated: Bool = true) {
         webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [unowned self] height, _ in
             guard let height = height as? CGFloat else {
                 return
             }
 
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: animated)
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
         })
     }
 
