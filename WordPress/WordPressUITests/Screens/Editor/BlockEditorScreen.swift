@@ -149,7 +149,7 @@ class BlockEditorScreen: BaseScreen {
     }
     @discardableResult
     func closeBlockPicker() -> BlockEditorScreen {
-        offBlockPickerCoordinate.tap()
+        editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
         return BlockEditorScreen()
     }
 }
