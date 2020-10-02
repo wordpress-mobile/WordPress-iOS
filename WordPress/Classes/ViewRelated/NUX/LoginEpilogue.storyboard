@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17503.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17502"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
@@ -25,6 +25,14 @@
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LF6-fg-TWa">
                                 <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7v-Xt-6uK">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TIz-aA-WwG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <blurEffect style="regular"/>
+                                    </visualEffectView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTr-q6-PbK" userLabel="Top Line">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,9 +42,13 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="E7v-Xt-6uK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="4cD-GC-Ud9"/>
+                                    <constraint firstAttribute="trailing" secondItem="E7v-Xt-6uK" secondAttribute="trailing" id="YmO-ZG-PD3"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="bjg-yv-Bi5"/>
                                     <constraint firstAttribute="trailing" secondItem="aTr-q6-PbK" secondAttribute="trailing" id="cQt-u6-ypc"/>
+                                    <constraint firstAttribute="bottom" secondItem="E7v-Xt-6uK" secondAttribute="bottom" id="mNZ-iM-0Uu"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="oAL-rY-TS7"/>
+                                    <constraint firstItem="E7v-Xt-6uK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="phn-sq-0JJ"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="zIw-8v-OFh"/>
                                 </constraints>
                             </view>
@@ -62,9 +74,9 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
                         <constraints>
                             <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="0rB-nq-HUv"/>
-                            <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="3xo-Xc-gY6"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
                             <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="20" id="M0r-84-tJ6"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
@@ -72,14 +84,15 @@
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="mVQ-Dg-W4g"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="blurEffectView" destination="E7v-Xt-6uK" id="RIm-YT-MPx"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
                         <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
@@ -90,14 +103,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zu-w6-ZSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4117.6000000000004" y="927.88605697151434"/>
+            <point key="canvasLocation" x="4105" y="893"/>
         </scene>
         <!--Login Epilogue Table View Controller-->
         <scene sceneID="sgW-0t-bH0">
             <objects>
                 <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>

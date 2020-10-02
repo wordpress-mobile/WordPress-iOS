@@ -9,6 +9,7 @@ class WhatIsNewViewController: UIViewController {
     private lazy var whatIsNewView: WhatIsNewView = {
         let view = makeWhatIsNewView()
         view.continueAction = { [weak self] in
+            WPAnalytics.track(.featureAnnouncementButtonTapped, properties: ["button": "close_dialog"])
             self?.dismiss(animated: true)
         }
         return view

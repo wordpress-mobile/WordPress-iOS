@@ -477,6 +477,25 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.showNotice(message)
     }
 
+    private func handleMissingBlockAlertButtonPressed() {
+        let blog = post.blog
+        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+        if JetpackSSOEnabled == false {
+            let controller = JetpackSecuritySettingsViewController(blog: blog)
+            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
+            let navController = UINavigationController(rootViewController: controller)
+            present(navController, animated: true)
+        }
+    }
+
+    @objc private func jetpackSettingsControllerDoneButtonPressed() {
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.gutenberg.updateCapabilities()
+            }
+        }
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -812,6 +831,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             withSupportButton: false
         )
     }
+
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
@@ -838,8 +858,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
         return gutenbergSettings.starterPageTemplatesTooltipShown
     }
+
     func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
         gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
+    }
+
+    func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
+        switch buttonType {
+            case .missingBlockAlertActionButton:
+                handleMissingBlockAlertButtonPressed()
+        }
     }
 }
 
@@ -925,20 +953,19 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+            .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
         // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
-        // The option is disabled on Self-hosted sites because they can have their web editor to be set to classic and then the fallback will not work.
-        // Jetpack sites with SSO disabled also have Unsupported Block Editor disabled, since we won't be able to authenticate to their self-hosted site.
-        // Atomic sites can also have SSO disabled (though is an opt-out option).
+        // This is because they can have their web editor to be set to classic and then the fallback will not work.
 
         let blog = post.blog
-        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return ( blog.isHostedAtWPcom || JetpackSSOEnabled ) && blog.webEditor == .gutenberg
+        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
     }
 }
 
