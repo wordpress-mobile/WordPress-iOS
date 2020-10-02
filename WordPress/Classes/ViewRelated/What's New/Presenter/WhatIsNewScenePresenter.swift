@@ -14,10 +14,17 @@ class WhatIsNewScenePresenter: ScenePresenter {
         AppRatingUtility.shared.didUpgradeVersion && UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString()
     }
 
+    var versionHasAnnouncements: Bool {
+        store.versionHasAnnouncements
+    }
+
     init(store: AnnouncementsStore) {
         self.store = store
         subscription = store.onChange { [weak self] in
-            self?.startPresenting?()
+            guard let self = self, !self.store.announcements.isEmpty else {
+                return
+            }
+            self.startPresenting?()
         }
     }
 
@@ -36,6 +43,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
             self.trackAccess(from: viewController)
             viewController.present(controller, animated: true) {
                 UserDefaults.standard.announcementsVersionDisplayed = Bundle.main.shortVersionString()
+                completion?()
             }
         }
         store.getAnnouncements()

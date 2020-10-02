@@ -9,6 +9,7 @@ private struct ElementStringIDs {
     static let statsButton = "Stats Row"
     static let settingsButton = "Settings Row"
     static let createButton = "floatingCreateButton"
+    static let ReaderButton = "Reader"
 }
 
 class MySiteScreen: BaseScreen {
@@ -21,6 +22,7 @@ class MySiteScreen: BaseScreen {
     let statsButton: XCUIElement
     let siteSettingsButton: XCUIElement
     let createButton: XCUIElement
+    let readerButton: XCUIElement
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -40,6 +42,7 @@ class MySiteScreen: BaseScreen {
         statsButton = app.cells[ElementStringIDs.statsButton]
         siteSettingsButton = app.cells[ElementStringIDs.settingsButton]
         createButton = app.buttons[ElementStringIDs.createButton]
+        readerButton = app.buttons[ElementStringIDs.ReaderButton]
 
         super.init(element: blogTable)
     }

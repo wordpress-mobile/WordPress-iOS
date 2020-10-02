@@ -141,4 +141,14 @@ class BlockEditorScreen: BaseScreen {
     static func isLoaded() -> Bool {
         return XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"].exists
     }
+    @discardableResult
+    func openBlockPicker() -> BlockEditorScreen {
+        addBlockButton.tap()
+        return BlockEditorScreen()
+    }
+    @discardableResult
+    func closeBlockPicker() -> BlockEditorScreen {
+        editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
+        return BlockEditorScreen()
+    }
 }

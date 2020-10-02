@@ -39,6 +39,8 @@ class WhatIsNewView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(viewTitles.continueButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = Accessibility.continueButtonIdentifier
+        button.accessibilityHint = Accessibility.continueButtonHint
         return button
     }()
 
@@ -240,5 +242,14 @@ private extension WhatIsNewView {
                 return .regular
             }
         }
+    }
+}
+
+
+// MARK: - Accessibility
+private extension WhatIsNewView {
+    enum Accessibility {
+        static let continueButtonIdentifier = "AnnouncementsContinueButton"
+        static let continueButtonHint = NSLocalizedString("Dismiss announcements", comment: "Accessibility hint for the continue button in the Feature Announcements screen.")
     }
 }
