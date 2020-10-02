@@ -420,7 +420,7 @@ import WordPressShared
     ///
     @objc func promptUnfollowTagTopic(_ topic: ReaderTagTopic) {
         let title = NSLocalizedString("Remove", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
-        let template = NSLocalizedString("Are you sure you wish to remove the tag '%@'?", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
+        let template = NSLocalizedString("Are you sure you wish to remove the topic '%@'?", comment: "A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic.")
         let message = String(format: template, topic.title)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title of a cancel button.")) { (action) in
@@ -443,7 +443,7 @@ import WordPressShared
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
-            let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
@@ -476,7 +476,7 @@ import WordPressShared
 
                 generator.notificationOccurred(.error)
 
-                let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+                let title = NSLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
                 let message = error?.localizedDescription
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
