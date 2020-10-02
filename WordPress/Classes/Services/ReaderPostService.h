@@ -9,7 +9,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
 @interface ReaderPostService : LocalCoreDataService
 
-@property (nonatomic) NSString *nextPageHandle;
+@property (copy, nonatomic) NSString *nextPageHandle;
 @property (nonatomic) NSInteger pageNumber;
 
 /**
