@@ -2,8 +2,11 @@ import Foundation
 
 extension ReaderPostService {
     func fetchPostsV2(for topic: ReaderTagTopic, isFirstPage: Bool = true, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
-        let remoteService = ReaderPostServiceRemote.withDefaultApi()
+        if isFirstPage {
+            nextPageHandle = nil
+        }
 
+        let remoteService = ReaderPostServiceRemote.withDefaultApi()
         remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { [weak self] posts, pageHandle in
             guard let self = self else {
                 return
