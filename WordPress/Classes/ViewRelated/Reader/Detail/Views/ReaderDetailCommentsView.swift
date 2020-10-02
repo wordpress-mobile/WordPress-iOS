@@ -72,7 +72,7 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
             return false
         }
 
-        if (post.isWPCom || post.isJetpack) {
+        if post.isWPCom || post.isJetpack {
             let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 return true
