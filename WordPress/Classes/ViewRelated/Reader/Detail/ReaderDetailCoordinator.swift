@@ -212,6 +212,7 @@ class ReaderDetailCoordinator {
         })
     }
 
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost from a URL.
@@ -221,7 +222,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.scrollToHashIfNeeded(with: url)
                             self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
@@ -244,9 +244,9 @@ class ReaderDetailCoordinator {
     /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
     /// once it loads
     ///
-    private func scrollToHashIfNeeded(with url: URL? = nil) {
+    private func scrollToHashIfNeeded() {
         guard
-            let url = url,
+            let url = postURL,
             let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment
         else {
             return
@@ -327,6 +327,12 @@ class ReaderDetailCoordinator {
         } else {
             presentWebViewController(url)
         }
+    }
+
+
+    /// Called after the webView fully loads
+    func webViewDidLoad() {
+        scrollToHashIfNeeded()
     }
 
     /// Show the featured image fullscreen

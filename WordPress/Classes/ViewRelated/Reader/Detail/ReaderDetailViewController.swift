@@ -72,13 +72,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    /// Tracks whether the webview has called -didFinish:navigation
-    private var isLoadingWebView = true
-
-    /// If the scroll(to:) has been called before the webview content has been loaded
-    /// the hash will be stored in this variable, and scrolled to once the content is loaded
-    private var pendingHashString: String? = nil
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -185,12 +178,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func scroll(to hash: String, animated: Bool = true) {
-        // If we're still loading, save the hash so it can be loaded once we're done loading
-        guard !isLoadingWebView else {
-            pendingHashString = hash
-            return
-        }
-
         webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [unowned self] height, _ in
             guard let height = height as? CGFloat else {
                 return
@@ -435,15 +422,7 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        isLoadingWebView = false
-
-        if let hash = pendingHashString {
-            // This fixes an issue where sometimes jumping to the anchor would go to the wrong place
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.scroll(to: hash, animated: false)
-            }
-        }
-
+        coordinator?.webViewDidLoad()
         self.webView.loadMedia()
         hideLoading()
     }
