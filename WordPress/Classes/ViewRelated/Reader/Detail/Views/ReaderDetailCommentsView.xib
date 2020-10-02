@@ -12,11 +12,11 @@
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHZ-A5-1VK" customClass="ReaderDetailCommentsView" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="CqH-7n-yCg">
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="CqH-7n-yCg">
                     <rect key="frame" x="-2" y="0.0" width="416" height="24"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNq-SU-bHU">
-                            <rect key="frame" x="0.0" y="0.0" width="208" height="24"/>
+                            <rect key="frame" x="0.0" y="0.0" width="203" height="24"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-xx-Hjc">
                                     <rect key="frame" x="0.0" y="0.0" width="83" height="24"/>
@@ -32,7 +32,7 @@
                                     </constraints>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucZ-Od-AwP" userLabel="Overlay Button">
-                                    <rect key="frame" x="0.0" y="0.0" width="208" height="24"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="203" height="24"/>
                                     <connections>
                                         <action selector="didTapViewCommentsButton:" destination="XHZ-A5-1VK" eventType="touchUpInside" id="3qG-Bc-nht"/>
                                     </connections>
@@ -42,6 +42,7 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="fl5-Kc-zxf" secondAttribute="bottom" constant="1" id="ERr-OS-ODd"/>
                                 <constraint firstItem="GeG-xx-Hjc" firstAttribute="leading" secondItem="tNq-SU-bHU" secondAttribute="leading" id="Et8-xQ-9e7"/>
+                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="fl5-Kc-zxf" secondAttribute="trailing" constant="97" id="KXQ-gE-OeJ"/>
                                 <constraint firstAttribute="trailing" secondItem="ucZ-Od-AwP" secondAttribute="trailing" id="Kmp-VN-5R3"/>
                                 <constraint firstItem="GeG-xx-Hjc" firstAttribute="top" secondItem="tNq-SU-bHU" secondAttribute="top" id="NZc-6x-Ewp"/>
                                 <constraint firstAttribute="bottom" secondItem="GeG-xx-Hjc" secondAttribute="bottom" id="SBP-PE-pbj"/>
@@ -49,10 +50,11 @@
                                 <constraint firstAttribute="bottom" secondItem="ucZ-Od-AwP" secondAttribute="bottom" id="cd4-ip-dRk"/>
                                 <constraint firstItem="ucZ-Od-AwP" firstAttribute="top" secondItem="tNq-SU-bHU" secondAttribute="top" id="cmB-vc-cBq"/>
                                 <constraint firstItem="fl5-Kc-zxf" firstAttribute="leading" secondItem="GeG-xx-Hjc" secondAttribute="trailing" constant="3" id="iN0-ln-EDv"/>
+                                <constraint firstItem="GeG-xx-Hjc" firstAttribute="width" relation="lessThanOrEqual" secondItem="tNq-SU-bHU" secondAttribute="width" multiplier="0.9" id="nlh-kX-VpU"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aec-C8-RtP">
-                            <rect key="frame" x="208" y="0.0" width="208" height="24"/>
+                            <rect key="frame" x="213" y="0.0" width="203" height="24"/>
                             <state key="normal" title="Add Comment"/>
                             <connections>
                                 <action selector="didTapAddCommentButton:" destination="XHZ-A5-1VK" eventType="touchUpInside" id="BbW-Ls-t5e"/>
