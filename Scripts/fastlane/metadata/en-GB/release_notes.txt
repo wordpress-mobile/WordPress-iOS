@@ -1,1 +1,11 @@
-New! Username @mentions now auto-complete in the Block Editor for WordPress.com and Jetpack sites. Type the “@” character to see a pop-up displaying usernames and make your selection! In this version, we’ve added support for media editing in the Cover block and fixed a Heading block bug where a heading with a link and string formatting displayed a white shadow in dark mode. Lastly, site headings in the WordPress.com Reader now have a modern new look.
+Your Reader experience can now be tailored just for you – with a new Discover feed reflecting your chosen interests.
+
+Block settings in the Block Editor now immediately reflect any changes made in the menu sliders.
+
+Improved signup and login experience – both with directing the user on the steps and connecting a self-hosted site.
+
+There is also a brand new way to log in with the iCloud Keychain feature – a password manager that remembers your WP.com accounts and passwords.
+
+Don’t miss anything! You can now follow conversations on P2 sites.
+
+We have also reduced memory usage when marking up an image, so media editing won’t cause a crash.

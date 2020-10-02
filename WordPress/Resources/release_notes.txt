@@ -1,1 +1,7 @@
-New! Username @mentions now auto-complete in the Block Editor for WordPress.com and Jetpack sites. Type the “@” character to see a pop-up displaying usernames and make your selection! In this version, we’ve added support for media editing in the Cover block and fixed a Heading block bug where a heading with a link and string formatting displayed a white shadow in dark mode. Lastly, site headings in the WordPress.com Reader now have a modern new look.
+Take a peek at what’s new in this release:
+
+- Support for full-width and wide alignment for the Group, Cover, and Image blocks (with support for more blocks to come).
+- Love rounded corners on your images? We’ve also added support for the Rounded style in the Image block.
+- Some people may have experienced a misbehaving toolbar when adding a new block, but we’ve fixed this issue.
+- We also noticed that in Image Preview, images were not positioned correctly after changing device orientation, but this has been addressed, too.
+- We resolved a few other issues around signup and login, including a username display issue after signing up with Apple, and an incorrect error message that displayed when you reach a maximum number of failed login attempts.

@@ -1,1 +1,11 @@
-Nyheter! Nu kompletteras automatiskt omnämnanden med @ i blockredigeraren för WordPress.com och webbplatser med Jetpack. När du skriver in tecknet ”@” visas en lista med användarnamn så att du kan välja! I denna version har vi lagt till stöd för redigering av media i omslagsblocket och korrigerat ett fel i rubrikblocket där en rubrik med länk och formaterad sträng hade en vit skugga i mörkt läge. Slutligen har webbplatsrubriker i läsaren för WordPress.com nu fått en modernare utformning.
+Din läsarupplevelse går nu att skräddarsy så att den passar just dig — med ett nytt Upptäck-flöde som återspeglar dina valda intressen.
+
+Blockinställningarna i blockredigeraren återspeglar nu omedelbart alla ändringar som görs med menyreglagen.
+
+Förbättrad registrerings- och inloggningsupplevelse — både vad gäller att guida användaren under stegen och att ansluta en webbplats som drivs på en egen server.
+
+Det finns också ett helt nytt sätt att logga in med funktionen iCloud-nyckelring — en lösenordshanterare som kommer ihåg dina WordPress.com-konton och -lösenord.
+
+Missa inte någonting! Du kan nu följa konversationer på P2-webbplatser.
+
+Vi har också minskat minnesanvändningen vid redigering av bilder, så mediaredigering kommer inte att orsaka en krasch.

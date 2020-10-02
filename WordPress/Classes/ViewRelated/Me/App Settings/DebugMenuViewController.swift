@@ -29,7 +29,8 @@ class DebugMenuViewController: UITableViewController {
 
         ImmuTable.registerRows([
             SwitchWithSubtitleRow.self,
-            ButtonRow.self
+            ButtonRow.self,
+            EditableTextRow.self
         ], tableView: tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -47,6 +48,7 @@ class DebugMenuViewController: UITableViewController {
             ImmuTableSection(headerText: Strings.featureFlags, rows: rows),
             ImmuTableSection(headerText: Strings.tools, rows: toolsRows),
             ImmuTableSection(headerText: Strings.crashLogging, rows: crashLoggingRows),
+            ImmuTableSection(headerText: Strings.reader, rows: readerRows),
         ])
     }
 
@@ -70,6 +72,8 @@ class DebugMenuViewController: UITableViewController {
             }),
         ]
     }
+
+    // MARK: Crash Logging
 
     private var crashLoggingRows: [ImmuTableRow] {
         return [
@@ -126,6 +130,24 @@ class DebugMenuViewController: UITableViewController {
         QuickStartTourGuide.find()?.setup(for: blog)
     }
 
+    // MARK: Reader
+
+    private var readerRows: [ImmuTableRow] {
+        return [
+            EditableTextRow(title: Strings.readerCssTitle, value: ReaderCSS().customAddress ?? "") { row in
+                let textViewController = SettingsTextViewController(text: ReaderCSS().customAddress, placeholder: Strings.readerURLPlaceholder, hint: Strings.readerURLHint)
+                textViewController.title = Strings.readerCssTitle
+                textViewController.onAttributedValueChanged = { [weak self] url in
+                    var readerCSS = ReaderCSS()
+                    readerCSS.customAddress = url.string
+                    self?.reloadViewModel()
+                }
+
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            }
+        ]
+    }
+
     enum Strings {
         static let overridden = NSLocalizedString("Overridden", comment: "Used to indicate a setting is overridden in debug builds of the app")
         static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
@@ -136,5 +158,9 @@ class DebugMenuViewController: UITableViewController {
         static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
         static let crashLogging = NSLocalizedString("Crash Logging", comment: "Title of a section on the debug screen that shows a list of actions related to crash logging")
         static let encryptedLogging = NSLocalizedString("Encrypted Logs", comment: "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs")
+        static let reader = NSLocalizedString("Reader", comment: "Title of the Reader section of the debug screen used in debug builds of the app")
+        static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
+        static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
+        static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
     }
 }

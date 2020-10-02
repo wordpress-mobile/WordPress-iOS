@@ -1038,4 +1038,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     return nil;
 }
+
+#pragma mark - What's New Presentation
+- (id<ScenePresenter>)whatIsNewScenePresenter
+{
+    if (_whatIsNewScenePresenter) {
+        return _whatIsNewScenePresenter;
+    }
+    self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
+    return _whatIsNewScenePresenter;
+}
+
 @end

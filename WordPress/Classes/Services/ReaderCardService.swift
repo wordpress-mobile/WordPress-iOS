@@ -79,6 +79,12 @@ class ReaderCardService {
         }
     }
 
+    /// Remove all cards and saves the context
+    func clean() {
+        removeAllCards()
+        coreDataStack.save(syncContext)
+    }
+
     private func removeAllCards() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
@@ -109,7 +115,7 @@ class ReaderCardService {
 }
 
 /// Used to inject the ReaderPostServiceRemote as an dependency
-private extension ReaderPostServiceRemote {
+extension ReaderPostServiceRemote {
     class func withDefaultApi() -> ReaderPostServiceRemote {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
         let defaultAccount = accountService.defaultWordPressComAccount()

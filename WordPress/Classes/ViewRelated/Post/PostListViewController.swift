@@ -155,11 +155,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
-        configureCompactOrDefault()
         configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        configureCompactOrDefault()
     }
 
     func configureNavigationButtons() {
@@ -213,7 +218,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [50])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
@@ -298,14 +303,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        tableView.reloadSections([0], with: .automatic)
-
         updateGhostableTableViewOptions()
-        ghostableTableView.reloadSections([0], with: .automatic)
 
         postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
         postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
         postsViewButtonItem.image = postViewIcon
+
+        if isViewOnScreen() {
+            tableView.reloadSections([0], with: .automatic)
+            ghostableTableView.reloadSections([0], with: .automatic)
+        }
     }
 
     // Mark - Layout Methods

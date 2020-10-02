@@ -360,7 +360,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+            NSDictionary *properties = @{@"tag":topicName};
+            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -377,7 +378,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+        NSDictionary *properties = @{@"tag":slug};
+        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
         if (success) {
             success();
         }
@@ -978,7 +980,7 @@ array are marked as being unfollowed in Core Data.
 
  @param topics An array of `ReaderAbstractTopics` to save.
  */
-- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success
+- (void)mergeMenuTopics:(NSArray *)topics isLoggedIn:(BOOL)isLoggedIn withSuccess:(void (^)(void))success
 {
     [self.managedObjectContext performBlock:^{
         NSArray *currentTopics = [self allMenuTopics];
@@ -1018,12 +1020,12 @@ array are marked as being unfollowed in Core Data.
                         if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
                             ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
-                            if (!ReaderHelpers.isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            if (!isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
                                 DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
                                 continue;
                             }
 
-                            if (tagTopic.cards) {
+                            if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards.count > 0) {
                                 DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
                                 continue;
                             }
@@ -1044,6 +1046,13 @@ array are marked as being unfollowed in Core Data.
         }];
 
     }];
+}
+
+- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success
+{
+    [self mergeMenuTopics:topics
+               isLoggedIn:ReaderHelpers.isLoggedIn
+              withSuccess:success];
 }
 
 /**

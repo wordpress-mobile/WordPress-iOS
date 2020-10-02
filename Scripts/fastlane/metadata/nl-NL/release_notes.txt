@@ -1,1 +1,11 @@
-Nieuw! Gebruikersnaam @mentions worden nu automatisch aangevuld in de blok-editor voor WordPress.com- en Jetpack sites. Typ het "@" teken om een ​​pop-up te zien met gebruikersnamen en maak je keuze! In deze versie hebben we ondersteuning toegevoegd voor mediabewerking in het cover blok en een bug in het heading blok verholpen waarbij een kop met een link en string opmaak een witte schaduw vertoonde in de donkere modus. Tenslotte hebben site headers in de WordPress.com Reader nu een moderne nieuwe look.
+Je lezer ervaring kan nu speciaal voor je worden aangepast - met een nieuwe Discover-feed die je gekozen interesses weerspiegelt.
+
+Blokinstellingen in de blok-editor weerspiegelen nu onmiddellijk alle wijzigingen die zijn aangebracht in de menu sliders.
+
+Verbeterde aanmelding- en inlogervaring -- zowel door de gebruiker door de stappen te leiden als door verbinding te maken met een door jezelf gehoste site.
+
+Er is ook een geheel nieuwe manier om in te loggen met de iCloud-keychain functie -- een wachtwoordbeheerder die je WP.com accounts en wachtwoorden onthoudt.
+
+Mis niets! Je kunt nu gesprekken volgen op P2 sites.
+
+We hebben ook het geheugengebruik verminderd bij het markeren van een afbeelding, zodat het bewerken van media niet crasht.

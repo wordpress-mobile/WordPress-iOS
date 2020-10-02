@@ -355,7 +355,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [WPStyleGuide preferredStatusBarStyle];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle

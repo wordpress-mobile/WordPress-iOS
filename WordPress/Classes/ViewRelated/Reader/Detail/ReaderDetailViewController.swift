@@ -172,6 +172,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.configure(for: post)
         commentAction.configure(for: post, in: self)
 
+        if let postURLString = post.permaLink,
+           let postURL = URL(string: postURLString) {
+            webView.postURL = postURL
+        }
+
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
@@ -233,7 +238,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
 
+        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
+        let titleView = UILabel()
+
+        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
+        navigationItem.titleView = titleView
     }
+
 
     /// Scroll the content to a given #hash
     ///
@@ -482,6 +493,7 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        coordinator?.webViewDidLoad()
         self.webView.loadMedia()
 
         isLoadingWebView = false
@@ -625,13 +637,3 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         return super.awakeAfter(using: aDecoder)
     }
 }
-
-// MARK: - PrefersFullscreenDisplay (iPad)
-
-// Expand this view controller to full screen if possible
-extension ReaderDetailViewController: PrefersFullscreenDisplay {}
-
-// MARK: - DefinesVariableStatusBarStyle (iPad)
-
-// Let's the split view know this vc changes the status bar style.
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}

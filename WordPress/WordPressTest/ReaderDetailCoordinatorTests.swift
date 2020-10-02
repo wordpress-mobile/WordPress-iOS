@@ -265,11 +265,10 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
         coordinator.post = post
 
-        coordinator.handle(URL(string: "#hash")!)
+        coordinator.handle(URL(string: "https://wordpress.com#hash")!)
 
         expect(viewMock.didCallScrollToWith).to(equal("hash"))
     }
-
 }
 
 private class ReaderPostServiceMock: ReaderPostService {

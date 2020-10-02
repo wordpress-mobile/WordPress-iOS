@@ -223,10 +223,6 @@ class AbstractPostListViewController: UIViewController,
         return type(of: self).defaultHeightForFooterView
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     func configureNavbar() {
         // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
         // this VC's title.
@@ -812,7 +808,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        ghostableTableView.startGhostAnimation()
+        if isViewOnScreen() {
+            ghostableTableView.startGhostAnimation()
+        }
         ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }

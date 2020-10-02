@@ -1,25 +1,33 @@
 import Foundation
 
 class PageCoordinator {
-    typealias TemplateSelectionCompletion = (String?) -> Void
+    typealias TemplateSelectionCompletion = (_ title: String?, _ content: String?) -> Void
 
     static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion: @escaping TemplateSelectionCompletion) {
         if FeatureFlag.gutenbergModalLayoutPicker.enabled && blog.isGutenbergEnabled {
-            showLayoutPicker(from: controller, completion)
+            showLayoutPicker(from: controller, forBlog: blog, completion)
         } else {
-            completion(nil)
+            completion(nil, nil)
         }
     }
 
-    private static func showLayoutPicker(from controller: UIViewController, _ completion: @escaping TemplateSelectionCompletion) {
+    private static func showLayoutPicker(from controller: UIViewController, forBlog blog: Blog, _ completion: @escaping TemplateSelectionCompletion) {
         let storyboard = UIStoryboard(name: "LayoutPickerStoryboard", bundle: Bundle.main)
         guard let navigationController = storyboard.instantiateInitialViewController() as? UINavigationController,
             let rootView = navigationController.topViewController as? GutenbergLayoutPickerViewController  else {
-            completion(nil)
+            completion(nil, nil)
             return
         }
         rootView.completion = completion
-        navigationController.modalPresentationStyle = .pageSheet
+        rootView.blog = blog
+
+        if #available(iOS 13.0, *) {
+            navigationController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+             navigationController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+
         controller.present(navigationController, animated: true, completion: nil)
     }
 }
