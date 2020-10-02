@@ -92,19 +92,3 @@ class FollowCommentsService: NSObject {
         case unfollowed
     }
 }
-
-/// Used to inject the ReaderPostServiceRemote as an dependency
-private extension ReaderPostServiceRemote {
-
-    class func withDefaultApi() -> ReaderPostServiceRemote {
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
-
-        let api = WordPressComRestApi.defaultApi(oAuthToken: token,
-                                                 userAgent: WPUserAgent.wordPress())
-
-        return ReaderPostServiceRemote(wordPressComRestApi: api)
-    }
-}
