@@ -4,9 +4,6 @@ public struct GutenbergPageLayouts: Codable {
     public let layouts: [GutenbergLayout]
     public let categories: [GutenbergLayoutCategory]
 
-    /// Contains a map of layouts based on their Category slug
-    private let groupedLayouts: [String: [GutenbergLayout]]
-
     enum CodingKeys: String, CodingKey {
         case layouts
         case categories
@@ -16,7 +13,6 @@ public struct GutenbergPageLayouts: Codable {
         let map = try decoder.container(keyedBy: CodingKeys.self)
         layouts = try map.decode([GutenbergLayout].self, forKey: .layouts)
         categories = try map.decode([GutenbergLayoutCategory].self, forKey: .categories).sorted()
-        groupedLayouts = GutenbergPageLayouts.groupLayouts(layouts)
     }
 
     public init() {
@@ -26,27 +22,6 @@ public struct GutenbergPageLayouts: Codable {
     public init(layouts: [GutenbergLayout], categories: [GutenbergLayoutCategory]) {
         self.layouts = layouts
         self.categories = categories
-        groupedLayouts = GutenbergPageLayouts.groupLayouts(layouts)
-    }
-
-    static func groupLayouts(_ layouts: [GutenbergLayout]) -> [String: [GutenbergLayout]] {
-
-        var groupedLayouts = [String: [GutenbergLayout]]()
-
-        layouts.forEach { (layout) in
-            let categories = layout.categories
-            categories.forEach { (category) in
-                var group = groupedLayouts[category.slug] ?? [GutenbergLayout]()
-                group.append(layout)
-                groupedLayouts.updateValue(group, forKey: category.slug)
-            }
-        }
-
-        return groupedLayouts
-    }
-
-    public func layouts(forCategory slug: String) -> [GutenbergLayout] {
-        return groupedLayouts[slug] ?? []
     }
 }
 

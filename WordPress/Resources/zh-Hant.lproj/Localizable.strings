@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-17 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-10-03 21:47:58+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "新增標籤";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "新增自訂訊息 (選用)。";
@@ -1030,7 +1033,7 @@
 
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
-"Category" = "類別";
+"Category" = "分類";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "分類標題遺失。";
@@ -1234,7 +1237,7 @@
 
 /* Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
-"Comment" = "迴響";
+"Comment" = "留言";
 
 /* Title for the `comment likes` setting */
 "Comment Likes" = "留言的按讚次數";
@@ -1257,7 +1260,7 @@
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
-"Comments" = "迴響";
+"Comments" = "留言";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "以下內容的留言：";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "預設文章格式";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "預設 URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章預設值";
@@ -2304,7 +2310,7 @@
 
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
-"Featured Image" = "特色圖片";
+"Featured Image" = "精選圖片";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色圖片選項";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "閱覽";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "讀取器 CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "轉發";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "回覆文章...";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "檢舉這篇文章";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "你目前正在上傳媒體。此動作將取消進行中的上傳。\n\n確定要執行？";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "你可以像剛剛一樣隨時使用神奇連結來登入，不過也可以依你的需要設定密碼。";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "你可以像剛剛一樣隨時使用連結來登入，也可以依需要設定密碼。";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "你可以在 iOS「今天\/通知中心」檢視畫面中顯示單一網站的統計資料。";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "其它";
+
+/* No comment provided by engineer. */
+"password" = "密碼";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";

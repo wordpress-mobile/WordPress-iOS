@@ -21,7 +21,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    var layout: GutenbergLayout? = nil {
+    var layout: PageTemplateLayout? = nil {
         didSet {
             setImage(layout?.preview)
         }

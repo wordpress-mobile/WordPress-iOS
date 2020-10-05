@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-18 14:54:07+0000 */
+/* Translation-Revision-Date: 2020-10-02 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Etiket ekle";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader'a yüklenmek üzere buraya özel bir CSS URL'si ekleyin. Calypso'yu yerel olarak çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Özel mesaj ekle (tercihe bağlı).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Varsayılan yazı biçimi";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "Varsayılan URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Yeni yazılar için varsayılanlar";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Okuyucu";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "Okuyucu CSS URLsi";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Yeniden blogla";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Yazıyı yanıtla…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Bu yazıyı bildir";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Bağlantı sayısı belirtilenden fazla olduğu durumlarda yorumu denetleme için beklet.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Şu anda medya yüklüyorsunuz. Bu eylem, süren yüklemeleri iptal edecektir.\n\nEmin misiniz?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Her zaman az önce kullandığınız gibi bir sihirli bağlantıyla oturum açabilirsiniz, ancak isterseniz bir parola da oluşturabilirsiniz.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Her zaman az önce kullandığınız gibi bir bağlantıyla oturum açabilirsiniz, ancak isterseniz bir parola da oluşturabilirsiniz.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "iOS Bugün\/Bildirim Merkezi görünümünde tek bir sitenin istatistiklerini görüntüleyebilirsiniz.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "diğer";
+
+/* No comment provided by engineer. */
+"password" = "parola";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefon numarası";

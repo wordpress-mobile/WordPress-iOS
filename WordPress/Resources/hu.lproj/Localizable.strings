@@ -417,6 +417,9 @@
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Add a Tag";
 
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Add a custom message (optional).";
 
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Default Post Format";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "Default URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Defaults for New Posts";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Olvasó";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "Reader CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Reblog";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Reply to post…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Report This Post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Require manual approval for comments that include more than this number of links.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "You can display a single site's stats in the iOS Today\/Notification Center view.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "other";
+
+/* No comment provided by engineer. */
+"password" = "password";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";

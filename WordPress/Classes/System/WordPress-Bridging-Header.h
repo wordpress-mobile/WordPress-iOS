@@ -44,6 +44,7 @@
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"
 #import "PostCategory.h"
+#import "PostCategoryService.h"
 #import "PostContentProvider.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
@@ -113,6 +114,7 @@
 #import "WPLogger.h"
 #import "WPException.h"
 
+#import "WPAddPostCategoryViewController.h"
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>

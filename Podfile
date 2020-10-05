@@ -149,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'f82f6ac5e7fe9ea4607ed2ed5b26a8d314751f28'
+    gutenberg :commit => '24745a603845b00cd343c66c508f6a74ffb5c9b3'
 
     ## Third party libraries
     ## =====================
@@ -184,7 +184,7 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.7.0'
+    pod 'WPMediaPicker', '~> 1.7.2'
     #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''

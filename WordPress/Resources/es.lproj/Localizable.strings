@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-08 07:52:23+0000 */
+/* Translation-Revision-Date: 2020-09-23 06:17:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Añadir una etiqueta";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Añade aquí una URL del CSS personalizado para que se cargue en el lector. Si estás ejecutando Calypso localmente, esto puede ser algo como: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Añadir un mensaje personalizado (opcional).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Formato de entrada por defecto";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL por defecto";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Opciones predeterminadas para entradas nuevas";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Lector";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL del CSS del lector";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Rebloguear";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Responder a la entrada…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Informar de esta entrada";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Los comentarios que incluyan más enlaces de los establecidos requieren aprobación manual.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Estás cargando multimedia en este momento. Esta acción cancelará las cargas en curso.\n\n¿Estás seguro?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Siempre puedes acceder con un enlace como el que acabas de usar, pero también puedes configurar una contraseña si lo prefieres.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Siempre puedes acceder con un enlace como el que acabas de usar, pero también puedes configurar una contraseña si lo prefieres.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Puedes mostrar las estadísticas de un sitio individual en la vista Hoy\/Centro de notificaciones de iOS.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "otros";
+
+/* No comment provided by engineer. */
+"password" = "contraseña";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de teléfono";

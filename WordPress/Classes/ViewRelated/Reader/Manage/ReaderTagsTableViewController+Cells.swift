@@ -16,7 +16,7 @@ extension ReaderTagsTableViewModel {
     }
 
     private func configureAddTag(cell: UITableViewCell) {
-        cell.textLabel?.text = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
+        cell.textLabel?.text = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
         cell.accessoryView = UIImageView(image: UIImage.gridicon(.plusSmall))
     }
 }

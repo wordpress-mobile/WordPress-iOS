@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-14 06:02:15+0000 */
+/* Translation-Revision-Date: 2020-09-25 06:42:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Ajouter un mot-clé";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Ajouter un CSS personnalisé ici pour être chargé dans le Lecteur. Si vous utilisez Calypso en local, cela ressemble à : http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Ajouter un message personnalisé (facultatif).";
@@ -1718,6 +1721,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format par défaut des articles";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL par défaut";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Paramètres par défaut pour les nouveaux articles";
 
@@ -2739,7 +2745,7 @@ translators: sample content for \"Team\" page template */
 "Image Link" = "Lien de l’image";
 
 /* Title of the screen for choosing an image's size. */
-"Image Size" = "Taille de l'image";
+"Image Size" = "Taille de l’image";
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Légende de l’image. %s";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Lecteur";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL du CSS du Lecteur";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Rebloguer";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Répondre à l’article…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Signaler cette publication";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Exigez l'approbation manuelle pour les commentaires comprenant un nombre de liens plus élevé que celui-ci.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Vous êtes en train de téléverser un média. Cette action annulera les téléversements en cours.\n\nConfirmez-vous ?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Vous pouvez toujours vous connecter avec un lien de connexion sans mot de passe comme celui que vous venez d'utiliser. Vous pouvez également définir un mot de passe si vous le préférez.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Vous pouvez toujours vous connecter avec un lien de connexion comme celui que vous venez d’utiliser. Vous pouvez également définir un mot de passe si vous le préférez.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Vous pouvez afficher les statistiques d’un seul site dans la vue Aujourd’hui\/Centre de notification de l’iOS.";
@@ -7371,6 +7384,9 @@ translators: sample content for \"Services\" page template */
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "Autre";
 
+/* No comment provided by engineer. */
+"password" = "mot de passe";
+
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numéro de téléphone";
 
@@ -7378,7 +7394,7 @@ translators: sample content for \"Services\" page template */
 "these items will be deleted:" = "ces éléments vont être supprimés :";
 
 /* Today */
-"today" = "aujourd'hui";
+"today" = "aujourd’hui";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL inconnue";
