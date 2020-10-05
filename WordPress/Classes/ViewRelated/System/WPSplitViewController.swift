@@ -319,24 +319,21 @@ class WPSplitViewController: UISplitViewController {
      *  detail view controller.
      */
     @objc func setInitialPrimaryViewController(_ viewController: UIViewController) {
-        var initialViewControllers = [viewController]
-
-        if let navigationController = viewController as? UINavigationController,
+        guard let navigationController = viewController as? UINavigationController,
             let rootViewController = navigationController.viewControllers.last,
-            let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
-
-            navigationController.delegate = self
-
-            initialViewControllers.append(detailViewController)
-            viewControllers = initialViewControllers
-        } else {
-            viewControllers = [viewController, UIViewController()]
+            let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) else {
+                viewControllers = [viewController, UIViewController()]
+                return
         }
+
+        navigationController.delegate = self
+        viewControllers = [viewController, detailViewController]
     }
 
     fileprivate func initialDetailViewControllerForPrimaryViewController(_ viewController: UIViewController) -> UIViewController? {
+
         guard let detailProvider = viewController as? WPSplitViewControllerDetailProvider,
-        let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self)  else {
+        let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self) else {
             return nil
         }
 
@@ -366,7 +363,9 @@ class WPSplitViewController: UISplitViewController {
     ///
     /// - Parameter hidden: If `true`, hide the primary view controller.
     @objc func setPrimaryViewControllerHidden(_ hidden: Bool, animated: Bool = true) {
-        guard fullscreenDisplayEnabled else { return }
+        guard fullscreenDisplayEnabled else {
+            return
+        }
 
         let updateDisplayMode = {
             self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
