@@ -175,7 +175,6 @@ class ReaderDetailCoordinator {
         }
 
         presentWebViewController(postURL)
-        viewController?.navigationController?.popViewController(animated: true)
     }
 
     /// Some posts have content from private sites that need special cookies
