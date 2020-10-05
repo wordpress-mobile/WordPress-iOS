@@ -1,11 +1,7 @@
-Dein Reader-Erlebnis kann ab sofort ganz auf deine Bedürfnisse abgestimmt werden – mit einem neuen Discover-Feed, der deine ausgewählten Interessen widerspiegelt.
+Neuerungen in dieser Version:
 
-Die Block-Einstellungen im Block-Editor spiegeln nun alle Änderungen, die in den Menü-Slidern vorgenommen wurden, unmittelbar wider.
-
-Verbessertes Registrierungs- und Anmeldeerlebnis – durch Anleitung für den Benutzer zu den entsprechenden Schritten und Verbindung einer selbst-gehosteten Website.
-
-Es gibt außerdem eine brandneue Möglichkeit zur Anmeldung über den iCloud-Schlüsselbund, einem Passwortmanager, der deine WP.com-Konten und -Passwörter speichert.
-
-Bleib immer auf dem Laufenden! Ab sofort kannst du Unterhaltungen auf P2-Websites folgen.
-
-Außerdem wurde die Speichernutzung bei der Markierung eines Bildes reduziert, damit die Bearbeitung von Medien keine Abstürze verursacht.
+- Unterstützung für breite oder volle Ausrichtung für Gruppen-, Cover- und Bildblöcke (Unterstützung für weitere Blöcke ist in Arbeit).
+- Dir gefallen Bilder mit abgerundeten Ecken?  Wir haben auch Unterstützung für den abgerundeten Stil im Bildblock hinzugefügt.
+- Bei einigen Benutzern hat die Toolbar ein unerwartetes Verhalten gezeigt, wenn ein neuer Block hinzugefügt wurde. Aber wir haben dieses Problem behoben.
+- Außerdem haben wir festgestellt, dass Bilder in der Bildvorschau nicht richtig positioniert wurden, nachdem die Geräteausrichtung geändert wurde. Auch das haben wir korrigiert.
+- Wir haben ein paar weitere Probleme im Zusammenhang mit Registrierung und Anmeldung behoben. Dazu zählen ein Problem bei der Anzeige des Benutzernamens nach der Registrierung mit Apple und eine falsche Fehlermeldung, die angezeigt wurde, wenn du die maximale Anzahl fehlgeschlagener Anmeldeversuche erreicht hast.

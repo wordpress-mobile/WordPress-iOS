@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-16 07:29:03+0000 */
+/* Translation-Revision-Date: 2020-10-02 14:17:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Adaugă o etichetă";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Adaugă un mesaj personalizat (opțional).";
@@ -1718,6 +1721,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format articol implicit";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL implicit";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Implicite pentru articole noi";
 
@@ -1835,7 +1841,7 @@
    Verb. Button title. Tapping dismisses a prmopt.
    Verb. User action to dismiss error alert when failing to load media item.
    Verb. User action to dismiss error alert when failing to share media. */
-"Dismiss" = "Înlăturat";
+"Dismiss" = "Respinge";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Renunță la pasul %@ din Inițierea rapidă";
@@ -2484,7 +2490,7 @@
 "Generating Preview" = "Generez previzualizarea";
 
 /* View title for initial auth views. */
-"Get Started" = "Get Started";
+"Get Started" = "Începe";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
 "Get a login link by email" = "Primești o legătură de autentificare prin email";
@@ -4504,8 +4510,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Cititor";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL CSS pentru Cititor";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Re-publică";
@@ -4689,6 +4699,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Răspunde la articol...";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Raportează acest articol";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "E necesară aprobarea manuală a comentariilor ce includ mai mult decât acest număr de legături.";
@@ -7129,7 +7142,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Acum încarci elemente media. Această acțiune va anula încărcările în curs.\n\nEști sigur?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Poți să te autentifici mereu cu o legătură magică precum cea pe care tocmai ai folosit-o, dar poți, de asemenea, să inițializezi o parolă dacă preferi.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Poți să te autentifici mereu cu o legătură, ca cea pe care tocmai ai folosit-o, dar poți, de asemenea, să inițializezi o parolă, dacă preferi.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Poți afișa statisticile unui singur sit în ecranul iOS azi\/Centrul de notificări.";
@@ -7373,6 +7386,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "alte";
+
+/* No comment provided by engineer. */
+"password" = "parolă";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";

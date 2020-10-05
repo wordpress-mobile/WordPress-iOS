@@ -1,11 +1,7 @@
-Je lezer ervaring kan nu speciaal voor je worden aangepast - met een nieuwe Discover-feed die je gekozen interesses weerspiegelt.
+Bekijk wat er nieuw is in deze release:
 
-Blokinstellingen in de blok-editor weerspiegelen nu onmiddellijk alle wijzigingen die zijn aangebracht in de menu sliders.
-
-Verbeterde aanmelding- en inlogervaring -- zowel door de gebruiker door de stappen te leiden als door verbinding te maken met een door jezelf gehoste site.
-
-Er is ook een geheel nieuwe manier om in te loggen met de iCloud-keychain functie -- een wachtwoordbeheerder die je WP.com accounts en wachtwoorden onthoudt.
-
-Mis niets! Je kunt nu gesprekken volgen op P2 sites.
-
-We hebben ook het geheugengebruik verminderd bij het markeren van een afbeelding, zodat het bewerken van media niet crasht.
+- Ondersteuning voor volledige breedte en brede uitlijning voor de groep-, cover- en afbeelding blokken (met ondersteuning voor nog meer blokken).
+- Ben je dol op afgeronde hoeken op je afbeeldingen? We hebben ook ondersteuning toegevoegd voor de stijl Afgerond in het afbeelding blok.
+- Sommige mensen hebben mogelijk te maken gehad met een toolbar die zichzelf niet goed gedroeg bij het toevoegen van een nieuw blok, maar we hebben dit probleem opgelost.
+- We hebben ook gemerkt dat afbeeldingen in Afbeelding voorbeeld niet correct waren gepositioneerd na het wijzigen van de apparaat oriëntatie, maar dit is ook verholpen.
+- We hebben een paar andere problemen met het aanmelden en inloggen opgelost, waaronder een probleem met het weergeven van de gebruikersnaam na het aanmelden bij Apple, en een onjuist foutbericht dat werd weergegeven wanneer je een maximum aantal mislukte login pogingen hebt bereikt.
