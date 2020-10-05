@@ -598,7 +598,7 @@ private extension ReaderDetailViewController {
     }
 
     func shareButtonItem() -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapBrowserButton(_:)))
+        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
         button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
 
         return button
