@@ -237,12 +237,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     ///
     /// - Parameter title: a optional String containing the title
     func show(title: String?) {
-
         let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         let titleView = UILabel()
 
         titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
         navigationItem.titleView = titleView
+        titleView.isHidden = true
+
+        // Allow the title to appear in the back button tap and hold in iOS 14+
+        self.title = title
     }
 
 
@@ -595,7 +598,7 @@ private extension ReaderDetailViewController {
     }
 
     func shareButtonItem() -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapBrowserButton(_:)))
+        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
         button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
 
         return button
