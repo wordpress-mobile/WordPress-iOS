@@ -537,13 +537,3 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
         filterBar.reloadData()
     }
 }
-
-extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        sections = makeSectionData(with: resultsController)
-        isLoading = resultsController.isEmpty()
-        tableView.reloadData()
-        filterBar.reloadData()
-    }
-}
