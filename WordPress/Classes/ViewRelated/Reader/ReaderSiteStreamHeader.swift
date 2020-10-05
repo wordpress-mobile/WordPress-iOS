@@ -99,7 +99,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
 
-        print("Found:", url.absoluteString)
         avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
     }
 
@@ -142,8 +141,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return nil
         }
 
-        // WP.com uses `w` and Gravatar uses `s`
-        // for the resizing query key
+        // WP.com uses `w` and Gravatar uses `s` for the resizing query key
         let widthKey = host.contains("gravatar") ? "s" : "w"
         let width = Int(avatarImageView.bounds.width * UIScreen.main.scale)
         let item = URLQueryItem(name: widthKey, value: "\(width)")
