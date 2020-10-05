@@ -429,7 +429,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         if wpPrimaryColumnWidth == .full {
             return primaryNavigationController
         }
-        
+
         var viewControllers: [UIViewController] = []
 
         // Splits the view controller list into primary and detail view controllers at the specified index
