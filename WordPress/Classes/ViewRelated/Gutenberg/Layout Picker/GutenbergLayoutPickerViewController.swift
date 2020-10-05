@@ -169,10 +169,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
 
         if let destination = segue.destination as? LayoutPreviewViewController,
-            let position = selectedLayout?.item {
-            let sectionIndex = selectedLayout?.section,
+           let sectionIndex = selectedLayout?.section,
+           let position = selectedLayout?.item {
+            let layout = sections[sectionIndex].layouts[position]
             LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
-            destination.layout = sections[sectionIndex].layouts[position]
+            destination.layout = layout
             destination.completion = completion
         }
 
@@ -206,13 +207,13 @@ class GutenbergLayoutPickerViewController: UIViewController {
 
     @IBAction func createPageTapped(_ sender: Any) {
         guard let sectionIndex = selectedLayout?.section, let position = selectedLayout?.item else {
-            createPage(title: nil, template: nil)
+            createPage(layout: nil)
             return
         }
 
         let layout = sections[sectionIndex].layouts[position]
         LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
-        createPage(title: layout.title, template: layout.content)
+        createPage(layout: layout)
     }
 
     private func createPage(layout: PageTemplateLayout?) {
