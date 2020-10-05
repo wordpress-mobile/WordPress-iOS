@@ -10,7 +10,6 @@
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
@@ -581,7 +580,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)shouldDisplaySuggestionsTableView
 {
-    return self.shouldDisplayReplyTextView && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
+    return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
 
