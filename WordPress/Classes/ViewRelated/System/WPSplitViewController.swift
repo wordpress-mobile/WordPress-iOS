@@ -425,6 +425,12 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             return nil
         }
 
+        // If the primary view is full width (i.e. when the No Results View is displayed),
+        // don't show a detail view as it will be rendered on top of (thus covering) the primary view.
+        if wpPrimaryColumnWidth == .full {
+            return primaryNavigationController
+        }
+        
         var viewControllers: [UIViewController] = []
 
         // Splits the view controller list into primary and detail view controllers at the specified index
