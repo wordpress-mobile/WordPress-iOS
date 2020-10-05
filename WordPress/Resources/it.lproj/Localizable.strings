@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-17 10:54:08+0000 */
+/* Translation-Revision-Date: 2020-09-30 18:10:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Aggiungi un tag";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Aggiungi qui l'URL del CSS personalizzato per essere caricato in Reader. Se stai utilizzando Calypso localmente, potrebbe essere qualcosa come: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Aggiungi un messaggio personalizzato (facoltativo).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Formato articoli predefinito";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL predefinito";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Valori predefiniti per i nuovi articoli";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Reader";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL del CSS del Reader";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Reblog";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Replica ad un articolo...";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Segnala questo articolo";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Richiede l'approvazione manuale per i commenti che contengono più di questo numero di link.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Stai caricando elementi media. Questa azione cancellerà i caricamenti in corso.\n\nSei sicuro?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Puoi sempre accedere con un link come quello che hai appena utilizzato, ma, se preferisci, puoi anche impostare una password.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Puoi sempre accedere con un link come quello che hai appena utilizzato, ma, se preferisci, puoi anche impostare una password.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Puoi visualizzare le statistiche di un singolo sito nella vista iOS Oggi\/Notifiche";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "altro";
+
+/* No comment provided by engineer. */
+"password" = "password";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numero di telefono";

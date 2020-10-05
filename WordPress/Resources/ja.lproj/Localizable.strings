@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-17 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-09-29 14:14:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -417,6 +417,9 @@
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "タグを追加";
 
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader に読み込むカスタム CSS URL はここに追加できます。Calypso をローカル環境で実行している場合、次のようになります: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
 /* Invite Footer Text */
 "Add a custom message (optional)." = "カスタムメッセージを追加します (オプション)。";
 
@@ -640,7 +643,7 @@
 "Appearance" = "外観";
 
 /* Message shown when Apple authentication fails. */
-"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication.";
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple の認証に失敗しました。\n二要素認証を使用している Apple ID で iCloud にログイン中かどうか確認してください。";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "適用";
@@ -1086,7 +1089,7 @@
 "Check Purchases Error" = "購入エラーをチェック";
 
 /* Instruction text after a login Magic Link was requested. */
-"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "この端末でメールをチェックして、WordPress.com から届いたメールにあるリンクをタップしてください。";
 
 /* Instructional text on how to open the email containing a magic link. */
 "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "この端末でメールを確認し、WordPress.com から届いたメールの中にあるリンクをタップしてください。\n\nメールが表示されない場合は、迷惑メールフォルダーを確認してみてください。";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "デフォルト投稿フォーマット";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "デフォルト URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新しい投稿のデフォルト";
@@ -2354,7 +2360,7 @@
 "Filter" = "フィルター";
 
 /* Title for the find out more button in the What's New page. */
-"Find out more" = "Find out more";
+"Find out more" = "さらに詳しく";
 
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "興味のあるサイトを見つけ、更新が公開されたら取得できるようフォローしましょう。";
@@ -3723,10 +3729,10 @@ translators: sample content for \"Services\" page template */
 "Not right now" = "後にする";
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
-"Not seeing the email? Check your Spam or Junk Mail folder." = "Not seeing the email? Check your Spam or Junk Mail folder.";
+"Not seeing the email? Check your Spam or Junk Mail folder." = "メールが表示されない場合は、 スパムメールや迷惑メールのフォルダーを確認してください。";
 
 /* No comment provided by engineer. */
-"Note: Column layout may vary between themes and screen sizes" = "Note: Column layout may vary between themes and screen sizes";
+"Note: Column layout may vary between themes and screen sizes" = "注: カラムのレイアウトはテーマ、画面サイズによって異なります";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "見つかりません。";
@@ -3815,7 +3821,7 @@ translators: sample content for \"Services\" page template */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "WordPress.com サイトの作成後は、お気に入りのコンテンツを自分のサイトにリブログできます。";
 
 /* Accessibility label for 1 password button */
-"One Password button" = "One Password button";
+"One Password button" = "1Password ボタン";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "最も関連の深い統計情報のみを表示します。ニーズに合った統計概要を追加します。";
@@ -3872,7 +3878,7 @@ translators: sample content for \"Services\" page template */
 "Open the Me Section" = "Me セクションを開く";
 
 /* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Opens One Password manager";
+"Opens One Password manager" = "1Password マネージャーを開く";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Safari で Web ページを開く";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "購読ブログ";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "Reader CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "リブログ";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "投稿に返信…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "この投稿を報告";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "この数より多くのリンクがコメントに含まれる場合、手動での承認が必要です。";
@@ -4998,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Select a few to continue" = "選択して続ける";
 
 /* No comment provided by engineer. */
-"Select a layout" = "Select a layout";
+"Select a layout" = "レイアウトを選択";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "メディアを選択。";
@@ -6561,7 +6574,7 @@ translators: sample content for \"Services\" page template */
 "Version" = "バージョン";
 
 /* Description for the version label in the What's new page. */
-"Version " = "Version ";
+"Version " = "バージョン:";
 
 /* Version of a plugin to install
    Version of an installed plugin */
@@ -6883,7 +6896,7 @@ translators: sample content for \"Services\" page template */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "その URL の Jetpack サイトと連携することはできません。サポートにご連絡ください。";
 
 /* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "新しい WordPress.com アカウントを作成するための登録リンクをメールでお送りしました。 このデバイスでメールをチェックして、WordPress.com から届いたメールにあるリンクをタップしてください。";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "サイトの主要ドメインの変更がうまくいきませんでしたが、ドメインの購入は正常に完了していますのでご心配なく。";
@@ -6901,7 +6914,7 @@ translators: sample content for \"Services\" page template */
 "Weeks" = "週";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welcome to Reader. Discover millions of blogs at your fingertips.";
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Reader へようこそ。何百万ものブログの中から、お気に入りを発見しましょう。";
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "WordPress へようこそ";
@@ -6941,7 +6954,7 @@ translators: sample content for \"Services\" page template */
 
 /* Opens the What's New / Feature Announcement modal
    Title of the What's new page. */
-"What's New in WordPress" = "What's New in WordPress";
+"What's New in WordPress" = "WordPress の新機能";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "ご使用のサイトアドレス。";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "現在メディアをアップロードしています。この操作を行うと、現在実行中のアップロードがキャンセルされます。\n\n本当によろしいですか ?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "直前に使用したものと同様のマジックリンクを使用していつでもログインできますが、希望される場合はパスワードを設定することもできます。";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "先ほど使用したようなリンクでいつでもログインできますが、ご希望の場合はパスワードを設定することもできます。";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "1つのサイトに関する統計を iOS の「今日」\/「通知センター」ビューに表示することができます。";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "その他";
+
+/* No comment provided by engineer. */
+"password" = "パスワード";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話番号";

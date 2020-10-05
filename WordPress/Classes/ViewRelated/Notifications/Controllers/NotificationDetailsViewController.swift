@@ -549,7 +549,7 @@ private extension NotificationDetailsViewController {
             return false
         }
 
-        return shouldAttachReplyView && SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
+        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: siteID)
     }
 }
 

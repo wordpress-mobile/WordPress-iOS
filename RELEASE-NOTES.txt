@@ -1,6 +1,13 @@
 15.9
 -----
- * [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
+* [*] Fixed issue that caused duplicate views to be displayed when requesting a login link. [#14975]
+* [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
+* [*] Fixed an issue that caused page editor to become an invisible overlay. [#15012]
+* [**] Block Editor: Increase tap-target of primary action on unsupported blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2608]
+* [***] Block Editor: On Jetpack connected sites, Unsupported Block Editor can be enabled via enabling Jetpack SSO setting directly from within the missing block alert. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2610]
+* [***] Block Editor: Add support for selecting user's post when configuring the link [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2484]
+* [*] Reader: Fixed an issue that resulted in no action when tapping a link with an anchor. [#15027]
+
 
 15.8
 -----
