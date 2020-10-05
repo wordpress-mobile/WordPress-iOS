@@ -505,8 +505,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.26.0-beta)
-  - WordPressKit (~> 4.18.0-beta)
+  - WordPressAuthenticator (~> 1.26.0)
+  - WordPressKit (~> 4.18.0)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.12.0)
   - WordPressUI (~> 1.7.1)
@@ -772,6 +772,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 7bbec11760f752c9de09862b157e7d0c9b54da1e
+PODFILE CHECKSUM: 007004d9031fa6dfc0da45dd052149f8db393b82
 
 COCOAPODS: 1.9.3
