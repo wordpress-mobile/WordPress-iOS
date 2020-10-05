@@ -29,7 +29,7 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
         return ReaderTagTopic.tagsFetchRequest
     }
 
-    /// Disable highlighting for all rows but "Add a tag" this allows the rows to be "flashed" but not show taps
+    /// Disable highlighting for all rows but "Add a Topic" this allows the rows to be "flashed" but not show taps
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let adjustedPath = tableViewHandler.adjusted(indexPath: indexPath)
         return adjustedPath == nil
@@ -65,15 +65,15 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for subscribing to a new tag.
     private func showAddTag() {
 
-        let placeholder = NSLocalizedString("Add any tag", comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe.")
+        let placeholder = NSLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
-        controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
+        controller.title = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
         controller.onValueChanged = { [weak self] value in
             self?.follow(tagName: value)
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
-        controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
+        controller.actionText = NSLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
         controller.onActionPress = { [weak self] in
             self?.dismissModal()
         }
@@ -115,11 +115,11 @@ extension ReaderTagsTableViewModel {
                 self?.scrollToTag(tag)
             }
         }, failure: { (error) in
-            DDLogError("Could not follow tag named \(tagName) : \(String(describing: error))")
+            DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")
 
             generator.notificationOccurred(.error)
 
-            let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
@@ -136,7 +136,7 @@ extension ReaderTagsTableViewModel {
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
-            let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))

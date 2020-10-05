@@ -575,6 +575,20 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
 {
+    // This has been added temporarily to try and track the source of a nil object exception
+    // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14960
+    //
+    // It's already crashing below inside performBlock.  This assertion just makes sure it crashes
+    // a bit earlier so we can get a better stack trace.
+    //
+    // - Diego Rey Mendez, 2 October 2020
+    if (blog == nil || blog.objectID == nil) {
+        DDLogInfo(@"Blog: %@", blog);
+        DDLogInfo(@"BlogID: %@", blog.objectID);
+        DDLogInfo(@"Blog MOC: %@", blog.managedObjectContext);
+        @throw NSInternalInconsistencyException;
+    }
+    
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
     [self.managedObjectContext performBlock:^{
