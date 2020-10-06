@@ -8,6 +8,7 @@ private struct ElementStringIDs {
 class StatsScreen: BaseScreen {
 
     enum Mode: String {
+        case months = "months"
         case years = "years"
     }
 
