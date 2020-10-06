@@ -46,11 +46,13 @@ class WordPressScreenshotGeneration: XCTestCase {
         let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
         if isIpad {
-            thenTakeScreenshot(1, named: "Editor")
+            BlockEditorScreen()
+                .thenTakeScreenshot(1, named: "Editor")
         } else {
-            BlockEditorScreen().openBlockPicker()
-            thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
-            BlockEditorScreen().closeBlockPicker()
+            BlockEditorScreen()
+                .openBlockPicker()
+                .thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
+                .closeBlockPicker()
         }
         postEditorScreenshot.close()
 
@@ -62,9 +64,9 @@ class WordPressScreenshotGeneration: XCTestCase {
                 .gotoPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
-                BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            BlockEditorScreen().selectBlock(containingText: "Ingredients")
             sleep(imagesWaitTime) // wait for post images to load
-            thenTakeScreenshot(7, named: "Editor-With-Keyboard")
+            BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
             ipadScreenshot.close()
         } else {
             postList.pop()
@@ -74,12 +76,12 @@ class WordPressScreenshotGeneration: XCTestCase {
         let mySite = MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
-        thenTakeScreenshot(4, named: "MySite")
+            .thenTakeScreenshot(4, named: "MySite")
 
         // Get Media screenshot
         _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
-        thenTakeScreenshot(6, named: "Media")
+        mySite.thenTakeScreenshot(6, named: "Media")
 
         if !isIpad {
             postList.pop()
@@ -90,32 +92,36 @@ class WordPressScreenshotGeneration: XCTestCase {
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
-        thenTakeScreenshot(3, named: "Stats")
+            .thenTakeScreenshot(3, named: "Stats")
 
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
         TabNavComponent()
             .gotoReaderScreen()
             .openDiscover()
-        thenTakeScreenshot(2, named: "Discover")
+            .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
         let notificationList = TabNavComponent()
             .gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if isIpad {
-            notificationList.openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
-            .replyToNotification()
+            notificationList
+                .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+                .replyToNotification()
         }
-        thenTakeScreenshot(5, named: "Notifications")
+        notificationList.thenTakeScreenshot(5, named: "Notifications")
     }
 }
 
-extension XCTestCase {
-    func thenTakeScreenshot(_ index: Int, named title: String) {
+extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = isDarkMode ? "dark" : "light"
         let filename = "\(index)-\(mode)-\(title)"
 
         snapshot(filename)
+
+        return self
     }
 }
