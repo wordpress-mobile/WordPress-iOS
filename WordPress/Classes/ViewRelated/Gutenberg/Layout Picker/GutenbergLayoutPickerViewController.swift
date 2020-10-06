@@ -29,7 +29,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var createBlankPageBtn: UIButton!
     @IBOutlet weak var previewBtn: UIButton!
     @IBOutlet weak var createPageBtn: UIButton!
-    @IBOutlet weak var buttonStackView: UIStackView!
+    @IBOutlet weak var selectedStateButtonsContainer: UIView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -303,12 +303,23 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutSelected(_ isSelected: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: [], animations: {
-            self.previewBtn.isHidden = !isSelected
+        createBlankPageBtn.isHidden = false
+        selectedStateButtonsContainer.isHidden = false
+
+        createBlankPageBtn.alpha = isSelected ? 1 : 0
+        selectedStateButtonsContainer.alpha = isSelected ? 0 : 1
+
+        let alpha: CGFloat = isSelected ? 0 : 1
+        let selectedStateContainerAlpha: CGFloat = isSelected ? 1 : 0
+
+
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.createBlankPageBtn.alpha = alpha
+            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
+        }) { (_) in
             self.createBlankPageBtn.isHidden = isSelected
-            self.createPageBtn.isHidden = !isSelected
-            self.buttonStackView.layoutIfNeeded()
-        })
+            self.selectedStateButtonsContainer.isHidden = !isSelected
+        }
     }
 
     private func fetchLayouts() {
