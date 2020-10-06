@@ -8,7 +8,7 @@ class LayoutPreviewViewController: UIViewController {
     @IBOutlet weak var previewContainer: UIView!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    var layout: GutenbergLayout?
+    var layout: PageTemplateLayout?
     var accentColor: UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { (traitCollection: UITraitCollection) -> UIColor in
@@ -42,6 +42,7 @@ class LayoutPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WPFontManager.loadNotoFontFamily()
         styleButtons()
         setupGutenbergView()
         view.backgroundColor = defaultBrackgroundColor
