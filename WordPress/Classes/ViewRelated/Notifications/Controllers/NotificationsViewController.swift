@@ -1275,6 +1275,10 @@ private extension NotificationsViewController {
         if splitViewController.wpPrimaryColumnWidth != columnWidth {
             splitViewController.wpPrimaryColumnWidth = columnWidth
         }
+
+        if columnWidth == .default {
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
+        }
     }
 
     var noConnectionTitleText: String {
@@ -1307,6 +1311,10 @@ private extension NotificationsViewController {
 
     var shouldDisplayFullscreenNoResultsView: Bool {
         return shouldDisplayNoResultsView && filter == .none
+    }
+
+    var shouldDimDetailViewController: Bool {
+        return shouldDisplayNoResultsView && filter != .none
     }
 
 }
