@@ -45,10 +45,10 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
         if isIpad {
-            snapshot("1-Editor-With-BlockPicker")
+            snapshot("1-Editor")
         } else {
             BlockEditorScreen().openBlockPicker()
-            snapshot("1-Editor")
+            snapshot("1-Editor-With-BlockPicker")
             BlockEditorScreen().closeBlockPicker()
         }
         postEditorScreenshot.close()
