@@ -49,7 +49,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergModalLayoutPicker:
             return false
         case .whatIsNew:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         }

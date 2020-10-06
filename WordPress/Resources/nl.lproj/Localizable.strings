@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-16 08:46:28+0000 */
+/* Translation-Revision-Date: 2020-09-22 19:07:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Voeg een tag toe";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Voeg een URL voor eigen CSS toe die geladen wordt in Lezer. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Voeg een aangepast bericht toe (optioneel).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Standaard post format";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "Standaard URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standaardinstellingen voor nieuwe berichten";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Lezer";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "Lezer CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Herblog";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Reageer op bericht…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Rapporteer dit bericht";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vereist handmatige goedkeuring voor reacties die meer dan dit aantal links bevatten.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Je bent media aan het uploaden. Met deze actie annuleer je de huidige uploads.\n\nWeet je het zeker?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen via de magische link zoals degene die je zojuist hebt gebruikt, maar als je wilt, kun je ook een wachtwoord instellen.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen met een link zoals degene die je zojuist hebt gebruikt, maar kunt ook een wachtwoord instellen, als je wilt.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site weergeven in de weergave iOS Vandaag\/Berichtencentrum.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
+
+/* No comment provided by engineer. */
+"password" = "wachtwoord";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
