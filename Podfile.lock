@@ -395,7 +395,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.26.0):
+  - WordPressAuthenticator (1.27.0-beta.1):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -412,15 +412,9 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1)
-<<<<<<< HEAD
-    - WordPressShared (~> 1.10-beta)
-    - wpxmlrpc (~> 0.9.0-beta)
-  - WordPressMocks (0.0.9-beta.1)
-=======
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9.0)
-  - WordPressMocks (0.0.8)
->>>>>>> develop
+  - WordPressMocks (0.0.9-beta.1)
   - WordPressShared (1.12.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -511,7 +505,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/accessibility-ids`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `20f709620d777e72bd42342e4bdf86f25d7a7cbc`)
   - WordPressKit (~> 4.18.0-beta)
   - WordPressMocks (from `https://github.com/wordpress-mobile/WordPressMocks.git`, branch `update/mocks-for-screenshots`)
   - WordPressShared (~> 1.12.0)
@@ -660,16 +654,13 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-<<<<<<< HEAD
+    :tag: v1.38.0
   WordPressAuthenticator:
-    :branch: fix/accessibility-ids
+    :commit: 20f709620d777e72bd42342e4bdf86f25d7a7cbc
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressMocks:
     :branch: update/mocks-for-screenshots
     :git: https://github.com/wordpress-mobile/WordPressMocks.git
-=======
-    :tag: v1.38.0
->>>>>>> develop
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.38.0/third-party-podspecs/Yoga.podspec.json
 
@@ -681,22 +672,16 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.38.0
-  RNCMaskedView:
-    :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
-    :git: https://github.com/react-native-community/react-native-masked-view.git
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-<<<<<<< HEAD
+    :tag: v1.38.0
   WordPressAuthenticator:
-    :commit: ee1176c17ad9e19afe53663387d50b44e657d9bc
+    :commit: 20f709620d777e72bd42342e4bdf86f25d7a7cbc
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressMocks:
     :commit: 8f076a7ffb5f634ec4bebede821093abe286a68b
     :git: https://github.com/wordpress-mobile/WordPressMocks.git
-=======
-    :tag: v1.38.0
->>>>>>> develop
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -777,14 +762,9 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 31bceb4ab25de663a327b791e76a405b9c903b73
-<<<<<<< HEAD
-  WordPressKit: 7fb381043697d3f1ec7c0f52407aa0fd54b544db
-  WordPressMocks: 1e04de6afa3a17f6f1ab4782f8460d7faefcf2f7
-=======
+  WordPressAuthenticator: 2d1db69d4a746709aa1e63750ff969166c284621
   WordPressKit: 1d10fa14ea185600472d31cf25e677c7d938b17d
-  WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
->>>>>>> develop
+  WordPressMocks: 1e04de6afa3a17f6f1ab4782f8460d7faefcf2f7
   WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
@@ -799,10 +779,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: 2bae271e4a98c97c57399caf0ba49a81d153d44a
-=======
-PODFILE CHECKSUM: 7bbec11760f752c9de09862b157e7d0c9b54da1e
->>>>>>> develop
+PODFILE CHECKSUM: 289dfe965f1c5db97ea2791157e533b08846cf2c
 
 COCOAPODS: 1.9.3
