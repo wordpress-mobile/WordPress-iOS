@@ -128,8 +128,7 @@
 
         self.detailView.showsDesignActive = selectionItemsExpanded;
         [self prepareForVoiceOver];
-        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification,
-                                        [self.stackView.arrangedSubviews firstObject]);
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
     }
 }
 
