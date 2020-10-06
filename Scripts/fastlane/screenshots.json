@@ -8,11 +8,11 @@
 			"text_size": [710, 540],
 			"text_offset": [266, 110],
 			"font_size": "110px",
-			"screenshot_size": [825, 1787],
-			"screenshot_offset": [210, 730],
+			"screenshot_size": [826, 1793],
+			"screenshot_offset": [210, 731],
 			"screenshot_mask": "appstoreres/assets/iphone-x-mask.png",
 			"device_frame": "appstoreres/assets/iphone-x.png",
-			"device_frame_size": [1081, 2028],
+			"device_frame_size": [1081, 2031],
 			"device_frame_offset": [80, 610]
 		},
 		{
@@ -34,7 +34,7 @@
 			"text_offset": [97, 121],
 			"font_size": "110px",
 			"screenshot_size": [1914, 1415],
-			"screenshot_offset": [426, 486],
+			"screenshot_offset": [426, 485],
 			"device_frame": "appstoreres/assets/ipad-2nd-gen.png",
 			"device_frame_size": [2360, 1680],
 			"device_frame_offset": [203, 349]
@@ -45,8 +45,8 @@
 			"text_size": [2538, 150],
 			"text_offset": [97, 120],
 			"font_size": "110px",
-			"screenshot_size": [1914, 1433],
-			"screenshot_offset": [420, 465],
+			"screenshot_size": [1918, 1436],
+			"screenshot_offset": [418, 465],
 			"screenshot_mask": "appstoreres/assets/ipad-x-mask.png",
 			"device_frame": "appstoreres/assets/ipad-3rd-gen.png",
 			"device_frame_size": [2150, 1680],
@@ -82,13 +82,13 @@
 			"filename": "iPhone XS Max-1-PostEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-2.png",
-			"screenshot": "iPhone XS Max-1-PostEditor.png"
+			"screenshot": "iPhone XS Max-1-light-Editor-With-BlockPicker.png"
 		},
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-2-Reader.png",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-3.png",
-			"screenshot": "iPhone XS Max-2-Stats.png",
+			"screenshot": "iPhone XS Max-2-dark-Discover.png",
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
@@ -104,20 +104,20 @@
 			"filename": "iPhone XS Max-3-Stats.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_4.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-4.png",
-			"screenshot": "iPhone XS Max-2-Stats.png"
+			"screenshot": "iPhone XS Max-3-light-Stats.png"
 		},
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-4-MySite.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-5.png",
-			"screenshot": "iPhone XS Max-3-Notifications.png"
+			"screenshot": "iPhone XS Max-4-dark-MySite.png"
 		},
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-5-Notifications.png",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-6.png",
-			"screenshot": "iPhone XS Max-3-Notifications.png",
+			"screenshot": "iPhone XS Max-5-light-notifications.png",
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
@@ -132,7 +132,7 @@
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-6-Media.png",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-7.png",
-			"screenshot": "iPhone XS Max-4-Media.png",
+			"screenshot": "iPhone XS Max-6-dark-Media.png",
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
@@ -171,27 +171,27 @@
 			"filename": "iPhone 8 Plus-1-PostEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-2.png",
-			"screenshot": "iPhone 8 Plus-1-PostEditor.png"
+			"screenshot": "iPhone 8 Plus-1-light-Editor-With-BlockPicker.png"
 		},
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-2-Reader.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-3.png",
-			"screenshot": "iPhone 8 Plus-2-Stats.png"
+			"screenshot": "iPhone 8 Plus-2-dark-Discover.png"
 		},
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-3-Stats.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_4.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-4.png",
-			"screenshot": "iPhone 8 Plus-2-Stats.png"
+			"screenshot": "iPhone 8 Plus-3-light-Stats.png"
 		},
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-4-MySite.png",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-5.png",
-			"screenshot": "iPhone 8 Plus-3-Notifications.png",
+			"screenshot": "iPhone 8 Plus-4-dark-MySite.png",
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
@@ -207,14 +207,14 @@
 			"filename": "iPhone 8 Plus-5-Notifications.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-6.png",
-			"screenshot": "iPhone 8 Plus-3-Notifications.png"
+			"screenshot": "iPhone 8 Plus-5-light-Notifications.png"
 		},
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-6-Media.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-7.png",
-			"screenshot": "iPhone 8 Plus-4-Media.png"
+			"screenshot": "iPhone 8 Plus-6-dark-Media.png"
 		},
 		{
 			"device": "iPad X",
@@ -244,42 +244,42 @@
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-1-PostEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-2.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-PostEditor.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-light-Editor.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-2-Reader.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-3.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-Stats.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-dark-Discover.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-3-Stats.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-4.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-Stats.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-light-Stats.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-4-Notifications.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-5.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-Notifications.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-dark-Notifications.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-5-Media.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-6.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-4-Media.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-6-light-Media.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-6-DraftEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_8.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-7.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-DraftEditor.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-6-dark-Editor-With-Keyboard.png"
 		},
 		{
 			"device": "iPad Pro",
@@ -309,42 +309,42 @@
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-1-PostEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-2.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-1-PostEditor.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-1-light-Editor.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-2-Reader.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-3.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-Stats.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-dark-Discover.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-3-Stats.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-4.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-Stats.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-light-Stats.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-4-Notifications.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-5.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-Notifications.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-dark-Notifications.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Media.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-6.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-Media.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-6-light-Media.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-6-DraftEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_8.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-7.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-DraftEditor.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-6-dark-Editor-With-Keyboard.png"
 		}
 	]
 }
