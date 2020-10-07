@@ -16,7 +16,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
-    case prologueCarousel
+    case unifiedPrologueCarousel
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -53,7 +53,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
-        case .prologueCarousel:
+        case .unifiedPrologueCarousel:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -111,8 +111,8 @@ extension FeatureFlag {
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
-        case .prologueCarousel:
-            return "Prologue Carousel"
+        case .unifiedPrologueCarousel:
+            return "Unified Prologue Carousel"
         }
     }
 
