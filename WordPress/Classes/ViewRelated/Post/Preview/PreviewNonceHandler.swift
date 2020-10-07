@@ -28,20 +28,19 @@ struct PreviewNonceHandler {
 
     private static func unmapURL(post: AbstractPost, url: URL) -> URL? {
         guard
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let unmappedSite = post.blog.getOptionValue("unmapped_url") as? String,
             let unmappedSiteURL = URL(string: unmappedSite)
         else {
             return url
         }
 
-        var comps = components
-        comps.queryItems?.append(URLQueryItem(name: "preview", value: "true"))
-        comps.scheme = unmappedSiteURL.scheme
-        comps.host = unmappedSiteURL.host
+        components.queryItems?.append(URLQueryItem(name: "preview", value: "true"))
+        components.scheme = unmappedSiteURL.scheme
+        components.host = unmappedSiteURL.host
 
         do {
-            return try comps.asURL()
+            return try components.asURL()
         } catch {
             return url
         }
