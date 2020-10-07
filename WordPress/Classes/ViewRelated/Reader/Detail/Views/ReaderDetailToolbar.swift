@@ -163,7 +163,14 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(image, for: .disabled)
         button.isSelected = selected
 
-        WPStyleGuide.applyReaderActionButtonStyle(button)
+        configureActionButtonStyle(button)
+    }
+
+    private func configureActionButtonStyle(_ button: UIButton) {
+        WPStyleGuide.applyReaderActionButtonStyle(button,
+                                                  titleColor: .textSubtle,
+                                                  imageColor: .textSubtle)
+
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
@@ -195,6 +202,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isPrivate()
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
+
+        configureActionButtonStyle(reblogButton)
     }
 
     private func playLikeButtonAnimation() {
@@ -262,6 +271,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     private func configureCommentActionButton() {
         WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
         commentButton.isEnabled = shouldShowCommentActionButton
+
+        configureActionButtonStyle(commentButton)
     }
 
     private var shouldShowCommentActionButton: Bool {
@@ -287,6 +298,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
+
+        configureActionButtonStyle(saveForLaterButton)
     }
 
     private func adjustInsetsForTextDirection() {
