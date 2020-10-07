@@ -1,14 +1,17 @@
 struct PreviewNonceHandler {
     static func nonceURL(post: AbstractPost, previewURL: URL?) -> URL? {
         let permalink = post.permaLink.flatMap(URL.init(string:))
-        guard let url = previewURL ?? permalink else {
+        guard
+            let url = previewURL ?? permalink,
+            let unmappedURL = unmapURL(post: post, url: url)
+        else {
             return nil
         }
 
         if post.blog.supports(.noncePreviews), let nonce = post.blog.getOptionValue("frame_nonce") as? String {
-            return addNonce(nonce, to: url)
+            return addNonce(nonce, to: unmappedURL)
         } else {
-            return url
+            return unmappedURL
         }
     }
 
@@ -21,5 +24,27 @@ struct PreviewNonceHandler {
         queryItems.append(URLQueryItem(name: "frame-nonce", value: nonce))
         components.queryItems = queryItems
         return components.url
+    }
+
+    private static func unmapURL(post: AbstractPost, url: URL) -> URL? {
+        guard
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let unmappedSite = post.blog.getOptionValue("unmapped_url") as? String,
+            let unmappedSiteURL = URL(string: unmappedSite)
+        else {
+            return url
+        }
+
+        var comps = components
+        comps.queryItems?.append(URLQueryItem(name: "preview", value: "true"))
+        comps.scheme = unmappedSiteURL.scheme
+        comps.host = unmappedSiteURL.host
+
+        do {
+            return try comps.asURL()
+        } catch {
+            return url
+        }
+
     }
 }
