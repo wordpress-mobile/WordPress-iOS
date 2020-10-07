@@ -22,10 +22,10 @@
 			"text_offset": [124, 40],
 			"font_size": "110px",
 			"screenshot_size": [825, 1467],
-			"screenshot_offset": [225, 771],
+			"screenshot_offset": [225, 741],
 			"device_frame": "appstoreres/assets/iphone-8.png",
 			"device_frame_size": [1030, 2048],
-			"device_frame_offset": [126, 482]
+			"device_frame_offset": [126, 452]
 		},
 		{
 			"name": "iPad Pro",
