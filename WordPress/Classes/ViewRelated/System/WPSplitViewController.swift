@@ -227,7 +227,7 @@ class WPSplitViewController: UISplitViewController {
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
-    @objc func dimDetailViewController(_ dimmed: Bool) {
+    func dimDetailViewController(_ dimmed: Bool, withAlpha alpha: CGFloat? = nil) {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
@@ -237,7 +237,7 @@ class WPSplitViewController: UISplitViewController {
                 // Dismiss the keyboard from the detail view controller if active
                 topDetailViewController?.navigationController?.view.endEditing(true)
                 UIView.animate(withDuration: dimmingViewAnimationDuration, animations: {
-                    self.dimmingView.alpha = self.dimmingViewAlpha
+                    self.dimmingView.alpha = alpha ?? self.dimmingViewAlpha
                 })
             }
         } else if dimmingView.superview != nil {
