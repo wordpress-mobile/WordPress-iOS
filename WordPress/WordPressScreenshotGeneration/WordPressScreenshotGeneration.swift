@@ -44,6 +44,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .showOnly(.drafts)
 
         let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        sleep(imagesWaitTime) // wait for post images to load
         if isIpad {
             snapshot("1-Editor")
         } else {
@@ -62,7 +63,8 @@ class WordPressScreenshotGeneration: XCTestCase {
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
                 BlockEditorScreen().selectBlock(containingText: "Ingredients")
-            snapshot("6-Editor-With-Keyboard")
+            sleep(imagesWaitTime) // wait for post images to load
+            snapshot("7-Editor-With-Keyboard")
             ipadScreenshot.close()
         } else {
             postList.pop()
