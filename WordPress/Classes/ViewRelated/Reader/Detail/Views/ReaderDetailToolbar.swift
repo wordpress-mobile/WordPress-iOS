@@ -167,10 +167,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButtonStyle(_ button: UIButton) {
+        let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
+                                    dark: .textSubtle)
+
         WPStyleGuide.applyReaderActionButtonStyle(button,
                                                   titleColor: .textSubtle,
-                                                  imageColor: .textSubtle)
-
+                                                  imageColor: .textSubtle,
+                                                  disabledColor: disabledColor)
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
