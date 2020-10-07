@@ -65,6 +65,16 @@ class BlockEditorScreen: BaseScreen {
         return self
     }
 
+    /**
+    Selects a block based on part of the block label (e.g. partial text in a paragraph block)
+     */
+    @discardableResult
+    func selectBlock(containingText text: String) -> BlockEditorScreen {
+        let predicate = NSPredicate(format: "label CONTAINS[c] '\(text)'")
+        XCUIApplication().buttons.containing(predicate).firstMatch.tap()
+        return self
+    }
+
     // returns void since return screen depends on from which screen it loaded
     func closeEditor() {
         XCTContext.runActivity(named: "Close the block editor") { (activity) in
