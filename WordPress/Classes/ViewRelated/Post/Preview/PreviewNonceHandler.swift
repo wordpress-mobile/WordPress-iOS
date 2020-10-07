@@ -20,9 +20,8 @@ struct PreviewNonceHandler {
             return nil
         }
         var queryItems = components.queryItems ?? []
-        queryItems.append(URLQueryItem(name: "preview", value: "true"))
         queryItems.append(URLQueryItem(name: "frame-nonce", value: nonce))
-        components.queryItems = queryItems
+        components.queryItems = addPreviewIfNecessary(items: queryItems)
         return components.url
     }
 
@@ -34,16 +33,21 @@ struct PreviewNonceHandler {
         else {
             return url
         }
-
-        components.queryItems?.append(URLQueryItem(name: "preview", value: "true"))
+        let queryItems = components.queryItems ?? []
+        components.queryItems = addPreviewIfNecessary(items: queryItems)
         components.scheme = unmappedSiteURL.scheme
         components.host = unmappedSiteURL.host
 
-        do {
-            return try components.asURL()
-        } catch {
-            return url
-        }
-
+        return components.url
     }
+
+    private static func addPreviewIfNecessary(items: [URLQueryItem]) -> [URLQueryItem] {
+        var queryItems = items
+        // Only add the preview query param if it doesn't exist.
+        if !(queryItems.map { $0.name }).contains("preview") {
+            queryItems.append(URLQueryItem(name: "preview", value: "true"))
+        }
+        return queryItems
+    }
+
 }
