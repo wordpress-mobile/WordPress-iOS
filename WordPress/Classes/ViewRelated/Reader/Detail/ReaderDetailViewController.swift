@@ -138,7 +138,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        featuredImage.restoreNavigationBarAppearance()
+        featuredImage.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {

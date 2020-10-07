@@ -91,6 +91,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         reset()
     }
 
+    func viewWillDisappear() {
+        scrollViewObserver?.invalidate()
+        scrollViewObserver = nil
+        
+        restoreNavigationBarAppearance()
+    }
+
     // MARK: - Public: Configuration
 
     func configure(scrollView: UIScrollView, navigationBar: UINavigationBar?) {
@@ -109,7 +116,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
         configureNavigationBar()
 
-        // Scrol View
+        // Scroll View
         self.scrollView = scrollView
         scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
             self?.scrollViewDidScroll()
