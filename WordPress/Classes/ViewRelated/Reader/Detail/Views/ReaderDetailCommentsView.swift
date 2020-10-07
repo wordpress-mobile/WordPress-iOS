@@ -59,7 +59,10 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
 
     // MARK: - Private: Helpers
     private func commentTitle() -> String {
-        let format = commentCount != 1 ? Strings.commentFormatPlural : Strings.commentFormat
+        var format = Strings.noCommentFormat
+        if commentCount > 0 {
+            format = commentCount != 1 ? Strings.commentFormatPlural : Strings.commentFormat
+        }
 
         return String(format: format, "\(commentCount)")
     }
@@ -103,6 +106,7 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
 
     // MARK: - Constants
     private struct Strings {
+        static let noCommentFormat = NSLocalizedString("Comments", comment: "Accessibility label for comments button with no comments")
         static let commentFormat = NSLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
         static let commentFormatPlural = NSLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
         static let addComment = NSLocalizedString("Add Comment", comment: "Accessibility label for add comment button")
