@@ -236,17 +236,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Show a given title
     ///
     /// - Parameter title: a optional String containing the title
-    func show(title: String?) {
-        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        let titleView = UILabel()
-
-        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
-        navigationItem.titleView = titleView
-        titleView.isHidden = true
-
-        // Allow the title to appear in the back button tap and hold in iOS 14+
-        self.title = title
-    }
+    func show(title: String?) { }
 
 
     /// Scroll the content to a given #hash
