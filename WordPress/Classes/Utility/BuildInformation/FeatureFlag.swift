@@ -6,8 +6,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case meMove
-    case floatingCreateButton
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
@@ -31,10 +29,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .readerCSS:
             return false
         case .unifiedAuth:
-            return true
-        case .meMove:
-            return true
-        case .floatingCreateButton:
             return true
         case .newReaderNavigation:
             return true
@@ -88,10 +82,6 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .meMove:
-            return "Move the Me Scene to My Site"
-        case .floatingCreateButton:
-            return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
         case .swiftCoreData:
@@ -114,8 +104,6 @@ extension FeatureFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .floatingCreateButton:
             return false
         case .newReaderNavigation:
             return false
