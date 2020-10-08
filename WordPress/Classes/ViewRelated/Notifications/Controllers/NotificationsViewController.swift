@@ -1266,15 +1266,18 @@ private extension NotificationsViewController {
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
-        if let splitViewController = splitViewController as? WPSplitViewController {
-            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
-            if splitViewController.wpPrimaryColumnWidth != columnWidth {
-                splitViewController.wpPrimaryColumnWidth = columnWidth
-            }
+        guard let splitViewController = splitViewController as? WPSplitViewController else {
+            return
+        }
 
-            if columnWidth == .default {
-                splitViewController.dimDetailViewController(shouldDimDetailViewController)
-            }
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+
+        if splitViewController.wpPrimaryColumnWidth != columnWidth {
+            splitViewController.wpPrimaryColumnWidth = columnWidth
+        }
+
+        if columnWidth == .default {
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
         }
     }
 
@@ -1313,6 +1316,7 @@ private extension NotificationsViewController {
     var shouldDimDetailViewController: Bool {
         return shouldDisplayNoResultsView && filter != .none
     }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate
