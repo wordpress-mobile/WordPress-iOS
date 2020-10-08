@@ -1,8 +1,7 @@
 #import "SuggestionsTableView.h"
 #import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
-#import "WordPress-Swift.h"
-#import "WPAvatarSource.h"
+#import "Suggestion.h"
 #import "SuggestionService.h"
 
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
@@ -243,7 +242,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         self.searchText = word;
         if (self.searchText.length > 1) {
             NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (username contains[c] %@)",
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
                                             searchQuery, searchQuery];
             self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
@@ -311,18 +310,18 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    UserAutocomplete *userAutocomplete = [self.searchResults objectAtIndex:indexPath.row];
-    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", userAutocomplete.username];
-    cell.displayNameLabel.text = userAutocomplete.displayName;
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];    
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
+    cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
-    cell.imageDownloadHash = userAutocomplete.imageURL.hash;
-    [self loadAvatarForSuggestion:userAutocomplete success:^(UIImage *image) {
+    cell.imageDownloadHash = suggestion.imageURL.hash;
+    [self loadAvatarForSuggestion:suggestion success:^(UIImage *image) {
         if (indexPath.row >= self.searchResults.count) {
             return;
         }
 
-        UserAutocomplete *reloaded = [self.searchResults objectAtIndex:indexPath.row];
+        Suggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
         if (cell.imageDownloadHash != reloaded.imageURL.hash) {
             return;
         }
@@ -337,9 +336,9 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UserAutocomplete *userAutocomplete = [self.searchResults objectAtIndex:indexPath.row];
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     [self.suggestionsDelegate suggestionsTableView:self
-                               didSelectSuggestion:userAutocomplete.username
+                               didSelectSuggestion:suggestion.userLogin
                                      forSearchText:[self.searchText substringFromIndex:1]];
 }
 
@@ -364,52 +363,22 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Avatar helper
 
-- (void)loadAvatarForSuggestion:(UserAutocomplete *)userAutocomplete success:(void (^)(UIImage *))success
+- (void)loadAvatarForSuggestion:(Suggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
-    UIImage *image = [self cachedAvatarWithSize:imageSize userAutocomplete:userAutocomplete];
+    UIImage *image = [suggestion cachedAvatarWithSize:imageSize];
     if (image) {
         success(image);
         return;
     }
 
-    [self fetchAvatarWithSize:imageSize userAutocomplete:userAutocomplete success:^(UIImage *image) {
+    [suggestion fetchAvatarWithSize:imageSize success:^(UIImage *image) {
         if (!image) {
             return;
         }
 
         success(image);
     }];
-}
-
-- (UIImage *)cachedAvatarWithSize:(CGSize)size userAutocomplete:(UserAutocomplete *)userAutocomplete
-{
-    NSString *hash;
-    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash userAutocomplete:userAutocomplete];
-    if (!hash) {
-        return nil;
-    }
-    return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
-}
-
-- (void)fetchAvatarWithSize:(CGSize)size userAutocomplete:(UserAutocomplete *)userAutocomplete success:(void (^)(UIImage *image))success
-{
-    NSString *hash;
-    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash userAutocomplete:userAutocomplete];
-
-    if (hash) {
-        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
-    } else if (success) {
-        success(nil);
-    }
-}
-
-- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash userAutocomplete:(UserAutocomplete *)userAutocomplete
-{
-    if (userAutocomplete.imageURL) {
-        return [[WPAvatarSource sharedSource] parseURL:userAutocomplete.imageURL forAvatarHash:hash];
-    }
-    return WPAvatarSourceTypeUnknown;
 }
 
 @end
