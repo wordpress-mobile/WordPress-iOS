@@ -394,6 +394,7 @@
 		3F5B3EB123A851480060FF1F /* ReaderReblogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */; };
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
+		3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */; };
 		3F73BE5D24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */; };
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
@@ -1700,6 +1701,12 @@
 		CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
 		CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */; };
 		CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
+		CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BC25082A86005CCC13 /* PrologueScreen.swift */; };
+		CCBC9EB02512446F008E1D5F /* GetStartedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BE25082B1E005CCC13 /* GetStartedScreen.swift */; };
+		CCBC9EB225124474008E1D5F /* PasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ADDDD925083CA9008FF6EE /* PasswordScreen.swift */; };
+		CCBC9EB32512448C008E1D5F /* ActionSheetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */; };
+		CCBC9EB4251258FB008E1D5F /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
+		CCBC9EB52512590B008E1D5F /* FeaturedImageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD47BDE2474228C00F00660 /* FeaturedImageScreen.swift */; };
 		CCE55E992242715C002A9634 /* CategoriesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE55E982242715C002A9634 /* CategoriesComponent.swift */; };
 		CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */; };
 		CCE911BE221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */; };
@@ -2848,6 +2855,7 @@
 		3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogFormatter.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
+		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
 		3F73BE5C24EB38E200BE99FF /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
@@ -6285,6 +6293,14 @@
 			path = "What's New";
 			sourceTree = "<group>";
 		};
+		3F6AD0542502A8ED00080F3B /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 		3F751D442491A8B20008A2B1 /* Zendesk */ = {
 			isa = PBXGroup;
 			children = (
@@ -6296,6 +6312,7 @@
 		3F8CBE1124EF955700F71234 /* Data store */ = {
 			isa = PBXGroup;
 			children = (
+				3F6AD0542502A8ED00080F3B /* Cache */,
 				3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */,
 				3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */,
 			);
@@ -11956,11 +11973,14 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/gutenberg-observer.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
 				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/extra-localstorage-entries.js",
+				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/remove-nux.js",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/MediaEditorHub.storyboard",
@@ -11985,11 +12005,14 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gridicons.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/content-functions.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor-style-overrides.css",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gutenberg-observer.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/inject-css.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/insert-block.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/local-storage-overrides.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/prevent-autosaves.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wp-bar-override.css",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/extra-localstorage-entries.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/remove-nux.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
@@ -12628,6 +12651,7 @@
 				E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */,
 				321E292623A5F10900588610 /* FullScreenCommentReplyViewController.swift in Sources */,
 				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,
+				3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */,
 				43FF64EF20DAA0840060A69A /* GravatarUploader.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
@@ -13667,16 +13691,20 @@
 			files = (
 				F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */,
 				F9C47A71238C7D8800AAD9ED /* LoginEmailScreen.swift in Sources */,
+				CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */,
 				1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */,
 				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
 				F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */,
 				F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */,
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
 				F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */,
+				CCBC9EB4251258FB008E1D5F /* WPUITestCredentials.swift in Sources */,
 				F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */,
 				F97DA42123D67BBB0050E791 /* MediaScreen.swift in Sources */,
 				F9C47A77238C7D8800AAD9ED /* LoginEpilogueScreen.swift in Sources */,
+				CCBC9EB02512446F008E1D5F /* GetStartedScreen.swift in Sources */,
 				F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */,
+				CCBC9EB225124474008E1D5F /* PasswordScreen.swift in Sources */,
 				F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */,
 				F9C47A8D238C809700AAD9ED /* PostsScreen.swift in Sources */,
 				F9C47A6F238C7D8800AAD9ED /* WelcomeScreenLoginComponent.swift in Sources */,
@@ -13684,6 +13712,7 @@
 				F9C47A73238C7D8800AAD9ED /* LinkOrPasswordScreen.swift in Sources */,
 				F9C47A90238C9D6700AAD9ED /* StatsScreen.swift in Sources */,
 				F9C47A6E238C7D7D00AAD9ED /* TabNavComponent.swift in Sources */,
+				CCBC9EB52512590B008E1D5F /* FeaturedImageScreen.swift in Sources */,
 				F9C47A79238C7DAC00AAD9ED /* MeTabScreen.swift in Sources */,
 				F9C47A6D238C7D7500AAD9ED /* MySiteScreen.swift in Sources */,
 				F9C47A72238C7D8800AAD9ED /* LoginPasswordScreen.swift in Sources */,
@@ -13703,6 +13732,7 @@
 				F9C47A85238C7DC500AAD9ED /* SignupCheckMagicLinkScreen.swift in Sources */,
 				F9C47A86238C7DC500AAD9ED /* SignupEpilogueScreen.swift in Sources */,
 				F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */,
+				CCBC9EB32512448C008E1D5F /* ActionSheetComponent.swift in Sources */,
 				F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */,
 				F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */,
 				F9C47A88238C7DF100AAD9ED /* MediaPickerAlbumScreen.swift in Sources */,

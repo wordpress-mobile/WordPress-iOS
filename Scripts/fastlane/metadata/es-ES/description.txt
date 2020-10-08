@@ -1,6 +1,6 @@
-Crea y gestiona tu web o blog WordPress directamente desde tu dispositivo iOS: crea y edita cualquier entrada o página, sube tus fotos y videos favoritos, accede a las estadísticas o responde a los comentarios fácilmente.
+Crea y gestiona tu web o blog WordPress directamente desde tu dispositivo iOS: crea y edita cualquier entrada o página, sube tus fotos y vídeos favoritos, accede a las estadísticas o responde a los comentarios fácilmente.
  
-Con WordPress para iOS, podrás publicar todo tu contenido desde la palma de tu mano. Escribe desde tu sofá el borrador de ese haiku que no te quitas de la cabeza. Sube y comparte en un momento esa increíble foto que hiciste durante el descanso en el trabajo. Responde a los últimos comentarios que te hayan dejado o descubre a qué nuevos países ha llegado hoy tu contenido echándole un vistazo a la sección de estadísticas.
+Con WordPress para iOS, podrás publicar todo tu contenido desde la palma de tu mano. Escribe desde tu sofá el borrador de ese haiku que no te quitas de la cabeza. Sube y comparte en un momento esa increíble foto que hiciste durante el descanso en el trabajo. Responde a los últimos comentarios que te hayan dejado o descubre a qué nuevos países ha llegado hoy tu contenido echándo un vistazo a la sección de estadísticas.
  
 WordPress para iOS es un proyecto de código abierto, lo que significa que tú también puedes participar en su desarrollo. Descubre más información en https://apps.wordpress.com/contribute/.
  

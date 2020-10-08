@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-08 09:22:59+0000 */
+/* Translation-Revision-Date: 2020-09-23 11:31:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Shtoni një Etiketë";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Shtoni këtu një URL CSS-je vetjake që të ngarkohet në Lexues. Nëse xhironi Calypso-n lokalisht, kjo mund të ishte diçka si: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Shtoni një mesazh vetjak (në daçi).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format Parazgjedhje Postimesh";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL Parazgjedhje";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Parazgjedhje për Postime të Reja";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Lexues";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL CSS-je Lexuesi";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Riblogojeni";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Përgjigjjuni postimit…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Njoftoni Për Këtë Postim";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Kërko miratim dorazi për komente që përmbajnë më tepër lidhje se sa kaq.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Po ngarkoni media. Ky veprim do të anulojë ngarkime në kryerje e sipër.\n\nJeni i sigurt?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Mundeni të hyni përherë me një lidhje magjike si ajo që sapo përdorët, por mund të caktoni edhe një fjalëkalim, nëse parapëlqeni.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Mundeni të hyni përherë me një lidhje si ajo që sapo përdorët, por mund të caktoni edhe një fjalëkalim, nëse parapëlqeni.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Mund të shfaqni statistikat e një sajti të vetëm, te skena Qendër iOS Sot\/Njoftime.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "tjetër";
+
+/* No comment provided by engineer. */
+"password" = "fjalëkalim";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numër telefoni";

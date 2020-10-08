@@ -1,11 +1,7 @@
-Votre expérience du Lecteur peut désormais être personnalisée grâce à un nouveau flux Découvrir qui reflète vos intérêts.
+Jetez un coup d’œil à ce qui est nouveau dans cette version :
 
-Les réglages du bloc dans l’éditeur de blocs reflètent désormais immédiatement les modifications apportées aux curseurs du menu.
-
-L’expérience d'inscription et de connexion est améliorée grâce aux indications guidant l’utilisateur durant la procédure et à la connexion d’un site auto-hébergé.
-
-Une nouvelle façon de se connecter grâce à la fonctionnalité Trousseau d’accès iCloud est désormais disponible : un gestionnaire de mots de passe qui se rappelle vos comptes et mots de passe WP.com.
-
-Ne ratez rien ! Vous pouvez désormais suivre des conversations sur des sites P2.
-
-Nous avons également réduit l'utilisation de la mémoire lors du marquage d'une image. L’édition de médias ne provoque plus de plantage.
+- Prise en charge de la largeur complète et de l’alignement large pour les blocs groupe, bannière et image (et plus de blocs à venir).
+- Vous aimez les coins arrondis sur vos images ? Nous avons aussi ajoutée la prise en charge du style arrondi pour le bloc image.
+- Quelques personnes avaient constaté un problème de comportement de la barre d’outil lors de l’ajout d’un nouveau bloc. C’est réparé.
+- Nous avons également remarqué que dans l’aperçu de l’image, les images n’étaient pas positionnées correctement  après un changement de l’orientation de l’appareil. Cela a aussi été réparé.
+- Nous avons résolu quelques autres problèmes autour de l’inscription et de la connexion, y compris un problème d’affichage de l’identifiant après une connexion avec Apple, et un message d’erreur incorrect qui s’affichait lorsque vous aviez atteint le nombre maximum de connexion échouée.

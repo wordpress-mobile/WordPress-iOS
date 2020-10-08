@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-08 11:50:37+0000 */
+/* Translation-Revision-Date: 2020-09-23 05:09:32+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "태그 추가";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "리더에서 부를 사용자 정의 CSS URL을 여기에 추가하세요. 자체적으로 칼립소를 실행하고 있다면 다음과 같이 할 수 있습니다: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "사용자 정의 메시지를 추가합니다(선택 사항).";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "기본 글 형식";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "기본 URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "새 글의 기본값";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "리더";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "리더 CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "리블로그";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "답글 달기…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "이 글 신고하기";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "이 링크 수보다 링크가 많이 포함된 댓글에 대한 수동 승인이 필요합니다.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "현재 미디어를 업로드 중입니다. 이 작업으로 진행 중인 업로드가 취소됩니다.\n\n계속하시겠습니까?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "회원님이 방금 사용한 것과 같은 매직 링크로 항상 로그인할 수 있지만, 원하는 경우 비밀번호를 설정할 수도 있습니다.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "방금 사용한 것과 같은 링크로 항상 로그인할 수 있지만, 원하는 경우 비밀번호를 설정할 수도 있습니다.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "iOS 오늘\/알림 센터 창에서 단일 사이트의 통계를 표시할 수 있습니다.";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "기타";
+
+/* No comment provided by engineer. */
+"password" = "비밀번호";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";

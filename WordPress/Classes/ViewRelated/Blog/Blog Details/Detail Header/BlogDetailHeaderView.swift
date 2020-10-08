@@ -127,7 +127,7 @@ class BlogDetailHeaderView: UIView {
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleButton)
 
         /// Constraints for constrained widths (iPad portrait)
-        let minimumPaddingSideConstraints = [
+        let minimumPaddingSideConstraints: [NSLayoutConstraint] = [
             buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 0),
             buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: 0),
         ]
@@ -138,18 +138,22 @@ class BlogDetailHeaderView: UIView {
         let widthConstraint = buttonsStackView.widthAnchor.constraint(equalToConstant: 320)
         widthConstraint.priority = .defaultHigh
 
-        let edgeConstraints = [
+        let stackViewConstraints = [
             stackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
-            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
+            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
+        ]
+        stackViewConstraints.forEach { $0.priority = UILayoutPriority(999) }
+
+        let edgeConstraints = [
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             bottomConstraint,
             widthConstraint
         ]
 
-        NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
+        NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints + stackViewConstraints)
     }
 
     override init(frame: CGRect) {

@@ -33,6 +33,16 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private lazy var service: BlogJetpackSettingsService? = {
+        guard
+            let settings = post.blog.settings,
+            let context = settings.managedObjectContext
+        else {
+            return nil
+        }
+        return BlogJetpackSettingsService(managedObjectContext: context)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -329,6 +339,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
         fetchEditorTheme()
+
+        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
+            self?.gutenberg.updateCapabilities()
+            print("---> Success syncing JETPACK: Enabled=\(self!.post.blog.settings!.jetpackSSOEnabled)")
+        }, failure: { (error) in
+            print("---> ERROR syncking JETPACK")
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -896,11 +913,15 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
-        // The Unsupported Block Editor is disabled for all self-hosted sites even the one that are connected via Jetpack to a WP.com account.
+        // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
         // The option is disabled on Self-hosted sites because they can have their web editor to be set to classic and then the fallback will not work.
-        // We disable in Jetpack site because we don't have the self-hosted site's credentials which are required for us to be able to fetch the site's authentication cookie.
-        // This cookie is needed to authenticate the network request that fetches the unsupported block editor web page.
-        return ( post.blog.isAtomic() || post.blog.isHostedAtWPcom ) && post.blog.webEditor == .gutenberg
+        // Jetpack sites with SSO disabled also have Unsupported Block Editor disabled, since we won't be able to authenticate to their self-hosted site.
+        // Atomic sites can also have SSO disabled (though is an opt-out option).
+
+        let blog = post.blog
+        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+
+        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
     }
 }
 

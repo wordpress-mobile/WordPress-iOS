@@ -197,11 +197,21 @@ class GutenbergLayoutPickerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func createBlankPage(_ sender: Any) {
-        createPage(nil)
+    @IBAction func createBlankPageTapped(_ sender: Any) {
+        createPage(template: nil)
     }
 
-    private func createPage(_ template: String?) {
+    @IBAction func createPageTapped(_ sender: Any) {
+        guard let slug = selectedLayout?.sectionSlug, let position = selectedLayout?.position else {
+            createPage(template: nil)
+            return
+        }
+
+        let layout = layouts.layouts(forCategory: slug)[position]
+        createPage(template: layout.content)
+    }
+
+    private func createPage(template: String?) {
         guard let completion = completion else {
             dismiss(animated: true, completion: nil)
             return
@@ -281,7 +291,8 @@ class GutenbergLayoutPickerViewController: UIViewController {
     private func fetchLayouts() {
         guard let blog = blog else { return }
         isLoading = true
-        PageLayoutService.layouts(forBlog: blog) {[weak self] (results) in
+        let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
             guard let self = self else { return }
             switch results {
             case .success(let fetchedLayouts):

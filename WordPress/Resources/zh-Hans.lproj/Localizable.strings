@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-18 12:54:08+0000 */
+/* Translation-Revision-Date: 2020-10-02 14:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "添加标签";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "添加自定义消息（可选）。";
@@ -1717,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "默认文章形式";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "默认 URL";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章的默认设置";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "读者";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "阅读器 CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "重新发布";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "回复文章…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "报告此文章";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "评论中包含的链接数量超过此数值后，要进行人工审核。";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "您目前正在上传媒体。此操作将会取消上传进程。\n\n确定吗？";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "通常情况下，您可以随时使用刚刚用过的免密登录链接登录。但如果您愿意，也可以设置密码。";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "通常情况下，您可以随时使用刚刚用过的链接登录，但如果您愿意，也可以设置密码。";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "您可以在 iOS 今天\/通知中心视图显示单个站点的统计资料。";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "其他";
+
+/* No comment provided by engineer. */
+"password" = "密码";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
