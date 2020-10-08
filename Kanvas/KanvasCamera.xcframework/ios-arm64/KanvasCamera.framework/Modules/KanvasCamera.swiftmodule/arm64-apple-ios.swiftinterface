@@ -1,6 +1,6 @@
 // swift-interface-format-version: 1.0
 // swift-compiler-version: Apple Swift version 5.3 effective-4.2 (swiftlang-1200.0.29.2 clang-1200.0.30.1)
-// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name KanvasCamera
+// swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name KanvasCamera
 import AVFoundation
 import AVFoundation/*.AVMakeRect*/
 import Accelerate
@@ -61,7 +61,7 @@ public protocol CameraControllerDelegate : AnyObject {
   func didEndDragInteraction()
   func openAppSettings(completion: ((Swift.Bool) -> ())?)
 }
-@objc public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate {
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CameraController : UIKit.UIViewController, KanvasCamera.EditorControllerDelegate {
   weak public var delegate: KanvasCamera.CameraControllerDelegate?
   convenience public init(settings: KanvasCamera.CameraSettings, stickerProvider: KanvasCamera.StickerProvider?, fonts: KanvasCamera.KanvasCameraFonts, analyticsProvider: KanvasCamera.KanvasCameraAnalyticsProvider?, quickBlogSelectorCoordinator: KanvasCamera.KanvasQuickBlogSelectorCoordinating?)
   @available(*, unavailable, message: "use init(settings:) instead")
@@ -168,7 +168,7 @@ public struct CameraFeatures {
   public var gifs: Swift.Bool
   public var multipleExports: Swift.Bool
 }
-@objc final public class CameraSettings : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @objc final public class CameraSettings : ObjectiveC.NSObject {
   final public var enabledModes: Swift.Set<KanvasCamera.CameraMode> {
     get
     set
@@ -303,7 +303,7 @@ public protocol EditorControllerDelegate : AnyObject {
 extension EditorControllerDelegate {
   public func shouldExport() -> Swift.Bool
 }
-@objc final public class EditorViewController : UIKit.UIViewController {
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class EditorViewController : UIKit.UIViewController {
   weak final public var delegate: KanvasCamera.EditorControllerDelegate?
   @available(*, unavailable, message: "use init(settings:, segments:) instead")
   @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)

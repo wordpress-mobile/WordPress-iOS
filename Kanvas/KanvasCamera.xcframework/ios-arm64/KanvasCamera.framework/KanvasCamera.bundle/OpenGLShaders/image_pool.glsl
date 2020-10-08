@@ -12,11 +12,7 @@ void main() {
     float time1 = time * .5 + 23.0;
     vec2 uv = textureCoordinate.xy;
 
-#ifdef SHOW_TILING
-    vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
-#else
     vec2 p = mod(uv * TAU, TAU) - 250.0;
-#endif
 
     vec2 i = vec2(p);
     float c = 1.0;

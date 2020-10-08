@@ -63,7 +63,12 @@ kernel void kernelIdentity(texture2d<float, access::read> inTexture [[ texture(0
                            texture2d<float, access::write> outTexture [[ texture(1) ]],
                            uint2 gid [[ thread_position_in_grid ]])
 {
-    float4 outColor = inTexture.read(gid);
+    uint inWidth = inTexture.get_width();
+    uint outWidth = outTexture.get_width();
+    
+    uint offset = (inWidth - outWidth) > 0 ? (inWidth - outWidth) / 2 : 0;
+    uint2 adjusted = uint2(gid.x + offset, gid.y);
+    float4 outColor = inTexture.read(adjusted);
     outTexture.write(outColor, gid);
 }
 
@@ -125,9 +130,9 @@ kernel void wavepool(texture2d<float, access::read> inTexture [[ texture(0) ]],
     float time = shaderContext.time;
     float width = inTexture.get_width();
     float height = inTexture.get_height();
-    float2 uv = float2(gid.x / width, gid.y / height);
+    float2 uv = float2(float(gid.x) / width, float(gid.y) / height);
     
-    float2 p =  fmod(uv * TAU * 2, TAU) - 250.0;
+    float2 p =  fmod(uv * TAU, TAU) - 250.0;
     float2 i = float2(p);
     float c = 1.0;
     float inten = 0.005;

@@ -30,6 +30,7 @@ class KanvasService {
         settings.features.newCameraModes = true
         settings.features.gifs = false
         settings.features.multipleExports = true
+        settings.crossIconInEditor = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
         return settings
