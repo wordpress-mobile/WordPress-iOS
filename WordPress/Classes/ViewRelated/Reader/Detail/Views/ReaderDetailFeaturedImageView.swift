@@ -94,7 +94,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func viewWillDisappear() {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
-        
+
         restoreNavigationBarAppearance()
     }
 
