@@ -164,16 +164,16 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
         let context = ContextManager.sharedInstance().mainContext
         var blog: Blog? = nil
-        
+
         context.performAndWait {
             guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
                 DDLogError("The media object no longer exists")
                 return
             }
-            
+
             blog = mediaInContext.blog
         }
-        
+
         return blog
     }
 }
