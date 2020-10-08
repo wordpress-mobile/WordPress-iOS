@@ -36,53 +36,77 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     func testGenerateScreenshots() {
 
-        let mySite = MySiteScreen()
+        // Get post editor screenshot
+        let postList = MySiteScreen()
             .showSiteSwitcher()
-            .switchToSite(withTitle: "infocusphotographers.com")
-
-        let postList = mySite
+            .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let firstPostEditorScreenshot = postList.selectPost(withSlug: "summer-band-jam")
-        snapshot("1-PostEditor")
-        firstPostEditorScreenshot.close()
-
-        // Get a screenshot of the drafts feature
-        let secondPostEditorScreenshot = postList.selectPost(withSlug: "ideas")
-        snapshot("5-DraftEditor")
-        secondPostEditorScreenshot.close()
-
-        // Get a screenshot of the full-screen editor
+        let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        sleep(imagesWaitTime) // wait for post images to load
         if isIpad {
-            let ipadScreenshot = postList.selectPost(withSlug: "now-booking-summer-sessions")
-            snapshot("6-No-Keyboard-Editor")
-            ipadScreenshot.close()
+            snapshot("1-Editor")
+        } else {
+            BlockEditorScreen().openBlockPicker()
+            snapshot("1-Editor-With-BlockPicker")
+            BlockEditorScreen().closeBlockPicker()
         }
+        postEditorScreenshot.close()
 
-        if !isIpad {
+        // Get a screenshot of the editor with keyboard (iPad only)
+        if isIpad {
+            let ipadScreenshot = MySiteScreen()
+                .showSiteSwitcher()
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .gotoPostsScreen()
+                .showOnly(.drafts)
+                .selectPost(withSlug: "easy-blueberry-muffins")
+                BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            sleep(imagesWaitTime) // wait for post images to load
+            snapshot("7-Editor-With-Keyboard")
+            ipadScreenshot.close()
+        } else {
             postList.pop()
         }
 
+        // Get My Site screenshot
+        let mySite = MySiteScreen()
+            .showSiteSwitcher()
+            .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
+        snapshot("4-MySite")
+
+        // Get Media screenshot
         _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
-        snapshot("4-Media")
+        snapshot("6-Media")
 
         if !isIpad {
             postList.pop()
         }
+
         // Get Stats screenshot
         let statsScreen = mySite.gotoStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
-            .switchTo(mode: .years)
+            .switchTo(mode: .months)
+        snapshot("3-Stats")
 
-        snapshot("2-Stats")
-
+        // Get Discover screenshot
+        // Currently, the view includes the "You Might Like" section
         TabNavComponent()
-            .gotoNotificationsScreen()
-            .dismissNotificationMessageIfNeeded()
+            .gotoReaderScreen()
+            .openDiscover()
+        snapshot("2-Discover")
 
-        snapshot("3-Notifications")
+        // Get Notifications screenshot
+        let notificationList = TabNavComponent()
+            .gotoNotificationsScreen()
+            .dismissNotificationAlertIfNeeded()
+        if isIpad {
+            notificationList.openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+            .replyToNotification()
+        }
+        snapshot("5-Notifications")
     }
 }

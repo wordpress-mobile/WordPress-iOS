@@ -38,6 +38,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) Menu *updatedMenuForSaving;
+@property (nonatomic, strong) Menu *initialMenuSelection;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
@@ -221,7 +222,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
          */
         [self setNeedsSave:YES forMenu:self.selectedMenuLocation.menu significantChanges:NO];
     } else {
-        [self setNeedsSave:YES forMenu:menu significantChanges:NO];
+        BOOL needsSave = (menu != self.initialMenuSelection) || self.hasMadeSignificantMenuChanges;
+        [self setNeedsSave:needsSave forMenu:menu significantChanges:NO];
     }
     self.selectedMenuLocation.menu = menu;
     [self.headerViewController setSelectedMenu:menu];
@@ -256,6 +258,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.headerViewController.blog = self.blog;
     MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
     self.selectedMenuLocation = selectedLocation;
+    self.initialMenuSelection = selectedLocation.menu;
 
     if (!self.animatesAppearanceAfterSync) {
         self.scrollView.alpha = 1.0;
@@ -643,9 +646,11 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         [self promptForDiscardingChangesBeforeSelectingADifferentLocation:^{
             [self discardAllChanges];
             self.selectedMenuLocation = location;
+            self.initialMenuSelection = location.menu;
         } cancellation:nil];
     } else {
         self.selectedMenuLocation = location;
+        self.initialMenuSelection = location.menu;
     }
 }
 

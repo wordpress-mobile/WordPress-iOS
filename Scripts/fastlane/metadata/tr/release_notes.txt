@@ -1,5 +1,7 @@
-Blok düzenleyici ile ilgili iyileştirmeler. Doğrudan Galeri bloğuna medya düzenleme desteği, Sütun bloğuna ise sütun genişliklerini değiştirme desteği eklenmiştir (bir hayal edin). Ayrıca sağdan sola düzendeki boş metin alanları düzeltilerek, seçilebilir olmaları sağlanmış ve yer tutucular görünür hale getirilmiştir. Yineleme/geri alma eylemleri kolaylaştırılmış, artık tüm cümleleri her seferinde bir karakter geri alma zahmetine son verilmiştir.
+Bu sürümdeki yeniliklere bir göz atın:
 
-Oturum açma işleminde iyileştirmeler. Oturum açma veya kayıt sırasında, ihtiyacınız olan ekrana ulaşmanızı sağlamak için Google kimlik doğrulaması daha kolay hale getirilmiştir. Bir WordPress hesabıyla ilişkili bir Gmail adresi kullanarak kaydolmaya çalışırsanız otomatik olarak oturum açmaya yönlendirilirsiniz. Bunun tersi de geçerlidir, eşleşen bir WordPress hesabına sahip olmayan bir adresle oturum açmaya çalışırsanız kayıt sayfasına yönlendirilirsiniz.
-
-Son olarak, bir düzeltme: Uygulamayı istenmeden iki sosyal hesapla ilişkilendiren, dolayısıyla bir sosyal hesapla oturum açmayı riskli hale getiren hata düzeltilmiştir. Artık risk yok.
+- Grup, Kapak ve Görsel blokları için tam genişlik ve geniş hizalama desteği (daha fazla blok için destek). 1 
+- Resimlerinizde yuvarlak köşeleri seviyor musunuz? Ayrıca Görsel bloğuna Yuvarlak stil için destek ekledik.
+- Bazı kişiler yeni blok eklerken araç çubuğunun hatalı davrandığını görmüş olabilir, ancak bu sorun çözdük.
+- Ayrıca, cihaz yönü değiştirildikten sonra Görsel Önizleme'de resimlerin doğru şekilde konumlandırılmadığını fark ettik, ancak bu sorun da giderildi.
+- Apple'a kaydolduktan sonra kullanıcı adı görüntülemeyle ilgili bir sorun ve maksimum sayıda başarısız oturum açma girişimine ulaştığınızda görüntülenen yanlış bir hata mesajı da dahil olmak üzere kayıt ve oturum açma ile ilgili diğer birkaç sorunu çözdük.

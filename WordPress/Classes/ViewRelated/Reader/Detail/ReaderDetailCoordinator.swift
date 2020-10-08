@@ -61,6 +61,15 @@ class ReaderDetailCoordinator {
     /// If the site is an external feed (not hosted at WPcom and not using Jetpack)
     private(set) var isFeed: Bool?
 
+    /// The perma link URL for the loaded post
+    private var permaLinkURL: URL? {
+        guard let postURLString = post?.permaLink else {
+            return nil
+        }
+
+        return URL(string: postURLString)
+    }
+
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
@@ -173,8 +182,7 @@ class ReaderDetailCoordinator {
     /// - Parameter completion: a completion block
     func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
         guard let authenticator = authenticator,
-            let postURLString = post?.permaLink,
-            let postURL = URL(string: postURLString) else {
+            let postURL = permaLinkURL else {
             completion()
             return
         }
@@ -204,6 +212,7 @@ class ReaderDetailCoordinator {
         })
     }
 
+
     /// Requests a ReaderPost from the service and updates the View.
     ///
     /// Use this method to fetch a ReaderPost from a URL.
@@ -227,8 +236,23 @@ class ReaderDetailCoordinator {
         }
 
         view?.render(post)
+
         bumpStats()
         bumpPageViewsForPost()
+    }
+
+    /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
+    /// once it loads
+    ///
+    private func scrollToHashIfNeeded() {
+        guard
+            let url = postURL,
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment
+        else {
+            return
+        }
+
+        view?.scroll(to: hash)
     }
 
     /// Shows the current post site posts in a new screen
@@ -281,15 +305,24 @@ class ReaderDetailCoordinator {
     /// Given a URL presents it the best way possible.
     ///
     /// If it's an image, shows it fullscreen.
+    /// If it's a fullscreen Story link, open it in the webview controller
     /// If it's a post, open a new detail screen.
     /// If it's a regular URL, open it in the webview controller
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment {
+        // If the URL has an anchor (#)
+        // and the URL is equal to the current post URL
+        if
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
+            let postURL = permaLinkURL,
+            postURL.isHostAndPathEqual(to: url)
+        {
             view?.scroll(to: hash)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
+        } else if url.query?.contains("wp-story") ?? false {
+            presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
         } else if url.isWordPressDotComPost {
@@ -297,6 +330,12 @@ class ReaderDetailCoordinator {
         } else {
             presentWebViewController(url)
         }
+    }
+
+
+    /// Called after the webView fully loads
+    func webViewDidLoad() {
+        scrollToHashIfNeeded()
     }
 
     /// Show the featured image fullscreen
@@ -333,8 +372,7 @@ class ReaderDetailCoordinator {
     private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
-            if let postURLString = post?.permaLink {
-                let postURL = URL(string: postURLString)
+            if let postURL = permaLinkURL {
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }

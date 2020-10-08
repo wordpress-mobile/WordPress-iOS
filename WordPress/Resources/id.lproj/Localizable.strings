@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-28 08:00:24+0000 */
+/* Translation-Revision-Date: 2020-10-02 14:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -318,9 +318,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ALAMAT";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = "Perihal";
 
 /* My Profile 'About me' label */
@@ -328,9 +326,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Tentang WordPress untuk iOS";
-
-/* Category description for page templates */
-"About pages" = "Halaman Tentang";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -422,6 +417,9 @@
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Tambahkan Tag";
 
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Tambahkan pesan kustom (opsional).";
 
@@ -466,6 +464,9 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Tambahkan item menu ke turunan";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "Tambahkan menu baru";
 
 /* Title of button to add a new site. */
 "Add new site" = "Tambah situs baru";
@@ -616,6 +617,9 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Terjadi error yang tidak diketahui. Silakan coba lagi.";
+
+/* No comment provided by engineer. */
+"Angle" = "Sudut";
 
 /* No comment provided by engineer. */
 "Annotations Sidebar" = "Bilah Sisi Anotasi";
@@ -868,18 +872,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "Pengaturan blok";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Pos-pos Blog";
-
-/* Category description for page templates */
-"Blog pages" = "Halaman Blog";
 
 /* Create new Blog Post button title */
 "Blog post" = "Pos blog";
@@ -917,6 +916,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Oleh %@.";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "Dengan melanjutkan, Anda menyetujui _Ketentuan Layanan_ kami.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Dengan mendaftarkan domain ini, Anda menyetujui <a>Syarat dan Ketentuan<\/a>.";
@@ -1408,10 +1410,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Koneksi";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "Hubungi";
-
 /* Support email label. */
 "Contact Email" = "Hubungi via Email";
 
@@ -1421,9 +1419,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "Hubungi Dukungan";
-
-/* Category description for page templates */
-"Contact pages" = "Halaman kontak";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1452,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Lanjutkan dengan Google";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "Lanjutkan dengan WordPress.com";
 
 /* Title of a Quick Start Tour */
@@ -1724,6 +1720,9 @@
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format Pos Default";
+
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL Asal";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Default untuk Pos Baru";
@@ -2038,7 +2037,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "Surel";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Alamat email";
 
 /* Notification Settings Channel */
@@ -2123,9 +2124,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "Masukkan informasi akun Anda untuk %@.";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Masukkan alamat email Anda untuk login atau membuat akun WordPress.com.";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Masukkan kata sandi saja.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "Masukkan alamat situs Anda";
 
 /* Generic error alert title
    Generic error.
@@ -2235,7 +2242,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Keluar dari Layar Penuh";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Diperluas";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2246,6 +2254,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "Membentangkan daftar tugas yang telah selesai.";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "Perluas untuk memilih menu yang berbeda";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "Perluas untuk memilih area menu yang berbeda";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Jelaskan tentang apa situs ini.";
@@ -2372,6 +2386,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "Ikuti Situs";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Ikuti Percakapan";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Ikuti situs lain";
 
@@ -2408,6 +2425,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Mengikuti %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "Mengikuti Percakapan";
+
 /* Filters Follows Notifications */
 "Follows" = "Mengikuti";
 
@@ -2416,6 +2436,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Mengikuti blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "Ikuti komentar pada pos.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Ikuti tag.";
@@ -2463,6 +2486,12 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Membuat Pratinjau";
 
+/* View title for initial auth views. */
+"Get Started" = "Memulai";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Dapatkan tautan login lewat email";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Aktiflah! Komentari pos dari blog yang Anda ikuti.";
 
@@ -2487,9 +2516,6 @@ translators: sample content for \"Team\" page template */
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Jalankan situs Anda";
-
-/* View title for initial auth views. */
-"Getting Started" = "Memulai";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Mencari informasi akun";
@@ -2688,6 +2714,9 @@ translators: sample content for \"Team\" page template */
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Jika dihapus, pengikut ini akan berhenti menerima pemberitahuan tentang situs ini, kecuali jika mereka kembali mengikuti.";
 
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Jika Anda melanjutkan dengan Apple atau Google dan belum memiliki akun WordPress.com, Anda akan membuat akun dan menyetujui _Ketentuan Layanan_ kami.";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Jika Anda menghapus %1$@, pengguna itu tak lagi bisa mengakses situs ini, tetapi segala konten yang dibuat oleh %2$@ tetap ada di situs.";
 
@@ -2829,6 +2858,9 @@ translators: sample content for \"Team\" page template */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL tidak valid, pastikan Anda menuliskan alamat situs yang valid.";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Titik akhir tidak valid";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Nama pengguna tidak sah";
@@ -3276,6 +3308,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Nama Menu";
+
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "Area menu: %1$@, %2$d area menu tersedia";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "Menu di area %1$@: %2$@, %3$d menu tersedia";
 
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
@@ -3854,6 +3892,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "Pesan opsional yang akan disertakan dalam undangan.";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "Atau";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Atau login dengan _memasukkan alamat situs Anda_.";
 
@@ -4155,13 +4196,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Bahasa populer";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portofolio";
-
-/* Category description for page templates */
-"Portfolio pages" = "Halaman portofolio";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Posisi atau Jabatan";
@@ -4359,9 +4395,6 @@ translators: sample content for \"Services\" page template */
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Melanjutkan tindakan ini akan menghapus semua data WordPress.com dari perangkat ini, dan menghapus semua draf yang disimpan secara lokal. Anda tidak akan kehilangan apa pun yang sudah disimpan di blog WordPress.com.";
 
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "Memproses Akun";
-
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Nama Proyek";
 
@@ -4474,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Pembaca";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL CSS Pembaca";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Reblog";
@@ -4660,6 +4697,9 @@ translators: sample content for \"Services\" page template */
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Balas pos…";
 
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Melaporkan Pos Ini";
+
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Wajibkan persetujuan manual untuk komentar yang memuat lebih dari jumlah tautan ini.";
 
@@ -4690,7 +4730,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Atur ulang penyaring";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset kata sandi";
 
 /* Screen title. Resize and crop an image. */
@@ -5003,6 +5043,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "Pilih situs mana saja yang akan ditampilkan di penyeleksi situs.";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "Terpilih";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Media yang dipilih bukan video.";
 
@@ -5017,6 +5060,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Pilih domain ini untuk digunakan untuk situs Anda.";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "Pilih item ini";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Kirim Masukan";
@@ -5048,13 +5094,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Layanan";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "Layanan";
-
-/* Category description for page templates */
-"Services pages" = "Halaman layanan";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Atur Gambar Unggulan";
@@ -5502,6 +5543,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Berhasil menginstal %@.";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "Berhasil berlangganan komentar";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "Berhasil berhenti berlangganan komentar";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Saran";
@@ -5628,6 +5675,9 @@ translators: sample content for \"Services\" page template */
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Ketuk untuk membatalkan unggahan.";
 
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "Ketuk untuk menciutkan tag pos";
+
 /* Accessibility hint */
 "Tap to customize insights" = "Ketuk untuk menyesuaikan wawasan";
 
@@ -5640,6 +5690,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Ketuk untuk menyembunyikan keyboard";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "Ketuk untuk melihat semua tag untuk pos ini";
+
 /* Accessibility hint */
 "Tap to select the next period" = "Ketuk untuk memilih periode selanjutnya";
 
@@ -5649,6 +5702,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Tekan untuk memilih blog yang akan diposting";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "Ketuk untuk melihat pos untuk tag ini";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "Ketuk untuk mengelola situs yang Anda ikuti.";
@@ -5656,13 +5712,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "Tim";
-
-/* Category description for page templates */
-"Team pages" = "Halaman tim";
 
 /* Section title of the teams reader section. */
 "Teams" = "Tim-tim";
@@ -5847,6 +5898,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Terjadi error yang tidak terduga saat mengirimkan balasan Anda";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "Terjadi error yang tidak terduga saat berlangganan komentar";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "Terjadi error yang tidak terduga saat berhenti berlangganan komentar";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Terjadi kesalahan yang tidak terduga saat memperbarui Pengaturan Pemberitahuan";
@@ -6794,7 +6851,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Kami akan mengirimkan email berisi link ajaib yang bisa Anda gunakan untuk login dalam sekejap, tanpa kata sandi. Tak perlu lagi repot mengetik!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "Kami akan mengirimkan email berisi magic link untuk membuat akun WordPress.com baru Anda.";
+"We'll email you a signup link to create your new WordPress.com account." = "Kami akan mengirimi Anda email berisi tautan pendaftaran untuk membuat akun WordPress.com baru.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Kami akan memberi tahu Anda saat mendapatkan pengikut, komentar, dan suka.";
@@ -6838,6 +6895,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Kami tidak bisa terhubung ke situs Jetpack di URL tersebut. Hubungi kami untuk mendapatkan bantuan.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kami telah mengirimi Anda email berisi tautan pendaftaran untuk membuat akun WordPress.com baru. Periksa email Anda di perangkat ini, dan ketuk tautan dalam email yang Anda terima dari WordPress.com";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Kami mengalami masalah saat mengubah domain utama di situs Anda — tetapi jangan khawatir, domain Anda telah berhasil dibeli.";
 
@@ -6876,9 +6936,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kami telah menambahkan lebih banyak tugas untuk membantu Anda menumbuhkan audiens.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kami telah mengirimi Anda e-mail berisi tautan pendaftaran untuk membuat akun WordPress.com baru. Periksa e-mail Anda di perangkat ini, dan ketuk tautan dalam e-mail yang Anda terima dari WordPress.com";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Kami telah melakukan beberapa perubahan pada daftar periksa Anda";
@@ -7082,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Saat ini Anda sedang mengunggah media. Tindakan ini dapat membatalkan proses unggahan yang sedang berlangsung.\n\nApakah Anda yakin?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Anda dapat login dengan tautan tanpa kata sandi kapan saja seperti yang Anda lakukan sebelumnya, tetapi Anda juga dapat menyiapkan kata sandi jika ingin.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Anda dapat menampilkan statistik situs tunggal di tampilan iOS Today\/Pusat Pemberitahuan.";
@@ -7326,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "lainnya";
+
+/* No comment provided by engineer. */
+"password" = "Kata sandi";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";

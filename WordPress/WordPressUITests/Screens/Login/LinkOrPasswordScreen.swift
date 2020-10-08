@@ -1,6 +1,8 @@
 import Foundation
 import XCTest
 
+// TODO: remove when unifiedAuth is permanent.
+
 private struct ElementStringIDs {
     static let passwordOption = "Use Password"
     static let linkButton = "Send Link Button"

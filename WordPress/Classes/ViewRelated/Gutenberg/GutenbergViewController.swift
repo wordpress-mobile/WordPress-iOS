@@ -33,6 +33,16 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private lazy var service: BlogJetpackSettingsService? = {
+        guard
+            let settings = post.blog.settings,
+            let context = settings.managedObjectContext
+        else {
+            return nil
+        }
+        return BlogJetpackSettingsService(managedObjectContext: context)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -329,6 +339,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
         fetchEditorTheme()
+        presentNewPageNoticeIfNeeded()
+
+        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
+            self?.gutenberg.updateCapabilities()
+            print("---> Success syncing JETPACK: Enabled=\(self!.post.blog.settings!.jetpackSSOEnabled)")
+        }, failure: { (error) in
+            print("---> ERROR syncking JETPACK")
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -445,6 +463,37 @@ class GutenbergViewController: UIViewController, PostEditor {
             return
         }
         gutenberg.setFocusOnTitle()
+    }
+
+    private func presentNewPageNoticeIfNeeded() {
+        guard FeatureFlag.gutenbergModalLayoutPicker.enabled else { return }
+
+        // Validate if the post is a newly created page or not.
+        guard post is Page,
+            post.isDraft(),
+            post.remoteStatus == AbstractPostRemoteStatus.local else { return }
+
+        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
+        gutenberg.showNotice(message)
+    }
+
+    private func handleMissingBlockAlertButtonPressed() {
+        let blog = post.blog
+        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+        if JetpackSSOEnabled == false {
+            let controller = JetpackSecuritySettingsViewController(blog: blog)
+            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
+            let navController = UINavigationController(rootViewController: controller)
+            present(navController, animated: true)
+        }
+    }
+
+    @objc private func jetpackSettingsControllerDoneButtonPressed() {
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.gutenberg.updateCapabilities()
+            }
+        }
     }
 
     // MARK: - Event handlers
@@ -782,6 +831,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             withSupportButton: false
         )
     }
+
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
@@ -808,8 +858,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
         return gutenbergSettings.starterPageTemplatesTooltipShown
     }
+
     func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
         gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
+    }
+
+    func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
+        switch buttonType {
+            case .missingBlockAlertActionButton:
+                handleMissingBlockAlertButtonPressed()
+        }
     }
 }
 
@@ -851,6 +909,10 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+    var isPreview: Bool {
+        return false
+    }
+
     var loadingView: UIView? {
         return ghostView
     }
@@ -891,16 +953,19 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+            .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
-        // The Unsupported Block Editor is disabled for all self-hosted sites even the one that are connected via Jetpack to a WP.com account.
-        // The option is disabled on Self-hosted sites because they can have their web editor to be set to classic and then the fallback will not work.
-        // We disable in Jetpack site because we don't have the self-hosted site's credentials which are required for us to be able to fetch the site's authentication cookie.
-        // This cookie is needed to authenticate the network request that fetches the unsupported block editor web page.
-        return ( post.blog.isAtomic() || post.blog.isHostedAtWPcom ) && post.blog.webEditor == .gutenberg
+        // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
+        // This is because they can have their web editor to be set to classic and then the fallback will not work.
+
+        let blog = post.blog
+        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+
+        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
     }
 }
 

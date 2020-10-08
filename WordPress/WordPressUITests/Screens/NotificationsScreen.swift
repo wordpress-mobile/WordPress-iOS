@@ -3,28 +3,25 @@ import XCTest
 
 class NotificationsScreen: BaseScreen {
 
-    private struct ElementStringIDs {
-        static let notificationDismissButton = "no-button"
-    }
-
     let tabBar: TabNavComponent
+    let replyButton: XCUIElement
 
     init() {
         let navBar = XCUIApplication().tables["Notifications Table"]
+        replyButton = XCUIApplication().buttons["reply-button"]
         tabBar = TabNavComponent()
 
         super.init(element: navBar)
     }
 
+    func openNotification(withText notificationText: String) -> NotificationsScreen {
+        XCUIApplication().staticTexts[notificationText].tap()
+        return self
+    }
+
     @discardableResult
-    func dismissNotificationMessageIfNeeded() -> NotificationsScreen {
-        //Tap the "Not Now" button to dismiss the notifications prompt
-        let notNowButton = app.buttons[ElementStringIDs.notificationDismissButton]
-
-        if notNowButton.exists {
-            notNowButton.tap()
-        }
-
+    func replyToNotification() -> NotificationsScreen {
+        replyButton.tap()
         return self
     }
 

@@ -1,5 +1,7 @@
-Améliorations de l’éditeur de blocs : il y a le support d’édition des médias directement dans le bloc Galerie, et le bloc de Colonne inclut la prise en charge pour changer les largeurs de colonne (Classe !). Nous avons aussi corriger les champs de texte vide dans les mises en page de droite à gauche, donc ils sont sélectionnable et les textes indicatifs sont visibles. Et nous avons rationalisé le processus Annuler/Rétablir, plus question d’annuler une phrase entière, un caractère à la fois.
+Jetez un coup d’œil à ce qui est nouveau dans cette version :
 
-Améliorations de la connexion ! Pendant la connexion ou l’inscription, l’authentification Google est plus simple pour être sûr d’obtenir l’écran dont vous avez besoin. Si vous essayez de vous inscrire avec une adresse Gmail qui est associée avec votre compte WordPress, nous vous redirigerons automatiquement vers la page de connexion. Et vice et versa, donc si vous tentez de vous connecter avec une adresse qui ne correspond pas avec un compte WordPress, nous cous redirigerons vers la page d’inscription.
-
-Et finalement un correctif : nous nous sommes occupé d’un bug qui a par inadvertance lié l’application avec deux comptes sociaux.
+- Prise en charge de la largeur complète et de l’alignement large pour les blocs groupe, bannière et image (et plus de blocs à venir).
+- Vous aimez les coins arrondis sur vos images ? Nous avons aussi ajoutée la prise en charge du style arrondi pour le bloc image.
+- Quelques personnes avaient constaté un problème de comportement de la barre d’outil lors de l’ajout d’un nouveau bloc. C’est réparé.
+- Nous avons également remarqué que dans l’aperçu de l’image, les images n’étaient pas positionnées correctement  après un changement de l’orientation de l’appareil. Cela a aussi été réparé.
+- Nous avons résolu quelques autres problèmes autour de l’inscription et de la connexion, y compris un problème d’affichage de l’identifiant après une connexion avec Apple, et un message d’erreur incorrect qui s’affichait lorsque vous aviez atteint le nombre maximum de connexion échouée.

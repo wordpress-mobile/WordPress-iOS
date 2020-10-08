@@ -16,7 +16,7 @@ class ReaderManageScenePresenter: ScenePresenter {
         var tabbedItem: TabbedViewController.TabbedItem {
             switch self {
             case .tags:
-                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags", comment: "Followed Tags Title"),
+                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Topics", comment: "Followed Topics Title"),
                                                                viewController: makeViewController(),
                                                                accessibilityIdentifier: "FollowedTags")
             case .sites:

@@ -1,5 +1,7 @@
-Miglioramenti all'editor a blocchi. Il supporto per la modifica degli elementi multimediali si trova proprio nel blocco Galleria e il blocco Colonna comprende il supporto per la modifica delle larghezze delle colonne. Abbiamo anche corretto i campi di testo vuoti nel layout da destra a sinistra, quindi sono selezionabili e i segnaposto sono visibili. Inoltre, abbiamo semplificato il processo di annullamento/ripristino: niente più annullamenti di intere frasi un carattere alla volta.
+Dai un'occhiata alle novità di questo rilascio:
 
-Miglioramenti alla procedura di accesso. Durante la procedura di accesso o iscrizione, l'autenticazione di Google è più semplice per garantirti di arrivare alla schermata necessaria. Se provi ad iscriverti con un indirizzo Gmail associato a un account WordPress, ti reindirizzeremo automaticamente alla procedura di accesso. Allo stesso modo, se provi ad accedere con un indirizzo che non corrisponde a un account WordPress, ti rimanderemo alla procedura di iscrizione.
-
-Infine, una correzione: abbiamo risolto un bug che involontariamente collegava l'app a due account social, rendendo inaffidabile l'accesso con un account social. Problema risolto.
+- Supporto per l'allineamento "a larghezza intera" e "largo" per i blocchi Gruppo, Copertina e Immagine (con supporto per altri blocchi in arrivo).
+- Ti piacciono gli angoli arrotondati nelle immagini? Abbiamo anche aggiunto il supporto per lo stile arrotondato nel blocco Immagine
+- Alcune persone potrebbero aver riscontrato un comportamento anomalo della barra degli strumenti durante l'aggiunta di un nuovo blocco, ma questo problema è stato risolto.
+- Abbiamo anche notato che nell'anteprima dell'immagine, le immagini non venivano posizionate correttamente dopo la modifica dell'orientamento del dispositivo, ma anche questo problema è stato risolto.
+- Abbiamo risolto alcuni altri problemi relativi all'iscrizione e all'accesso, incluso un problema con la visualizzazione del nome utente dopo l'iscrizione con Apple e con un messaggio di errore non corretto che veniva visualizzato al raggiungimento del numero massimo di tentativi di accesso non riusciti.

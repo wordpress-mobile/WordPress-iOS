@@ -4,14 +4,8 @@
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
+    case readerCSS
     case unifiedAuth
-    case unifiedSiteAddress
-    case unifiedGoogle
-    case unifiedApple
-    case unifiedWordPress
-    case unifiedKeychainLogin
-    case meMove
-    case floatingCreateButton
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
@@ -20,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
+    case unifiedPrologueCarousel
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -32,21 +27,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .readerCSS:
+            return false
         case .unifiedAuth:
-            return true
-        case .unifiedSiteAddress:
-            return true
-        case .unifiedGoogle:
-            return true
-        case .unifiedApple:
-            return true
-        case .unifiedWordPress:
-            return true
-        case .unifiedKeychainLogin:
-            return true
-        case .meMove:
-            return true
-        case .floatingCreateButton:
             return true
         case .newReaderNavigation:
             return true
@@ -61,8 +44,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergModalLayoutPicker:
             return false
         case .whatIsNew:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .newNavBarAppearance:
+            return BuildConfiguration.current == .localDeveloper
+        case .unifiedPrologueCarousel:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -96,22 +81,10 @@ extension FeatureFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
+        case .readerCSS:
+            return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .unifiedSiteAddress:
-            return "Unified Auth - Site Address"
-        case .unifiedGoogle:
-            return "Unified Auth - Google"
-        case .unifiedApple:
-            return "Unified Auth - Apple"
-        case .unifiedWordPress:
-            return "Unified Auth - WordPress"
-        case .unifiedKeychainLogin:
-            return "Unified Auth - iCloud Keychain"
-        case .meMove:
-            return "Move the Me Scene to My Site"
-        case .floatingCreateButton:
-            return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
         case .swiftCoreData:
@@ -128,14 +101,14 @@ extension FeatureFlag {
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
+        case .unifiedPrologueCarousel:
+            return "Unified Prologue Carousel"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .floatingCreateButton:
             return false
         case .newReaderNavigation:
             return false

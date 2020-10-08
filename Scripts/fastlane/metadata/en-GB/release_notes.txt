@@ -1,5 +1,7 @@
-Block editor improvements! There’s media editing support right in the Gallery block, and the Column block includes support for changing column widths (fancy!). We also fixed the empty text fields in right-to-left layout, so they’re selectable, and placeholders are visible. And we streamlined the redo/undo process – no more undoing whole sentences, one character at a time.
+Take a peek at what’s new in this release:
 
-Login improvements! During login or signup, Google authentication is simpler, to make sure you get to the screen you need. If you try to sign up with a Gmail address that’s associated with a WordPress account, we’ll automatically redirect you to login. And vice-versa, so if you try to log in with an address that doesn’t have a matching WordPress account, we’ll send you to signup.
-
-And finally, a fix: we took care of a bug that inadvertently linked the app with two social accounts, therefore making login with a social account wonky. It is wonky no more!
+- Support for full-width and wide alignment for the Group, Cover, and Image blocks (with support for more blocks to come).
+- Love rounded corners on your images? We’ve also added support for the Rounded style in the Image block.
+- Some people may have experienced a misbehaving Toolbar when adding a new block, but we’ve fixed this issue.
+- We also noticed that in Image Preview, images were not positioned correctly after changing device orientation, but this has been addressed, too.
+- We resolved a few other issues around signup and login, including a username display issue after signing up with Apple, and an incorrect error message that displayed when you reach a maximum number of failed login attempts.

@@ -39,11 +39,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
-                                                                enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled,
-                                                                enableUnifiedGoogle: FeatureFlag.unifiedGoogle.enabled,
-                                                                enableUnifiedApple: FeatureFlag.unifiedApple.enabled,
-                                                                enableUnifiedWordPress: FeatureFlag.unifiedWordPress.enabled,
-                                                                enableUnifiedKeychainLogin: FeatureFlag.unifiedKeychainLogin.enabled)
+                                                                enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -194,8 +190,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
         WPStyleGuide.configureNavigationAppearance()
 
+        // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
+        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
+        // it here manually before tracking the new step.
+        let step = tracker.state.lastStep
+
+        tracker.track(step: .help)
+
         let controller = SupportTableViewController { [weak self] in
             self?.tracker.track(click: .dismiss)
+            self?.tracker.set(step: step)
         }
         controller.sourceTag = sourceTag
 

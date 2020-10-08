@@ -22,6 +22,8 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTabViewController.configureRestoration(on: self)
 
+        ReaderCardService().clean()
+
         viewModel.filterTapped = { [weak self] (fromView, completion) in
             guard let self = self else {
                 return
@@ -64,6 +66,10 @@ class ReaderTabViewController: UIViewController {
 
         if !FeatureFlag.readerImprovementsPhase2.enabled {
             markSelectedInterestsVisited()
+        }
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
         }
     }
 

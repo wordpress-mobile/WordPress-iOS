@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-08-26 07:43:24+0000 */
+/* Translation-Revision-Date: 2020-10-02 14:17:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -318,9 +318,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESĂ";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = "Despre";
 
 /* My Profile 'About me' label */
@@ -328,9 +326,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Despre WordPress pentru iOS";
-
-/* Category description for page templates */
-"About pages" = "Pagini Despre";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Pagini accelerate pentru mobil (PAM)";
@@ -422,6 +417,9 @@
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Adaugă o etichetă";
 
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Adaugă un mesaj personalizat (opțional).";
 
@@ -466,6 +464,9 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Adaugă element meniu la copil";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "Adaugă meniu nou";
 
 /* Title of button to add a new site. */
 "Add new site" = "Adaugă sit nou";
@@ -616,6 +617,9 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "A apărut o eroare necunoscută. Te rog încearcă din nou.";
+
+/* No comment provided by engineer. */
+"Angle" = "Unghi";
 
 /* No comment provided by engineer. */
 "Annotations Sidebar" = "Bară laterală adnotări";
@@ -868,18 +872,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "Setări blocuri";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Articole de blog";
-
-/* Category description for page templates */
-"Blog pages" = "Pagini blog";
 
 /* Create new Blog Post button title */
 "Blog post" = "Articol blog";
@@ -917,6 +916,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "De %@.";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "Dacă continui, ești de acord cu _Termenii noștri de utilizare ai serviciului_.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Prin înregistrarea acestui domeniu ești de acord cu\n<a>termenii&nbsp;și&nbsp;condițiile<\/a>.";
@@ -1408,10 +1410,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Conexiuni";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "Contact";
-
 /* Support email label. */
 "Contact Email" = "Email de contact";
 
@@ -1421,9 +1419,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "Contactează suportul";
-
-/* Category description for page templates */
-"Contact pages" = "Pagini de contact";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1452,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continuă cu Google";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "Continuă cu WordPress.com";
 
 /* Title of a Quick Start Tour */
@@ -1725,6 +1721,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Format articol implicit";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL implicit";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Implicite pentru articole noi";
 
@@ -1738,7 +1737,7 @@
 "Delete" = "Ștergre";
 
 /* Menus confirmation button for deleting a menu. */
-"Delete Menu" = "Șterge meniu";
+"Delete Menu" = "Șterge meniul";
 
 /* Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
@@ -1842,7 +1841,7 @@
    Verb. Button title. Tapping dismisses a prmopt.
    Verb. User action to dismiss error alert when failing to load media item.
    Verb. User action to dismiss error alert when failing to share media. */
-"Dismiss" = "Înlăturat";
+"Dismiss" = "Respinge";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Renunță la pasul %@ din Inițierea rapidă";
@@ -2041,7 +2040,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "Email";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Adresă de email";
 
 /* Notification Settings Channel */
@@ -2126,9 +2127,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "Introdu informațiile contului pentru %@.";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Introdu adresa ta de email pentru a te autentifica sau creează un cont WordPress.com.";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "În schimb, introdu parola.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "Introdu adresa sitului tău";
 
 /* Generic error alert title
    Generic error.
@@ -2238,7 +2245,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Ieși din ecranul complet";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Extinse";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2249,6 +2257,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "Extinde lista sarcinilor finalizate.";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "Se extinde pentru a selecta un alt meniu";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "Se extinde pentru a selecta o altă zonă din meniu";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explică despre ce vorba în acest sit.";
@@ -2375,6 +2389,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "Urmărește situl";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Urmărește conversația";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Urmărește alte situri";
 
@@ -2411,6 +2428,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Urmăresc %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "Urmăresc conversația";
+
 /* Filters Follows Notifications */
 "Follows" = "Urmăriri";
 
@@ -2419,6 +2439,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Urmărește blogul.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "Urmărește comentariile la un articol.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Urmărește eticheta.";
@@ -2451,7 +2474,7 @@
 "From this device" = "De pe acest dispozitiv";
 
 /* Full size image. (default). Should be the same as in core WP. */
-"Full Size" = "Mărime întreagă";
+"Full Size" = "Dimensiune completă";
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
@@ -2465,6 +2488,12 @@
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generez previzualizarea";
+
+/* View title for initial auth views. */
+"Get Started" = "Începe";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Primești o legătură de autentificare prin email";
 
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Fii activ! Comentează la articole de pe blogurile pe care le urmărești.";
@@ -2490,9 +2519,6 @@ translators: sample content for \"Team\" page template */
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Obții un sit care funcționează și rulează";
-
-/* View title for initial auth views. */
-"Getting Started" = "Începe";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Preiau informațiile contului";
@@ -2691,6 +2717,9 @@ translators: sample content for \"Team\" page template */
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Dacă-i înlăturat, acest urmăritor nu va mai primi notificări despre sit, decât dacă îl reurmărește.";
 
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Dacă continui cu Apple sau Google și nu ai deja un cont WordPress.com, îți creezi un cont și ești de acord cu _Termenii de utilizare ai serviciului_ nostru.";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Dacă-l înlături pe %1$@, el nu va mai putea accesa acest sit, dar orice conținut creat de %2$@ va rămâne pe sit.";
 
@@ -2832,6 +2861,9 @@ translators: sample content for \"Team\" page template */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL invalid, te rog verifică dacă ai scris o adresă de sit validă.";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Punct-final invalid";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Nume de utilizator invalid";
@@ -3279,6 +3311,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Nume meniu";
+
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "Zonă meniu: %1$@, %2$d zone de meniu disponibile";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "Meniu în zona %1$@: %2$@, %3$d meniuri disponibile";
 
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
@@ -3857,6 +3895,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "Mesaj opțional care să fie inclus în invitație.";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "Sau";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Sau autentifică-te prin _introducerea adresei sitului tău_.";
 
@@ -4158,13 +4199,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Limbi populare";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portofoliu";
-
-/* Category description for page templates */
-"Portfolio pages" = "Pagini portofolii";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Poziția sau funcția";
@@ -4362,9 +4398,6 @@ translators: sample content for \"Services\" page template */
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Continuând se vor îndepărta toate datele WordPress.com de pe acest dispozitiv și se vor șterge toate ciornele salvate local. Nu vei pierde nimic din ce a fost deja salvat pe blogul\/blogurile tale WordPress.com.";
 
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "Procesez contul";
-
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Nume proiect";
 
@@ -4477,8 +4510,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Cititor";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL CSS pentru Cititor";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Re-publică";
@@ -4663,6 +4700,9 @@ translators: sample content for \"Services\" page template */
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Răspunde la articol...";
 
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Raportează acest articol";
+
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "E necesară aprobarea manuală a comentariilor ce includ mai mult decât acest număr de legături.";
 
@@ -4693,7 +4733,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Resetează filtrul";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Resetează-ți parola";
 
 /* Screen title. Resize and crop an image. */
@@ -5006,6 +5046,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "selectează ce situri să fie arătate în selectorul de situri.";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "Selectat";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Media selectată nu este un video.";
 
@@ -5020,6 +5063,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Selectează acest domeniu pentru a-l folosi pentru situl tău.";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "Se selectează acest element";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Trimite impresii";
@@ -5051,13 +5097,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviciu";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "Servicii";
-
-/* Category description for page templates */
-"Services pages" = "Pagini servicii";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Setează imaginea reprezentativă";
@@ -5505,6 +5546,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ instalat cu succes.";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "Te-ai abonat cu succes la comentarii";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "Te-ai dezabonat cu succes de la comentarii";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Sugestii";
@@ -5631,6 +5678,9 @@ translators: sample content for \"Services\" page template */
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
 
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "Atinge pentru a restrânge etichetele articolului";
+
 /* Accessibility hint */
 "Tap to customize insights" = "Atinge pentru a personaliza perspectivele";
 
@@ -5643,6 +5693,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Atinge pentru a ascunde tastatura";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "Atinge pentru a vedea toate etichetele pentru acest articol";
+
 /* Accessibility hint */
 "Tap to select the next period" = "Atinge pentru a selecta perioada următoare";
 
@@ -5652,6 +5705,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Atinge pentru a selecta pe ce blog să se facă publicarea";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "Atinge pentru a vedea articolele cu această etichetă";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "Atingerea îți permite să administrezi siturile pe care le urmărești.";
@@ -5659,13 +5715,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Clasificare";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "Echipă";
-
-/* Category description for page templates */
-"Team pages" = "Pagini echipă";
 
 /* Section title of the teams reader section. */
 "Teams" = "Echipe";
@@ -5850,6 +5901,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "A apărut o eroare neașteptată în timpul trimiterii răspunsului tău";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "A apărut o eroare neașteptată în timpul abonării la comentarii.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "A apărut o eroare neașteptată în timpul dezabonării de la comentarii.";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "A apărut o eroare neașteptată în timpul actualizării setărilor pentru notificări";
@@ -6797,7 +6854,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Îți vom trimite prin email o legătură magică care te va autentifica instantaneu, fără nicio parolă. Nu te mai chinui să tastezi!";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "Îți vom trimite prin email o legătură magică pentru a-ți crea noul cont WordPress.com.";
+"We'll email you a signup link to create your new WordPress.com account." = "Îți vom trimite prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Te vom notifica când ai urmăritori noi, primești comentarii și aprecieri.";
@@ -6841,6 +6898,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Nu putem să ne conectăm la situl Jetpack la acel URL. Contactează-ne pentru asistență.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ți-am trimis prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com. Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Am avut probleme la modificarea domeniului principal pentru situl tău — dar nu-ți face griji, domeniul a fost cumpărat cu succes.";
 
@@ -6879,9 +6939,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Am adăugat mai multe sarcini pentru a te ajuta să-ți crești audiența.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ți-am trimis prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com. Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Am făcut câteva modificări în lista de verificări";
@@ -7085,7 +7142,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Acum încarci elemente media. Această acțiune va anula încărcările în curs.\n\nEști sigur?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Poți să te autentifici mereu cu o legătură magică precum cea pe care tocmai ai folosit-o, dar poți, de asemenea, să inițializezi o parolă dacă preferi.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Poți să te autentifici mereu cu o legătură, ca cea pe care tocmai ai folosit-o, dar poți, de asemenea, să inițializezi o parolă, dacă preferi.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Poți afișa statisticile unui singur sit în ecranul iOS azi\/Centrul de notificări.";
@@ -7329,6 +7386,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "alte";
+
+/* No comment provided by engineer. */
+"password" = "parolă";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
