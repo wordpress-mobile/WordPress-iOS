@@ -241,7 +241,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         self.searchText = word;
         if (self.searchText.length > 1) {
             NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (username contains[c] %@)",
                                             searchQuery, searchQuery];
             self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
@@ -309,8 +309,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
+    AtMentionSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.username];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
@@ -320,7 +320,7 @@ CGFloat const STVSeparatorHeight = 1.f;
             return;
         }
 
-        Suggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
+        AtMentionSuggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
         if (cell.imageDownloadHash != reloaded.imageURL.hash) {
             return;
         }
@@ -335,9 +335,9 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    AtMentionSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     [self.suggestionsDelegate suggestionsTableView:self
-                               didSelectSuggestion:suggestion.userLogin
+                               didSelectSuggestion:suggestion.username
                                      forSearchText:[self.searchText substringFromIndex:1]];
 }
 
@@ -362,7 +362,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Avatar helper
 
-- (void)loadAvatarForSuggestion:(Suggestion *)suggestion success:(void (^)(UIImage *))success
+- (void)loadAvatarForSuggestion:(AtMentionSuggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
     UIImage *image = [suggestion cachedAvatarWith:imageSize];

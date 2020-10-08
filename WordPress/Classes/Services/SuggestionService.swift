@@ -11,7 +11,6 @@ extension NSNotification.Name {
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {
 
-    private let suggestionsCache = NSCache<NSNumber, NSArray>()
     private var siteIDsCurrentlyBeingRequested = [NSNumber]()
 
     static let shared = SuggestionService()
@@ -23,9 +22,13 @@ class SuggestionService {
     @param siteID ID of the blog/site to retrieve suggestions for
     @return An array of suggestions
     */
-    func suggestions(for siteID: NSNumber) -> [Suggestion]? {
-        if let cachedSuggestions = suggestionsCache.object(forKey: siteID) {
-            return cachedSuggestions as? [Suggestion]
+    func suggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
+        let context = ContextManager.shared.mainContext
+        guard let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID) else {
+            return nil
+        }
+        if let suggestions = blog.atMentionSuggestions, suggestions.isEmpty == false {
+            return Array(suggestions) as? [AtMentionSuggestion]
         }
         updateSuggestions(for: siteID)
         return nil
@@ -55,8 +58,12 @@ class SuggestionService {
             guard let payload = responseObject as? [String: Any] else { return }
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
-            let suggestions = restSuggestions.compactMap { Suggestion(dictionary: $0) }
-            self.suggestionsCache.setObject(suggestions as NSArray, forKey: siteID)
+            let suggestions = restSuggestions.compactMap { AtMentionSuggestion(dictionary: $0, context: context) }
+
+            let context = ContextManager.shared.mainContext
+            let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID)
+            blog?.atMentionSuggestions = Set(suggestions)
+            try? context.save()
 
             // send the siteID with the notification so it could be filtered out
             NotificationCenter.default.post(name: .suggestionListUpdated, object: siteID)
@@ -80,26 +87,17 @@ class SuggestionService {
     @return BOOL Whether the caller should show suggestions
     */
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID else {
+        let context = ContextManager.shared.mainContext
+        guard let siteID = siteID, let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID) else {
             return false
         }
-
-        let suggestions = suggestionsCache.object(forKey: siteID) as? [Suggestion]
 
         // if the device is offline and suggestion list is not yet retrieved
-        if !ReachabilityUtils.isInternetReachable() && suggestions == nil {
-            return false
-        }
-
-        // if the suggestion list is already retrieved and there is nothing to show
-        if let suggestions = suggestions, suggestions.isEmpty {
+        guard ReachabilityUtils.isInternetReachable() || blog.atMentionSuggestions?.isEmpty == false else {
             return false
         }
 
         // if the site is not hosted on WordPress.com
-        let context = ContextManager.shared.mainContext
-        let service = BlogService(managedObjectContext: context)
-        let blog = service.blog(byBlogId: siteID)
-        return blog?.supports(.mentions) == true
+        return blog.supports(.mentions) == true
     }
 }
