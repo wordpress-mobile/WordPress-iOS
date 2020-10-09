@@ -27,7 +27,7 @@ class SuggestionService {
         guard let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID) else {
             return nil
         }
-        if let suggestions = blog.atMentionSuggestions, suggestions.isEmpty == false {
+        if let suggestions = blog.atMentionSuggestions {
             return Array(suggestions) as? [AtMentionSuggestion]
         }
         updateSuggestions(for: siteID)
