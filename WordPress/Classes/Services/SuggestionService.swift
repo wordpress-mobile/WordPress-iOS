@@ -98,6 +98,6 @@ class SuggestionService {
         }
 
         // if the site is not hosted on WordPress.com
-        return blog.supports(.mentions) == true
+        return blog.supports(.mentions)
     }
 }
