@@ -1,3 +1,6 @@
+16.0
+-----
+ 
 15.9
 -----
 * [*] Fixed issue that caused duplicate views to be displayed when requesting a login link. [#14975]
