@@ -36,33 +36,45 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     func testGenerateScreenshots() {
 
-        // Get My Site screenshot
-        let mySite = MySiteScreen()
+        // Get post editor screenshot
+        let postList = MySiteScreen()
             .showSiteSwitcher()
-            .switchToSite(withTitle: "infocusphotographers.com")
-        snapshot("4-MySite")
-
-        // Get BlockPicker screenshot
-        let postList = mySite
+            .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let postEditorScreenshot = postList.selectPost(withSlug: "summer-band-jam")
-        BlockEditorScreen().openBlockPicker()
-        snapshot("1-BlockPicker")
-        BlockEditorScreen().closeBlockPicker()
+        let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        sleep(imagesWaitTime) // wait for post images to load
+        if isIpad {
+            snapshot("1-Editor")
+        } else {
+            BlockEditorScreen().openBlockPicker()
+            snapshot("1-Editor-With-BlockPicker")
+            BlockEditorScreen().closeBlockPicker()
+        }
         postEditorScreenshot.close()
 
-        // Get a screenshot of the full-screen editor
+        // Get a screenshot of the editor with keyboard (iPad only)
         if isIpad {
-            let ipadScreenshot = postList.selectPost(withSlug: "now-booking-summer-sessions")
-            snapshot("6-No-Keyboard-Editor")
+            let ipadScreenshot = MySiteScreen()
+                .showSiteSwitcher()
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .gotoPostsScreen()
+                .showOnly(.drafts)
+                .selectPost(withSlug: "easy-blueberry-muffins")
+                BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            sleep(imagesWaitTime) // wait for post images to load
+            snapshot("7-Editor-With-Keyboard")
             ipadScreenshot.close()
-        }
-
-        if !isIpad {
+        } else {
             postList.pop()
         }
+
+        // Get My Site screenshot
+        let mySite = MySiteScreen()
+            .showSiteSwitcher()
+            .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
+        snapshot("4-MySite")
 
         // Get Media screenshot
         _ = mySite.gotoMediaScreen()
@@ -77,7 +89,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let statsScreen = mySite.gotoStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
-            .switchTo(mode: .years)
+            .switchTo(mode: .months)
         snapshot("3-Stats")
 
         // Get Discover screenshot
@@ -88,9 +100,13 @@ class WordPressScreenshotGeneration: XCTestCase {
         snapshot("2-Discover")
 
         // Get Notifications screenshot
-        TabNavComponent()
+        let notificationList = TabNavComponent()
             .gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
+        if isIpad {
+            notificationList.openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+            .replyToNotification()
+        }
         snapshot("5-Notifications")
     }
 }

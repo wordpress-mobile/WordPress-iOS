@@ -444,13 +444,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
 
-        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (title, template) in
-            self?.createPage(title, template)
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
+            self?.createPage(selectedLayout)
         }
     }
 
-    func createPage(_ title: String? = nil, _ template: String? = nil) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: template)
+    private func createPage(_ starterLayout: PageTemplateLayout?) {
+        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
         present(editorViewController, animated: false)
 
         QuickStartTourGuide.find()?.visited(.newPage)

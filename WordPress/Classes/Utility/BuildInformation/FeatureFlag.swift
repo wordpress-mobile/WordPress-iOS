@@ -6,8 +6,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case meMove
-    case floatingCreateButton
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
@@ -16,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
+    case unifiedPrologueCarousel
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -32,10 +31,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .unifiedAuth:
             return true
-        case .meMove:
-            return true
-        case .floatingCreateButton:
-            return true
         case .newReaderNavigation:
             return true
         case .swiftCoreData:
@@ -51,6 +46,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .whatIsNew:
             return true
         case .newNavBarAppearance:
+            return BuildConfiguration.current == .localDeveloper
+        case .unifiedPrologueCarousel:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -88,10 +85,6 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .meMove:
-            return "Move the Me Scene to My Site"
-        case .floatingCreateButton:
-            return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
         case .swiftCoreData:
@@ -108,14 +101,14 @@ extension FeatureFlag {
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
+        case .unifiedPrologueCarousel:
+            return "Unified Prologue Carousel"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .floatingCreateButton:
             return false
         case .newReaderNavigation:
             return false
