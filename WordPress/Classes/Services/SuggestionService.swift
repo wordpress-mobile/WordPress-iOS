@@ -3,43 +3,45 @@ import Foundation
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {
 
-    private var siteIDsCurrentlyBeingRequested = [NSNumber]()
+    private var blogsCurrentlyBeingRequested = [Blog]()
 
     static let shared = SuggestionService()
 
     /**
     Fetches the suggestions from the network if the device is online, otherwise retrieves previously persisted suggestions.
 
-    @param siteID ID of the blog/site to retrieve suggestions for
+    @param the blog/site to retrieve suggestions for
     @param completion callback containing list of suggestions
     */
-    func suggestions(for siteID: NSNumber, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
+    func suggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
         // If the device is offline, use persisted (cached) suggestions if available
         guard ReachabilityUtils.isInternetReachable() else {
-            completion(retrievePersistedSuggestions(for: siteID))
+            completion(retrievePersistedSuggestions(for: blog))
             return
         }
 
-        fetchAndPersistSuggestions(for: siteID, completion: completion)
+        fetchAndPersistSuggestions(for: blog, completion: completion)
     }
 
     /**
-    Performs a REST API request for the siteID given.
+    Performs a REST API request for the given blog.
     Persists response objects to Core Data.
 
-    @param siteID ID of the blog/site to retrieve suggestions for
+    @param blog/site to retrieve suggestions for
     */
-    private func fetchAndPersistSuggestions(for siteID: NSNumber, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
+    private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
-        // if there is already a request in place for this siteID, just wait
-        guard !siteIDsCurrentlyBeingRequested.contains(siteID) else { return }
+        // if there is already a request in place for this blog, just wait
+        guard !blogsCurrentlyBeingRequested.contains(blog) else { return }
 
-        // add this siteID to currently being requested list
-        siteIDsCurrentlyBeingRequested.append(siteID)
+        guard let siteID = blog.dotComID else { return }
 
         let suggestPath = "rest/v1.1/users/suggest"
         let params = ["site_id": siteID]
+
+        // add this blog to currently being requested list
+        blogsCurrentlyBeingRequested.append(blog)
 
         defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
@@ -48,44 +50,50 @@ class SuggestionService {
 
             let context = ContextManager.shared.mainContext
 
-            // Persist `AtMentionSuggestion` objects
+            // Delete any existing `AtMentionSuggestion` objects
+            self.retrievePersistedSuggestions(for: blog)?.forEach { suggestion in
+                context.delete(suggestion)
+            }
+
+            // Create new `AtMentionSuggestion` objects
             let suggestions = restSuggestions.compactMap { AtMentionSuggestion(dictionary: $0, context: context) }
 
-            // Associate `AtMentionSuggestion` objects with site ID
-            let blog = self.persistedBlog(for: siteID)
-            blog?.atMentionSuggestions = Set(suggestions)
-            try? context.save()
+            // Associate `AtMentionSuggestion` objects with blog
+            blog.atMentionSuggestions = Set(suggestions)
+
+            // Save the changes
+            try? blog.managedObjectContext?.save()
 
             completion(suggestions)
 
-            // remove siteID from the currently being requested list
-            self.siteIDsCurrentlyBeingRequested.removeAll { $0 == siteID}
+            // remove blog from the currently being requested list
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog }
         }, failure: { [weak self] error, _ in
             guard let `self` = self else { return }
 
             completion(nil)
 
-            // remove siteID from the currently being requested list
-            self.siteIDsCurrentlyBeingRequested.removeAll { $0 == siteID}
+            // remove blog from the currently being requested list
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog}
 
             DDLogVerbose("[Rest API] ! \(error.localizedDescription)")
         })
     }
 
     /**
-    Tells the caller if it is a good idea to show suggestions right now for a given siteID.
+    Tells the caller if it is a good idea to show suggestions right now for a given blog/site.
 
-    @param siteID ID of the blog/site to check for
+    @param blog blog/site to check for
     @return BOOL Whether the caller should show suggestions
     */
-    func shouldShowSuggestions(for siteID: NSNumber) -> Bool {
+    func shouldShowSuggestions(for blog: Blog) -> Bool {
 
         // The device must be online or there must be already persisted suggestions
-        guard ReachabilityUtils.isInternetReachable() || retrievePersistedSuggestions(for: siteID)?.isEmpty == false else {
+        guard ReachabilityUtils.isInternetReachable() || retrievePersistedSuggestions(for: blog)?.isEmpty == false else {
             return false
         }
 
-        return persistedBlog(for: siteID)?.supports(.mentions) == true
+        return blog.supports(.mentions)
     }
 
     private func defaultAccount() -> WPAccount? {
@@ -94,12 +102,18 @@ class SuggestionService {
         return accountService.defaultWordPressComAccount()
     }
 
-    private func retrievePersistedSuggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
-        guard let suggestions = persistedBlog(for: siteID)?.atMentionSuggestions else { return nil }
+    private func retrievePersistedSuggestions(for blog: Blog) -> [AtMentionSuggestion]? {
+        guard let suggestions = blog.atMentionSuggestions else { return nil }
         return Array(suggestions)
     }
 
-    private func persistedBlog(for siteID: NSNumber) -> Blog? {
+    /**
+     Retrieve the persisted blog/site for a given site ID
+
+     @param siteID the dotComID to retrieve
+     @return Blog the blog/site
+     */
+    func persistedBlog(for siteID: NSNumber) -> Blog? {
         let context = ContextManager.shared.mainContext
         return BlogService(managedObjectContext: context).blog(byBlogId: siteID)
     }

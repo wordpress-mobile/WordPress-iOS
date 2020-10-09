@@ -11,5 +11,5 @@ extension AtMentionSuggestion {
     @NSManaged public var displayName: String?
     @NSManaged public var imageURL: URL?
     @NSManaged public var username: String?
-
+    @NSManaged public var blog: Blog?
 }
