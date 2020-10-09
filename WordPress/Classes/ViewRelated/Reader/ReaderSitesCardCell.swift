@@ -2,8 +2,8 @@ import UIKit
 
 /// A cell that displays topics the user might like
 ///
-class ReaderTopicsCardCell: ReaderTopicsTableCardCell {
-    private let cellIdentifier = "TopicCell"
+class ReaderSitesCardCell: ReaderTopicsTableCardCell {
+    private let cellIdentifier = "SitesTopicCell"
 
     override func configure(_ data: [ReaderAbstractTopic]) {
         super.configure(data)
@@ -18,7 +18,7 @@ class ReaderTopicsCardCell: ReaderTopicsTableCardCell {
     }
 
     override func cell(forRowAt indexPath: IndexPath, tableView: UITableView, topic: ReaderAbstractTopic?) -> UITableViewCell {
-        guard let tagTopic = topic as? ReaderTagTopic else {
+        guard let tagTopic = topic as? ReaderSiteTopic else {
             return UITableViewCell()
         }
 
@@ -29,9 +29,8 @@ class ReaderTopicsCardCell: ReaderTopicsTableCardCell {
         cell.backgroundColor = .listForeground
         return cell
     }
-    
+
     private enum Constants {
-        static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might ")
+        static let title = NSLocalizedString("Sites to follow", comment: "A suggestion of topics the user might ")
     }
 }
-
