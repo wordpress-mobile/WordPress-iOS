@@ -16,20 +16,18 @@ class SuggestionService {
     static let shared = SuggestionService()
 
     /**
-    Returns the cached @mention suggestions (if any) for a given siteID.  Calls
-    updateSuggestionsForSiteID if no suggestions for the site have been cached.
+    Fetches the suggestions from the network if the device is online, otherwise retrieves previously persisted suggestions.
+    If fetch is performed, sends a notification `suggestionListUpdated` to notify caller when fetch is complete.
 
     @param siteID ID of the blog/site to retrieve suggestions for
     @return An array of suggestions
     */
     func suggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
-        let context = ContextManager.shared.mainContext
-        guard let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID) else {
-            return nil
+
+        guard ReachabilityUtils.isInternetReachable() else {
+            return retrievePersistedSuggestions(for: siteID)
         }
-        if let suggestions = blog.atMentionSuggestions {
-            return Array(suggestions) as? [AtMentionSuggestion]
-        }
+
         updateSuggestions(for: siteID)
         return nil
     }
@@ -86,18 +84,23 @@ class SuggestionService {
     @param siteID ID of the blog/site to check for
     @return BOOL Whether the caller should show suggestions
     */
-    func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
+    func shouldShowSuggestions(for siteID: NSNumber) -> Bool {
+
+        // The device must be online or there must be already persisted suggestions
+        guard ReachabilityUtils.isInternetReachable() || retrievePersistedSuggestions(for: siteID)?.isEmpty == false else {
+            return false
+        }
+
+        return persistedBlog(for: siteID)?.supports(.mentions) == true
+    }
+
+    private func persistedBlog(for siteID: NSNumber) -> Blog? {
         let context = ContextManager.shared.mainContext
-        guard let siteID = siteID, let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID) else {
-            return false
-        }
+        return BlogService(managedObjectContext: context).blog(byBlogId: siteID)
+    }
 
-        // if the device is offline and suggestion list is not yet retrieved
-        guard ReachabilityUtils.isInternetReachable() || blog.atMentionSuggestions?.isEmpty == false else {
-            return false
-        }
-
-        // if the site is not hosted on WordPress.com
-        return blog.supports(.mentions)
+    private func retrievePersistedSuggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
+        guard let suggestions = persistedBlog(for: siteID)?.atMentionSuggestions else { return nil }
+        return Array(suggestions)
     }
 }
