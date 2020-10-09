@@ -5,7 +5,6 @@ protocol ReaderDetailView: class {
     func showLoading()
     func showError()
     func showErrorWithWebAction()
-    func show(title: String?)
     func scroll(to: String)
     func updateHeader()
 }
@@ -232,12 +231,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         ReaderTracker.shared.start(.readerPost)
     }
-
-    /// Show a given title
-    ///
-    /// - Parameter title: a optional String containing the title
-    func show(title: String?) { }
-
 
     /// Scroll the content to a given #hash
     ///
