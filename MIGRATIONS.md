@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 100
 
-@guarani 2020-10-208
+@guarani 2020-10-09
 
 - Add a new `AtMentionSuggestion` entity
 - Add a one-to-many relationship between `Blog` and `AtMentionSuggestion`
