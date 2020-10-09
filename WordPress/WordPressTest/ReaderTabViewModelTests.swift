@@ -96,25 +96,6 @@ class ReaderTabViewModelTests: XCTestCase {
         }
     }
 
-    func testSettingsTapped() {
-        // Given
-        let settingsTappedExpectation = expectation(description: "Settings button was tapped")
-        viewModel.settingsTapped = { view in
-            settingsTappedExpectation.fulfill()
-            XCTAssertEqual("test view", view.accessibilityIdentifier!)
-        }
-        let view = UIView()
-        view.accessibilityIdentifier = "test view"
-        // When
-        viewModel.presentSettings(from: view)
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
     func testPresentFilterFromView() {
         // Given
         let filterTappedExpectation = expectation(description: "Filter button was tapped")

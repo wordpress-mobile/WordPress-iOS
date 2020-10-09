@@ -18,7 +18,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     weak var delegate: LayoutPickerSectionTableViewCellDelegate?
 
-    private var layouts = [GutenbergLayout]() {
+    private var layouts = [PageTemplateLayout]() {
         didSet {
             collectionView.reloadData()
         }
@@ -26,7 +26,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     var section: GutenbergLayoutSection? = nil {
         didSet {
             layouts = section?.layouts ?? []
-            categoryTitle.text = section?.section.description ?? ""
+            categoryTitle.text = section?.section.desc ?? ""
             collectionView.contentOffset = section?.scrollOffset ?? .zero
         }
     }

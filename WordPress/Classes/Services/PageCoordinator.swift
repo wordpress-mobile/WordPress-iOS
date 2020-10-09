@@ -1,13 +1,13 @@
 import Foundation
 
 class PageCoordinator {
-    typealias TemplateSelectionCompletion = (_ title: String?, _ content: String?) -> Void
+    typealias TemplateSelectionCompletion = (_ layout: PageTemplateLayout?) -> Void
 
     static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion: @escaping TemplateSelectionCompletion) {
         if FeatureFlag.gutenbergModalLayoutPicker.enabled && blog.isGutenbergEnabled {
             showLayoutPicker(from: controller, forBlog: blog, completion)
         } else {
-            completion(nil, nil)
+            completion(nil)
         }
     }
 
@@ -15,7 +15,7 @@ class PageCoordinator {
         let storyboard = UIStoryboard(name: "LayoutPickerStoryboard", bundle: Bundle.main)
         guard let navigationController = storyboard.instantiateInitialViewController() as? UINavigationController,
             let rootView = navigationController.topViewController as? GutenbergLayoutPickerViewController  else {
-            completion(nil, nil)
+            completion(nil)
             return
         }
         rootView.completion = completion
