@@ -876,7 +876,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController {
 
     private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = post.blog.dotComID else {
+        guard let siteID = post.blog.dotComID, SuggestionService.shared.shouldShowSuggestions(for: siteID) else {
             callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
             return
         }
