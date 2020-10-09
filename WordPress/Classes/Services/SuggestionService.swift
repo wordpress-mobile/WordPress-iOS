@@ -15,13 +15,11 @@ class SuggestionService {
     */
     func suggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
-        // If the device is offline, use persisted (cached) suggestions if available
-        guard ReachabilityUtils.isInternetReachable() else {
-            completion(retrievePersistedSuggestions(for: blog))
-            return
+        if let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
+            completion(suggestions)
+        } else if ReachabilityUtils.isInternetReachable() {
+            fetchAndPersistSuggestions(for: blog, completion: completion)
         }
-
-        fetchAndPersistSuggestions(for: blog, completion: completion)
     }
 
     /**
