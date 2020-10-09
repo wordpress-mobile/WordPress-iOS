@@ -59,9 +59,14 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
 
     // MARK: - Private: Helpers
     private func commentTitle() -> String {
-        var format = Strings.noCommentFormat
-        if commentCount > 0 {
-            format = commentCount != 1 ? Strings.commentFormatPlural : Strings.commentFormat
+        var format: String
+        switch commentCount {
+            case let count where count == 1:
+                format = Strings.commentFormat
+            case let count where count > 0:
+                format = Strings.commentFormatPlural
+            default:
+                format = Strings.noCommentFormat
         }
 
         return String(format: format, "\(commentCount)")
