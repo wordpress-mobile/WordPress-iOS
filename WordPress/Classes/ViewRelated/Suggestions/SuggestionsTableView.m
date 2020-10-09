@@ -149,11 +149,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)startObservingNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(suggestionListUpdated:)
-                                                 name:NSNotification.suggestionListUpdated
-                                               object:nil];
-        
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -343,19 +338,13 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Suggestion list management
 
-- (void)suggestionListUpdated:(NSNotification *)notification
-{
-    // only reload if the suggestion list is updated for the current site
-    if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
-        self.suggestions = [self suggestionsFor:self.siteID];
-        [self showSuggestionsForWord:self.searchText];
-    }
-}
-
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        _suggestions = [self suggestionsFor:self.siteID];
+        [self suggestionsFor:self.siteID completion:^(NSArray<AtMentionSuggestion *> * _Nullable results) {
+            self.suggestions = results;
+            [self showSuggestionsForWord:self.searchText];
+        }];
     }
     return _suggestions;
 }

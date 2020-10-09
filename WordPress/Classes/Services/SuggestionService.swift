@@ -1,13 +1,5 @@
 import Foundation
 
-extension NSNotification.Name {
-    static let suggestionListUpdated = NSNotification.Name("SuggestionListUpdated")
-}
-
-@objc extension NSNotification {
-    public static let suggestionListUpdated = NSNotification.Name.suggestionListUpdated
-}
-
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {
 
@@ -17,27 +9,28 @@ class SuggestionService {
 
     /**
     Fetches the suggestions from the network if the device is online, otherwise retrieves previously persisted suggestions.
-    If fetch is performed, sends a notification `suggestionListUpdated` to notify caller when fetch is complete.
 
     @param siteID ID of the blog/site to retrieve suggestions for
-    @return An array of suggestions
+    @param completion callback containing list of suggestions
     */
-    func suggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
+    func suggestions(for siteID: NSNumber, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
+        // If the device is offline, use persisted (cached) suggestions if available
         guard ReachabilityUtils.isInternetReachable() else {
-            return retrievePersistedSuggestions(for: siteID)
+            completion(retrievePersistedSuggestions(for: siteID))
+            return
         }
 
-        updateSuggestions(for: siteID)
-        return nil
+        fetchAndPersistSuggestions(for: siteID, completion: completion)
     }
 
     /**
     Performs a REST API request for the siteID given.
+    Persists response objects to Core Data.
 
     @param siteID ID of the blog/site to retrieve suggestions for
     */
-    private func updateSuggestions(for siteID: NSNumber) {
+    private func fetchAndPersistSuggestions(for siteID: NSNumber, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
         // if there is already a request in place for this siteID, just wait
         guard !siteIDsCurrentlyBeingRequested.contains(siteID) else { return }
@@ -46,30 +39,31 @@ class SuggestionService {
         siteIDsCurrentlyBeingRequested.append(siteID)
 
         let suggestPath = "rest/v1.1/users/suggest"
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        let defaultAccount = accountService.defaultWordPressComAccount()
         let params = ["site_id": siteID]
 
-        defaultAccount?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
+        defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
             guard let payload = responseObject as? [String: Any] else { return }
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
+            let context = ContextManager.shared.mainContext
+
+            // Persist `AtMentionSuggestion` objects
             let suggestions = restSuggestions.compactMap { AtMentionSuggestion(dictionary: $0, context: context) }
 
-            let context = ContextManager.shared.mainContext
-            let blog = BlogService(managedObjectContext: context).blog(byBlogId: siteID)
+            // Associate `AtMentionSuggestion` objects with site ID
+            let blog = self.persistedBlog(for: siteID)
             blog?.atMentionSuggestions = Set(suggestions)
             try? context.save()
 
-            // send the siteID with the notification so it could be filtered out
-            NotificationCenter.default.post(name: .suggestionListUpdated, object: siteID)
+            completion(suggestions)
 
             // remove siteID from the currently being requested list
             self.siteIDsCurrentlyBeingRequested.removeAll { $0 == siteID}
         }, failure: { [weak self] error, _ in
             guard let `self` = self else { return }
+
+            completion(nil)
 
             // remove siteID from the currently being requested list
             self.siteIDsCurrentlyBeingRequested.removeAll { $0 == siteID}
@@ -94,13 +88,19 @@ class SuggestionService {
         return persistedBlog(for: siteID)?.supports(.mentions) == true
     }
 
-    private func persistedBlog(for siteID: NSNumber) -> Blog? {
+    private func defaultAccount() -> WPAccount? {
         let context = ContextManager.shared.mainContext
-        return BlogService(managedObjectContext: context).blog(byBlogId: siteID)
+        let accountService = AccountService(managedObjectContext: context)
+        return accountService.defaultWordPressComAccount()
     }
 
     private func retrievePersistedSuggestions(for siteID: NSNumber) -> [AtMentionSuggestion]? {
         guard let suggestions = persistedBlog(for: siteID)?.atMentionSuggestions else { return nil }
         return Array(suggestions)
+    }
+
+    private func persistedBlog(for siteID: NSNumber) -> Blog? {
+        let context = ContextManager.shared.mainContext
+        return BlogService(managedObjectContext: context).blog(byBlogId: siteID)
     }
 }
