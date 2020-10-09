@@ -67,7 +67,7 @@ class WPSplitViewController: UISplitViewController {
             preferredPrimaryColumnWidthFraction = columnWidth / size.width
         case .full:
             break
-            
+
             // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
             // Due to a bug where the column widths are not updating correctly when the primary column
             // is set to full width, the empty views are not sized correctly on rotation. As a workaround,
