@@ -342,6 +342,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     if (!_suggestions && _siteID != nil) {
         [self suggestionsFor:self.siteID completion:^(NSArray<AtMentionSuggestion *> * _Nullable results) {
+            if (!results) return;
             self.suggestions = results;
             [self showSuggestionsForWord:self.searchText];
         }];
