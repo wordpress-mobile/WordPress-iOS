@@ -8,10 +8,10 @@ class SuggestionService {
     static let shared = SuggestionService()
 
     /**
-    Fetches the suggestions from the network if the device is online, otherwise retrieves previously persisted suggestions.
+    Fetch cached suggestions if available, otherwise from the network if the device is online.
 
     @param the blog/site to retrieve suggestions for
-    @param completion callback containing list of suggestions
+    @param completion callback containing list of suggestions, or nil if unavailable
     */
     func suggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
 
@@ -20,6 +20,7 @@ class SuggestionService {
         } else if ReachabilityUtils.isInternetReachable() {
             fetchAndPersistSuggestions(for: blog, completion: completion)
         }
+        completion(nil)
     }
 
     /**
