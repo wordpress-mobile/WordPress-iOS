@@ -19,8 +19,9 @@ class SuggestionService {
             completion(suggestions)
         } else if ReachabilityUtils.isInternetReachable() {
             fetchAndPersistSuggestions(for: blog, completion: completion)
+        } else {
+            completion(nil)
         }
-        completion(nil)
     }
 
     /**
