@@ -116,6 +116,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
 
+        if let postURLString = post.permaLink,
+           let postURL = URL(string: postURLString) {
+            webView.postURL = postURL
+        }
+
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
@@ -164,6 +169,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
         navigationItem.titleView = titleView
     }
+
 
     /// Scroll the content to a given #hash
     ///
@@ -412,6 +418,7 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        coordinator?.webViewDidLoad()
         self.webView.loadMedia()
         hideLoading()
     }

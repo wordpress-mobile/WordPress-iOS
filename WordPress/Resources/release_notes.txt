@@ -1,7 +1,5 @@
-Take a peek at what’s new in this release:
+Block editor improvements:
+On Jetpack sites, you can now edit unsupported blocks by enabling Jetpack SSO from the missing block alert. Use the handy link picker to add URLs to posts. We’ve also increased the size of the tap target on the primary action on unsupported blocks.
 
-- Support for full-width and wide alignment for the Group, Cover, and Image blocks (with support for more blocks to come).
-- Love rounded corners on your images? We’ve also added support for the Rounded style in the Image block.
-- Some people may have experienced a misbehaving toolbar when adding a new block, but we’ve fixed this issue.
-- We also noticed that in Image Preview, images were not positioned correctly after changing device orientation, but this has been addressed, too.
-- We resolved a few other issues around signup and login, including a username display issue after signing up with Apple, and an incorrect error message that displayed when you reach a maximum number of failed login attempts.
+Fixes:
+Zapped bugs that caused the page editor to become an invisible overlay and eliminated duplicate views generated when requesting a login link. In the Reader, tapping a link with an anchor now works as expected.

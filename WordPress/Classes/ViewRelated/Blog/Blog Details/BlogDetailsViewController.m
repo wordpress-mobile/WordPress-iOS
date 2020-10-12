@@ -368,13 +368,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
-    if([Feature enabled:FeatureFlagMeMove]) {
-        [self addMeButtonToNavigationBar];
-    }
+    [self addMeButtonToNavigationBar];
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    }
+    [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
@@ -421,7 +417,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] && [Feature enabled:FeatureFlagFloatingCreateButton]) {
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
         [self.createButtonCoordinator showCreateButton];
     }
     [self createUserActivity];
@@ -430,6 +426,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.shouldScrollToViewSite == YES) {
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
+    }
+    if([Feature enabled:FeatureFlagWhatIsNew]) {
+        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
 

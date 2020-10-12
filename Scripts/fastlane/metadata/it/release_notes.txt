@@ -1,11 +1,7 @@
-La tua esperienza del Reader può essere ora su misura per te, con un nuovo feed di Discover che riflette gli interessi scelti.
+Dai un'occhiata alle novità di questo rilascio:
 
-Le impostazioni del blocco nell'editor a blocchi riflettono qualsiasi modifica effettuata negli slider del menu.
-
-Esperienza di registrazione e accesso migliorata nel guidare l'utente durante i passaggi e nella connettere un sito ospitato personalmente.
-
-Esiste anche un nuovo modo per accedere con la funzionalità Portachiavi di iCloud: un gestore di password che ricorda i tuoi account e le password di WP.com.
-
-Non perderti nulla. Ora puoi seguire le conversazioni sui siti P2.
-
-Abbiamo anche ridotto l'utilizzo della memoria durante il markup di un'immagine. In questo modo la modifica dei contenuti multimediali non causerà un arresto anomalo.
+- Supporto per l'allineamento "a larghezza intera" e "largo" per i blocchi Gruppo, Copertina e Immagine (con supporto per altri blocchi in arrivo).
+- Ti piacciono gli angoli arrotondati nelle immagini? Abbiamo anche aggiunto il supporto per lo stile arrotondato nel blocco Immagine
+- Alcune persone potrebbero aver riscontrato un comportamento anomalo della barra degli strumenti durante l'aggiunta di un nuovo blocco, ma questo problema è stato risolto.
+- Abbiamo anche notato che nell'anteprima dell'immagine, le immagini non venivano posizionate correttamente dopo la modifica dell'orientamento del dispositivo, ma anche questo problema è stato risolto.
+- Abbiamo risolto alcuni altri problemi relativi all'iscrizione e all'accesso, incluso un problema con la visualizzazione del nome utente dopo l'iscrizione con Apple e con un messaggio di errore non corretto che veniva visualizzato al raggiungimento del numero massimo di tentativi di accesso non riusciti.

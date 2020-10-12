@@ -18,7 +18,7 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-        setupSearchButton()
+        setupNavigationButtons()
 
         ReaderTabViewController.configureRestoration(on: self)
 
@@ -32,13 +32,6 @@ class ReaderTabViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 completion(title)
             })
-        }
-
-        viewModel.settingsTapped = { [weak self] fromView in
-            guard let self = self else {
-                return
-            }
-            viewModel.presentManage(from: self)
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -67,6 +60,10 @@ class ReaderTabViewController: UIViewController {
         if !FeatureFlag.readerImprovementsPhase2.enabled {
             markSelectedInterestsVisited()
         }
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,12 +72,20 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.stop(.main)
     }
 
-    func setupSearchButton() {
+    func setupNavigationButtons() {
+        // Settings Button
+        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(didTapSettingsButton))
+        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
+
+        // Search Button
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
                                            target: self,
                                            action: #selector(didTapSearchButton))
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        navigationItem.rightBarButtonItem = searchButton
+        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
     }
 
     override func loadView() {
@@ -97,8 +102,11 @@ class ReaderTabViewController: UIViewController {
 }
 
 
-// MARK: - Search
+// MARK: - Navigation Buttons
 extension ReaderTabViewController {
+    @objc private func didTapSettingsButton() {
+        viewModel.presentManage(from: self)
+    }
 
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
@@ -188,6 +196,7 @@ extension ReaderTabViewController {
 extension ReaderTabViewController {
     private enum ReaderTabConstants {
         static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let settingsButtonIdentifier = "ReaderSettingsButton"
         static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"

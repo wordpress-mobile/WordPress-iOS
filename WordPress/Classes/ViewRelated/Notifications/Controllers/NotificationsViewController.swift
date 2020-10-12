@@ -187,6 +187,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -995,18 +999,24 @@ extension NotificationsViewController {
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
-        // If we don't currently have a selected notification and there is a notification
-        // in the list, then select it.
-        if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
-            if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
-                let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
-                selectRow(for: firstNotification, animated: false, scrollPosition: .none)
-                self.tableView(tableView, didSelectRowAt: indexPath)
-            } else {
-                // If there's no notification to select, we should wipe out
-                // any detail view controller that may be present.
-                showDetailViewController(UIViewController(), sender: nil)
-            }
+        guard !splitViewControllerIsHorizontallyCompact && selectedNotification == nil else {
+            return
+        }
+
+        // If we don't currently have a selected notification and there is a notification in the list, then select it.
+        if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
+            selectRow(for: firstNotification, animated: false, scrollPosition: .none)
+            self.tableView(tableView, didSelectRowAt: indexPath)
+            return
+        }
+
+        // If we're not showing the Jetpack prompt or the fullscreen No Results View,
+        // then clear any detail view controller that may be present.
+        // (i.e. don't add an empty detail VC if the primary is full width)
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            splitViewController.wpPrimaryColumnWidth != WPSplitViewControllerPrimaryColumnWidth.full {
+            showDetailViewController(UIViewController(), sender: nil)
         }
     }
 
@@ -1262,15 +1272,18 @@ private extension NotificationsViewController {
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
-        if let splitViewController = splitViewController as? WPSplitViewController {
-            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
-            if splitViewController.wpPrimaryColumnWidth != columnWidth {
-                splitViewController.wpPrimaryColumnWidth = columnWidth
-            }
+        guard let splitViewController = splitViewController as? WPSplitViewController else {
+            return
+        }
 
-            if columnWidth == .default {
-                splitViewController.dimDetailViewController(shouldDimDetailViewController)
-            }
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+
+        if splitViewController.wpPrimaryColumnWidth != columnWidth {
+            splitViewController.wpPrimaryColumnWidth = columnWidth
+        }
+
+        if columnWidth == .default {
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
         }
     }
 
@@ -1309,6 +1322,7 @@ private extension NotificationsViewController {
     var shouldDimDetailViewController: Bool {
         return shouldDisplayNoResultsView && filter != .none
     }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate

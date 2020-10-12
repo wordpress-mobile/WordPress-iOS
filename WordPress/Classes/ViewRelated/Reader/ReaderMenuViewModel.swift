@@ -510,7 +510,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         var fetchedIndex = index
         if ReaderHelpers.isLoggedIn() {
             if fetchedIndex == 0 {
-                let title = NSLocalizedString("Add a Tag", comment: "Title. Lets the user know that they can use this feature to subscribe to new tags.")
+                let title = NSLocalizedString("Add a Topic", comment: "Title. Lets the user know that they can use this feature to subscribe to new topics.")
                 return ReaderMenuItem(title: title, type: .addItem)
             } else {
                 // Adjust the index by one to account for AddItem

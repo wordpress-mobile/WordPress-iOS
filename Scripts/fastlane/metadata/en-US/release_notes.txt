@@ -1,11 +1,7 @@
-Your Reader experience can now be tailored just for you — with a new Discover feed reflecting your chosen interests.
+Take a peek at what’s new in this release:
 
-Block settings in the Block Editor now immediately reflect any changes made in the menu sliders.
-
-Improved signup and login experience — both with directing the user on the steps and connecting a self-hosted site.
-
-There is also a brand new way to login with the iCloud Keychain feature — a password manager that remembers your WP.com accounts and passwords.
-
-Don’t miss anything! You can now follow conversations on P2 sites.
-
-We have also reduced memory usage when marking up an image, so media editing won’t cause a crash.
+- Support for full-width and wide alignment for the Group, Cover, and Image blocks (with support for more blocks to come).
+- Love rounded corners on your images? We’ve also added support for the Rounded style in the Image block.
+- Some people may have experienced a misbehaving toolbar when adding a new block, but we’ve fixed this issue.
+- We also noticed that in Image Preview, images were not positioned correctly after changing device orientation, but this has been addressed, too.
+- We resolved a few other issues around signup and login, including a username display issue after signing up with Apple, and an incorrect error message that displayed when you reach a maximum number of failed login attempts.

@@ -1,11 +1,7 @@
-Pengalaman Pembaca kini dapat disesuaikan khusus untuk Anda dengan feed Jelajah baru yang menampilkan minat yang Anda pilih.
+Lihat apa yang baru di rilis ini:
 
-Pengaturan Blok di Penyunting Blok kini langsung menampilkan perubahan yang dilakukan di slider menu.
-
-Pengalaman daftar dan login ditingkatkan — baik dengan mengarahkan pengguna langkah demi langkah maupun menghubungkan situs hosting sendiri.
-
-Ada cara baru untuk login dengan fitur iCloud Keychain — pengelola kata sandi yang mengingat akun dan kata sandi WP.com Anda.
-
-Jangan lewatkan apa pun! Kini Anda dapat mengikuti percakapan di situs P2.
-
-Kami juga telah mengurangi penggunaan memori saat menandai gambar, sehingga penyuntingan media tidak akan menyebabkan crash.
+- Dukungan untuk perataan lebar penuh dan lebar untuk blok Dikelompokkan, Sampul, dan Gambar (dan akan ada dukungan untuk lebih banyak blok).
+- Suka memberi sudut bulat pada gambar?  Kami juga menambahkan dukungan untuk gaya Bulat di blok Gambar.
+- Sebagian orang mungkin pernah mengalami bilah peralatan yang berjalan tidak semestinya saat menambahkan blok baru, tetapi kami telah memperbaiki masalah ini.
+- Kami juga mendapati bahwa di Pratinjau Gambar, gambar tidak ditempatkan dengan benar setelah mengubah orientasi perangkat, tetapi masalah ini juga telah kami atasi.
+- Kami menyelesaikan beberapa masalah lain seputar pendaftaran dan login, termasuk masalah tampilan nama pengguna setelah mendaftar dengan Apple, dan kesalahan penampilan pesan error saat percobaan login mencapai jumlah maksimum.

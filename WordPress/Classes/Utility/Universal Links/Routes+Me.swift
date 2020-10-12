@@ -24,9 +24,6 @@ enum MeNavigationAction: NavigationAction {
         switch self {
         case .root:
             WPTabBarController.sharedInstance().showMeScene()
-            if !FeatureFlag.meMove.enabled {
-                WPTabBarController.sharedInstance().popMeTabToRoot()
-            }
         case .accountSettings:
             WPTabBarController.sharedInstance().navigateToAccountSettings()
         case .notificationSettings:

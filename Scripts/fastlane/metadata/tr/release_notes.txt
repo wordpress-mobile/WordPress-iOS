@@ -1,11 +1,7 @@
-Reader deneyiminiz, seçtiğiniz ilgi alanlarını yansıtan yeni bir Keşfet akışıyla artık yalnızca size özle şekilde uyarlanabilir.
+Bu sürümdeki yeniliklere bir göz atın:
 
-Blok Düzenleyici'deki engelleme ayarları artık menü kaydırıcılarında yapılan değişiklikleri anında yansıtır.
-
-İyileştirilmiş kayıt ve oturum açma deneyimiyle kullanıcı hem adımlar konusunda hem de kendi kendine barındırılan bir siteyi bağlama konusunda yönlendirilir.
-
-WP.com hesaplarınızı ve parolalarınızı hatırlayan bir parola yöneticisi olan iCloud Anahtar Zinciri özelliğiyle oturum açmada yepyeni bir yol da sunulur.
-
-Hiçbir şeyi kaçırmayın. Artık P2 sitelerindeki konuşmaları takip edebilirsiniz.
-
-Bir görseli işaretlerken bellek kullanımı azaltıldığından ortam düzenleme işlemleri kilitlenmeye neden olmaz.
+- Grup, Kapak ve Görsel blokları için tam genişlik ve geniş hizalama desteği (daha fazla blok için destek). 1 
+- Resimlerinizde yuvarlak köşeleri seviyor musunuz? Ayrıca Görsel bloğuna Yuvarlak stil için destek ekledik.
+- Bazı kişiler yeni blok eklerken araç çubuğunun hatalı davrandığını görmüş olabilir, ancak bu sorun çözdük.
+- Ayrıca, cihaz yönü değiştirildikten sonra Görsel Önizleme'de resimlerin doğru şekilde konumlandırılmadığını fark ettik, ancak bu sorun da giderildi.
+- Apple'a kaydolduktan sonra kullanıcı adı görüntülemeyle ilgili bir sorun ve maksimum sayıda başarısız oturum açma girişimine ulaştığınızda görüntülenen yanlış bir hata mesajı da dahil olmak üzere kayıt ve oturum açma ile ilgili diğer birkaç sorunu çözdük.
