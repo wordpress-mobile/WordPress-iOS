@@ -402,9 +402,33 @@
                             <constraint firstItem="sDy-Xm-faX" firstAttribute="leading" secondItem="zqw-XR-tUq" secondAttribute="leading" id="yur-y4-80v"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Preview" id="yl7-1R-9yC"/>
+                    <navigationItem key="navigationItem" title="Preview" id="yl7-1R-9yC">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="a9M-Fe-sUg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3Uh-3L-aYL" userLabel="Close">
+                                <rect key="frame" x="364" y="13" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemFillColor"/>
+                                <accessibility key="accessibilityConfiguration" label="Close"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="3Uh-3L-aYL" secondAttribute="height" multiplier="1:1" id="AyU-lv-npK"/>
+                                    <constraint firstAttribute="width" constant="30" id="Vhx-9m-oeq"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="secondaryLabelColor"/>
+                                <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="Ppr-up-cWw" eventType="touchUpInside" id="Des-qy-svW"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="closeButton" destination="3Uh-3L-aYL" id="LcO-JA-Iop"/>
                         <outlet property="createPageBtn" destination="zxm-hl-Fkq" id="UZv-lu-kME"/>
                         <outlet property="previewContainer" destination="sDy-Xm-faX" id="NPZ-k7-eZt"/>
                     </connections>
