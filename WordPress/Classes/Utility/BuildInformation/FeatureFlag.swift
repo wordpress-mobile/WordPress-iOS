@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+    case bigTitlesWhiteHeaders
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -23,6 +24,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
 
         switch self {
+        case .bigTitlesWhiteHeaders:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -77,6 +80,8 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
+        case .bigTitlesWhiteHeaders:
+            return "Big Titles, White Headers"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
