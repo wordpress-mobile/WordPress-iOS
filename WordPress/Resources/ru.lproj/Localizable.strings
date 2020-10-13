@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-07 18:43:26+0000 */
+/* Translation-Revision-Date: 2020-10-03 11:16:35+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -416,6 +416,9 @@
 /* Title of a feature to add a new tag to the tags subscribed by the user.
    Title. Lets the user know that they can use this feature to subscribe to new tags. */
 "Add a Tag" = "Добавьте метку";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Добавьте комментарий (необязательно).";
@@ -1718,6 +1721,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Основной формат записей";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "URL по умолчанию";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Параметры по умолчанию для новых записей";
 
@@ -2009,7 +2015,7 @@
 "Edit sharing buttons" = "Изменить кнопки «Поделиться»";
 
 /* No comment provided by engineer. */
-"Edit video" = "Измненить видео";
+"Edit video" = "Изменить видео";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Редактирование GIF изображения приведёт к потере анимации.";
@@ -4501,8 +4507,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Новости";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "URL CSS Чтива";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Переопубликовать";
@@ -4686,6 +4696,9 @@ translators: sample content for \"Services\" page template */
 
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Прокомментировать запись…";
+
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Пожаловаться на запись";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Включить обязательный этап одобрения для комментариев, которые содержат число ссылок, больше указанного.";
@@ -7126,7 +7139,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "В данный момент выполняется загрузка медиафайлов. В результате этого действия загрузка будет прервана.\n\nПродолжить?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Вы всегда можете войти с магической ссылкой, как вы только что использовали, но если хотите, то можно и установить пароль.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Вы всегда можете войти с помощью ссылки, такой, как вы только что использовали, но если хотите, то можно и установить пароль.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "В iOS статистику по отдельному сайту можно отобразить в Центре уведомлений на экране «Cегодня».";
@@ -7370,6 +7383,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "другое";
+
+/* No comment provided by engineer. */
+"password" = "пароль";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
