@@ -16,6 +16,7 @@ class RequestAuthenticator: NSObject {
 
     enum DotComAuthenticationType {
         case regular
+        case atomic(loginURL: String)
         case privateAtomic(blogID: Int)
     }
 
@@ -46,15 +47,15 @@ class RequestAuthenticator: NSObject {
         let authenticationType: DotComAuthenticationType
 
         if let blog = blog,
-            blog.isPrivate(),
             blog.isAtomic() {
 
             guard let blogID = blog.dotComID as? Int else {
                 CrashLogging.logError(Error.atomicSiteWithoutDotComID(blog: blog))
                 return nil
             }
+            let logingUrl = blog.loginUrl()
 
-            authenticationType = .privateAtomic(blogID: blogID)
+            authenticationType = blog.isPrivate() ? .privateAtomic(blogID: blogID) : .atomic(loginURL: logingUrl)
         } else {
             authenticationType = .regular
         }
@@ -122,11 +123,19 @@ class RequestAuthenticator: NSObject {
                 authToken: authToken,
                 completion: completion)
         case .privateAtomic(let siteID):
-            requestForAtomicWPCom(
+            requestForPrivateAtomicWPCom(
                 url: url,
                 cookieJar: cookieJar,
                 username: username,
                 siteID: siteID,
+                completion: completion)
+        case .atomic(let loginURL):
+            requestForAtomicWPCom(
+                url: url,
+                loginURL: loginURL,
+                cookieJar: cookieJar,
+                username: username,
+                authToken: authToken,
                 completion: completion)
         }
     }
@@ -152,7 +161,7 @@ class RequestAuthenticator: NSObject {
         }
     }
 
-    private func requestForAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
+    private func requestForPrivateAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
 
         func done() {
             let request = URLRequest(url: url)
@@ -169,6 +178,36 @@ class RequestAuthenticator: NSObject {
         let authenticationService = AtomicAuthenticationService(account: account)
 
         authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID, success: {
+            done()
+        }) { error in
+            // Make sure this error scenario isn't silently ignored.
+            CrashLogging.logError(error)
+
+            // Even if getting the auth cookies fail, we'll still try to load the URL
+            // so that the user sees a reasonable error situation on screen.
+            // We could opt to create a special screen but for now I'd rather users report
+            // the issue when it happens.
+            done()
+        }
+    }
+
+    private func requestForAtomicWPCom(url: URL, loginURL: String, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
+
+        func done() {
+            // For non-private Atomic sites, proxy the request through wp-login like Calypso does.
+            // If the site has SSO enabled auth should happen and we get redirected to our preview.
+            // If SSO is not enabled wp-admin prompts for credentials, then redirected.
+            var components = URLComponents(string: loginURL)
+            var queryItems = components?.queryItems ?? []
+            queryItems.append(URLQueryItem(name: "redirect_to", value: url.absoluteString))
+            components?.queryItems = queryItems
+            let requestURL = components?.url ?? url
+
+            let request = URLRequest(url: requestURL)
+            completion(request)
+        }
+
+        authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.

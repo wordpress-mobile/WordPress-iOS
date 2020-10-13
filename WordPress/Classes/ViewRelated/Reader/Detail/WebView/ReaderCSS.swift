@@ -62,7 +62,7 @@ struct ReaderCSS {
     }
 
     private func url(appendingTimestamp appending: Int) -> String {
-        guard let customURL = customAddress else {
+        guard let customURL = customAddress, !customURL.isEmpty else {
             let timestamp = String(appending)
             return "https://wordpress.com/calypso/reader-mobile.css?\(timestamp)"
         }

@@ -574,11 +574,18 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (void)syncMediaLibraryForBlog:(Blog *)blog
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
-{
+{    
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
     [self.managedObjectContext performBlock:^{
-        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+        NSError *error = nil;
+        Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+        
+        if (!blogInContext) {
+            failure(error);
+            return;
+        }
+        
         NSSet *originalLocalMedia = blogInContext.media;
         id<MediaServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote getMediaLibraryWithPageLoad:^(NSArray *media) {

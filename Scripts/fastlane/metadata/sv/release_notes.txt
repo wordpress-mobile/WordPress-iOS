@@ -1,11 +1,7 @@
-Din läsarupplevelse går nu att skräddarsy så att den passar just dig — med ett nytt Upptäck-flöde som återspeglar dina valda intressen.
+Kolla in nyheterna i denna utgåva:
 
-Blockinställningarna i blockredigeraren återspeglar nu omedelbart alla ändringar som görs med menyreglagen.
-
-Förbättrad registrerings- och inloggningsupplevelse — både vad gäller att guida användaren under stegen och att ansluta en webbplats som drivs på en egen server.
-
-Det finns också ett helt nytt sätt att logga in med funktionen iCloud-nyckelring — en lösenordshanterare som kommer ihåg dina WordPress.com-konton och -lösenord.
-
-Missa inte någonting! Du kan nu följa konversationer på P2-webbplatser.
-
-Vi har också minskat minnesanvändningen vid redigering av bilder, så mediaredigering kommer inte att orsaka en krasch.
+- Stöd för fullbredd och brett innehåll i blocken grupp, omslag och bild (och stöd för fler block är på väg).
+- Gillar du rundade hörn på dina bilder? Nu har bildblocket stöd för runda hörn.
+- Vissa användare kan ha haft strul med ett verktygsfält som uppträdde konstigt när du skulle lägga till ett nytt block. Nu har vi löst det.
+- Vi upptäckte också att i förhandsvisning av bilder kunde bilderna hamna lite fel efter att man vridit sin enhet mellan stående och liggande. Men det är också fixat nu.
+- Vi har rättat några fler fel kring registrering och inloggning, inklusive ett problem med visning av användarnamnet efter att man registrerat sig via Apple, samt ett felaktigt felmeddelande som visades när man nått taket för antalet misslyckade inloggningsförsök.

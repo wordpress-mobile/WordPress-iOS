@@ -35,9 +35,12 @@ class WhatIsNewScenePresenter: ScenePresenter {
         }
 
         startPresenting = { [weak viewController, weak self] in
-            guard let self = self, let viewController = viewController, viewController.isViewOnScreen() else {
-                return
-            }
+            guard let self = self,
+                let viewController = viewController,
+                viewController.isViewOnScreen(),
+                (viewController is AppSettingsViewController || self.store.announcements.first?.isLocalized == true) else {
+                    return
+                }
             let controller = self.makeWhatIsNewViewController()
 
             self.trackAccess(from: viewController)

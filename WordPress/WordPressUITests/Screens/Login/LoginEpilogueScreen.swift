@@ -21,7 +21,7 @@ class LoginEpilogueScreen: BaseScreen {
         connectSiteButton = app.cells[ElementStringIDs.connectSiteButton]
         continueButton = app.buttons[ElementStringIDs.continueButton]
 
-        super.init(element: siteUrlField)
+        super.init(element: continueButton)
     }
 
     func continueWithSelectedSite() -> MySiteScreen {
@@ -41,7 +41,7 @@ class LoginEpilogueScreen: BaseScreen {
         }
 
         let expectedSiteUrl = getDisplayUrl(for: siteUrl)
-        let actualSiteUrl = siteUrlField.label
+        let actualSiteUrl = siteUrlField.firstMatch.label
         XCTAssertEqual(expectedSiteUrl, actualSiteUrl, "Site URL displayed is \(actualSiteUrl) but should be \(expectedSiteUrl)")
 
         return self
