@@ -17,13 +17,17 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
+    /// Tracks whether or not we should force sync
+    /// This is set to true after the Reader Manage view is dismissed
+    private var shouldForceRefresh = false
+
     private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
-        observeDisplayContext()
+        addObservers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,9 +77,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return tableView.contentOffset.y == 0
     }
 
-    private func displaySelectInterestsIfNeeded() {
-        guard let readerTabBarViewController = parent as? ReaderTabViewController else {
-            return
     @objc private func reload(_ notification: Foundation.Notification) {
         tableView.reloadData()
     }
@@ -110,10 +111,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return cards?.count ?? 0
     }
 
-    override func syncIfAppropriate() {
+    override func syncIfAppropriate(forceSync: Bool = false) {
         // Only sync if the tableview is at the top, otherwise this will change tableview's offset
         if isTableViewAtTheTop() {
-            super.syncIfAppropriate()
+            super.syncIfAppropriate(forceSync: forceSync)
         }
     }
 
@@ -143,9 +144,26 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return controller
     }
 
-    /// Observe the managedObjectContext for changes (likes, saves) and reload the tableView
-    private func observeDisplayContext() {
-        NotificationCenter.default.addObserver(self, selector: #selector(reload(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext())
+    private func addObservers() {
+        // Observe the managedObjectContext for changes (likes, saves) and reload the tableView
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reload(_:)),
+                                               name: .NSManagedObjectContextDidSave,
+                                               object: managedObjectContext())
+
+        // Listens for when the reader manage view controller is dismissed
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(manageControllerWasDismissed(_:)),
+                                               name: .readerManageControllerWasDismissed,
+                                               object: nil)
+    }
+
+    @objc func manageControllerWasDismissed(_ notification: Foundation.Notification) {
+        shouldForceRefresh = true
+        self.displaySelectInterestsIfNeeded()
+    }
+}
+
 // MARK: - Select Interests Display
 private extension ReaderCardsStreamViewController {
     func displaySelectInterestsIfNeeded() {
@@ -160,6 +178,10 @@ private extension ReaderCardsStreamViewController {
 
     func hideSelectInterestsView() {
         guard selectInterestsViewController.parent != nil else {
+            if shouldForceRefresh {
+                displayLoadingStream()
+                syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
             }
 
             return
