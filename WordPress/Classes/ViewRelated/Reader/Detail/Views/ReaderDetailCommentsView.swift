@@ -13,9 +13,6 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
     /// The VC where the toolbar is inserted
     private weak var viewController: UIViewController?
 
-    /// An observer of the number of likes of the post
-    private var commentCountObserver: NSKeyValueObservation?
-
     /// Returns the current comment count
     private var commentCount: Int {
         return post?.commentCount()?.intValue ?? 0
@@ -81,7 +78,6 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
         }
 
         if post.isWPCom || post.isJetpack {
-            let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 return true
             }
