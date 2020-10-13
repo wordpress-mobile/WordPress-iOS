@@ -103,6 +103,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func configure(scrollView: UIScrollView, navigationBar: UINavigationBar?) {
         guard self.navigationBar == nil, self.scrollView == nil else {
             configureNavigationBar()
+            addScrollObserver()
             return
         }
 
@@ -114,14 +115,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             originalNavBarAppearance = NavBarAppearance(navigationBar: navBar)
         }
 
-        configureNavigationBar()
-
-        // Scroll View
         self.scrollView = scrollView
-        scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
-            self?.scrollViewDidScroll()
-        }
 
+        configureNavigationBar()
+        addScrollObserver()
         addTapGesture()
     }
 
@@ -185,6 +182,17 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Config
     private func configureNavigationBar() {
         applyTransparentNavigationBarAppearance(to: navigationBar)
+    }
+
+    private func addScrollObserver() {
+        guard scrollViewObserver == nil,
+              let scrollView = self.scrollView else {
+            return
+        }
+
+        scrollViewObserver = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, _ in
+            self?.scrollViewDidScroll()
+        }
     }
 
     // MARK: - Tap Gesture
