@@ -316,7 +316,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         let selectedStateContainerAlpha: CGFloat = isSelected ? 1 : 0
 
 
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
             self.createBlankPageBtn.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
         }) { (_) in

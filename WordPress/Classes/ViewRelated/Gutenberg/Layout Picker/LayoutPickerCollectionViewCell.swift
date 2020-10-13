@@ -6,7 +6,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     static let cellReuseIdentifier = "LayoutPickerCollectionViewCell"
     static let nib = UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
-
+    static let selectionAnimationSpeed: Double = 0.25
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkBackground: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView! {
@@ -115,12 +115,12 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         let borderWidthAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
         borderWidthAnimation.fromValue = imageView.layer.borderWidth
         borderWidthAnimation.toValue = imageBorderWidth
-        borderWidthAnimation.duration = 0.1
+        borderWidthAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
 
         let borderColorAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
         borderColorAnimation.fromValue = imageView.layer.borderColor
         borderColorAnimation.toValue = imageBorderColor
-        borderColorAnimation.duration = 0.1
+        borderColorAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
 
         imageView.layer.add(borderColorAnimation, forKey: "borderColor")
         imageView.layer.add(borderWidthAnimation, forKey: "borderWidth")
@@ -141,10 +141,11 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         // Set the inverse of the animation destination
         checkmarkImageView.alpha = isHidden ? 1 : 0
         checkmarkBackground.alpha = isHidden ? 1 : 0
+        let targetAlpha: CGFloat = isHidden ? 0 : 1
 
-        UIView.animate(withDuration: 0.1, animations: {
-            self.checkmarkImageView.alpha = isHidden ? 0 : 1
-            self.checkmarkBackground.alpha = isHidden ? 0 : 1
+        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, animations: {
+            self.checkmarkImageView.alpha = targetAlpha
+            self.checkmarkBackground.alpha = targetAlpha
         }, completion: { (_) in
             self.checkmarkImageView.isHidden = isHidden
             self.checkmarkBackground.isHidden = isHidden
