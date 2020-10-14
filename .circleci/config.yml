@@ -46,9 +46,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: rake dependencies
-      - ios/xcodebuild:
-          command: build-for-testing
-          arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPress' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
+      - run:
+          name: Build for Testing
+          command: bundle exec fastlane build_for_testing
       - persist_to_workspace:
           root: ./
           paths:

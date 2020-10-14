@@ -472,7 +472,17 @@ import "./ScreenshotFastfile"
 
     zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
   end
-  
+
+  desc "Build for Testing"
+  lane :build_for_testing do | options |
+    run_tests(
+      workspace: "../WordPress.xcworkspace",
+      scheme: "WordPress",
+      derived_data_path: "DerivedData",
+      build_for_testing: true,
+    )
+  end
+
   #####################################################################################
   # register_new_device
   # -----------------------------------------------------------------------------------
