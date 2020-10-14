@@ -6,6 +6,7 @@ class LayoutPreviewViewController: UIViewController {
 
     @IBOutlet weak var createPageBtn: UIButton!
     @IBOutlet weak var previewContainer: UIView!
+    @IBOutlet weak var closeButton: UIButton!
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
     var layout: PageTemplateLayout?
@@ -46,6 +47,18 @@ class LayoutPreviewViewController: UIViewController {
         styleButtons()
         setupGutenbergView()
         view.backgroundColor = defaultBrackgroundColor
+        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+
+        if #available(iOS 13.0, *) {
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +110,10 @@ class LayoutPreviewViewController: UIViewController {
         dismiss(animated: true) {
             completion(layout)
         }
+    }
+
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 }
 
