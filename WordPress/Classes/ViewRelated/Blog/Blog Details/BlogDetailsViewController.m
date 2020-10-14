@@ -436,6 +436,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if (!_createButtonCoordinator) {
         __weak __typeof(self) weakSelf = self;
+
+        BOOL showNewStory = [Feature enabled:FeatureFlagStories] && [self.blog supports:BlogFeatureStories];
+        void (^newStory)(void) = ^void() {
+            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
+            Blog *blog = [controller currentOrLastBlog];
+            [controller showStoryEditorForBlog:blog];
+        };
+
         _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
             [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
                 [weakSelf startAlertTimer];
@@ -444,7 +452,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
             Blog *blog = [controller currentOrLastBlog];
             [controller showPageEditorForBlog:blog];
-        }];
+        } newStory: (showNewStory) ? newStory : nil];
     }
     
     return _createButtonCoordinator;
