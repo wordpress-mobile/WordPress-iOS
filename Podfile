@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
-  raise 'Please run fastlane via `bundle exec`'
+  raise 'Please run CocoaPods via `bundle exec`'
 end
 
 inhibit_all_warnings!
