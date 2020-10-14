@@ -40,17 +40,15 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="fl5-Kc-zxf" firstAttribute="leading" secondItem="GeG-xx-Hjc" secondAttribute="trailing" constant="3" id="2Cq-Ju-MEv"/>
                                 <constraint firstAttribute="bottom" secondItem="fl5-Kc-zxf" secondAttribute="bottom" constant="1" id="ERr-OS-ODd"/>
                                 <constraint firstItem="GeG-xx-Hjc" firstAttribute="leading" secondItem="tNq-SU-bHU" secondAttribute="leading" id="Et8-xQ-9e7"/>
-                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="fl5-Kc-zxf" secondAttribute="trailing" constant="97" id="KXQ-gE-OeJ"/>
                                 <constraint firstAttribute="trailing" secondItem="ucZ-Od-AwP" secondAttribute="trailing" id="Kmp-VN-5R3"/>
                                 <constraint firstItem="GeG-xx-Hjc" firstAttribute="top" secondItem="tNq-SU-bHU" secondAttribute="top" id="NZc-6x-Ewp"/>
                                 <constraint firstAttribute="bottom" secondItem="GeG-xx-Hjc" secondAttribute="bottom" id="SBP-PE-pbj"/>
                                 <constraint firstItem="ucZ-Od-AwP" firstAttribute="leading" secondItem="tNq-SU-bHU" secondAttribute="leading" id="c2B-XC-3rm"/>
                                 <constraint firstAttribute="bottom" secondItem="ucZ-Od-AwP" secondAttribute="bottom" id="cd4-ip-dRk"/>
                                 <constraint firstItem="ucZ-Od-AwP" firstAttribute="top" secondItem="tNq-SU-bHU" secondAttribute="top" id="cmB-vc-cBq"/>
-                                <constraint firstItem="fl5-Kc-zxf" firstAttribute="leading" secondItem="GeG-xx-Hjc" secondAttribute="trailing" constant="3" id="iN0-ln-EDv"/>
-                                <constraint firstItem="GeG-xx-Hjc" firstAttribute="width" relation="lessThanOrEqual" secondItem="tNq-SU-bHU" secondAttribute="width" multiplier="0.9" id="nlh-kX-VpU"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aec-C8-RtP">

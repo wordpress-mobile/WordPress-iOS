@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,10 +13,10 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-0W-AQZ">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="ikP-PI-Is1"/>
+                        <constraint firstAttribute="height" constant="0.5" id="ikP-PI-Is1"/>
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
