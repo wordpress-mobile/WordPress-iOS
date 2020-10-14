@@ -180,7 +180,7 @@ private extension ReaderCardsStreamViewController {
         guard selectInterestsViewController.parent != nil else {
             if shouldForceRefresh {
                 displayLoadingStream()
-                syncIfAppropriate(forceSync: true)
+                super.syncIfAppropriate(forceSync: true)
                 shouldForceRefresh = false
             }
 
