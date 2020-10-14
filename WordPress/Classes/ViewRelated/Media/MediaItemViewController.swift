@@ -155,6 +155,7 @@ class MediaItemViewController: UITableViewController {
                                             style: .plain,
                                             target: self,
                                             action: #selector(shareTapped(_:)))
+            shareItem.accessibilityLabel = NSLocalizedString("Share", comment: "Accessibility label for share buttons in nav bars")
 
             let trashItem = UIBarButtonItem(image: .gridicon(.trash),
                                             style: .plain,
