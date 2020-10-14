@@ -111,6 +111,6 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 extension LayoutPickerFilterCollectionViewCell: GhostableView {
     func ghostAnimationWillStart() {
         filterLabel.text = ""
-        pillBackgroundView.startGhostAnimation()
+        pillBackgroundView.startGhostAnimation(style: GhostCellStyle.muriel)
     }
 }
