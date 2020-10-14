@@ -626,7 +626,7 @@ import "./ScreenshotFastfile"
     buildProductsPath = File.expand_path("../DerivedData/Build/Products/", Dir.pwd)
     testPlanPath = Dir.glob(File.join(buildProductsPath, '*.xctestrun') ).select { |e|
       e.include?(options[:name])
-    }
+    }.first
 
     multi_scan(
       workspace: "../WordPress.xcworkspace",
