@@ -900,7 +900,7 @@ import WordPressFlux
     /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
-    func syncIfAppropriate() {
+    func syncIfAppropriate(forceSync: Bool = false) {
         guard UIApplication.shared.isRunningTestSuite() == false else {
             return
         }
@@ -925,7 +925,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
 
-        if canSync() && (interval >= refreshInterval || topicPostsCount == 0) {
+        if forceSync || (canSync() && (interval >= refreshInterval || topicPostsCount == 0)) {
             syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
