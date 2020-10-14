@@ -628,12 +628,13 @@ import "./ScreenshotFastfile"
       e.include?(options[:name])
     }.first
 
+    puts testPlanPath
+
     multi_scan(
       workspace: "../WordPress.xcworkspace",
       scheme: "WordPress",
       test_without_building: true,
       xctestrun: testPlanPath,
-      destination: options[:destination],
       try_count: options[:try_count],
       output_directory: "../build/results",
       result_bundle: true
