@@ -72,7 +72,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support Stock Photos feature (free photos library)
     BlogFeatureStockPhotos,
     /// Does the blog support setting the homepage type and pages?
-    BlogFeatureHomepageSettings
+    BlogFeatureHomepageSettings,
+    /// Does the blog support stories?
+    BlogFeatureStories
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
