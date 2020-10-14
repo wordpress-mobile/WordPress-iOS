@@ -48,7 +48,7 @@ jobs:
           command: rake dependencies
       - run:
           name: Build for Testing
-          command: bundle exec fastlane build_for_testing
+          command: cd ./Scripts && bundle exec fastlane build_for_testing
       - persist_to_workspace:
           root: ./
           paths:
