@@ -34,7 +34,7 @@ PODS:
   - CocoaLumberjack (3.5.2):
     - CocoaLumberjack/Core (= 3.5.2)
   - CocoaLumberjack/Core (3.5.2)
-  - CropViewController (2.5.4)
+  - CropViewController (2.5.3)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
   - FBLazyVector (0.61.5)
@@ -448,6 +448,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (~> 0.5.1)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
+  - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542/third-party-podspecs/FBReactNativeSpec.podspec.json`)
@@ -688,7 +689,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
-  CropViewController: 980df34ffc499db89755b2f307f20eca00cd40c6
+  CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 47798d43f20e85af0d3cef09928b6e2d16dbbe4c
@@ -772,6 +773,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 59aaeee72514d2b0e33eb444a478d9717c825353
+PODFILE CHECKSUM: bf8880b6906cd0805fa584c893a87da92fc56075
 
 COCOAPODS: 1.9.3
