@@ -194,6 +194,7 @@ private extension ReaderCardsStreamViewController {
             self.selectInterestsViewController.view.alpha = 0
         }) { [unowned self] _ in
             self.selectInterestsViewController.remove()
+            self.selectInterestsViewController.view.alpha = 1
         }
     }
 
