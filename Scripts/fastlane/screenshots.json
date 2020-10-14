@@ -18,8 +18,8 @@
 		{
 			"name": "iPhone 8",
 			"canvas_size": [1242, 2208],
-			"text_size": [995, 420],
-			"text_offset": [124, 40],
+			"text_size": [1055, 420],
+			"text_offset": [94, 40],
 			"font_size": "110px",
 			"screenshot_size": [825, 1467],
 			"screenshot_offset": [225, 741],
@@ -92,8 +92,8 @@
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
-					"size": [630, 540],
-					"position": [306, 110],
+					"size": [640, 540],
+					"position": [301, 110],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
@@ -136,8 +136,8 @@
 			"attachments": [
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
-					"size": [500, 540],
-					"position": [371, 110],
+					"size": [660, 540],
+					"position": [316, 110],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
@@ -169,9 +169,17 @@
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-1-PostEditor.png",
-			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-2.png",
-			"screenshot": "iPhone 8 Plus-1-light-Editor-With-BlockPicker.png"
+			"screenshot": "iPhone 8 Plus-1-light-Editor-With-BlockPicker.png",
+			"attachments": [
+				{
+					"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
+					"size": [990, 420],
+					"position": [124, 40],
+					"font-size": 110,
+					"stylesheet": "appstoreres/assets/style.css"
+				}
+			]
 		},
 		{
 			"device": "iPhone 8",
@@ -279,7 +287,7 @@
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-6-DraftEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_8.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-7.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-6-dark-Editor-With-Keyboard.png"
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-7-dark-Editor-With-Keyboard.png"
 		},
 		{
 			"device": "iPad Pro",
@@ -344,7 +352,7 @@
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-6-DraftEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_8.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/Circles-7.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-6-dark-Editor-With-Keyboard.png"
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-7-dark-Editor-With-Keyboard.png"
 		}
 	]
 }
