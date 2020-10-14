@@ -110,7 +110,8 @@ jobs:
           name: Run UI Tests
           working_directory: Scripts
           command: |
-            TEST_PLAN_NAME=$(cd DerivedData/Build/Products/ && ls -l | grep xctestrun | grep UITests | awk '{print $9}')
+            TEST_PLAN_NAME=$(cd ./Scripts/DerivedData/Build/Products/ && ls -l | grep xctestrun | grep UITests | awk '{print $9}')
+            echo $TEST_PLAN_NAME
             bundle exec fastlane test_without_building xctestrun:"DerivedData/Build/Products/$TEST_PLAN_NAME" destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
