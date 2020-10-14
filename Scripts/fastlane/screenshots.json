@@ -137,7 +137,7 @@
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 					"size": [660, 540],
-					"position": [316, 110],
+					"position": [291, 110],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
