@@ -179,6 +179,7 @@ private extension ReaderCardsStreamViewController {
     func hideSelectInterestsView() {
         guard selectInterestsViewController.parent != nil else {
             if shouldForceRefresh {
+                scrollViewToTop()
                 displayLoadingStream()
                 super.syncIfAppropriate(forceSync: true)
                 shouldForceRefresh = false
@@ -187,8 +188,9 @@ private extension ReaderCardsStreamViewController {
             return
         }
 
+        scrollViewToTop()
         displayLoadingStream()
-        syncIfAppropriate(forceSync: true)
+        super.syncIfAppropriate(forceSync: true)
 
         UIView.animate(withDuration: 0.2, animations: {
             self.selectInterestsViewController.view.alpha = 0
