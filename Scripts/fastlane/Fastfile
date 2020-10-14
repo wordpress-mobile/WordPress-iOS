@@ -478,7 +478,7 @@ import "./ScreenshotFastfile"
     run_tests(
       workspace: "../WordPress.xcworkspace",
       scheme: "WordPress",
-      derived_data_path: "DerivedData",
+      derived_data_path: "../DerivedData",
       build_for_testing: true,
     )
   end
@@ -617,18 +617,19 @@ import "./ScreenshotFastfile"
   # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [destination:<Simulator>] [try_count:<Number of times to try tests>]
   #
   # Example:
-  # bundle exec fastlane test_without_building xctestrun:UITests destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+  # bundle exec fastlane test_without_building name:UITests try_count:3
   #####################################################################################
   desc "Run tests without building"
   lane :test_without_building do | options |
 
     # Find the referenced .xctestrun file based on its name
-    buildProductsPath = File.expand_path("../DerivedData/Build/Products/", Dir.pwd)
+    buildProductsPath = File.expand_path("../DerivedData/Build/Products/", File.dirname(Dir.pwd))
+
     testPlanPath = Dir.glob(File.join(buildProductsPath, '*.xctestrun') ).select { |e|
       e.include?(options[:name])
     }.first
 
-    puts testPlanPath
+    UI.user_error!("Unable to find .xctestrun file") unless testPlanPath != nil and File.exists? (testPlanPath)
 
     multi_scan(
       workspace: "../WordPress.xcworkspace",
