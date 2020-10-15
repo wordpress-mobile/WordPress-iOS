@@ -1037,10 +1037,6 @@ import WordPressFlux
         }
     }
 
-    private func isNewDiscover() -> Bool {
-        return readerTopic?.title == "Discover" && FeatureFlag.readerImprovementsPhase2.enabled
-    }
-
     private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
         guard let topic = readerTopic else {
@@ -1224,16 +1220,14 @@ import WordPressFlux
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
 
-        if FeatureFlag.readerImprovementsPhase2.enabled {
-            if let topic = readerTopic {
-                let type = ReaderHelpers.topicType(topic)
+        if let topic = readerTopic {
+            let type = ReaderHelpers.topicType(topic)
 
-                switch type {
-                case .discover, .tag:
-                    displayTopics = true
-                default:
-                    displayTopics = false
-                }
+            switch type {
+            case .discover, .tag:
+                displayTopics = true
+            default:
+                displayTopics = false
             }
         }
 

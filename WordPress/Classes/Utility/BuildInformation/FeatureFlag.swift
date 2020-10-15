@@ -9,7 +9,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
-    case readerImprovementsPhase2
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
@@ -36,8 +35,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
-            return true
-        case .readerImprovementsPhase2:
             return true
         case .gutenbergMentions:
             return true
@@ -91,8 +88,6 @@ extension FeatureFlag {
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
-        case .readerImprovementsPhase2:
-            return "Reader Improvements Phase 2"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         case .gutenbergModalLayoutPicker:

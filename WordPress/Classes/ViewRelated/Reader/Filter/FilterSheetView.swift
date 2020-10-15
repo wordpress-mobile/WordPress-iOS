@@ -25,9 +25,7 @@ class FilterSheetView: UIView {
         let view = EmptyActionView(tappedButton: tappedEmptyAddButton)
 
         // Hide the button if the user is not logged in
-        if FeatureFlag.readerImprovementsPhase2.enabled {
-            view.button.isHidden = !ReaderHelpers.isLoggedIn()
-        }
+        view.button.isHidden = !ReaderHelpers.isLoggedIn()
 
         return view
     }()
