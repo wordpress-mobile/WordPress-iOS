@@ -29,7 +29,9 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
+    // Subclasses should configure these properties
     var headerTitle: String?
+    var headerContentInsets: UIEdgeInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -118,7 +120,7 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        cell(forRowAt: indexPath, tableView: tableView, topic: data[indexPath.row])
+        return cell(forRowAt: indexPath, tableView: tableView, topic: data[indexPath.row])
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -140,7 +142,7 @@ extension ReaderTopicsTableCardCell: UITableViewDelegate {
         headerTitle.text = title
         header.addSubview(headerTitle)
         headerTitle.translatesAutoresizingMaskIntoConstraints = false
-        header.pinSubviewToAllEdges(headerTitle, insets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 0))
+        header.pinSubviewToAllEdges(headerTitle, insets: headerContentInsets)
         headerTitle.font = WPStyleGuide.serifFontForTextStyle(.title2)
         return header
     }
