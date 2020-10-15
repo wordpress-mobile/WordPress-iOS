@@ -281,8 +281,8 @@ workflows:
           device: iPhone 11
           requires: [ "Optional Tests" ]
       - UI Tests:
-          name: UI Tests (iPad Air 3rd generation)
-          device: iPad Air \\(3rd generation\\)
+          name: UI Tests (iPad Air 4th generation)
+          device: iPad Air \\(4th generation\\)
           requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
