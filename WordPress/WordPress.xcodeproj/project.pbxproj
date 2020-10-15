@@ -5782,7 +5782,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */,
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -5799,10 +5798,10 @@
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
 				98D31B902396ED7F009CFF43 /* WordPressAllTimeWidget */,
 				98A3C2F1239997DA0048D38D /* WordPressThisWeekWidget */,
+				3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
 				FF2716901CAAC87B0006E2D4 /* WordPressUITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
-				3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				93FA0F0118E451A80007903B /* LICENSE */,
@@ -6438,12 +6437,21 @@
 		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
 			isa = PBXGroup;
 			children = (
+				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
 				3F526C542538CF2A0069706C /* WordPressHomeWidgetToday.intentdefinition */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
 				3F526C572538CF2B0069706C /* Info.plist */,
 			);
 			path = WordPressHomeWidgetToday;
+			sourceTree = "<group>";
+		};
+		3F526CA82538E0ED0069706C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		3F662C4824DC9F8300CAEA95 /* What's New */ = {
@@ -14919,7 +14927,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = WordPressHomeWidgetTodayExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayExtension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -14965,7 +14973,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = WordPressHomeWidgetTodayExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15005,7 +15013,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = WordPressHomeWidgetTodayExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayExtension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15045,7 +15053,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = WordPressHomeWidgetTodayExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayExtension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
