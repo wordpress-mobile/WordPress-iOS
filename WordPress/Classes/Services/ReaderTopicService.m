@@ -1017,18 +1017,16 @@ array are marked as being unfollowed in Core Data.
                     } else {
                         // If the user adds a locally saved tag/interest prevent it from being deleted
                         // while the user is logged out.
-                        if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
-                            ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+                        ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
-                            if (!isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
-                                DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
-                                continue;
-                            }
+                        if (!isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
+                            continue;
+                        }
 
-                            if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards.count > 0) {
-                                DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
-                                continue;
-                            }
+                        if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards.count > 0) {
+                            DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
+                            continue;
                         }
 
                         DDLogInfo(@"Deleting topic: %@", topic.title);
