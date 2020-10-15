@@ -57,7 +57,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     func setupTableView() {
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(containerView, insets: Constants.containerInsets)
+        pinSubviewToSafeArea(containerView, insets: Constants.containerInsets)
         containerView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
