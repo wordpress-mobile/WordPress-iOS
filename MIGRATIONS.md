@@ -7,8 +7,8 @@ data model as well as any custom migrations.
 
 @guarani 2020-10-09
 
-- Add a new `AtMentionSuggestion` entity
-- Add a one-to-many relationship between `Blog` and `AtMentionSuggestion`
+- Add a new `UserSuggestion` entity
+- Add a one-to-many relationship between `Blog` and `UserSuggestion`
 
 ## WordPress 98
 

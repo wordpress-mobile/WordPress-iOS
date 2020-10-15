@@ -2,10 +2,10 @@ import Foundation
 import CoreData
 
 
-extension AtMentionSuggestion {
+extension UserSuggestion {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<AtMentionSuggestion> {
-        return NSFetchRequest<AtMentionSuggestion>(entityName: "AtMentionSuggestion")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<UserSuggestion> {
+        return NSFetchRequest<UserSuggestion>(entityName: "UserSuggestion")
     }
 
     @NSManaged public var displayName: String?

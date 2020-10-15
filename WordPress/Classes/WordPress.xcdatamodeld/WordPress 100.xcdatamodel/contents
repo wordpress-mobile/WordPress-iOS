@@ -92,12 +92,6 @@
         <attribute name="totalPostsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="totalWordsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="AtMentionSuggestion" representedClassName="AtMentionSuggestion" syncable="YES">
-        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="imageURL" optional="YES" attributeType="URI" syncable="YES"/>
-        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="atMentionSuggestions" inverseEntity="Blog" syncable="YES"/>
-    </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -154,7 +148,6 @@
         <attribute name="xmlrpc" attributeType="String"/>
         <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="blogs" inverseEntity="Account" syncable="YES"/>
         <relationship name="accountForDefaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="defaultBlog" inverseEntity="Account" syncable="YES"/>
-        <relationship name="atMentionSuggestions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AtMentionSuggestion" inverseName="blog" inverseEntity="AtMentionSuggestion" syncable="YES"/>
         <relationship name="authors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BlogAuthor" inverseName="blog" inverseEntity="BlogAuthor" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="blog" inverseEntity="Category"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="blog" inverseEntity="Comment"/>
@@ -172,6 +165,7 @@
         <relationship name="statsRecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatsRecord" inverseName="blog" inverseEntity="StatsRecord" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostTag" inverseName="blog" inverseEntity="PostTag"/>
         <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
+        <relationship name="userSuggestions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UserSuggestion" inverseName="blog" inverseEntity="UserSuggestion" syncable="YES"/>
         <fetchIndex name="byAccountIndex">
             <fetchIndexElement property="account" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -881,6 +875,12 @@
         <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="UserSuggestion" representedClassName="UserSuggestion" syncable="YES">
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="URI" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="userSuggestions" inverseEntity="Blog" syncable="YES"/>
+    </entity>
     <entity name="VisitsSummaryStatsRecordValue" representedClassName=".VisitsSummaryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -894,7 +894,7 @@
         <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="255"/>
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
-        <element name="AtMentionSuggestion" positionX="99" positionY="90" width="128" height="103"/>
+        <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="808"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>

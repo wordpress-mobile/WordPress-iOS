@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public extension AtMentionSuggestion {
+@objc public extension UserSuggestion {
     func cachedAvatar(with size: CGSize) -> UIImage? {
         var hash: NSString?
         let type = avatarSourceType(with: &hash)
@@ -23,7 +23,7 @@ import Foundation
     }
 }
 
-extension AtMentionSuggestion {
+extension UserSuggestion {
     func avatarSourceType(with hash: inout NSString?) -> WPAvatarSourceType? {
         if let imageURL = imageURL {
             return WPAvatarSource.shared()?.parseURL(imageURL, forAvatarHash: &hash)

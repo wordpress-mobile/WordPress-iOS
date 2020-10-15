@@ -13,7 +13,7 @@ class SuggestionService {
     @param the blog/site to retrieve suggestions for
     @param completion callback containing list of suggestions, or nil if unavailable
     */
-    func suggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
+    func suggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
 
         if let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
             completion(suggestions)
@@ -30,7 +30,7 @@ class SuggestionService {
 
     @param blog/site to retrieve suggestions for
     */
-    private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([AtMentionSuggestion]?) -> Void) {
+    private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
 
         // if there is already a request in place for this blog, just wait
         guard !blogsCurrentlyBeingRequested.contains(blog) else { return }
@@ -50,16 +50,16 @@ class SuggestionService {
 
             let context = ContextManager.shared.mainContext
 
-            // Delete any existing `AtMentionSuggestion` objects
+            // Delete any existing `UserSuggestion` objects
             self.retrievePersistedSuggestions(for: blog)?.forEach { suggestion in
                 context.delete(suggestion)
             }
 
-            // Create new `AtMentionSuggestion` objects
-            let suggestions = restSuggestions.compactMap { AtMentionSuggestion(dictionary: $0, context: context) }
+            // Create new `UserSuggestion` objects
+            let suggestions = restSuggestions.compactMap { UserSuggestion(dictionary: $0, context: context) }
 
-            // Associate `AtMentionSuggestion` objects with blog
-            blog.atMentionSuggestions = Set(suggestions)
+            // Associate `UserSuggestion` objects with blog
+            blog.userSuggestions = Set(suggestions)
 
             // Save the changes
             try? blog.managedObjectContext?.save()
@@ -102,8 +102,8 @@ class SuggestionService {
         return accountService.defaultWordPressComAccount()
     }
 
-    private func retrievePersistedSuggestions(for blog: Blog) -> [AtMentionSuggestion]? {
-        guard let suggestions = blog.atMentionSuggestions else { return nil }
+    private func retrievePersistedSuggestions(for blog: Blog) -> [UserSuggestion]? {
+        guard let suggestions = blog.userSuggestions else { return nil }
         return Array(suggestions)
     }
 

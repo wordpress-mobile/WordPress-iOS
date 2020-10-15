@@ -1,8 +1,8 @@
 import Foundation
 import CoreData
 
-@objc(AtMentionSuggestion)
-public class AtMentionSuggestion: NSManagedObject {
+@objc(UserSuggestion)
+public class UserSuggestion: NSManagedObject {
 
     convenience init?(dictionary: [String: Any], context: NSManagedObjectContext) {
         let userLoginValue = dictionary["user_login"] as? String
@@ -13,7 +13,7 @@ public class AtMentionSuggestion: NSManagedObject {
             return nil
         }
 
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "AtMentionSuggestion", in: context) else {
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "UserSuggestion", in: context) else {
             return nil
         }
         self.init(entity: entityDescription, insertInto: context)

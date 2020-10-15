@@ -304,7 +304,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    AtMentionSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    UserSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.username];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -315,7 +315,7 @@ CGFloat const STVSeparatorHeight = 1.f;
             return;
         }
 
-        AtMentionSuggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
+        UserSuggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
         if (cell.imageDownloadHash != reloaded.imageURL.hash) {
             return;
         }
@@ -330,7 +330,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AtMentionSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    UserSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     [self.suggestionsDelegate suggestionsTableView:self
                                didSelectSuggestion:suggestion.username
                                      forSearchText:[self.searchText substringFromIndex:1]];
@@ -341,7 +341,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        [self suggestionsFor:self.siteID completion:^(NSArray<AtMentionSuggestion *> * _Nullable results) {
+        [self suggestionsFor:self.siteID completion:^(NSArray<UserSuggestion *> * _Nullable results) {
             if (!results) return;
             self.suggestions = results;
             [self showSuggestionsForWord:self.searchText];
@@ -352,7 +352,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Avatar helper
 
-- (void)loadAvatarForSuggestion:(AtMentionSuggestion *)suggestion success:(void (^)(UIImage *))success
+- (void)loadAvatarForSuggestion:(UserSuggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
     UIImage *image = [suggestion cachedAvatarWith:imageSize];
