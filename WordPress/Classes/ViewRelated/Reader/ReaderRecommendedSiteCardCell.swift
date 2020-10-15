@@ -62,7 +62,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
         hostNameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         hostNameLabel.textColor = .textSubtle
 
-        // Host Label
+        // Description Label
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         descriptionLabel.textColor = .text
 
