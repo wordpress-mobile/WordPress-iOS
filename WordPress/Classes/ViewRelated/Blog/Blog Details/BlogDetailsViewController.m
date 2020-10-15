@@ -1357,7 +1357,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             break;
     }
     
-    [WPAppAnalytics track:event withProperties:@{@"tap_source": sourceString} withBlog:self.blog];
+    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
 }
 
 - (void)preloadBlogData
