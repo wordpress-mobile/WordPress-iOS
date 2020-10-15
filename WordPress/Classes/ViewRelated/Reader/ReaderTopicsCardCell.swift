@@ -30,9 +30,8 @@ class ReaderTopicsCardCell: ReaderTopicsTableCardCell {
 
         return cell
     }
-    
+
     private enum Constants {
         static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might ")
     }
 }
-

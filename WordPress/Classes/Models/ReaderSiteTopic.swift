@@ -49,7 +49,7 @@ import Foundation
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
         postCount = remoteInfo.postCount ?? 0
-        showInMenu = false;
+        showInMenu = false
         siteBlavatar = remoteInfo.siteBlavatar ?? ""
         siteDescription = remoteInfo.siteDescription ?? ""
         siteID = remoteInfo.siteID ?? 0
@@ -67,7 +67,7 @@ import Foundation
         guard let path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath else {
             return ReaderSiteTopic(remoteInfo: remoteInfo, context: context)
         }
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
         fetchRequest.predicate = NSPredicate(format: "path = %@ OR path ENDSWITH %@", path, path)
 
