@@ -1,6 +1,7 @@
 16.0
 -----
  * [*] Reader: Select interests is now displayed under the Discover tab. [#15097]
+ * [***] Reader: The new redesigned Reader detail shows your post as beautiful as ever. And if you add a featured image it would be twice as beautiful! [#15107]
 
 15.9
 -----
