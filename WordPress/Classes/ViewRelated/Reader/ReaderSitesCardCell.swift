@@ -28,10 +28,27 @@ class ReaderSitesCardCell: ReaderTopicsTableCardCell {
         }
 
         cell.configure(siteTopic)
+        cell.delegate = self
         return cell
     }
 
     private enum Constants {
         static let title = NSLocalizedString("Sites to follow", comment: "A suggestion of topics the user might ")
+    }
+}
+
+protocol ReaderSitesCardCellDelegate: ReaderTopicsTableCardCellDelegate {
+    func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell)
+}
+
+extension ReaderSitesCardCell: ReaderRecommendedSitesCardCellDelegate {
+    func handleFollowActionForCell(_ cell: ReaderRecommendedSiteCardCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+
+        let topic = data[indexPath.row]
+
+        (delegate as? ReaderSitesCardCellDelegate)?.handleFollowActionForTopic(topic, for: self)
     }
 }

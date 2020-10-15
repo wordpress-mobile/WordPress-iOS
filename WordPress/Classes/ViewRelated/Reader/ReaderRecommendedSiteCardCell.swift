@@ -7,7 +7,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
 
-    weak var topic: ReaderSiteTopic? = nil
+    var delegate: ReaderRecommendedSitesCardCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -16,23 +16,30 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     }
 
     func configure(_ topic: ReaderSiteTopic) {
-        self.topic = topic
-
         followButton.isSelected = topic.following
+        followButton.isHidden = !ReaderHelpers.isLoggedIn()
+
         blogNameLabel.text = topic.title
         hostNameLabel.text = URL(string: topic.siteURL)?.host
         descriptionLabel.text = topic.siteDescription
         descriptionLabel.isHidden = topic.siteDescription.isEmpty
 
-        configureHeaderImage()
+        configureSiteIcon(topic)
     }
 
-    func configureHeaderImage() {
+    @IBAction func didTapFollowButton(_ sender: Any) {
+        // Optimistically change the value
+        followButton.isSelected = !followButton.isSelected
+        
+        delegate?.handleFollowActionForCell(self)
+    }
+
+    private func configureSiteIcon(_ topic: ReaderSiteTopic) {
         let placeholder = UIImage.siteIconPlaceholder
 
         guard
-            let path = topic?.siteBlavatar,
-            let url = URL(string: path)
+            !topic.siteBlavatar.isEmpty,
+            let url = URL(string: topic.siteBlavatar)
         else {
             iconImageView.image = placeholder
             return
@@ -58,4 +65,8 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
 
         WPStyleGuide.applyReaderIconFollowButtonStyle(followButton)
     }
+}
+
+protocol ReaderRecommendedSitesCardCellDelegate {
+    func handleFollowActionForCell(_ cell: ReaderRecommendedSiteCardCell)
 }

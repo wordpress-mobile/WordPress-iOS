@@ -228,7 +228,7 @@ private extension ReaderCardsStreamViewController {
 
 // MARK: - Suggested Topics Delegate
 
-extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
@@ -237,6 +237,19 @@ extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
             WPAnalytics.track(.readerDiscoverTopicTapped)
         } else if topic as? ReaderSiteTopic != nil {
             WPAnalytics.track(.readerSitePreviewed)
+        }
+    }
+
+    func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
+        toggleFollowingForTopic(topic) { [weak self] success in
+            guard
+                let self = self,
+                let indexPath = self.tableView.indexPath(for: cell)
+            else {
+                return
+            }
+
+            self.tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
 }
