@@ -900,7 +900,7 @@ import WordPressFlux
     /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
-    func syncIfAppropriate() {
+    func syncIfAppropriate(forceSync: Bool = false) {
         guard UIApplication.shared.isRunningTestSuite() == false else {
             return
         }
@@ -925,7 +925,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
 
-        if canSync() && (interval >= refreshInterval || topicPostsCount == 0) {
+        if forceSync || (canSync() && (interval >= refreshInterval || topicPostsCount == 0)) {
             syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
@@ -1035,10 +1035,6 @@ import WordPressFlux
         } else {
             service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
         }
-    }
-
-    private func isNewDiscover() -> Bool {
-        return readerTopic?.title == "Discover" && FeatureFlag.readerImprovementsPhase2.enabled
     }
 
     private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
@@ -1224,16 +1220,14 @@ import WordPressFlux
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
 
-        if FeatureFlag.readerImprovementsPhase2.enabled {
-            if let topic = readerTopic {
-                let type = ReaderHelpers.topicType(topic)
+        if let topic = readerTopic {
+            let type = ReaderHelpers.topicType(topic)
 
-                switch type {
-                case .discover, .tag:
-                    displayTopics = true
-                default:
-                    displayTopics = false
-                }
+            switch type {
+            case .discover, .tag:
+                displayTopics = true
+            default:
+                displayTopics = false
             }
         }
 

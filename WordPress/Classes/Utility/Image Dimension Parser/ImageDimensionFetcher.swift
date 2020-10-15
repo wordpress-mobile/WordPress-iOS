@@ -12,6 +12,11 @@ class ImageDimensionsFetcher: NSObject, URLSessionDataDelegate {
     private let request: URLRequest
     private var task: URLSessionDataTask? = nil
     private let parser: ImageDimensionParser
+    private var session: URLSession? = nil
+
+    deinit {
+        cancel()
+    }
 
     init(request: URLRequest,
          success: @escaping CompletionHandler,
@@ -33,9 +38,11 @@ class ImageDimensionsFetcher: NSObject, URLSessionDataDelegate {
         task.resume()
 
         self.task = task
+        self.session = session
     }
 
     func cancel() {
+        session?.invalidateAndCancel()
         task?.cancel()
     }
 

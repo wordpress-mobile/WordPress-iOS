@@ -96,9 +96,8 @@ class ReaderDetailCoordinator {
     func start() {
         view?.showLoading()
 
-        if let post = post {
+        if post != nil {
             renderPostAndBumpStats()
-            view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         } else if let postURL = postURL {
@@ -207,7 +206,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
             self?.reportPostLoadFailure()
@@ -224,7 +222,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()

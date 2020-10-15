@@ -2,9 +2,7 @@
 // MARK: - Tab Access Tracking
 
 extension WPTabBarController {
-    private static let tabIndexToStatMap: [WPTabType: WPAnalyticsStat] = FeatureFlag.meMove.enabled ?
-        [.mySites: .mySitesTabAccessed, .reader: .readerAccessed] :
-        [.mySites: .mySitesTabAccessed, .reader: .readerAccessed, .me: .meTabAccessed]
+    private static let tabIndexToStatMap: [WPTabType: WPAnalyticsStat] = [.mySites: .mySitesTabAccessed, .reader: .readerAccessed]
 
     private struct AssociatedKeys {
         static var shouldTrackTabAccessOnViewDidAppear = 0

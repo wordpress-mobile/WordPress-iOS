@@ -13,9 +13,6 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
     /// The VC where the toolbar is inserted
     private weak var viewController: UIViewController?
 
-    /// An observer of the number of likes of the post
-    private var commentCountObserver: NSKeyValueObservation?
-
     /// Returns the current comment count
     private var commentCount: Int {
         return post?.commentCount()?.intValue ?? 0
@@ -59,7 +56,15 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
 
     // MARK: - Private: Helpers
     private func commentTitle() -> String {
-        let format = commentCount != 1 ? Strings.commentFormatPlural : Strings.commentFormat
+        var format: String
+        switch commentCount {
+            case let count where count == 1:
+                format = Strings.commentFormat
+            case let count where count > 0:
+                format = Strings.commentFormatPlural
+            default:
+                format = Strings.noCommentFormat
+        }
 
         return String(format: format, "\(commentCount)")
     }
@@ -73,7 +78,6 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
         }
 
         if post.isWPCom || post.isJetpack {
-            let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 return true
             }
@@ -103,6 +107,7 @@ class ReaderDetailCommentsView: UIView, NibLoadable {
 
     // MARK: - Constants
     private struct Strings {
+        static let noCommentFormat = NSLocalizedString("Comments", comment: "Accessibility label for comments button with no comments")
         static let commentFormat = NSLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
         static let commentFormatPlural = NSLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
         static let addComment = NSLocalizedString("Add Comment", comment: "Accessibility label for add comment button")

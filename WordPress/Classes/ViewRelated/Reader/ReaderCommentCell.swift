@@ -194,8 +194,8 @@ class ReaderCommentCell: UITableViewCell {
         guard let comment = comment else {
             return
         }
-
-        timeLabel.text = (comment.dateForDisplay() as NSDate).mediumString()
+        let commentDate = (comment.dateForDisplay() as NSDate?) ?? NSDate()
+        timeLabel.text = commentDate.mediumString()
         timeLabel.isUserInteractionEnabled = true
         timeLabel.longPressAction = { [weak self] in self?.onTimeStampLongPress?() }
     }

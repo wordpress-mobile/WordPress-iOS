@@ -241,6 +241,7 @@ static NSInteger HideSearchMinSites = 3;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
     [self.noResultsViewController removeFromView];
+    [self.tableView.refreshControl setHidden: NO];
     
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
@@ -288,6 +289,8 @@ static NSInteger HideSearchMinSites = 3;
                                                    image:@"mysites-nosites"
                                            subtitleImage:nil
                                            accessoryView:nil];
+
+        [self.tableView.refreshControl setHidden: YES];
         [self addNoResultsToView];
     }
 }
@@ -332,6 +335,7 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     }
 
+    [self.tableView.refreshControl setHidden: YES];
     [self addNoResultsToView];
     
 }
@@ -885,11 +889,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        if([Feature enabled:FeatureFlagMeMove]) {
-            [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
-        } else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
+        [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;

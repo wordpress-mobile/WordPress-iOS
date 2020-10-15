@@ -3,20 +3,16 @@ import Gridicons
 import Gutenberg
 
 class GutenbergLayoutSection {
-    var section: GutenbergLayoutCategory
-    var layouts: [GutenbergLayout]
+    var section: PageTemplateCategory
+    var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
 
-    init(section: GutenbergLayoutCategory, layouts: [GutenbergLayout], scrollOffset: CGPoint = .zero) {
+    init(_ section: PageTemplateCategory) {
+        let layouts = Array(section.layouts ?? []).sorted()
         self.section = section
         self.layouts = layouts
-        self.scrollOffset = scrollOffset
+        self.scrollOffset = .zero
     }
-}
-
-struct GutenbergSelectedLayout {
-    let sectionSlug: String
-    let position: Int
 }
 
 class GutenbergLayoutPickerViewController: UIViewController {
@@ -33,6 +29,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
     @IBOutlet weak var createBlankPageBtn: UIButton!
     @IBOutlet weak var previewBtn: UIButton!
     @IBOutlet weak var createPageBtn: UIButton!
+    @IBOutlet weak var selectedStateButtonsContainer: UIView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -103,27 +100,28 @@ class GutenbergLayoutPickerViewController: UIViewController {
         }
     }
 
-    private var selectedLayout: GutenbergSelectedLayout? = nil {
+    private var selectedLayout: IndexPath? = nil {
         didSet {
-            layoutSelected(selectedLayout != nil)
+            if !(oldValue != nil && selectedLayout != nil) {
+                layoutSelected(selectedLayout != nil)
+            }
         }
     }
 
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
-    var layouts = GutenbergPageLayouts(layouts: [], categories: []) {
-        didSet {
-            sections = layouts.categories.map({
-                GutenbergLayoutSection(section: $0, layouts: layouts.layouts(forCategory: $0.slug))
-            })
-        }
-    }
+    lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
+        let controller = PageLayoutService.resultsController(delegate: self)
+        sections = makeSectionData(with: controller)
+        return controller
+    }()
+
     private var isLoading: Bool = true {
         didSet {
             filterBar.shouldShowGhostContent = isLoading
             filterBar.allowsMultipleSelection = !isLoading
             if isLoading {
-                tableView.startGhostAnimation()
+                tableView.startGhostAnimation(style: GhostCellStyle.muriel)
             } else {
                 tableView.stopGhostAnimation()
             }
@@ -152,13 +150,12 @@ class GutenbergLayoutPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
+        fetchLayouts()
         filterBar.filterDelegate = self
         setStaticText()
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         layoutHeader()
-        layouts = GutenbergPageLayouts()
-        fetchLayouts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -175,9 +172,11 @@ class GutenbergLayoutPickerViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
 
         if let destination = segue.destination as? LayoutPreviewViewController,
-            let slug = selectedLayout?.sectionSlug,
-            let position = selectedLayout?.position {
-            destination.layout = layouts.layouts(forCategory: slug)[position]
+           let sectionIndex = selectedLayout?.section,
+           let position = selectedLayout?.item {
+            let layout = sections[sectionIndex].layouts[position]
+            LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
+            destination.layout = layout
             destination.completion = completion
         }
 
@@ -206,27 +205,28 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     @IBAction func createBlankPageTapped(_ sender: Any) {
-        createPage(title: nil, template: nil)
+        createPage(layout: nil)
     }
 
     @IBAction func createPageTapped(_ sender: Any) {
-        guard let slug = selectedLayout?.sectionSlug, let position = selectedLayout?.position else {
-            createPage(title: nil, template: nil)
+        guard let sectionIndex = selectedLayout?.section, let position = selectedLayout?.item else {
+            createPage(layout: nil)
             return
         }
 
-        let layout = layouts.layouts(forCategory: slug)[position]
-        createPage(title: layout.title, template: layout.content)
+        let layout = sections[sectionIndex].layouts[position]
+        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
+        createPage(layout: layout)
     }
 
-    private func createPage(title: String?, template: String?) {
+    private func createPage(layout: PageTemplateLayout?) {
         guard let completion = completion else {
             dismiss(animated: true, completion: nil)
             return
         }
 
         dismiss(animated: true) {
-            completion(title, template)
+            completion(layout)
         }
     }
 
@@ -261,10 +261,25 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutTableViewHeader() {
-        let tableFooterFrame = footerView.frame
-        let bottomInset = tableFooterFrame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: maxHeaderHeight + headerBar.frame.height))
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: bottomInset))
+        let topInset = maxHeaderHeight + headerBar.frame.height
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
+        updateTableViewFooter()
+    }
+
+    /*
+     * Calculates the needed space for the footer to allow the header to still collapse but also to prevent unneeded space
+     * at the bottome of the tableView when multiple cells are rendered.
+     */
+    private func updateTableViewFooter() {
+        let estimatedRowHeight: CGFloat = LayoutPickerSectionTableViewCell.estimatedCellHeight
+        let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        let rowCount = CGFloat(max((filteredSections ?? sections).count, 1))
+
+        /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
+        let distanceToBottom = tableView.frame.height - headerBar.frame.height - minHeaderHeight - (estimatedRowHeight * rowCount)
+        let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
+
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
         tableView.tableFooterView?.isGhostableDisabled = true
     }
 
@@ -291,25 +306,36 @@ class GutenbergLayoutPickerViewController: UIViewController {
     }
 
     private func layoutSelected(_ isSelected: Bool) {
-        createBlankPageBtn.isHidden = isSelected
-        previewBtn.isHidden = !isSelected
-        createPageBtn.isHidden = !isSelected
+        createBlankPageBtn.isHidden = false
+        selectedStateButtonsContainer.isHidden = false
+
+        createBlankPageBtn.alpha = isSelected ? 1 : 0
+        selectedStateButtonsContainer.alpha = isSelected ? 0 : 1
+
+        let alpha: CGFloat = isSelected ? 0 : 1
+        let selectedStateContainerAlpha: CGFloat = isSelected ? 1 : 0
+
+
+        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.createBlankPageBtn.alpha = alpha
+            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
+        }) { (_) in
+            self.createBlankPageBtn.isHidden = isSelected
+            self.selectedStateButtonsContainer.isHidden = !isSelected
+        }
     }
 
     private func fetchLayouts() {
         guard let blog = blog else { return }
-        isLoading = true
+        isLoading = resultsController.isEmpty()
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) {[weak self] (results) in
-            guard let self = self else { return }
-            switch results {
-            case .success(let fetchedLayouts):
-                self.layouts = fetchedLayouts
-                self.isLoading = false
-            case .failure:
-                return
-            }
-        }
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
+    }
+
+    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
+        return controller.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
+            return GutenbergLayoutSection(category)
+        }) ?? []
     }
 }
 
@@ -370,13 +396,18 @@ extension GutenbergLayoutPickerViewController: UITableViewDelegate {
         }, completion: nil)
     }
 
-    private func containsSelectedLayout(_ layout: GutenbergSelectedLayout, atIndexPath indexPath: IndexPath) -> Bool {
+    private func containsSelectedLayout(_ selectedIndexPath: IndexPath, atIndexPath indexPath: IndexPath) -> Bool {
         let rowSection = (filteredSections ?? sections)[indexPath.row]
-        return (layout.sectionSlug == rowSection.section.slug)
+        let sectionSlug = sections[selectedIndexPath.section].section.slug
+        return (sectionSlug == rowSection.section.slug)
     }
 }
 
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return LayoutPickerSectionTableViewCell.estimatedCellHeight
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isLoading ? 1 : ((filteredSections ?? sections).count)
@@ -395,7 +426,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         cell.clipsToBounds = false
         cell.collectionView.allowsSelection = !isLoading
         if let selectedLayout = selectedLayout, containsSelectedLayout(selectedLayout, atIndexPath: indexPath) {
-            cell.selectItemAt(selectedLayout.position)
+            cell.selectItemAt(selectedLayout.item)
         }
 
         return cell
@@ -405,11 +436,14 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellDelegate {
 
     func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell) {
-        guard let cellIndexPath = tableView.indexPath(for: cell), let slug = cell.section?.section.slug else { return }
-        tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
+        guard let cellIndexPath = tableView.indexPath(for: cell),
+              let slug = cell.section?.section.slug,
+              let sectionIndex = sections.firstIndex(where: { $0.section.slug == slug })
+        else { return }
 
+        tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
         deselectCurrentLayout()
-        selectedLayout = GutenbergSelectedLayout(sectionSlug: slug, position: position)
+        selectedLayout = IndexPath(item: position, section: sectionIndex)
     }
 
     func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell) {
@@ -451,28 +485,25 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
 
         filteredSections = [sections[selectedIndex.item]]
         tableView.performBatchUpdates({
+            updateTableViewFooter()
             tableView.deleteRows(at: rowsToRemove, with: .fade)
-        }) { _ in
-            self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
-        }
+        })
     }
 
     func insertFilterRow(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
-
-        var row: IndexPath? = nil
         let sortedIndexes = selectedIndexes.sorted(by: { $0.item < $1.item })
         for i in 0..<sortedIndexes.count {
             if sortedIndexes[i].item == selectedIndex.item {
-                let indexPath = IndexPath(row: i, section: 0)
                 filteredSections?.insert(sections[selectedIndex.item], at: i)
-                row = indexPath
                 break
             }
         }
 
-        guard let rowToAdd = row else { return }
         tableView.performBatchUpdates({
-            tableView.insertRows(at: [rowToAdd], with: .fade)
+            if selectedIndexes.count == 2 {
+                updateTableViewFooter()
+            }
+            tableView.reloadSections([0], with: .automatic)
         })
     }
 
@@ -482,11 +513,10 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
             return
         }
 
-        let currentRowSlug = filteredSections?.first?.section.slug
         filteredSections = nil
-        let rowsToAdd = (0..<sections.count).compactMap { (sections[$0].section.slug == currentRowSlug) ? nil : IndexPath(row: $0, section: 0) }
         tableView.performBatchUpdates({
-            tableView.insertRows(at: rowsToAdd, with: .fade)
+            updateTableViewFooter()
+            tableView.reloadSections([0], with: .fade)
         })
     }
 
@@ -506,11 +536,18 @@ extension GutenbergLayoutPickerViewController: FilterBarDelegate {
 
         guard let rowToRemove = row else { return }
         tableView.performBatchUpdates({
+            updateTableViewFooter()
             tableView.deleteRows(at: [rowToRemove], with: .fade)
-        }) { _ in
-            if (self.filteredSections?.count ?? 0) < 2 {
-                self.snapToHeight(self.tableView, height: self.maxHeaderHeight)
-            }
-        }
+        })
+    }
+}
+
+extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        sections = makeSectionData(with: resultsController)
+        isLoading = resultsController.isEmpty()
+        tableView.reloadData()
+        filterBar.reloadData()
     }
 }

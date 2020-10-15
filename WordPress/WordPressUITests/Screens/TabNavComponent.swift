@@ -27,7 +27,7 @@ class TabNavComponent: BaseScreen {
     func gotoMySiteScreen() -> MySiteScreen {
         // Avoid transitioning to the sites list if MySites is already on screen
         if !MySiteScreen.isVisible {
-            gotoMySitesScreen().switchToSite(withTitle: "infocusphotographers.com")
+            gotoMySitesScreen().switchToSite(withTitle: WPUITestCredentials.testWPcomSiteAddress)
         }
         return MySiteScreen()
     }

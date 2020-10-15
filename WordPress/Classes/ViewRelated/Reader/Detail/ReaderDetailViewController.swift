@@ -5,7 +5,6 @@ protocol ReaderDetailView: class {
     func showLoading()
     func showError()
     func showErrorWithWebAction()
-    func show(title: String?)
     func scroll(to: String)
     func updateHeader()
 }
@@ -138,7 +137,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        featuredImage.restoreNavigationBarAppearance()
+        featuredImage.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -232,22 +231,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         ReaderTracker.shared.start(.readerPost)
     }
-
-    /// Show a given title
-    ///
-    /// - Parameter title: a optional String containing the title
-    func show(title: String?) {
-        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        let titleView = UILabel()
-
-        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
-        navigationItem.titleView = titleView
-        titleView.isHidden = true
-
-        // Allow the title to appear in the back button tap and hold in iOS 14+
-        self.title = title
-    }
-
 
     /// Scroll the content to a given #hash
     ///

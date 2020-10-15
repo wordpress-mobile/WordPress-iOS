@@ -339,6 +339,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
         fetchEditorTheme()
+        presentNewPageNoticeIfNeeded()
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
@@ -462,6 +463,18 @@ class GutenbergViewController: UIViewController, PostEditor {
             return
         }
         gutenberg.setFocusOnTitle()
+    }
+
+    private func presentNewPageNoticeIfNeeded() {
+        guard FeatureFlag.gutenbergModalLayoutPicker.enabled else { return }
+
+        // Validate if the post is a newly created page or not.
+        guard post is Page,
+            post.isDraft(),
+            post.remoteStatus == AbstractPostRemoteStatus.local else { return }
+
+        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
+        gutenberg.showNotice(message)
     }
 
     private func handleMissingBlockAlertButtonPressed() {
@@ -863,7 +876,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController {
 
     private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = post.blog.dotComID else {
+        guard let siteID = post.blog.dotComID,
+              let blog = SuggestionService.shared.persistedBlog(for: siteID),
+              SuggestionService.shared.shouldShowSuggestions(for: blog) else {
             callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
             return
         }
