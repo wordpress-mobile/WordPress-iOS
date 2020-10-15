@@ -1265,7 +1265,7 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forTag: topic, success: { [weak self] in
+        service.toggleFollowing(forTag: topic, success: {
             completion?(true)
         }, failure: { (error: Error?) in
             generator.notificationOccurred(.error)

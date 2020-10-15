@@ -241,15 +241,8 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
     }
 
     func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
-        toggleFollowingForTopic(topic) { [weak self] success in
-            guard
-                let self = self,
-                let indexPath = self.tableView.indexPath(for: cell)
-            else {
-                return
-            }
-
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+        toggleFollowingForTopic(topic) { success in
+            cell.didToggleFollowing(topic, with: success)
         }
     }
 }

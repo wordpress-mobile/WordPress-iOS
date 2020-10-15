@@ -30,7 +30,7 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     @IBAction func didTapFollowButton(_ sender: Any) {
         // Optimistically change the value
         followButton.isSelected = !followButton.isSelected
-        
+
         delegate?.handleFollowActionForCell(self)
     }
 

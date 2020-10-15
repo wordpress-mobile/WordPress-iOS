@@ -32,6 +32,14 @@ class ReaderSitesCardCell: ReaderTopicsTableCardCell {
         return cell
     }
 
+    func didToggleFollowing(_ topic: ReaderAbstractTopic, with success: Bool) {
+        guard let row = data.firstIndex(of: topic) else {
+            return
+        }
+
+        tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+    }
+
     private enum Constants {
         static let title = NSLocalizedString("Sites to follow", comment: "A suggestion of topics the user might ")
     }
