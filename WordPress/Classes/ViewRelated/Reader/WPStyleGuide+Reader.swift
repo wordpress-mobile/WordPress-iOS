@@ -342,10 +342,9 @@ extension WPStyleGuide {
         let followingIcon = UIImage.gridicon(.readerFollowing)
 
         button.backgroundColor = .clear
-        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(.gray(.shade40))
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(.accent(.shade40))
+        let tintedFollowIcon = followIcon.imageWithTintColor(.accent(.shade40))
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(.gray(.shade40))
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
