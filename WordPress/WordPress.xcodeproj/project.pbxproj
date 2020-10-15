@@ -6437,11 +6437,9 @@
 		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
 			isa = PBXGroup;
 			children = (
-				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
-				3F526C542538CF2A0069706C /* WordPressHomeWidgetToday.intentdefinition */,
+				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
-				3F526C572538CF2B0069706C /* Info.plist */,
 			);
 			path = WordPressHomeWidgetToday;
 			sourceTree = "<group>";
@@ -6449,6 +6447,8 @@
 		3F526CA82538E0ED0069706C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3F526C572538CF2B0069706C /* Info.plist */,
+				3F526C542538CF2A0069706C /* WordPressHomeWidgetToday.intentdefinition */,
 				3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */,
 			);
 			path = "Supporting Files";
@@ -14941,7 +14941,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressHomeWidgetToday/Info.plist;
+				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -14983,7 +14983,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressHomeWidgetToday/Info.plist;
+				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -15023,7 +15023,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressHomeWidgetToday/Info.plist;
+				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -15063,7 +15063,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressHomeWidgetToday/Info.plist;
+				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
