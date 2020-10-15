@@ -2,6 +2,7 @@ import Foundation
 
 class ReaderCardsStreamViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
+    private let readerCardSitesIdentifier = "ReaderSitesCell"
 
     /// Page number used for Analytics purpose
     private var page = 1
@@ -27,6 +28,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+        tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+
         addObservers()
     }
 
@@ -47,6 +50,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return cell(for: card.post!, at: indexPath)
         case .topics:
             return cell(for: card.topicsArray)
+        case .sites:
+            return cell(for: card.sitesArray)
         case .unknown:
             return UITableViewCell()
         }
@@ -69,6 +74,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     func cell(for interests: [ReaderTagTopic]) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCardCell
         cell.configure(interests)
+        cell.delegate = self
+        return cell
+    }
+
+    func cell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderSitesCardCell
+        cell.configure(sites)
         cell.delegate = self
         return cell
     }
@@ -127,7 +139,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "post != NULL OR topics.@count != 0")
+        return NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
     }
 
     /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
@@ -216,10 +228,15 @@ private extension ReaderCardsStreamViewController {
 
 // MARK: - Suggested Topics Delegate
 
-extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
-    func didSelect(topic: ReaderTagTopic) {
+extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
+    func didSelect(topic: ReaderAbstractTopic) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
-        WPAnalytics.track(.readerDiscoverTopicTapped)
+
+        if topic as? ReaderTagTopic != nil {
+            WPAnalytics.track(.readerDiscoverTopicTapped)
+        } else if topic as? ReaderSiteTopic != nil {
+            WPAnalytics.track(.readerSitePreviewed)
+        }
     }
 }
