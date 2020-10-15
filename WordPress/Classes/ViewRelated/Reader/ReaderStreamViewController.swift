@@ -1246,9 +1246,17 @@ import WordPressFlux
 
 
     // MARK: - Helpers for ReaderStreamHeader
+    public func toggleFollowingForTopic(_ topic: ReaderAbstractTopic?, completion: ((Bool) -> Void)?) {
+        if let topic = topic as? ReaderTagTopic {
+            toggleFollowingForTag(topic, completion: completion)
+        } else if let topic = topic as? ReaderSiteTopic {
+            toggleFollowingForSite(topic, completion: completion)
+        } else if let topic = topic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
+            showManageSites()
+        }
+    }
 
-
-    private func toggleFollowingForTag(_ topic: ReaderTagTopic) {
+    private func toggleFollowingForTag(_ topic: ReaderTagTopic, completion: ((Bool) -> Void)?) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1258,17 +1266,14 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forTag: topic, success: { [weak self] in
-            self?.syncHelper?.syncContent()
-        }, failure: { [weak self] (error: Error?) in
+            completion?(true)
+        }, failure: { (error: Error?) in
             generator.notificationOccurred(.error)
-            self?.updateStreamHeaderIfNeeded()
+            completion?(false)
         })
-
-        updateStreamHeaderIfNeeded()
     }
 
-
-    private func toggleFollowingForSite(_ topic: ReaderSiteTopic) {
+    private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1286,16 +1291,15 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
-            self?.syncHelper?.syncContent()
             if toFollow {
                 self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
-        }, failure: { [weak self] (error: Error?) in
-            generator.notificationOccurred(.error)
-            self?.updateStreamHeaderIfNeeded()
-        })
 
-        updateStreamHeaderIfNeeded()
+            completion?(true)
+        }, failure: { (error: Error?) in
+            generator.notificationOccurred(.error)
+            completion?(false)
+        })
     }
 }
 
@@ -1305,15 +1309,15 @@ import WordPressFlux
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
     func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
-        if let topic = readerTopic as? ReaderTagTopic {
-            toggleFollowingForTag(topic)
+        toggleFollowingForTopic(readerTopic) { [weak self] success in
+            if success {
+                self?.syncHelper?.syncContent()
+            }
 
-        } else if let topic = readerTopic as? ReaderSiteTopic {
-            toggleFollowingForSite(topic)
-
-        } else if let topic = readerTopic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+            self?.updateStreamHeaderIfNeeded()
         }
+
+        updateStreamHeaderIfNeeded()
     }
 }
 
