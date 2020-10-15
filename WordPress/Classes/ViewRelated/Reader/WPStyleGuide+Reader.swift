@@ -337,6 +337,24 @@ extension WPStyleGuide {
         button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
+    @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
+        let followIcon = UIImage.gridicon(.readerFollow)
+        let followingIcon = UIImage.gridicon(.readerFollowing)
+
+        button.backgroundColor = .clear
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
+
+        let tintedFollowIcon = followIcon.imageWithTintColor(.gray(.shade40))
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(.accent(.shade40))
+
+        button.setImage(tintedFollowIcon, for: .normal)
+        button.setImage(tintedFollowingIcon, for: .selected)
+
+        // Default accessibility label and hint.
+        button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
+        button.accessibilityHint = FollowButton.Text.accessibilityHint
+    }
+
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
         let size = Gridicon.defaultSize
         let icon = UIImage.gridicon(.bookmarkOutline, size: size)
