@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19G2021" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19F101" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -292,6 +292,7 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
+        <relationship name="sites" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderSiteTopic" inverseName="cards" inverseEntity="ReaderSiteTopic" syncable="YES"/>
         <fetchIndex name="byStatusIndex">
             <fetchIndexElement property="status" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -584,6 +585,7 @@
     <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
+        <relationship name="sites" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderSiteTopic" inverseName="cards" inverseEntity="ReaderSiteTopic" syncable="YES"/>
         <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderTagTopic" inverseName="cards" inverseEntity="ReaderTagTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
@@ -704,6 +706,7 @@
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderCard" inverseName="sites" inverseEntity="ReaderCard" syncable="YES"/>
         <relationship name="emailSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionEmail" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionEmail" syncable="YES"/>
         <relationship name="postSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionPost" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionPost" syncable="YES"/>
     </entity>
@@ -894,7 +897,6 @@
         <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="255"/>
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
-        <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="808"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>
@@ -932,7 +934,7 @@
         <element name="PublicizeService" positionX="-1660.05078125" positionY="-16.88671875" width="128" height="210"/>
         <element name="QuickStartTourState" positionX="1069.09375" positionY="-43.8515625" width="128" height="105"/>
         <element name="ReaderAbstractTopic" positionX="-1504.35546875" positionY="693.08984375" width="128" height="180"/>
-        <element name="ReaderCard" positionX="-1638" positionY="-459" width="128" height="88"/>
+        <element name="ReaderCard" positionX="-1638" positionY="-459" width="128" height="103"/>
         <element name="ReaderCrossPostMeta" positionX="-1292.6171875" positionY="353.91796875" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="-1651.8125" positionY="578.61328125" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="-1092.98828125" positionY="814.5703125" width="128" height="45"/>
@@ -942,7 +944,7 @@
         <element name="ReaderSearchTopic" positionX="-1657.08984375" positionY="930.36328125" width="128" height="45"/>
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>
         <element name="ReaderSiteInfoSubscriptionPost" positionX="-1845.87109375" positionY="1035.71484375" width="128" height="75"/>
-        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="240"/>
+        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="253"/>
         <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="103"/>
         <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="60"/>
         <element name="ReferrerStatsRecordValue" positionX="-273.765625" positionY="1398.2265625" width="128" height="133"/>
@@ -964,6 +966,7 @@
         <element name="TopViewedAuthorStatsRecordValue" positionX="-637.94921875" positionY="1803.6796875" width="128" height="105"/>
         <element name="TopViewedPostStatsRecordValue" positionX="-638.76953125" positionY="1639.93359375" width="128" height="133"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
+        <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
     </elements>
 </model>
