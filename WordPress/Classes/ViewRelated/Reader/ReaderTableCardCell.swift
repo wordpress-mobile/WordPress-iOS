@@ -88,7 +88,8 @@ class ReaderTopicsTableCardCell: UITableViewCell {
         tableView.backgroundColor = .listForeground
         tableView.separatorColor = .placeholderElement
 
-        backgroundColor = .none
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
 
         refreshHorizontalConstraints()
     }

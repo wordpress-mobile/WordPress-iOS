@@ -26,7 +26,8 @@ class ReaderTopicsCardCell: ReaderTopicsTableCardCell {
         cell.textLabel?.text = tagTopic.title
         cell.accessoryType = .disclosureIndicator
         cell.separatorInset = UIEdgeInsets.zero
-        cell.backgroundColor = .listForeground
+        cell.backgroundColor = .clear
+
         return cell
     }
     

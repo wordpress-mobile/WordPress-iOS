@@ -16,6 +16,9 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     }
 
     func configure(_ topic: ReaderSiteTopic) {
+        backgroundColor = .clear
+        separatorInset = UIEdgeInsets.zero
+
         followButton.isSelected = topic.following
         followButton.isHidden = !ReaderHelpers.isLoggedIn()
 
