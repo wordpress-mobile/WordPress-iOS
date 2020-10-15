@@ -1,9 +1,5 @@
 import UIKit
 
-protocol ReaderTopicsTableCardCellDelegate: class {
-    func didSelect(topic: ReaderAbstractTopic)
-}
-
 /// A cell that contains a table that displays a list of ReaderAbstractTopic's
 ///
 class ReaderTopicsTableCardCell: UITableViewCell {
@@ -11,7 +7,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     let tableView: UITableView = ReaderTopicsTableView()
 
-    private var data: [ReaderAbstractTopic] = [] {
+    private(set) var data: [ReaderAbstractTopic] = [] {
         didSet {
             guard oldValue != data else {
                 return
@@ -165,4 +161,8 @@ private class ReaderTopicsTableView: UITableView {
             self.invalidateIntrinsicContentSize()
         }
     }
+}
+
+protocol ReaderTopicsTableCardCellDelegate: class {
+    func didSelect(topic: ReaderAbstractTopic)
 }
