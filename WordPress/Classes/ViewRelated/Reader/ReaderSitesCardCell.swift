@@ -9,7 +9,6 @@ class ReaderSitesCardCell: ReaderTopicsTableCardCell {
         super.configure(data)
 
         headerTitle = Constants.title
-        headerContentInsets = UIEdgeInsets(top: 10, left: 15, bottom: -5, right: 0)
     }
 
     override func setupTableView() {
