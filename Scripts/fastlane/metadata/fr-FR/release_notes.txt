@@ -1,7 +1,5 @@
-Jetez un coup d’œil à ce qui est nouveau dans cette version :
+Améliorations de l’éditeur de blocs :
+Sur les sites Jetpack, vous pouvez désormais modifier des blocs non pris en charge en autorisant Jetpack SSO à partir de l’alerte de bloc manquant. Utilisez le sélecteur de lien pratique pour ajouter des URL à des articles. Nous avons également augmenté la taille de la cible tactile sur l’action principale sur les blocs non pris en charge.
 
-- Prise en charge de la largeur complète et de l’alignement large pour les blocs groupe, bannière et image (et plus de blocs à venir).
-- Vous aimez les coins arrondis sur vos images ? Nous avons aussi ajoutée la prise en charge du style arrondi pour le bloc image.
-- Quelques personnes avaient constaté un problème de comportement de la barre d’outil lors de l’ajout d’un nouveau bloc. C’est réparé.
-- Nous avons également remarqué que dans l’aperçu de l’image, les images n’étaient pas positionnées correctement  après un changement de l’orientation de l’appareil. Cela a aussi été réparé.
-- Nous avons résolu quelques autres problèmes autour de l’inscription et de la connexion, y compris un problème d’affichage de l’identifiant après une connexion avec Apple, et un message d’erreur incorrect qui s’affichait lorsque vous aviez atteint le nombre maximum de connexion échouée.
+Correctifs :
+Suppression de bogues qui faisaient de l’éditeur de page une superposition invisible et élimination des vues en double générées lors de la demande d’un lien de connexion. Dans le Lecteur, l’appui sur un lien avec une ancre fonctionne désormais comme prévu.
