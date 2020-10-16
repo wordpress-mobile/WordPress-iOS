@@ -74,7 +74,7 @@ jobs:
       - run:
           name: Run Unit Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building name:WordPressUnitTests destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
   UI Tests:
@@ -107,7 +107,7 @@ jobs:
       - run:
           name: Run UI Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building name:WordPressUITests destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
       - when:
