@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
+    case stories
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +47,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .unifiedPrologueCarousel:
             return BuildConfiguration.current == .localDeveloper
+        case .stories:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -98,6 +101,8 @@ extension FeatureFlag {
             return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
+        case .stories:
+            return "Stories"
         }
     }
 
