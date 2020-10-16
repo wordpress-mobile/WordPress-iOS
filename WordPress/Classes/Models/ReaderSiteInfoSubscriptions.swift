@@ -12,7 +12,7 @@ import CoreData
         }
 
         var subscription = topic.postSubscription
-        if !(subscription?.wp_isValidObject() ?? false) {
+        if subscription?.wp_isValidObject() == false {
             subscription = ReaderSiteInfoSubscriptionPost(context: context)
         }
 
@@ -31,19 +31,19 @@ import CoreData
     @NSManaged open var postDeliveryFrequency: String
 
     class func createOrUpdate(from remoteSiteInfo: RemoteReaderSiteInfo, topic: ReaderSiteTopic, context: NSManagedObjectContext) -> ReaderSiteInfoSubscriptionEmail? {
-        guard remoteSiteInfo.emailSubscription?.wp_isValidObject() ?? false else {
+        guard let emailSubscription = remoteSiteInfo.emailSubscription, emailSubscription.wp_isValidObject() else {
             return nil
         }
 
         var subscription = topic.emailSubscription
-        if !(subscription?.wp_isValidObject() ?? false) {
+        if subscription?.wp_isValidObject() == false {
             subscription = ReaderSiteInfoSubscriptionEmail(context: context)
         }
 
         subscription?.siteTopic = topic
-        subscription?.sendPosts = remoteSiteInfo.emailSubscription.sendPosts
-        subscription?.sendComments = remoteSiteInfo.emailSubscription.sendComments
-        subscription?.postDeliveryFrequency = remoteSiteInfo.emailSubscription.postDeliveryFrequency
+        subscription?.sendPosts = emailSubscription.sendPosts
+        subscription?.sendComments = emailSubscription.sendComments
+        subscription?.postDeliveryFrequency = emailSubscription.postDeliveryFrequency
 
         return subscription
     }
