@@ -11,6 +11,9 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     @IBInspectable var cellHeight: CGFloat = 40
     @IBInspectable var allowsCentering: Bool = true
 
+    /// Whether or not the layout should be force centered
+    @IBInspectable var isCentered: Bool = false
+
     // Collapsing/Expanding support
     static let overflowItemKind = "InterestsOverflowItem"
     var maxNumberOfDisplayedLines: Int?
@@ -130,7 +133,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         // Update content size
         contentSize.width = maxContentWidth
-        contentSize.height = (currentRow + 1) * (cellHeight + itemSpacing) + contentInsets.top + contentInsets.bottom
+        contentSize.height = (currentRow + 1) * cellHeight + contentInsets.top + contentInsets.bottom + (currentRow * itemSpacing)
     }
 
     override func invalidateLayout() {
@@ -169,8 +172,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
 
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if allowsCentering,
-            collectionView?.traitCollection.horizontalSizeClass == .regular {
+        if allowsCentering, isCentered || collectionView?.traitCollection.horizontalSizeClass == .regular {
             return centeredLayoutAttributesForElements(in: rect)
         }
 

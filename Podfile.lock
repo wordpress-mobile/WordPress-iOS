@@ -407,14 +407,14 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.18.0):
+  - WordPressKit (4.19-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1)
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9.0)
-  - WordPressMocks (0.0.9-beta.1)
+  - WordPressMocks (0.0.9-beta.2)
   - WordPressShared (1.12.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -448,6 +448,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (~> 0.5.1)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
+  - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542/third-party-podspecs/FBReactNativeSpec.podspec.json`)
@@ -505,9 +506,9 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/495-extend-background-carousel-container`)
-  - WordPressKit (~> 4.18.0-beta)
-  - WordPressMocks (~> 0.0.9-beta.1)
+  - WordPressAuthenticator (~> 1.27.0-beta)
+  - WordPressKit (~> 4.19-beta.1)
+  - WordPressMocks (~> 0.0.9-beta)
   - WordPressShared (~> 1.12.0)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.2)
@@ -761,8 +762,8 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
   WordPressAuthenticator: b22bc0844ebfed1266e062bfeebac47f34990162
-  WordPressKit: 1d10fa14ea185600472d31cf25e677c7d938b17d
-  WordPressMocks: 1e04de6afa3a17f6f1ab4782f8460d7faefcf2f7
+  WordPressKit: 1fb3b2fddd237dd9fa14f52b9c2b6f329a94c6fc
+  WordPressMocks: 512df883edd980e5e4f11fa6341bde07c0b1ab26
   WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
@@ -777,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 701b03acdc3e3d404b8e216f88c98dd7f048c860
+PODFILE CHECKSUM: c71d87c0799fc16db6b6660ba8761df2419eb3c8
 
 COCOAPODS: 1.9.3

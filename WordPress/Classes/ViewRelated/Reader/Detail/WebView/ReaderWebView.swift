@@ -98,8 +98,11 @@ class ReaderWebView: WKWebView {
 
             // Make all images tappable
             // Exception for images in Stories, which have their own link structure
+            // and images that already have a link
             document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
-                el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`
+                if (el.parentNode.nodeName.toLowerCase() !== 'a') {
+                    el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`;
+                }
             })
 
             // Only display images after they have fully loaded, to have a native feel

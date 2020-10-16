@@ -38,7 +38,13 @@ class LoginUsernamePasswordScreen: BaseScreen {
         usernameTextField.tap()
         usernameTextField.typeText(username)
         passwordTextField.tap()
-        passwordTextField.typeText(password)
+        // Workaround to enter password in languages where typing doesn't work
+        // Pasting is not reliable enough to use all the time so we only use it where it's necessary
+        if ["ru", "th"].contains(Locale.current.languageCode) {
+            passwordTextField.pasteText(password)
+        } else {
+            passwordTextField.typeText(password)
+        }
         nextButton.tap()
 
         return LoginEpilogueScreen()
