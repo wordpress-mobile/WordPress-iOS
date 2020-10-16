@@ -36,7 +36,7 @@ class GridCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .equalCentering
+        stackView.distribution = .equalSpacing
         return stackView
     }()
 
@@ -70,7 +70,7 @@ class GridCell: UITableViewCell {
             let button = makeGridButton(image: item.image, action: item.action)
             let label = makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
             label.text = item.description
-            let stackView = makeGridStackView(button: button, label: label)
+            let stackView = makeItemStackView(button: button, label: label)
             return stackView
         }
 
@@ -79,6 +79,22 @@ class GridCell: UITableViewCell {
         views[views.startIndex..<nextToLast].forEach() { view in
             gridStackView.setCustomSpacing(Appearance.gridIteminterItemSpacing, after: view)
         }
+
+        refreshAlignment()
+    }
+
+    /// Left align all views in the grid if width is too wide to look good centered.
+    private func refreshAlignment() {
+        if traitCollection.horizontalSizeClass == .compact {
+            mainStackView.alignment = .center
+        } else {
+            mainStackView.alignment = .leading
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        refreshAlignment()
     }
 }
 
@@ -145,7 +161,7 @@ private extension GridCell {
         - label: The label to go on the bottom of the stack view.
     - Returns: The resulting stack view.
      */
-    func makeGridStackView(button: UIView, label: UIView) -> UIStackView {
+    func makeItemStackView(button: UIView, label: UIView) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: [
             button,
             label
@@ -168,7 +184,6 @@ private extension GridCell {
         static let subHeadingFont = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline), size: 15)
 
         // main stack view
-        static let imageTextSpacing: CGFloat = 16
         static let mainStackViewInsets = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 0)
 
         /// The spacing below `headingLabel`
