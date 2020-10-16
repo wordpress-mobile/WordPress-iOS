@@ -85,20 +85,14 @@ class StoriesIntroViewController: WhatIsNewViewController {
     static func trackDismiss() {
         WPAnalytics.track(.storyIntroDismissed)
     }
-
-    // MARK: - Data Source
-
-
 }
 
 fileprivate extension URLQueryItem {
     /// Query Parameters to be used for the WP Stories feature.
     /// These can be used appended to the URL for any WordPress blog post
     enum WPStory {
-
         /// Opens the story in fullscreen.
         static let fullscreen = URLQueryItem(name: "wp-story-load-in-fullscreen", value: "true")
-
         /// Begins playing the story immediately.
         static let playOnLoad = URLQueryItem(name: "wp-story-play-on-load", value: "true")
     }

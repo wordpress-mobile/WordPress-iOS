@@ -66,21 +66,24 @@ class GridCell: UITableViewCell {
     func configure(title: String, items: [Item]) {
         headingLabel.text = title
 
-        let views: [UIView] = items.map { item in
+        let itemViews = makeViews(forItems: items)
+        gridStackView.addArrangedSubviews(itemViews)
+        gridStackView.addInterItemSpacing(Appearance.gridIteminterItemSpacing)
+
+        refreshAlignment()
+    }
+
+    /// Creates Item Stack Views (see `makeItemStackView` for `items`
+    /// - Parameter items: The items to populate the Item Stack Views
+    private func makeViews(forItems items: [Item]) -> [UIView] {
+        return items.map { item in
             let button = makeGridButton(image: item.image, action: item.action)
+            button.accessibilityLabel = item.description
             let label = makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
             label.text = item.description
             let stackView = makeItemStackView(button: button, label: label)
             return stackView
         }
-
-        gridStackView.addArrangedSubviews(views)
-        let nextToLast = views.index(before: views.endIndex)
-        views[views.startIndex..<nextToLast].forEach() { view in
-            gridStackView.setCustomSpacing(Appearance.gridIteminterItemSpacing, after: view)
-        }
-
-        refreshAlignment()
     }
 
     /// Left align all views in the grid if width is too wide to look good centered.
@@ -95,6 +98,17 @@ class GridCell: UITableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         refreshAlignment()
+    }
+}
+
+private extension UIStackView {
+    /// Adds spacing after each view in `arrangedSubviews`, except for the last one.
+    /// - Parameter spacing: The spacing to apply between arranged subviews.
+    func addInterItemSpacing(_ spacing: CGFloat) {
+        let nextToLast = arrangedSubviews.index(before: arrangedSubviews.endIndex)
+        arrangedSubviews[arrangedSubviews.startIndex..<nextToLast].forEach() { view in
+            setCustomSpacing(spacing, after: view)
+        }
     }
 }
 

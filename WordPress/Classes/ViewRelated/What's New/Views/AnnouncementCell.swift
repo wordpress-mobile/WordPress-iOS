@@ -75,12 +75,8 @@ class AnnouncementCell: UITableViewCell {
         headingLabel.text = title
         subHeadingLabel.text = description
 
-        if let image = image {
-            announcementImageView.image = image
-            announcementImageView.isHidden = false
-        } else {
-            announcementImageView.isHidden = true
-        }
+        announcementImageView.image = image
+        announcementImageView.isHidden = image == nil
     }
 }
 
