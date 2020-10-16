@@ -53,8 +53,16 @@ extension WPTabBarController {
         let blogID = blog.dotComID?.intValue ?? 0 as Any
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-        let controller = UIViewController()
-        controller.view.backgroundColor = .white
-        present(controller, animated: true, completion: nil)
+        let intro = StoriesIntro(continueTapped: { [weak self] in
+            self?.showStoryEditor()
+        }, openURL: { [weak self] url in
+            let webViewController = WebViewControllerFactory.controller(url: url)
+            self?.presentedViewController?.present(webViewController, animated: true)
+        })
+
+        let controller = intro.makeController()
+        present(controller, animated: true, completion: {
+            intro.trackShown()
+        })
     }
 }
