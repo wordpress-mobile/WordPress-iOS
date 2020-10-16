@@ -230,17 +230,20 @@ private extension ReaderCardsStreamViewController {
 
 extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
-        let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-        navigationController?.pushViewController(topicStreamViewController, animated: true)
 
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.track(.readerDiscoverTopicTapped)
-        } else if topic as? ReaderSiteTopic != nil {
-            WPAnalytics.track(.readerSitePreviewed)
+
+            let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+            navigationController?.pushViewController(topicStreamViewController, animated: true)
+
         } else if let siteTopic = topic as? ReaderSiteTopic {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
             WPAnalytics.track(.readerSuggestedSiteVisited, properties: properties)
+
+            let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
+            navigationController?.pushViewController(topicStreamViewController, animated: true)
         }
     }
 
