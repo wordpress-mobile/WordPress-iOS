@@ -84,13 +84,12 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
     private func applyStyles() {
         containerView.backgroundColor = .listForeground
-
         tableView.backgroundColor = .listForeground
         tableView.separatorColor = .placeholderElement
 
-        backgroundColor = .none
+        backgroundColor = .clear
         contentView.backgroundColor = .clear
-
+        
         refreshHorizontalConstraints()
     }
 
@@ -117,7 +116,12 @@ extension ReaderTopicsTableCardCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return cell(forRowAt: indexPath, tableView: tableView, topic: data[indexPath.row])
+        let tableCell = cell(forRowAt: indexPath, tableView: tableView, topic: data[indexPath.row])
+
+        tableCell.backgroundColor = .clear
+        tableCell.contentView.backgroundColor = .clear
+
+        return tableCell
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
