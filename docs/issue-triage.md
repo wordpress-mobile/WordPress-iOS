@@ -18,8 +18,8 @@ Bug reports (issues with the  `[Type] Bug` label) should also have a Priority la
 | |**Low Severity**|**Medium Severity**|**High Severity**|**Critical Severity**|
 |-|-|-|-|-|
 |**Low Impact**|Low|Low|Normal|High|
-|**Medium Impact**|Low|Normal|High|Critical|
-|**High Impact**|Normal|High|Critical|Critical|
+|**Medium Impact**|Low|Normal|High|Blocking|
+|**High Impact**|Normal|High|Blocking|Blocking|
 
 ### Severity
 
@@ -27,8 +27,8 @@ Severity is determined by what functionality is affected and how broken it is:
 
 * **Low:** Visual issue or edge case (doesn’t affect core/default functionality)
 * **Medium:** Bug with a workaround, low priority feature is broken/non-functional, visual issue in login/signup (first impressions)
-* **High**: High priority flow or feature is broken/non-functional, security issue, crash. High priority areas: login, signup, editing, stats, notifications
-* **Critical:** Critical impact on data or site: data loss (posts, pages, comments), unexpected publishing
+* **High**: High priority flow or feature is broken/non-functional, crash. High priority areas: login, signup, editing, stats, notifications
+* **Critical:** Critical impact on data or site: data loss (posts, pages, comments), unexpected publishing, security issue
 
 ### Impact
 
@@ -39,3 +39,12 @@ Impact is determined by how many users are affected or how many reports we recei
 * **High:** 5+ user reports, or estimated 26-100% of users affected.
 
 If you aren't sure how to estimate the number of users affected, use the number of user reports you can find as a starting point. The issue can be escalated later if we find a good estimate of users affected or if more user reports are noted on the issue.
+
+### Crashes
+
+In addition to the guidelines above, we have specific criteria for prioritizing crashes in a new production or beta release:
+
+* A new crash affecting more than 0.2% of users once the rollout of a production release is completed requires a hotfix. Some considerations here:
+   * If the crash leaves the user in an unrecoverable situation, that’s a breaking incident. All hands on deck until we push a fix.
+   * If the user can recover, we need to find the developer(s) that have the highest chance of success and redirect them to the issue.
+* All new crashes in a beta release should be fixed on the frozen branch (i.e. "Blocking" priority).

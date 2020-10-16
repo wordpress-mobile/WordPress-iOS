@@ -9,12 +9,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
-    case readerImprovementsPhase2
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
+    case stories
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,8 +37,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
-        case .readerImprovementsPhase2:
-            return true
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
@@ -49,6 +47,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .unifiedPrologueCarousel:
             return BuildConfiguration.current == .localDeveloper
+        case .stories:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -91,8 +91,6 @@ extension FeatureFlag {
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
-        case .readerImprovementsPhase2:
-            return "Reader Improvements Phase 2"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         case .gutenbergModalLayoutPicker:
@@ -103,6 +101,8 @@ extension FeatureFlag {
             return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
+        case .stories:
+            return "Stories"
         }
     }
 

@@ -1,5 +1,9 @@
 source 'https://cdn.cocoapods.org/'
 
+unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
+  raise 'Please run CocoaPods via `bundle exec`'
+end
+
 inhibit_all_warnings!
 use_frameworks!
 
@@ -167,6 +171,7 @@ target 'WordPress' do
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
     pod 'AMScrollingNavbar', '5.6.0'
+    pod 'CropViewController', '2.5.3'
 
     ## Automattic libraries
     ## ====================
@@ -366,7 +371,7 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.9-beta.1'
+  pod 'WordPressMocks', '~> 0.0.9-beta'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'

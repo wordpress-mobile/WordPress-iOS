@@ -12,6 +12,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
     static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
     static let expectedTumbnailSize = CGSize(width: 160.0, height: 230.0)
+    static let estimatedCellHeight: CGFloat = 320.0
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -100,7 +101,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
             fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
         }
         guard !isGhostCell else {
-            cell.startGhostAnimation()
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
             return cell
         }
 

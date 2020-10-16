@@ -66,11 +66,14 @@ extension GutenbergLayoutFilterBar: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LayoutPickerFilterCollectionViewCell.cellReuseIdentifier, for: indexPath) as! LayoutPickerFilterCollectionViewCell
+        let cellReuseIdentifier = LayoutPickerFilterCollectionViewCell.cellReuseIdentifier
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? LayoutPickerFilterCollectionViewCell else {
+            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerFilterCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
+        }
 
         if shouldShowGhostContent {
             cell.ghostAnimationWillStart()
-            cell.startGhostAnimation()
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
         } else {
             cell.stopGhostAnimation()
             cell.filter = filterDelegate?.filter(forIndex: indexPath.item)

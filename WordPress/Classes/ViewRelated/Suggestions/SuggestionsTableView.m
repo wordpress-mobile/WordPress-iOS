@@ -149,11 +149,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)startObservingNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(suggestionListUpdated:)
-                                                 name:NSNotification.suggestionListUpdated
-                                               object:nil];
-        
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -241,7 +236,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         self.searchText = word;
         if (self.searchText.length > 1) {
             NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (username contains[c] %@)",
                                             searchQuery, searchQuery];
             self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
@@ -309,8 +304,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         return cell;
     }
     
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
+    UserSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.username];
     cell.displayNameLabel.text = suggestion.displayName;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.avatarImageView.image = [UIImage imageNamed:@"gravatar"];
@@ -320,7 +315,7 @@ CGFloat const STVSeparatorHeight = 1.f;
             return;
         }
 
-        Suggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
+        UserSuggestion *reloaded = [self.searchResults objectAtIndex:indexPath.row];
         if (cell.imageDownloadHash != reloaded.imageURL.hash) {
             return;
         }
@@ -335,34 +330,29 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    UserSuggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
     [self.suggestionsDelegate suggestionsTableView:self
-                               didSelectSuggestion:suggestion.userLogin
+                               didSelectSuggestion:suggestion.username
                                      forSearchText:[self.searchText substringFromIndex:1]];
 }
 
 #pragma mark - Suggestion list management
 
-- (void)suggestionListUpdated:(NSNotification *)notification
-{
-    // only reload if the suggestion list is updated for the current site
-    if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
-        self.suggestions = [self suggestionsFor:self.siteID];
-        [self showSuggestionsForWord:self.searchText];
-    }
-}
-
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        _suggestions = [self suggestionsFor:self.siteID];
+        [self suggestionsFor:self.siteID completion:^(NSArray<UserSuggestion *> * _Nullable results) {
+            if (!results) return;
+            self.suggestions = results;
+            [self showSuggestionsForWord:self.searchText];
+        }];
     }
     return _suggestions;
 }
 
 #pragma mark - Avatar helper
 
-- (void)loadAvatarForSuggestion:(Suggestion *)suggestion success:(void (^)(UIImage *))success
+- (void)loadAvatarForSuggestion:(UserSuggestion *)suggestion success:(void (^)(UIImage *))success
 {
     CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
     UIImage *image = [suggestion cachedAvatarWith:imageSize];
