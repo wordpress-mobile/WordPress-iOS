@@ -50,12 +50,20 @@ protocol ReaderSitesCardCellDelegate: ReaderTopicsTableCardCellDelegate {
 
 extension ReaderSitesCardCell: ReaderRecommendedSitesCardCellDelegate {
     func handleFollowActionForCell(_ cell: ReaderRecommendedSiteCardCell) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
+        guard
+            let indexPath = self.tableView.indexPath(for: cell),
+            let topic = data[indexPath.row] as? ReaderSiteTopic
+        else {
             return
         }
 
-        let topic = data[indexPath.row]
-
         (delegate as? ReaderSitesCardCellDelegate)?.handleFollowActionForTopic(topic, for: self)
+
+        // Track Follow Action
+        var properties = [String: Any]()
+        properties[WPAppAnalyticsKeyFollowAction] = !topic.following
+        properties[WPAppAnalyticsKeyBlogID] = topic.siteID
+
+        WPAnalytics.track(.readerSuggestedSiteToggleFollow, properties: properties)
     }
 }
