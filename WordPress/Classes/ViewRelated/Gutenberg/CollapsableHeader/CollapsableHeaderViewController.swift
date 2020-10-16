@@ -67,9 +67,9 @@ class CollapsableHeaderViewController: UIViewController {
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
     @IBOutlet weak var footerView: UIView!
-    @IBOutlet weak var createBlankPageBtn: UIButton!
-    @IBOutlet weak var previewBtn: UIButton!
-    @IBOutlet weak var createPageBtn: UIButton!
+    @IBOutlet weak var defaultActionButton: UIButton!
+    @IBOutlet weak var secondaryActionButton: UIButton!
+    @IBOutlet weak var primaryActionButton: UIButton!
     @IBOutlet weak var selectedStateButtonsContainer: UIView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
@@ -217,9 +217,9 @@ class CollapsableHeaderViewController: UIViewController {
         titleView.text = childViewController.mainTitle
         largeTitleView.text = childViewController.mainTitle
         promptView.text = childViewController.prompt
-        createBlankPageBtn.setTitle(childViewController.defaultActionTitle, for: .normal)
-        previewBtn.setTitle(childViewController.secondaryActionTitle, for: .normal)
-        createPageBtn.setTitle(childViewController.primaryActionTitle, for: .normal)
+        defaultActionButton.setTitle(childViewController.defaultActionTitle, for: .normal)
+        secondaryActionButton.setTitle(childViewController.secondaryActionTitle, for: .normal)
+        primaryActionButton.setTitle(childViewController.primaryActionTitle, for: .normal)
     }
 
     private func insertChildView() {
@@ -242,16 +242,16 @@ class CollapsableHeaderViewController: UIViewController {
             seperator = UIColor.muriel(color: .divider)
         }
 
-        [createBlankPageBtn, previewBtn].forEach { (button) in
+        [defaultActionButton, secondaryActionButton].forEach { (button) in
             button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
             button?.layer.borderColor = seperator.cgColor
             button?.layer.borderWidth = 1
             button?.layer.cornerRadius = 8
         }
 
-        createPageBtn.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
-        createPageBtn.backgroundColor = accentColor
-        createPageBtn.layer.cornerRadius = 8
+        primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
+        primaryActionButton.backgroundColor = accentColor
+        primaryActionButton.layer.cornerRadius = 8
 
         if #available(iOS 13.0, *) {
             closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
@@ -380,20 +380,20 @@ extension CollapsableHeaderViewController: CollapsableHeaderContentsDelegate {
     }
 
     func itemSelectionChanged(_ hasSelectedItem: Bool) {
-        createBlankPageBtn.isHidden = false
+        defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
-        createBlankPageBtn.alpha = hasSelectedItem ? 1 : 0
+        defaultActionButton.alpha = hasSelectedItem ? 1 : 0
         selectedStateButtonsContainer.alpha = hasSelectedItem ? 0 : 1
 
         let alpha: CGFloat = hasSelectedItem ? 0 : 1
         let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
 
         UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.createBlankPageBtn.alpha = alpha
+            self.defaultActionButton.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
         }) { (_) in
-            self.createBlankPageBtn.isHidden = hasSelectedItem
+            self.defaultActionButton.isHidden = hasSelectedItem
             self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
         }
     }
