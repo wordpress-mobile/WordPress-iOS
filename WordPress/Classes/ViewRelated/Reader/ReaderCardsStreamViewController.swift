@@ -226,11 +226,10 @@ private extension ReaderCardsStreamViewController {
     }
 }
 
-// MARK: - Suggested Topics Delegate
+// MARK: - ReaderTopicsTableCardCellDelegate
 
-extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
+extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
-
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.track(.readerDiscoverTopicTapped)
 
@@ -245,7 +244,11 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
             navigationController?.pushViewController(topicStreamViewController, animated: true)
         }
     }
+}
 
+// MARK: - ReaderSitesCardCellDelegate
+
+extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
     func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
         toggleFollowingForTopic(topic) { success in
             cell.didToggleFollowing(topic, with: success)
