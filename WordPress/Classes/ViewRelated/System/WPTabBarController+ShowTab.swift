@@ -51,18 +51,27 @@ extension WPTabBarController {
 
         guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
         let blogID = blog.dotComID?.intValue ?? 0 as Any
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-        let intro = StoriesIntro(continueTapped: { [weak self] in
-            self?.showStoryEditor()
-        }, openURL: { [weak self] url in
-            let webViewController = WebViewControllerFactory.controller(url: url)
-            self?.presentedViewController?.present(webViewController, animated: true)
-        })
+        if UserDefaults.standard.storiesIntroWasAcknowledged == false {
+            // Show Intro screen
+            let intro = StoriesIntro(continueTapped: { [weak self] in
+                UserDefaults.standard.storiesIntroWasAcknowledged = true
+                self?.showStoryEditor()
+            }, openURL: { [weak self] url in
+                let webViewController = WebViewControllerFactory.controller(url: url)
+                self?.presentedViewController?.present(webViewController, animated: true)
+            })
 
-        let controller = intro.makeController()
-        present(controller, animated: true, completion: {
-            intro.trackShown()
-        })
+            let controller = intro.makeController()
+            present(controller, animated: true, completion: {
+                intro.trackShown()
+            })
+        } else {
+            //TODO: Show the stories feature
+            let viewController = UIViewController()
+            viewController.view.backgroundColor = .red
+            present(viewController, animated: true)
+        }
     }
 }

@@ -34,6 +34,14 @@ struct StoriesIntro {
         return viewController
     }
 
+    // MARK: - Acknowledged Flags
+
+    var acknowledged: Bool {
+        return UserDefaults.standard.storiesIntroWasAcknowledged
+    }
+
+    // MARK: - Analytics
+
     /// To be called when the view controller from `makeController` is shown.
     func trackShown() {
         WPAnalytics.track(.storyIntroShown)
@@ -47,7 +55,7 @@ struct StoriesIntro {
         WPAnalytics.track(.storyIntroCreateStoryButtonTapped)
     }
 
-    // MARK: - Data Source]
+    // MARK: - Data Source
 
     private var dataSource: StoriesIntroDataSource {
 
@@ -102,6 +110,21 @@ fileprivate extension URL {
         queryItems.append(contentsOf: newQueryItems)
         components?.queryItems = queryItems
         return components?.url ?? self
+    }
+}
+
+extension UserDefaults {
+    private enum Keys: String {
+        case storiesIntroWasAcknowledged = "storiesIntroWasAcknowledged"
+    }
+
+    var storiesIntroWasAcknowledged: Bool {
+        get {
+            return bool(forKey: Keys.storiesIntroWasAcknowledged.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.storiesIntroWasAcknowledged.rawValue)
+        }
     }
 }
 
