@@ -173,6 +173,7 @@ class ReaderDetailCoordinator {
             return
         }
 
+        WPAnalytics.track(.readerArticleVisited)
         presentWebViewController(postURL)
     }
 
