@@ -113,6 +113,8 @@ class ReaderDetailCoordinator {
         }
 
         sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+
+        WPAnalytics.track(.readerSharedItem)
     }
 
     /// Set a postID, siteID and isFeed

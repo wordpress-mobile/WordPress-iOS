@@ -70,6 +70,8 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerPostReported
+    case readerArticleDetailMoreTapped
+    case readerSharedItem
     // What's New - Feature announcements
     case featureAnnouncementShown
     case featureAnnouncementButtonTapped
@@ -188,6 +190,10 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
+        case .readerArticleDetailMoreTapped:
+            return "reader_article_detail_more_tapped"
+        case .readerSharedItem:
+            return "reader_shared_item"
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
