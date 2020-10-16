@@ -1,37 +1,68 @@
 
-/// Configures a view controller to show the intro screen for the stories feature.
-struct StoriesIntro {
+class StoriesIntroViewController: WhatIsNewViewController {
 
-    /// Called when the user taps the continue button and the stories editor should be shown.
-    let continueTapped: () -> Void
+    enum Constants {
+        static let headerTitle = NSLocalizedString("Introducing Story Posts", comment: "Stories intro header title")
+        static let continueButtonTitle = NSLocalizedString("Create Story Post", comment: "Stories intro continue button title")
 
-    /// Called when the user taps one of the demo stories to open the URL.
-    let openURL: (URL) -> Void
+        static let exampleHeaderTitle = NSLocalizedString("You've got early access to story posts and we'd love for you to give it a try.", comment: "Story Intro welcome title")
 
-    /// Creates a configured view controller.
-    /// - Returns: A view controller to present which shows the stories intro screen.
-    func makeController() -> UIViewController {
-        let titles = WhatIsNewViewTitles(header: NSLocalizedString("Introducing Story Posts", comment: "Stories intro header title"),
+        static let example1Image = UIImage(named: "democover01")
+        static let example1Description = NSLocalizedString("How to create a story post", comment: "How to create story description")
+        static let example1URL = URL(string: "https://wpstories.wordpress.com/2020/10/12/patagonia-2/")
+
+        static let example2Image = UIImage(named: "democover02")
+        static let example2Description = NSLocalizedString("Example story title", comment: "Example story title description")
+        static let example2URL = URL(string: "https://wpstories.wordpress.com/2020/10/12/hiking-in-the-southwest/")
+
+        static let announcement1Title = NSLocalizedString("Now stories are for everyone", comment: "First story intro item title")
+        static let announcement1Description = NSLocalizedString("Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.", comment: "First story intro item description")
+
+        static let announcement2Title = NSLocalizedString("Story posts don't disappear", comment: "Second story intro item description")
+        static let announcement2Description = NSLocalizedString("They're published as a new blog post on your site so your audience never misses out on a thing.", comment: "Second story intro item description")
+    }
+
+    init(continueTapped: @escaping () -> Void, openURL: @escaping (URL) -> Void) {
+        let titles = WhatIsNewViewTitles(header: Constants.headerTitle,
                                        version: "",
-                                       continueButtonTitle: NSLocalizedString("Create Story Post", comment: "Stories intro continue button title"))
+                                       continueButtonTitle: Constants.continueButtonTitle)
 
-        let view = WhatIsNewView(viewTitles: titles, dataSource: dataSource, showsBackButton: true)
+        let storyQueryItems = [URLQueryItem.WPStory.fullscreen, URLQueryItem.WPStory.playOnLoad]
 
-        let viewController = WhatIsNewViewController(whatIsNewViewFactory: {
-            return view
-        })
+        let gridItems = [
+            GridCell.Item(image: Constants.example1Image,
+                          description: Constants.example1Description,
+                          action: {
+                            if let url = Constants.example1URL?.add(storyQueryItems) {
+                                openURL(url)
+                            }
+            }),
+            GridCell.Item(image: Constants.example2Image,
+                          description: Constants.example2Description,
+                          action: {
+                            if let url = Constants.example2URL?.add(storyQueryItems) {
+                                openURL(url)
+                            }
+            })]
 
-        view.continueAction = {
-            trackContinue()
+        let dataSource = StoriesIntroDataSource(items: [
+            StoriesIntroDataSource.Grid(title: Constants.exampleHeaderTitle, items: gridItems),
+            StoriesIntroDataSource.AnnouncementItem(title: Constants.announcement1Title, description: Constants.announcement1Description),
+            StoriesIntroDataSource.AnnouncementItem(title: Constants.announcement2Title, description: Constants.announcement2Description)
+        ])
+
+        super.init(whatIsNewViewFactory: {
+            return WhatIsNewView(viewTitles: titles, dataSource: dataSource, showsBackButton: true)
+        }, onContinue: {
+            StoriesIntroViewController.trackContinue()
             continueTapped()
-        }
+        }, onDismiss: {
+            StoriesIntroViewController.trackDismiss()
+        })
+    }
 
-        view.dismissAction = { [weak viewController] in
-            trackDismissed()
-            viewController?.dismiss(animated: true, completion: nil)
-        }
-
-        return viewController
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Acknowledged Flags
@@ -43,48 +74,21 @@ struct StoriesIntro {
     // MARK: - Analytics
 
     /// To be called when the view controller from `makeController` is shown.
-    func trackShown() {
+    static func trackShown() {
         WPAnalytics.track(.storyIntroShown)
     }
 
-    private func trackDismissed() {
-        WPAnalytics.track(.storyIntroDismissed)
+    static func trackContinue() {
+        WPAnalytics.track(.storyIntroCreateStoryButtonTapped)
     }
 
-    private func trackContinue() {
-        WPAnalytics.track(.storyIntroCreateStoryButtonTapped)
+    static func trackDismiss() {
+        WPAnalytics.track(.storyIntroDismissed)
     }
 
     // MARK: - Data Source
 
-    private var dataSource: StoriesIntroDataSource {
 
-        let storyQueryItems = [URLQueryItem.WPStory.fullscreen, URLQueryItem.WPStory.playOnLoad]
-
-        let gridItems = [
-            GridCell.Item(image: UIImage(named: "democover01")!,
-                          description: NSLocalizedString("How to create a story post", comment: "How to create story description"),
-                          action: {
-                            if let url = URL(string: "https://wpstories.wordpress.com/2020/10/12/patagonia-2/")?.add(storyQueryItems) {
-                                openURL(url)
-                            }
-            }),
-            GridCell.Item(image: UIImage(named: "democover02")!,
-                          description: NSLocalizedString("Example story title", comment: "Example story title description"),
-                          action: {
-                            if let url = URL(string: "https://wpstories.wordpress.com/2020/10/12/hiking-in-the-southwest/")?.add(storyQueryItems) {
-                                openURL(url)
-                            }
-            })]
-
-        let dataSource = StoriesIntroDataSource(items: [
-            StoriesIntroDataSource.Grid(title: NSLocalizedString("You've got early access to story posts and we'd love for you to give it a try.", comment: "Story Intro welcome title"), items: gridItems),
-            StoriesIntroDataSource.AnnouncementItem(title: NSLocalizedString("Now stories are for everyone", comment: "First story intro item title"), description: NSLocalizedString("Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.", comment: "First story intro item description")),
-            StoriesIntroDataSource.AnnouncementItem(title: NSLocalizedString("Story posts don't disappear", comment: "Second story intro item description"), description: NSLocalizedString("They're published as a new blog post on your site so your audience never misses out on a thing.", comment: "Second story intro item description"))
-        ])
-
-        return dataSource
-    }
 }
 
 fileprivate extension URLQueryItem {

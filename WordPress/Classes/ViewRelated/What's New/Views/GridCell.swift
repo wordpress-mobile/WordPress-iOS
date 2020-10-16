@@ -21,7 +21,7 @@
 class GridCell: UITableViewCell {
 
     struct Item {
-        let image: UIImage
+        let image: UIImage?
         let description: String
         let action: () -> Void
     }
@@ -122,7 +122,7 @@ private extension GridCell {
     ///   - image: The image to show in the button. The button will be constrained to match the image's size.
     ///   - action: An action to perform when the button is tapped.
     /// - Returns: The configured button.
-    func makeGridButton(image: UIImage, action: @escaping () -> Void) -> UIButton {
+    func makeGridButton(image: UIImage?, action: @escaping () -> Void) -> UIButton {
         let button: UIButton
         if #available(iOS 14.0, *) {
             button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in
@@ -134,8 +134,8 @@ private extension GridCell {
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addConstraints([
-            button.widthAnchor.constraint(equalToConstant: image.size.width),
-            button.heightAnchor.constraint(equalToConstant: image.size.height)
+            button.widthAnchor.constraint(equalToConstant: image?.size.width ?? 0),
+            button.heightAnchor.constraint(equalToConstant: image?.size.height ?? 0)
         ])
         return button
     }

@@ -2238,7 +2238,7 @@
 		F5E032E62408D537003AF350 /* ActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032E32408D537003AF350 /* ActionSheetViewController.swift */; };
 		F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032E52408D537003AF350 /* BottomSheetPresentationController.swift */; };
 		F5E032EC240D49FF003AF350 /* ActionSheetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */; };
-		F5E1BA9B253A0A5E0091E9A6 /* StoriesIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E1BA9A253A0A5E0091E9A6 /* StoriesIntro.swift */; };
+		F5E1BA9B253A0A5E0091E9A6 /* StoriesIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */; };
 		F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */; };
 		F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29037243FAB0300C19CA5 /* FilterTableData.swift */; };
 		F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E63128243BC8190088229D /* FilterSheetView.swift */; };
@@ -4987,7 +4987,7 @@
 		F5E032E32408D537003AF350 /* ActionSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheetViewController.swift; sourceTree = "<group>"; };
 		F5E032E52408D537003AF350 /* BottomSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetPresentationController.swift; sourceTree = "<group>"; };
 		F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetComponent.swift; sourceTree = "<group>"; };
-		F5E1BA9A253A0A5E0091E9A6 /* StoriesIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesIntro.swift; sourceTree = "<group>"; };
+		F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesIntroViewController.swift; sourceTree = "<group>"; };
 		F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProvider.swift; sourceTree = "<group>"; };
 		F5E29037243FAB0300C19CA5 /* FilterTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableData.swift; sourceTree = "<group>"; };
 		F5E63128243BC8190088229D /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
@@ -6283,7 +6283,7 @@
 				3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */,
 				3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */,
 				F5B390E92537E30B0097049E /* GridCell.swift */,
-				F5E1BA9A253A0A5E0091E9A6 /* StoriesIntro.swift */,
+				F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -13307,7 +13307,7 @@
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				D88106FC20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift in Sources */,
 				FF1B11E5238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift in Sources */,
-				F5E1BA9B253A0A5E0091E9A6 /* StoriesIntro.swift in Sources */,
+				F5E1BA9B253A0A5E0091E9A6 /* StoriesIntroViewController.swift in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				9865257D2194D77F0078B916 /* SiteStatsInsightsViewModel.swift in Sources */,
 				9F74696B209EFD0C0074D52B /* CheckmarkTableViewCell.swift in Sources */,
