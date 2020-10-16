@@ -614,7 +614,7 @@ import "./ScreenshotFastfile"
   # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [destination:<Simulator>] [try_count:<Number of times to try tests>]
+  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [try_count:<Number of times to try tests>]
   #
   # Example:
   # bundle exec fastlane test_without_building name:UITests try_count:3
