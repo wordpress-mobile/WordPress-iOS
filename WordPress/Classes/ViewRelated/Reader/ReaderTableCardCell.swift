@@ -89,7 +89,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
 
         backgroundColor = .clear
         contentView.backgroundColor = .clear
-        
+
         refreshHorizontalConstraints()
     }
 

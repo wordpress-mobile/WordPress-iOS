@@ -236,7 +236,6 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
             navigationController?.pushViewController(topicStreamViewController, animated: true)
-
         } else if let siteTopic = topic as? ReaderSiteTopic {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
