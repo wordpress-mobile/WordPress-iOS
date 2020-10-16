@@ -108,7 +108,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
-        service.toggleLiked(for: post, success: nil, failure: { [weak self] (error: Error?) in
+        service.toggleLiked(for: post, success: { [weak self] in
+            self?.trackArticleDetailsLikedOrUnliked()
+        }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()
             if let anError = error {
                 DDLogError("Error (un)liking post: \(anError.localizedDescription)")
