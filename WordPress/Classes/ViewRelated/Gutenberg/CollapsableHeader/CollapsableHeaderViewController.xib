@@ -200,7 +200,7 @@
                                 <constraint firstAttribute="height" constant="0.5" id="DKq-so-Z8k"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dmc-kV-0d8">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dmc-kV-0d8" userLabel="Default Action">
                             <rect key="frame" x="20" y="16" width="374" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -214,10 +214,10 @@
                                 <action selector="defaultActionSelected:" destination="-1" eventType="touchUpInside" id="d2H-aW-Shz"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xLP-0m-3rr">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xLP-0m-3rr" userLabel="Selected State Container">
                             <rect key="frame" x="20" y="16" width="374" height="44"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeJ-NR-hHA">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeJ-NR-hHA" userLabel="Secondry Action">
                                     <rect key="frame" x="0.0" y="0.0" width="182" height="44"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
@@ -228,7 +228,7 @@
                                         <action selector="secondaryActionSelected:" destination="-1" eventType="touchUpInside" id="fGK-R9-pK4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cck-0Q-rBD">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cck-0Q-rBD" userLabel="Primary Action">
                                     <rect key="frame" x="192" y="0.0" width="182" height="44"/>
                                     <color key="backgroundColor" name="Pink50"/>
                                     <state key="normal" title="Create Page">
