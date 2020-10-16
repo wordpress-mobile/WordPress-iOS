@@ -237,6 +237,10 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
             WPAnalytics.track(.readerDiscoverTopicTapped)
         } else if topic as? ReaderSiteTopic != nil {
             WPAnalytics.track(.readerSitePreviewed)
+        } else if let siteTopic = topic as? ReaderSiteTopic {
+            var properties = [String: Any]()
+            properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
+            WPAnalytics.track(.readerSuggestedSiteVisited, properties: properties)
         }
     }
 
