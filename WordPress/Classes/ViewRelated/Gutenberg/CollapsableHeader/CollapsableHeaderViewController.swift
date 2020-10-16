@@ -170,6 +170,12 @@ class CollapsableHeaderViewController: UIViewController {
         scrollView.delegate = self
         layoutHeader()
         filterBar.filterDelegate = filterDelegate
+
+        if #available(iOS 13.0, *) {} else {
+            headerBar.backgroundColor = .basicBackground
+            headerView.backgroundColor = .basicBackground
+            footerView.backgroundColor = .basicBackground
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -271,7 +277,13 @@ class CollapsableHeaderViewController: UIViewController {
     }
 
     private func layoutHeaderInsets() {
-        let topInset = maxHeaderHeight + headerBar.frame.height
+        let topInset: CGFloat
+
+        if #available(iOS 13.0, *) {
+            topInset = maxHeaderHeight + headerBar.frame.height
+        } else {
+            topInset = maxHeaderHeight + headerBar.frame.height + UIApplication.shared.statusBarFrame.height
+        }
 
         if let tableView = scrollView as? UITableView {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
