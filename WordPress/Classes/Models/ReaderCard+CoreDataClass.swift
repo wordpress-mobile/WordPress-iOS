@@ -14,11 +14,11 @@ public class ReaderCard: NSManagedObject {
             return .post
         }
 
-        if topicsArray.count != 0 {
+        if topicsArray.count > 0 {
             return .topics
         }
 
-        if sitesArray.count != 0 {
+        if sitesArray.count > 0 {
             return .sites
         }
 
