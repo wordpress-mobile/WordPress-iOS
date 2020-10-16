@@ -506,7 +506,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/495-extend-background-carousel-container`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/495-extended-bg`)
   - WordPressKit (~> 4.19-beta.1)
   - WordPressMocks (~> 0.0.9-beta)
   - WordPressShared (~> 1.12.0)
@@ -658,7 +658,7 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :branch: feature/495-extend-background-carousel-container
+    :branch: feature/495-extended-bg
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542/third-party-podspecs/Yoga.podspec.json
@@ -679,7 +679,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   WordPressAuthenticator:
-    :commit: 30a2859a27f1a672bcc68460523bb9eff21e27c4
+    :commit: e11508547b56399179641b8ebbc322180df5c571
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -778,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: e02ec230f57f49f1c07c925243b2b01407f20802
+PODFILE CHECKSUM: 4c79926d3e92ea096178220defb28d28d0ff38cc
 
 COCOAPODS: 1.9.3
