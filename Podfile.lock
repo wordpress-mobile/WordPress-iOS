@@ -506,7 +506,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.27.0-beta)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/495-extend-background-carousel-container`)
   - WordPressKit (~> 4.19-beta.1)
   - WordPressMocks (~> 0.0.9-beta)
   - WordPressShared (~> 1.12.0)
@@ -778,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: c71d87c0799fc16db6b6660ba8761df2419eb3c8
+PODFILE CHECKSUM: e02ec230f57f49f1c07c925243b2b01407f20802
 
 COCOAPODS: 1.9.3
