@@ -194,7 +194,7 @@ import Foundation
         case .readerSuggestedSiteVisited:
             return "reader_suggested_site_visited"
         case .readerSuggestedSiteToggleFollow:
-            return "reader_suggested_site_visited"
+            return "reader_suggested_site_toggle_follow"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
