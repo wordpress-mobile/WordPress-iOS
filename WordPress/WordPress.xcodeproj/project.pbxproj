@@ -2239,6 +2239,7 @@
 		F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032E52408D537003AF350 /* BottomSheetPresentationController.swift */; };
 		F5E032EC240D49FF003AF350 /* ActionSheetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */; };
 		F5E1BA9B253A0A5E0091E9A6 /* StoriesIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */; };
+		F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E1BBDF253B74240091E9A6 /* URLQueryItem+Parameters.swift */; };
 		F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */; };
 		F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E29037243FAB0300C19CA5 /* FilterTableData.swift */; };
 		F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E63128243BC8190088229D /* FilterSheetView.swift */; };
@@ -4988,6 +4989,7 @@
 		F5E032E52408D537003AF350 /* BottomSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetPresentationController.swift; sourceTree = "<group>"; };
 		F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetComponent.swift; sourceTree = "<group>"; };
 		F5E1BA9A253A0A5E0091E9A6 /* StoriesIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesIntroViewController.swift; sourceTree = "<group>"; };
+		F5E1BBDF253B74240091E9A6 /* URLQueryItem+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLQueryItem+Parameters.swift"; sourceTree = "<group>"; };
 		F5E29035243E4F5F00C19CA5 /* FilterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProvider.swift; sourceTree = "<group>"; };
 		F5E29037243FAB0300C19CA5 /* FilterTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableData.swift; sourceTree = "<group>"; };
 		F5E63128243BC8190088229D /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
@@ -9386,6 +9388,7 @@
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
 				9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */,
 				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
+				F5E1BBDF253B74240091E9A6 /* URLQueryItem+Parameters.swift */,
 				17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */,
 				F12E500223C7C5330068CB5E /* WKWebView+UserAgent.swift */,
 				57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */,
@@ -13327,6 +13330,7 @@
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
+				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,

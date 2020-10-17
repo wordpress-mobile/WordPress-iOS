@@ -17,6 +17,8 @@
      │└─────────────┘│
      │ mainStackView │
      └───────────────┘
+
+ See `makeItemStackView` for a description of `item`.
 */
 class GridCell: UITableViewCell {
 
@@ -26,7 +28,6 @@ class GridCell: UITableViewCell {
         let action: () -> Void
     }
 
-    // MARK: - View elements
     lazy var headingLabel: UILabel = {
         return makeLabel(font: Appearance.headingFont, color: .textSubtle)
     }()
@@ -162,18 +163,18 @@ private extension GridCell {
     /**
     Creates a vertical stack view with `button` on top and `label` on bottom.
 
-         ┌──────────┐
-         │          │
-         │          │
-         │  button  │
-         │          │
-         │          │
-         │          │
-         └──────────┘
+          ┌──────────┐
+          │          │
+          │          │
+          │  button  │
+          │          │
+          │          │
+          │          │
+          └──────────┘
         gridButtonLabelSpacing
-         ┌──────────┐
-         │  label   │
-         └──────────┘
+          ┌──────────┐
+          │  label   │
+          └──────────┘
 
     - Parameters:
         - button: The button to go on the top of the stack view.

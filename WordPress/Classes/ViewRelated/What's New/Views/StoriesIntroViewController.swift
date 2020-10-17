@@ -33,14 +33,14 @@ class StoriesIntroViewController: WhatIsNewViewController {
             GridCell.Item(image: Constants.example1Image,
                           description: Constants.example1Description,
                           action: {
-                            if let url = Constants.example1URL?.add(storyQueryItems) {
+                            if let url = Constants.example1URL?.appending(storyQueryItems) {
                                 openURL(url)
                             }
             }),
             GridCell.Item(image: Constants.example2Image,
                           description: Constants.example2Description,
                           action: {
-                            if let url = Constants.example2URL?.add(storyQueryItems) {
+                            if let url = Constants.example2URL?.appending(storyQueryItems) {
                                 openURL(url)
                             }
             })]
@@ -65,8 +65,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Acknowledged Flags
-
+    /// Whether the user has already seen and acknowledged the Stories Intro screen.
     var acknowledged: Bool {
         return UserDefaults.standard.storiesIntroWasAcknowledged
     }
@@ -87,29 +86,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
     }
 }
 
-fileprivate extension URLQueryItem {
-    /// Query Parameters to be used for the WP Stories feature.
-    /// These can be used appended to the URL for any WordPress blog post
-    enum WPStory {
-        /// Opens the story in fullscreen.
-        static let fullscreen = URLQueryItem(name: "wp-story-load-in-fullscreen", value: "true")
-        /// Begins playing the story immediately.
-        static let playOnLoad = URLQueryItem(name: "wp-story-play-on-load", value: "true")
-    }
-}
-
-fileprivate extension URL {
-    /// Appends query items to the URL.
-    /// - Parameter newQueryItems: The new query items to add to the URL. These will **not** overwrite any existing items but are appended to the existing list.
-    /// - Returns: The URL with added query items.
-    func add(_ newQueryItems: [URLQueryItem]) -> URL {
-        var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
-        var queryItems = components?.queryItems ?? []
-        queryItems.append(contentsOf: newQueryItems)
-        components?.queryItems = queryItems
-        return components?.url ?? self
-    }
-}
+// MARK: - Helpers
 
 extension UserDefaults {
     private enum Keys: String {
