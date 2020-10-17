@@ -211,7 +211,7 @@ extension URL {
     /// Appends query items to the URL.
     /// - Parameter newQueryItems: The new query items to add to the URL. These will **not** overwrite any existing items but are appended to the existing list.
     /// - Returns: The URL with added query items.
-    func appending(_ newQueryItems: [URLQueryItem]) -> URL {
+    func appendingQueryItems(_ newQueryItems: [URLQueryItem]) -> URL {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
         var queryItems = components?.queryItems ?? []
         queryItems.append(contentsOf: newQueryItems)

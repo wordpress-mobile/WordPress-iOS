@@ -33,14 +33,14 @@ class StoriesIntroViewController: WhatIsNewViewController {
             GridCell.Item(image: Constants.example1Image,
                           description: Constants.example1Description,
                           action: {
-                            if let url = Constants.example1URL?.appending(storyQueryItems) {
+                            if let url = Constants.example1URL?.appendingQueryItems(storyQueryItems) {
                                 openURL(url)
                             }
             }),
             GridCell.Item(image: Constants.example2Image,
                           description: Constants.example2Description,
                           action: {
-                            if let url = Constants.example2URL?.appending(storyQueryItems) {
+                            if let url = Constants.example2URL?.appendingQueryItems(storyQueryItems) {
                                 openURL(url)
                             }
             })]
