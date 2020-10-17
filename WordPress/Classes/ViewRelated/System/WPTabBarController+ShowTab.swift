@@ -56,7 +56,8 @@ extension WPTabBarController {
                 self?.showStoryEditor()
             }, openURL: { [weak self] url in
                 let webViewController = WebViewControllerFactory.controller(url: url)
-                self?.presentedViewController?.present(webViewController, animated: true)
+                let navController = UINavigationController(rootViewController: webViewController)
+                self?.presentedViewController?.present(navController, animated: true)
             })
 
             present(intro, animated: true, completion: {

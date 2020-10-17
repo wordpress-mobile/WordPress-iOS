@@ -36,7 +36,7 @@ class GridCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fillEqually
         return stackView
     }()
 
@@ -147,9 +147,14 @@ private extension GridCell {
         }
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+
+        let imageWidth = image?.size.width ?? 0
+        let imageHeight = image?.size.height ?? 0
         button.addConstraints([
-            button.widthAnchor.constraint(equalToConstant: image?.size.width ?? 0),
-            button.heightAnchor.constraint(equalToConstant: image?.size.height ?? 0)
+            // Width attempts to match the image size but can scale down if it doesn't fit. (Narrowest iPad split screen + iPhone SE)
+            button.widthAnchor.constraint(lessThanOrEqualToConstant: imageWidth),
+            // Height is scaled to the same aspect ratio as the image to scale with width changes.
+            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: imageHeight/imageWidth),
         ])
         return button
     }
@@ -180,7 +185,7 @@ private extension GridCell {
             button,
             label
         ])
-        stackView.alignment = .top
+        stackView.alignment = .leading
         stackView.setCustomSpacing(Appearance.gridButtonLabelSpacing, after: button)
         stackView.axis = .vertical
         stackView.distribution = .fill
@@ -216,9 +221,14 @@ class ClosureButton: UIButton {
     init(frame: CGRect, closure: @escaping () -> Void) {
         self.closure = closure
         super.init(frame: frame)
+        self.addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func tapped() {
+        closure()
     }
 }
