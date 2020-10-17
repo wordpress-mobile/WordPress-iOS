@@ -138,14 +138,7 @@ private extension GridCell {
     ///   - action: An action to perform when the button is tapped.
     /// - Returns: The configured button.
     func makeGridButton(image: UIImage?, action: @escaping () -> Void) -> UIButton {
-        let button: UIButton
-        if #available(iOS 14.0, *) {
-            button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in
-                action()
-            }))
-        } else {
-            button = ClosureButton(frame: .zero, closure: action)
-        }
+        let button = ClosureButton(frame: .zero, closure: action)
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
 
