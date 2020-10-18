@@ -120,10 +120,13 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func updateNavigationItemButtons(for assetCount: Int) {
         if isEditing {
-            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped))
+            cancelButton.accessibilityLabel = NSLocalizedString("Cancel editing", comment: "Accessibility Label for cancel button when editing media in media library")
+            navigationItem.setLeftBarButton(cancelButton, animated: false)
 
             let trashButton = UIBarButtonItem(image: .gridicon(.trash), style: .plain, target: self, action: #selector(trashTapped))
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
+            trashButton.accessibilityLabel = NSLocalizedString("Delete", comment: "Accessibility Label for deleting selected media")
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.setLeftBarButton(nil, animated: false)
