@@ -1,6 +1,6 @@
 import Foundation
 
-/// This class takes care of constructing our add site action sheets.  It does not handle any presentation logic and doe
+/// This class takes care of constructing our "Add Site" action sheets.  It does not handle any presentation logic and does
 /// not know any external data sources - all of the data is received as parameters.
 @objc
 class AddSiteAlertFactory: NSObject {
