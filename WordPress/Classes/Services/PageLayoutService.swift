@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import Gutenberg
+import WordPressKit
 
 class PageLayoutService {
     private struct Parameters {
@@ -9,59 +10,40 @@ class PageLayoutService {
         static let scale = "scale"
     }
 
-    typealias CompletionHandler = (Swift.Result<GutenbergPageLayouts, Error>) -> Void
-
-    static func layouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
-        if blog.isAccessibleThroughWPCom() {
-            fetchWordPressComLayouts(forBlog: blog, withThumbnailSize: thumbnailSize, completion: completion)
+    typealias CompletionHandler = (Swift.Result<Void, Error>) -> Void
+    static func fetchLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
+        let api: WordPressComRestApi
+        let blogID: Int?
+        if let dotComID = blog.dotComID,
+           blog.isAccessibleThroughWPCom(),
+           let restAPI = blog.wordPressComRestApi() {
+            api = restAPI
+            blogID = dotComID.intValue
         } else {
-            fetchSharedLayouts(thumbnailSize, completion: completion)
-        }
-    }
-
-    private static func fetchWordPressComLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler?) {
-        guard let blogId = blog.dotComID as? Int, let api = blog.wordPressComRestApi() else {
-            let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
-            completion?(.failure(error))
-            return
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+            blogID = nil
         }
 
-        let urlPath = "/wpcom/v2/sites/\(blogId)/block-layouts"
-        fetchLayouts(thumbnailSize, api, urlPath, completion)
+        fetchLayouts(api, forBlogID: blogID, withThumbnailSize: thumbnailSize, completion: completion)
     }
 
-    private static func fetchSharedLayouts(_ thumbnailSize: CGSize, completion: CompletionHandler?) {
-        let api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
-        let urlPath = "/wpcom/v2/common-block-layouts"
-        fetchLayouts(thumbnailSize, api, urlPath, completion)
-    }
-
-    private static func fetchLayouts(_ thumbnailSize: CGSize, _ api: WordPressComRestApi, _ urlPath: String, _ completion: CompletionHandler?) {
-        api.GET(urlPath, parameters: parameters(thumbnailSize), success: { (responseObject, _) in
-            guard let result = parseLayouts(fromResponse: responseObject) else {
-                let error = NSError(domain: "PageLayoutService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Unable to parse response"])
-                completion?(.failure(error))
-                return
-            }
-
-            persistToCoreData(result) { (persistanceResult) in
-                switch persistanceResult {
-                case .success:
-                    completion?(.success(result))
-                case .failure(let error):
-                    completion?(.failure(error))
+    private static func fetchLayouts(_ api: WordPressComRestApi, forBlogID blogID: Int?, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler?) {
+        let params = parameters(thumbnailSize)
+        PageLayoutServiceRemote.fetchLayouts(api, forBlogID: blogID, withParameters: params) { (result) in
+            switch result {
+            case .success(let remoteLayouts):
+                persistToCoreData(remoteLayouts) { (persistanceResult) in
+                    switch persistanceResult {
+                    case .success:
+                        completion?(.success(()))
+                    case .failure(let error):
+                        completion?(.failure(error))
+                    }
                 }
+            case .failure(let error):
+                completion?(.failure(error))
             }
-        }, failure: { (error, _) in
-            completion?(.failure(error))
-        })
-    }
-
-    private static func parseLayouts(fromResponse response: Any) -> GutenbergPageLayouts? {
-        guard let data = try? JSONSerialization.data(withJSONObject: response) else {
-            return nil
         }
-        return try? JSONDecoder().decode(GutenbergPageLayouts.self, from: data)
     }
 
     // Parameter Generation
@@ -104,7 +86,7 @@ extension PageLayoutService {
         return resultsController
     }
 
-    private static func persistToCoreData(_ layouts: GutenbergPageLayouts, _ completion: @escaping (Swift.Result<Void, Error>) -> Void) {
+    private static func persistToCoreData(_ layouts: RemotePageLayouts, _ completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         let context = ContextManager.shared.newDerivedContext()
         context.perform {
             do {
@@ -119,14 +101,14 @@ extension PageLayoutService {
         }
     }
 
-    private static func persistCategoriesToCoreData(_ categories: [GutenbergLayoutCategory], context: NSManagedObjectContext) throws {
+    private static func persistCategoriesToCoreData(_ categories: [RemoteLayoutCategory], context: NSManagedObjectContext) throws {
         context.deleteAllObjects(ofType: PageTemplateCategory.self)
         for category in categories {
             let _ = PageTemplateCategory(context: context, category: category)
         }
     }
 
-    private static func persistLayoutsToCoreData(_ layouts: [GutenbergLayout], context: NSManagedObjectContext) throws {
+    private static func persistLayoutsToCoreData(_ layouts: [RemoteLayout], context: NSManagedObjectContext) throws {
         context.deleteAllObjects(ofType: PageTemplateLayout.self)
 
         for layout in layouts {
@@ -135,7 +117,7 @@ extension PageLayoutService {
         }
     }
 
-    private static func associate(layout: PageTemplateLayout, toCategories categories: [GutenbergLayoutCategory], context: NSManagedObjectContext) throws {
+    private static func associate(layout: PageTemplateLayout, toCategories categories: [RemoteLayoutCategory], context: NSManagedObjectContext) throws {
         let categoryList = categories.map({ $0.slug })
         let request: NSFetchRequest<PageTemplateCategory> = PageTemplateCategory.fetchRequest()
         request.predicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.slug)) IN %@", categoryList)

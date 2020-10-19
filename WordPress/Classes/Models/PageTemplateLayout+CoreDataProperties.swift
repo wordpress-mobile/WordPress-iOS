@@ -33,7 +33,7 @@ extension PageTemplateLayout {
 
 extension PageTemplateLayout {
 
-    convenience init(context: NSManagedObjectContext, layout: GutenbergLayout) {
+    convenience init(context: NSManagedObjectContext, layout: RemoteLayout) {
         self.init(context: context)
         preview = layout.preview ?? ""
         content = layout.content ?? ""

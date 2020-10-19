@@ -329,7 +329,7 @@ class GutenbergLayoutPickerViewController: UIViewController {
         guard let blog = blog else { return }
         isLoading = resultsController.isEmpty()
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
+        PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
     }
 
     private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
