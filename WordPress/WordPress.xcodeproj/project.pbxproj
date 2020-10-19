@@ -415,6 +415,9 @@
 		3F526C582538CF2B0069706C /* WordPressHomeWidgetToday.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C542538CF2A0069706C /* WordPressHomeWidgetToday.intentdefinition */; };
 		3F526C592538CF2B0069706C /* WordPressHomeWidgetToday.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C542538CF2A0069706C /* WordPressHomeWidgetToday.intentdefinition */; };
 		3F526C5C2538CF2B0069706C /* WordPressHomeWidgetToday.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3F526CF02539F85F0069706C /* TodayWidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */; };
+		3F526CF12539F85F0069706C /* TodayWidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */; };
+		3F526D572539FAC60069706C /* TodayWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526D562539FAC60069706C /* TodayWidgetView.swift */; };
 		3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */; };
 		3F5B3EB123A851480060FF1F /* ReaderReblogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */; };
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
@@ -426,6 +429,7 @@
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
+		3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		3F8CB10623A07B17007627BF /* ReaderReblogAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */; };
 		3F8CBE0B24EEB0EA00F71234 /* AnnouncementsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */; };
 		3F8CBE0D24EED2CB00F71234 /* FindOutMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8CBE0C24EED2CB00F71234 /* FindOutMoreCell.swift */; };
@@ -2922,6 +2926,8 @@
 		3F526C552538CF2B0069706C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F526C572538CF2B0069706C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressHomeWidgetTodayExtension.entitlements; sourceTree = "<group>"; };
+		3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetContent.swift; sourceTree = "<group>"; };
+		3F526D562539FAC60069706C /* TodayWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetView.swift; sourceTree = "<group>"; };
 		3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogPresenter.swift; sourceTree = "<group>"; };
 		3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogFormatter.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
@@ -6437,6 +6443,8 @@
 		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
 			isa = PBXGroup;
 			children = (
+				3F526D2B2539F9D60069706C /* View */,
+				3F526D1C2539F9C80069706C /* Model */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
 				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
@@ -6452,6 +6460,22 @@
 				3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3F526D1C2539F9C80069706C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3F526D2B2539F9D60069706C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3F526D562539FAC60069706C /* TodayWidgetView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		3F662C4824DC9F8300CAEA95 /* What's New */ = {
@@ -11695,6 +11719,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F526C562538CF2B0069706C /* Assets.xcassets in Resources */,
+				3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13058,6 +13083,7 @@
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
 				3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */,
+				3F526CF02539F85F0069706C /* TodayWidgetContent.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				F53FF3A323EA3E45001AD596 /* BlogDetailsViewController+Header.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
@@ -13818,6 +13844,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F526D572539FAC60069706C /* TodayWidgetView.swift in Sources */,
+				3F526CF12539F85F0069706C /* TodayWidgetContent.swift in Sources */,
 				3F526C532538CF2A0069706C /* WordPressHomeWidgetToday.swift in Sources */,
 				3F526C582538CF2B0069706C /* WordPressHomeWidgetToday.intentdefinition in Sources */,
 			);
