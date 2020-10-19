@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-  -webkit-text-size-adjust: none !important; font: -apple-system-body !important; font-family: 'Noto Serif', serif !important; font-weight: 400 !important; padding: 0; margin: 0; background-color: transparent;
+  -webkit-text-size-adjust: none !important; font: -apple-system-body !important; font-family: 'Noto Serif', serif !important; font-weight: 400 !important; padding: 0 !important; margin: 0; background-color: transparent;
 }
 
 a { text-decoration: none; color: var(--main-link-color); }

@@ -150,7 +150,7 @@ import AutomatticTracks
 
         WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "url_scheme", WPAppAnalyticsKeyPostType: "post"])
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"])
 
         return true
     }

@@ -194,9 +194,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
-            _readerNavigationController = [[ScrollingNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
         _readerNavigationController.navigationBar.translucent = NO;
 
@@ -451,7 +451,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     editor.afterDismiss = afterDismiss;
     
     NSString *tapSource = @"create_button";
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ WPAppAnalyticsKeyTapSource: tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
 }
 
