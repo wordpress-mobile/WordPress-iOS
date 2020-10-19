@@ -3,6 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 101
+
+@emilylaguna 2020-10-09
+- Add a relationship between `ReaderCard` and `ReaderSiteTopic`
+
+## WordPress 100
+
+@guarani 2020-10-09
+
+- Add a new `UserSuggestion` entity
+- Add a one-to-many relationship between `Blog` and `UserSuggestion`
+
 ## WordPress 98
 
 @leandrowalonso 2020-07-27

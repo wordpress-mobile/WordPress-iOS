@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension PageTemplateCategory {
+extension PageTemplateCategory: CollabsableHeaderFilterOption {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PageTemplateCategory> {
         return NSFetchRequest<PageTemplateCategory>(entityName: "PageTemplateCategory")

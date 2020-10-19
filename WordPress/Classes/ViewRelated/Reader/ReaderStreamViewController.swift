@@ -83,7 +83,6 @@ import WordPressFlux
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
-    private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isLoggedIn = false
     private var isFeed = false
     private var syncIsFillingGap = false
@@ -900,7 +899,7 @@ import WordPressFlux
     /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
-    func syncIfAppropriate() {
+    func syncIfAppropriate(forceSync: Bool = false) {
         guard UIApplication.shared.isRunningTestSuite() == false else {
             return
         }
@@ -925,7 +924,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
 
-        if canSync() && (interval >= refreshInterval || topicPostsCount == 0) {
+        if forceSync || (canSync() && (interval >= refreshInterval || topicPostsCount == 0)) {
             syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
@@ -1035,10 +1034,6 @@ import WordPressFlux
         } else {
             service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
         }
-    }
-
-    private func isNewDiscover() -> Bool {
-        return readerTopic?.title == "Discover" && FeatureFlag.readerImprovementsPhase2.enabled
     }
 
     private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
@@ -1224,16 +1219,14 @@ import WordPressFlux
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
 
-        if FeatureFlag.readerImprovementsPhase2.enabled {
-            if let topic = readerTopic {
-                let type = ReaderHelpers.topicType(topic)
+        if let topic = readerTopic {
+            let type = ReaderHelpers.topicType(topic)
 
-                switch type {
-                case .discover, .tag:
-                    displayTopics = true
-                default:
-                    displayTopics = false
-                }
+            switch type {
+            case .discover, .tag:
+                displayTopics = true
+            default:
+                displayTopics = false
             }
         }
 
@@ -1253,9 +1246,17 @@ import WordPressFlux
 
 
     // MARK: - Helpers for ReaderStreamHeader
+    public func toggleFollowingForTopic(_ topic: ReaderAbstractTopic?, completion: ((Bool) -> Void)?) {
+        if let topic = topic as? ReaderTagTopic {
+            toggleFollowingForTag(topic, completion: completion)
+        } else if let topic = topic as? ReaderSiteTopic {
+            toggleFollowingForSite(topic, completion: completion)
+        } else if let topic = topic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
+            showManageSites()
+        }
+    }
 
-
-    private func toggleFollowingForTag(_ topic: ReaderTagTopic) {
+    private func toggleFollowingForTag(_ topic: ReaderTagTopic, completion: ((Bool) -> Void)?) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1264,18 +1265,15 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forTag: topic, success: { [weak self] in
-            self?.syncHelper?.syncContent()
-        }, failure: { [weak self] (error: Error?) in
+        service.toggleFollowing(forTag: topic, success: {
+            completion?(true)
+        }, failure: { (error: Error?) in
             generator.notificationOccurred(.error)
-            self?.updateStreamHeaderIfNeeded()
+            completion?(false)
         })
-
-        updateStreamHeaderIfNeeded()
     }
 
-
-    private func toggleFollowingForSite(_ topic: ReaderSiteTopic) {
+    private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1293,16 +1291,15 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
-            self?.syncHelper?.syncContent()
             if toFollow {
                 self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
-        }, failure: { [weak self] (error: Error?) in
-            generator.notificationOccurred(.error)
-            self?.updateStreamHeaderIfNeeded()
-        })
 
-        updateStreamHeaderIfNeeded()
+            completion?(true)
+        }, failure: { (error: Error?) in
+            generator.notificationOccurred(.error)
+            completion?(false)
+        })
     }
 }
 
@@ -1312,15 +1309,15 @@ import WordPressFlux
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
     func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
-        if let topic = readerTopic as? ReaderTagTopic {
-            toggleFollowingForTag(topic)
+        toggleFollowingForTopic(readerTopic) { [weak self] success in
+            if success {
+                self?.syncHelper?.syncContent()
+            }
 
-        } else if let topic = readerTopic as? ReaderSiteTopic {
-            toggleFollowingForSite(topic)
-
-        } else if let topic = readerTopic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+            self?.updateStreamHeaderIfNeeded()
         }
+
+        updateStreamHeaderIfNeeded()
     }
 }
 
@@ -1445,22 +1442,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: - TableView Related
 
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
-        // likes to reload rows in a strange way.
-        // It uses the estimated height as a starting value for reloading animations.
-        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
-        // the cell heights during reload animations.
-        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
-        // Brent C. August 8/2016
-        if let height = estimatedHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
-            // Return the previously known height as it was cached via willDisplayCell.
-            return height
-        }
-        return tableConfiguration.estimatedRowHeight()
-    }
-
-
     func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -1518,9 +1499,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Cache the cell's layout height as the currently known height, for estimation.
-        // See estimatedHeightForRowAtIndexPath
-        estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
 
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold

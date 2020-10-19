@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressOrgXMLRPCApi;
 @class Role;
 @class QuickStartTourState;
+@class UserSuggestion;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -72,7 +73,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support Stock Photos feature (free photos library)
     BlogFeatureStockPhotos,
     /// Does the blog support setting the homepage type and pages?
-    BlogFeatureHomepageSettings
+    BlogFeatureHomepageSettings,
+    /// Does the blog support stories?
+    BlogFeatureStories
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -98,6 +101,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
+@property (nonatomic, strong, readwrite, nullable) NSSet<UserSuggestion *> *userSuggestions;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;

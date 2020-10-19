@@ -1,5 +1,9 @@
 source 'https://cdn.cocoapods.org/'
 
+unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
+  raise 'Please run CocoaPods via `bundle exec`'
+end
+
 inhibit_all_warnings!
 use_frameworks!
 
@@ -37,8 +41,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-
-    pod 'WordPressKit', '~> 4.19-beta.1'
+    pod 'WordPressKit', '~> 4.19-beta.2'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -149,7 +152,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542'
+    gutenberg :tag => 'v1.39.0'
 
     ## Third party libraries
     ## =====================
@@ -167,6 +170,7 @@ target 'WordPress' do
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
     pod 'AMScrollingNavbar', '5.6.0'
+    pod 'CropViewController', '2.5.3'
 
     ## Automattic libraries
     ## ====================
@@ -366,7 +370,7 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.9-beta.1'
+  pod 'WordPressMocks', '~> 0.0.9-beta'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'

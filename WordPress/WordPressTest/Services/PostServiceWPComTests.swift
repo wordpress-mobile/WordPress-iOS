@@ -79,8 +79,8 @@ class PostServiceWPComTests: XCTestCase {
 
         expect(posts).to(haveCount(2))
         posts?.forEach { post in
-            expect(expectedStatuses).to(contain(post.status!))
-            expect(expectedStatuses).to(contain(post.statusAfterSync!))
+            expect(expectedStatuses as NMBContainer).to(contain(post.status))
+            expect(expectedStatuses as NMBContainer).to(contain(post.statusAfterSync))
             expect(post.status).to(equal(post.statusAfterSync))
         }
     }

@@ -1,7 +1,5 @@
-Kolla in nyheterna i denna utgåva:
+Förbättringar i blockredigeraren:
+På webbplatser med Jetpack kan du nu redigera block som saknar stöd om du aktiverar Jetpack SSO från meddelandet om att ett block saknas. Använd den smidiga länkväljaren för att lägga till URL:er i inlägg. Vi har även förstorat det tryckkänsliga området för huvudåtgärden hos block som saknar stöd.
 
-- Stöd för fullbredd och brett innehåll i blocken grupp, omslag och bild (och stöd för fler block är på väg).
-- Gillar du rundade hörn på dina bilder? Nu har bildblocket stöd för runda hörn.
-- Vissa användare kan ha haft strul med ett verktygsfält som uppträdde konstigt när du skulle lägga till ett nytt block. Nu har vi löst det.
-- Vi upptäckte också att i förhandsvisning av bilder kunde bilderna hamna lite fel efter att man vridit sin enhet mellan stående och liggande. Men det är också fixat nu.
-- Vi har rättat några fler fel kring registrering och inloggning, inklusive ett problem med visning av användarnamnet efter att man registrerat sig via Apple, samt ett felaktigt felmeddelande som visades när man nått taket för antalet misslyckade inloggningsförsök.
+Rättelser:
+Tagit bort fel som gjorde att sidredigeraren kunde bli ett osynligt överlägg och elimierat dubblerade visningar som skapades när man begärde en inloggningslänk. Om man i läsaren trycker på en länk med måltext beter den sig som förväntat.

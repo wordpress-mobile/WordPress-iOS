@@ -5,6 +5,7 @@ public class ReaderCard: NSManagedObject {
     enum CardType {
         case post
         case topics
+        case sites
         case unknown
     }
 
@@ -13,8 +14,12 @@ public class ReaderCard: NSManagedObject {
             return .post
         }
 
-        if topics != nil {
+        if topicsArray.count > 0 {
             return .topics
+        }
+
+        if sitesArray.count > 0 {
+            return .sites
         }
 
         return .unknown
@@ -22,6 +27,10 @@ public class ReaderCard: NSManagedObject {
 
     var topicsArray: [ReaderTagTopic] {
         topics?.array as? [ReaderTagTopic] ?? []
+    }
+
+    var sitesArray: [ReaderSiteTopic] {
+        sites?.array as? [ReaderSiteTopic] ?? []
     }
 
     convenience init?(context: NSManagedObjectContext, from remoteCard: RemoteReaderCard) {
@@ -33,11 +42,16 @@ public class ReaderCard: NSManagedObject {
 
         switch remoteCard.type {
         case .post:
-            post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: managedObjectContext)
+            post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
         case .interests:
             topics = NSOrderedSet(array: remoteCard.interests?.map {
                 ReaderTagTopic.createOrUpdateIfNeeded(from: $0, context: context)
             } ?? [])
+        case .sites:
+            sites = NSOrderedSet(array: remoteCard.sites?.map {
+                ReaderSiteTopic.createIfNeeded(from: $0, context: context)
+            } ?? [])
+
         default:
             break
         }
