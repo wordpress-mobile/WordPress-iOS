@@ -204,7 +204,7 @@ import WordPressFlux
 
     @objc func showCreateButton(for blog: Blog) {
         let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
-        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
+        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
         showCreateButton(notice: notice(for: blog))
     }
 
