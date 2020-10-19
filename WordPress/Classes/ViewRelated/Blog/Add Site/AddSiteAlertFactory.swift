@@ -1,19 +1,17 @@
 import Foundation
 
-/// This class takes care of constructing `AddSiteAlertFactory`.  It does not handle any presentation logic and doe
-/// not know any external data sources - all of the data is received as parameters.  The intention behind this class design is
-/// to keep the scope very tight and avoid it containing unnecessary logic for the class' purpose.
+/// This class takes care of constructing our add site action sheets.  It does not handle any presentation logic and doe
+/// not know any external data sources - all of the data is received as parameters.
 @objc
 class AddSiteAlertFactory: NSObject {
 
     @objc
     func make(
-        style: UIAlertController.Style,
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {
 
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if canCreateWPComSite {
             alertController.addAction(createWPComSiteAction(handler: createWPComSite))
