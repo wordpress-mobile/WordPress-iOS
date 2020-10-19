@@ -1,9 +1,8 @@
 import Foundation
 import UIKit
 
-public class GutenbergMentionsViewController: UIViewController {
+public class GutenbergSuggestionsViewController: UIViewController {
 
-    static let mentionTriggerText = String("@")
     static let minimumHeaderHeight = CGFloat(50)
 
     public lazy var backgroundView: UIView = {
@@ -23,8 +22,7 @@ public class GutenbergMentionsViewController: UIViewController {
 
     public lazy var searchView: UITextField = {
         let textField = UITextField(frame: CGRect.zero)
-        textField.placeholder = NSLocalizedString("Search users...", comment: "Placeholder message when showing mentions search field")
-        textField.text = Self.mentionTriggerText
+        textField.text = suggestionType.trigger
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
@@ -33,23 +31,22 @@ public class GutenbergMentionsViewController: UIViewController {
     }()
 
     public lazy var suggestionsView: SuggestionsTableView = {
-        let suggestionsView = SuggestionsTableView()
+        let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: suggestionType, delegate: self)
         suggestionsView.animateWithKeyboard = false
         suggestionsView.enabled = true
         suggestionsView.showLoading = true
-        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
-        suggestionsView.suggestionsDelegate = self
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
-        suggestionsView.siteID = siteID
         suggestionsView.useTransparentHeader = false
         return suggestionsView
     }()
 
     private let siteID: NSNumber
+    private let suggestionType: SuggestionType
     public var onCompletion: ((Result<String, NSError>) -> Void)?
 
-    public init(siteID: NSNumber) {
+    public init(siteID: NSNumber, suggestionType: SuggestionType) {
         self.siteID = siteID
+        self.suggestionType = suggestionType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -101,11 +98,11 @@ public class GutenbergMentionsViewController: UIViewController {
     }
 
     override public func viewDidAppear(_ animated: Bool) {
-        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
+        suggestionsView.showSuggestions(forWord: suggestionType.trigger)
     }
 }
 
-extension GutenbergMentionsViewController: UITextFieldDelegate {
+extension GutenbergSuggestionsViewController: UITextFieldDelegate {
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
         onCompletion?(.failure(buildErrorForCancelation()))
@@ -117,7 +114,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
             return true
         }
         let searchWord = nsString.replacingCharacters(in: range, with: string)
-        if searchWord.hasPrefix(Self.mentionTriggerText) {
+        if searchWord.hasPrefix(suggestionType.trigger) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
             // We are dispatching this async to allow this delegate to finish and process the keypress before executing the cancelation.
@@ -136,7 +133,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
     }
 }
 
-extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
+extension GutenbergSuggestionsViewController: SuggestionsTableViewDelegate {
 
     public func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         if let suggestion = suggestion {
@@ -161,13 +158,13 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
     }
 }
 
-extension GutenbergMentionsViewController {
+extension GutenbergSuggestionsViewController {
 
-    enum MentionError: CustomNSError {
+    enum SuggestionError: CustomNSError {
         case canceled
         case notAvailable
 
-        static var errorDomain: String = "MentionErrorDomain"
+        static var errorDomain: String = "SuggestionErrorDomain"
 
         var errorCode: Int {
             switch self {
@@ -184,6 +181,6 @@ extension GutenbergMentionsViewController {
     }
 
     private func buildErrorForCancelation() -> NSError {
-        return MentionError.canceled as NSError
+        return SuggestionError.canceled as NSError
     }
 }
