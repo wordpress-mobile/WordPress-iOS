@@ -1,6 +1,9 @@
 /// Encapsulates a command to toggle following a post
 final class ReaderFollowAction {
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
+    func execute(with post: ReaderPost,
+                 context: NSManagedObjectContext,
+                 completion: (() -> Void)? = nil,
+                 failure: (() -> Void)? = nil) {
         let siteID = post.siteID
         var errorMessage: String
         var errorTitle: String
@@ -25,6 +28,7 @@ final class ReaderFollowAction {
                                         completion?()
             },
                                     failure: { _ in
+                                        failure?()
                                         let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
                                         let alertController = UIAlertController(title: errorTitle,
                                                                                 message: errorMessage,
