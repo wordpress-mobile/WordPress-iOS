@@ -1,4 +1,0 @@
-Blok-editor verbeteringen:
-Op Jetpack sites, kun je niet ondersteunde blokken bewerken door het inschakelen van Jetpack SSO vanuit de ontbrekend blok waarschuwing. Gebruik de handige link picker om de URL's aan het bericht toe te voegen. We hebben tevens de grootte van het tik-doel vergroot op de primaire actie op niet ondersteunde blokken.
-Oplossingen:
-Samengevoegde bugs die ervoor zorgden dat de pagina editor een onzichtbare overlay vormde en dubbele weergave uitschakelde als een login link wordt aangevraagd. In de reader, als er op een link met een anker wordt getikt, dan werkt dat nu zoals verwacht.

@@ -1,5 +1,0 @@
-Miglioramenti dell'editor a blocchi:
-sui siti di Jetpack, puoi ora modificare i blocchi non supportati abilitando Jetpack SSO dall'avviso di blocco mancante. Utilizza il selezionatore di link manualmente per aggiungere URL agli articoli. Abbiamo anche aumentato le dimensioni della destinazione da toccare sull'azione principale sui blocchi non supportati.
-
-Correzioni:
-eliminati i bug che causavano una sovrapposizione invisibile dell'editor della pagina ed eliminate le visualizzazioni duplicate generate quando si richiedeva un link di accesso. Nel Reader, toccare un link con un'ancora ora funziona come previsto.

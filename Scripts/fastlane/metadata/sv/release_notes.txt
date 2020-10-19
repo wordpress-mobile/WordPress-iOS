@@ -1,5 +1,0 @@
-Förbättringar i blockredigeraren:
-På webbplatser med Jetpack kan du nu redigera block som saknar stöd om du aktiverar Jetpack SSO från meddelandet om att ett block saknas. Använd den smidiga länkväljaren för att lägga till URL:er i inlägg. Vi har även förstorat det tryckkänsliga området för huvudåtgärden hos block som saknar stöd.
-
-Rättelser:
-Tagit bort fel som gjorde att sidredigeraren kunde bli ett osynligt överlägg och elimierat dubblerade visningar som skapades när man begärde en inloggningslänk. Om man i läsaren trycker på en länk med måltext beter den sig som förväntat.
