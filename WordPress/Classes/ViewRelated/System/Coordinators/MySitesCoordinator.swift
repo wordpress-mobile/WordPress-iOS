@@ -14,7 +14,7 @@ class MySitesCoordinator: NSObject {
         mySitesSplitViewController: WPSplitViewController,
         mySitesNavigationController: UINavigationController,
         blogListViewController: BlogListViewController) {
-        
+
         self.tabBarController = tabBarController
         self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
@@ -41,7 +41,7 @@ class MySitesCoordinator: NSObject {
     @objc
     func showBlogDetails(for blog: Blog) {
         prepareToNavigate()
-        
+
         if Feature.enabled(.bigTitlesWhiteHeaders) {
             blogDetailsViewController.blog = blog
         } else {

@@ -5,14 +5,14 @@ import Foundation
 /// to keep the scope very tight and avoid it containing unnecessary logic for the class' purpose.
 @objc
 class AddSiteAlertFactory: NSObject {
-    
+
     @objc
     func make(
         style: UIAlertController.Style,
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {
-        
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
 
         if canCreateWPComSite {
@@ -24,9 +24,9 @@ class AddSiteAlertFactory: NSObject {
 
         return alertController
     }
-    
+
     // MARK: - Alert Action Definitions
-    
+
     private func addSelfHostedSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Add self-hosted site", comment: "Add self-hosted site button"),
@@ -35,13 +35,13 @@ class AddSiteAlertFactory: NSObject {
                 handler()
             })
     }
-    
+
     private func cancelAction() -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "Cancel button"),
             style: .cancel)
     }
-    
+
     private func createWPComSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Create WordPress.com site", comment: "Create WordPress.com site button"),
