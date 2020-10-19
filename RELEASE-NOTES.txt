@@ -16,7 +16,7 @@
 * [***] Block Editor: On Jetpack connected sites, Unsupported Block Editor can be enabled via enabling Jetpack SSO setting directly from within the missing block alert. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2610]
 * [***] Block Editor: Add support for selecting user's post when configuring the link [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2484]
 * [*] Reader: Fixed an issue that resulted in no action when tapping a link with an anchor. [#15027]
-
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/issues/2695]
 
 15.8
 -----
