@@ -10,6 +10,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Button Container View.
     ///
     @IBOutlet var buttonPanel: UIView!
+    @IBOutlet var blurEffectView: UIVisualEffectView!
 
     /// Line displayed atop the buttonPanel when the table is scrollable.
     ///
@@ -25,6 +26,16 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
     private var defaultTableViewMargin: CGFloat = 0
+
+    /// Blur effect on button panel
+    ///
+    private var blurEffect: UIBlurEffect.Style {
+        if #available(iOS 13.0, *) {
+            return .systemChromeMaterial
+        }
+
+        return .regular
+    }
 
     /// Links to the Epilogue TableViewController
     ///
@@ -143,11 +154,13 @@ private extension LoginEpilogueViewController {
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height >= (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = .listBackground
             topLine.isHidden = false
+            blurEffectView.effect = UIBlurEffect(style: blurEffect)
+            blurEffectView.isHidden = false
         } else {
             buttonPanel.backgroundColor = .basicBackground
             topLine.isHidden = true
+            blurEffectView.isHidden = true
         }
     }
 

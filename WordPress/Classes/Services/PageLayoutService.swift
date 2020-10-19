@@ -1,7 +1,9 @@
-import UIKit
+import Foundation
+import Gutenberg
 
 class PageLayoutService {
     private struct Parameters {
+        static let supportedBlocks = "supported_blocks"
         static let previewWidth = "preview_width"
         static let scale = "scale"
     }
@@ -56,10 +58,16 @@ class PageLayoutService {
     // Parameter Generation
     private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
         return [
+            Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
             Parameters.scale: scale as AnyObject
         ]
     }
+
+    private static let supportedBlocks: String = {
+        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
+    }()
 
     private static func previewWidth(_ thumbnailSize: CGSize) -> String {
         return "\(thumbnailSize.width)"

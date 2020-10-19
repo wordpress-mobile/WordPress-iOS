@@ -8,6 +8,8 @@ class FindOutMoreCell: UITableViewCell {
         button.contentHorizontalAlignment = .leading
         button.setTitleColor(.primary, for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = Accessibility.findOutMoreButtonIdentifier
+        button.accessibilityHint = Accessibility.findOutMoreButtonHint
         return button
     }()
 
@@ -30,7 +32,8 @@ class FindOutMoreCell: UITableViewCell {
     }
 
     func configure(with url: URL?) {
-        self.findOutMoreUrl = url
+        findOutMoreUrl = url
+        findOutMoreButton.isHidden = url == nil
     }
 }
 
@@ -43,10 +46,20 @@ private extension FindOutMoreCell {
     }
 
     @objc func buttonTapped() {
+        WPAnalytics.track(.featureAnnouncementButtonTapped, properties: ["button": "find_out_more"])
+
         guard let url = self.findOutMoreUrl else {
             return
         }
         // TODO - WHATSNEW: we should probably present the post in a WebView
         UIApplication.shared.open(url)
+    }
+}
+
+
+private extension FindOutMoreCell {
+    enum Accessibility {
+        static let findOutMoreButtonIdentifier = "AnnouncementsFindOutMoreButton"
+        static let findOutMoreButtonHint = NSLocalizedString("Get more details for this release", comment: "Accessibility hint for the find out more button in the Feature Announcements screen.")
     }
 }

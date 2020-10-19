@@ -10,6 +10,8 @@ class ReaderWebView: WKWebView {
 
     let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
+    var postURL: URL? = nil
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -50,6 +52,31 @@ class ReaderWebView: WKWebView {
                 \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
+
+                // Replaces the bundle URL with the post URL for each "blank" anchor tag (<a href="#anchor"></a>).
+                // this fixes an issue where tapping on one would return a file url with the anchor attached to it
+                let baseURL = "\(Bundle.wordPressSharedBundle.bundleURL)"
+                let postURL = "\(postURL?.absoluteString ?? "")"
+
+                if(postURL.length > 0){
+                    let anchors = document.querySelectorAll('a')
+
+                    anchors.forEach(function(elem){
+                      // Ignore any regular links that don't have hashes
+                      if(!elem.hash || elem.hash.length < 0) {
+                        return
+                      }
+
+                      let href = elem.href;
+
+                      // Skip any links that aren't the base URL
+                      if(href.substr(0, baseURL.length) != baseURL){
+                        return
+                      }
+
+                      elem.href = postURL + elem.hash;
+                    });
+                }
             })
         </script>
         </html>
@@ -70,7 +97,10 @@ class ReaderWebView: WKWebView {
             })
 
             // Make all images tappable
-            document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+            // Exception for images in Stories, which have their own link structure
+            document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
+                el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`
+            })
 
             // Only display images after they have fully loaded, to have a native feel
             document.querySelectorAll('img').forEach((el) => {

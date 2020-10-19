@@ -29,6 +29,9 @@ class GutenbergLightNavigationController: UINavigationController {
         navigationBar.barStyle = .default
         navigationBar.barTintColor = .white
 
+        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [GutenbergLightNavigationController.self])
+        barButtonItemAppearance.tintColor = UIColor(light: .brand, dark: .white)
+
         setNeedsStatusBarAppearanceUpdate()
     }
 }

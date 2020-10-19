@@ -6,11 +6,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case unifiedSiteAddress
-    case unifiedGoogle
-    case unifiedApple
-    case unifiedWordPress
-    case unifiedKeychainLogin
     case meMove
     case floatingCreateButton
     case newReaderNavigation
@@ -37,16 +32,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .unifiedAuth:
             return true
-        case .unifiedSiteAddress:
-            return true
-        case .unifiedGoogle:
-            return true
-        case .unifiedApple:
-            return true
-        case .unifiedWordPress:
-            return true
-        case .unifiedKeychainLogin:
-            return true
         case .meMove:
             return true
         case .floatingCreateButton:
@@ -64,7 +49,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergModalLayoutPicker:
             return false
         case .whatIsNew:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         }
@@ -103,16 +88,6 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .unifiedSiteAddress:
-            return "Unified Auth - Site Address"
-        case .unifiedGoogle:
-            return "Unified Auth - Google"
-        case .unifiedApple:
-            return "Unified Auth - Apple"
-        case .unifiedWordPress:
-            return "Unified Auth - WordPress"
-        case .unifiedKeychainLogin:
-            return "Unified Auth - iCloud Keychain"
         case .meMove:
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
