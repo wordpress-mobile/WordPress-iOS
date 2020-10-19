@@ -38,27 +38,33 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
 
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
-    lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
-        let controller = PageLayoutService.resultsController(delegate: self)
-        sections = makeSectionData(with: controller)
-        return controller
-    }()
+    var resultsController: NSFetchedResultsController<PageTemplateCategory>? {
+        didSet {
+            sections = makeSectionData(with: resultsController)
+        }
+    }
 
     private var isLoading: Bool = true {
         didSet {
-            headerContentsDelegate?.loadingStateChanged(isLoading)
             if isLoading {
                 tableView.startGhostAnimation(style: GhostCellStyle.muriel)
             } else {
                 tableView.stopGhostAnimation()
             }
 
+            headerContentsDelegate?.loadingStateChanged(isLoading)
             tableView.reloadData()
         }
     }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    var blog: Blog? = nil
+    var blog: Blog? = nil {
+        didSet {
+            if let blog = blog {
+                resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,13 +110,13 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
 
     private func fetchLayouts() {
         guard let blog = blog else { return }
-        isLoading = resultsController.isEmpty()
+        isLoading = resultsController?.isEmpty() ?? true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
         PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
     }
 
-    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
-        return controller.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
+    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>?) -> [GutenbergLayoutSection] {
+        return controller?.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
             return GutenbergLayoutSection(category)
         }) ?? []
     }
@@ -291,7 +297,7 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
-        isLoading = resultsController.isEmpty()
+        isLoading = resultsController?.isEmpty() ?? true
         tableView.reloadData()
     }
 }
