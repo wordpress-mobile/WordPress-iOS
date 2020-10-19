@@ -37,6 +37,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    }
 
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");

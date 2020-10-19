@@ -207,14 +207,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface BlogDetailsViewController () <UIActionSheetDelegate,
+                                            UIAlertViewDelegate,
+                                            WPSplitViewControllerDetailProvider,
+                                            BlogDetailHeaderViewDelegate,
+                                            UITableViewDelegate,
+                                            UITableViewDataSource,
+                                            NoResultsViewControllerDelegate>
 
+@property (nonatomic, weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -322,6 +330,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
     
+    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+        [self configureLargeTitle];
+    }
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -349,11 +361,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    /*
     [self.blogService syncBlogAndAllMetadata:_blog
                            completionHandler:^{
                                [weakSelf configureTableViewData];
                                [weakSelf reloadTableViewPreservingSelection];
-                           }];
+                           }];*/
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -369,7 +382,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
     [self addMeButtonToNavigationBar];
-    
+
     [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
 }
 
@@ -392,6 +405,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // When Big Titles are enabled, deleting a site brings us right back to this VC, so
+    // we want to make sure the blog is set to `nil` in such scenario.
+    //
+    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders] && self.blog.isDeleted) {
+        self.blog = nil;
+    }
 
     if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
         self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
@@ -411,7 +431,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureTableViewData];
 
     [self reloadTableViewPreservingSelection];
-    [self preloadBlogData];
+    
+    if (self.blog == nil) {
+        [self showNoResults];
+    } else {
+        [self hideNoResults];
+        [self preloadBlogData];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -991,6 +1017,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Configuration
 
+- (void)configureLargeTitle
+{
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+    
+    // Workaround:
+    //
+    // Without the next line, the large title was being lost when going into a child VC with a small
+    // title and pressing "Back" in the navigation bar.
+    //
+    // I'm not sure if this makes sense - it doesn't to me right now, so I'm adding instructions to
+    // test the issue which will be helpful for removing the issue if the workaround is no longer
+    // needed.
+    //
+    // To see the issue in action, comment the line, run the App, go into "Stats" (or any other
+    // child VC that has a small title in the navigation bar), check that the title is small,
+    // press back, and check that this VC has a large title.  If this VC still has a
+    // large title, you can remove the following line.
+    //
+    self.extendedLayoutIncludesOpaqueBars = YES;
+}
+
 - (void)configureBlogDetailHeader
 {
     BlogDetailHeaderView *headerView = [self configureHeaderView];
@@ -1457,9 +1504,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
                            completionHandler:^{
-                               [weakSelf configureTableViewData];
-                               [weakSelf reloadTableViewPreservingSelection];
-                           }];
+        // If the user signs out, and this handler is executed, our blog object may not have
+        // a valid managed object context anymore, causing the below methods to crash.
+        // IMHO the best fix would be to unload all VCs, but for now I'm adding a workaround to
+        // prevent the crash.
+        if (self.blog.managedObjectContext == nil) {
+            return;
+        }
+        
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+    }];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element
@@ -1739,6 +1794,85 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     return nil;
+}
+
+#pragma mark - NoResultsViewController
+
+- (NoResultsViewController *)noResultsViewController
+{
+    if (_noResultsViewController) {
+        return _noResultsViewController;
+    }
+    
+    _noResultsViewController = [NoResultsViewController controller];
+    _noResultsViewController.delegate = self;
+    
+    [_noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
+                                 attributedTitle:nil
+                               noConnectionTitle:nil
+                                     buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
+                                        subtitle:nil
+                            noConnectionSubtitle:nil
+                              attributedSubtitle:nil
+                 attributedSubtitleConfiguration:nil
+                                           image:@"mysites-nosites"
+                                   subtitleImage:nil
+                                   accessoryView:nil];
+    
+    return _noResultsViewController;
+}
+
+- (void)hideNoResults {
+    if (![self.childViewControllers containsObject:self.noResultsViewController]) {
+        return;
+    }
+    
+    [self.noResultsViewController.view removeFromSuperview];
+    [self.noResultsViewController removeFromParentViewController];
+}
+
+- (void)showNoResults {
+    if ([self.childViewControllers containsObject:self.noResultsViewController]) {
+        return;
+    }
+    
+    [self addChildViewController:self.noResultsViewController];
+    [self.view addSubview:self.noResultsViewController.view];
+    [self.view pinSubviewToAllEdges:self.noResultsViewController.view];
+}
+
+#pragma mark - NoResultsViewControllerDelegate
+
+- (WPAccount *)defaultWordPressComAccount
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    return [accountService defaultWordPressComAccount];
+}
+
+- (void)actionButtonPressed {
+    if (self.addSiteAlertController != nil) {
+        // Just making sure we prevent multiple taps causing havok in the UI.
+        return;
+    }
+    
+    AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
+    
+    UIAlertController *alertController = [factory makeWithStyle:UIAlertControllerStyleActionSheet
+                                             canCreateWPComSite:[self defaultWordPressComAccount]
+                                                createWPComSite:^{
+        [self launchSiteCreation];
+    } addSelfHostedSite:^{
+        [WordPressAuthenticator showLoginForSelfHostedSite:self];
+    }];
+
+    UIView *sourceView = self.noResultsViewController.actionButton;
+    alertController.popoverPresentationController.sourceView = sourceView;
+    alertController.popoverPresentationController.sourceRect = sourceView.bounds;
+    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+
+    [self presentViewController:alertController animated:YES completion:nil];
+    self.addSiteAlertController = alertController;
 }
 
 @end

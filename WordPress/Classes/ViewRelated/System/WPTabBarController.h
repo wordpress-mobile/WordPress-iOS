@@ -4,7 +4,7 @@ extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
 
 typedef NS_ENUM(NSUInteger, WPTabType) {
-    WPTabMySites,
+    WPTabMySite,
     WPTabReader,
     WPTabNotifications
 };
@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 @property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
-@property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
+@property (nonatomic, strong, readonly) UINavigationController *mySiteNavigationController;
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
@@ -40,7 +40,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 + (instancetype)sharedInstance;
 
 - (NSString *)currentlySelectedScreen;
-- (BOOL)isNavigatingMySitesTab;
 
 - (void)showMySitesTab;
 - (void)showReaderTab;
@@ -58,7 +57,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (void)switchTabToPagesListForPost:(AbstractPost *)post;
-- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog;
 
 - (void)popNotificationsTabToRoot;
 - (void)switchNotificationsTabToNotificationSettings;

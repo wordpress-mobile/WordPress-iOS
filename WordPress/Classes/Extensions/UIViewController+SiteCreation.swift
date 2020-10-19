@@ -1,4 +1,6 @@
-/*extension BlogListViewController {
+import Foundation
+
+extension UIViewController {
     @objc
     func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
@@ -8,4 +10,4 @@
         present(wizard, animated: true)
         WPAnalytics.track(.enhancedSiteCreationAccessed)
     }
-}*/
+}
