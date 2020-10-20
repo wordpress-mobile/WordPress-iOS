@@ -66,7 +66,9 @@ class WhatIsNewScenePresenter: ScenePresenter {
 private extension WhatIsNewScenePresenter {
 
     func makeWhatIsNewViewController() -> WhatIsNewViewController {
-        return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView)
+        return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView, onContinue: {
+            WPAnalytics.track(.featureAnnouncementButtonTapped, properties: ["button": "close_dialog"])
+        })
     }
 
     func makeWhatIsNewView() -> WhatIsNewView {
