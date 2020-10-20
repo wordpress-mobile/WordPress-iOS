@@ -11,7 +11,7 @@ class GutenbergFilesAppMediaSource: NSObject {
         self.gutenberg = gutenberg
     }
 
-    func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String],  multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
 
         let uttypeFilters = filters.contains(.other) ? allowedTypesOnBlog : filters.compactMap { $0.typeIdentifier }
 
