@@ -435,16 +435,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (CreateButtonCoordinator *)createButtonCoordinator
 {
     if (!_createButtonCoordinator) {
-        __weak __typeof(self) weakSelf = self;
-        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
-                [weakSelf startAlertTimer];
-            }];
-        } newPage:^{
-            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
-            Blog *blog = [controller currentOrLastBlog];
-            [controller showPageEditorForBlog:blog];
-        }];
+        _createButtonCoordinator = [self makeCreateButtonCoordinator];
     }
     
     return _createButtonCoordinator;
@@ -1366,7 +1357,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             break;
     }
     
-    [WPAppAnalytics track:event withProperties:@{@"tap_source": sourceString} withBlog:self.blog];
+    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
 }
 
 - (void)preloadBlogData

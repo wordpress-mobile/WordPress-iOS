@@ -1,7 +1,0 @@
-Jetez un coup d’œil à ce qui est nouveau dans cette version :
-
-- Prise en charge de la largeur complète et de l’alignement large pour les blocs groupe, bannière et image (et plus de blocs à venir).
-- Vous aimez les coins arrondis sur vos images ? Nous avons aussi ajoutée la prise en charge du style arrondi pour le bloc image.
-- Quelques personnes avaient constaté un problème de comportement de la barre d’outil lors de l’ajout d’un nouveau bloc. C’est réparé.
-- Nous avons également remarqué que dans l’aperçu de l’image, les images n’étaient pas positionnées correctement  après un changement de l’orientation de l’appareil. Cela a aussi été réparé.
-- Nous avons résolu quelques autres problèmes autour de l’inscription et de la connexion, y compris un problème d’affichage de l’identifiant après une connexion avec Apple, et un message d’erreur incorrect qui s’affichait lorsque vous aviez atteint le nombre maximum de connexion échouée.
