@@ -418,7 +418,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [self.createButtonCoordinator showCreateButton];
+        [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
     [self startAlertTimer];

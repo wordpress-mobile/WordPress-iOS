@@ -14,7 +14,6 @@ import WordPressFlux
         let button = FloatingActionButton(image: .gridicon(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
-        button.accessibilityHint = NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button")
         return button
     }()
 
@@ -26,15 +25,17 @@ import WordPressFlux
 
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
-    private lazy var notice: Notice = {
-        let notice = Notice(title: NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button"),
+    private func notice(for blog: Blog) -> Notice {
+        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
+        let notice = Notice(title: title,
                             message: "",
                             style: ToolTipNoticeStyle()) { [weak self] _ in
                 self?.didDismissTooltip = true
                 self?.hideNotice()
         }
         return notice
-    }()
+    }
 
     // Once this reaches `maximumTooltipViews` we won't show the tooltip again
     private var shownTooltipCount: Int {
@@ -201,13 +202,13 @@ import WordPressFlux
         }
     }
 
-    @objc func showCreateButton() {
-        showCreateButton(notice: nil)
+    @objc func showCreateButton(for blog: Blog) {
+        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
+        showCreateButton(notice: notice(for: blog))
     }
 
-    func showCreateButton(notice: Notice? = nil) {
-        let notice = notice ?? self.notice
-
+    func showCreateButton(notice: Notice) {
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
             shownTooltipCount += 1
