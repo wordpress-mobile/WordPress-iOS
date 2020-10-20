@@ -37,7 +37,10 @@ struct WordPressHomeWidgetToday: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             TodayWidgetView(content: staticModel)
         }
-        .configurationDisplayName("WordPress Today Widget.")
+        .configurationDisplayName("Today")
+        .description("Stay up to date with today's activity on your WordPress site.")
+        // TODO - TODAYWIDGET: medium size to be supported too.
+        .supportedFamilies([.systemSmall])
     }
 }
 
