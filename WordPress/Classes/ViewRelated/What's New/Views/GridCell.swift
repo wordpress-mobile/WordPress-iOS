@@ -11,14 +11,11 @@
      │││    │ │    │││
      │││item│ │item│││
      │││    │ │    │││
-     │││    │ │    │││
      ││└────┘ └────┘││
      ││gridStackView││
      │└─────────────┘│
      │ mainStackView │
      └───────────────┘
-
- See `makeItemStackView` for a description of `item`.
 */
 class GridCell: UITableViewCell {
 
@@ -44,6 +41,7 @@ class GridCell: UITableViewCell {
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [headingLabel, gridStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .leading
         stackView.axis = .vertical
         stackView.setCustomSpacing(Appearance.postHeaderSpacing, after: headingLabel)
         return stackView
@@ -70,35 +68,16 @@ class GridCell: UITableViewCell {
         let itemViews = makeViews(forItems: items)
         gridStackView.addArrangedSubviews(itemViews)
         gridStackView.addInterItemSpacing(Appearance.gridIteminterItemSpacing)
-
-        refreshAlignment()
     }
 
-    /// Creates Item Stack Views (see `makeItemStackView` for `items`
-    /// - Parameter items: The items to populate the Item Stack Views
+    /// Creates a view for `Item`s (see `makeGridButton`)
+    /// - Parameter items: The items to populate the Item Grid Buttons
     private func makeViews(forItems items: [Item]) -> [UIView] {
         return items.map { item in
             let button = makeGridButton(image: item.image, action: item.action)
             button.accessibilityLabel = item.description
-            let label = makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
-            label.text = item.description
-            let stackView = makeItemStackView(button: button, label: label)
-            return stackView
+            return button
         }
-    }
-
-    /// Left align all views in the grid if width is too wide to look good centered.
-    private func refreshAlignment() {
-        if traitCollection.horizontalSizeClass == .compact {
-            mainStackView.alignment = .center
-        } else {
-            mainStackView.alignment = .leading
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshAlignment()
     }
 }
 
@@ -152,39 +131,6 @@ private extension GridCell {
         ])
         return button
     }
-
-    /**
-    Creates a vertical stack view with `button` on top and `label` on bottom.
-
-          ┌──────────┐
-          │          │
-          │          │
-          │  button  │
-          │          │
-          │          │
-          │          │
-          └──────────┘
-        gridButtonLabelSpacing
-          ┌──────────┐
-          │  label   │
-          └──────────┘
-
-    - Parameters:
-        - button: The button to go on the top of the stack view.
-        - label: The label to go on the bottom of the stack view.
-    - Returns: The resulting stack view.
-     */
-    func makeItemStackView(button: UIView, label: UIView) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: [
-            button,
-            label
-        ])
-        stackView.alignment = .leading
-        stackView.setCustomSpacing(Appearance.gridButtonLabelSpacing, after: button)
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        return stackView
-    }
 }
 
 // MARK: - Appearance
@@ -203,7 +149,6 @@ private extension GridCell {
         static let postHeaderSpacing: CGFloat = 8
 
         // grid stack view
-        static let gridButtonLabelSpacing: CGFloat = 4
         static let gridIteminterItemSpacing: CGFloat = 8
     }
 }

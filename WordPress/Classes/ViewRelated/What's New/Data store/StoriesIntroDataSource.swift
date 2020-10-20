@@ -45,7 +45,8 @@ class StoriesIntroDataSource: NSObject, AnnouncementsDataSource {
         }
     }
 
-    let items: [CellItem]
+    var dataDidChange: (() -> Void)?
+    private let items: [CellItem]
 
     init(items: [CellItem]) {
         self.items = items
@@ -65,6 +66,4 @@ class StoriesIntroDataSource: NSObject, AnnouncementsDataSource {
             item.registerCells(in: tableView)
         }
     }
-
-    var dataDidChange: (() -> Void)?
 }
