@@ -85,6 +85,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -517,6 +518,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureStories:
+            return [self supportsStories];
     }
 }
 
@@ -583,6 +586,12 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         && self.isAdmin;
 
     return isTransferrable || hasRequiredJetpack;
+}
+
+- (BOOL)supportsStories
+{
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"8.9"];
+    return hasRequiredJetpack || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount
