@@ -46,9 +46,15 @@ protocol CollapsableHeaderContentsDelegate: class {
 
     /// A public interface to notify the container that the content view is loading content still
     func loadingStateChanged(_ isLoading: Bool)
+
+    /// A public interface to notify the container that the content view is loading content still
+    func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?)
+
+    /// A public interface to notify the container that the content view is loading content still
+    func dismissNoResultsController()
 }
 
-class CollapsableHeaderViewController: UIViewController {
+class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     let childViewController: (UIViewController & CollapsableHeaderDataSource)
     weak var delegate: CollapsableHeaderDelegate?
@@ -93,6 +99,12 @@ class CollapsableHeaderViewController: UIViewController {
             }
         }
     }
+    private var isShowingNoResults: Bool = false {
+        didSet {
+            shouldHideFilterBar = isShowingNoResults
+        }
+    }
+
     private var shouldHideFilterBar: Bool = false {
         didSet {
             filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
@@ -103,7 +115,7 @@ class CollapsableHeaderViewController: UIViewController {
             layoutHeaderInsets()
         }
     }
-    
+
     private var shouldUseCompactLayout: Bool {
         return traitCollection.verticalSizeClass == .compact
     }
@@ -343,16 +355,20 @@ class CollapsableHeaderViewController: UIViewController {
 
 extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout else {
-            titleIsHidden = false
-            return
-        }
-
+    private func disableInitialLayoutHelpers() {
         if !headerHeightConstraint.isActive {
             initialHeaderTopConstraint.isActive = false
             headerHeightConstraint.isActive = true
         }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !shouldUseCompactLayout,
+              !isShowingNoResults else {
+            titleIsHidden = false
+            return
+        }
+        disableInitialLayoutHelpers()
 
         let scrollOffset = scrollView.contentOffset.y
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
@@ -400,6 +416,27 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 }
 
 extension CollapsableHeaderViewController: CollapsableHeaderContentsDelegate {
+    func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?) {
+        guard !isShowingNoResults else { return }
+        isShowingNoResults = true
+        disableInitialLayoutHelpers()
+        snapToHeight(scrollView, height: minHeaderHeight)
+        configureAndDisplayNoResults(on: containerView,
+                                     title: title,
+                                     subtitle: subtitle,
+                                     noConnectionSubtitle: subtitle,
+                                     buttonTitle: NSLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
+                                     customizationBlock: { (noResultsController) in
+                                        noResultsController.delegate = resultsDelegate
+                                     })
+    }
+
+    func dismissNoResultsController() {
+        guard isShowingNoResults else { return }
+        isShowingNoResults = false
+        snapToHeight(scrollView, height: maxHeaderHeight)
+        hideNoResults()
+    }
 
     func contentSizeWillChange() {
         updateFooterInsets()
