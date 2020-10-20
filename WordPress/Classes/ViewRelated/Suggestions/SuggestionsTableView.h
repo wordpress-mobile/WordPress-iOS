@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
-    SuggestionTypeMention
+    SuggestionTypeMention,
+    SuggestionTypeXpost
 };
 
 @protocol SuggestionsTableViewDelegate;
@@ -20,7 +21,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 - (nonnull instancetype)initWithSiteID:(NSNumber *_Nullable)siteID
                          suggestionType:(SuggestionType)suggestionType
-                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
+                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate NS_DESIGNATED_INITIALIZER;
 
 /**
   Enables or disables the SuggestionsTableView component.

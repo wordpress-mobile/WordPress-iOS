@@ -548,7 +548,7 @@ private extension NotificationDetailsViewController {
               let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
             return false
         }
-        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
+        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestionsOf(type: .mention, for: blog)
     }
 }
 

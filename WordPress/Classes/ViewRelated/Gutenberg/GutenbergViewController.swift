@@ -346,6 +346,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        let xpostSuggestions = SuggestionService.shared.retrievePersistedSuggestionsOf(type: .xpost, for: post.blog)
+        if xpostSuggestions == nil || xpostSuggestions?.isEmpty == true {
+            SuggestionService.shared.suggestionsOf(type: .xpost, for: post.blog, completion: nil)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -853,6 +858,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestXpost(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.showSuggestions(type: .xpost, callback: callback)
+        })
+    }
+
     func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
         return gutenbergSettings.starterPageTemplatesTooltipShown
     }
@@ -878,6 +889,8 @@ extension GutenbergViewController {
             callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
             return
         }
+
+        guard SuggestionService.shared.shouldShowSuggestionsOf(type: type, for: post.blog) else { return }
 
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
@@ -950,7 +963,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .mentions: FeatureFlag.gutenbergMentions.enabled && post.blog.supports(.mentions),
+            .xposts: FeatureFlag.gutenbergXposts.enabled && post.blog.supports(.xposts),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,

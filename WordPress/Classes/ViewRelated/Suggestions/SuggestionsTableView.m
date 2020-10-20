@@ -319,7 +319,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (NSArray *)suggestions
 {
     if (!_suggestions && _siteID != nil) {
-        [self fetchSuggestionsFor:_siteID];
+        [self fetchSuggestionsOfType: self.suggestionType for:_siteID];
     }
     return _suggestions;
 }

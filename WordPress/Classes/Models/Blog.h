@@ -38,6 +38,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureActivity,
     /// Does the blog support mentions?
     BlogFeatureMentions,
+    /// Does the blog support xposts?
+    BlogFeatureXposts,
     /// Does the blog support push notifications?
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?

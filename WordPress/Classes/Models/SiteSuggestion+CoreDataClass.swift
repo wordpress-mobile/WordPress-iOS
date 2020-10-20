@@ -10,7 +10,7 @@ enum DecoderError: Error {
 }
 
 @objc(SiteSuggestion)
-public class SiteSuggestion: NSManagedObject, Decodable {
+public class SiteSuggestion: NSManagedObject, Decodable, Comparable {
     enum CodingKeys: String, CodingKey {
         case title = "title"
         case siteURL = "siteurl"
@@ -30,5 +30,9 @@ public class SiteSuggestion: NSManagedObject, Decodable {
         self.siteURL = try container.decode(URL.self, forKey: .siteURL)
         self.subdomain = try container.decode(String.self, forKey: .subdomain)
         self.blavatarURL = try container.decode(URL.self, forKey: .blavatarURL)
+    }
+
+    public static func < (lhs: SiteSuggestion, rhs: SiteSuggestion) -> Bool {
+        return (lhs.title ?? "").localizedCaseInsensitiveCompare(rhs.title ?? "") == .orderedAscending
     }
 }
