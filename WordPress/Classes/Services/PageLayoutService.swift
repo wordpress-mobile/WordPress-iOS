@@ -12,21 +12,24 @@ class PageLayoutService {
 
     typealias CompletionHandler = (Swift.Result<Void, Error>) -> Void
     static func fetchLayouts(forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler? = nil) {
+        let blogPersistentID = blog.objectID
         let api: WordPressComRestApi
+        let dotComID: Int?
         if blog.isAccessibleThroughWPCom(),
+           let blogID = blog.dotComID?.intValue,
            let restAPI = blog.wordPressComRestApi() {
             api = restAPI
+            dotComID = blogID
         } else {
             api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+            dotComID = nil
         }
 
-        fetchLayouts(api, forBlog: blog, withThumbnailSize: thumbnailSize, completion: completion)
+        fetchLayouts(api, dotComID, blogPersistentID, thumbnailSize, completion)
     }
 
-    private static func fetchLayouts(_ api: WordPressComRestApi, forBlog blog: Blog, withThumbnailSize thumbnailSize: CGSize, completion: CompletionHandler?) {
+    private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ completion: CompletionHandler?) {
         let params = parameters(thumbnailSize)
-        let dotComID = blog.dotComID?.intValue
-        let blogPersistentID = blog.objectID
         PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { (result) in
             switch result {
             case .success(let remoteLayouts):
