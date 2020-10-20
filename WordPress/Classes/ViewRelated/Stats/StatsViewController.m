@@ -38,7 +38,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
     
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
 

@@ -131,7 +131,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [super viewDidLoad];
     
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
 
@@ -1000,10 +1000,8 @@ static NSInteger HideSearchMinSites = 3;
         [self setEditing:YES animated:YES];
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
-        
-        UIAlertController *alertController = [factory makeWithStyle:UIAlertControllerStyleActionSheet
-                                                 canCreateWPComSite:[self defaultWordPressComAccount]
-                                                    createWPComSite:^{
+        UIAlertController *alertController = [factory makeWithCanCreateWPComSite:[self defaultWordPressComAccount]
+                                                                 createWPComSite:^{
             [self launchSiteCreation];
         } addSelfHostedSite:^{
             [self showLoginControllerForAddingSelfHostedSite];

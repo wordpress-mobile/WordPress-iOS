@@ -174,7 +174,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     self.blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
     
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         BlogDetailsViewController* blogDetailsViewController = [[BlogDetailsViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
         blogDetailsViewController.blog = blogToOpen;
         
@@ -185,7 +185,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
     _mySiteNavigationController.navigationBar.translucent = NO;
     
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         _mySiteNavigationController.navigationBar.prefersLargeTitles = true;
     }
 
@@ -696,7 +696,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)bypassBlogListViewControllerIfNecessary
 {
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         // Since now the blog details screen is shown first, we don't want the logic below to be executed.
         return;
     }

@@ -27,7 +27,7 @@ class MySitesCoordinator: NSObject {
     private func prepareToNavigate() {
         tabBarController.showMySitesTab()
 
-        if Feature.enabled(.bigTitlesWhiteHeaders) {
+        if Feature.enabled(.newNavBarAppearance) {
             mySitesNavigationController.viewControllers = [blogDetailsViewController]
         } else {
             mySitesNavigationController.viewControllers = [blogListViewController]
@@ -42,7 +42,7 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog) {
         prepareToNavigate()
 
-        if Feature.enabled(.bigTitlesWhiteHeaders) {
+        if Feature.enabled(.newNavBarAppearance) {
             blogDetailsViewController.blog = blog
         } else {
             blogListViewController.setSelectedBlog(blog, animated: false)

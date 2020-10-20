@@ -330,7 +330,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidLoad];
     
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders]) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
         [self configureLargeTitle];
     }
     
@@ -404,7 +404,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // When Big Titles are enabled, deleting a site brings us right back to this VC, so
     // we want to make sure the blog is set to `nil` in such scenario.
     //
-    if ([Feature enabled:FeatureFlagBigTitlesWhiteHeaders] && self.blog.isDeleted) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance] && self.blog.isDeleted) {
         self.blog = nil;
     }
 
@@ -1844,9 +1844,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
     
-    UIAlertController *alertController = [factory makeWithStyle:UIAlertControllerStyleActionSheet
-                                             canCreateWPComSite:[self defaultWordPressComAccount]
-                                                createWPComSite:^{
+    UIAlertController *alertController = [factory makeWithCanCreateWPComSite:[self defaultWordPressComAccount]
+                                                             createWPComSite:^{
         [self launchSiteCreation];
     } addSelfHostedSite:^{
         [WordPressAuthenticator showLoginForSelfHostedSite:self];
