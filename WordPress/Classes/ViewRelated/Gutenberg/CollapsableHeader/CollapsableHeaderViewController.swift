@@ -79,8 +79,11 @@ class CollapsableHeaderViewController: UIViewController {
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleToSubtitleSpacing: NSLayoutConstraint!
     @IBOutlet weak var subtitleToCategoryBarSpacing: NSLayoutConstraint!
+
+    /// As the Header expands it allows a little bit of extra room between the bottom of the filter bar and the bottom of the header view. These next two constaints help account for that slight adustment.
     @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
+
     @IBOutlet var visualEffects: [UIVisualEffectView]! {
         didSet {
             if #available(iOS 13.0, *) {
