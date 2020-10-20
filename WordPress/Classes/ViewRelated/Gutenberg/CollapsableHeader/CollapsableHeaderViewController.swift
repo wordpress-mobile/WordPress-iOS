@@ -158,8 +158,8 @@ class CollapsableHeaderViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        filterBar.filterDelegate = filterDelegate
         insertChildView()
-
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
@@ -169,7 +169,6 @@ class CollapsableHeaderViewController: UIViewController {
 
         scrollView.delegate = self
         layoutHeader()
-        filterBar.filterDelegate = filterDelegate
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
