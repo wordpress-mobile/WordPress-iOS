@@ -4,27 +4,27 @@ import Foundation
 /// not know any external data sources - all of the data is received as parameters.
 @objc
 class AddSiteAlertFactory: NSObject {
-    
+
     @objc
     func make(
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {
-        
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
+
         if canCreateWPComSite {
             alertController.addAction(createWPComSiteAction(handler: createWPComSite))
         }
-        
+
         alertController.addAction(addSelfHostedSiteAction(handler: addSelfHostedSite))
         alertController.addAction(cancelAction())
-        
+
         return alertController
     }
-    
+
     // MARK: - Alert Action Definitions
-    
+
     private func addSelfHostedSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Add self-hosted site", comment: "Add self-hosted site button"),
@@ -33,13 +33,13 @@ class AddSiteAlertFactory: NSObject {
                 handler()
             })
     }
-    
+
     private func cancelAction() -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "Cancel button"),
             style: .cancel)
     }
-    
+
     private func createWPComSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Create WordPress.com site", comment: "Create WordPress.com site button"),
