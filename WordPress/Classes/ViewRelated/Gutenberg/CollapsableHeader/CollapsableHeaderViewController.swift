@@ -66,6 +66,7 @@ class CollapsableHeaderViewController: UIViewController {
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
+    @IBOutlet weak var filterBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var defaultActionButton: UIButton!
     @IBOutlet weak var secondaryActionButton: UIButton!
@@ -89,7 +90,17 @@ class CollapsableHeaderViewController: UIViewController {
             }
         }
     }
-
+    private var shouldHideFilterBar: Bool = false {
+        didSet {
+            filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
+            maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+            filterBar.layoutIfNeeded()
+            headerView.layoutIfNeeded()
+            calculateHeaderSnapPoints()
+            layoutHeaderInsets()
+        }
+    }
+    
     private var shouldUseCompactLayout: Bool {
         return traitCollection.verticalSizeClass == .compact
     }
@@ -270,8 +281,9 @@ class CollapsableHeaderViewController: UIViewController {
     }
 
     private func calculateHeaderSnapPoints() {
-        minHeaderHeight = filterBar.frame.height + minHeaderBottomSpacing.constant
-        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBar.frame.height + maxHeaderBottomSpacing.constant
+        minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
+        let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeightConstraint.constant + filterBarBottomSpacing
         _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
     }
 
@@ -302,7 +314,7 @@ class CollapsableHeaderViewController: UIViewController {
         let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let estimatedContentSize = childViewController.estimatedContentSize()
+        let estimatedContentSize = isShowingNoResults ? .zero : childViewController.estimatedContentSize()
         let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
 
