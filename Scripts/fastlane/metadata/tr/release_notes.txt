@@ -1,7 +1,0 @@
-Bu sürümdeki yeniliklere bir göz atın:
-
-- Grup, Kapak ve Görsel blokları için tam genişlik ve geniş hizalama desteği (daha fazla blok için destek). 1 
-- Resimlerinizde yuvarlak köşeleri seviyor musunuz? Ayrıca Görsel bloğuna Yuvarlak stil için destek ekledik.
-- Bazı kişiler yeni blok eklerken araç çubuğunun hatalı davrandığını görmüş olabilir, ancak bu sorun çözdük.
-- Ayrıca, cihaz yönü değiştirildikten sonra Görsel Önizleme'de resimlerin doğru şekilde konumlandırılmadığını fark ettik, ancak bu sorun da giderildi.
-- Apple'a kaydolduktan sonra kullanıcı adı görüntülemeyle ilgili bir sorun ve maksimum sayıda başarısız oturum açma girişimine ulaştığınızda görüntülenen yanlış bir hata mesajı da dahil olmak üzere kayıt ve oturum açma ile ilgili diğer birkaç sorunu çözdük.

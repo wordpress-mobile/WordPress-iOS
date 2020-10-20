@@ -1,9 +1,13 @@
+16.1
+-----
+ 
 16.0
 -----
 * [***] Block Editor: Full-width and wide alignment support for Video, Latest-posts, Gallery, Media & text, and Pullquote block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2605]
 * [***] Block Editor: Fix unsupported block bottom sheet is triggered when device is rotated. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2710]
 * [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack site. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2709]
-* [*] Reader: Select interests is now displayed under the Discover tab. [#15097]
+* [**] Reader: Select interests is now displayed under the Discover tab. [#15097]
+* [**] Reader: The reader now displays site recommendations in the Discover feed [#15116]
 * [***] Reader: The new redesigned Reader detail shows your post as beautiful as ever. And if you add a featured image it would be twice as beautiful! [#15107]
 
 15.9
@@ -15,7 +19,7 @@
 * [***] Block Editor: On Jetpack connected sites, Unsupported Block Editor can be enabled via enabling Jetpack SSO setting directly from within the missing block alert. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2610]
 * [***] Block Editor: Add support for selecting user's post when configuring the link [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2484]
 * [*] Reader: Fixed an issue that resulted in no action when tapping a link with an anchor. [#15027]
-
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/issues/2695]
 
 15.8
 -----
