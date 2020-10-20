@@ -5,33 +5,33 @@ struct TodayWidgetView: View {
     let content: TodayWidgetContent
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(content.siteTitle)
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .lineLimit(Constants.siteTitleLines)
-                .foregroundColor(Color(.label))
+        HStack {
+            VStack(alignment: .leading) {
+                Text(content.siteTitle)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .lineLimit(Constants.siteTitleLines)
+                    .foregroundColor(Color(.label))
 
-            Text(Constants.todayTitle)
-                .font(.caption)
-                .fontWeight(.regular)
-                .foregroundColor(Color(.secondaryLabel))
+                Text(Constants.todayTitle)
+                    .font(.caption)
+                    .fontWeight(.regular)
+                    .foregroundColor(Color(.secondaryLabel))
 
+                Spacer()
+
+                Text(Constants.viewsTitle)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color(Constants.viewsTitleColorName))
+
+                Text("\(content.views)")
+                    .font(.largeTitle)
+                    .foregroundColor(Color(.label))
+            }
             Spacer()
-
-            Text(Constants.viewsTitle)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundColor(Color(Constants.viewsTitleColorName))
-
-            Text("\(content.views)")
-                .font(.largeTitle)
-                .foregroundColor(Color(.label))
-
         }
-        .padding([.top, .leading, .trailing], Constants.otherPadding)
-        .padding(.bottom, Constants.bottomPadding)
-        .cornerRadius(Constants.cornerRadius)
+        .padding(.all, Constants.padding)
     }
 
     private enum Constants {
@@ -43,9 +43,7 @@ struct TodayWidgetView: View {
         static let commentsTitle = NSLocalizedString("Comments", comment: "Label name for the comments field in the Today widget.")
 
         // Overall Appearance
-        static let otherPadding: CGFloat = 16
-        static let bottomPadding: CGFloat = 12
-        static let cornerRadius: CGFloat = 6
+        static let padding: CGFloat = 16
 
         // Site Title
         static let siteTitleLines = 2
