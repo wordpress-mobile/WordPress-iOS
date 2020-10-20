@@ -40,7 +40,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
-            return false
+            return true
         case .whatIsNew:
             return true
         case .newNavBarAppearance:
