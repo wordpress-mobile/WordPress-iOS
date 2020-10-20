@@ -47,6 +47,24 @@ class ReaderCardTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    /// Create a Card of the type sites from a RemoteReaderCard
+    ///
+    func testCreateSitesCardFromRemote() {
+        let expectation = self.expectation(description: "Create a Reader Card of type sites")
+
+        remoteCard(ofType: .sites) { remoteCard in
+            let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let topics = card?.sitesArray
+
+            expect(topics?.count).to(equal(1))
+            expect(topics?.filter { $0.siteDescription == "Lorem Ipsum Sit Dolor Amet" }).toNot(beNil())
+            expect(topics?.filter { $0.siteURL == "http://loremipsum.wordpress.com" }).toNot(beNil())
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     /// Don't create a Card if RemoteReaderCard type is unknown
     ///
     func testDontCreateCardTypeUnknown() {

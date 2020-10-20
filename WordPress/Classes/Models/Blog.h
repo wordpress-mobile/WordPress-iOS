@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Role;
 @class QuickStartTourState;
 @class UserSuggestion;
+@class PageTemplateCategory;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -73,7 +74,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support Stock Photos feature (free photos library)
     BlogFeatureStockPhotos,
     /// Does the blog support setting the homepage type and pages?
-    BlogFeatureHomepageSettings
+    BlogFeatureHomepageSettings,
+    /// Does the blog support stories?
+    BlogFeatureStories
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -136,7 +139,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 /// Disk quota for site, this is only available for WP.com sites
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
-
+@property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

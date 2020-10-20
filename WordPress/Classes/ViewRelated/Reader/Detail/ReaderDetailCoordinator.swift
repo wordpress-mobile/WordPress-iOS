@@ -113,6 +113,8 @@ class ReaderDetailCoordinator {
         }
 
         sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+
+        WPAnalytics.track(.readerSharedItem)
     }
 
     /// Set a postID, siteID and isFeed
@@ -173,6 +175,7 @@ class ReaderDetailCoordinator {
             return
         }
 
+        WPAnalytics.track(.readerArticleVisited)
         presentWebViewController(postURL)
     }
 
@@ -285,6 +288,8 @@ class ReaderDetailCoordinator {
         let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
 
         ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
+
+        WPAnalytics.track(.readerArticleDetailMoreTapped)
     }
 
     private func showTopic(_ topic: String) {

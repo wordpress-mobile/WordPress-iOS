@@ -73,25 +73,25 @@ class ReaderCardServiceTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    /// Save 9 cards in the database
-    /// The API returns 10, but one of them is unknown and shouldn't be saved
+    /// Save 10 cards in the database
+    /// The API returns 11, but one of them is unknown and shouldn't be saved
     ///
     func testSaveCards() {
-        let expectation = self.expectation(description: "9 reader cards should be returned")
+        let expectation = self.expectation(description: "10 reader cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
-            expect(cards?.count).to(equal(9))
+            expect(cards?.count).to(equal(10))
             expectation.fulfill()
         }, failure: { _ in })
 
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    /// From the 9 cards saved, 8 should have posts
+    /// From the 10 cards saved, 8 should have posts
     ///
     func testSaveCardsWithPosts() {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
@@ -127,7 +127,7 @@ class ReaderCardServiceTests: XCTestCase {
     /// When fetching the first page, clean all the cards
     ///
     func testFirstPageClean() {
-        let expectation = self.expectation(description: "Only 9 cards should be returned")
+        let expectation = self.expectation(description: "Only 10 cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: coreDataStack, followedInterestsService: followedInterestsService)
         apiMock.succeed = true
@@ -136,7 +136,7 @@ class ReaderCardServiceTests: XCTestCase {
             // Fetch again, this time the 1st page
             service.fetch(isFirstPage: true, success: { _, _ in
                 let cards = try? self.coreDataStack.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-                expect(cards?.count).to(equal(9))
+                expect(cards?.count).to(equal(10))
                 expectation.fulfill()
             }, failure: { _ in })
         }, failure: {_ in })
