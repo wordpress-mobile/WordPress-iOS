@@ -577,12 +577,12 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResultConstants.errorTitle,
                                      subtitle: NoResultConstants.errorSubtitle,
-                                     buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                     buttonTitle: NoResultConstants.refreshButtonTitle, customizationBlock: { [weak self] noResults in
                                         noResults.delegate = self
                                         if !noResults.isReachable {
                                             noResults.resetButtonText()
                                         }
-        }
+                                     })
     }
 
     private func displayEmptyViewIfNecessary() {
