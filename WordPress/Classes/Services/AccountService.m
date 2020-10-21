@@ -499,6 +499,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
             [NotificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
             [NotificationSupportService insertServiceExtensionUsername:defaultAccount.username];
+            [NotificationSupportService insertServiceExtensionUserID:defaultAccount.userID.stringValue];
         });
     }
     
