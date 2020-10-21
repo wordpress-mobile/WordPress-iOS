@@ -2164,6 +2164,7 @@
 		F16C35DC23F3F78E00C81331 /* AutoUploadMessageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */; };
 		F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */; };
 		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
+		F1863716253E49B8003D4BEF /* AddSiteAlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1863715253E49B8003D4BEF /* AddSiteAlertFactory.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */; };
 		F1B1E7A324098FA100549E2A /* BlogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B1E7A224098FA100549E2A /* BlogTests.swift */; };
@@ -4922,6 +4923,7 @@
 		F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoUploadMessageProvider.swift; sourceTree = "<group>"; };
 		F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
+		F1863715253E49B8003D4BEF /* AddSiteAlertFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSiteAlertFactory.swift; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicAuthenticationService.swift; sourceTree = "<group>"; };
 		F1B1E7A224098FA100549E2A /* BlogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogTests.swift; sourceTree = "<group>"; };
@@ -9008,6 +9010,7 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				F1863714253E49B8003D4BEF /* Add Site */,
 				3F43603423F368BF001DEE70 /* Blog Details */,
 				3F43603523F368CA001DEE70 /* Blog List */,
 				3F43603623F36962001DEE70 /* Blog Selector */,
@@ -10712,6 +10715,14 @@
 			);
 			name = config;
 			path = ../config;
+			sourceTree = "<group>";
+		};
+		F1863714253E49B8003D4BEF /* Add Site */ = {
+			isa = PBXGroup;
+			children = (
+				F1863715253E49B8003D4BEF /* AddSiteAlertFactory.swift */,
+			);
+			path = "Add Site";
 			sourceTree = "<group>";
 		};
 		F198533821ADAA4E00DCDAE7 /* Editor */ = {
@@ -12522,6 +12533,7 @@
 				B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */,
 				B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */,
 				F56A33332538C0ED00E2AEF3 /* BlogDetailsViewController+FAB.swift in Sources */,
+				F1863716253E49B8003D4BEF /* AddSiteAlertFactory.swift in Sources */,
 				F12FA5D92428FA8F0054DA21 /* AuthenticationService.swift in Sources */,
 				E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
