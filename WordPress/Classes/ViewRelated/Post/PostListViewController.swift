@@ -159,19 +159,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
-
-        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
-
-    lazy var createButtonCoordinator: CreateButtonCoordinator = { return CreateButtonCoordinator(self, newPost: {}, newPage: {}, newStory: {})
-    }()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         configureCompactOrDefault()
-
-        createButtonCoordinator.showCreateButton()
     }
 
     func configureNavigationButtons() {
