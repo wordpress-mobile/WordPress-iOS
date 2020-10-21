@@ -18,7 +18,7 @@ class MySitesCoordinator: NSObject {
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
         self.becomeActiveTab = becomeActiveTab
-        
+
         super.init()
     }
 
