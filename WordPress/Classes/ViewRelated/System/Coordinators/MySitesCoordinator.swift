@@ -27,11 +27,7 @@ class MySitesCoordinator: NSObject {
     private func prepareToNavigate() {
         becomeActiveTab()
 
-        if Feature.enabled(.newNavBarAppearance) {
-            mySitesNavigationController.viewControllers = [blogDetailsViewController]
-        } else {
-            mySitesNavigationController.viewControllers = [blogListViewController]
-        }
+        mySitesNavigationController.viewControllers = [blogListViewController]
     }
 
     func showMySites() {
@@ -42,11 +38,7 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog) {
         prepareToNavigate()
 
-        if Feature.enabled(.newNavBarAppearance) {
-            blogDetailsViewController.blog = blog
-        } else {
-            blogListViewController.setSelectedBlog(blog, animated: false)
-        }
+        blogListViewController.setSelectedBlog(blog, animated: false)
     }
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
