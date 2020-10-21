@@ -123,54 +123,12 @@ import WordPressFlux
         guard let viewController = viewController else {
             return
         }
-        let actionSheetVC = actionSheetController(with: viewController.traitCollection)
+        let actionSheetVC = CreateButtonActionSheet(newPost: newPost, newPage: newPage, newStory: newStory)
+        setupPresentation(on: actionSheetVC, for: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
             QuickStartTourGuide.find()?.visited(.newpost)
         })
-    }
-
-    private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
-        let postsButton = makePostsButton()
-        let pagesButton = makePagesButton()
-        let storiesButton = makeStoriesButton()
-        let shouldShowStories = newStory != nil
-        let buttons = shouldShowStories ? [postsButton, pagesButton, storiesButton] : [postsButton, pagesButton]
-        let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
-                                                              buttons: buttons)
-
-        setupPresentation(on: actionSheetController, for: traitCollection)
-
-        return actionSheetController
-    }
-
-    private func makePostsButton() -> ActionSheetButton {
-        let highlight: Bool = QuickStartTourGuide.find()?.shouldSpotlight(.newpost) ?? false
-
-        return ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
-                                 image: .gridicon(.posts),
-                                 identifier: "blogPostButton",
-                                 target: self,
-                                 selector: #selector(showNewPost),
-                                 highlight: highlight)
-    }
-
-    // MARK: Button Constructors
-
-    private func makePagesButton() -> ActionSheetButton {
-        return ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-                                            image: .gridicon(.pages),
-                                            identifier: "sitePageButton",
-                                            target: self,
-                                            selector: #selector(showNewPage))
-    }
-
-    private func makeStoriesButton() -> ActionSheetButton {
-        return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
-                                            image: .gridicon(.book),
-                                            identifier: "storyButton",
-                                            target: self,
-                                            selector: #selector(showNewStory))
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
@@ -218,18 +176,6 @@ import WordPressFlux
         } else {
             button.springAnimation(toShow: true)
         }
-    }
-
-    @objc func showNewPost() {
-        newPost()
-    }
-
-    @objc func showNewPage() {
-        newPage()
-    }
-
-    @objc func showNewStory() {
-        newStory?()
     }
 
     // MARK: - Quick Start
