@@ -1,5 +1,7 @@
 16.1
 -----
+* [*] Fixed an issue that was causing the refresh control to show up on top of the list of sites. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15136]
+
  
 16.0
 -----
