@@ -288,8 +288,6 @@ class ReaderDetailCoordinator {
         let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
 
         ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
-
-        WPAnalytics.track(.readerArticleDetailMoreTapped)
     }
 
     private func showTopic(_ topic: String) {
