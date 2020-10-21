@@ -15,10 +15,10 @@ parameters:
     default: all-lang
 
 commands:
-  fix-path:
+  fix-image:
     steps:
       - run:
-          name: Fix $PATH
+          name: Fix CI Image
           command: |
             # Add `/usr/local/bin` to the Xcode 11.2 image's $PATH in order to be able to use dependencies
 
@@ -28,12 +28,16 @@ commands:
               echo $PATH
             fi
 
+            chruby ruby-2.6.6
+            gem install bundler
+
 jobs:
   Build Tests:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -42,9 +46,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: rake dependencies
-      - ios/xcodebuild:
-          command: build-for-testing
-          arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPress' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
+      - run:
+          name: Build for Testing
+          command: cd ./Scripts && bundle exec fastlane build_for_testing
       - persist_to_workspace:
           root: ./
           paths:
@@ -54,12 +58,12 @@ jobs:
   Unit Tests:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
-      - fix-path
+      - fix-image
       - git/shallow-checkout
       - ios/boot-simulator:
-          xcode-version: "11.2.1"
+          xcode-version: "12.0.0"
           device: iPhone 11
       - attach_workspace:
           at: ./
@@ -70,7 +74,7 @@ jobs:
       - run:
           name: Run Unit Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
   UI Tests:
@@ -83,12 +87,12 @@ jobs:
         default: false
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
-      - fix-path
+      - fix-image
       - git/shallow-checkout
       - ios/boot-simulator:
-          xcode-version: "11.2.1"
+          xcode-version: "12.0.0"
           device: << parameters.device >>
       - attach_workspace:
           at: ./
@@ -103,7 +107,7 @@ jobs:
       - run:
           name: Run UI Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
       - when:
@@ -124,8 +128,9 @@ jobs:
   Installable Build:
     executor:
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     steps:
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -149,10 +154,11 @@ jobs:
   Release Build:
     executor: 
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
+      - fix-image
       - run:
           name: Setup Notifications
           command: |
@@ -168,7 +174,6 @@ jobs:
       - run: 
           name: Install other tools
           command: |
-            brew unlink python@2
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
@@ -191,10 +196,11 @@ jobs:
   translation-review-build:
     executor: 
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "12.0.0"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
+      - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
@@ -274,8 +280,8 @@ workflows:
           device: iPhone 11
           requires: [ "Optional Tests" ]
       - UI Tests:
-          name: UI Tests (iPad Air 3rd generation)
-          device: iPad Air \\(3rd generation\\)
+          name: UI Tests (iPad Air 4th generation)
+          device: iPad Air \\(4th generation\\)
           requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
@@ -303,4 +309,3 @@ workflows:
     when: << pipeline.parameters.translation_review_build >>
     jobs:
       - translation-review-build
-
