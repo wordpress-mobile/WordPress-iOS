@@ -4,7 +4,6 @@ import UIKit
 class MySitesCoordinator: NSObject {
     let mySitesSplitViewController: WPSplitViewController
     let mySitesNavigationController: UINavigationController
-    let blogDetailsViewController: BlogDetailsViewController
     let blogListViewController: BlogListViewController
     let becomeActiveTab: () -> Void
 
@@ -18,7 +17,6 @@ class MySitesCoordinator: NSObject {
         self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
-        self.blogDetailsViewController = BlogDetailsViewController(meScenePresenter: blogListViewController.meScenePresenter)
         self.becomeActiveTab = becomeActiveTab
         
         super.init()
