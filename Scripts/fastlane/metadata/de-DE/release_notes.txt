@@ -1,5 +1,0 @@
-Verbesserungen am Blockeditor:
-Auf Jetpack-Websites kannst du jetzt nicht unterstützte Blöcke bearbeiten, indem du über die Warnmeldung zu fehlenden Blöcken Jetpack-SSO aktivierst. Verwende die praktische Linkauswahl, um URLs zu Beiträgen hinzuzufügen. Außerdem haben wir das Tippziel für die primäre Aktion bei nicht unterstützten Blöcken vergrößert.
-
-Korrekturen:
-Wir haben Bugs behoben, die dazu führten, dass der Seiteneditor zu einem unsichtbaren Overlay wurde. Und es werden jetzt keine doppelten Ansichten mehr generiert, wenn ein Anmeldelink angefordert wird. Wenn im Reader auf einen Link mit einem Anker getippt wird, tritt jetzt das erwartete Verhalten auf.

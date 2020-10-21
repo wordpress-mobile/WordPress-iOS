@@ -49,12 +49,30 @@ extension WPTabBarController {
             return
         }
 
-        guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
-        let blogID = blog.dotComID?.intValue ?? 0 as Any
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+        if UserDefaults.standard.storiesIntroWasAcknowledged == false {
+            // Show Intro screen
+            let intro = StoriesIntroViewController(continueTapped: { [weak self] in
+                UserDefaults.standard.storiesIntroWasAcknowledged = true
+                self?.showStoryEditor()
+            }, openURL: { [weak self] url in
+                let webViewController = WebViewControllerFactory.controller(url: url)
+                let navController = UINavigationController(rootViewController: webViewController)
+                self?.presentedViewController?.present(navController, animated: true)
+            })
 
-        let controller = UIViewController()
-        controller.view.backgroundColor = .white
-        present(controller, animated: true, completion: nil)
+            present(intro, animated: true, completion: {
+                StoriesIntroViewController.trackShown()
+            })
+        } else {
+            //TODO: Show the stories feature
+            guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
+            let blogID = blog.dotComID?.intValue ?? 0 as Any
+
+            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+
+            let viewController = UIViewController()
+            viewController.view.backgroundColor = .red
+            present(viewController, animated: true)
+        }
     }
 }

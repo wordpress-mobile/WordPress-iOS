@@ -1,3 +1,6 @@
+16.1
+-----
+ 
 16.0
 -----
 * [***] Block Editor: Full-width and wide alignment support for Video, Latest-posts, Gallery, Media & text, and Pullquote block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2605]
