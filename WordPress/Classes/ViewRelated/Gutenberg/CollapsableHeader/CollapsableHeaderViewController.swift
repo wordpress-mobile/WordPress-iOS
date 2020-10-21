@@ -95,8 +95,12 @@ class CollapsableHeaderViewController: UIViewController {
     }
     private var shouldHideFilterBar: Bool = false {
         didSet {
+            guard oldValue != shouldHideFilterBar else { return }
+            headerHeightConstraint.isActive = false
+            initialHeaderTopConstraint.isActive = true
             filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
             maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+            minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
             filterBar.layoutIfNeeded()
             headerView.layoutIfNeeded()
             calculateHeaderSnapPoints()
@@ -317,7 +321,7 @@ class CollapsableHeaderViewController: UIViewController {
         let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let estimatedContentSize = isShowingNoResults ? .zero : childViewController.estimatedContentSize()
+        let estimatedContentSize = shouldHideFilterBar ? .zero : childViewController.estimatedContentSize()
         let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
 
