@@ -4,33 +4,53 @@ import UIKit
 class MySitesCoordinator: NSObject {
     let mySitesSplitViewController: WPSplitViewController
     let mySitesNavigationController: UINavigationController
+    let blogDetailsViewController: BlogDetailsViewController
     let blogListViewController: BlogListViewController
+    let becomeActiveTab: () -> Void
 
     @objc
-    init(mySitesSplitViewController: WPSplitViewController,
-         mySitesNavigationController: UINavigationController,
-         blogListViewController: BlogListViewController) {
+    init(
+        mySitesSplitViewController: WPSplitViewController,
+        mySitesNavigationController: UINavigationController,
+        blogListViewController: BlogListViewController,
+        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
+
         self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
-
+        self.blogDetailsViewController = BlogDetailsViewController(meScenePresenter: blogListViewController.meScenePresenter)
+        self.becomeActiveTab = becomeActiveTab
+        
         super.init()
     }
 
     private func prepareToNavigate() {
-        WPTabBarController.sharedInstance().showMySitesTab()
+        becomeActiveTab()
 
-        mySitesNavigationController.viewControllers = [blogListViewController]
+        if Feature.enabled(.newNavBarAppearance) {
+            mySitesNavigationController.viewControllers = [blogDetailsViewController]
+        } else {
+            mySitesNavigationController.viewControllers = [blogListViewController]
+        }
     }
 
     func showMySites() {
         prepareToNavigate()
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
+    @objc
+    func showBlogDetails(for blog: Blog) {
         prepareToNavigate()
 
-        blogListViewController.setSelectedBlog(blog, animated: false)
+        if Feature.enabled(.newNavBarAppearance) {
+            blogDetailsViewController.blog = blog
+        } else {
+            blogListViewController.setSelectedBlog(blog, animated: false)
+        }
+    }
+
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
+        showBlogDetails(for: blog)
 
         if let subsection = subsection,
             let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
