@@ -35,12 +35,14 @@ struct TodayWidgetView: View {
     }
 
     private enum Constants {
+        // TODO - TODAYWIDGET: SwiftUI should be able to automatically localize strings,
+        // so let's not use NSLocalizedString for now and check how this will fit in our existing system
         // Titles
-        static let todayTitle = NSLocalizedString("Today", comment: "Title of the Today widget.")
-        static let viewsTitle = NSLocalizedString("Views", comment: "Label name for the views field in the Today widget.")
-        static let visitorsTitle = NSLocalizedString("Visitors", comment: "Label name for the visitors field in the Today widget.")
-        static let likesTitle = NSLocalizedString("Likes", comment: "Label name for the likes field in the Today widget.")
-        static let commentsTitle = NSLocalizedString("Comments", comment: "Label name for the comments field in the Today widget.")
+        static let todayTitle = "Today"
+        static let viewsTitle = "Views"
+        static let visitorsTitle = "Visitors"
+        static let likesTitle = "Likes"
+        static let commentsTitle = "Comments"
 
         // Overall Appearance
         static let padding: CGFloat = 16
