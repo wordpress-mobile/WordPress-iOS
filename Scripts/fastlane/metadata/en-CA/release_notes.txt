@@ -1,5 +1,0 @@
-Block editor improvements:
-On Jetpack sites, you can now edit unsupported blocks by enabling Jetpack SSO from the missing block alert. Use the handy link picker to add URLs to posts. We’ve also increased the size of the tap target on the primary action on unsupported blocks.
-
-Fixes:
-Zapped bugs that caused the page editor to become an invisible overlay and eliminated duplicate views generated when requesting a login link. In the Reader, tapping a link with an anchor now works as expected.
