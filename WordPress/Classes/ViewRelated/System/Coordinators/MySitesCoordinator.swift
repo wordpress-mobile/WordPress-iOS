@@ -22,19 +22,15 @@ class MySitesCoordinator: NSObject {
         super.init()
     }
 
-    private func prepareToNavigate() {
+    func showMySites() {
         becomeActiveTab()
 
         mySitesNavigationController.viewControllers = [blogListViewController]
     }
 
-    func showMySites() {
-        prepareToNavigate()
-    }
-
     @objc
     func showBlogDetails(for blog: Blog) {
-        prepareToNavigate()
+        showMySites()
 
         blogListViewController.setSelectedBlog(blog, animated: false)
     }
