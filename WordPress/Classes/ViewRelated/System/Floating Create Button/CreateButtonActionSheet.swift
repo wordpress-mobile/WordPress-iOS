@@ -11,7 +11,7 @@ class CreateButtonActionSheet: ActionSheetViewController {
     }
 
     init(actions: [ActionSheetItem]) {
-        let buttons = actions.map({ return $0.makeButton() })
+        let buttons = actions.map { $0.makeButton() }
         super.init(headerTitle: Constants.title, buttons: buttons)
     }
 

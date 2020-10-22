@@ -24,7 +24,10 @@ extension BlogDetailsViewController {
             controller?.showStoryEditor(forBlog: blog)
         }
 
-        let actions: [ActionSheetItem] = shouldShowNewStory ? [PostAction(handler: newPost), PageAction(handler: newPage), StoryAction(handler: newStory)] : [PostAction(handler: newPost), PageAction(handler: newPage)]
+        var actions: [ActionSheetItem] = [PostAction(handler: newPost), PageAction(handler: newPage)]
+        if shouldShowNewStory {
+            actions.append(StoryAction(handler: newStory))
+        }
         let coordinator = CreateButtonCoordinator(self, actions: actions)
         return coordinator
     }
