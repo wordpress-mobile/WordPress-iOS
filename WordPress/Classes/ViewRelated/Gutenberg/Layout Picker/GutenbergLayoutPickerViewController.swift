@@ -315,6 +315,7 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
         isLoading = resultsController?.isEmpty() ?? true
+        headerContentsDelegate?.contentSizeWillChange()
         tableView.reloadData()
     }
 }
