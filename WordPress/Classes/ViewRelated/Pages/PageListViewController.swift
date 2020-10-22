@@ -50,6 +50,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return HomepageSettingsService(blog: blog, context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
     }()
 
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        return CreateButtonCoordinator(self, actions: [PageAction(handler: { [weak self] in
+            self?.createPost()
+        })])
+    }()
+
     // MARK: - GUI
 
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -122,6 +128,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
+
+        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -131,6 +139,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         _tableViewHandler.refreshTableView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton()
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton()
+        } else {
+            createButtonCoordinator.hideCreateButton()
+        }
+    }
 
     // MARK: - Configuration
 
