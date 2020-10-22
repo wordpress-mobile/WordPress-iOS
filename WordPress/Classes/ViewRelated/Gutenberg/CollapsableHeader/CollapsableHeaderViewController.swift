@@ -47,10 +47,10 @@ protocol CollapsableHeaderContentsDelegate: class {
     /// A public interface to notify the container that the content view is loading content still
     func loadingStateChanged(_ isLoading: Bool)
 
-    /// A public interface to notify the container that the content view is loading content still
+    /// A public interface to notify the container that the content has failed to load
     func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?)
 
-    /// A public interface to notify the container that the content view is loading content still
+    /// A public interface to notify the container that the content has loaded data or is attempting too. 
     func dismissNoResultsController()
 }
 
