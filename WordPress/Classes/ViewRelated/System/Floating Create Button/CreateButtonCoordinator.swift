@@ -19,10 +19,6 @@ import WordPressFlux
 
     private weak var viewController: UIViewController?
 
-    let newPost: () -> Void
-    let newPage: () -> Void
-    let newStory: (() -> Void)?
-
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
     private func notice(for blog: Blog) -> Notice {
@@ -61,6 +57,7 @@ import WordPressFlux
     }
 
     private weak var noticeContainerView: NoticeContainerView?
+    private let actions: [ActionSheetItem]
 
     /// Returns a newly initialized CreateButtonCoordinator
     /// - Parameters:
@@ -68,11 +65,9 @@ import WordPressFlux
     ///   - newPost: A closure to call when the New Post button is tapped.
     ///   - newPage: A closure to call when the New Page button is tapped.
     ///   - newStory: A closure to call when the New Story button is tapped. The New Story button is hidden when value is `nil`.
-    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void, newStory: (() -> Void)?) {
+    init(_ viewController: UIViewController, actions: [ActionSheetItem]) {
         self.viewController = viewController
-        self.newPost = newPost
-        self.newPage = newPage
-        self.newStory = newStory
+        self.actions = actions
 
         super.init()
 
@@ -124,12 +119,22 @@ import WordPressFlux
         guard let viewController = viewController else {
             return
         }
-        let actionSheetVC = CreateButtonActionSheet(newPost: newPost, newPage: newPage, newStory: newStory)
-        setupPresentation(on: actionSheetVC, for: viewController.traitCollection)
-        viewController.present(actionSheetVC, animated: true, completion: {
-            WPAnalytics.track(.createSheetShown)
-            QuickStartTourGuide.find()?.visited(.newpost)
-        })
+
+        if actions.count == 1 {
+            actions.first?.handler()
+        } else {
+            let actionSheetVC = actionSheetController(with: viewController.traitCollection)
+            viewController.present(actionSheetVC, animated: true, completion: {
+                WPAnalytics.track(.createSheetShown)
+                QuickStartTourGuide.find()?.visited(.newpost)
+            })
+        }
+    }
+
+    private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
+        let actionSheetVC = CreateButtonActionSheet(actions: actions)
+        setupPresentation(on: actionSheetVC, for: traitCollection)
+        return actionSheetVC
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {

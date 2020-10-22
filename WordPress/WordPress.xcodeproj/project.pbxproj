@@ -2217,6 +2217,7 @@
 		F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */; };
 		F5D0A65023CC15A800B20D27 /* PreviewNonceHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */; };
 		F5D0A65223CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */; };
+		F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3992F2541F25B0058D0AB /* SheetActions.swift */; };
 		F5E032D6240889EB003AF350 /* CreateButtonCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032D5240889EB003AF350 /* CreateButtonCoordinator.swift */; };
 		F5E032DB24088F44003AF350 /* UIView+SpringAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032DA24088F44003AF350 /* UIView+SpringAnimations.swift */; };
 		F5E032DF2408D1F1003AF350 /* WPTabBarController+ShowTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032DE2408D1F1003AF350 /* WPTabBarController+ShowTab.swift */; };
@@ -4978,6 +4979,7 @@
 		F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewController.swift; sourceTree = "<group>"; };
 		F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewNonceHandler.swift; sourceTree = "<group>"; };
 		F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewControllerTests.swift; sourceTree = "<group>"; };
+		F5D3992F2541F25B0058D0AB /* SheetActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetActions.swift; sourceTree = "<group>"; };
 		F5E032D5240889EB003AF350 /* CreateButtonCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateButtonCoordinator.swift; sourceTree = "<group>"; };
 		F5E032DA24088F44003AF350 /* UIView+SpringAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SpringAnimations.swift"; sourceTree = "<group>"; };
 		F5E032DE2408D1F1003AF350 /* WPTabBarController+ShowTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ShowTab.swift"; sourceTree = "<group>"; };
@@ -10777,6 +10779,7 @@
 				F551E7F423F6EA3100751212 /* FloatingActionButton.swift */,
 				F5E032DA24088F44003AF350 /* UIView+SpringAnimations.swift */,
 				F5E032D5240889EB003AF350 /* CreateButtonCoordinator.swift */,
+				F5D3992F2541F25B0058D0AB /* SheetActions.swift */,
 				F532AE1B253E55D40013B42E /* CreateButtonActionSheet.swift */,
 				F5B9D7EF245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift */,
 			);
@@ -12991,6 +12994,7 @@
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
 				400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
+				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
 				3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */,
