@@ -3,6 +3,7 @@ import UIKit
 open class Tracks {
     // MARK: - Public Properties
     open var wpcomUsername: String?
+    open var wpcomUserID: String?
 
     // MARK: - Private Properties
     fileprivate let uploader: Uploader
@@ -31,7 +32,7 @@ open class Tracks {
     // MARK: - Private Helpers
     fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
         let timestamp   = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
-        let userID      = UUID().uuidString
+        let anonUserID  = UUID().uuidString
         let device      = UIDevice.current
         let bundle      = Bundle.main
         let appName     = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
@@ -55,8 +56,11 @@ open class Tracks {
         if let username = wpcomUsername {
             payload["_ul"] = username
             payload["_ut"] = "wpcom:user_id"
+            if let userID = wpcomUserID {
+                payload["_ui"] = userID
+            }
         } else {
-            payload["_ui"] = userID
+            payload["_ui"] = anonUserID
             payload["_ut"] = "anon"
         }
 

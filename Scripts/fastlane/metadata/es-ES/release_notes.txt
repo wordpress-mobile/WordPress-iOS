@@ -1,6 +1,0 @@
-Mejoras en el editor de bloques:
-En los sitios Jetpack ahora puedes editar bloques no compatibles activando el acceso simple único de Jetpack desde la alerta de bloque no disponible. Utiliza el práctico selector de enlaces para añadir URLs a las entradas. También hemos aumentado el tamaño del destion del toque en la acción principal de los bloques no compatibles.
-
-Correcciones:
-Corrección de errores que causaban que el editor de la página se convirtiera en una superposición invisible y eliminaba las vistas duplicadas que se generaban al solicitar un enlace de inicio de sesión. En el lector, tocar un enlace con un anclaje ahora funciona como se esperaba.
-

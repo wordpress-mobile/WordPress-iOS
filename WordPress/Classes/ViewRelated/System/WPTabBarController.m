@@ -360,10 +360,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
-    return [[MySitesCoordinator alloc] initWithTabBarController:self
-                                     mySitesSplitViewController:self.blogListSplitViewController
-                                    mySitesNavigationController:self.mySiteNavigationController
-                                         blogListViewController:self.blogListViewController];
+    __weak __typeof(self) weakSelf = self;
+    
+    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
+                                              mySitesNavigationController:self.mySiteNavigationController
+                                                   blogListViewController:self.blogListViewController
+                                                        onBecomeActiveTab:^{
+        [weakSelf showMySitesTab];
+    }];
 }
 
 - (ReaderCoordinator *)readerCoordinator

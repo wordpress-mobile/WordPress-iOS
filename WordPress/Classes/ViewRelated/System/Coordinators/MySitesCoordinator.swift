@@ -6,26 +6,26 @@ class MySitesCoordinator: NSObject {
     let mySitesNavigationController: UINavigationController
     let blogDetailsViewController: BlogDetailsViewController
     let blogListViewController: BlogListViewController
-    let tabBarController: WPTabBarController
+    let becomeActiveTab: () -> Void
 
     @objc
     init(
-        tabBarController: WPTabBarController,
         mySitesSplitViewController: WPSplitViewController,
         mySitesNavigationController: UINavigationController,
-        blogListViewController: BlogListViewController) {
+        blogListViewController: BlogListViewController,
+        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
 
-        self.tabBarController = tabBarController
         self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
         self.blogDetailsViewController = BlogDetailsViewController(meScenePresenter: blogListViewController.meScenePresenter)
+        self.becomeActiveTab = becomeActiveTab
 
         super.init()
     }
 
-    private func prepareToNavigate() {
-        tabBarController.showMySitesTab()
+    func showMySites() {
+        becomeActiveTab()
 
         if Feature.enabled(.newNavBarAppearance) {
             mySitesNavigationController.viewControllers = [blogDetailsViewController]
@@ -34,13 +34,9 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    func showMySites() {
-        prepareToNavigate()
-    }
-
     @objc
     func showBlogDetails(for blog: Blog) {
-        prepareToNavigate()
+        showMySites()
 
         if Feature.enabled(.newNavBarAppearance) {
             blogDetailsViewController.blog = blog

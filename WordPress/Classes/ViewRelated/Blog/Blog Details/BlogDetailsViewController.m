@@ -1844,8 +1844,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
     
-    UIAlertController *alertController = [factory makeWithCanCreateWPComSite:[self defaultWordPressComAccount]
-                                                             createWPComSite:^{
+    UIAlertController *alertController = [factory makeAddSiteAlertWithCanCreateWPComSite:[self defaultWordPressComAccount]
+                                                                         createWPComSite:^{
         [self launchSiteCreation];
     } addSelfHostedSite:^{
         [WordPressAuthenticator showLoginForSelfHostedSite:self];

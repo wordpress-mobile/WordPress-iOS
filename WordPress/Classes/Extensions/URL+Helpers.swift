@@ -206,3 +206,16 @@ extension URL {
         return newComponents.url ?? self
     }
 }
+
+extension URL {
+    /// Appends query items to the URL.
+    /// - Parameter newQueryItems: The new query items to add to the URL. These will **not** overwrite any existing items but are appended to the existing list.
+    /// - Returns: The URL with added query items.
+    func appendingQueryItems(_ newQueryItems: [URLQueryItem]) -> URL {
+        var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+        var queryItems = components?.queryItems ?? []
+        queryItems.append(contentsOf: newQueryItems)
+        components?.queryItems = queryItems
+        return components?.url ?? self
+    }
+}

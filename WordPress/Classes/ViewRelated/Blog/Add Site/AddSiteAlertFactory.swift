@@ -6,7 +6,7 @@ import Foundation
 class AddSiteAlertFactory: NSObject {
 
     @objc
-    func make(
+    func makeAddSiteAlert(
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {

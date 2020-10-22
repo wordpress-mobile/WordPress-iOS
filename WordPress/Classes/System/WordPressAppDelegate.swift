@@ -800,6 +800,7 @@ extension WordPressAppDelegate {
 
             NotificationSupportService.insertServiceExtensionToken(authToken)
             NotificationSupportService.insertServiceExtensionUsername(account.username)
+            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
         }
     }
 
@@ -809,6 +810,7 @@ extension WordPressAppDelegate {
 
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
+        NotificationSupportService.deleteServiceExtensionUserID()
     }
 }
 

@@ -1,5 +1,0 @@
-Améliorations de l’éditeur de blocs :
-Sur les sites Jetpack, vous pouvez désormais modifier des blocs non pris en charge en autorisant Jetpack SSO à partir de l’alerte de bloc manquant. Utilisez le sélecteur de lien pratique pour ajouter des URL à des articles. Nous avons également augmenté la taille de la cible tactile sur l’action principale sur les blocs non pris en charge.
-
-Correctifs :
-Suppression de bogues qui faisaient de l’éditeur de page une superposition invisible et élimination des vues en double générées lors de la demande d’un lien de connexion. Dans le Lecteur, l’appui sur un lien avec une ancre fonctionne désormais comme prévu.
