@@ -16,8 +16,7 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (TodayWidgetContent) -> ()) {
-        let entry = staticModel
-        completion(entry)
+        completion(staticModel)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {

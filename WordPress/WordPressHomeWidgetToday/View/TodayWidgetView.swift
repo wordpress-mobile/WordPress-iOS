@@ -23,7 +23,7 @@ struct TodayWidgetView: View {
                 Text(Constants.viewsTitle)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(Constants.viewsTitleColorName))
+                    .foregroundColor(Constants.viewsTitleColor)
 
                 Text("\(content.views)")
                     .font(.largeTitle)
@@ -38,11 +38,11 @@ struct TodayWidgetView: View {
         // TODO - TODAYWIDGET: SwiftUI should be able to automatically localize strings,
         // so let's not use NSLocalizedString for now and check how this will fit in our existing system
         // Titles
-        static let todayTitle = "Today"
-        static let viewsTitle = "Views"
-        static let visitorsTitle = "Visitors"
-        static let likesTitle = "Likes"
-        static let commentsTitle = "Comments"
+        static let todayTitle: LocalizedStringKey = "Today"
+        static let viewsTitle: LocalizedStringKey  = "Views"
+        static let visitorsTitle: LocalizedStringKey  = "Visitors"
+        static let likesTitle: LocalizedStringKey  = "Likes"
+        static let commentsTitle: LocalizedStringKey  = "Comments"
 
         // Overall Appearance
         static let padding: CGFloat = 16
@@ -51,7 +51,7 @@ struct TodayWidgetView: View {
         static let siteTitleLines = 2
 
         // Views
-        static let viewsTitleColorName = "Blue50"
+        static let viewsTitleColor = Color("Blue50")
     }
 }
 
