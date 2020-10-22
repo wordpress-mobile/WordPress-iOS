@@ -5,32 +5,38 @@ class MySitesCoordinator: NSObject {
     let mySitesSplitViewController: WPSplitViewController
     let mySitesNavigationController: UINavigationController
     let blogListViewController: BlogListViewController
+    let becomeActiveTab: () -> Void
 
     @objc
-    init(mySitesSplitViewController: WPSplitViewController,
-         mySitesNavigationController: UINavigationController,
-         blogListViewController: BlogListViewController) {
+    init(
+        mySitesSplitViewController: WPSplitViewController,
+        mySitesNavigationController: UINavigationController,
+        blogListViewController: BlogListViewController,
+        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
+
         self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
+        self.becomeActiveTab = becomeActiveTab
 
         super.init()
     }
 
-    private func prepareToNavigate() {
-        WPTabBarController.sharedInstance().showMySitesTab()
+    func showMySites() {
+        becomeActiveTab()
 
         mySitesNavigationController.viewControllers = [blogListViewController]
     }
 
-    func showMySites() {
-        prepareToNavigate()
+    @objc
+    func showBlogDetails(for blog: Blog) {
+        showMySites()
+
+        blogListViewController.setSelectedBlog(blog, animated: false)
     }
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
-        prepareToNavigate()
-
-        blogListViewController.setSelectedBlog(blog, animated: false)
+        showBlogDetails(for: blog)
 
         if let subsection = subsection,
             let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
