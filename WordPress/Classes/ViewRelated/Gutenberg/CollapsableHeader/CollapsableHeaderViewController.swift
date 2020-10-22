@@ -25,15 +25,15 @@ protocol CollapsableHeaderDataSource {
     func estimatedContentSize() -> CGSize
 }
 
-protocol CollapsableHeaderDelegate: class {
-    /// Notifies the delegate that the button that is displayed when no item is selected was tapped
-    func defaultActionSelected()
-
+@objc protocol CollapsableHeaderDelegate: class {
     /// Notifies the delegate that the right most button when an item is selected was tapped
     func primaryActionSelected()
 
+    /// Notifies the delegate that the button that is displayed when no item is selected was tapped
+    @objc optional func defaultActionSelected()
+
     /// Notifies the delegate that the left most button when an item is selected was tapped
-    func secondaryActionSelected()
+    @objc optional func secondaryActionSelected()
 }
 
 protocol CollapsableHeaderContentsDelegate: class {
@@ -93,6 +93,8 @@ class CollapsableHeaderViewController: UIViewController {
             }
         }
     }
+
+    private let hasFilterBar: Bool
     private var shouldHideFilterBar: Bool = false {
         didSet {
             guard oldValue != shouldHideFilterBar else { return }
@@ -163,10 +165,15 @@ class CollapsableHeaderViewController: UIViewController {
         self.init(childViewController: childViewController, delegate: childViewController, filterDelegate: childViewController)
     }
 
-    init(childViewController: UIViewController & CollapsableHeaderDataSource, delegate: CollapsableHeaderDelegate?, filterDelegate: CollapsableHeaderFilterBarDelegate?) {
+    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate, withFilterBar hasFilterBar:Bool) {
+        self.init(childViewController: childViewController, withFilterBar: hasFilterBar, delegate: childViewController)
+    }
+
+    init(childViewController: UIViewController & CollapsableHeaderDataSource, withFilterBar hasFilterBar:Bool = false, delegate: CollapsableHeaderDelegate? = nil, filterDelegate: CollapsableHeaderFilterBarDelegate? = nil) {
         self.childViewController = childViewController
         self.delegate = delegate
         self.filterDelegate = filterDelegate
+        self.hasFilterBar = hasFilterBar
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -224,7 +231,9 @@ class CollapsableHeaderViewController: UIViewController {
     }
 
     @IBAction func defaultActionSelected(_ sender: Any) {
-        delegate?.defaultActionSelected()
+        if let defaultActionSelected = delegate?.defaultActionSelected  {
+            defaultActionSelected()
+        }
     }
 
     @IBAction func primaryActionSelected(_ sender: Any) {
@@ -232,7 +241,9 @@ class CollapsableHeaderViewController: UIViewController {
     }
 
     @IBAction func secondaryActionSelected(_ sender: Any) {
-        delegate?.secondaryActionSelected()
+        if let secondaryActionSelected = delegate?.secondaryActionSelected  {
+            secondaryActionSelected()
+        }
     }
 
     private func setStaticText() {
