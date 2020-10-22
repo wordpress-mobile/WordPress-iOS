@@ -50,7 +50,7 @@ protocol CollapsableHeaderContentsDelegate: class {
     /// A public interface to notify the container that the content has failed to load
     func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?)
 
-    /// A public interface to notify the container that the content has loaded data or is attempting too. 
+    /// A public interface to notify the container that the content has loaded data or is attempting too.
     func dismissNoResultsController()
 }
 
@@ -105,18 +105,22 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    private func updateHeaderDisplay() {
+        headerHeightConstraint.isActive = false
+        initialHeaderTopConstraint.isActive = true
+        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
+        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
+        filterBar.layoutIfNeeded()
+        headerView.layoutIfNeeded()
+        calculateHeaderSnapPoints()
+        layoutHeaderInsets()
+    }
+
     private var shouldHideFilterBar: Bool = false {
         didSet {
             guard oldValue != shouldHideFilterBar else { return }
-            headerHeightConstraint.isActive = false
-            initialHeaderTopConstraint.isActive = true
-            filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-            maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
-            minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
-            filterBar.layoutIfNeeded()
-            headerView.layoutIfNeeded()
-            calculateHeaderSnapPoints()
-            layoutHeaderInsets()
+            updateHeaderDisplay()
         }
     }
 
@@ -142,20 +146,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
     private var minHeaderHeight: CGFloat = 0
-
-    private var titleIsHidden: Bool = true {
-        didSet {
-            if oldValue != titleIsHidden {
-                titleView.isHidden = false
-                let alpha: CGFloat = titleIsHidden ? 0 : 1
-                UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-                    self.titleView.alpha = alpha
-                }) { (_) in
-                    self.titleView.isHidden = self.titleIsHidden
-                }
-            }
-        }
-    }
 
     var accentColor: UIColor {
         if #available(iOS 13.0, *) {
@@ -215,6 +205,18 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewDidDisappear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
         super.viewDidDisappear(animated)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate { (_) in
+            self.updateHeaderDisplay()
+            if self.shouldHideFilterBar {
+                self.disableInitialLayoutHelpers()
+                self.snapToHeight(self.scrollView, height: self.minHeaderHeight, animated: false)
+            }
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -299,6 +301,22 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    private func hideSmallTitle(_ isHidden: Bool, animated: Bool = true) {
+        guard animated else {
+            titleView.isHidden = isHidden
+            return
+        }
+
+        titleView.isHidden = false
+        let alpha: CGFloat = isHidden ? 0 : 1
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.titleView.alpha = alpha
+        }) { (_) in
+            self.titleView.isHidden = isHidden
+        }
+    }
+
+    // MARK: Header and Footer Sizing
     private func calculateHeaderSnapPoints() {
         minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
         let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
@@ -369,7 +387,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
-            titleIsHidden = false
+            hideSmallTitle(false, animated: true)
             return
         }
         disableInitialLayoutHelpers()
@@ -383,7 +401,8 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
 
-        titleIsHidden = largeTitleView.frame.maxY > 0
+        let shouldHide = (largeTitleView.frame.maxY > 0)
+        hideSmallTitle(shouldHide, animated: true)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -408,10 +427,18 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat) {
+    private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {
         scrollView.contentOffset.y = maxHeaderHeight - height
         headerHeightConstraint.constant = height
-        titleIsHidden = (height >= maxHeaderHeight) && !shouldUseCompactLayout
+        let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
+        hideSmallTitle(shouldHide, animated: animated)
+
+        guard animated else {
+            headerView.setNeedsLayout()
+            headerView.layoutIfNeeded()
+            return
+        }
+
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
