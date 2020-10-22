@@ -16,8 +16,7 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (TodayWidgetContent) -> ()) {
-        let entry = staticModel
-        completion(entry)
+        completion(staticModel)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
@@ -39,14 +38,6 @@ struct WordPressHomeWidgetToday: Widget {
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")
-        // TODO - TODAYWIDGET: medium size to be supported too.
         .supportedFamilies([.systemSmall, .systemMedium])
-    }
-}
-
-struct WordPressHomeWidgetToday_Previews: PreviewProvider {
-    static var previews: some View {
-        TodayWidgetView(content: staticModel)
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
