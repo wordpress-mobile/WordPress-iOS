@@ -1,6 +1,6 @@
  import SwiftUI
 
-struct TodayWidgetMediumView: View {
+ struct TodayWidgetMediumView: View {
     let content: TodayWidgetContent
     let siteNameTitle: LocalizedStringKey
     let viewsTitle: LocalizedStringKey
@@ -9,22 +9,20 @@ struct TodayWidgetMediumView: View {
     let commentsTitle: LocalizedStringKey
 
     var body: some View {
-        ZStack {
-            VStack(alignment: .leading) {
-                FlexibleCard(axis: .horizontal,
-                             title: siteNameTitle,
-                             value: content.siteTitle)
-                Spacer()
-                makeRow(leftTitle: viewsTitle,
-                        leftValue: "\(content.views)",
-                        rightTitle: visitorsTitle,
-                        rightValue: "\(content.visitors)")
-                Spacer()
-                makeRow(leftTitle: likesTitle,
-                        leftValue: "\(content.likes)",
-                        rightTitle: commentsTitle,
-                        rightValue: "\(content.comments)")
-            }
+        VStack(alignment: .leading) {
+            FlexibleCard(axis: .horizontal,
+                         title: siteNameTitle,
+                         value: content.siteTitle)
+            Spacer()
+            makeRow(leftTitle: viewsTitle,
+                    leftValue: "\(content.views)",
+                    rightTitle: visitorsTitle,
+                    rightValue: "\(content.visitors)")
+            Spacer()
+            makeRow(leftTitle: likesTitle,
+                    leftValue: "\(content.likes)",
+                    rightTitle: commentsTitle,
+                    rightValue: "\(content.comments)")
         }
     }
     /// Constructs a two-card row for the medium size Today widget
@@ -40,4 +38,4 @@ struct TodayWidgetMediumView: View {
             Spacer()
         }
     }
-}
+ }
