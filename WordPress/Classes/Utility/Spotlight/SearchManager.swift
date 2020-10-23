@@ -320,7 +320,7 @@ fileprivate extension SearchManager {
     }
 
     func openSiteDetailsScreen(for blog: Blog) {
-        WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation

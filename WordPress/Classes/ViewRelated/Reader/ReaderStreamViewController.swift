@@ -83,6 +83,7 @@ import WordPressFlux
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
+    private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isLoggedIn = false
     private var isFeed = false
     private var syncIsFillingGap = false
@@ -1441,6 +1442,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     // MARK: - TableView Related
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
+        // likes to reload rows in a strange way.
+        // It uses the estimated height as a starting value for reloading animations.
+        // So this estimated value needs to be as accurate as possible to avoid any "jumping" in
+        // the cell heights during reload animations.
+        // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
+        // Brent C. August 8/2016
+        if let height = estimatedHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
+            // Return the previously known height as it was cached via willDisplayCell.
+            return height
+        }
+        return tableConfiguration.estimatedRowHeight()
+    }
 
     func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -1499,6 +1514,9 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Cache the cell's layout height as the currently known height, for estimation.
+        // See estimatedHeightForRowAtIndexPath
+        estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
 
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
