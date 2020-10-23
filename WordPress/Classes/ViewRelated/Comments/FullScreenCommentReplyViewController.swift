@@ -68,9 +68,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
             return
         }
 
-        let tableView = SuggestionsTableView()
-        tableView.siteID = siteID
-        tableView.suggestionsDelegate = self
+        guard let siteID = siteID else { return }
+        let tableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         tableView.useTransparentHeader = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
