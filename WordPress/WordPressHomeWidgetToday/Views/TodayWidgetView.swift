@@ -11,8 +11,7 @@ struct TodayWidgetView: View {
         switch family {
         case .systemSmall:
             TodayWidgetSmallView(content: content,
-                                 siteNameTitle:
-                                    Constants.siteNameTitle,
+                                 siteNameTitle: Constants.siteNameTitle,
                                  viewsTitle: Constants.viewsTitle)
                 .padding(.all, Constants.padding)
         case .systemMedium:

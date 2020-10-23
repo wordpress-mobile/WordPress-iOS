@@ -10,7 +10,6 @@ let staticModel = TodayWidgetContent(siteTitle: "Places you should visit",
 
 struct Provider: TimelineProvider {
 
-
     func placeholder(in context: Context) -> TodayWidgetContent {
         staticModel
     }
