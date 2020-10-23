@@ -1,70 +1,51 @@
-//
-//  WordPressHomeWidgetToday.swift
-//  WordPressHomeWidgetToday
-//
-//  Created by Giorgio Ruscigno on 10/15/20.
-//  Copyright © 2020 WordPress. All rights reserved.
-//
-
 import WidgetKit
 import SwiftUI
-import Intents
 
-struct Provider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent())
+// TODO - TODAYWIDGET: remove this static model when real data come in.
+let staticModel = TodayWidgetContent(siteTitle: "Around the world with Pam",
+                                   views: 1752,
+                                   visitors: 5000,
+                                   likes: 5000,
+                                   comments: 250)
+
+struct Provider: TimelineProvider {
+
+
+    func placeholder(in context: Context) -> TodayWidgetContent {
+        staticModel
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration)
-        completion(entry)
+    func getSnapshot(in context: Context, completion: @escaping (TodayWidgetContent) -> ()) {
+        completion(staticModel)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
-
+        let entries = [staticModel]
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let configuration: ConfigurationIntent
-}
-
-struct WordPressHomeWidgetTodayEntryView : View {
-    var entry: Provider.Entry
-
-    var body: some View {
-        Text(entry.date, style: .time)
-    }
-}
 
 @main
 struct WordPressHomeWidgetToday: Widget {
-    let kind: String = "WordPressHomeWidgetToday"
+    private let kind: String = "WordPressHomeWidgetToday"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-            WordPressHomeWidgetTodayEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            TodayWidgetView(content: staticModel)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Today")
+        .description("Stay up to date with today's activity on your WordPress site.")
+        // TODO - TODAYWIDGET: medium size to be supported too.
+        .supportedFamilies([.systemSmall])
     }
 }
 
 struct WordPressHomeWidgetToday_Previews: PreviewProvider {
     static var previews: some View {
-        WordPressHomeWidgetTodayEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
+        TodayWidgetView(content: staticModel)
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
