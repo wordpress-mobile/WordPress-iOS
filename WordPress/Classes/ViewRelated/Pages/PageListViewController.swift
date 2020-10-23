@@ -143,14 +143,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         super.viewDidAppear(animated)
 
         if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton()
+            createButtonCoordinator.showCreateButton(for: blog)
         }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton()
+            createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
         }
