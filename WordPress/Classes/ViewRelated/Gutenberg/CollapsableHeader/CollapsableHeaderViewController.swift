@@ -188,7 +188,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         setStaticText()
 
         scrollView.delegate = self
-        layoutHeader()
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
@@ -199,6 +198,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: true)
+        if !isViewOnScreen() {
+            layoutHeader()
+        }
         super.viewWillAppear(animated)
     }
 
@@ -210,6 +212,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        guard isShowingNoResults else { return }
         coordinator.animate { (_) in
             self.updateHeaderDisplay()
             if self.shouldHideFilterBar {
