@@ -182,7 +182,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.viewDidAppear(animated)
 
         if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton()
+            createButtonCoordinator.showCreateButton(for: blog)
         }
     }
 
@@ -195,7 +195,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.horizontalSizeClass == .compact {
-            createButtonCoordinator.showCreateButton()
+            createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
         }
