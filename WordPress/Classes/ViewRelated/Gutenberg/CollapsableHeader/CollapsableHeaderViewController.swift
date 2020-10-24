@@ -124,22 +124,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private let hasFilterBar: Bool
-    private var shouldHideFilterBar: Bool = false {
-        didSet {
-            guard oldValue != shouldHideFilterBar else { return }
-            headerHeightConstraint.isActive = false
-            initialHeaderTopConstraint.isActive = true
-            filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-            maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
-            minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
-            filterBar.layoutIfNeeded()
-            headerView.layoutIfNeeded()
-            calculateHeaderSnapPoints()
-            layoutHeaderInsets()
-        }
-    }
-    
     private var shouldUseCompactLayout: Bool {
         return traitCollection.verticalSizeClass == .compact
     }
@@ -209,7 +193,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         setStaticText()
 
         scrollView.delegate = self
-        layoutHeader()
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
@@ -220,6 +203,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: true)
+        if !isViewOnScreen() {
+            layoutHeader()
+        }
         super.viewWillAppear(animated)
     }
 
@@ -231,6 +217,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        guard isShowingNoResults else { return }
         coordinator.animate { (_) in
             self.updateHeaderDisplay()
             if self.shouldHideFilterBar {

@@ -350,9 +350,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
+    __weak __typeof(self) weakSelf = self;
+    
     return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
                                               mySitesNavigationController:self.blogListNavigationController
-                                                   blogListViewController:self.blogListViewController];
+                                                   blogListViewController:self.blogListViewController
+                                                        onBecomeActiveTab:^{
+        [weakSelf showMySitesTab];
+    }];
 }
 
 - (ReaderCoordinator *)readerCoordinator
@@ -501,7 +506,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
-    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
+    [self.mySitesCoordinator showBlogDetailsFor:post.blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
@@ -521,7 +526,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
-    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
+    [self.mySitesCoordinator showBlogDetailsFor:post.blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
@@ -537,7 +542,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
+    [self.mySitesCoordinator showBlogDetailsFor:blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
@@ -568,7 +573,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
 {
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
+    [self.mySitesCoordinator showBlogDetailsFor:blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {

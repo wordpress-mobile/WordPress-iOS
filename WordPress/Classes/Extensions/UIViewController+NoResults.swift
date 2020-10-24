@@ -22,6 +22,7 @@ extension NoResultsViewHost where Self: UIViewController {
     ///   - view: The no results view parentView. Required.
     ///   - title: Main descriptive text. Required.
     ///   - subtitle: Secondary descriptive text. Optional.
+    ///   - noConnectionSubtitle: Secondary descriptive text to use specifically when there is no network connection. Optional.
     ///   - buttonTitle: Title of action button. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - attributedSubtitleConfiguration: Called after default styling, for subtitle attributed text customization.
