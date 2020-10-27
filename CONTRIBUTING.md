@@ -34,6 +34,14 @@ The core team monitors and reviews all pull requests. Depending on the changes, 
 
 We do our best to respond quickly to all pull requests. If you don't get a response from us after a week, feel free to reach out to us via Slack.
 
+### PR merge policy
+
+* PRs require one reviewer to approve the PR before it can be merged to the base branch
+* We keep the PR git history when merging (merge via "merge commit")
+* Who merges the PR?
+  * For PRs authored by people external to the organisation and not having push permissions, the reviewer who approved the PR will merge it.
+  * For contributors with push permissions on our repos, we follow the convention that the author of the PR is the one who will merge their own PR.
+
 ## Getting in Touch
 
 If you have questions or just want to say hi, join the [WordPress Slack](https://make.wordpress.org/chat/) and drop a message on the `#mobile` channel.
