@@ -12,7 +12,7 @@ protocol CollapsableHeaderDataSource {
     var prompt: String { get }
 
     /// Used to populate the button title for the button that is displayed when no item is selected
-    var defaultActionTitle: String { get }
+    var defaultActionTitle: String? { get }
 
     /// Used to populate the button title for the right most button when an item is selected
     var primaryActionTitle: String { get }
@@ -254,9 +254,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = childViewController.mainTitle
         largeTitleView.text = childViewController.mainTitle
         promptView.text = childViewController.prompt
-        defaultActionButton.setTitle(childViewController.defaultActionTitle, for: .normal)
         secondaryActionButton.setTitle(childViewController.secondaryActionTitle, for: .normal)
         primaryActionButton.setTitle(childViewController.primaryActionTitle, for: .normal)
+
+        if let defaultActionTitle = childViewController.defaultActionTitle {
+            defaultActionButton.setTitle(defaultActionTitle, for: .normal)
+        } else {
+            footerView.isHidden = true
+        }
     }
 
     private func insertChildView() {

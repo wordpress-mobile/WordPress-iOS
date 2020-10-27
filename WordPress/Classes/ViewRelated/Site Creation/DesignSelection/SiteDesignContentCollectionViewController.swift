@@ -5,7 +5,7 @@ private let reuseIdentifier = "Cell"
 class SiteDesignContentCollectionViewController: UICollectionViewController, CollapsableHeaderDataSource {
     let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
     let prompt = NSLocalizedString("Pick your fvorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site.")
-    let defaultActionTitle: String = ""
+    let defaultActionTitle: String? = nil
     let primaryActionTitle = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
     let secondaryActionTitle = NSLocalizedString("Preview", comment: "Title for the button to preview the selected site homepage design")
 
