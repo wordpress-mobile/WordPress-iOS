@@ -112,7 +112,7 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
         guard let blog = blog else { return }
         isLoading = resultsController?.isEmpty() ?? true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
+        PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
