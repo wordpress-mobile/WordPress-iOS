@@ -38,9 +38,9 @@ We do our best to respond quickly to all pull requests. If you don't get a respo
 
 * PRs require one reviewer to approve the PR before it can be merged to the base branch
 * We keep the PR git history when merging (merge via "merge commit")
-* Who merges the PR?
+* Who merges the PR once it's approved and green?
   * For PRs authored by people external to the organisation and not having push permissions, the reviewer who approved the PR will merge it.
-  * For contributors with push permissions on our repos, we follow the convention that the author of the PR is the one who will merge their own PR.
+  * For PRs authored by contributors with push permissions, the author of the PR will merge their own PR.
 
 ## Getting in Touch
 
