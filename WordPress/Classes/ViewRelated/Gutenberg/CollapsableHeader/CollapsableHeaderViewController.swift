@@ -101,28 +101,15 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
     private var isShowingNoResults: Bool = false {
         didSet {
-            shouldHideFilterBar = isShowingNoResults
+            if oldValue != isShowingNoResults {
+                updateHeaderDisplay()
+            }
         }
-    }
-
-    private func updateHeaderDisplay() {
-        headerHeightConstraint.isActive = false
-        initialHeaderTopConstraint.isActive = true
-        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
-        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
-        filterBar.layoutIfNeeded()
-        headerView.layoutIfNeeded()
-        calculateHeaderSnapPoints()
-        layoutHeaderInsets()
     }
 
     private let hasFilterBar: Bool
-    private var shouldHideFilterBar: Bool = false {
-        didSet {
-            guard oldValue != shouldHideFilterBar else { return }
-            updateHeaderDisplay()
-        }
+    private var shouldHideFilterBar: Bool {
+        return isShowingNoResults || !hasFilterBar
     }
 
     private var shouldUseCompactLayout: Bool {
@@ -193,6 +180,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         styleButtons()
         setStaticText()
         scrollView.delegate = self
+        toggleFilterBarConstraints()
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
@@ -329,6 +317,22 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: Header and Footer Sizing
+    private func toggleFilterBarConstraints() {
+        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
+        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
+    }
+
+    private func updateHeaderDisplay() {
+        headerHeightConstraint.isActive = false
+        initialHeaderTopConstraint.isActive = true
+        toggleFilterBarConstraints()
+        filterBar.layoutIfNeeded()
+        headerView.layoutIfNeeded()
+        calculateHeaderSnapPoints()
+        layoutHeaderInsets()
+    }
+
     private func calculateHeaderSnapPoints() {
         minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
         let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
