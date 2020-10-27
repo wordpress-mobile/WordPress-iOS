@@ -2,7 +2,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class SiteDesignContentCollectionViewController: UICollectionViewController, CollapsableHeaderDataSource  {
+class SiteDesignContentCollectionViewController: UICollectionViewController, CollapsableHeaderDataSource {
     let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
     let prompt = NSLocalizedString("Pick your fvorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site.")
     let defaultActionTitle: String = ""

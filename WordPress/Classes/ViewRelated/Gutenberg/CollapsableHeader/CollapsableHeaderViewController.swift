@@ -128,6 +128,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         return traitCollection.verticalSizeClass == .compact
     }
 
+    private var topInset: CGFloat = 0
     private var _maxHeaderHeight: CGFloat = 0
     private var maxHeaderHeight: CGFloat {
         if shouldUseCompactLayout {
@@ -165,11 +166,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.init(childViewController: childViewController, delegate: childViewController, filterDelegate: childViewController)
     }
 
-    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate, withFilterBar hasFilterBar:Bool) {
+    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate, withFilterBar hasFilterBar: Bool) {
         self.init(childViewController: childViewController, withFilterBar: hasFilterBar, delegate: childViewController)
     }
 
-    init(childViewController: UIViewController & CollapsableHeaderDataSource, withFilterBar hasFilterBar:Bool = false, delegate: CollapsableHeaderDelegate? = nil, filterDelegate: CollapsableHeaderFilterBarDelegate? = nil) {
+    init(childViewController: UIViewController & CollapsableHeaderDataSource, withFilterBar hasFilterBar: Bool = true, delegate: CollapsableHeaderDelegate? = nil, filterDelegate: CollapsableHeaderFilterBarDelegate? = nil) {
         self.childViewController = childViewController
         self.delegate = delegate
         self.filterDelegate = filterDelegate
@@ -188,10 +189,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-
         styleButtons()
         setStaticText()
-
         scrollView.delegate = self
 
         if #available(iOS 13.0, *) {} else {
@@ -246,7 +245,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     @IBAction func defaultActionSelected(_ sender: Any) {
-        if let defaultActionSelected = delegate?.defaultActionSelected  {
+        if let defaultActionSelected = delegate?.defaultActionSelected {
             defaultActionSelected()
         }
     }
@@ -256,7 +255,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     @IBAction func secondaryActionSelected(_ sender: Any) {
-        if let secondaryActionSelected = delegate?.secondaryActionSelected  {
+        if let secondaryActionSelected = delegate?.secondaryActionSelected {
             secondaryActionSelected()
         }
     }
@@ -349,6 +348,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
             tableView.tableHeaderView?.backgroundColor = .clear
         } else {
+            self.topInset = topInset
             scrollView.contentInset.top = topInset
         }
 
@@ -366,7 +366,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let estimatedContentSize = shouldHideFilterBar ? .zero : childViewController.estimatedContentSize()
         let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
-
         if let tableView = scrollView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
@@ -382,6 +381,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             $0?.layoutIfNeeded()
         })
 
+        toggleHeaderConstraints()
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
     }
@@ -404,7 +404,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
         disableInitialLayoutHelpers()
 
-        let scrollOffset = scrollView.contentOffset.y
+        let scrollOffset = scrollView.contentOffset.y + topInset
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
         if newHeaderViewHeight < minHeaderHeight {
@@ -440,7 +440,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {
-        scrollView.contentOffset.y = maxHeaderHeight - height
+        scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
         let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
         hideSmallTitle(shouldHide, animated: animated)
