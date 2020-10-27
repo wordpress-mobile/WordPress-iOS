@@ -15,14 +15,14 @@
                          value: content.siteTitle)
             Spacer()
             makeRow(leftTitle: viewsTitle,
-                    leftValue: "\(content.views)",
+                    leftValue: "\(content.stats.views)",
                     rightTitle: visitorsTitle,
-                    rightValue: "\(content.visitors)")
+                    rightValue: "\(content.stats.visitors)")
             Spacer()
             makeRow(leftTitle: likesTitle,
-                    leftValue: "\(content.likes)",
+                    leftValue: "\(content.stats.likes)",
                     rightTitle: commentsTitle,
-                    rightValue: "\(content.comments)")
+                    rightValue: "\(content.stats.comments)")
         }
     }
     /// Constructs a two-card row for the medium size Today widget

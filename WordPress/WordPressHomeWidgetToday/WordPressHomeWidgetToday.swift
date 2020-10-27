@@ -3,10 +3,10 @@ import SwiftUI
 
 // TODO - TODAYWIDGET: remove this static model when real data come in.
 let staticModel = TodayWidgetContent(siteTitle: "Places you should visit",
-                                   views: 5980,
-                                   visitors: 4208,
-                                   likes: 107,
-                                   comments: 5)
+                                     stats:TodayWidgetStats(views: 5980,
+                                                            visitors: 4208,
+                                                            likes: 107,
+                                                            comments: 5))
 
 struct Provider: TimelineProvider {
 
