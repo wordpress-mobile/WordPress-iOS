@@ -117,6 +117,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         layoutHeaderInsets()
     }
 
+    private let hasFilterBar: Bool
     private var shouldHideFilterBar: Bool = false {
         didSet {
             guard oldValue != shouldHideFilterBar else { return }
@@ -381,7 +382,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             $0?.layoutIfNeeded()
         })
 
-        toggleHeaderConstraints()
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
     }
