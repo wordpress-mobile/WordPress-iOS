@@ -174,7 +174,6 @@ jobs:
       - run: 
           name: Install other tools
           command: |
-            brew unlink python@2
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash

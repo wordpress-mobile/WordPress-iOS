@@ -1,5 +1,0 @@
-Blok düzenleyici geliştirmeleri:
-Jetpack sitelerinde, artık Jetpack SSO'yu eksik blok uyarısından etkinleştirerek desteklenmeyen blokları düzenleyebilirsiniz. Yazılara URL eklemek için kullanışlı bağlantı seçiciyi kullanın. Desteklenmeyen bloklarda birincil işlemde dokunma hedefinin boyutu da arttırıldı.
-
-Düzeltmeler:
-Sayfa düzenleyicinin görünmez bir tabaka haline gelmesine neden olan hata ve bir oturum açma bağlantısı istendiğinde oluşulan yinelenen görünümler ortadan kaldırıldı. Reader'da, bağlayıcı içeren bir bağlantıya dokunulduğunda artık beklendiği gibi çalışır.

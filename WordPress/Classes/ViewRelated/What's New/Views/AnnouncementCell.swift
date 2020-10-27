@@ -47,6 +47,8 @@ class AnnouncementCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Configures the labels and image views using the data from a `WordPressKit.Feature` object.
+    /// - Parameter feature: The `feature` containing the information to fill the cell with.
     func configure(feature: WordPressKit.Feature) {
 
         if let iconBase64Components = feature.iconBase64,
@@ -62,6 +64,19 @@ class AnnouncementCell: UITableViewCell {
         }
         headingLabel.text = feature.title
         subHeadingLabel.text = feature.subtitle
+    }
+
+    /// Configures the labels and image views using the data passed as parameters.
+    /// - Parameters:
+    ///   - title: The title string to use for the heading.
+    ///   - description: The description string to use for the sub heading.
+    ///   - image: The image to use for the image view.
+    func configure(title: String, description: String, image: UIImage?) {
+        headingLabel.text = title
+        subHeadingLabel.text = description
+
+        announcementImageView.image = image
+        announcementImageView.isHidden = image == nil
     }
 }
 

@@ -1,5 +1,0 @@
-Melhorias no editor de blocos:
-Sites Jetpack agora podem editar blocos não suportados ativando o Jetpack SSO no alerta de bloco ausente. Use o seletor de links para adicionar URLs em posts. Também aumentamos o tamanho da área de toque na ação primária de blocos não suportados.
-
-Correções:
-Removemos erros que adicionavam uma camada invisível na página do editor e eliminamos telas duplicadas geradas ao solicitar um link de acesso. No Leitor, tocar em um link com âncora agora funciona como esperado.

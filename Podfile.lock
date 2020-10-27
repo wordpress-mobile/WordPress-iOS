@@ -395,7 +395,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.27.0-beta.4):
+  - WordPressAuthenticator (1.27.0):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -407,14 +407,14 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.20.0-beta.1):
+  - WordPressKit (4.19.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1)
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9.0)
-  - WordPressMocks (0.0.9-beta.2)
+  - WordPressMocks (0.0.9)
   - WordPressShared (1.12.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -506,9 +506,9 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.27.0-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/migrateLayoutFetch`)
-  - WordPressMocks (~> 0.0.9-beta)
+  - WordPressAuthenticator (~> 1.27.0)
+  - WordPressKit (~> 4.19)
+  - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.12.0)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.2)
@@ -761,9 +761,9 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: b22bc0844ebfed1266e062bfeebac47f34990162
-  WordPressKit: bef382033025e316af09263855e16fb8af9dd187
-  WordPressMocks: 512df883edd980e5e4f11fa6341bde07c0b1ab26
+  WordPressAuthenticator: 2808ae2692e9e5ded6780c7bfb74e6a1571a1906
+  WordPressKit: bbd17cd14a7f68080bdeb350c3780a40c29fd937
+  WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
@@ -778,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: c126b10929061c5704e8474af8d143a4054b8389
+PODFILE CHECKSUM: cf4946853e0d66f41d5e06692a8e3fbc588e94fc
 
 COCOAPODS: 1.9.3

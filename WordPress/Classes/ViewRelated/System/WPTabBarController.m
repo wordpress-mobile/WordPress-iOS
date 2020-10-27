@@ -350,9 +350,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
+    __weak __typeof(self) weakSelf = self;
+    
     return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
                                               mySitesNavigationController:self.blogListNavigationController
-                                                   blogListViewController:self.blogListViewController];
+                                                   blogListViewController:self.blogListViewController
+                                                        onBecomeActiveTab:^{
+        [weakSelf showMySitesTab];
+    }];
 }
 
 - (ReaderCoordinator *)readerCoordinator
@@ -489,46 +494,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
-- (void)switchTabToPostsListForPost:(AbstractPost *)post
-{
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
-    if ([topVC isKindOfClass:[PostListViewController class]]) {
-        Blog *blog = ((PostListViewController *)topVC).blog;
-        if ([post.blog.objectID isEqual:blog.objectID]) {
-            // The desired post view controller is already the top viewController for the tab.
-            // Nothing to see here.  Move along.
-            return;
-        }
-    }
-
-    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
-    }
-}
-
-- (void)switchTabToPagesListForPost:(AbstractPost *)post
-{
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
-    if ([topVC isKindOfClass:[PageListViewController class]]) {
-        Blog *blog = ((PageListViewController *)topVC).blog;
-        if ([post.blog.objectID isEqual:blog.objectID]) {
-            // The desired post view controller is already the top viewController for the tab.
-            // Nothing to see here.  Move along.
-            return;
-        }
-    }
-
-    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPages];
-    }
-}
-
 - (void)switchMySitesTabToAddNewSite
 {
     [self setSelectedIndex:WPTabMySites];
@@ -537,7 +502,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
+    [self.mySitesCoordinator showBlogDetailsFor:blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
@@ -568,7 +533,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
 {
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
+    [self.mySitesCoordinator showBlogDetailsFor:blog];
 
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {

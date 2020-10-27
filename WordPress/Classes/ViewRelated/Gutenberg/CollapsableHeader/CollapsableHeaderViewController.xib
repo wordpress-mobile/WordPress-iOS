@@ -16,6 +16,7 @@
                 <outlet property="containerView" destination="WmP-bw-ceT" id="lul-gs-fMI"/>
                 <outlet property="defaultActionButton" destination="dmc-kV-0d8" id="NfO-bU-Zl7"/>
                 <outlet property="filterBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
+                <outlet property="filterBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
                 <outlet property="footerView" destination="UfV-hu-KZx" id="LZu-HT-o4b"/>
                 <outlet property="headerBar" destination="UZ7-wW-FYi" id="4aa-pG-O4U"/>
                 <outlet property="headerHeightConstraint" destination="dks-Bz-gRQ" id="PfP-C9-RWM"/>
@@ -159,7 +160,7 @@
                         <constraint firstItem="nio-Wp-Ebw" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" id="tcz-y3-AwH"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" id="uVe-Ze-eIF"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="top" id="wKv-4h-bvX"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DE5-R9-8tB" secondAttribute="bottom" constant="9" id="wOf-4J-lXq"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DE5-R9-8tB" secondAttribute="bottom" priority="999" constant="9" id="wOf-4J-lXq"/>
                         <constraint firstItem="bxz-wi-I73" firstAttribute="top" secondItem="nio-Wp-Ebw" secondAttribute="bottom" constant="12" id="yo1-TE-BW8"/>
                     </constraints>
                     <variation key="default">

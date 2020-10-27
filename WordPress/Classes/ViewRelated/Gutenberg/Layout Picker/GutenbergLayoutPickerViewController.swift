@@ -112,7 +112,24 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
         guard let blog = blog else { return }
         isLoading = resultsController?.isEmpty() ?? true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
+        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.headerContentsDelegate?.dismissNoResultsController()
+                case .failure(let error):
+                    self?.handleErrors(error)
+                }
+            }
+        }
+    }
+
+    private func handleErrors(_ error: Error) {
+        guard resultsController?.isEmpty() ?? true else { return }
+        isLoading = false
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
+        headerContentsDelegate?.displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 
     private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>?) -> [GutenbergLayoutSection] {
@@ -298,6 +315,13 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
         isLoading = resultsController?.isEmpty() ?? true
+        headerContentsDelegate?.contentSizeWillChange()
         tableView.reloadData()
+    }
+}
+
+extension GutenbergLayoutPickerViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        fetchLayouts()
     }
 }
