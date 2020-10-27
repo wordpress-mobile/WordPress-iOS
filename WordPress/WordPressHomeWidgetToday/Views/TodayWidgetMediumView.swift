@@ -2,7 +2,7 @@
 
  struct TodayWidgetMediumView: View {
     let content: TodayWidgetContent
-    let siteNameTitle: LocalizedStringKey
+    let widgetTitle: LocalizedStringKey
     let viewsTitle: LocalizedStringKey
     let visitorsTitle: LocalizedStringKey
     let likesTitle: LocalizedStringKey
@@ -11,7 +11,7 @@
     var body: some View {
         VStack(alignment: .leading) {
             FlexibleCard(axis: .horizontal,
-                         title: siteNameTitle,
+                         title: widgetTitle,
                          value: content.siteTitle)
             Spacer()
             makeRow(leftTitle: viewsTitle,

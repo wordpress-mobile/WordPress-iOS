@@ -11,12 +11,12 @@ struct TodayWidgetView: View {
         switch family {
         case .systemSmall:
             TodayWidgetSmallView(content: content,
-                                 siteNameTitle: Constants.siteNameTitle,
+                                 widgetTitle: Constants.widgetTitle,
                                  viewsTitle: Constants.viewsTitle)
                 .padding(.all, Constants.padding)
         case .systemMedium:
             TodayWidgetMediumView(content: content,
-                                  siteNameTitle: Constants.siteNameTitle,
+                                  widgetTitle: Constants.widgetTitle,
                                   viewsTitle: Constants.viewsTitle,
                                   visitorsTitle: Constants.visitorsTitle,
                                   likesTitle: Constants.likesTitle,
@@ -33,7 +33,7 @@ extension TodayWidgetView {
 
     private enum Constants {
         // Titles
-        static let siteNameTitle: LocalizedStringKey = "Today"
+        static let widgetTitle: LocalizedStringKey = "Today"
         static let viewsTitle: LocalizedStringKey = "Views"
         static let visitorsTitle: LocalizedStringKey = "Visitors"
         static let likesTitle: LocalizedStringKey = "Likes"
