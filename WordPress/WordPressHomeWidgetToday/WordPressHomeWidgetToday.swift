@@ -19,11 +19,19 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        guard let initialStats = TodayWidgetStats.loadSavedData() else {
+            return
+        }
 
-        let entries = [staticModel]
+        let entries = [TodayWidgetContent(siteTitle: siteName, stats: initialStats)]
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
+
+    var siteName: String {
+        UserDefaults(suiteName: WPAppGroupName)?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? "Site name not found"
+    }
+
 }
 
 
@@ -33,7 +41,7 @@ struct WordPressHomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            TodayWidgetView(content: staticModel)
+            TodayWidgetView(content: entry)
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")
