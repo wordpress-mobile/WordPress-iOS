@@ -13,7 +13,7 @@ struct TodayWidgetView: View {
             TodayWidgetSmallView(content: content,
                                  widgetTitle: Constants.widgetTitle,
                                  viewsTitle: Constants.viewsTitle)
-                .padding(.all, Constants.padding)
+                .padding()
         case .systemMedium:
             TodayWidgetMediumView(content: content,
                                   widgetTitle: Constants.widgetTitle,
@@ -21,7 +21,7 @@ struct TodayWidgetView: View {
                                   visitorsTitle: Constants.visitorsTitle,
                                   likesTitle: Constants.likesTitle,
                                   commentsTitle: Constants.commentsTitle)
-                .padding(.all, Constants.padding)
+                .padding()
         default:
             Text("View is unavailable")
         }
@@ -39,8 +39,6 @@ extension TodayWidgetView {
         static let likesTitle: LocalizedStringKey = "Likes"
         static let commentsTitle: LocalizedStringKey = "Comments"
 
-        // Padding
-        static let padding: CGFloat = 16
     }
 }
 

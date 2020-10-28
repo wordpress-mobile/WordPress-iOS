@@ -14,28 +14,31 @@
                          title: widgetTitle,
                          value: content.siteTitle)
             Spacer()
-            makeRow(leftTitle: viewsTitle,
-                    leftValue: "\(content.stats.views)",
-                    rightTitle: visitorsTitle,
-                    rightValue: "\(content.stats.visitors)")
-            Spacer()
-            makeRow(leftTitle: likesTitle,
-                    leftValue: "\(content.stats.likes)",
-                    rightTitle: commentsTitle,
-                    rightValue: "\(content.stats.comments)")
+            HStack {
+                makeColumn(upperTitle: viewsTitle,
+                           upperValue: "\(content.views)",
+                           lowerTitle: likesTitle,
+                           lowerValue: "\(content.likes)")
+                Spacer()
+                Spacer()
+                makeColumn(upperTitle: visitorsTitle,
+                           upperValue: "\(content.visitors)",
+                           lowerTitle: commentsTitle,
+                           lowerValue: "\(content.comments)")
+                Spacer()
+            }
         }
     }
-    /// Constructs a two-card row for the medium size Today widget
-    private func makeRow(leftTitle: LocalizedStringKey,
-                         leftValue: LocalizedStringKey,
-                         rightTitle: LocalizedStringKey,
-                         rightValue: LocalizedStringKey) -> some View {
-        HStack {
-            VerticalCard(title: leftTitle, value: leftValue, largeText: false)
+
+    /// Constructs a two-card column for the medium size Today widget
+    private func makeColumn(upperTitle: LocalizedStringKey,
+                            upperValue: LocalizedStringKey,
+                            lowerTitle: LocalizedStringKey,
+                            lowerValue: LocalizedStringKey) -> some View {
+        VStack(alignment: .leading) {
+            VerticalCard(title: upperTitle, value: upperValue, largeText: false)
             Spacer()
-            Spacer()
-            VerticalCard(title: rightTitle, value: rightValue, largeText: false)
-            Spacer()
+            VerticalCard(title: lowerTitle, value: lowerValue, largeText: false)
         }
     }
  }
