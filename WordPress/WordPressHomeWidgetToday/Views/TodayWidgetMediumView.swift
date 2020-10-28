@@ -29,6 +29,7 @@
             }
         }
     }
+
     /// Constructs a two-card column for the medium size Today widget
     private func makeColumn(upperTitle: LocalizedStringKey,
                             upperValue: LocalizedStringKey,
