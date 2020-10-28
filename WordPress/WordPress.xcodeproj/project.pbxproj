@@ -633,6 +633,9 @@
 		46183CF5251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46183CF3251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift */; };
 		46183D1F251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46183D1D251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift */; };
 		46183D20251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */; };
+		46241C0F2540BD01002B8A12 /* SiteDesignStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */; };
+		46241C3C2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */; };
+		46241C3D2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */; };
 		4625B556253789C000C04AAD /* CollapsableHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */; };
 		4625B6342538B53700C04AAD /* CollapsableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */; };
 		4629E41D243D21400002E15C /* EditorThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4629E41C243D21400002E15C /* EditorThemeStore.swift */; };
@@ -3096,6 +3099,9 @@
 		46183CF3251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageTemplateLayout+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		46183D1D251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageTemplateCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageTemplateCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignStep.swift; sourceTree = "<group>"; };
+		46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignContentCollectionViewController.swift; sourceTree = "<group>"; };
+		46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteDesignContentCollectionViewController.xib; sourceTree = "<group>"; };
 		4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderViewController.swift; sourceTree = "<group>"; };
 		4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollapsableHeaderViewController.xib; sourceTree = "<group>"; };
 		4625BC26253E285700C04AAD /* WordPress 102.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 102.xcdatamodel"; sourceTree = "<group>"; };
@@ -6708,6 +6714,16 @@
 			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
+		46241BD72540B403002B8A12 /* DesignSelection */ = {
+			isa = PBXGroup;
+			children = (
+				46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */,
+				46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */,
+				46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */,
+			);
+			path = DesignSelection;
+			sourceTree = "<group>";
+		};
 		4625B5472537875E00C04AAD /* CollapsableHeader */ = {
 			isa = PBXGroup;
 			children = (
@@ -10102,6 +10118,7 @@
 				73178C2D21BEE13E00E37C9A /* FinalAssembly */,
 				738B9A4721B85CF20005062B /* Shared */,
 				D8C31CBF2188442200A33B35 /* SiteSegments */,
+				46241BD72540B403002B8A12 /* DesignSelection */,
 				D8380CA72194287B00250609 /* WebAddress */,
 				738B9A3F21B85CF20005062B /* Wizard */,
 			);
@@ -11585,6 +11602,7 @@
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
 				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
+				46241C3D2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib in Resources */,
 				17E3639922C41DBA000E0C79 /* hot_pink_icon_76pt.png in Resources */,
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
@@ -12714,6 +12732,7 @@
 				2F605FAA25145F7200F99544 /* WPCategoryTree.swift in Sources */,
 				5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */,
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
+				46241C3C2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift in Sources */,
 				17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */,
 				1715179220F4B2EB002C4A38 /* Routes+Stats.swift in Sources */,
 				3F29EB7224042276005313DE /* MeViewController+UIViewControllerRestoration.swift in Sources */,
@@ -12862,6 +12881,7 @@
 				B543D2B520570B5A00D3D4CC /* WordPressComSyncService.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
 				46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */,
+				46241C0F2540BD01002B8A12 /* SiteDesignStep.swift in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */,
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
