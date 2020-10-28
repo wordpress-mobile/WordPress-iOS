@@ -2,14 +2,13 @@ import WidgetKit
 import SwiftUI
 
 // TODO - TODAYWIDGET: remove this static model when real data come in.
-let staticModel = TodayWidgetContent(siteTitle: "Around the world with Pam",
-                                   views: 1752,
-                                   visitors: 5000,
-                                   likes: 5000,
-                                   comments: 250)
+let staticModel = TodayWidgetContent(siteTitle: "Places you should visit",
+                                   views: 5980,
+                                   visitors: 4208,
+                                   likes: 107,
+                                   comments: 5)
 
 struct Provider: TimelineProvider {
-
 
     func placeholder(in context: Context) -> TodayWidgetContent {
         staticModel
@@ -38,14 +37,6 @@ struct WordPressHomeWidgetToday: Widget {
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")
-        // TODO - TODAYWIDGET: medium size to be supported too.
-        .supportedFamilies([.systemSmall])
-    }
-}
-
-struct WordPressHomeWidgetToday_Previews: PreviewProvider {
-    static var previews: some View {
-        TodayWidgetView(content: staticModel)
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

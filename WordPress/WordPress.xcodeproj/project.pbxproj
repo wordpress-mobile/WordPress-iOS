@@ -419,6 +419,10 @@
 		3F526C5C2538CF2B0069706C /* WordPressHomeWidgetToday.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3F526CF12539F85F0069706C /* TodayWidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */; };
 		3F526D572539FAC60069706C /* TodayWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526D562539FAC60069706C /* TodayWidgetView.swift */; };
+		3F5689F0254209790048A9E4 /* TodayWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5689EF254209790048A9E4 /* TodayWidgetSmallView.swift */; };
+		3F568A0025420DE80048A9E4 /* TodayWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5689FF25420DE80048A9E4 /* TodayWidgetMediumView.swift */; };
+		3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A1E254213B60048A9E4 /* VerticalCard.swift */; };
+		3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A2E254216550048A9E4 /* FlexibleCard.swift */; };
 		3F5B2D372540BECB009DEED1 /* TodayWidgetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */; };
 		3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */; };
 		3F5B3EB123A851480060FF1F /* ReaderReblogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */; };
@@ -2926,6 +2930,10 @@
 		3F526C702538D0690069706C /* WordPressHomeWidgetTodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressHomeWidgetTodayExtension.entitlements; sourceTree = "<group>"; };
 		3F526CEF2539F85F0069706C /* TodayWidgetContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetContent.swift; sourceTree = "<group>"; };
 		3F526D562539FAC60069706C /* TodayWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetView.swift; sourceTree = "<group>"; };
+		3F5689EF254209790048A9E4 /* TodayWidgetSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetSmallView.swift; sourceTree = "<group>"; };
+		3F5689FF25420DE80048A9E4 /* TodayWidgetMediumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgetMediumView.swift; sourceTree = "<group>"; };
+		3F568A1E254213B60048A9E4 /* VerticalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalCard.swift; sourceTree = "<group>"; };
+		3F568A2E254216550048A9E4 /* FlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleCard.swift; sourceTree = "<group>"; };
 		3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogPresenter.swift; sourceTree = "<group>"; };
 		3F5B3EB023A851480060FF1F /* ReaderReblogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogFormatter.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
@@ -6428,7 +6436,7 @@
 		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
 			isa = PBXGroup;
 			children = (
-				3F526D2B2539F9D60069706C /* View */,
+				3F526D2B2539F9D60069706C /* Views */,
 				3F526D1C2539F9C80069706C /* Model */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
 				3F526CA82538E0ED0069706C /* Supporting Files */,
@@ -6458,12 +6466,24 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		3F526D2B2539F9D60069706C /* View */ = {
+		3F526D2B2539F9D60069706C /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				3F526D562539FAC60069706C /* TodayWidgetView.swift */,
+				3F5689EF254209790048A9E4 /* TodayWidgetSmallView.swift */,
+				3F5689FF25420DE80048A9E4 /* TodayWidgetMediumView.swift */,
+				3F568A1D254210950048A9E4 /* Cards */,
 			);
-			path = View;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3F568A1D254210950048A9E4 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				3F568A2E254216550048A9E4 /* FlexibleCard.swift */,
+				3F568A1E254213B60048A9E4 /* VerticalCard.swift */,
+			);
+			path = Cards;
 			sourceTree = "<group>";
 		};
 		3F662C4824DC9F8300CAEA95 /* What's New */ = {
@@ -13883,8 +13903,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F526D572539FAC60069706C /* TodayWidgetView.swift in Sources */,
+				3F568A0025420DE80048A9E4 /* TodayWidgetMediumView.swift in Sources */,
+				3F568A2F254216550048A9E4 /* FlexibleCard.swift in Sources */,
+				3F568A1F254213B60048A9E4 /* VerticalCard.swift in Sources */,
 				3F526CF12539F85F0069706C /* TodayWidgetContent.swift in Sources */,
 				3F526C532538CF2A0069706C /* WordPressHomeWidgetToday.swift in Sources */,
+				3F5689F0254209790048A9E4 /* TodayWidgetSmallView.swift in Sources */,
 				3F526C582538CF2B0069706C /* WordPressHomeWidgetToday.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
