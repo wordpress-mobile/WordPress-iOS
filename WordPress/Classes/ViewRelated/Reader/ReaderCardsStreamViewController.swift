@@ -25,7 +25,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
 
     /// Whether the current view controller is visible
-    private var isVisible = false
+    private var isVisible: Bool {
+        return isViewLoaded && view.window != nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,16 +41,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         displaySelectInterestsIfNeeded()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        isVisible = true
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        isVisible = false
     }
 
     // MARK: - TableView Related
