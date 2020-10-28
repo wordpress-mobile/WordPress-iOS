@@ -1,68 +1,13 @@
 import UIKit
 
-protocol CollapsableHeaderDataSource {
-
-    /// Used to populate the scrollable area of this container. 
-    var scrollView: UIScrollView { get }
-
-    /// Used to populate the Large title and small title in the header
-    var mainTitle: String { get }
-
-    /// Used to populate the subtitle/prompt in the header
-    var prompt: String { get }
-
-    /// Used to populate the button title for the button that is displayed when no item is selected
-    var defaultActionTitle: String? { get }
-
-    /// Used to populate the button title for the right most button when an item is selected
-    var primaryActionTitle: String { get }
-
-    /// Used to populate the button title for the left most button when an item is selected
-    var secondaryActionTitle: String { get }
-
-    /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
-    /// it's not populated with enough data. This is desirable to help maintain the header's state when the filtered options change and reduce the content size.
-    func estimatedContentSize() -> CGSize
-}
-
-@objc protocol CollapsableHeaderDelegate: class {
-    /// Notifies the delegate that the right most button when an item is selected was tapped
-    func primaryActionSelected()
-
-    /// Notifies the delegate that the button that is displayed when no item is selected was tapped
-    @objc optional func defaultActionSelected()
-
-    /// Notifies the delegate that the left most button when an item is selected was tapped
-    @objc optional func secondaryActionSelected()
-}
-
-protocol CollapsableHeaderContentsDelegate: class {
-    /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
-    /// view to still be scrollable with the content size is less than the total space of the expanded screen.
-    func contentSizeWillChange()
-
-    /// A public interface to notify the container that the selected state for an items has changed.
-    func itemSelectionChanged(_ hasSelectedItem: Bool)
-
-    /// A public interface to notify the container that the content view is loading content still
-    func loadingStateChanged(_ isLoading: Bool)
-
-    /// A public interface to notify the container that the content has failed to load
-    func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?)
-
-    /// A public interface to notify the container that the content has loaded data or is attempting too.
-    func dismissNoResultsController()
-}
-
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
-    let childViewController: (UIViewController & CollapsableHeaderDataSource)
-    weak var delegate: CollapsableHeaderDelegate?
-    weak var filterDelegate: CollapsableHeaderFilterBarDelegate?
-
-    var scrollView: UIScrollView {
-        childViewController.scrollView
-    }
+    let scrollableView: UIScrollView
+    let mainTitle: String
+    let prompt: String
+    let primaryActionTitle: String
+    let secondaryActionTitle: String?
+    let defaultActionTitle: String?
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headerBar: UIView!
@@ -136,7 +81,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
     private var minHeaderHeight: CGFloat = 0
 
-    var accentColor: UIColor {
+    private var accentColor: UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { (traitCollection: UITraitCollection) -> UIColor in
                 if traitCollection.userInterfaceStyle == .dark {
@@ -150,19 +95,32 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate & CollapsableHeaderFilterBarDelegate) {
-        self.init(childViewController: childViewController, delegate: childViewController, filterDelegate: childViewController)
-    }
-
-    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate, withFilterBar hasFilterBar: Bool) {
-        self.init(childViewController: childViewController, withFilterBar: hasFilterBar, delegate: childViewController)
-    }
-
-    init(childViewController: UIViewController & CollapsableHeaderDataSource, withFilterBar hasFilterBar: Bool = true, delegate: CollapsableHeaderDelegate? = nil, filterDelegate: CollapsableHeaderFilterBarDelegate? = nil) {
-        self.childViewController = childViewController
-        self.delegate = delegate
-        self.filterDelegate = filterDelegate
+    /// Configure and display the no results view controller
+    ///
+    /// - Parameters:
+    ///   - scrollableView: Populates the scrollable area of this container. Required.
+    ///   - title: The Large title and small title in the header. Required.
+    ///   - prompt: The subtitle/prompt in the header. Required.
+    ///   - primaryActionTitle: The button title for the right most button when an item is selected. Required.
+    ///   - secondaryActionTitle: The button title for the left most button when an item is selected. Optional - nil results in the left most button being hidden when an item is selected.
+    ///   - defaultActionTitle: The button title for the button that is displayed when no item is selected. Optional - nil results in the footer being hidden when no item is selected.
+    ///   - hasFilterBar: Determines if the filter bar should be shown or not. Optional - The default is shown.
+    ///
+    init(scrollableView: UIScrollView,
+         mainTitle: String,
+         prompt: String,
+         primaryActionTitle: String,
+         secondaryActionTitle: String? = nil,
+         defaultActionTitle: String? = nil,
+         hasFilterBar: Bool = true) {
+        self.scrollableView = scrollableView
+        self.mainTitle = mainTitle
+        self.prompt = prompt
+        self.primaryActionTitle = primaryActionTitle
+        self.secondaryActionTitle = secondaryActionTitle
+        self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
+
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -172,14 +130,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterBar.filterDelegate = filterDelegate
         insertChildView()
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         styleButtons()
         setStaticText()
-        scrollView.delegate = self
+        scrollableView.delegate = self
         toggleFilterBarConstraints()
 
         if #available(iOS 13.0, *) {} else {
@@ -187,6 +144,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             headerView.backgroundColor = .basicBackground
             footerView.backgroundColor = .basicBackground
         }
+    }
+
+    /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
+    /// it's not populated with enough data. This is desirable to help maintain the header's state when the filtered options change and reduce the content size.
+    open func estimatedContentSize() -> CGSize {
+        return scrollableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -210,7 +173,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             self.updateHeaderDisplay()
             if self.shouldHideFilterBar {
                 self.disableInitialLayoutHelpers()
-                self.snapToHeight(self.scrollView, height: self.minHeaderHeight, animated: false)
+                self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
             }
         }
     }
@@ -229,51 +192,48 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    @IBAction func closeSelected(_ sender: Any) {
+    // MARK: - Header Actions
+    @IBAction open func closeSelected(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func defaultActionSelected(_ sender: Any) {
-        if let defaultActionSelected = delegate?.defaultActionSelected {
-            defaultActionSelected()
-        }
+    // MARK: - Footer Actions
+    @IBAction open func defaultActionSelected(_ sender: Any) {
+        /* This should be overriden in a child class in order to enable support. */
     }
 
-    @IBAction func primaryActionSelected(_ sender: Any) {
-        delegate?.primaryActionSelected()
+    @IBAction open func primaryActionSelected(_ sender: Any) {
+        /* This should be overriden in a child class in order to enable support. */
     }
 
-    @IBAction func secondaryActionSelected(_ sender: Any) {
-        if let secondaryActionSelected = delegate?.secondaryActionSelected {
-            secondaryActionSelected()
-        }
+    @IBAction open func secondaryActionSelected(_ sender: Any) {
+        /* This should be overriden in a child class in order to enable support. */
+    }
+
+    // MARK: - View Styling
+    private func insertChildView() {
+        scrollableView.translatesAutoresizingMaskIntoConstraints = false
+        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
+        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
+        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
+        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
+        containerView.addSubview(scrollableView)
+        containerView.addConstraints([top, bottom, leading, trailing])
     }
 
     private func setStaticText() {
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        titleView.text = childViewController.mainTitle
-        largeTitleView.text = childViewController.mainTitle
-        promptView.text = childViewController.prompt
-        secondaryActionButton.setTitle(childViewController.secondaryActionTitle, for: .normal)
-        primaryActionButton.setTitle(childViewController.primaryActionTitle, for: .normal)
+        titleView.text = mainTitle
+        largeTitleView.text = mainTitle
+        promptView.text = prompt
+        secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
+        primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
-        if let defaultActionTitle = childViewController.defaultActionTitle {
+        if let defaultActionTitle = defaultActionTitle {
             defaultActionButton.setTitle(defaultActionTitle, for: .normal)
         } else {
             footerView.isHidden = true
         }
-    }
-
-    private func insertChildView() {
-        add(childViewController)
-        guard let childView = childViewController.view else { return }
-        childView.translatesAutoresizingMaskIntoConstraints = false
-        let top = NSLayoutConstraint(item: childView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: childView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
-        let leading = NSLayoutConstraint(item: childView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
-        let trailing = NSLayoutConstraint(item: childView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
-        containerView.addSubview(childView)
-        containerView.addConstraints([top, bottom, leading, trailing])
     }
 
     private func styleButtons() {
@@ -303,6 +263,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                     return UIColor.quaternarySystemFill
                 }
             }
+        } else {
+            closeButton.tintColor = .textSubtle
+            closeButton.backgroundColor = .quaternaryBackground
         }
     }
 
@@ -321,7 +284,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: Header and Footer Sizing
+    // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
         maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
@@ -360,12 +323,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             topInset = maxHeaderHeight + headerBar.frame.height
         }
 
-        if let tableView = scrollView as? UITableView {
+        if let tableView = scrollableView as? UITableView {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
             tableView.tableHeaderView?.backgroundColor = .clear
         } else {
             self.topInset = topInset
-            scrollView.contentInset.top = topInset
+            scrollableView.contentInset.top = topInset
         }
 
         updateFooterInsets()
@@ -379,15 +342,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let estimatedContentSize = childViewController.estimatedContentSize()
-        let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
+        let distanceToBottom = scrollableView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize().height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
-        if let tableView = scrollView as? UITableView {
+        if let tableView = scrollableView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
             tableView.tableFooterView?.backgroundColor = .clear
         } else {
-            scrollView.contentInset.bottom = newHeight
+            scrollableView.contentInset.bottom = newHeight
         }
     }
 
@@ -400,8 +362,61 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
     }
+
+    // MARK: - Subclass callbacks
+    public func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?) {
+        guard !isShowingNoResults else { return }
+        isShowingNoResults = true
+        disableInitialLayoutHelpers()
+        snapToHeight(scrollableView, height: minHeaderHeight)
+        configureAndDisplayNoResults(on: containerView,
+                                     title: title,
+                                     subtitle: subtitle,
+                                     noConnectionSubtitle: subtitle,
+                                     buttonTitle: NSLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
+                                     customizationBlock: { (noResultsController) in
+                                        noResultsController.delegate = resultsDelegate
+                                     })
+    }
+
+    public func dismissNoResultsController() {
+        guard isShowingNoResults else { return }
+        isShowingNoResults = false
+        snapToHeight(scrollableView, height: maxHeaderHeight)
+        hideNoResults()
+    }
+
+    public func contentSizeWillChange() {
+        updateFooterInsets()
+    }
+
+    public func itemSelectionChanged(_ hasSelectedItem: Bool) {
+        defaultActionButton.isHidden = false
+        selectedStateButtonsContainer.isHidden = false
+
+        defaultActionButton.alpha = hasSelectedItem ? 1 : 0
+        selectedStateButtonsContainer.alpha = hasSelectedItem ? 0 : 1
+
+        let alpha: CGFloat = hasSelectedItem ? 0 : 1
+        let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
+
+        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.defaultActionButton.alpha = alpha
+            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
+        }) { (_) in
+            self.defaultActionButton.isHidden = hasSelectedItem
+            self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
+        }
+    }
+
+    public func loadingStateChanged(_ isLoading: Bool) {
+        filterBar.shouldShowGhostContent = isLoading
+        filterBar.allowsMultipleSelection = !isLoading
+        filterBar.reloadData()
+    }
 }
 
+// MARK: - UIScrollViewDelegate
 extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
     private func disableInitialLayoutHelpers() {
@@ -470,58 +485,5 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
-    }
-}
-
-extension CollapsableHeaderViewController: CollapsableHeaderContentsDelegate {
-    func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?) {
-        guard !isShowingNoResults else { return }
-        isShowingNoResults = true
-        disableInitialLayoutHelpers()
-        snapToHeight(scrollView, height: minHeaderHeight)
-        configureAndDisplayNoResults(on: containerView,
-                                     title: title,
-                                     subtitle: subtitle,
-                                     noConnectionSubtitle: subtitle,
-                                     buttonTitle: NSLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
-                                     customizationBlock: { (noResultsController) in
-                                        noResultsController.delegate = resultsDelegate
-                                     })
-    }
-
-    func dismissNoResultsController() {
-        guard isShowingNoResults else { return }
-        isShowingNoResults = false
-        snapToHeight(scrollView, height: maxHeaderHeight)
-        hideNoResults()
-    }
-
-    func contentSizeWillChange() {
-        updateFooterInsets()
-    }
-
-    func itemSelectionChanged(_ hasSelectedItem: Bool) {
-        defaultActionButton.isHidden = false
-        selectedStateButtonsContainer.isHidden = false
-
-        defaultActionButton.alpha = hasSelectedItem ? 1 : 0
-        selectedStateButtonsContainer.alpha = hasSelectedItem ? 0 : 1
-
-        let alpha: CGFloat = hasSelectedItem ? 0 : 1
-        let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
-
-        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.defaultActionButton.alpha = alpha
-            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
-        }) { (_) in
-            self.defaultActionButton.isHidden = hasSelectedItem
-            self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
-        }
-    }
-
-    func loadingStateChanged(_ isLoading: Bool) {
-        filterBar.shouldShowGhostContent = isLoading
-        filterBar.allowsMultipleSelection = !isLoading
-        filterBar.reloadData()
     }
 }

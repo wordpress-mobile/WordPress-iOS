@@ -1,17 +1,7 @@
 import UIKit
 import WordPressKit
 
-class SiteDesignContentCollectionViewController: UICollectionViewController, CollapsableHeaderDataSource {
-    let mainTitle = NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site.")
-    let prompt = NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site.")
-    let defaultActionTitle: String? = nil
-    let primaryActionTitle = NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design")
-    let secondaryActionTitle = NSLocalizedString("Preview", comment: "Title for the button to preview the selected site homepage design")
-
-    var scrollView: UIScrollView {
-        return collectionView
-    }
-
+class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
             collectionView.reloadData()
@@ -20,28 +10,43 @@ class SiteDesignContentCollectionViewController: UICollectionViewController, Col
     var isLoading = true
     let cellSize = CGSize(width: 150, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+    let collectionView: UICollectionView
+    let collectionViewLayout: UICollectionViewFlowLayout
 
     init() {
-        super.init(nibName: "\(SiteDesignContentCollectionViewController.self)", bundle: .main)
+        collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+        collectionViewLayout.minimumLineSpacing = 10
+        collectionViewLayout.minimumInteritemSpacing = 10
+        collectionViewLayout.itemSize = cellSize
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.showsVerticalScrollIndicator = false
+
+        super.init(scrollableView: collectionView,
+                   mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
+                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
+                   primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
+                   hasFilterBar: false)
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
 
-    func estimatedContentSize() -> CGSize {
+    override func estimatedContentSize() -> CGSize {
         guard isLoading || siteDesigns.count > 1 else { return .zero }
         let cellCount = isLoading ? 1 : siteDesigns.count
         let cellsPerRow = floor(collectionView.frame.size.width / cellSize.width)
         let rows = ceil(CGFloat(cellCount) / cellsPerRow)
-        let flowLayout = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)
-        let topSpacing = (flowLayout?.sectionInset.top ?? 1)
-        let lineSpacing = (flowLayout?.minimumLineSpacing ?? 01) * max(rows - 2, 0)
+        let topSpacing = collectionViewLayout.sectionInset.top
+        let lineSpacing = collectionViewLayout.minimumLineSpacing * max(rows - 2, 0)
         let estimatedHeight = rows * cellSize.height + topSpacing + lineSpacing
         return CGSize(width: collectionView.frame.width, height: estimatedHeight)
     }
@@ -59,20 +64,26 @@ class SiteDesignContentCollectionViewController: UICollectionViewController, Col
         }
     }
 
-    private func handleError(_ error: Error) {
+    override func primaryActionSelected(_ sender: Any) {
         /* ToDo */
     }
 
-    // MARK: UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    private func handleError(_ error: Error) {
+        /* ToDo */
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+extension SiteDesignContentCollectionViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return isLoading ? 1 : siteDesigns.count
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellReuseIdentifier = CollapsableHeaderCollectionViewCell.cellReuseIdentifier
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? CollapsableHeaderCollectionViewCell else {
             fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CollapsableHeaderCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
@@ -90,20 +101,12 @@ class SiteDesignContentCollectionViewController: UICollectionViewController, Col
 
         return cell
     }
-
-    // MARK: UICollectionViewFlowLayout
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
-    }
 }
 
-// MARK: - CollapsableHeaderDelegate
-extension SiteDesignContentCollectionViewController: CollapsableHeaderDelegate {
-    func primaryActionSelected() {
-        /* TODO - connect to choose */
-    }
-}
-
+// MARK: - UICollectionViewDelegate
 extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
 
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return !isLoading
+    }
 }
