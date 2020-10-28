@@ -115,7 +115,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
             self?.trackApiResponse()
             success(cardsCount, hasMore)
-        }, failure: failure)
+        }, failure: { [weak self] error in
+            self?.trackApiResponse()
+            failure(error)
+        })
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
@@ -154,7 +157,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
-        WPAnalytics.track(.readerCardsFetched)
+        WPAnalytics.track(.readerCardsDidRespond)
     }
 
     // MARK: - TableViewHandler
