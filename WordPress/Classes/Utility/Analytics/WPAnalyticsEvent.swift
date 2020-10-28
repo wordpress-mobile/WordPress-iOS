@@ -74,6 +74,7 @@ import Foundation
     case readerSharedItem
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
+    case readerCardsFetched
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -205,6 +206,8 @@ import Foundation
             return "reader_suggested_site_visited"
         case .readerSuggestedSiteToggleFollow:
             return "reader_suggested_site_toggle_follow"
+        case .readerCardsFetched:
+            return "reader_cards_fetched"
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
