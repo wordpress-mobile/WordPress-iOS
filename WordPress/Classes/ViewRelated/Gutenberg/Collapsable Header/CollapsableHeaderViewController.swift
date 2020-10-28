@@ -345,13 +345,19 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
     }
 
+    private var isFullscreen: Bool {
+        guard !shouldUseCompactLayout else { return true }
+        let targetViewController = parent ?? self
+        let presenationStyle: UIModalPresentationStyle = targetViewController.modalPresentationStyle
+        return !(Set([.pageSheet, .formSheet, .popover]).contains(presenationStyle))
+    }
+
     private func layoutHeaderInsets() {
         let topInset: CGFloat
-
-        if #available(iOS 13.0, *) {
-            topInset = maxHeaderHeight + headerBar.frame.height
-        } else {
+        if isFullscreen {
             topInset = maxHeaderHeight + headerBar.frame.height + UIApplication.shared.statusBarFrame.height
+        } else {
+            topInset = maxHeaderHeight + headerBar.frame.height
         }
 
         if let tableView = scrollView as? UITableView {
@@ -373,7 +379,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let estimatedContentSize = shouldHideFilterBar ? .zero : childViewController.estimatedContentSize()
+        let estimatedContentSize = childViewController.estimatedContentSize()
         let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
         if let tableView = scrollView as? UITableView {
@@ -504,7 +510,7 @@ extension CollapsableHeaderViewController: CollapsableHeaderContentsDelegate {
         let alpha: CGFloat = hasSelectedItem ? 0 : 1
         let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
 
-        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
             self.defaultActionButton.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
         }) { (_) in

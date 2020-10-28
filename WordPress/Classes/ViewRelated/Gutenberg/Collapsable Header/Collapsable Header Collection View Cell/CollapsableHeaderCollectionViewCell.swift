@@ -2,10 +2,10 @@ import UIKit
 import Gutenberg
 import Gridicons
 
-class LayoutPickerCollectionViewCell: UICollectionViewCell {
+class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
 
-    static let cellReuseIdentifier = "LayoutPickerCollectionViewCell"
-    static let nib = UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
+    static let cellReuseIdentifier = "\(CollapsableHeaderCollectionViewCell.self)"
+    static let nib = UINib(nibName: "\(CollapsableHeaderCollectionViewCell.self)", bundle: Bundle.main)
     static let selectionAnimationSpeed: Double = 0.25
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkBackground: UIView!
@@ -21,9 +21,9 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    var layout: PageTemplateLayout? = nil {
+    var previewURL: String? = nil {
         didSet {
-            setImage(layout?.preview)
+            setImage(previewURL)
         }
     }
 
@@ -115,12 +115,12 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         let borderWidthAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
         borderWidthAnimation.fromValue = imageView.layer.borderWidth
         borderWidthAnimation.toValue = imageBorderWidth
-        borderWidthAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
+        borderWidthAnimation.duration = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed
 
         let borderColorAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
         borderColorAnimation.fromValue = imageView.layer.borderColor
         borderColorAnimation.toValue = imageBorderColor
-        borderColorAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
+        borderColorAnimation.duration = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed
 
         imageView.layer.add(borderColorAnimation, forKey: "borderColor")
         imageView.layer.add(borderWidthAnimation, forKey: "borderWidth")
@@ -143,7 +143,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         checkmarkBackground.alpha = isHidden ? 1 : 0
         let targetAlpha: CGFloat = isHidden ? 0 : 1
 
-        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, animations: {
+        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, animations: {
             self.checkmarkImageView.alpha = targetAlpha
             self.checkmarkBackground.alpha = targetAlpha
         }, completion: { (_) in
