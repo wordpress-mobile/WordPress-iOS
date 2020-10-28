@@ -25,7 +25,7 @@ class ShareNoticeNavigationCoordinator {
     static func navigateToPostList(with userInfo: NSDictionary) {
         fetchPost(from: userInfo, onSuccess: { post in
             if let post = post {
-                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+                WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch post from share notification.")

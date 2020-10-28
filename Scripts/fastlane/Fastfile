@@ -175,6 +175,7 @@ import "./ScreenshotFastfile"
   lane :new_beta_release do | options |
     ios_betabuild_prechecks(options)
     ios_bump_version_beta()
+    ios_update_metadata(options)
     ios_tag_build()
   end
 

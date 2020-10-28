@@ -58,11 +58,11 @@
                         <blurEffect style="systemChromeMaterial"/>
                     </vibrancyEffect>
                 </visualEffectView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UZ7-wW-FYi" userLabel="Header Bar">
+                <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UZ7-wW-FYi" userLabel="Header Bar">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                     <subviews>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a Layout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLd-6x-CZD">
-                            <rect key="frame" x="143.5" y="62" width="127.5" height="20.5"/>
+                            <rect key="frame" x="143.5" y="44" width="127.5" height="56"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -90,13 +90,12 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="ZLd-6x-CZD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="UZ7-wW-FYi" secondAttribute="top" id="2Xs-UD-gf1"/>
                         <constraint firstItem="ZLd-6x-CZD" firstAttribute="centerX" secondItem="UZ7-wW-FYi" secondAttribute="centerX" id="UWU-OH-B6J"/>
                         <constraint firstItem="ZLd-6x-CZD" firstAttribute="centerY" secondItem="uxA-nG-zFs" secondAttribute="centerY" id="Y6L-97-Huh"/>
                         <constraint firstItem="uxA-nG-zFs" firstAttribute="top" relation="greaterThanOrEqual" secondItem="UZ7-wW-FYi" secondAttribute="top" constant="13" id="gSh-Kw-Z03"/>
                         <constraint firstAttribute="bottom" secondItem="uxA-nG-zFs" secondAttribute="bottom" constant="13" id="qDy-4y-t1r"/>
                         <constraint firstItem="uxA-nG-zFs" firstAttribute="width" secondItem="uxA-nG-zFs" secondAttribute="height" multiplier="1:1" id="r29-jf-HGj"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZLd-6x-CZD" secondAttribute="bottom" id="sff-7j-JoX"/>
+                        <constraint firstAttribute="bottom" secondItem="ZLd-6x-CZD" secondAttribute="bottom" id="sff-7j-JoX"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LGN-fD-c9Q" userLabel="Header View">

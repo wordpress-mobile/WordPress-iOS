@@ -9,6 +9,10 @@ final class SiteCreationWizardLauncher {
         return SiteSegmentsStep(creator: self.creator, service: segmentsService)
     }()
 
+    private lazy var designStep: WizardStep = {
+        return SiteDesignStep()
+    }()
+
     private lazy var addressStep: WizardStep = {
         let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
         return WebAddressStep(creator: self.creator, service: addressService)
@@ -20,8 +24,9 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var steps: [WizardStep] = {
+        let initialStep = FeatureFlag.siteCreationHomePagePicker.enabled ? self.designStep : self.segmentsStep
         return [
-            self.segmentsStep,
+            initialStep,
             self.addressStep,
             self.siteAssemblyStep
         ]
