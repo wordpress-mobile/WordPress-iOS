@@ -157,7 +157,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
-        WPAnalytics.track(.readerCardsDidRespond)
+        WPAnalytics.track(.readerDiscoverContentPresented)
     }
 
     // MARK: - TableViewHandler

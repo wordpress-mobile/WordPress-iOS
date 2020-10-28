@@ -74,7 +74,7 @@ import Foundation
     case readerSharedItem
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
-    case readerCardsDidRespond
+    case readerDiscoverContentPresented
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -206,8 +206,8 @@ import Foundation
             return "reader_suggested_site_visited"
         case .readerSuggestedSiteToggleFollow:
             return "reader_suggested_site_toggle_follow"
-        case .readerCardsDidRespond:
-            return "reader_cards_did_respond"
+        case .readerDiscoverContentPresented:
+            return "reader_discover_content_presented"
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
