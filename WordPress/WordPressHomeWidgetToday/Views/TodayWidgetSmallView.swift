@@ -15,5 +15,6 @@ struct TodayWidgetSmallView: View {
             }
             Spacer()
         }
+        .flipsForRightToLeftLayoutDirection(true)
     }
 }
