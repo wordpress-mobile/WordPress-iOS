@@ -24,6 +24,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
 
+    /// Whether the current view controller is visible
+    private var isVisible = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
@@ -36,6 +39,16 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         displaySelectInterestsIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isVisible = true
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        isVisible = false
     }
 
     // MARK: - TableView Related
@@ -99,7 +112,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: success, failure: failure)
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
+            self?.trackApiResponse()
+            success(cardsCount, hasMore)
+        }, failure: failure)
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
@@ -128,6 +144,17 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         if isTableViewAtTheTop() {
             super.syncIfAppropriate(forceSync: forceSync)
         }
+    }
+
+    /// Track when the API returned the cards and the user is still on the screen
+    /// This is used to create a funnel to check if users are leaving the screen
+    /// before the API response
+    private func trackApiResponse() {
+        guard isVisible else {
+            return
+        }
+
+        WPAnalytics.track(.readerCardsFetched)
     }
 
     // MARK: - TableViewHandler
