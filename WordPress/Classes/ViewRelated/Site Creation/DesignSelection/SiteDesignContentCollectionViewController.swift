@@ -21,7 +21,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionViewLayout.itemSize = cellSize
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.showsVerticalScrollIndicator = false
-
+        collectionView.backgroundColor = .basicBackground
+        collectionView.contentInsetAdjustmentBehavior = .never
         super.init(scrollableView: collectionView,
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
                    prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
@@ -36,7 +37,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
-        collectionView.delegate = self
         collectionView.dataSource = self
     }
 
@@ -45,9 +45,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let cellCount = isLoading ? 1 : siteDesigns.count
         let cellsPerRow = floor(collectionView.frame.size.width / cellSize.width)
         let rows = ceil(CGFloat(cellCount) / cellsPerRow)
-        let topSpacing = collectionViewLayout.sectionInset.top
-        let lineSpacing = collectionViewLayout.minimumLineSpacing * max(rows - 2, 0)
-        let estimatedHeight = rows * cellSize.height + topSpacing + lineSpacing
+        let estimatedHeight = rows * (cellSize.height + collectionViewLayout.minimumLineSpacing)
         return CGSize(width: collectionView.frame.width, height: estimatedHeight)
     }
 

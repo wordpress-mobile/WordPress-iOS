@@ -1,7 +1,6 @@
 import UIKit
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
-
     let scrollableView: UIScrollView
     let mainTitle: String
     let prompt: String
@@ -303,9 +302,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func calculateHeaderSnapPoints() {
-        minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
+        let filterBarHeight = shouldHideFilterBar ? 0 : filterBarHeightConstraint.constant
         let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
-        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeightConstraint.constant + filterBarBottomSpacing
+        minHeaderHeight = filterBarHeight + minHeaderBottomSpacing.constant
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeight + filterBarBottomSpacing
         _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
     }
 
