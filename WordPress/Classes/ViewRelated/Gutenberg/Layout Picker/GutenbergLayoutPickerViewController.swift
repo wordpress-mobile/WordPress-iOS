@@ -16,7 +16,7 @@ class GutenbergLayoutSection {
 }
 
 class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDataSource, CollapsableHeaderDelegate {
-    let defaultActionTitle = NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
+    let defaultActionTitle: String? = NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
     let primaryActionTitle = NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout")
     let secondaryActionTitle = NSLocalizedString("Preview", comment: "Title for button to preview a selected layout")
     let mainTitle = NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page")
@@ -112,7 +112,7 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
         guard let blog = blog else { return }
         isLoading = resultsController?.isEmpty() ?? true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
+        PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

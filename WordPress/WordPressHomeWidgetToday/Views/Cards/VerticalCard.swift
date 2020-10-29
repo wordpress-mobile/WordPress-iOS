@@ -21,6 +21,7 @@ struct VerticalCard: View {
                 .font(titleFont)
                 .foregroundColor(Appearance.textColor)
         }
+        .flipsForRightToLeftLayoutDirection(true)
     }
 }
 

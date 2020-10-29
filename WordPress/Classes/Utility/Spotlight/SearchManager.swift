@@ -402,9 +402,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
         } else if let page = apost as? Page {
-            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPages(for: page.blog)
         }
     }
 

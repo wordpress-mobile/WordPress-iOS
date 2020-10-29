@@ -1,9 +1,10 @@
 16.1
 -----
+* [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.
 * [*] Fixed an issue that was causing the refresh control to show up on top of the list of sites. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15136]
 * [***] The "Floating Action Button" now appears on the list of posts and pages for quick and convenient creation. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15149l]
+* [**] Today widgets: Fixed translations for All Time and This Week. [#15185]
 
- 
 16.0
 -----
 * [***] Block Editor: Full-width and wide alignment support for Video, Latest-posts, Gallery, Media & text, and Pullquote block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2605]
@@ -42,7 +43,7 @@
        Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
 * [**] Added iCloud Keychain login functionality. (#14770)
 * [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
-* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash.
 * [**] Block Editor: Fixed Dark Mode transition for editor menus.
 
 15.6
