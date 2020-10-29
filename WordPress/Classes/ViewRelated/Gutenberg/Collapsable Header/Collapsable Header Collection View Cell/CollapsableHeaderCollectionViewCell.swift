@@ -30,6 +30,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.cancelImageDownload()
+        stopGhostAnimation()
     }
 
     var accentColor: UIColor {
@@ -68,6 +69,8 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
          } else {
              addShadow()
          }
+
+        checkmarkImageView.isGhostableDisabled = true
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
