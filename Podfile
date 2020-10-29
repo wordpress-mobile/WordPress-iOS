@@ -48,9 +48,9 @@ end
 def kanvas
   #pod 'Kanvas', ''
   #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :tag => ''
-  #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :branch => 'multi-frame'
+  pod 'KanvasCamera', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'stories/build'
   #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :commit => ''
-  pod 'KanvasCamera', :path => './Kanvas' # Precompiled framework
+  #pod 'KanvasCamera', :path => './Kanvas' # Precompiled framework
   #pod 'KanvasCamera', :path => '../Kanvas-iOS'
   #pod 'Kanvas', :path => '../orangina/Components/KanvasCamera'
 end

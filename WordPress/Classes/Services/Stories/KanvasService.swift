@@ -37,7 +37,7 @@ class KanvasService {
     }
 
     func controller() -> CameraController {
-        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), fonts: KanvasCameraCustomUI.shared.cameraFonts(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
+        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve

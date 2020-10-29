@@ -459,7 +459,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.0.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `93db884b5563c8df0b47aae3365a9b3263a799ca`)
   - JTAppleCalendar (~> 8.0.2)
-  - KanvasCamera (from `./Kanvas`)
+  - "KanvasCamera (from `git@github.com:tumblr/kanvas-ios.git`, branch `stories/build`)"
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -590,7 +590,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   KanvasCamera:
-    :path: "./Kanvas"
+    :branch: stories/build
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/93db884b5563c8df0b47aae3365a9b3263a799ca/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -672,6 +673,9 @@ CHECKOUT OPTIONS:
     :commit: 93db884b5563c8df0b47aae3365a9b3263a799ca
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
+  KanvasCamera:
+    :commit: 127677bc7599072a4da912b68d9709906bad0e9f
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RNCMaskedView:
     :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
     :git: https://github.com/react-native-community/react-native-masked-view.git
@@ -708,7 +712,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   Gutenberg: 165e7a7c6b8656eb0f3cde1b6410c4a8206cbc33
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  KanvasCamera: 3f6118b832d7d8e39b18d031dc5b9b864dd13bd9
+  KanvasCamera: de8d54faaf50d0c8c9a055b3abc8d50bd284c853
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -777,6 +781,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 73f0c6f4aefe3e47ea305bb2426558b684b9b5c2
+PODFILE CHECKSUM: 57b9d2078228cf86303085f4990d1f0fa837b694
 
 COCOAPODS: 1.9.3
