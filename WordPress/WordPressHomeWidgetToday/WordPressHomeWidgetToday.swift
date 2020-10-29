@@ -19,6 +19,7 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
         guard let initialStats = TodayWidgetStats.loadSavedData() else {
             return
         }
@@ -27,7 +28,7 @@ struct Provider: TimelineProvider {
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
-
+    // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
     var siteName: String {
         UserDefaults(suiteName: WPAppGroupName)?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? "Site name not found"
     }
