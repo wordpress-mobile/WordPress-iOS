@@ -211,16 +211,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - View Styling
-    private func insertChildView() {
-        scrollableView.translatesAutoresizingMaskIntoConstraints = false
-        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
-        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
-        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
-        containerView.addSubview(scrollableView)
-        containerView.addConstraints([top, bottom, leading, trailing])
-    }
-
     private func setStaticText() {
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
         titleView.text = mainTitle
@@ -235,6 +225,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             footerView.isHidden = true
         }
     }
+
+    private func insertChildView() {
+        scrollableView.translatesAutoresizingMaskIntoConstraints = false
+        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
+        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
+        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
+        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
+        containerView.addSubview(scrollableView)
+        containerView.addConstraints([top, bottom, leading, trailing])
+    }
+
 
     private func styleButtons() {
         let seperator: UIColor
