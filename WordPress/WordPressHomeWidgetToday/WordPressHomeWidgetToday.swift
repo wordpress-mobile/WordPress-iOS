@@ -3,7 +3,7 @@ import SwiftUI
 
 // TODO - TODAYWIDGET: remove this static model when real data come in.
 let staticModel = TodayWidgetContent(siteTitle: "Places you should visit",
-                                     stats:TodayWidgetStats(views: 5980,
+                                     stats: TodayWidgetStats(views: 5980,
                                                             visitors: 4208,
                                                             likes: 107,
                                                             comments: 5))
