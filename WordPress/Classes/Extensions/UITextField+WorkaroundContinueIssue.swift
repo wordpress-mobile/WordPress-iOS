@@ -23,12 +23,17 @@ extension UITextField {
     ///
     @objc
     class func activateWorkaroundForBulgarianKeyboardCrash() {
-        let original = class_getInstanceMethod(
-            UITextField.self,
-            #selector(UITextField.becomeFirstResponder))!
-        let new = class_getInstanceMethod(
-            UITextField.self,
-            #selector(UITextField.swizzledBecomeFirstResponder))!
+        guard let original = class_getInstanceMethod(
+                UITextField.self,
+                #selector(UITextField.becomeFirstResponder)),
+              let new = class_getInstanceMethod(
+                UITextField.self,
+                #selector(UITextField.swizzledBecomeFirstResponder)) else {
+
+            DDLogError("Could not activate workaround for Bulgarian keyboard crash.")
+
+            return
+        }
 
         method_exchangeImplementations(original, new)
     }
