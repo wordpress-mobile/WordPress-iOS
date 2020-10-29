@@ -364,6 +364,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - Subclass callbacks
+
+    /// A public interface to notify the container that the content has loaded data or is attempting too.
     public func displayNoResultsController(title: String, subtitle: String?, resultsDelegate: NoResultsViewControllerDelegate?) {
         guard !isShowingNoResults else { return }
         isShowingNoResults = true
@@ -386,10 +388,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         hideNoResults()
     }
 
+    /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
+    /// view to still be scrollable with the content size is less than the total space of the expanded screen.
     public func contentSizeWillChange() {
         updateFooterInsets()
     }
 
+    /// A public interface to notify the container that the selected state for an items has changed.
     public func itemSelectionChanged(_ hasSelectedItem: Bool) {
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
@@ -409,6 +414,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    /// A public interface to notify the container that the content view is loading content still
     public func loadingStateChanged(_ isLoading: Bool) {
         filterBar.shouldShowGhostContent = isLoading
         filterBar.allowsMultipleSelection = !isLoading
