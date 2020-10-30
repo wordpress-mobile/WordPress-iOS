@@ -1305,6 +1305,7 @@
 		9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */; };
 		982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */; };
+		98390AC3254C984700868F0A /* Tracks+TodayHomeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98390AC2254C984700868F0A /* Tracks+TodayHomeWidget.swift */; };
 		98390AD2254C985F00868F0A /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		983AE84C2399AC5B00E5B7F6 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
@@ -3919,6 +3920,7 @@
 		9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailsViewModel.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
 		983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightTableViewController.swift; sourceTree = "<group>"; };
+		98390AC2254C984700868F0A /* Tracks+TodayHomeWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+TodayHomeWidget.swift"; sourceTree = "<group>"; };
 		983DBBA822125DD300753988 /* StatsTableFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTableFooter.xib; sourceTree = "<group>"; };
 		983DBBA922125DD300753988 /* StatsTableFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTableFooter.swift; sourceTree = "<group>"; };
 		98458CB721A39D350025D232 /* StatsNoDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsNoDataRow.swift; sourceTree = "<group>"; };
@@ -6421,6 +6423,7 @@
 				3F526D2B2539F9D60069706C /* Views */,
 				3F526D1C2539F9C80069706C /* Model */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
+				98390AC2254C984700868F0A /* Tracks+TodayHomeWidget.swift */,
 				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
 			);
@@ -13954,6 +13957,7 @@
 				3F526C532538CF2A0069706C /* WordPressHomeWidgetToday.swift in Sources */,
 				3F1FD27B2548AE900060C53A /* CocoaLumberjack.swift in Sources */,
 				3F5689F0254209790048A9E4 /* TodayWidgetSmallView.swift in Sources */,
+				98390AC3254C984700868F0A /* Tracks+TodayHomeWidget.swift in Sources */,
 				3F71D5302548C2B200A4BA93 /* Double+Stats.swift in Sources */,
 				3F526C582538CF2B0069706C /* WordPressHomeWidgetToday.intentdefinition in Sources */,
 				98390AD2254C985F00868F0A /* Tracks.swift in Sources */,
