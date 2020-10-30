@@ -12,7 +12,7 @@ protocol CollapsableHeaderDataSource {
     var prompt: String { get }
 
     /// Used to populate the button title for the button that is displayed when no item is selected
-    var defaultActionTitle: String { get }
+    var defaultActionTitle: String? { get }
 
     /// Used to populate the button title for the right most button when an item is selected
     var primaryActionTitle: String { get }
@@ -25,15 +25,15 @@ protocol CollapsableHeaderDataSource {
     func estimatedContentSize() -> CGSize
 }
 
-protocol CollapsableHeaderDelegate: class {
-    /// Notifies the delegate that the button that is displayed when no item is selected was tapped
-    func defaultActionSelected()
-
+@objc protocol CollapsableHeaderDelegate: class {
     /// Notifies the delegate that the right most button when an item is selected was tapped
     func primaryActionSelected()
 
+    /// Notifies the delegate that the button that is displayed when no item is selected was tapped
+    @objc optional func defaultActionSelected()
+
     /// Notifies the delegate that the left most button when an item is selected was tapped
-    func secondaryActionSelected()
+    @objc optional func secondaryActionSelected()
 }
 
 protocol CollapsableHeaderContentsDelegate: class {
@@ -101,33 +101,22 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
     private var isShowingNoResults: Bool = false {
         didSet {
-            shouldHideFilterBar = isShowingNoResults
+            if oldValue != isShowingNoResults {
+                updateHeaderDisplay()
+            }
         }
     }
 
-    private func updateHeaderDisplay() {
-        headerHeightConstraint.isActive = false
-        initialHeaderTopConstraint.isActive = true
-        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
-        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
-        filterBar.layoutIfNeeded()
-        headerView.layoutIfNeeded()
-        calculateHeaderSnapPoints()
-        layoutHeaderInsets()
-    }
-
-    private var shouldHideFilterBar: Bool = false {
-        didSet {
-            guard oldValue != shouldHideFilterBar else { return }
-            updateHeaderDisplay()
-        }
+    private let hasFilterBar: Bool
+    private var shouldHideFilterBar: Bool {
+        return isShowingNoResults || !hasFilterBar
     }
 
     private var shouldUseCompactLayout: Bool {
         return traitCollection.verticalSizeClass == .compact
     }
 
+    private var topInset: CGFloat = 0
     private var _maxHeaderHeight: CGFloat = 0
     private var maxHeaderHeight: CGFloat {
         if shouldUseCompactLayout {
@@ -165,10 +154,15 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.init(childViewController: childViewController, delegate: childViewController, filterDelegate: childViewController)
     }
 
-    init(childViewController: UIViewController & CollapsableHeaderDataSource, delegate: CollapsableHeaderDelegate?, filterDelegate: CollapsableHeaderFilterBarDelegate?) {
+    convenience init(childViewController: UIViewController & CollapsableHeaderDataSource & CollapsableHeaderDelegate, withFilterBar hasFilterBar: Bool) {
+        self.init(childViewController: childViewController, withFilterBar: hasFilterBar, delegate: childViewController)
+    }
+
+    init(childViewController: UIViewController & CollapsableHeaderDataSource, withFilterBar hasFilterBar: Bool = true, delegate: CollapsableHeaderDelegate? = nil, filterDelegate: CollapsableHeaderFilterBarDelegate? = nil) {
         self.childViewController = childViewController
         self.delegate = delegate
         self.filterDelegate = filterDelegate
+        self.hasFilterBar = hasFilterBar
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -183,11 +177,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-
         styleButtons()
         setStaticText()
-
         scrollView.delegate = self
+        toggleFilterBarConstraints()
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
@@ -241,7 +234,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     @IBAction func defaultActionSelected(_ sender: Any) {
-        delegate?.defaultActionSelected()
+        if let defaultActionSelected = delegate?.defaultActionSelected {
+            defaultActionSelected()
+        }
     }
 
     @IBAction func primaryActionSelected(_ sender: Any) {
@@ -249,7 +244,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     @IBAction func secondaryActionSelected(_ sender: Any) {
-        delegate?.secondaryActionSelected()
+        if let secondaryActionSelected = delegate?.secondaryActionSelected {
+            secondaryActionSelected()
+        }
     }
 
     private func setStaticText() {
@@ -257,9 +254,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = childViewController.mainTitle
         largeTitleView.text = childViewController.mainTitle
         promptView.text = childViewController.prompt
-        defaultActionButton.setTitle(childViewController.defaultActionTitle, for: .normal)
         secondaryActionButton.setTitle(childViewController.secondaryActionTitle, for: .normal)
         primaryActionButton.setTitle(childViewController.primaryActionTitle, for: .normal)
+
+        if let defaultActionTitle = childViewController.defaultActionTitle {
+            defaultActionButton.setTitle(defaultActionTitle, for: .normal)
+        } else {
+            footerView.isHidden = true
+        }
     }
 
     private func insertChildView() {
@@ -320,6 +322,22 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: Header and Footer Sizing
+    private func toggleFilterBarConstraints() {
+        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
+        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
+    }
+
+    private func updateHeaderDisplay() {
+        headerHeightConstraint.isActive = false
+        initialHeaderTopConstraint.isActive = true
+        toggleFilterBarConstraints()
+        filterBar.layoutIfNeeded()
+        headerView.layoutIfNeeded()
+        calculateHeaderSnapPoints()
+        layoutHeaderInsets()
+    }
+
     private func calculateHeaderSnapPoints() {
         minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
         let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
@@ -340,6 +358,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
             tableView.tableHeaderView?.backgroundColor = .clear
         } else {
+            self.topInset = topInset
             scrollView.contentInset.top = topInset
         }
 
@@ -357,7 +376,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let estimatedContentSize = shouldHideFilterBar ? .zero : childViewController.estimatedContentSize()
         let distanceToBottom = scrollView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize.height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
-
         if let tableView = scrollView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
@@ -395,7 +413,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
         disableInitialLayoutHelpers()
 
-        let scrollOffset = scrollView.contentOffset.y
+        let scrollOffset = scrollView.contentOffset.y + topInset
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
         if newHeaderViewHeight < minHeaderHeight {
@@ -431,7 +449,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {
-        scrollView.contentOffset.y = maxHeaderHeight - height
+        scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
         let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
         hideSmallTitle(shouldHide, animated: animated)
@@ -442,7 +460,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             return
         }
 
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
