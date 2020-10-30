@@ -16,8 +16,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     /// Calculates the necessary edge margins to make sure the content is centered. The design request is to limit the number of items in a row to 3 on larger screens, so the content is also capped there.
-    private static func edgeInsets(forCellSize cellSize: CGSize, itemSpacing: CGFloat) -> UIEdgeInsets {
-        let screenWidth = UIScreen.main.bounds.width
+    private static func edgeInsets(forCellSize cellSize: CGSize, itemSpacing: CGFloat, screenSize: CGSize = UIScreen.main.bounds.size) -> UIEdgeInsets {
+        let screenWidth = screenSize.width
         let cellsPerRow = floor(screenWidth / cellSize.width)
         let cellsPerRowCap = min(cellsPerRow, 3)
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
@@ -65,8 +65,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         return CGSize(width: collectionView.frame.width, height: estimatedHeight)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
+        coordinator.animate { (_) in
+            self.collectionViewLayout.sectionInset = newEdgeInsets
+        }
     }
 
     private func fetchSiteDesigns() {
@@ -127,6 +131,7 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDataSource 
 extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return !isLoading
+        return false
+//        return !isLoading /* To Do - Update this in the next issue and also handle the footer showing/hiding */
     }
 }
