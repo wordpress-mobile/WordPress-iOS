@@ -54,8 +54,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)switchMySitesTabToAddNewSite;
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
 - (void)switchMySitesTabToMediaForBlog:(Blog *)blog;
-- (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog;
-- (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog;
 
 - (void)popNotificationsTabToRoot;
 - (void)switchNotificationsTabToNotificationSettings;
