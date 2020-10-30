@@ -35,12 +35,13 @@ struct Provider: TimelineProvider {
         if let title = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey),
            !title.isEmpty {
             return title
-        } else if let url = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey),
+        }
+
+        if let url = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey),
                   !url.isEmpty {
             return url
-        } else {
-            return "Site not found"
         }
+        return "Site not found"
     }
 }
 
