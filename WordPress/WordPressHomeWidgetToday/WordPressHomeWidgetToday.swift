@@ -3,10 +3,10 @@ import SwiftUI
 
 // TODO - TODAYWIDGET: remove this static model when real data come in.
 let staticModel = TodayWidgetContent(siteTitle: "Places you should visit",
-                                   views: 5980,
-                                   visitors: 4208,
-                                   likes: 107,
-                                   comments: 5)
+                                     stats: TodayWidgetStats(views: 5980,
+                                                            visitors: 4208,
+                                                            likes: 107,
+                                                            comments: 5))
 
 struct Provider: TimelineProvider {
 
@@ -19,10 +19,29 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
+        guard let initialStats = TodayWidgetStats.loadSavedData() else {
+            return
+        }
 
-        let entries = [staticModel]
+        let entries = [TodayWidgetContent(siteTitle: siteName, stats: initialStats)]
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
+    }
+    // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
+    var siteName: String {
+        let defaults = UserDefaults(suiteName: WPAppGroupName)
+
+        if let title = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey),
+           !title.isEmpty {
+            return title
+        }
+
+        if let url = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey),
+                  !url.isEmpty {
+            return url
+        }
+        return "Site not found"
     }
 }
 
@@ -33,7 +52,7 @@ struct WordPressHomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            TodayWidgetView(content: staticModel)
+            TodayWidgetView(content: entry)
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")

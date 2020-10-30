@@ -45,6 +45,9 @@ extension TodayWidgetView {
 struct TodayWidgetView_Previews: PreviewProvider {
     static var previews: some View {
         TodayWidgetView(content: staticModel)
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+
+        TodayWidgetView(content: staticModel)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
