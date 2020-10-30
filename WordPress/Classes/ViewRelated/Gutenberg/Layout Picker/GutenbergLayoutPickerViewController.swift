@@ -81,7 +81,6 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         guard let sectionIndex = selectedLayout?.section, let position = selectedLayout?.item else { return }
         let layout = sections[sectionIndex].layouts[position]
         let destination = LayoutPreviewViewController(layout: layout, completion: completion)
-        navigationController?.isNavigationBarHidden = false
         LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
     }
