@@ -30,9 +30,18 @@ struct Provider: TimelineProvider {
     }
     // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
     var siteName: String {
-        UserDefaults(suiteName: WPAppGroupName)?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? "Site name not found"
-    }
+        let defaults = UserDefaults(suiteName: WPAppGroupName)
 
+        if let title = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey),
+           !title.isEmpty {
+            return title
+        } else if let url = defaults?.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey),
+                  !url.isEmpty {
+            return url
+        } else {
+            return "Site not found"
+        }
+    }
 }
 
 
