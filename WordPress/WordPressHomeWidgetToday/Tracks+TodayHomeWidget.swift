@@ -6,7 +6,7 @@ extension Tracks {
 
     // MARK: - Public Methods
 
-    public func trackExtensionStatsLaunched(_ siteID: Int?) {
+    public func trackExtensionStatsLaunched(_ siteID: Int) {
         let properties = ["site_id": siteID]
         trackExtensionEvent(.statsLaunched, properties: properties as [String: AnyObject]?)
     }
