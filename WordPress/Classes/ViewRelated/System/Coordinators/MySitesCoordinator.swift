@@ -4,6 +4,7 @@ import UIKit
 class MySitesCoordinator: NSObject {
     let mySitesSplitViewController: WPSplitViewController
     let mySitesNavigationController: UINavigationController
+    let mySiteViewController = MySiteViewController()
     let blogListViewController: BlogListViewController
     let becomeActiveTab: () -> Void
 
@@ -22,17 +23,39 @@ class MySitesCoordinator: NSObject {
         super.init()
     }
 
-    func showMySites() {
+    /// Shows the main View Controller for My Sites
+    func showRootViewController() {
         becomeActiveTab()
 
-        mySitesNavigationController.viewControllers = [blogListViewController]
+        if Feature.enabled(.newNavBarAppearance) {
+            mySitesNavigationController.viewControllers = [mySiteViewController]
+        } else {
+            mySitesNavigationController.viewControllers = [blogListViewController]
+        }
     }
+    
+    // MARK: - Sites List
+    
+    func showSitesList() {
+        showRootViewController()
+        
+        if Feature.enabled(.newNavBarAppearance) {
+            blogListViewController.modalPresentationStyle = .pageSheet
+            mySiteViewController.present(blogListViewController, animated: false, completion: nil)
+        }
+    }
+    
+    // MARK: - Blog Details
 
     @objc
     func showBlogDetails(for blog: Blog) {
-        showMySites()
+        showRootViewController()
 
-        blogListViewController.setSelectedBlog(blog, animated: false)
+        if Feature.enabled(.newNavBarAppearance) {
+            mySiteViewController.blog = blog
+        } else {
+            blogListViewController.setSelectedBlog(blog, animated: false)
+        }
     }
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
@@ -72,6 +95,15 @@ class MySitesCoordinator: NSObject {
 
     private static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 
+    // MARK: - Adding a new site
+    
+    @objc
+    func showAddNewSite(from view: UIView) {
+        showSitesList()
+    
+        self.blogListViewController.presentInterfaceForAddingNewSite(from: view)
+    }
+        
     // MARK: - My Sites
 
     func showPages(for blog: Blog) {

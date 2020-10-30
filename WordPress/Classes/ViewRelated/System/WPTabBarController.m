@@ -371,7 +371,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
         allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
