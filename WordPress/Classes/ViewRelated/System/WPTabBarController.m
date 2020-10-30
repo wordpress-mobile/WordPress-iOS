@@ -19,11 +19,9 @@
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 
-static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
 static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPNotificationsSplitViewRestorationID = @"WPNotificationsSplitViewRestorationID";
 
-static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
@@ -49,11 +47,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) QuickStartTourGuide *tourGuide;
 
-@property (nonatomic, strong) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
-@property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
@@ -104,7 +100,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [self setViewControllers:[self tabViewControllers]];
 
-        [self setSelectedViewController:self.blogListSplitViewController];
+        [self setSelectedViewController:self.mySitesCoordinator.splitViewController];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -161,34 +157,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 }
 
 #pragma mark - Tab Bar Items
-
-- (UINavigationController *)blogListNavigationController
-{
-    if (_blogListNavigationController) {
-        return _blogListNavigationController;
-    }
-
-    self.blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
-    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    _blogListNavigationController.navigationBar.translucent = NO;
-
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
-    _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
-    _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
-    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
-    if (blogToOpen) {
-        _blogListViewController.selectedBlog = blogToOpen;
-    }
-    
-    return _blogListNavigationController;
-}
 
 - (UINavigationController *)readerNavigationController
 {
@@ -256,23 +224,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Split View Controllers
 
-- (UISplitViewController *)blogListSplitViewController
-{
-    if (!_blogListSplitViewController) {
-        _blogListSplitViewController = [WPSplitViewController new];
-        _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
-        _blogListSplitViewController.presentsWithGesture = NO;
-        [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
-        _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
-
-        _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
-    }
-
-    return _blogListSplitViewController;
-}
-
 - (UISplitViewController *)readerSplitViewController
 {
     if (!_readerSplitViewController && ![Feature enabled:FeatureFlagNewReaderNavigation]) {
@@ -323,8 +274,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)reloadSplitViewControllers
 {
-    _blogListNavigationController = nil;
-    _blogListSplitViewController = nil;
     _readerNavigationController = nil;
     _readerMenuViewController = nil;
     _readerSplitViewController = nil;
@@ -352,10 +301,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     __weak __typeof(self) weakSelf = self;
     
-    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
-                                              mySitesNavigationController:self.blogListNavigationController
-                                                   blogListViewController:self.blogListViewController
-                                                        onBecomeActiveTab:^{
+    return [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController
+                                                    onBecomeActiveTab:^{
         [weakSelf showMySitesTab];
     }];
 }
@@ -373,11 +320,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.splitViewController,
         self.readerNavigationController,
         self.notificationsSplitViewController]];
     } else {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.splitViewController,
         self.readerSplitViewController,
         self.notificationsSplitViewController]];
     }
@@ -445,7 +392,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     if (!blog) {
-        blog = [self currentOrLastBlog];
+        blog = [self mainBlog];
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
@@ -499,35 +446,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
 }
 
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
-{
-    [self.mySitesCoordinator showBlogDetailsFor:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
-    }
-}
-
-- (void)switchMySitesTabToMediaForBlog:(Blog *)blog
-{
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
-    }
-}
- 
-- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
-{
-    [self setSelectedIndex:WPTabMySites];
-
-    BlogListViewController *blogListVC = self.blogListViewController;
-    self.blogListNavigationController.viewControllers = @[blogListVC];
-    [blogListVC setSelectedBlog:blog animated:NO];
-}
-
 - (void)switchNotificationsTabToNotificationSettings
 {
     [self showNotificationsTab];
@@ -574,29 +492,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return currentlySelectedScreen;
 }
 
-- (Blog *)currentlyVisibleBlog
+- (Blog *)mainBlog
 {
-    if (self.selectedIndex != WPTabMySites) {
-        return nil;
-    }
-
-    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
-        return [obj isKindOfClass:[BlogDetailsViewController class]];
-    }] firstObject];
-    return blogDetailsController.blog;
-}
-
-- (Blog *)currentOrLastBlog
-{
-    Blog *blog = [self currentlyVisibleBlog];
-
-    if (blog == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog = [blogService lastUsedOrFirstBlog];
-    }
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
-    return blog;
+    return [blogService lastUsedOrFirstBlog];
 }
 
 #pragma mark - UITabBarControllerDelegate methods
@@ -609,7 +510,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
             case WPTabMySites: {
-                [self bypassBlogListViewControllerIfNecessary];
+                [self.mySitesCoordinator showMainViewControllerWithCanBypassBlogList:true];
                 break;
             }
             case WPTabReader: {
@@ -633,21 +534,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return YES;
-}
-
-- (void)bypassBlogListViewControllerIfNecessary
-{
-    // If the user has one blog then we don't want to present them with the main "My Sites"
-    // screen where they can see all their blogs. In the case of only one blog just show
-    // the main blog details screen
-    UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
-    BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
-
-    if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-        if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
-            [blogListViewController bypassBlogListViewController];
-        }
-    }
 }
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
