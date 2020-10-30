@@ -133,10 +133,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        toggleFilterBarConstraints()
         styleButtons()
         setStaticText()
         scrollableView.delegate = self
-        toggleFilterBarConstraints()
 
         if #available(iOS 13.0, *) {} else {
             headerBar.backgroundColor = .basicBackground
@@ -287,7 +287,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-        maxHeaderBottomSpacing.isActive = !shouldHideFilterBar
+        maxHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 24
         minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
     }
 
@@ -302,11 +302,15 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func calculateHeaderSnapPoints() {
-        let filterBarHeight = shouldHideFilterBar ? 0 : filterBarHeightConstraint.constant
-        let filterBarBottomSpacing = shouldHideFilterBar ? minHeaderBottomSpacing.constant : maxHeaderBottomSpacing.constant
-        minHeaderHeight = filterBarHeight + minHeaderBottomSpacing.constant
-        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeight + filterBarBottomSpacing
-        _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+        if shouldHideFilterBar {
+            minHeaderHeight = 1
+            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + minHeaderHeight
+            _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+        } else {
+            minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
+            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
+            _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+        }
     }
 
     private var isFullscreen: Bool {
