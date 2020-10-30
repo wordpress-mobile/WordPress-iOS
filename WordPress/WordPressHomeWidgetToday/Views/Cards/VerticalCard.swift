@@ -10,16 +10,22 @@ struct VerticalCard: View {
         largeText ? Appearance.largeTextFont : Appearance.textFont
     }
 
+    private var accessibilityLabel: Text {
+        // The colon makes VoiceOver pause between elements
+        Text(title) + Text(": ") + Text(value)
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(Appearance.titleFont)
                 .fontWeight(Appearance.titleFontWeight)
                 .foregroundColor(Appearance.titleColor)
-
+                .accessibility(hidden: true)
             Text(value)
                 .font(titleFont)
                 .foregroundColor(Appearance.textColor)
+                .accessibility(label: accessibilityLabel)
         }
         .flipsForRightToLeftLayoutDirection(true)
     }
