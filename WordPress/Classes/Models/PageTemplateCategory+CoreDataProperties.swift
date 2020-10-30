@@ -44,7 +44,7 @@ extension PageTemplateCategory {
 
 extension PageTemplateCategory {
 
-    convenience init(context: NSManagedObjectContext, category: GutenbergLayoutCategory) {
+    convenience init(context: NSManagedObjectContext, category: RemoteLayoutCategory) {
         self.init(context: context)
         slug = category.slug
         title = category.title
