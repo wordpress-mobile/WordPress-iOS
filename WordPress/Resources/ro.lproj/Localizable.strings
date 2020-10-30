@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-10 06:55:08+0000 */
+/* Translation-Revision-Date: 2020-10-21 08:39:21+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -1873,7 +1873,7 @@
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
-"Display Name" = "Nume afișat";
+"Display Name" = "Nume de afișat";
 
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Afișează aici toate statisticile sitului. Configurează statisticile sitului în aplicația WordPress.";
