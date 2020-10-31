@@ -23,7 +23,7 @@ class PageCoordinator {
 
         let container = CollapsableHeaderViewController(childViewController: childViewController)
         childViewController.headerContentsDelegate = container
-        let navigationController = UINavigationController(rootViewController: container)
+        let navigationController = GutenbergLightNavigationController(rootViewController: container)
 
         if #available(iOS 13.0, *) {
             navigationController.modalPresentationStyle = .pageSheet

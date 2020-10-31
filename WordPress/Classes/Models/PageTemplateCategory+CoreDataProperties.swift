@@ -3,8 +3,18 @@ import CoreData
 
 extension PageTemplateCategory: CollabsableHeaderFilterOption {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<PageTemplateCategory> {
-        return NSFetchRequest<PageTemplateCategory>(entityName: "PageTemplateCategory")
+    @nonobjc public class func fetchRequest(forBlog blog: Blog, categorySlugs: [String]) -> NSFetchRequest<PageTemplateCategory> {
+        let request = NSFetchRequest<PageTemplateCategory>(entityName: "PageTemplateCategory")
+        let blogPredicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.blog)) == %@", blog)
+        let categoryPredicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.slug)) IN %@", categorySlugs)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [blogPredicate, categoryPredicate])
+        return request
+    }
+
+    @nonobjc public class func fetchRequest(forBlog blog: Blog) -> NSFetchRequest<PageTemplateCategory> {
+        let request = NSFetchRequest<PageTemplateCategory>(entityName: "PageTemplateCategory")
+        request.predicate = NSPredicate(format: "\(#keyPath(PageTemplateCategory.blog)) == %@", blog)
+        return request
     }
 
     @NSManaged public var desc: String?
@@ -12,7 +22,7 @@ extension PageTemplateCategory: CollabsableHeaderFilterOption {
     @NSManaged public var slug: String
     @NSManaged public var title: String
     @NSManaged public var layouts: Set<PageTemplateLayout>?
-
+    @NSManaged public var blog: Blog?
 }
 
 // MARK: Generated accessors for layouts
@@ -34,7 +44,7 @@ extension PageTemplateCategory {
 
 extension PageTemplateCategory {
 
-    convenience init(context: NSManagedObjectContext, category: GutenbergLayoutCategory) {
+    convenience init(context: NSManagedObjectContext, category: RemoteLayoutCategory) {
         self.init(context: context)
         slug = category.slug
         title = category.title

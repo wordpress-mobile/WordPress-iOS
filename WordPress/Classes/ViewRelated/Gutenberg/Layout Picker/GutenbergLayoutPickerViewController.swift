@@ -16,7 +16,7 @@ class GutenbergLayoutSection {
 }
 
 class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDataSource, CollapsableHeaderDelegate {
-    let defaultActionTitle = NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
+    let defaultActionTitle: String? = NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
     let primaryActionTitle = NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout")
     let secondaryActionTitle = NSLocalizedString("Preview", comment: "Title for button to preview a selected layout")
     let mainTitle = NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page")
@@ -38,27 +38,33 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
 
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
-    lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
-        let controller = PageLayoutService.resultsController(delegate: self)
-        sections = makeSectionData(with: controller)
-        return controller
-    }()
+    var resultsController: NSFetchedResultsController<PageTemplateCategory>? {
+        didSet {
+            sections = makeSectionData(with: resultsController)
+        }
+    }
 
     private var isLoading: Bool = true {
         didSet {
-            headerContentsDelegate?.loadingStateChanged(isLoading)
             if isLoading {
                 tableView.startGhostAnimation(style: GhostCellStyle.muriel)
             } else {
                 tableView.stopGhostAnimation()
             }
 
+            headerContentsDelegate?.loadingStateChanged(isLoading)
             tableView.reloadData()
         }
     }
 
     var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    var blog: Blog? = nil
+    var blog: Blog? = nil {
+        didSet {
+            if let blog = blog {
+                resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,13 +110,30 @@ class GutenbergLayoutPickerViewController: UIViewController, CollapsableHeaderDa
 
     private func fetchLayouts() {
         guard let blog = blog else { return }
-        isLoading = resultsController.isEmpty()
+        isLoading = resultsController?.isEmpty() ?? true
         let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
-        PageLayoutService.layouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize)
+        PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.headerContentsDelegate?.dismissNoResultsController()
+                case .failure(let error):
+                    self?.handleErrors(error)
+                }
+            }
+        }
     }
 
-    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>) -> [GutenbergLayoutSection] {
-        return controller.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
+    private func handleErrors(_ error: Error) {
+        guard resultsController?.isEmpty() ?? true else { return }
+        isLoading = false
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
+        headerContentsDelegate?.displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
+    }
+
+    private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>?) -> [GutenbergLayoutSection] {
+        return controller?.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
             return GutenbergLayoutSection(category)
         }) ?? []
     }
@@ -291,7 +314,14 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
-        isLoading = resultsController.isEmpty()
+        isLoading = resultsController?.isEmpty() ?? true
+        headerContentsDelegate?.contentSizeWillChange()
         tableView.reloadData()
+    }
+}
+
+extension GutenbergLayoutPickerViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        fetchLayouts()
     }
 }

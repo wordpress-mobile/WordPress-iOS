@@ -77,6 +77,7 @@
 #import "SourcePostAttribution.h"
 #import "StatsViewController.h"
 #import "SuggestionsTableView.h"
+#import "SuggestionsTableViewCell.h"
 #import "SVProgressHUD+Dismiss.h"
 
 #import "Theme.h"
