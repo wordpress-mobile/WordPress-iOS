@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-09 17:06:56+0000 */
+/* Translation-Revision-Date: 2020-10-21 07:52:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -393,7 +393,7 @@
 "Add To End" = "Toevoegen aan einde";
 
 /* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Toevoegen onderwerp";
+"Add Topic" = "Onderwerp toevoegen";
 
 /* No comment provided by engineer. */
 "Add URL" = "URL toevoegen";
@@ -4039,7 +4039,7 @@ translators: sample content for \"Services\" page template */
 "Pale cyan blue" = "Bleek cyaan blauw";
 
 /* No comment provided by engineer. */
-"Pale ocean" = "Bleek oceaan";
+"Pale ocean" = "Bleek oceaanblauw";
 
 /* No comment provided by engineer. */
 "Pale pink" = "Bleek roze";
