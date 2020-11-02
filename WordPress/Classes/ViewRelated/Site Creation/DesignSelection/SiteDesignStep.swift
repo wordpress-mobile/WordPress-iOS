@@ -5,7 +5,6 @@ final class SiteDesignStep: WizardStep {
     var delegate: WizardDelegate?
 
     private(set) lazy var content: UIViewController = {
-        let childViewController = SiteDesignContentCollectionViewController()
-        return CollapsableHeaderViewController(childViewController: childViewController, withFilterBar: false)
+        return SiteDesignContentCollectionViewController()
     }()
 }
