@@ -7,6 +7,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
+    private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headerBar: UIView!
@@ -21,7 +22,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var defaultActionButton: UIButton!
     @IBOutlet weak var secondaryActionButton: UIButton!
     @IBOutlet weak var primaryActionButton: UIButton!
-    @IBOutlet weak var selectedStateButtonsContainer: UIView!
+    @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -119,6 +120,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
+        self.hasDefaultAction = (defaultActionTitle != nil)
 
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
@@ -215,13 +217,20 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = mainTitle
         largeTitleView.text = mainTitle
         promptView.text = prompt
-        secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
         if let defaultActionTitle = defaultActionTitle {
             defaultActionButton.setTitle(defaultActionTitle, for: .normal)
         } else {
             footerView.isHidden = true
+            defaultActionButton.isHidden = true
+            selectedStateButtonsContainer.isHidden = false
+        }
+
+        if let secondaryActionTitle = secondaryActionTitle {
+            secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
+        } else {
+            secondaryActionButton.isHidden = true
         }
     }
 
@@ -401,21 +410,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     /// A public interface to notify the container that the selected state for an items has changed.
     public func itemSelectionChanged(_ hasSelectedItem: Bool) {
-        defaultActionButton.isHidden = false
-        selectedStateButtonsContainer.isHidden = false
-
-        defaultActionButton.alpha = hasSelectedItem ? 1 : 0
-        selectedStateButtonsContainer.alpha = hasSelectedItem ? 0 : 1
-
-        let alpha: CGFloat = hasSelectedItem ? 0 : 1
-        let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
-
-        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.defaultActionButton.alpha = alpha
-            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
-        }) { (_) in
-            self.defaultActionButton.isHidden = hasSelectedItem
-            self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
+        if hasDefaultAction {
+            itemSelectionChangedWithDefaultOption(hasSelectedItem)
+        } else {
+            itemSelectionChangedNoDefault(hasSelectedItem)
         }
     }
 
@@ -496,5 +494,38 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
+    }
+}
+
+private extension CollapsableHeaderViewController {
+    private func itemSelectionChangedWithDefaultOption(_ hasSelectedItem: Bool) {
+        defaultActionButton.isHidden = false
+        selectedStateButtonsContainer.isHidden = false
+
+        defaultActionButton.alpha = hasSelectedItem ? 1 : 0
+        selectedStateButtonsContainer.alpha = hasSelectedItem ? 0 : 1
+
+        let alpha: CGFloat = hasSelectedItem ? 0 : 1
+        let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
+
+        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.defaultActionButton.alpha = alpha
+            self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
+        }) { (_) in
+            self.defaultActionButton.isHidden = hasSelectedItem
+            self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
+        }
+    }
+
+    private func itemSelectionChangedNoDefault(_ hasSelectedItem: Bool) {
+        footerView.isHidden = false
+        footerView.alpha = hasSelectedItem ? 0 : 1
+        let alpha: CGFloat = hasSelectedItem ? 1 : 0
+
+        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.footerView.alpha = alpha
+        }) { (_) in
+            self.footerView.isHidden = !hasSelectedItem
+        }
     }
 }
