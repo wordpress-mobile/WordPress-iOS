@@ -2,12 +2,10 @@
 
 extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
-//TODO: Remove WPTabMe and WPTabNewPost when the new Me page and FAB are released
+
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
     WPTabReader,
-    WPTabNewPost,
-    WPTabMe,
     WPTabNotifications
 };
 
@@ -31,10 +29,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
-// will be removed when the new IA implementation completes
-@property (nonatomic, strong, readonly) MeViewController *meViewController;
-// will be removed when the new IA implementation completes
-@property (nonatomic, strong, readonly) UINavigationController *meNavigationController;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
@@ -54,8 +48,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showPostTab;
 - (void)showPostTabWithCompletion:(void (^)(void))afterDismiss;
 - (void)showPostTabForBlog:(Blog *)blog;
-// will be removed when the new IA implementation completes
-- (void)showMeTab;
 - (void)showNotificationsTab;
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
@@ -75,8 +67,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
-// will be removed when the new IA implementation completes
-- (void)showTabForIndex:(NSInteger)tabIndex;
 
 - (Blog *)currentOrLastBlog;
 

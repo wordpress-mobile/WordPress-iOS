@@ -1,19 +1,24 @@
 import UIKit
 
-class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
+protocol CollabsableHeaderFilterOption: class {
+    var title: String { get }
+    var emoji: String? { get }
+}
 
-    static let cellReuseIdentifier = "LayoutPickerFilterCollectionViewCell"
-    static let nib = UINib(nibName: "LayoutPickerFilterCollectionViewCell", bundle: Bundle.main)
+class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
+
+    static let cellReuseIdentifier = "\(CollabsableHeaderFilterCollectionViewCell.self)"
+    static let nib = UINib(nibName: "\(CollabsableHeaderFilterCollectionViewCell.self)", bundle: Bundle.main)
 
     static var font: UIFont {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
     private static let combinedLeftRightMargin: CGFloat = 32
-    static func estimatedWidth(forFilter filter: GutenbergLayoutSection) -> CGFloat {
+    static func estimatedWidth(forFilter filter: CollabsableHeaderFilterOption) -> CGFloat {
         /// The emoji below is used as a placeholder to estimate the size of the title. We don't use the actual emoji provided by the API because this could be nil
         /// and we want to allow space for a checkmark when the cell is selected.
-        let size = "👋 \(filter.section.title)".size(withAttributes: [
+        let size = "👋 \(filter.title)".size(withAttributes: [
             NSAttributedString.Key.font: font
         ])
 
@@ -24,18 +29,16 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var pillBackgroundView: UIView!
     @IBOutlet weak var checkmark: UIImageView!
 
-    var filter: GutenbergLayoutSection? = nil {
+    var filter: CollabsableHeaderFilterOption? = nil {
         didSet {
-            let section = filter?.section
             filterLabel.text = filterTitle
-            filterLabel.accessibilityLabel = section?.title
+            filterLabel.accessibilityLabel = filter?.title
         }
     }
 
     var filterTitle: String {
-        let section = filter?.section
-        let emoji = isSelected ? nil : section?.emoji
-        return [emoji, section?.title].compactMap { $0 }.joined(separator: " ")
+        let emoji = isSelected ? nil : filter?.emoji
+        return [emoji, filter?.title].compactMap { $0 }.joined(separator: " ")
     }
 
     var checkmarkTintColor: UIColor {
@@ -62,7 +65,7 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        filterLabel.font = LayoutPickerFilterCollectionViewCell.font
+        filterLabel.font = CollabsableHeaderFilterCollectionViewCell.font
         if #available(iOS 13.0, *) {
             checkmark.image = UIImage(systemName: "checkmark")
         } else {
@@ -108,9 +111,9 @@ class LayoutPickerFilterCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension LayoutPickerFilterCollectionViewCell: GhostableView {
+extension CollabsableHeaderFilterCollectionViewCell: GhostableView {
     func ghostAnimationWillStart() {
         filterLabel.text = ""
-        pillBackgroundView.startGhostAnimation()
+        pillBackgroundView.startGhostAnimation(style: GhostCellStyle.muriel)
     }
 }

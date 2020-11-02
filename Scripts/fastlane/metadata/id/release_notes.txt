@@ -1,5 +1,0 @@
-Peningkatan editor blok:
-Pada situs Jetpack, sekarang Anda bisa mengedit blok yang tidak didukung dengan mengaktifkan Jetpack SSO dari peringatan blok hilang. Gunakan pemilih tautan praktis untuk menambahkan URL ke pos. Kami juga telah meningkatkan ukuran target ketuk pada tindakan utama pada blok yang tidak didukung.
-
-Perbaikan:
-Bug yang menyebabkan editor halaman menjadi overlay tidak terlihat telah dilumpuhkan dan tampilan ganda yang muncul saat meminta tautan login telah dihapuskan. Pada Pembaca, mengetuk tautan dengan jangkar berfungsi sebagaimana yang diharapkan.

@@ -22,7 +22,9 @@ class ReaderScreen: BaseScreen {
         return XCUIApplication().tables[ElementStringIDs.readerTable].exists
     }
 
-    func openDiscover() {
+    func openDiscover() -> ReaderScreen {
         discoverButton.tap()
+
+        return self
     }
 }

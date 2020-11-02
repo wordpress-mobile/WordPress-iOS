@@ -14,7 +14,6 @@ import WordPressFlux
         let button = FloatingActionButton(image: .gridicon(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
-        button.accessibilityHint = NSLocalizedString("Creates new post or page", comment: " Accessibility hint for create floating action button")
         return button
     }()
 
@@ -22,18 +21,21 @@ import WordPressFlux
 
     let newPost: () -> Void
     let newPage: () -> Void
+    let newStory: (() -> Void)?
 
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
-    private lazy var notice: Notice = {
-        let notice = Notice(title: NSLocalizedString("Create a post or page", comment: "The tooltip title for the Floating Create Button"),
+    private func notice(for blog: Blog) -> Notice {
+        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
+        let notice = Notice(title: title,
                             message: "",
                             style: ToolTipNoticeStyle()) { [weak self] _ in
                 self?.didDismissTooltip = true
                 self?.hideNotice()
         }
         return notice
-    }()
+    }
 
     // Once this reaches `maximumTooltipViews` we won't show the tooltip again
     private var shownTooltipCount: Int {
@@ -60,10 +62,17 @@ import WordPressFlux
 
     private weak var noticeContainerView: NoticeContainerView?
 
-    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void) {
+    /// Returns a newly initialized CreateButtonCoordinator
+    /// - Parameters:
+    ///   - viewController: The UIViewController from which the menu should be shown.
+    ///   - newPost: A closure to call when the New Post button is tapped.
+    ///   - newPage: A closure to call when the New Page button is tapped.
+    ///   - newStory: A closure to call when the New Story button is tapped. The New Story button is hidden when value is `nil`.
+    @objc init(_ viewController: UIViewController, newPost: @escaping () -> Void, newPage: @escaping () -> Void, newStory: (() -> Void)?) {
         self.viewController = viewController
         self.newPost = newPost
         self.newPage = newPage
+        self.newStory = newStory
 
         super.init()
 
@@ -115,22 +124,21 @@ import WordPressFlux
         guard let viewController = viewController else {
             return
         }
-        let actionSheetVC = actionSheetController(for: viewController.traitCollection)
+        let actionSheetVC = actionSheetController(with: viewController.traitCollection)
         viewController.present(actionSheetVC, animated: true, completion: {
             WPAnalytics.track(.createSheetShown)
             QuickStartTourGuide.find()?.visited(.newpost)
         })
     }
 
-    private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
+    private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = makePostsButton()
-        let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-                                            image: .gridicon(.pages),
-                                            identifier: "sitePageButton",
-                                            target: self,
-                                            selector: #selector(showNewPage))
+        let pagesButton = makePagesButton()
+        let storiesButton = makeStoriesButton()
+        let shouldShowStories = newStory != nil
+        let buttons = shouldShowStories ? [postsButton, pagesButton, storiesButton] : [postsButton, pagesButton]
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"),
-                                                              buttons: [postsButton, pagesButton])
+                                                              buttons: buttons)
 
         setupPresentation(on: actionSheetController, for: traitCollection)
 
@@ -146,6 +154,24 @@ import WordPressFlux
                                  target: self,
                                  selector: #selector(showNewPost),
                                  highlight: highlight)
+    }
+
+    // MARK: Button Constructors
+
+    private func makePagesButton() -> ActionSheetButton {
+        return ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
+                                            image: .gridicon(.pages),
+                                            identifier: "sitePageButton",
+                                            target: self,
+                                            selector: #selector(showNewPage))
+    }
+
+    private func makeStoriesButton() -> ActionSheetButton {
+        return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
+                                            image: .gridicon(.book),
+                                            identifier: "storyButton",
+                                            target: self,
+                                            selector: #selector(showNewStory))
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
@@ -176,13 +202,13 @@ import WordPressFlux
         }
     }
 
-    @objc func showCreateButton() {
-        showCreateButton(notice: nil)
+    @objc func showCreateButton(for blog: Blog) {
+        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
+        showCreateButton(notice: notice(for: blog))
     }
 
-    func showCreateButton(notice: Notice? = nil) {
-        let notice = notice ?? self.notice
-
+    func showCreateButton(notice: Notice) {
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
             shownTooltipCount += 1
@@ -201,6 +227,10 @@ import WordPressFlux
 
     @objc func showNewPage() {
         newPage()
+    }
+
+    @objc func showNewStory() {
+        newStory?()
     }
 
     // MARK: - Quick Start

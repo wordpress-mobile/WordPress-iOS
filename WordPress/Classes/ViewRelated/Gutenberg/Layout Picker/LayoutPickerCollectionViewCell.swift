@@ -6,7 +6,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     static let cellReuseIdentifier = "LayoutPickerCollectionViewCell"
     static let nib = UINib(nibName: "LayoutPickerCollectionViewCell", bundle: Bundle.main)
-
+    static let selectionAnimationSpeed: Double = 0.25
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkBackground: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView! {
@@ -21,7 +21,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    var layout: GutenbergLayout? = nil {
+    var layout: PageTemplateLayout? = nil {
         didSet {
             setImage(layout?.preview)
         }
@@ -54,17 +54,14 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            styleSelectedBorderColor()
-            imageView.layer.borderWidth = isSelected ? 2 : borderWith
-            checkmarkImageView.isHidden = !isSelected
-            checkmarkBackground.isHidden = !isSelected
+            checkmarkHidden(!isSelected, animated: true)
+            styleSelectedBorder(animated: true)
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        styleSelectedBorderColor()
-        imageView.layer.borderWidth = borderWith
+        styleSelectedBorder()
 
         if #available(iOS 13.0, *) {
              styleShadow()
@@ -78,7 +75,7 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                styleSelectedBorderColor()
+                styleSelectedBorder()
                 styleShadow()
             }
         }
@@ -106,13 +103,58 @@ class LayoutPickerCollectionViewCell: UICollectionViewCell {
         layer.shadowColor = nil
     }
 
-    private func styleSelectedBorderColor() {
-        imageView.layer.borderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
+    private func styleSelectedBorder(animated: Bool = false) {
+        let imageBorderColor = isSelected ? accentColor.cgColor : borderColor.cgColor
+        let imageBorderWidth = isSelected ? 2 : borderWith
+        guard animated else {
+            imageView.layer.borderColor = imageBorderColor
+            imageView.layer.borderWidth = imageBorderWidth
+            return
+        }
+
+        let borderWidthAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
+        borderWidthAnimation.fromValue = imageView.layer.borderWidth
+        borderWidthAnimation.toValue = imageBorderWidth
+        borderWidthAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
+
+        let borderColorAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
+        borderColorAnimation.fromValue = imageView.layer.borderColor
+        borderColorAnimation.toValue = imageBorderColor
+        borderColorAnimation.duration = LayoutPickerCollectionViewCell.selectionAnimationSpeed
+
+        imageView.layer.add(borderColorAnimation, forKey: "borderColor")
+        imageView.layer.add(borderWidthAnimation, forKey: "borderWidth")
+        imageView.layer.borderColor = imageBorderColor
+        imageView.layer.borderWidth = imageBorderWidth
+    }
+
+    private func checkmarkHidden(_ isHidden: Bool, animated: Bool = false) {
+        guard animated else {
+            checkmarkImageView.isHidden = isHidden
+            checkmarkBackground.isHidden = isHidden
+            return
+        }
+
+        checkmarkImageView.isHidden = false
+        checkmarkBackground.isHidden = false
+
+        // Set the inverse of the animation destination
+        checkmarkImageView.alpha = isHidden ? 1 : 0
+        checkmarkBackground.alpha = isHidden ? 1 : 0
+        let targetAlpha: CGFloat = isHidden ? 0 : 1
+
+        UIView.animate(withDuration: LayoutPickerCollectionViewCell.selectionAnimationSpeed, animations: {
+            self.checkmarkImageView.alpha = targetAlpha
+            self.checkmarkBackground.alpha = targetAlpha
+        }, completion: { (_) in
+            self.checkmarkImageView.isHidden = isHidden
+            self.checkmarkBackground.isHidden = isHidden
+        })
     }
 
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
-        imageView.startGhostAnimation()
+        imageView.startGhostAnimation(style: GhostCellStyle.muriel)
         imageView.downloadImage(from: url, success: { [weak self] _ in
             self?.imageView.stopGhostAnimation()
         }, failure: nil)

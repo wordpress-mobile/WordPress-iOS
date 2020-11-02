@@ -358,11 +358,8 @@ private extension FullScreenCommentReplyViewController {
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {
-        guard let siteID = self.siteID else {
-            return false
-        }
-
-        return SuggestionService.shared.shouldShowSuggestions(for: siteID)
+        guard let siteID = self.siteID, let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return false }
+        return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 
     // This should be moved elsewhere

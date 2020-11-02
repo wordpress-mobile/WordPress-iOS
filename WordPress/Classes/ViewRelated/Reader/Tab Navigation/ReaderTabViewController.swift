@@ -10,15 +10,13 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-        setupSearchButton()
+        setupNavigationButtons()
 
         ReaderTabViewController.configureRestoration(on: self)
 
@@ -32,13 +30,6 @@ class ReaderTabViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
                 completion(title)
             })
-        }
-
-        viewModel.settingsTapped = { [weak self] fromView in
-            guard let self = self else {
-                return
-            }
-            viewModel.presentManage(from: self)
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -58,16 +49,6 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTracker.shared.start(.main)
 
-        displaySelectInterestsIfNeeded()
-
-        viewModel.onTabBarItemsDidChange { [weak self] items, _ in
-            self?.displaySelectInterestsIfNeeded()
-        }
-
-        if !FeatureFlag.readerImprovementsPhase2.enabled {
-            markSelectedInterestsVisited()
-        }
-
         if FeatureFlag.whatIsNew.enabled {
             WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
         }
@@ -79,12 +60,20 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.stop(.main)
     }
 
-    func setupSearchButton() {
+    func setupNavigationButtons() {
+        // Settings Button
+        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(didTapSettingsButton))
+        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
+
+        // Search Button
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
                                            target: self,
                                            action: #selector(didTapSearchButton))
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        navigationItem.rightBarButtonItem = searchButton
+        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
     }
 
     override func loadView() {
@@ -101,8 +90,11 @@ class ReaderTabViewController: UIViewController {
 }
 
 
-// MARK: - Search
+// MARK: - Navigation Buttons
 extension ReaderTabViewController {
+    @objc private func didTapSettingsButton() {
+        viewModel.presentManage(from: self)
+    }
 
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
@@ -148,50 +140,11 @@ extension ReaderTabViewController {
     }
 }
 
-// MARK: - Select Interests Display
-extension ReaderTabViewController {
-    func displaySelectInterestsIfNeeded(isDisplaying: ((Bool) -> Void)? = nil) {
-        guard viewModel.itemsLoaded, isViewOnScreen(),
-            FeatureFlag.readerImprovementsPhase2.enabled else {
-            isDisplaying?(false)
-            return
-        }
-
-        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
-            if !isFollowing {
-                self.showSelectInterestsView()
-                isDisplaying?(true)
-            } else {
-                self.markSelectedInterestsVisited()
-                isDisplaying?(false)
-            }
-        }
-    }
-
-    func showSelectInterestsView() {
-        definesPresentationContext = true
-        selectInterestsViewController.modalPresentationStyle = .overCurrentContext
-        navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
-
-        selectInterestsViewController.didSaveInterests = { [unowned self] in
-            self.markSelectedInterestsVisited()
-
-            self.readerTabView.selectDiscover()
-
-            self.selectInterestsViewController.dismiss(animated: true)
-        }
-    }
-
-    private func markSelectedInterestsVisited() {
-        QuickStartTourGuide.find()?.visited(.selectInterests)
-    }
-}
-
-
 // MARK: - Constants
 extension ReaderTabViewController {
     private enum ReaderTabConstants {
         static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let settingsButtonIdentifier = "ReaderSettingsButton"
         static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"

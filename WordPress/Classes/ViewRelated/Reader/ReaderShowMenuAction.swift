@@ -99,7 +99,7 @@ final class ReaderShowMenuAction {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || (ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.readerImprovementsPhase2.enabled)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
                 || ReaderHelpers.topicIsFreshlyPressed(topic) || (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
         }
         return false

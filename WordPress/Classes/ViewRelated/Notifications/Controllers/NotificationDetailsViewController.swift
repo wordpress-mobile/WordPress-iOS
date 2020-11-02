@@ -545,11 +545,11 @@ private extension NotificationDetailsViewController {
     }
 
     var shouldAttachSuggestionsView: Bool {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = note.metaSiteID,
+              let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
             return false
         }
-
-        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: siteID)
+        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 }
 

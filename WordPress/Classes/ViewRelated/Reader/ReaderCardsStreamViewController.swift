@@ -2,6 +2,7 @@ import Foundation
 
 class ReaderCardsStreamViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
+    private let readerCardSitesIdentifier = "ReaderSitesCell"
 
     /// Page number used for Analytics purpose
     private var page = 1
@@ -17,11 +18,19 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
+    /// Tracks whether or not we should force sync
+    /// This is set to true after the Reader Manage view is dismissed
+    private var shouldForceRefresh = false
+
+    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
-        observeDisplayContext()
+        tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+
+        addObservers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +50,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return cell(for: card.post!, at: indexPath)
         case .topics:
             return cell(for: card.topicsArray)
+        case .sites:
+            return cell(for: card.sitesArray)
         case .unknown:
             return UITableViewCell()
         }
@@ -67,20 +78,15 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return cell
     }
 
-    private func isTableViewAtTheTop() -> Bool {
-        return tableView.contentOffset.y == 0
+    func cell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderSitesCardCell
+        cell.configure(sites)
+        cell.delegate = self
+        return cell
     }
 
-    private func displaySelectInterestsIfNeeded() {
-        guard let readerTabBarViewController = parent as? ReaderTabViewController else {
-            return
-        }
-
-        readerTabBarViewController.displaySelectInterestsIfNeeded { [unowned self] (isDisplaying) in
-            if isDisplaying {
-                self.showGhost()
-            }
-        }
+    private func isTableViewAtTheTop() -> Bool {
+        return tableView.contentOffset.y == 0
     }
 
     @objc private func reload(_ notification: Foundation.Notification) {
@@ -117,10 +123,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return cards?.count ?? 0
     }
 
-    override func syncIfAppropriate() {
+    override func syncIfAppropriate(forceSync: Bool = false) {
         // Only sync if the tableview is at the top, otherwise this will change tableview's offset
         if isTableViewAtTheTop() {
-            super.syncIfAppropriate()
+            super.syncIfAppropriate(forceSync: forceSync)
         }
     }
 
@@ -133,7 +139,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "post != NULL OR topics.@count != 0")
+        return NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
     }
 
     /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
@@ -150,18 +156,102 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return controller
     }
 
-    /// Observe the managedObjectContext for changes (likes, saves) and reload the tableView
-    private func observeDisplayContext() {
-        NotificationCenter.default.addObserver(self, selector: #selector(reload(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext())
+    private func addObservers() {
+        // Observe the managedObjectContext for changes (likes, saves) and reload the tableView
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reload(_:)),
+                                               name: .NSManagedObjectContextDidSave,
+                                               object: managedObjectContext())
+
+        // Listens for when the reader manage view controller is dismissed
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(manageControllerWasDismissed(_:)),
+                                               name: .readerManageControllerWasDismissed,
+                                               object: nil)
+    }
+
+    @objc func manageControllerWasDismissed(_ notification: Foundation.Notification) {
+        shouldForceRefresh = true
+        self.displaySelectInterestsIfNeeded()
     }
 }
 
-// MARK: - Suggested Topics Delegate
+// MARK: - Select Interests Display
+private extension ReaderCardsStreamViewController {
+    func displaySelectInterestsIfNeeded() {
+        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
+            if isFollowing {
+                self.hideSelectInterestsView()
+            } else {
+                self.showSelectInterestsView()
+            }
+        }
+    }
 
-extension ReaderCardsStreamViewController: ReaderTopicsCardCellDelegate {
-    func didSelect(topic: ReaderTagTopic) {
-        let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-        navigationController?.pushViewController(topicStreamViewController, animated: true)
-        WPAnalytics.track(.readerDiscoverTopicTapped)
+    func hideSelectInterestsView() {
+        guard selectInterestsViewController.parent != nil else {
+            if shouldForceRefresh {
+                scrollViewToTop()
+                displayLoadingStream()
+                super.syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
+            }
+
+            return
+        }
+
+        scrollViewToTop()
+        displayLoadingStream()
+        super.syncIfAppropriate(forceSync: true)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.selectInterestsViewController.view.alpha = 0
+        }) { [unowned self] _ in
+            self.selectInterestsViewController.remove()
+            self.selectInterestsViewController.view.alpha = 1
+        }
+    }
+
+    func showSelectInterestsView() {
+        guard selectInterestsViewController.parent == nil else {
+            return
+        }
+
+        selectInterestsViewController.view.frame = self.view.bounds
+        self.add(selectInterestsViewController)
+
+        selectInterestsViewController.didSaveInterests = { [unowned self] in
+            self.hideSelectInterestsView()
+        }
+    }
+}
+
+// MARK: - ReaderTopicsTableCardCellDelegate
+
+extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
+    func didSelect(topic: ReaderAbstractTopic) {
+        if topic as? ReaderTagTopic != nil {
+            WPAnalytics.track(.readerDiscoverTopicTapped)
+
+            let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+            navigationController?.pushViewController(topicStreamViewController, animated: true)
+        } else if let siteTopic = topic as? ReaderSiteTopic {
+            var properties = [String: Any]()
+            properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
+            WPAnalytics.track(.readerSuggestedSiteVisited, properties: properties)
+
+            let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
+            navigationController?.pushViewController(topicStreamViewController, animated: true)
+        }
+    }
+}
+
+// MARK: - ReaderSitesCardCellDelegate
+
+extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
+    func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
+        toggleFollowingForTopic(topic) { success in
+            cell.didToggleFollowing(topic, with: success)
+        }
     }
 }

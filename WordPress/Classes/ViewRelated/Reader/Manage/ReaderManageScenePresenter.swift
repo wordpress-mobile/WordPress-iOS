@@ -1,3 +1,7 @@
+extension NSNotification.Name {
+    static let readerManageControllerWasDismissed = NSNotification.Name("ReaderManageControllerWasDismissed")
+}
+
 class ReaderManageScenePresenter: ScenePresenter {
 
     enum TabbedSection {
@@ -59,6 +63,7 @@ private extension ReaderManageScenePresenter {
 
         let tabbedViewController = TabbedViewController(items: tabbedItems, onDismiss: {
             self.delegate?.didDismiss(presenter: self)
+            NotificationCenter.default.post(name: .readerManageControllerWasDismissed, object: self)
         })
         tabbedViewController.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
         if let section = selectedSection, let firstSelection = sections.firstIndex(of: section) {

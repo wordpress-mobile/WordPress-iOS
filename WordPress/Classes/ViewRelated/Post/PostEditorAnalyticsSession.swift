@@ -12,11 +12,12 @@ struct PostEditorAnalyticsSession {
     var template: String?
     private let startTime = DispatchTime.now().uptimeNanoseconds
 
-    init(editor: Editor, post: AbstractPost) {
+    init(editor: Editor, post: AbstractPost, template: String? = nil) {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
+        self.template = template
     }
 
     mutating func start(unsupportedBlocks: [String] = []) {

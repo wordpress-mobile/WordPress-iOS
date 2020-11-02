@@ -27,6 +27,7 @@ class MainNavigationTests: XCTestCase {
 
         _ = mySiteScreen
             .tabBar.gotoNotificationsScreen()
+            .dismissNotificationAlertIfNeeded()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
             XCTAssert(NotificationsScreen.isLoaded(), "Notifications screen isn't loaded.")
