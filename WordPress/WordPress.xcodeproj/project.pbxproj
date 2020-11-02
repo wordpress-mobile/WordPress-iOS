@@ -5696,7 +5696,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -11321,7 +11321,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11852,9 +11852,11 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${PODS_ROOT}/ZendeskCommonUISDK/CommonUISDK.framework",
 				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework",
+				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework.dSYM",
 				"${PODS_ROOT}/ZendeskMessagingAPISDK/MessagingAPI.framework",
 				"${PODS_ROOT}/ZendeskMessagingSDK/MessagingSDK.framework",
 				"${PODS_ROOT}/ZendeskSDKConfigurationsSDK/SDKConfigurations.framework",
+				"${PODS_ROOT}/ZendeskSDKConfigurationsSDK/SDKConfigurations.framework.dSYM",
 				"${PODS_ROOT}/ZendeskSupportProvidersSDK/SupportProvidersSDK.framework",
 				"${PODS_ROOT}/ZendeskSupportSDK/SupportSDK.framework",
 			);
@@ -11863,9 +11865,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZendeskCoreSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/ZendeskCoreSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingAPI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDKConfigurations.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/SDKConfigurations.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportProvidersSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportSDK.framework",
 			);
