@@ -164,7 +164,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.0.0'
+    pod 'ZendeskSupportSDK', '5.1.1'
     pod 'AlamofireImage', '3.5.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
