@@ -39,7 +39,7 @@ struct StoryAction: ActionSheetItem {
     func makeButton() -> ActionSheetButton {
         let badge = StoryAction.newBadge(title: NSLocalizedString("New", comment: "New button badge on Stories Post button"))
         return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
-                                            image: .gridicon(.book),
+                                            image: .gridicon(.story),
                                             identifier: "storyButton",
                                             badge: badge,
                                             action: handler)

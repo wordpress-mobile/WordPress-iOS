@@ -68,7 +68,7 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2-beta.1'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -194,7 +194,7 @@ target 'WordPress' do
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2-beta.1'
 
     pod 'WordPressAuthenticator', '~> 1.27.0'
     # While in PR

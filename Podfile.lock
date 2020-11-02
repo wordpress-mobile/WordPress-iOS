@@ -64,7 +64,7 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Gridicons (1.0.1)
+  - Gridicons (1.0.2-beta.1)
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
@@ -456,7 +456,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.0.1)
+  - Gridicons (~> 1.0.2-beta.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.40.0`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.2.1)
@@ -700,7 +700,7 @@ SPEC CHECKSUMS:
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  Gridicons: 8e19276b20bb15d1fda1d4d0db96d066d170135b
+  Gridicons: eaddc89f7210f38722de4c4c32c121da3e9738d9
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   Gutenberg: 36d982421b1fee7e77d7259184398afb022714dd
@@ -773,6 +773,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: cda74947e17c8c60efbc5b4fa4ebea28d41ab338
+PODFILE CHECKSUM: 8ac4286295d811e50e61dda9d48e8441de34c2d8
 
 COCOAPODS: 1.9.3
