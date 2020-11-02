@@ -1,0 +1,5 @@
+Med denna uppdatering kommer du att märka några trevliga förbättringar både när du skapar och när du konsumerar innehåll. Slutresultatet blir en bättre upplevelse av hela appen!
+
+Senaste nytt i blockredigeraren: när du skapar inlägg finns det nu stöd för fullbred eller bred justering i blocken för video, senaste inläggen, galleri, media och text samt framhävda citat. Vi har även gjort några justeringar: Rättat ett fel i det klassiska blocket på webbplatser med Jetpack. En annan rättelse berör hur block som saknar stöd i appen betedde sig när man roterade telefonen/surfplattan.
+
+Läsaren har fått ny design: Den nyligen uppfräschade läsaren innehåller en rad ändringar, bl.a. en renare läsupplevelse av enstaka inlägg. Bilder visas på ett snyggt sätt och vi rekommenderar verkligen att du lägger till en utvald bild för alla dina inlägg så att de märks ordentligt i blogglistan! Att läsa och upptäcka andra personers innehåll är också en del av den kreativa processen. Under fliken ”Upptäck” visar vi nu webbplatser vi rekommenderar att titta närmare på. Du kan också välja olika intressen som är relevanta för dig för att se mer innehåll som passar dig.
