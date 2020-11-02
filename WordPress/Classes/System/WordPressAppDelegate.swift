@@ -108,6 +108,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
+        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
+            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
+            // Please refer to the documentation of the called method to learn the details and know
+            // how to tell if this call can be removed.
+            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
+        }
+
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()

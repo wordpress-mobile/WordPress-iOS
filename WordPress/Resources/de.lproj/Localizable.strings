@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-16 15:54:14+0000 */
+/* Translation-Revision-Date: 2020-10-22 19:06:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -6967,7 +6967,7 @@ translators: sample content for \"Services\" page template */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Wir können zur Jetpack-Website unter dieser URL keine Verbindung herstellen. Wende dich an uns, um Unterstützung zu erhalten.";
 
 /* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Wir haben dir einen Anmeldelink per E-Mail gesendet, um dein neues WordPress.com-Konto zu erstellen. Überprüfe deine E-Mails auf diesem Gerät und tippe auf den Link in der E-Mail, die du von WordPress.com erhalten hast.";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Beim Ändern der Hauptdomain deiner Website ist ein Problem aufgetreten. Aber keine Sorge, deine Domain wurde erfolgreich gekauft.";
@@ -7459,7 +7459,7 @@ translators: sample content for \"Services\" page template */
 "other" = "andere";
 
 /* No comment provided by engineer. */
-"password" = "password";
+"password" = "Passwort";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonnummer";

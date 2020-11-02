@@ -1,13 +1,13 @@
-/* Translation-Revision-Date: 2020-10-15 15:54:08+0000 */
+/* Translation-Revision-Date: 2020-10-21 15:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
-"\nPlease send us an email to have your content cleared out." = "\nPlease send us an email to have your content cleared out.";
+"\nPlease send us an email to have your content cleared out." = "\nלמחיקת התוכן שלך יש לשלוח לנו אימייל.";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
-"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
+"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nלאישור, עליך להזין את כתובת האתר שלך לפני המחיקה.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "'טעינה עצלה' של תמונות";
@@ -663,7 +663,7 @@
 "Are you sure you want to cancel and discard changes?" = "בחרת לבטל את השינויים - האם ההחלטה סופית?";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Are you sure you want to continue?\n All site data for %@ will be removed from your %@.";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "האם ברצונך להמשיך?\n כל נתוני האתר של ‎%1$‎‎@‎ יוסרו מה-%2$‎@‎ שלך.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "בחרת להמשיך - האם ההחלטה סופית?\n כל נתוני האתר יוסרו מה-%@ שלך.";
@@ -706,7 +706,7 @@
 "Are you sure you want to remove %1$@?" = "האם ברצונך להסיר את %1$@?";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.";
+"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "האם ברצונך לשחזר את האתר חזרה לגרסה ממועד %@?\nפעולה זו תסיר את כל התוכן ואת האפשרויות שנוצרו או ששונו מאז.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "האם ברצונך לשמור כטיוטה?";
@@ -937,7 +937,7 @@
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
-"By setting up Jetpack you agree to our\n%@" = "By setting up Jetpack you agree to our\n%@";
+"By setting up Jetpack you agree to our\n%@" = "ההגדרה של Jetpack מהווה את ההסכמה שלך אל \n%@";
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "ביצוע ההרשמה מהווה את הסכמתך לתנאי השימוש שלנו.";
@@ -1104,7 +1104,7 @@
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Check your email on this device, and tap the link in the email you receive from WordPress.com.";
 
 /* Instructional text on how to open the email containing a magic link. */
-"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder.";
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "עליך לבדוק את האימייל ממכשיר זה ולהקיש על הקישור בהודעה שקיבלת מ-WordPress.com.\n\nלא רואה את האימייל? כדאי לבדוק בתיבת הספאם או בדואר הזבל.";
 
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "יש לבדוק את תיבת האימייל!";
@@ -1674,7 +1674,7 @@
 "Customize the message" = "התאמה אישית של ההודעה";
 
 /* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
+"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "להתאים אישית את ההודעה שברצונך לשתף.\nאם הטקסט שלך לא יירשם כאן, אנחנו נשתמש בכותרת של הפוסט להודעה.";
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "התאמה אישית של הגדרות האתרים שבמעקב אחר פוסטים ותגובות חדשים";
@@ -2207,7 +2207,7 @@
 "Error loading plugins" = "שגיאה בטעינת התוספים";
 
 /* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Error occurred\nduring loading";
+"Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
 
 /* Text displayed in HUD after attempting to save a draft post and an error occurred. */
 "Error occurred\nduring saving" = "ארע שגיאה\nבמהלך השמירה";
@@ -2321,10 +2321,10 @@
 "Failed" = "נכשל";
 
 /* Error message to show to use when media insertion on a post fails */
-"Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
+"Failed to insert media.\n Please tap for options." = "שילוב פירטי המדיה נכשל.\n יש להקיש לאפשרויות.";
 
 /* No comment provided by engineer. */
-"Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
+"Failed to insert media.\nPlease tap for options." = "שילוב פירטי המדיה נכשל.\nיש להקיש לאפשרויות.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "לא הצלחנו לערוך בסדרה בקשה אל REST API.";
@@ -2585,7 +2585,7 @@ translators: sample content for \"Team\" page template */
 "Gradient Type" = "סוג מעבר צבע";
 
 /* This is the text we display to the user after they've indicated they like the app */
-"Great!\n We love to hear from happy users \n😁" = "";
+"Great!\n We love to hear from happy users \n😁" = "נהדר!\n אנחנו שמחים כשהמשתמשים שלנו מרוצים \n😁";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
 "Great! Could you leave us a nice review?\n\nIt really helps." = "נהדר! האם תוכל להשאיר לנו סקירה חדשה?\n\nכל משוב יעזור.";
@@ -2724,7 +2724,7 @@ translators: sample content for \"Team\" page template */
 "Homepage successfully updated" = "עמוד הבית עודכן בהצלחה";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
-"Hooray!\nAlmost done" = "Hooray!\nAlmost done";
+"Hooray!\nAlmost done" = "הידד!\nכמעט סיימת";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "אהבתי את זה";
@@ -4974,7 +4974,7 @@ translators: sample content for \"Services\" page template */
 "Search WordPress" = "חיפוש ב-WordPress";
 
 /* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
+"Search WordPress\nfor a site or post" = "לחפש ב-WordPress \nאתר או פוסט";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "לחפש או להקליד כתובת URL";
@@ -6840,7 +6840,7 @@ translators: sample content for \"Services\" page template */
 "We couldn't publish this private post, but we'll try again later." = "לא הצלחנו לפרסם את הפוסט הפרטי אבל ננסה שוב מאוחר יותר.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
-"We couldn't retrieve this media.\nPlease tap to retry." = "We couldn't retrieve this media.\nPlease tap to retry.";
+"We couldn't retrieve this media.\nPlease tap to retry." = "לא הצלחנו לאחזר את המדיה.\nיש להקיש כדי לנסות שוב.";
 
 /* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
 "We couldn't schedule this page, but we'll try again later." = "לא הצלחנו לתזמן את העמוד אבל ננסה שוב מאוחר יותר.";
@@ -6891,7 +6891,7 @@ translators: sample content for \"Services\" page template */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "זה עתה שלחנו לך הודעת אימייל עם קישור אל %@. יש לבדוק את האפליקציה של האימייל שלך ולהקיש על הקישור כדי להתחבר.";
 
 /* Popup content about why this post is being opened in block editor */
-"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
+"We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "שיפרנו באופן משמעותי את עורך הבלוקים ואנחנו חושבים שכדאי לנסות אותו!\n\nהפעלנו אותו בפוסטים ובעמודים חדשים אבל אם ברצונך לחזור לעורך הקלאסי, יש לעבור אל 'האתר שלי' > 'הגדרות אתר'.";
 
 /* translators: sample content for \"Services\" page template */
 "We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "יש לנו מגוון שירותים שיעזרו לך לקבל את התוצאות שנדרשות לך. אין לך מושג מה נדרש לך ומה העלות? אנחנו יכולים להסביר לך אילו שירותים רלוונטיים עבורך ומה הם התעריפים שלנו. אפשר ליצור איתנו קשר למטה.";
@@ -7204,7 +7204,7 @@ translators: sample content for \"Services\" page template */
 "You are already following this site." = "האתר הזה כבר במעקב אצליך";
 
 /* Alert message. */
-"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.";
+"You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "שם המשתמש שלך ישתנה אל %@. שינוי שם המשתמש שלך ישפיע גם על כתובת הפרופיל של Gravatar ועל כתובת הפרופיל של IntenseDebate. \nיש לאשר את שם המשתמש החדש שלך כדי להמשיך.";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "מתבצעת כרגע העלאת מדיה על-ידך. יש להמתין להשלמת הפעולה.";
@@ -7292,11 +7292,11 @@ translators: sample content for \"Services\" page template */
 "You must be signed in to a WordPress.com account to perform this action." = "יש להיכנס לחשבון וורדפרס.קום כדי לבצע פעולה זו.";
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
+"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "עליך לאמת את החשבון שלך לפני שיהיה באפשרותך לפרסם פוסט.\nאל דאגה, הפוסט שלך בטוח ויישמר כטיוטה.";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "לאחרונה ביצעת שינויים בפוסט וטרם שמרת אותם. יש לבחור את הגרסה שברצונך לטעון: \n\nמהמכשיר הנייד הזה\nנשמר בתאריך %1$@\n\nממכשיר אחר\nנשמר בתאריך %2$@\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "כבר ענית לתגובה זו.";
