@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -55,7 +55,7 @@
                     </view>
                     <color key="tintColor" systemColor="systemBackgroundColor"/>
                     <vibrancyEffect style="fill">
-                        <blurEffect style="systemChromeMaterial"/>
+                        <blurEffect style="regular"/>
                     </vibrancyEffect>
                 </visualEffectView>
                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UZ7-wW-FYi" userLabel="Header Bar">
@@ -190,7 +190,7 @@
                             </view>
                             <color key="tintColor" systemColor="systemBackgroundColor"/>
                             <vibrancyEffect style="fill">
-                                <blurEffect style="systemChromeMaterial"/>
+                                <blurEffect style="regular"/>
                             </vibrancyEffect>
                         </visualEffectView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jCA-DJ-MgS" userLabel="Seperator">
