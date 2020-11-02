@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-14 16:54:08+0000 */
+/* Translation-Revision-Date: 2020-11-02 16:30:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -2517,7 +2517,7 @@
 "Generating Preview" = "Génération de l’aperçu…";
 
 /* View title for initial auth views. */
-"Get Started" = "Démarrez !";
+"Get Started" = "Premiers pas";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
 "Get a login link by email" = "Obtenir un lien de connexion par e-mail";
