@@ -54,9 +54,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <color key="tintColor" systemColor="systemBackgroundColor"/>
-                    <vibrancyEffect style="fill">
-                        <blurEffect style="regular"/>
-                    </vibrancyEffect>
+                    <blurEffect style="regular"/>
                 </visualEffectView>
                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UZ7-wW-FYi" userLabel="Header Bar">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
@@ -189,9 +187,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <color key="tintColor" systemColor="systemBackgroundColor"/>
-                            <vibrancyEffect style="fill">
-                                <blurEffect style="regular"/>
-                            </vibrancyEffect>
+                            <blurEffect style="regular"/>
                         </visualEffectView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jCA-DJ-MgS" userLabel="Seperator">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
