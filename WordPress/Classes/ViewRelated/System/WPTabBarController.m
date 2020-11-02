@@ -519,28 +519,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
     }
 }
-
-- (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
-{
-    [self switchMySitesTabToThemesViewForBlog:blog];
-
-    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
-    if ([topVC isKindOfClass:[ThemeBrowserViewController class]]) {
-        ThemeBrowserViewController *themeViewController = (ThemeBrowserViewController *)topVC;
-        [themeViewController presentCustomizeForTheme:[themeViewController currentTheme]];
-    }
-}
-
-- (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
-{
-    [self.mySitesCoordinator showBlogDetailsFor:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionThemes];
-    }
-}
-
+ 
 - (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
 {
     [self setSelectedIndex:WPTabMySites];
