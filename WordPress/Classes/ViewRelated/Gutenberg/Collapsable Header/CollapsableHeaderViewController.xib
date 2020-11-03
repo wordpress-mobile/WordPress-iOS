@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -17,6 +17,7 @@
                 <outlet property="defaultActionButton" destination="dmc-kV-0d8" id="NfO-bU-Zl7"/>
                 <outlet property="filterBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
                 <outlet property="filterBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
+                <outlet property="footerHeightContraint" destination="lle-48-IUZ" id="CV2-G2-ryj"/>
                 <outlet property="footerView" destination="UfV-hu-KZx" id="LZu-HT-o4b"/>
                 <outlet property="headerBar" destination="UZ7-wW-FYi" id="4aa-pG-O4U"/>
                 <outlet property="headerHeightConstraint" destination="dks-Bz-gRQ" id="PfP-C9-RWM"/>
@@ -190,6 +191,9 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <color key="tintColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="110" id="RV8-lP-Nz4"/>
+                            </constraints>
                             <vibrancyEffect style="fill">
                                 <blurEffect style="systemChromeMaterial"/>
                             </vibrancyEffect>
@@ -252,9 +256,9 @@
                         <constraint firstItem="3RE-1V-jrs" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" constant="16" id="By8-S6-dPm"/>
                         <constraint firstAttribute="trailing" secondItem="jCA-DJ-MgS" secondAttribute="trailing" id="Msd-NV-Dt9"/>
                         <constraint firstItem="qxH-Si-bGn" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" id="Sdv-Fh-3JR"/>
-                        <constraint firstAttribute="bottom" secondItem="qxH-Si-bGn" secondAttribute="bottom" id="ZsV-Vw-hdo"/>
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" id="jdx-th-4uc"/>
                         <constraint firstItem="dmc-kV-0d8" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" constant="16" id="lU4-Sj-dcL"/>
+                        <constraint firstAttribute="height" constant="110" id="lle-48-IUZ"/>
                         <constraint firstItem="3RE-1V-jrs" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" constant="20" id="rsX-3D-0xz"/>
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" id="v6p-Jz-Saz"/>
                         <constraint firstAttribute="trailing" secondItem="qxH-Si-bGn" secondAttribute="trailing" id="yT0-ne-uGv"/>
@@ -277,12 +281,10 @@
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="trailing" secondItem="U3M-sT-nKQ" secondAttribute="trailing" id="USb-Ex-vxP"/>
                 <constraint firstItem="UZ7-wW-FYi" firstAttribute="top" secondItem="U3M-sT-nKQ" secondAttribute="top" id="Wkr-ux-jJa"/>
                 <constraint firstAttribute="trailing" secondItem="0Qq-k5-kWr" secondAttribute="trailing" id="XxU-6u-RcX"/>
-                <constraint firstItem="0a4-LI-57Y" firstAttribute="bottom" secondItem="3RE-1V-jrs" secondAttribute="bottom" constant="16" id="cHQ-N1-l3C"/>
                 <constraint firstItem="0a4-LI-57Y" firstAttribute="trailing" secondItem="dmc-kV-0d8" secondAttribute="trailing" constant="20" id="cxE-O8-ska"/>
                 <constraint firstItem="0Qq-k5-kWr" firstAttribute="top" secondItem="UZ7-wW-FYi" secondAttribute="top" id="fJ8-nE-fRq"/>
                 <constraint firstItem="dmc-kV-0d8" firstAttribute="leading" secondItem="0a4-LI-57Y" secondAttribute="leading" constant="20" id="gMc-5F-M6S"/>
                 <constraint firstItem="UZ7-wW-FYi" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="i7c-8T-4PJ"/>
-                <constraint firstItem="0a4-LI-57Y" firstAttribute="bottom" secondItem="dmc-kV-0d8" secondAttribute="bottom" constant="16" id="l61-SQ-FeO"/>
                 <constraint firstItem="UfV-hu-KZx" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="msf-aW-ktk"/>
                 <constraint firstItem="0Qq-k5-kWr" firstAttribute="bottom" secondItem="LGN-fD-c9Q" secondAttribute="bottom" id="p8r-IQ-pZK"/>
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="uNo-VY-vcT"/>
