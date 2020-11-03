@@ -635,7 +635,7 @@
 		46183D20251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */; };
 		46241C0F2540BD01002B8A12 /* SiteDesignStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */; };
 		46241C3C2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */; };
-		46241C3D2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */; };
+		462423A4254A071D002B8A12 /* LayoutPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 462423A3254A071D002B8A12 /* LayoutPreviewViewController.xib */; };
 		4625B556253789C000C04AAD /* CollapsableHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */; };
 		4625B6342538B53700C04AAD /* CollapsableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */; };
 		4629E41D243D21400002E15C /* EditorThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4629E41C243D21400002E15C /* EditorThemeStore.swift */; };
@@ -643,7 +643,6 @@
 		4629E4232440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */; };
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		4631359124AD013F0017E65C /* PageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4631359024AD013F0017E65C /* PageCoordinator.swift */; };
-		4631359424AD05A60017E65C /* LayoutPickerStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4631359324AD05A60017E65C /* LayoutPickerStoryboard.storyboard */; };
 		4631359624AD068B0017E65C /* GutenbergLayoutPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4631359524AD068B0017E65C /* GutenbergLayoutPickerViewController.swift */; };
 		465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */; };
 		46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */; };
@@ -651,8 +650,8 @@
 		46963F5924649542000D356D /* EditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46963F5824649542000D356D /* EditorTheme.swift */; };
 		469CE06D24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */; };
 		469CE06E24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */; };
-		469CE07124BCFB04003BDC8B /* LayoutPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06F24BCFB04003BDC8B /* LayoutPickerCollectionViewCell.swift */; };
-		469CE07224BCFB04003BDC8B /* LayoutPickerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE07024BCFB04003BDC8B /* LayoutPickerCollectionViewCell.xib */; };
+		469CE07124BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06F24BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift */; };
+		469CE07224BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE07024BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib */; };
 		469EB16524D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469EB16324D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift */; };
 		469EB16624D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469EB16424D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib */; };
 		469EB16824D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */; };
@@ -3103,7 +3102,7 @@
 		46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageTemplateCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignStep.swift; sourceTree = "<group>"; };
 		46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignContentCollectionViewController.swift; sourceTree = "<group>"; };
-		46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteDesignContentCollectionViewController.xib; sourceTree = "<group>"; };
+		462423A3254A071D002B8A12 /* LayoutPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPreviewViewController.xib; sourceTree = "<group>"; };
 		4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderViewController.swift; sourceTree = "<group>"; };
 		4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollapsableHeaderViewController.xib; sourceTree = "<group>"; };
 		4625BC26253E285700C04AAD /* WordPress 102.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 102.xcdatamodel"; sourceTree = "<group>"; };
@@ -3113,7 +3112,6 @@
 		462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
 		462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlogDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4631359024AD013F0017E65C /* PageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCoordinator.swift; sourceTree = "<group>"; };
-		4631359324AD05A60017E65C /* LayoutPickerStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LayoutPickerStoryboard.storyboard; sourceTree = "<group>"; };
 		4631359524AD068B0017E65C /* GutenbergLayoutPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergLayoutPickerViewController.swift; sourceTree = "<group>"; };
 		465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergLightNavigationController.swift; sourceTree = "<group>"; };
 		46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBlockProcessor.swift; sourceTree = "<group>"; };
@@ -3121,8 +3119,8 @@
 		46963F5824649542000D356D /* EditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTheme.swift; sourceTree = "<group>"; };
 		469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerSectionTableViewCell.swift; sourceTree = "<group>"; };
 		469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPickerSectionTableViewCell.xib; sourceTree = "<group>"; };
-		469CE06F24BCFB04003BDC8B /* LayoutPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerCollectionViewCell.swift; sourceTree = "<group>"; };
-		469CE07024BCFB04003BDC8B /* LayoutPickerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPickerCollectionViewCell.xib; sourceTree = "<group>"; };
+		469CE06F24BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
+		469CE07024BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollapsableHeaderCollectionViewCell.xib; sourceTree = "<group>"; };
 		469EB16324D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabsableHeaderFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		469EB16424D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollabsableHeaderFilterCollectionViewCell.xib; sourceTree = "<group>"; };
 		469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderFilterBar.swift; sourceTree = "<group>"; };
@@ -5698,7 +5696,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -6687,19 +6685,28 @@
 			children = (
 				46241C0E2540BD01002B8A12 /* SiteDesignStep.swift */,
 				46241C3A2540D483002B8A12 /* SiteDesignContentCollectionViewController.swift */,
-				46241C3B2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib */,
 			);
 			path = DesignSelection;
 			sourceTree = "<group>";
 		};
-		4625B5472537875E00C04AAD /* CollapsableHeader */ = {
+		462422DE2549AD11002B8A12 /* Collapsable Header Collection View Cell */ = {
 			isa = PBXGroup;
 			children = (
+				469CE06F24BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift */,
+				469CE07024BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib */,
+			);
+			path = "Collapsable Header Collection View Cell";
+			sourceTree = "<group>";
+		};
+		4625B5472537875E00C04AAD /* Collapsable Header */ = {
+			isa = PBXGroup;
+			children = (
+				462422DE2549AD11002B8A12 /* Collapsable Header Collection View Cell */,
 				4625B70A2539F35000C04AAD /* Collabsable Header Filter Bar */,
 				4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */,
 				4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */,
 			);
-			path = CollapsableHeader;
+			path = "Collapsable Header";
 			sourceTree = "<group>";
 		};
 		4625B70A2539F35000C04AAD /* Collabsable Header Filter Bar */ = {
@@ -6717,12 +6724,10 @@
 			children = (
 				4631359524AD068B0017E65C /* GutenbergLayoutPickerViewController.swift */,
 				465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */,
-				469CE06F24BCFB04003BDC8B /* LayoutPickerCollectionViewCell.swift */,
-				469CE07024BCFB04003BDC8B /* LayoutPickerCollectionViewCell.xib */,
 				469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */,
 				469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */,
-				4631359324AD05A60017E65C /* LayoutPickerStoryboard.storyboard */,
 				466653492501552A00165DD4 /* LayoutPreviewViewController.swift */,
+				462423A3254A071D002B8A12 /* LayoutPreviewViewController.xib */,
 				46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */,
 			);
 			path = "Layout Picker";
@@ -7582,7 +7587,7 @@
 				912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */,
 				912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */,
 				FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */,
-				4625B5472537875E00C04AAD /* CollapsableHeader */,
+				4625B5472537875E00C04AAD /* Collapsable Header */,
 			);
 			path = Gutenberg;
 			sourceTree = "<group>";
@@ -11332,7 +11337,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11374,7 +11379,7 @@
 				17E3634522C417F0000E0C79 /* jetpack_green_icon_20pt@2x.png in Resources */,
 				17E363A422C41DBA000E0C79 /* hot_pink_icon_40pt@2x.png in Resources */,
 				B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */,
-				469CE07224BCFB04003BDC8B /* LayoutPickerCollectionViewCell.xib in Resources */,
+				469CE07224BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib in Resources */,
 				8B0732E7242B9C5200E7FBD3 /* PrepublishingHeaderView.xib in Resources */,
 				17DC4C3822C5E6910059CA11 /* open_source_dark_icon_83.5@2x.png in Resources */,
 				17DC4C3522C5E6910059CA11 /* open_source_dark_icon_29pt.png in Resources */,
@@ -11458,6 +11463,7 @@
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
 				17DC4C5922C5E6D60059CA11 /* open_source_icon_40pt@3x.png in Resources */,
 				17E363DB22C4280A000E0C79 /* pride_icon_40pt@3x.png in Resources */,
+				462423A4254A071D002B8A12 /* LayoutPreviewViewController.xib in Resources */,
 				98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
@@ -11514,7 +11520,6 @@
 				3223393E24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				17E363E622C4280A000E0C79 /* pride_icon_40pt.png in Resources */,
-				4631359424AD05A60017E65C /* LayoutPickerStoryboard.storyboard in Resources */,
 				17E3634A22C417F0000E0C79 /* jetpack_green_icon_60pt@2x.png in Resources */,
 				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				17E3634722C417F0000E0C79 /* jetpack_green_icon_76pt.png in Resources */,
@@ -11577,7 +11582,6 @@
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
 				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
-				46241C3D2540D483002B8A12 /* SiteDesignContentCollectionViewController.xib in Resources */,
 				17E3639922C41DBA000E0C79 /* hot_pink_icon_76pt.png in Resources */,
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
@@ -11863,9 +11867,11 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${PODS_ROOT}/ZendeskCommonUISDK/CommonUISDK.framework",
 				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework",
+				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework.dSYM",
 				"${PODS_ROOT}/ZendeskMessagingAPISDK/MessagingAPI.framework",
 				"${PODS_ROOT}/ZendeskMessagingSDK/MessagingSDK.framework",
 				"${PODS_ROOT}/ZendeskSDKConfigurationsSDK/SDKConfigurations.framework",
+				"${PODS_ROOT}/ZendeskSDKConfigurationsSDK/SDKConfigurations.framework.dSYM",
 				"${PODS_ROOT}/ZendeskSupportProvidersSDK/SupportProvidersSDK.framework",
 				"${PODS_ROOT}/ZendeskSupportSDK/SupportSDK.framework",
 			);
@@ -11874,9 +11880,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZendeskCoreSDK.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/ZendeskCoreSDK.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingAPI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDKConfigurations.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/SDKConfigurations.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportProvidersSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportSDK.framework",
 			);
@@ -13390,7 +13398,7 @@
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
 				8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
-				469CE07124BCFB04003BDC8B /* LayoutPickerCollectionViewCell.swift in Sources */,
+				469CE07124BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift in Sources */,
 				7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */,
 				F53FF3AA23EA725C001AD596 /* SiteIconView.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
