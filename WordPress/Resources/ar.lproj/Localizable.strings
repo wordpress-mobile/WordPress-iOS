@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-16 22:05:33+0000 */
+/* Translation-Revision-Date: 2020-11-03 01:16:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -196,6 +196,9 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
 
+/* translators: Missing block alert title. %s: The localized block name */
+"'%s' is not fully-supported" = "'%s' is not fully-supported";
+
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "+96692000000";
 
@@ -364,8 +367,7 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "سجلات النشاط";
 
-/* Button to create a new post.
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "إضافة";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -379,6 +381,9 @@
 
 /* No comment provided by engineer. */
 "Add Block Before" = "إضافة مكوّن قبل";
+
+/* Accessibility label for add comment button */
+"Add Comment" = "أضف تعليق";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "إضافة المحتويات إلى المقالة";
@@ -803,7 +808,9 @@
 
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
-   Previous web page */
+   Dismiss view
+   Previous web page
+   Spoken accessibility label */
 "Back" = "رجوع";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
@@ -840,12 +847,12 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "تحديث iPhone\/iPad كبير متوفر الآن";
 
-/* No comment provided by engineer. */
-"Black" = "أسود";
-
 /* Blacklist Title
    Settings: Comments Blacklist */
 "Blacklist" = "قائمة الحظر";
+
+/* Notice that a page without content has been created */
+"Blank page created" = "تم إنشاء صفحة فارغة";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -898,12 +905,6 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "مشاهد المدونة";
 
-/* No comment provided by engineer. */
-"Blush bordeaux" = "وردي نبيذي";
-
-/* No comment provided by engineer. */
-"Blush light purple" = "بنفسجي متورد";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "عريض";
@@ -925,6 +926,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "نمط الزر";
+
+/* Label for the post author in the post detail. */
+"By " = "بواسطة ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "بواسطة %@.";
@@ -1109,6 +1113,9 @@
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "التحقق من بريدك الإلكتروني!";
 
+/* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
+"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+
 /* Default subtitle for no-results when there is no connection */
 "Check your network connection and try again." = "تحقق من اتصال الشبكة والمحاولة مرة أخرى.";
 
@@ -1124,6 +1131,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "جاري التحقق من عمليات الشراء…";
 
+/* Title for the button to progress with the selected site homepage design */
+"Choose" = "اختيار";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "اختيار الصفحات";
 
@@ -1135,6 +1145,9 @@
 
 /* Label for Publish date picker */
 "Choose a date" = "اختيار تاريخ";
+
+/* Title for the screen to pick a design and homepage for a site. */
+"Choose a design" = "اختيار تصميم";
 
 /* Create site, step 4. Select domain name. Title */
 "Choose a domain name for your site" = "اختيار اسم نطاق لموقعك";
@@ -1162,6 +1175,9 @@
 
 /* No comment provided by engineer. */
 "Choose image or video" = "اختيار صورة أو فيديو";
+
+/* No comment provided by engineer. */
+"Choose images" = "اختيار الصور";
 
 /* No comment provided by engineer. */
 "Choose video" = "اختيار فيديو";
@@ -1244,6 +1260,9 @@
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "جمع المعلومات";
 
+/* First story intro item description */
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+
 /* Menu item label for linking a comic page. */
 "Comics" = "كوميكات";
 
@@ -1260,7 +1279,8 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "تم وسم التعليق كتعليق مزعج";
 
-/* Filters Comments Notifications
+/* Accessibility label for comments button with no comments
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1475,9 +1495,6 @@
 "Continuing with Apple" = "المتابعة عبر Apple";
 
 /* No comment provided by engineer. */
-"Cool to warm spectrum" = "بارد إلى طيف دافئ";
-
-/* No comment provided by engineer. */
 "Copied block" = "المكوِّن الذي تم نسخه";
 
 /* Copy link to oomment button title */
@@ -1598,6 +1615,9 @@
    Site creation. Step 1. Screen title */
 "Create Site" = "إنشاء موقع";
 
+/* Stories intro continue button title */
+"Create Story Post" = "إنشاء مقالة قصة";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "إنشاء موقع WordPress.com";
 
@@ -1616,8 +1636,11 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "أنشئ موقعًا جديدًا لأعمالك أو مجلتك أو مدونتك الشخصية؛ أو اتصل بموقع ووردبريس موجود وتم تثبيته مسبقًا.";
 
-/* The tooltip title for the Floating Create Button */
+/* Accessibility hint for create floating action button */
 "Create a post or page" = "إنشاء مقالة أو صفحة";
+
+/* The tooltip title for the Floating Create Button */
+"Create a post, page, or story" = "إنشاء مقالة، صفحة، أو قصة";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "إنشاء لوحة التحكم المخصصة الخاصة بك واختر ما تود رؤيته بالتقارير. ركّز على البيانات التي تُهمّك أكثر.";
@@ -1629,7 +1652,10 @@
 "Creates a new site with the given information." = "ينشئ موقعًا جديدًا باستخدام المعلومات المتوافرة.";
 
 /* Accessibility hint for create floating action button */
-"Creates new post or page" = "إنشاء مقالة أو صفحة جديدة";
+"Creates new post, or page" = "لإنشاء مقالة أو صفحة جديدة";
+
+/* Accessibility hint for create floating action button */
+"Creates new post, page, or story" = "لإنشاء مقالة، صفحة، أو قصة جديدة";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "إن إنشاء قائمة جديدة سيتجاهل التغييرات التي قمت بإجرائها على القائمة الحالية. هل أنت متأكد من رغبتك في المتابعة؟";
@@ -1690,9 +1716,6 @@
 
 /* No comment provided by engineer. */
 "Cut block" = "قص المكوِّن";
-
-/* No comment provided by engineer. */
-"Cyan bluish gray" = "أزرق سماوي رمادي";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "داكن";
@@ -2039,6 +2062,9 @@
 "Edit sharing buttons" = "تحرير أزرار المشاركة";
 
 /* No comment provided by engineer. */
+"Edit using web editor" = "تحرير باستخدام محرر الويب";
+
+/* No comment provided by engineer. */
 "Edit video" = "تحرير الفيديو";
 
 /* Editing GIF alert message. */
@@ -2055,9 +2081,6 @@
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "يقوم بتحرير عنصر القائمة هذا";
-
-/* No comment provided by engineer. */
-"Electric grass" = "أخضر مشع";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -2257,6 +2280,9 @@
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "الجميع";
 
+/* Example story title description */
+"Example story title" = "مثال لعنوان قصة";
+
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "المقتطف";
 
@@ -2421,6 +2447,9 @@
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "متابعة مواقع أخرى";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2681,6 +2710,12 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "المساعدة والدعم";
 
 /* No comment provided by engineer. */
+"Help button" = "زر المساعدة";
+
+/* No comment provided by engineer. */
+"Help icon" = "أيقونة المساعدة";
+
+/* No comment provided by engineer. */
 "Here is the panel content!" = "فيما يأتي محتوى اللوحة!";
 
 /* Appended to latest post summary text when the post has data. */
@@ -2725,6 +2760,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "مرحى!\nعلى وشك الانتهاء";
+
+/* How to create story description */
+"How to create a story post" = "كيفية إنشاء مقالة قصة";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "يعجبني هذا";
@@ -2874,6 +2912,9 @@ translators: sample content for \"Team\" page template */
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "يمكن أن يستغرق تثبيت الإضافة الأولى على موقعك حتى دقيقة واحدة. لن تتمكن من إجراء تغييرات على موقعك خلال هذه الفترة.";
 
+/* Stories intro header title */
+"Introducing Story Posts" = "مقدمة لمقالات القصص";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "عنوان موقع غير صالح";
 
@@ -3016,12 +3057,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the app appearance setting for light mode */
 "Light" = "فاتح";
-
-/* No comment provided by engineer. */
-"Light green cyan" = "أخضر سماوي فاتح";
-
-/* No comment provided by engineer. */
-"Light green cyan to vivid green cyan" = "أخضر سماوي فاتح إلى أخضر سماوي حيوي";
 
 /* Like (verb)
    Like a post.
@@ -3215,31 +3250,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. */
 "Lost your password?" = "هل فقدت كلمة مرورك؟";
 
-/* No comment provided by engineer. */
-"Luminous dusk" = "برتقالي مضيء";
-
-/* No comment provided by engineer. */
-"Luminous vivid amber" = "برتقالي ناري";
-
-/* No comment provided by engineer. */
-"Luminous vivid amber to luminous vivid orange" = "برتقالي ناري إلى برتقالي فاقع";
-
-/* No comment provided by engineer. */
-"Luminous vivid orange" = "برتقالي فاقع";
-
-/* No comment provided by engineer. */
-"Luminous vivid orange to vivid red" = "برتقالي فاقع إلى أحمر فاقع";
-
 /* Option to select the Apple Mail app when logging in with magic links */
 "Mail (Default)" = "البريد (افتراضي)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "التنقل الرئيسي";
 
-/* Accessibility label for the settings button in the reader.
-   Button leading to a screen where users can manage their installed plugins
+/* Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
-   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3257,9 +3275,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "إدارة المواقع";
-
-/* Accessibility hint for the settings button in the reader. */
-"Manage followed sites and tags" = "إدارة المواقع والوسوم التي تمت متابعتها";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "إدارة الموقع";
@@ -3297,7 +3312,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
-   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "أنا";
 
@@ -3374,9 +3388,6 @@ translators: sample content for \"Services\" page template */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Midnight" = "منتصف الليل";
-
 /* Title for the mobile web preview */
 "Mobile" = "الأجهزة المحمولة";
 
@@ -3396,7 +3407,8 @@ translators: sample content for \"Services\" page template */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More */
+   More
+   Spoken accessibility label */
 "More" = "المزيد";
 
 /* Action button to display more available options
@@ -3526,7 +3538,8 @@ translators: sample content for \"Services\" page template */
 /* Describes a status of a plugin */
 "Needs Update" = "بحاجة إلى تحديث";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   New button badge on Stories Post button */
 "New" = "جديد";
 
 /* Blacklist Keyword Insertion Title */
@@ -3541,8 +3554,7 @@ translators: sample content for \"Services\" page template */
 /* New Photo Post 3D Touch Shortcut */
 "New Photo Post" = "مقالة مصورة جديدة";
 
-/* New Post 3D Touch Shortcut
-   The accessibility value of the post tab. */
+/* New Post 3D Touch Shortcut */
 "New Post" = "مقالة جديدة";
 
 /* Menu item title text used as default when creating a new menu item. */
@@ -3811,6 +3823,9 @@ translators: sample content for \"Services\" page template */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "إشعارات غير مقروءة";
 
+/* First story intro item title */
+"Now stories are for everyone" = "تتوافر القصص الآن للجميع";
+
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "والآن بعد تثبيت Jetpack، ما علينا سوى مساعدتك على الإعداد. لن يستغرق هذا إلا دقيقة.";
 
@@ -3907,7 +3922,7 @@ translators: sample content for \"Services\" page template */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "فتح أداة انتقاء الوسائط بالكامل";
 
-/* No comment provided by engineer. */
+/* Spoken accessibility label */
 "Open in Safari" = "فتح في Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -4002,6 +4017,9 @@ translators: sample content for \"Services\" page template */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "مكوِّن فاصل الصفحات. %s";
 
+/* Notice that a page with content has been created */
+"Page created" = "تم إنشاء صفحة";
+
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "تم رفع مسودة الصفحة";
 
@@ -4034,15 +4052,6 @@ translators: sample content for \"Services\" page template */
    Discussion Settings
    Settings: Comments Paging preferences */
 "Paging" = "ترقيم الصفحات";
-
-/* No comment provided by engineer. */
-"Pale cyan blue" = "أزرق سماوي شاحب";
-
-/* No comment provided by engineer. */
-"Pale ocean" = "محيط شاحب";
-
-/* No comment provided by engineer. */
-"Pale pink" = "زهري فاتح";
 
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
@@ -4111,6 +4120,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "اختيار اسم مستخدم";
+
+/* Prompt for the screen to pick a design and homepage for a site. */
+"Pick your favorite homepage layout. You can customize or change it later" = "اختر تخطيط الصفحة الرئيسية المفضَّل لديك. يمكنك تخصيصه أو تغييره لاحقًا";
 
 /* The item to select during a guided tour. */
 "Plan" = "الخطة";
@@ -4260,8 +4272,7 @@ translators: sample content for \"Services\" page template */
 "Position or Job Title" = "المنصب أو المسمى الوظيفي";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
-   Placeholder title for ReaderPostDetails. */
+   Noun. Type of content being selected is a blog post */
 "Post" = "مقالة";
 
 /* Title for selecting categories for a post */
@@ -4379,7 +4390,8 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected layout */
+   Title for button to preview a selected layout
+   Title for the button to preview the selected site homepage design */
 "Preview" = "معاينة";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4793,7 +4805,8 @@ translators: sample content for \"Services\" page template */
 /* The largest resolution allowed for uploading */
 "Resolution" = "الدقة";
 
-/* Button title, displayed when media has failed to upload. Allows the user to try the upload again.
+/* A prompt to attempt the failed network request again
+   Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Label for a button that attempts to re-upload a page that previously failed to upload.
@@ -4951,6 +4964,12 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "جاري الجدولة...";
 
+/* No comment provided by engineer. */
+"Scrollable block menu closed." = "Scrollable block menu closed.";
+
+/* No comment provided by engineer. */
+"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+
 /* Placeholder text for the search bar
    Search
    The menu item to select during a guided tour.
@@ -4991,9 +5010,6 @@ translators: sample content for \"Services\" page template */
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "ابحث للعثور على صور مجانية لإضافتها إلى مكتبة الوسائط الخاصة بك!";
 
-/* Placeholder message when showing mentions search field */
-"Search users..." = "البحث عن مستخدمين...";
-
 /* Menus search bar placeholder text. */
 "Search..." = "يجري البحث...";
 
@@ -5009,6 +5025,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "مشاهدة الكل";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"See comments and notifications in real time." = "See comments and notifications in real time.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "تحديد";
@@ -5203,7 +5222,8 @@ translators: sample content for \"Services\" page template */
 /* Message to show when setting save failed */
 "Settings update failed" = "فشل تحديث الإعدادات";
 
-/* Button label to share a post
+/* Accessibility label for share buttons in nav bars
+   Button label to share a post
    Button label to share a web page
    Share the post.
    Spoken accessibility label
@@ -5400,6 +5420,9 @@ translators: sample content for \"Services\" page template */
 /* Sites Filter Tab Title with Count */
 "Sites (%lu)" = "المواقع (%lu)";
 
+/* A suggestion of topics the user might */
+"Sites to follow" = "مواقع لمتابعتها";
+
 /* Image size option title. */
 "Size" = "الحجم";
 
@@ -5570,6 +5593,12 @@ translators: sample content for \"Services\" page template */
 /* User action to stop upload. */
 "Stop upload" = "إيقاف الرفع";
 
+/* Create new Story button title */
+"Story post" = "مقالة قصة";
+
+/* Second story intro item description */
+"Story posts don't disappear" = "مقالات القصة لا تختفي";
+
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "الإستراتيجية";
 
@@ -5724,6 +5753,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint */
 "Tap for more detail." = "اضغط لمزيد من التفاصيل.";
+
+/* No comment provided by engineer. */
+"Tap here to show help" = "أنقر هنا لإظهار المساعدة";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "انقر لإلغاء الرفع.";
@@ -6046,6 +6078,9 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "ثمَّة عملية استعادة قيد التقدّم حاليًا، يرجى الانتظار قبل بدء عملية الاستعادة التالية";
 
+/* Second story intro item description */
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "تُنشر المقالة كمقالة جديدة على موقعك حتى لا يفوِّت جمهورك أي شيء.";
+
 /* Insights 'This Year' header */
 "This Year" = "هذا العام";
 
@@ -6342,7 +6377,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "يتعذر تحميل الصورة. يرجى اختيار صورة مختلفة أو المحاولة مرة أخرى لاحقًا.";
 
-/* Default title shown for no-results when the device is offline. */
+/* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "يتعذر تحميل هذا المحتوى حاليًا.";
 
 /* Error shown when the app fails to load a video from the user's media library. */
@@ -6645,9 +6681,6 @@ translators: sample content for \"Services\" page template */
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "الإصدار %@ متاح";
 
-/* No comment provided by engineer. */
-"Very light gray to cyan bluish gray" = "رمادي فاتح جداً إلى أزرق سماوي رمادي";
-
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "معاينة الفيديو غير متوفرة";
 
@@ -6744,21 +6777,6 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "سيرغب الزائرون في معرفة الموجودين على الجانب الآخر من الصفحة. استخدم هذه المساحة للكتابة عن نفسك أو موقعك أو شركتك أو أي شيء تريده. استعن بالتوصيات الواردة أدناه للاقتباس من الآخرين الذين يتحدثون حول الأمر نفسه بأسلوبهم الخاص.";
 
-/* No comment provided by engineer. */
-"Vivid cyan blue" = "أزرق سماوي حيوي";
-
-/* No comment provided by engineer. */
-"Vivid cyan blue to vivid purple" = "أزرق سماوي حيوي إلى بنفسجي ساطع";
-
-/* No comment provided by engineer. */
-"Vivid green cyan" = "أخضر سماوي حيوي";
-
-/* No comment provided by engineer. */
-"Vivid purple" = "بنفسجي ساطع";
-
-/* No comment provided by engineer. */
-"Vivid red" = "أحمر فاقع";
-
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "مسؤول ووردبريس";
 
@@ -6786,11 +6804,17 @@ translators: sample content for \"Services\" page template */
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "راقب القرّاء من جميع أنحاء العالم وهم يقرؤون ويتفاعلون مع موقعك — بالوقت الفعلي.";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "نحن فريق صغير من الاحترافيين الموهوبين الذين يتمتعون بمجموعة كبيرة من المهارات والخبرات. نحب ما نفعله ونقوم به بشغف. نتطلع إلى العمل معك.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "نواجه مشكلة في تحميل البيانات";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release." = "نعمل بجد لإضافة المزيد من المكوِّنات مع كل إصدار.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "لم نتمكن من إكمال هذا الإجراء، ولم ننشر هذه الصفحة.";
@@ -6996,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 /* A message title */
 "Welcome to the Reader" = "مرحبًا بكم مع القارئ";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "الغرب";
 
@@ -7051,9 +7078,6 @@ translators: sample content for \"Services\" page template */
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "ما الإصدار الذي ترغب في تحريره؟";
 
-/* No comment provided by engineer. */
-"White" = "أبيض";
-
 /* Whitelisted IP Addresses Title */
 "Whitelisted IP Addresses" = "عناوين IP المدرجة في قائمة السماح";
 
@@ -7074,6 +7098,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "لن تكون مرئية للجميع.";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"With this powerful editor you can post on the go." = "باستخدام هذا المحرر القوي، يمكنك النشر أثناء التنقّل.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "إعدادات تطبيق ووردبريس";
@@ -7159,9 +7186,6 @@ translators: sample content for \"Services\" page template */
 
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "ألا تزال تريد إزالة هذا الشخص؟";
-
-/* The accessibility value of the post tab. */
-"Write" = "كتابة";
 
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
@@ -7285,7 +7309,7 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "يمكنك إدراج عنوان IP أو سلسلة عناوين في قائمة السماح، الأمر الذي يعمل على منعهم من الحظر بواسطة Jetpack. IPv4 وIPv6 مقبولان. لتحديد نطاق، أدخل القيمة المنخفضة والقيمة المرتفعة مفصولاً بينهما بشرطة. على سبيل المثال: ‎12.12.12.1-12.12.12.100.";
 
-/* A suggestion of topics the user might */
+/* A suggestion of topics the user might like */
 "You might like" = "قد ترغب في";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
@@ -7309,6 +7333,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "تم تحديثك!";
+
+/* Story Intro welcome title */
+"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "لقد أجريتَ تغييرات غير محفوظة على هذه المقالة";
