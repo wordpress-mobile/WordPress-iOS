@@ -1,15 +1,15 @@
 import Foundation
 
-class ExPlat: ABTesting {
+class ExPlatService {
     let wordPressComRestApi: WordPressComRestApi
+
+    let assignmentsPath = "wpcom/v2/experiments/0.1.0/assignments/calypso"
 
     init(wordPressComRestApi: WordPressComRestApi) {
         self.wordPressComRestApi = wordPressComRestApi
     }
 
-    func refresh() {
-        let assignmentsPath = "wpcom/v2/experiments/0.1.0/assignments/calypso"
-
+    func getAssignments(completion: @escaping (Assignments?) -> Void) {
         wordPressComRestApi.GET(assignmentsPath,
                                 parameters: nil,
                                 success: { responseObject, httpResponse in
@@ -17,18 +17,19 @@ class ExPlat: ABTesting {
                                         let decoder = JSONDecoder()
                                         let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
                                         let assignments = try decoder.decode(Assignments.self, from: data)
-                                        UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
+                                        completion(assignments)
                                     } catch {
                                         DDLogError("Error parsing the experiment response: \(error)")
+                                        completion(nil)
                                     }
         }, failure: { error, _ in
-
+            completion(nil)
         })
     }
 }
 
-extension ExPlat {
-    class func withDefaultApi() -> ExPlat {
+extension ExPlatService {
+    class func withDefaultApi() -> ExPlatService {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
         let defaultAccount = accountService.defaultWordPressComAccount()
         let token: String? = defaultAccount?.authToken
@@ -36,6 +37,6 @@ extension ExPlat {
         let api = WordPressComRestApi.defaultApi(oAuthToken: token,
                                               userAgent: WPUserAgent.wordPress(),
                                               localeKey: WordPressComRestApi.LocaleKeyV2)
-        return ExPlat(wordPressComRestApi: api)
+        return ExPlatService(wordPressComRestApi: api)
     }
 }

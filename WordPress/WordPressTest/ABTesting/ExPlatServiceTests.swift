@@ -1,10 +1,9 @@
 import XCTest
 import OHHTTPStubs
-import Nimble
 
 @testable import WordPress
 
-class ExPlatTests: XCTestCase {
+class ExPlatServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         stubDomainsResponseWithFile("explat-assignments.json")
@@ -16,12 +15,19 @@ class ExPlatTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
+    // Return TTL and variations
+    //
     func testRefresh() {
-        let abTesting = ExPlat.withDefaultApi()
+        let expectation = XCTestExpectation(description: "Return assignments")
+        let service = ExPlatService.withDefaultApi()
 
-        abTesting.refresh()
+        service.getAssignments { assignments in
+            XCTAssertEqual(assignments?.ttl, 60)
+            XCTAssertEqual(assignments?.variations, ["experiment": "control"])
+            expectation.fulfill()
+        }
 
-        expect(UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?]).toEventually(equal(["experiment": "control"]))
+        wait(for: [expectation], timeout: 2.0)
     }
 
     private func stubDomainsResponseWithFile(_ filename: String) {
