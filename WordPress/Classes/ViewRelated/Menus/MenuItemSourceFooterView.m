@@ -55,7 +55,7 @@
 - (void)toggleMessageWithText:(NSString *)text
 {
     self.labelText = text;
-    if (!self.beginLoadingAnimationsTimer && !self.endLoadingAnimationsTimer) {
+    if (self.spinner.isAnimating == NO) {
         self.drawsLabelTextIfNeeded = YES;
     }
 }
@@ -68,7 +68,7 @@
 
     self.drawsLabelTextIfNeeded = NO;
 
-    [self.beginLoadingAnimationsTimer invalidate];
+    [self.spinner startAnimating];
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
 }
@@ -79,7 +79,7 @@
         return;
     }
 
-    [self.beginLoadingAnimationsTimer invalidate];
+    [self.spinner stopAnimating];
     self.isAnimating = NO;
 }
 
