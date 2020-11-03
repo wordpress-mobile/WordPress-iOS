@@ -12,7 +12,7 @@
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="revisions" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="revisions" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="statusAfterSync" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" syncable="YES"/>
         <relationship name="featuredImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Media" inverseName="featuredOnPosts" inverseEntity="Media" syncable="YES"/>
