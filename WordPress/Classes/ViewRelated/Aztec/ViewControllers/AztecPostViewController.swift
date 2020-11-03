@@ -1260,7 +1260,9 @@ private extension AztecPostViewController {
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
+        let settingsTitle = self.post is Page ? MoreSheetAlert.pageSettingsTitle : MoreSheetAlert.postSettingsTitle
+
+        alert.addDefaultActionWithTitle(settingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
 
@@ -3396,6 +3398,7 @@ extension AztecPostViewController {
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }

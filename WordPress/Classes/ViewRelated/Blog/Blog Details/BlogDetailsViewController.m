@@ -262,7 +262,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
     }
 
-    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    BlogDetailsViewController *viewController = [[self alloc] init];
     viewController.blog = restoredBlog;
 
     return viewController;
