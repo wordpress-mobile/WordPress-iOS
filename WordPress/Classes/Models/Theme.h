@@ -14,7 +14,6 @@
 @property (nonatomic, retain) NSString *version;
 @property (nonatomic, retain) NSString *author;
 @property (nonatomic, retain) NSString *authorUrl;
-@property (nonatomic, retain) NSArray *tags;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *previewUrl;
 @property (nonatomic, retain) NSString *price;
