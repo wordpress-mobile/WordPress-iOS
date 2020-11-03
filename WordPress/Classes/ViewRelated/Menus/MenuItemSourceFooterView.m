@@ -20,7 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
 
-        self.backgroundColor = [UIColor murielListBackground];
+        self.backgroundColor = [UIColor murielBasicBackground];
 
         [self setupSourceCell];
     }
