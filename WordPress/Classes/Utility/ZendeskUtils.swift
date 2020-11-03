@@ -828,12 +828,15 @@ private extension ZendeskUtils {
     }
 
     static func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
-            let nameField = alertController.textFields?.last else {
-                return
+        guard !email.isEmpty else {
+            return
         }
 
-        guard !email.isEmpty else {
+        // Find the name text field if it's being displayed.
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
+              let textFields = alertController.textFields,
+              textFields.count > 1,
+              let nameField = textFields.last else {
             return
         }
 
