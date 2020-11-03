@@ -788,6 +788,7 @@ private extension ZendeskUtils {
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
+            textField.keyboardType = .emailAddress
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
