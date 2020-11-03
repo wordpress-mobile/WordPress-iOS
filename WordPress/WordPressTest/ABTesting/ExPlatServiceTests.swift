@@ -14,7 +14,7 @@ class ExPlatServiceTests: XCTestCase {
     //
     func testRefresh() {
         let expectation = XCTestExpectation(description: "Return assignments")
-        stubDomainsResponseWithFile("explat-assignments.json")
+        stubAssignmentsResponseWithFile("explat-assignments.json")
         let service = ExPlatService.withDefaultApi()
 
         service.getAssignments { assignments in
@@ -30,7 +30,7 @@ class ExPlatServiceTests: XCTestCase {
     //
     func testRefreshDecodeFails() {
         let expectation = XCTestExpectation(description: "Do not return assignments")
-        stubDomainsResponseWithFile("explat-malformed-assignments.json")
+        stubAssignmentsResponseWithFile("explat-malformed-assignments.json")
         let service = ExPlatService.withDefaultApi()
 
         service.getAssignments { assignments in
@@ -41,13 +41,36 @@ class ExPlatServiceTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
-    private func stubDomainsResponseWithFile(_ filename: String) {
+    // Do not return assignments when the server returns an error
+    //
+    func testRefreshServerFails() {
+        let expectation = XCTestExpectation(description: "Do not return assignments")
+        stubAssignmentsResponseWithError()
+        let service = ExPlatService.withDefaultApi()
+
+        service.getAssignments { assignments in
+            XCTAssertNil(assignments)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 2.0)
+    }
+
+    private func stubAssignmentsResponseWithFile(_ filename: String) {
+        stubAssignments(withFile: filename)
+    }
+
+    private func stubAssignmentsResponseWithError() {
+        stubAssignments(withStatus: 503)
+    }
+
+    private func stubAssignments(withFile file: String = "explat-assignments.json", withStatus status: Int32? = nil) {
         let endpoint = "wpcom/v2/experiments/0.1.0/assignments/calypso"
         stub(condition: { request in
             return (request.url!.absoluteString as NSString).contains(endpoint) && request.httpMethod! == "GET"
         }) { _ in
-            let stubPath = OHPathForFile(filename, type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
+            let stubPath = OHPathForFile(file, type(of: self))
+            return fixture(filePath: stubPath!, status: status ?? 200, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
     }
 }
