@@ -33,6 +33,7 @@ static ContextManager *_override;
 {
     self = [super init];
     if (self) {
+        [self registerCustomValueTransformers];
         [self startListeningToMainContextNotifications];
     }
 
@@ -290,6 +291,14 @@ static ContextManager *_override;
 
 
 #pragma mark - Private Helpers
+
+- (void)registerCustomValueTransformers
+{
+    if (@available(iOS 14.0, *)) {
+        [CoordinateValueTransformer register];
+        [NSErrorValueTransformer register];
+    }
+}
 
 - (void)internalSaveContext:(NSManagedObjectContext *)context
 {

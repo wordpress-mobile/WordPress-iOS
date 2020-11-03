@@ -351,7 +351,7 @@
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="error" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Transformable" valueTransformerName="NSErrorValueTransformer" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String"/>
         <attribute name="filesize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
@@ -490,7 +490,7 @@
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
         <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="disabledPublicizeConnections" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
-        <attribute name="geolocation" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="geolocation" optional="YES" attributeType="Transformable" valueTransformerName="CoordinateValueTransformer"/>
         <attribute name="isStickyPost" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="latitudeID" optional="YES" attributeType="String"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>

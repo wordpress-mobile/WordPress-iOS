@@ -5,7 +5,15 @@ class CoreDataManager: CoreDataStack {
 
     /// Only for tests, do not use this method directly
     init() {
+        registerCustomValueTransformers()
         observe()
+    }
+
+    func registerCustomValueTransformers() {
+        if #available(iOS 12.0, *) {
+            CoordinateValueTransformer.register()
+            NSErrorValueTransformer.register()
+        }
     }
 
     private lazy var writerContext: NSManagedObjectContext = {
