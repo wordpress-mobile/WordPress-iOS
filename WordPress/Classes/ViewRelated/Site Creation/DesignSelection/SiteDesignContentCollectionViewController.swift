@@ -54,6 +54,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         collectionView.dataSource = self
         fetchSiteDesigns()
+        configureCloseButton()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -86,6 +87,35 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 }
             }
         }
+    }
+
+    private func configureCloseButton() {
+        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        closeButton.layer.cornerRadius = 15
+        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+
+        if #available(iOS 13.0, *) {
+            closeButton.tintColor = .secondaryLabel
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        } else {
+            closeButton.tintColor = .textSubtle
+            closeButton.backgroundColor = .quaternaryBackground
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeButton)
+
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 
     override func primaryActionSelected(_ sender: Any) {

@@ -9,10 +9,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let defaultActionTitle: String?
 
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var titleView: UILabel!
+    let titleView: UILabel = {
+        let title = UILabel(frame: .zero)
+        title.adjustsFontForContentSizeCategory = true
+        title.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
+        title.isHidden = true
+        return title
+    }()
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
@@ -130,19 +134,20 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         insertChildView()
+        navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
-        titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
-        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         toggleFilterBarConstraints()
         styleButtons()
         setStaticText()
         scrollableView.delegate = self
 
         if #available(iOS 13.0, *) {} else {
-            headerBar.backgroundColor = .basicBackground
             headerView.backgroundColor = .basicBackground
             footerView.backgroundColor = .basicBackground
         }
+        extendedLayoutIncludesOpaqueBars = true
+        edgesForExtendedLayout = .top
+        formatNavigationController()
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -152,7 +157,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        if #available(iOS 13.0, *) {
+            // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
+        } else {
+            formatNavigationController()
+        }
         if !isViewOnScreen() {
             layoutHeader()
         }
@@ -160,8 +169,48 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = false
+        if #available(iOS 13.0, *) {
+            // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
+        } else {
+            restoreNavigationBar()
+        }
         super.viewDidDisappear(animated)
+    }
+
+    var originalNavBarAppearance: (barStyle: UIBarStyle?, barTintColor: UIColor?) {
+        return (navigationController?.navigationBar.barStyle, navigationController?.navigationBar.barTintColor)
+    }
+
+    func formatNavigationController() {
+        if #available(iOS 13.0, *) {
+            let newAppearance = UINavigationBarAppearance()
+            newAppearance.configureWithTransparentBackground()
+            newAppearance.backgroundColor = .clear
+            newAppearance.shadowColor = .clear
+            newAppearance.shadowImage = UIImage()
+            navigationItem.standardAppearance = newAppearance
+            navigationItem.scrollEdgeAppearance = newAppearance
+            navigationItem.compactAppearance = newAppearance
+
+        } else {
+            navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barTintColor = .white
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.shadowImage = UIImage()
+        }
+    }
+
+    func restoreNavigationBar() {
+        if #available(iOS 13.0, *) { } else {
+            navigationController?.navigationBar.barStyle = originalNavBarAppearance.barStyle ?? .default
+            navigationController?.navigationBar.barTintColor = originalNavBarAppearance.barTintColor
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.shadowImage = UIImage()
+        }
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -191,11 +240,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - Header Actions
-    @IBAction open func closeSelected(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-
     // MARK: - Footer Actions
     @IBAction open func defaultActionSelected(_ sender: Any) {
         /* This should be overriden in a child class in order to enable support. */
@@ -211,8 +255,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - View Styling
     private func setStaticText() {
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
         titleView.text = mainTitle
+        titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
         secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
@@ -227,6 +271,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     private func insertChildView() {
         scrollableView.translatesAutoresizingMaskIntoConstraints = false
+        scrollableView.clipsToBounds = false
         let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
         let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
         let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
@@ -234,7 +279,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         containerView.addSubview(scrollableView)
         containerView.addConstraints([top, bottom, leading, trailing])
     }
-
 
     private func styleButtons() {
         let seperator: UIColor
@@ -254,19 +298,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
-
-        if #available(iOS 13.0, *) {
-            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.systemFill
-                } else {
-                    return UIColor.quaternarySystemFill
-                }
-            }
-        } else {
-            closeButton.tintColor = .textSubtle
-            closeButton.backgroundColor = .quaternaryBackground
-        }
     }
 
     private func hideSmallTitle(_ isHidden: Bool, animated: Bool = true) {
@@ -313,21 +344,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private var isFullscreen: Bool {
-        guard !shouldUseCompactLayout else { return true }
-        let targetViewController = parent ?? self
-        let presenationStyle: UIModalPresentationStyle = targetViewController.modalPresentationStyle
-        return !(Set([.pageSheet, .formSheet, .popover]).contains(presenationStyle))
-    }
-
     private func layoutHeaderInsets() {
-        let topInset: CGFloat
-        if isFullscreen {
-            topInset = maxHeaderHeight + headerBar.frame.height + UIApplication.shared.statusBarFrame.height
-        } else {
-            topInset = maxHeaderHeight + headerBar.frame.height
-        }
-
+        let topInset: CGFloat = maxHeaderHeight
         if let tableView = scrollableView as? UITableView {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
             tableView.tableHeaderView?.backgroundColor = .clear
@@ -347,7 +365,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let distanceToBottom = scrollableView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize().height
+        let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
         let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
@@ -359,7 +377,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func layoutHeader() {
-        [headerBar, headerView, footerView].forEach({
+        [headerView, footerView].forEach({
             $0?.setNeedsLayout()
             $0?.layoutIfNeeded()
         })
