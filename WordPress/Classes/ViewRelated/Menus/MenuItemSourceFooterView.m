@@ -26,6 +26,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 @property (nonatomic, strong) MenuItemSourceLoadingDrawView *drawView;
 @property (nonatomic, strong) NSTimer *beginLoadingAnimationsTimer;
 @property (nonatomic, strong) NSTimer *endLoadingAnimationsTimer;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
 
@@ -59,6 +60,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     cell.alpha = 0.0;
     [cell setTitle:@"Dummy Text For Sizing the Label"];
     [self addSubview:cell];
+    [self addSpinner];
     self.sourceCell = cell;
 }
 
@@ -71,6 +73,18 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     drawView.contentMode = UIViewContentModeRedraw;
     [self.sourceCell addSubview:drawView];
     self.drawView = drawView;
+}
+
+- (void)addSpinner
+{
+    if (@available(iOS 13.0, *)) {
+        _spinner = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
+    } else {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    }
+
+    [self addSubview:_spinner];
+    [self pinSubviewAtCenter:_spinner];
 }
 
 - (void)toggleMessageWithText:(NSString *)text
