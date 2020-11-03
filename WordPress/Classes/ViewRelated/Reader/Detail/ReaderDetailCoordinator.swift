@@ -61,6 +61,15 @@ class ReaderDetailCoordinator {
     /// If the site is an external feed (not hosted at WPcom and not using Jetpack)
     private(set) var isFeed: Bool?
 
+    /// The perma link URL for the loaded post
+    private var permaLinkURL: URL? {
+        guard let postURLString = post?.permaLink else {
+            return nil
+        }
+
+        return URL(string: postURLString)
+    }
+
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
@@ -87,9 +96,8 @@ class ReaderDetailCoordinator {
     func start() {
         view?.showLoading()
 
-        if let post = post {
+        if post != nil {
             renderPostAndBumpStats()
-            view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         } else if let postURL = postURL {
@@ -105,6 +113,8 @@ class ReaderDetailCoordinator {
         }
 
         sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+
+        WPAnalytics.track(.readerSharedItem)
     }
 
     /// Set a postID, siteID and isFeed
@@ -158,12 +168,15 @@ class ReaderDetailCoordinator {
     /// Open the postURL in a separated view controller
     ///
     func openInBrowser() {
-        guard let postURL = postURL else {
+        guard
+            let permaLink = post?.permaLink,
+            let postURL = URL(string: permaLink)
+        else {
             return
         }
 
+        WPAnalytics.track(.readerArticleVisited)
         presentWebViewController(postURL)
-        viewController?.navigationController?.popViewController(animated: true)
     }
 
     /// Some posts have content from private sites that need special cookies
@@ -173,8 +186,7 @@ class ReaderDetailCoordinator {
     /// - Parameter completion: a completion block
     func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
         guard let authenticator = authenticator,
-            let postURLString = post?.permaLink,
-            let postURL = URL(string: postURLString) else {
+            let postURL = permaLinkURL else {
             completion()
             return
         }
@@ -197,12 +209,12 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
             self?.reportPostLoadFailure()
         })
     }
+
 
     /// Requests a ReaderPost from the service and updates the View.
     ///
@@ -213,7 +225,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
@@ -227,8 +238,23 @@ class ReaderDetailCoordinator {
         }
 
         view?.render(post)
+
         bumpStats()
         bumpPageViewsForPost()
+    }
+
+    /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
+    /// once it loads
+    ///
+    private func scrollToHashIfNeeded() {
+        guard
+            let url = postURL,
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment
+        else {
+            return
+        }
+
+        view?.scroll(to: hash)
     }
 
     /// Shows the current post site posts in a new screen
@@ -264,6 +290,11 @@ class ReaderDetailCoordinator {
         ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
     }
 
+    private func showTopic(_ topic: String) {
+        let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
+    }
+
     /// Show a list with posts contianing this tag
     ///
     private func showTag() {
@@ -281,15 +312,24 @@ class ReaderDetailCoordinator {
     /// Given a URL presents it the best way possible.
     ///
     /// If it's an image, shows it fullscreen.
+    /// If it's a fullscreen Story link, open it in the webview controller
     /// If it's a post, open a new detail screen.
     /// If it's a regular URL, open it in the webview controller
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment {
+        // If the URL has an anchor (#)
+        // and the URL is equal to the current post URL
+        if
+            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
+            let postURL = permaLinkURL,
+            postURL.isHostAndPathEqual(to: url)
+        {
             view?.scroll(to: hash)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
             presentImage(url)
+        } else if url.query?.contains("wp-story") ?? false {
+            presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: viewController)
         } else if url.isWordPressDotComPost {
@@ -297,6 +337,12 @@ class ReaderDetailCoordinator {
         } else {
             presentWebViewController(url)
         }
+    }
+
+
+    /// Called after the webView fully loads
+    func webViewDidLoad() {
+        scrollToHashIfNeeded()
     }
 
     /// Show the featured image fullscreen
@@ -320,6 +366,21 @@ class ReaderDetailCoordinator {
         viewController?.present(controller, animated: true)
     }
 
+    private func followSite() {
+        guard let post = post else {
+            return
+        }
+
+        ReaderFollowAction().execute(with: post,
+                                     context: coreDataStack.mainContext,
+                                     completion: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     },
+                                     failure: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     })
+    }
+
     /// Given a URL presents it in a new Reader detail screen
     ///
     private func presentReaderDetail(_ url: URL) {
@@ -333,8 +394,7 @@ class ReaderDetailCoordinator {
     private func presentWebViewController(_ url: URL) {
         var url = url
         if url.host == nil {
-            if let postURLString = post?.permaLink {
-                let postURL = URL(string: postURLString)
+            if let postURL = permaLinkURL {
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
@@ -415,6 +475,7 @@ class ReaderDetailCoordinator {
     }
 }
 
+// MARK: - ReaderDetailHeaderViewDelegate
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didTapBlogName() {
         previewSite()
@@ -432,6 +493,17 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
+    func didTapFollowButton() {
+        followSite()
+    }
+
+    func didSelectTopic(_ topic: String) {
+        showTopic(topic)
+    }
+}
+
+// MARK: - ReaderDetailFeaturedImageViewDelegate
+extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
     }

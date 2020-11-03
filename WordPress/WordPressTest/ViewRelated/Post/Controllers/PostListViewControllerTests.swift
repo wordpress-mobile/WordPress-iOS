@@ -46,7 +46,7 @@ class PostListViewControllerTests: XCTestCase {
 
         postListViewController.startGhost()
 
-        expect(postListViewController.ghostableTableView.numberOfRows(inSection: 0)).to(equal(10))
+        expect(postListViewController.ghostableTableView.numberOfRows(inSection: 0)).to(equal(50))
     }
 
     func testItCanHandleNewPostUpdatesEvenIfTheGhostViewIsStillVisible() {

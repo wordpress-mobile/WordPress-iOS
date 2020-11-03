@@ -36,7 +36,6 @@ import WordPressFlux
 
     /// Settings
     private let settingsPresenter: ScenePresenter
-    var settingsTapped: ((UIView) -> Void)?
 
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
@@ -141,16 +140,6 @@ extension ReaderTabViewModel {
         }
     }
 }
-
-
-// MARK: - Settings
-extension ReaderTabViewModel {
-
-    func presentSettings(from: UIView) {
-        settingsTapped?(from)
-    }
-}
-
 
 // MARK: - Bottom Sheet
 extension ReaderTabViewModel {

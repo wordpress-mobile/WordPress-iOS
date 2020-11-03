@@ -155,15 +155,54 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
-        configureCompactOrDefault()
         configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        return CreateButtonCoordinator(self, actions: [
+            PostAction(handler: { [weak self] in
+                    self?.dismiss(animated: false, completion: nil)
+                    self?.createPost()
+            }),
+            StoryAction(handler: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
+            })
+        ])
+    }()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        configureCompactOrDefault()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        } else {
+            createButtonCoordinator.hideCreateButton()
+        }
     }
 
     func configureNavigationButtons() {
-        navigationItem.rightBarButtonItems = [addButton, postsViewButtonItem]
+        navigationItem.rightBarButtonItems = [postsViewButtonItem]
     }
 
     @objc func togglePostsView() {
@@ -213,7 +252,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [50])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
@@ -298,14 +337,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        tableView.reloadSections([0], with: .automatic)
-
         updateGhostableTableViewOptions()
-        ghostableTableView.reloadSections([0], with: .automatic)
 
         postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
         postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
         postsViewButtonItem.image = postViewIcon
+
+        if isViewOnScreen() {
+            tableView.reloadSections([0], with: .automatic)
+            ghostableTableView.reloadSections([0], with: .automatic)
+        }
     }
 
     // Mark - Layout Methods
@@ -516,7 +557,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
     private func editPost(apost: AbstractPost) {

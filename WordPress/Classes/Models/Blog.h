@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressOrgXMLRPCApi;
 @class Role;
 @class QuickStartTourState;
+@class UserSuggestion;
+@class PageTemplateCategory;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -100,6 +102,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
+@property (nonatomic, strong, readwrite, nullable) NSSet<UserSuggestion *> *userSuggestions;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
@@ -136,7 +139,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 /// Disk quota for site, this is only available for WP.com sites
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
-
+@property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

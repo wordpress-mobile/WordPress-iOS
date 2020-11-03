@@ -10,6 +10,8 @@ class ReaderWebView: WKWebView {
 
     let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
+    var postURL: URL? = nil
+
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
@@ -50,6 +52,31 @@ class ReaderWebView: WKWebView {
                 \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
+
+                // Replaces the bundle URL with the post URL for each "blank" anchor tag (<a href="#anchor"></a>).
+                // this fixes an issue where tapping on one would return a file url with the anchor attached to it
+                let baseURL = "\(Bundle.wordPressSharedBundle.bundleURL)"
+                let postURL = "\(postURL?.absoluteString ?? "")"
+
+                if(postURL.length > 0){
+                    let anchors = document.querySelectorAll('a')
+
+                    anchors.forEach(function(elem){
+                      // Ignore any regular links that don't have hashes
+                      if(!elem.hash || elem.hash.length < 0) {
+                        return
+                      }
+
+                      let href = elem.href;
+
+                      // Skip any links that aren't the base URL
+                      if(href.substr(0, baseURL.length) != baseURL){
+                        return
+                      }
+
+                      elem.href = postURL + elem.hash;
+                    });
+                }
             })
         </script>
         </html>
@@ -70,7 +97,13 @@ class ReaderWebView: WKWebView {
             })
 
             // Make all images tappable
-            document.querySelectorAll('img').forEach((el) => { el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>` })
+            // Exception for images in Stories, which have their own link structure
+            // and images that already have a link
+            document.querySelectorAll('img:not(.wp-story-image)').forEach((el) => {
+                if (el.parentNode.nodeName.toLowerCase() !== 'a') {
+                    el.outerHTML = `<a href="${el.src}">${el.outerHTML}</a>`;
+                }
+            })
 
             // Only display images after they have fully loaded, to have a native feel
             document.querySelectorAll('img').forEach((el) => {
@@ -151,11 +184,13 @@ class ReaderWebView: WKWebView {
         return """
             :root {
               --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
-              --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
+            --color-neutral-10: #\(UIColor(light: .muriel(color: .gray, .shade10),
+                            dark: .muriel(color: .gray, .shade30)).color(for: trait).hexString() ?? "");
               --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
               dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
+              --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
               --main-link-color: #\(UIColor.primary.color(for: trait).hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.color(for: trait).hexString() ?? "");
             }
@@ -168,10 +203,11 @@ class ReaderWebView: WKWebView {
         return """
             :root {
               --color-text: #\(UIColor.text.hexString() ?? "");
-              --color-neutral-70: #\(UIColor.text.hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.hexString() ?? "");
+              --color-neutral-10: #\(UIColor(color: .muriel(color: .gray, .shade10)).hexString() ?? "");
               --color-neutral-40: #\(UIColor(color: .muriel(color: .gray, .shade40)).hexString() ?? "");
               --color-neutral-50: #\(UIColor.textSubtle.hexString() ?? "");
+              --color-neutral-70: #\(UIColor.text.hexString() ?? "");
               --main-link-color: #\(UIColor.primary.hexString() ?? "");
               --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "");
             }

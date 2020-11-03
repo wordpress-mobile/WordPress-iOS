@@ -22,6 +22,7 @@ extension NoResultsViewHost where Self: UIViewController {
     ///   - view: The no results view parentView. Required.
     ///   - title: Main descriptive text. Required.
     ///   - subtitle: Secondary descriptive text. Optional.
+    ///   - noConnectionSubtitle: Secondary descriptive text to use specifically when there is no network connection. Optional.
     ///   - buttonTitle: Title of action button. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - attributedSubtitleConfiguration: Called after default styling, for subtitle attributed text customization.
@@ -33,6 +34,7 @@ extension NoResultsViewHost where Self: UIViewController {
     func configureAndDisplayNoResults(on view: UIView,
                                       title: String,
                                       subtitle: String? = nil,
+                                      noConnectionSubtitle: String? = nil,
                                       buttonTitle: String? = nil,
                                       attributedSubtitle: NSAttributedString? = nil,
                                       attributedSubtitleConfiguration: NoResultsAttributedSubtitleConfiguration? = nil,
@@ -44,6 +46,7 @@ extension NoResultsViewHost where Self: UIViewController {
         noResultsViewController.configure(title: title,
                                           buttonTitle: buttonTitle,
                                           subtitle: subtitle,
+                                          noConnectionSubtitle: noConnectionSubtitle,
                                           attributedSubtitle: attributedSubtitle,
                                           attributedSubtitleConfiguration: attributedSubtitleConfiguration,
                                           image: image,

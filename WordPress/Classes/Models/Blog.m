@@ -54,6 +54,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic domains;
 @dynamic themes;
 @dynamic media;
+@dynamic userSuggestions;
 @dynamic menus;
 @dynamic menuLocations;
 @dynamic roles;
@@ -84,6 +85,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;

@@ -22,8 +22,36 @@
         },
         {
             "type": "recommended_blogs",
+            "data": [{
+                "description": "Lorem Ipsum Sit Dolor Amet",
+                "feed_ID": 123456789,
+                "feed_URL": "http://loremipsum.wordpress.com",
+                "icon": {
+                    "img": "http://loremipsum.wordpress.com/wp-content/uploads/2020/10/example.png",
+                    "ico": "http://loremipsum.wordpress.com/wp-content/uploads/2020/10/example.png?w=16"
+                },
+                "ID": 987654321,
+                "is_private": false,
+                "jetpack": false,
+                "name": "Lipsum's Blog",
+                "prefer_feed": false,
+                "subscribers_count": 123,
+                "subscription": {
+                    "delivery_methods": {
+                        "email": null,
+                        "notification": {
+                            "send_posts": false
+                        }
+                    }
+                },
+                "URL": "http://loremipsum.wordpress.com"
+            }]
+        },
+        {
+            "type": "unknown_type",
             "data": []
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 8349,
@@ -131,7 +159,8 @@
                 "featured_media": {},
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 6243,
@@ -795,7 +824,8 @@
                 },
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 460,
@@ -974,7 +1004,8 @@
                 "featured_media": {},
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 2835,
@@ -1230,7 +1261,8 @@
                 "featured_media": {},
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 783,
@@ -1407,7 +1439,8 @@
                 },
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 5033,
@@ -1607,7 +1640,8 @@
                 },
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 8347,
@@ -1715,7 +1749,8 @@
                 "featured_media": {},
                 "use_excerpt": false
             }
-        }, {
+        },
+        {
             "type": "post",
             "data": {
                 "ID": 208,

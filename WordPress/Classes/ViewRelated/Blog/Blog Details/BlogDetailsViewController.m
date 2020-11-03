@@ -124,7 +124,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                          image:image
                       callback:callback];
 }
-    
+
 - (instancetype)initWithTitle:(NSString *)title
       accessibilityIdentifier:(NSString *)accessibilityIdentifier
                         image:(UIImage *)image
@@ -321,7 +321,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -359,7 +359,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
@@ -368,27 +368,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
-    if([Feature enabled:FeatureFlagMeMove]) {
-        [self addMeButtonToNavigationBar];
-    }
-    
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view for:self.blog trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    }
+    [self addMeButtonToNavigationBar];
+
+    [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    
+
     [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
-    
+
     UIView *headerView = self.tableView.tableHeaderView;
-    
+
     CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     if (headerView.frame.size.height != size.height) {
         headerView.frame = CGRectMake(headerView.frame.origin.x, headerView.frame.origin.y, headerView.frame.size.width, size.height);
-        
+
         self.tableView.tableHeaderView = headerView;
     }
 }
@@ -406,7 +402,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.splitViewControllerIsHorizontallyCompact) {
         self.restorableSelectedIndexPath = nil;
     }
-    
+
     self.navigationItem.title = NSLocalizedString(@"My Site", @"Title of My Site tab");
 
     [self.headerView setBlog:self.blog];
@@ -421,8 +417,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] && [Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator showCreateButton];
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+        [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
     [self startAlertTimer];
@@ -431,27 +427,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
+    if([Feature enabled:FeatureFlagWhatIsNew]) {
+        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
+    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
 {
     if (!_createButtonCoordinator) {
-        __weak __typeof(self) weakSelf = self;
-        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
-                [weakSelf startAlertTimer];
-            }];
-        } newPage:^{
-            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
-            Blog *blog = [controller currentOrLastBlog];
-            [controller showPageEditorForBlog:blog];
-        } newStory:^{
-            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
-            Blog *blog = [controller currentOrLastBlog];
-            [controller showStoryEditorForBlog:blog];
-        }];
+        _createButtonCoordinator = [self makeCreateButtonCoordinator];
     }
-    
+
     return _createButtonCoordinator;
 }
 
@@ -1315,17 +1301,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
     NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
-    
+
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        
+
         [[QuickStartTourGuide find] removeFrom:self.blog];
     }];
-    
+
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     removeSheet.popoverPresentationController.sourceView = view;
     removeSheet.popoverPresentationController.sourceRect = view.ellipsisButton.frame;
@@ -1333,7 +1319,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
-    
+
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
 
@@ -1351,27 +1337,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - Private methods
 
 - (void)trackEvent:(WPAnalyticsStat)event fromSource:(BlogDetailsNavigationSource)source {
-    
+
     NSString *sourceString;
-    
+
     switch (source) {
         case BlogDetailsNavigationSourceRow:
             sourceString = @"row";
             break;
-            
+
         case BlogDetailsNavigationSourceLink:
             sourceString = @"link";
             break;
-            
+
         case BlogDetailsNavigationSourceButton:
             sourceString = @"button";
             break;
-            
+
         default:
             break;
     }
-    
-    [WPAppAnalytics track:event withProperties:@{@"tap_source": sourceString} withBlog:self.blog];
+
+    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
 }
 
 - (void)preloadBlogData
@@ -1715,7 +1701,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         [self configureTableViewData];
         BOOL isQuickStartSectionShownAfter = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
-        
+
         // quick start was just enabled
         if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
             [self showQuickStartCustomize];

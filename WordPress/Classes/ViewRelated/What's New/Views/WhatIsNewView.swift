@@ -32,6 +32,17 @@ class WhatIsNewView: UIView {
         return label
     }()
 
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentEdgeInsets = UIEdgeInsets(top: Appearance.backButtonInset, left: Appearance.backButtonInset, bottom: 0, right: 0)
+        button.setImage(UIImage.gridicon(.arrowLeft), for: .normal)
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        button.accessibilityLabel = NSLocalizedString("Back", comment: "Dismiss view")
+        button.tintColor = Appearance.backButtonTintColor
+        return button
+    }()
+
     private lazy var continueButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
@@ -39,6 +50,8 @@ class WhatIsNewView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(viewTitles.continueButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = Accessibility.continueButtonIdentifier
+        button.accessibilityHint = Accessibility.continueButtonHint
         return button
     }()
 
@@ -110,8 +123,9 @@ class WhatIsNewView: UIView {
     private let dataSource: AnnouncementsDataSource
 
     var continueAction: (() -> Void)?
+    var dismissAction: (() -> Void)?
 
-    init(viewTitles: WhatIsNewViewTitles, dataSource: AnnouncementsDataSource) {
+    init(viewTitles: WhatIsNewViewTitles, dataSource: AnnouncementsDataSource, showsBackButton: Bool = false) {
         self.viewTitles = viewTitles
         self.dataSource = dataSource
 
@@ -131,6 +145,14 @@ class WhatIsNewView: UIView {
             continueButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             headerView.widthAnchor.constraint(equalTo: announcementsTableView.widthAnchor)
         ])
+
+        if showsBackButton {
+            addSubview(backButton)
+            NSLayoutConstraint.activate([
+                backButton.leftAnchor.constraint(equalTo: leftAnchor),
+                backButton.topAnchor.constraint(equalTo: topAnchor),
+            ])
+        }
 
         setupTableViewDataSource()
     }
@@ -168,6 +190,10 @@ private extension WhatIsNewView {
 
     @objc func continueButtonTapped() {
         continueAction?()
+    }
+
+    @objc func backButtonTapped() {
+        dismissAction?()
     }
 }
 
@@ -240,5 +266,18 @@ private extension WhatIsNewView {
                 return .regular
             }
         }
+
+        // back button
+        static let backButtonTintColor = UIColor.darkGray
+        static let backButtonInset: CGFloat = 16
+    }
+}
+
+
+// MARK: - Accessibility
+private extension WhatIsNewView {
+    enum Accessibility {
+        static let continueButtonIdentifier = "AnnouncementsContinueButton"
+        static let continueButtonHint = NSLocalizedString("Dismiss announcements", comment: "Accessibility hint for the continue button in the Feature Announcements screen.")
     }
 }

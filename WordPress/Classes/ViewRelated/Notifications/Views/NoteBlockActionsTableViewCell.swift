@@ -194,6 +194,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnReply.setTitleColor(textNormalColor, for: UIControl.State())
         btnReply.accessibilityLabel = ReplyToComment.title
         btnReply.accessibilityHint = ReplyToComment.hint
+        btnReply.accessibilityIdentifier = ReplyToComment.identifier
 
         btnLike.setTitle(LikeComment.TitleStrings.like, for: UIControl.State())
         btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .highlighted)

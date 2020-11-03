@@ -9,6 +9,9 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
 @interface ReaderPostService : LocalCoreDataService
 
+@property (copy, nonatomic) NSString *nextPageHandle;
+@property (nonatomic) NSInteger pageNumber;
+
 /**
  Fetches the posts for the specified topic
 
@@ -189,5 +192,38 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  @siteURL the URL of the site.
  */
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL;
+
+/**
+ Delete all `ReaderPosts` beyond the max number to be retained.
+
+ The managed object context is not saved.
+
+ @param topic the `ReaderAbstractTopic` to delete posts from.
+ */
+- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic;
+
+/**
+ Delete posts that are flagged as belonging to a blocked site.
+
+ The managed object context is not saved.
+ */
+- (void)deletePostsFromBlockedSites;
+
+#pragma mark - Merging and Deletion
+
+/**
+ Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
+ Saves the managed object context.
+
+ @param remotePosts An array of RemoteReaderPost objects
+ @param date The `before` date posts were requested.
+ @param topicObjectID The ObjectID of the ReaderAbstractTopic to assign to the newly created posts.
+ @param success block called on a successful fetch which should be performed after merging
+ */
+- (void)mergePosts:(NSArray *)remotePosts
+    rankedLessThan:(NSNumber *)rank
+          forTopic:(NSManagedObjectID *)topicObjectID
+   deletingEarlier:(BOOL)deleteEarlier
+    callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success;
 
 @end

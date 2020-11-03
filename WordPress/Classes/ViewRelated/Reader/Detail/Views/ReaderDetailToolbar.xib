@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,22 +13,22 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-0W-AQZ">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="ikP-PI-Is1"/>
+                        <constraint firstAttribute="height" constant="0.5" id="ikP-PI-Is1"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
-                    <rect key="frame" x="28" y="423" width="358" height="50"/>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
+                    <rect key="frame" x="28" y="426" width="358" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
-                            <rect key="frame" x="0.0" y="13" width="32" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
+                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="fqQ-GT-Dks"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="sbH-ur-3hQ"/>
+                                <constraint firstAttribute="height" constant="44" id="fqQ-GT-Dks"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="sbH-ur-3hQ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
                             <state key="normal" title="0" image="icon-reader-comment">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -37,16 +37,14 @@
                                 <action selector="didTapSaveForLater:" destination="opk-iy-IwF" eventType="touchUpInside" id="PDn-1T-rlh"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p01-2J-g2A">
-                            <rect key="frame" x="48" y="0.0" width="143" height="50"/>
-                        </view>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
-                            <rect key="frame" x="207" y="13" width="40" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
+                            <rect key="frame" x="100.5" y="0.0" width="48" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="Z2e-Ky-bYe"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="j4t-0h-sz7"/>
+                                <constraint firstAttribute="height" constant="44" id="Z2e-Ky-bYe"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
                             <state key="normal" title="Reblog">
                                 <color key="titleShadowColor" red="0.50196078430000002" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -54,13 +52,13 @@
                                 <action selector="didTapReblog:" destination="opk-iy-IwF" eventType="touchUpInside" id="4SX-vl-xza"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
-                            <rect key="frame" x="263" y="13" width="32" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
+                            <rect key="frame" x="205.5" y="0.0" width="44" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="GbG-ii-IcP"/>
-                                <constraint firstAttribute="height" constant="24" id="qNK-wQ-gIc"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="GbG-ii-IcP"/>
+                                <constraint firstAttribute="height" constant="44" id="qNK-wQ-gIc"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                             <state key="normal" title="0" image="icon-reader-comment">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -69,13 +67,13 @@
                                 <action selector="didTapComment:" destination="opk-iy-IwF" eventType="touchUpInside" id="QGB-ei-h8b"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
-                            <rect key="frame" x="311" y="13" width="47" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
+                            <rect key="frame" x="306" y="0.0" width="52" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="Fio-gF-mFy"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="JqZ-KF-mxs"/>
+                                <constraint firstAttribute="height" constant="44" id="Fio-gF-mFy"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="JqZ-KF-mxs"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                             <state key="normal" title="Like" image="icon-reader-like">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

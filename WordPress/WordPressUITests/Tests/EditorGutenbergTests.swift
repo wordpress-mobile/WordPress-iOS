@@ -6,7 +6,7 @@ class EditorGutenbergTests: XCTestCase {
     override func setUp() {
         setUpTestSuite()
 
-        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
+        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .toggleBlockEditor(to: .on)
             .goBackToMySite()

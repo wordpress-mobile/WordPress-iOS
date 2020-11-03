@@ -434,9 +434,8 @@ extension NotificationDetailsViewController {
     }
 
     func setupSuggestionsView() {
-        suggestionsTableView = SuggestionsTableView()
-        suggestionsTableView.siteID = note.metaSiteID
-        suggestionsTableView.suggestionsDelegate = self
+        guard let siteID = note.metaSiteID else { return }
+        suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -545,11 +544,11 @@ private extension NotificationDetailsViewController {
     }
 
     var shouldAttachSuggestionsView: Bool {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = note.metaSiteID,
+              let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
             return false
         }
-
-        return shouldAttachReplyView && SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
+        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 }
 
