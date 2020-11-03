@@ -847,14 +847,20 @@ private extension ZendeskUtils {
         }
     }
 
-    static func generateDisplayName(from rawEmail: String) -> String {
-
+    static func generateDisplayName(from rawEmail: String) -> String? {
         // Generate Name, using the same format as Signup.
 
         // step 1: lower case
         let email = rawEmail.lowercased()
+
         // step 2: remove the @ and everything after
-        let localPart = email.split(separator: "@")[0]
+
+        // Verify something exists before the @.
+        guard email.first != "@",
+              let localPart = email.split(separator: "@").first else {
+            return nil
+        }
+
         // step 3: remove all non-alpha characters
         let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
         // step 4: turn periods into spaces
