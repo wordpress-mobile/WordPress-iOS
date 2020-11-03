@@ -1198,6 +1198,7 @@
 		8BE25F732551C8A0002E52E4 /* explat-assignments.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE25F722551C8A0002E52E4 /* explat-assignments.json */; };
 		8BE25F9D2551D5BD002E52E4 /* ExPlatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE25F812551D52C002E52E4 /* ExPlatService.swift */; };
 		8BE25FAC2551D6E7002E52E4 /* ExPlatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE25FAB2551D6E7002E52E4 /* ExPlatServiceTests.swift */; };
+		8BE25FBB2551F6CC002E52E4 /* explat-malformed-assignments.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BE25FBA2551F6CC002E52E4 /* explat-malformed-assignments.json */; };
 		8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
 		8BF0B607247D88EB009A7457 /* UITableViewCell+enableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */; };
@@ -3749,6 +3750,7 @@
 		8BE25F722551C8A0002E52E4 /* explat-assignments.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "explat-assignments.json"; sourceTree = "<group>"; };
 		8BE25F812551D52C002E52E4 /* ExPlatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExPlatService.swift; sourceTree = "<group>"; };
 		8BE25FAB2551D6E7002E52E4 /* ExPlatServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExPlatServiceTests.swift; sourceTree = "<group>"; };
+		8BE25FBA2551F6CC002E52E4 /* explat-malformed-assignments.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "explat-malformed-assignments.json"; sourceTree = "<group>"; };
 		8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrepublishingHeaderViewTests.swift; path = WordPressTest/PrepublishingHeaderViewTests.swift; sourceTree = SOURCE_ROOT; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
 		8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+enableDisable.swift"; sourceTree = "<group>"; };
@@ -10447,6 +10449,7 @@
 				D88A64A9208D974D008AE9BC /* thumbnail-collection.json */,
 				D88A64AD208D9CF5008AE9BC /* stock-photos-pageable.json */,
 				8BE25F722551C8A0002E52E4 /* explat-assignments.json */,
+				8BE25FBA2551F6CC002E52E4 /* explat-malformed-assignments.json */,
 			);
 			name = "Mock Data";
 			path = "Test Data";
@@ -11771,6 +11774,7 @@
 				3211056B250C0F750048446F /* valid-png-header in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
 				7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */,
+				8BE25FBB2551F6CC002E52E4 /* explat-malformed-assignments.json in Resources */,
 				F127FFD824213B5600B9D41A /* atomic-get-authentication-cookie-success.json in Resources */,
 				D848CC0120FF030C00A9038F /* notifications-comment-meta.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,

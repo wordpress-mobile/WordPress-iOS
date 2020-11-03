@@ -4,11 +4,6 @@ import OHHTTPStubs
 @testable import WordPress
 
 class ExPlatServiceTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        stubDomainsResponseWithFile("explat-assignments.json")
-    }
-
     override func tearDown() {
         super.tearDown()
 
@@ -19,11 +14,27 @@ class ExPlatServiceTests: XCTestCase {
     //
     func testRefresh() {
         let expectation = XCTestExpectation(description: "Return assignments")
+        stubDomainsResponseWithFile("explat-assignments.json")
         let service = ExPlatService.withDefaultApi()
 
         service.getAssignments { assignments in
             XCTAssertEqual(assignments?.ttl, 60)
             XCTAssertEqual(assignments?.variations, ["experiment": "control"])
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 2.0)
+    }
+
+    // Do not return assignments when the decoding fails
+    //
+    func testRefreshDecodeFails() {
+        let expectation = XCTestExpectation(description: "Do not return assignments")
+        stubDomainsResponseWithFile("explat-malformed-assignments.json")
+        let service = ExPlatService.withDefaultApi()
+
+        service.getAssignments { assignments in
+            XCTAssertNil(assignments)
             expectation.fulfill()
         }
 
