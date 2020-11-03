@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-22 20:05:33+0000 */
+/* Translation-Revision-Date: 2020-10-30 08:42:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sk */
@@ -727,7 +727,7 @@
 "Are you sure you want to update?" = "Naozaj chcete aktualizovať?";
 
 /* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Are you sure you wish to remove the topic '%@'?";
+"Are you sure you wish to remove the topic '%@'?" = "Naozaj chcete odstrániť tému '%@'?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Od 1. augusta 2018 spoločnosť Facebook už neumožňuje priame zdieľanie príspevkov na profily služby Facebook. Pripojenia na stránky Facebooku zostávajú nezmenené.";
@@ -1490,10 +1490,10 @@
 "Could Be Better" = "Mohlo by byť lepšie";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Follow Topic" = "Could Not Follow Topic";
+"Could Not Follow Topic" = "Tému nie je možné sledovať";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Remove Topic" = "Could Not Remove Topic";
+"Could Not Remove Topic" = "Nie je možné odstrániť tému";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Nepodarilo sa uložiť zmeny";
