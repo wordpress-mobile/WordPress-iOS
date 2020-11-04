@@ -2,6 +2,7 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentViewController: CollapsableHeaderViewController {
+    let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
     let cellSize = CGSize(width: 160, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
@@ -27,7 +28,8 @@ class SiteDesignContentViewController: CollapsableHeaderViewController {
         return UIEdgeInsets(top: itemSpacing, left: margin, bottom: itemSpacing, right: margin)
     }
 
-    init() {
+    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.completion = completion
         collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.sectionInset = SiteDesignContentViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
@@ -105,7 +107,7 @@ class SiteDesignContentViewController: CollapsableHeaderViewController {
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        completion(nil)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
@@ -113,7 +115,12 @@ class SiteDesignContentViewController: CollapsableHeaderViewController {
     }
 
     override func primaryActionSelected(_ sender: Any) {
-        /* ToDo */
+        guard let selectedIndexPath = selectedIndexPath else {
+            completion(nil)
+            return
+        }
+        let design = siteDesigns[selectedIndexPath.row]
+        completion(design)
     }
 
     private func handleError(_ error: Error) {

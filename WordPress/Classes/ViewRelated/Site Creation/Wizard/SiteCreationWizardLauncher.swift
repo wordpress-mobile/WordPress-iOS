@@ -10,7 +10,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var designStep: WizardStep = {
-        return SiteDesignStep()
+        return SiteDesignStep(creator: self.creator)
     }()
 
     private lazy var addressStep: WizardStep = {
