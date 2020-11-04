@@ -180,7 +180,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     override func viewWillDisappear(_ animated: Bool) {
         if #available(iOS 13.0, *) {
-            // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
+            // For iOS 13 the navigation item is being set so there is no need to revert everytime we're dismissing the controller.
         } else {
             restoreNavigationBar()
         }
