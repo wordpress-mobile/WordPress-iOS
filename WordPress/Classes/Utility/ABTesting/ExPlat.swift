@@ -20,11 +20,19 @@ class ExPlat: ABTesting {
         }
     }
 
-    func experiment(_ name: String) -> String? {
-        guard let assignments = UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?] else {
-            return nil
+    func experiment(_ name: String) -> Variation {
+        guard let assignments = UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?],
+              case let variation?? = assignments[name] else {
+            return .unknown
         }
 
-        return assignments[name] ?? nil
+        switch variation {
+        case "control":
+            return .control
+        case "treatment":
+            return .treatment
+        default:
+            return .other(variation)
+        }
     }
 }

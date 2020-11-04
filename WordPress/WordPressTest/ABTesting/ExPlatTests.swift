@@ -10,8 +10,8 @@ class ExPlatTests: XCTestCase {
         let abTesting = ExPlat(service: ExPlatServiceMock())
 
         abTesting.refresh {
-            XCTAssertEqual(abTesting.experiment("experiment"), "control")
-            XCTAssertEqual(abTesting.experiment("another_experiment"), "treatment")
+            XCTAssertEqual(abTesting.experiment("experiment"), .control)
+            XCTAssertEqual(abTesting.experiment("another_experiment"), .treatment)
             expectation.fulfill()
         }
 
@@ -28,8 +28,8 @@ class ExPlatTests: XCTestCase {
 
             serviceMock.returnAssignments = false
             abTesting.refresh {
-                XCTAssertEqual(abTesting.experiment("experiment"), "control")
-                XCTAssertEqual(abTesting.experiment("another_experiment"), "treatment")
+                XCTAssertEqual(abTesting.experiment("experiment"), .control)
+                XCTAssertEqual(abTesting.experiment("another_experiment"), .treatment)
                 expectation.fulfill()
             }
 
