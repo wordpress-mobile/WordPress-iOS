@@ -12,7 +12,7 @@ class ExPlatService {
     func getAssignments(completion: @escaping (Assignments?) -> Void) {
         wordPressComRestApi.GET(assignmentsPath,
                                 parameters: nil,
-                                success: { responseObject, httpResponse in
+                                success: { responseObject, _ in
                                     do {
                                         let decoder = JSONDecoder()
                                         let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
