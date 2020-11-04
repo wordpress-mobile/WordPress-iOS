@@ -11,6 +11,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     var selectedIndexPath: IndexPath? = nil
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
+            contentSizeWillChange()
             collectionView.reloadData()
         }
     }
@@ -76,12 +77,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
+        isLoading = true
         let request = SiteDesignRequest(previewSize: cellSize, scale: UIScreen.main.nativeScale)
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
+                self?.isLoading = false
                 switch response {
                 case .success(let result):
-                    self?.isLoading = false
+                    self?.dismissNoResultsController()
                     self?.siteDesigns = result
                 case .failure(let error):
                     self?.handleError(error)
@@ -114,7 +117,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func handleError(_ error: Error) {
-        /* ToDo */
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
+        displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 }
 
@@ -175,5 +180,12 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
         guard selectedIndexPath == indexPath else { return }
         selectedIndexPath = nil
         itemSelectionChanged(false)
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        fetchSiteDesigns()
     }
 }
