@@ -178,6 +178,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
     _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
+    _blogListNavigationController.tabBarItem.isAccessibilityElement = true;
     _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
