@@ -7,6 +7,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
+    private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headerView: UIView!
@@ -22,10 +23,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
     @IBOutlet weak var filterBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
     @IBOutlet weak var secondaryActionButton: UIButton!
     @IBOutlet weak var primaryActionButton: UIButton!
-    @IBOutlet weak var selectedStateButtonsContainer: UIView!
+    @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -46,6 +48,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                 }
             }
         }
+    }
+    private var footerHeight: CGFloat {
+        let verticalMargins: CGFloat = 16
+        let buttonHeight: CGFloat = 44
+        let safeArea = (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        return verticalMargins + buttonHeight + verticalMargins + safeArea
     }
     private var isShowingNoResults: Bool = false {
         didSet {
@@ -123,6 +131,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
+        self.hasDefaultAction = (defaultActionTitle != nil)
+
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -271,13 +281,21 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
-        secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
         if let defaultActionTitle = defaultActionTitle {
             defaultActionButton.setTitle(defaultActionTitle, for: .normal)
         } else {
-            footerView.isHidden = true
+            footerHeightContraint.constant = 0
+            footerView.layoutIfNeeded()
+            defaultActionButton.isHidden = true
+            selectedStateButtonsContainer.isHidden = false
+        }
+
+        if let secondaryActionTitle = secondaryActionTitle {
+            secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
+        } else {
+            secondaryActionButton.isHidden = true
         }
     }
 
@@ -375,11 +393,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
      * at the bottome of the tableView when multiple cells are rendered.
      */
     private func updateFooterInsets() {
-        let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        /// Update the footer height if it's being displayed. 
+        if footerHeightContraint.constant > 0 {
+            footerHeightContraint.constant = footerHeight
+        }
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
         let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
-        let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
+        let newHeight: CGFloat = max(footerHeight, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
@@ -432,6 +453,16 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     /// A public interface to notify the container that the selected state for an items has changed.
     public func itemSelectionChanged(_ hasSelectedItem: Bool) {
+        let animationSpeed = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed
+        guard hasDefaultAction else {
+            UIView.animate(withDuration: animationSpeed, delay: 0, options: .curveEaseInOut, animations: {
+                self.footerHeightContraint.constant = hasSelectedItem ? self.footerHeight : 0
+                self.footerView.setNeedsLayout()
+                self.footerView.layoutIfNeeded()
+            })
+            return
+        }
+
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
@@ -441,7 +472,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let alpha: CGFloat = hasSelectedItem ? 0 : 1
         let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
 
-        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+        UIView.animate(withDuration: animationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
             self.defaultActionButton.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
         }) { (_) in
