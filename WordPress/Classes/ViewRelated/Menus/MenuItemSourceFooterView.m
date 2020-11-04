@@ -48,7 +48,7 @@
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     }
 
-//    CGFloat height = self.frame.size.height;
+    _activityIndicator.translatesAutoresizingMaskIntoConstraints = false;
     [self addSubview: _activityIndicator];
     [self pinSubviewAtCenter: _activityIndicator];
 }
