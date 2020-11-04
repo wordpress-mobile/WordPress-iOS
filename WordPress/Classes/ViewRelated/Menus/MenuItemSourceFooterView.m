@@ -9,7 +9,7 @@
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, assign) BOOL drawsLabelTextIfNeeded;
 @property (nonatomic, strong) MenuItemSourceCell *sourceCell;
-@property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -36,29 +36,27 @@
     cell.alpha = 0.0;
     [cell setTitle:@"Dummy Text For Sizing the Label"];
     [self addSubview:cell];
-    [self addSpinner];
     self.sourceCell = cell;
+    [self setupActivityIndicator];
 }
 
-- (void)addSpinner
+- (void)setupActivityIndicator
 {
     if (@available(iOS 13.0, *)) {
-        _spinner = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
+        _activityIndicator = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
     } else {
-        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     }
 
 //    CGFloat height = self.frame.size.height;
-//    CGFloat width = height;
-//    _spinner.frame = CGRectMake(self.frame.size.width / 2, height / 2, height, width);
-    [self addSubview:_spinner];
-    [self pinSubviewAtCenter:_spinner];
+    [self addSubview: _activityIndicator];
+    [self pinSubviewAtCenter: _activityIndicator];
 }
 
 - (void)toggleMessageWithText:(NSString *)text
 {
     self.labelText = text;
-    if (self.spinner.isAnimating == NO) {
+    if (self.activityIndicator.isAnimating == NO) {
         self.drawsLabelTextIfNeeded = YES;
     }
 }
@@ -71,7 +69,7 @@
 
     self.drawsLabelTextIfNeeded = NO;
 
-    [self.spinner startAnimating];
+    [self.activityIndicator startAnimating];
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
 }
@@ -82,7 +80,7 @@
         return;
     }
 
-    [self.spinner stopAnimating];
+    [self.activityIndicator stopAnimating];
     self.isAnimating = NO;
 }
 
