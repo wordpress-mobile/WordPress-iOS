@@ -55,6 +55,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionView.dataSource = self
         fetchSiteDesigns()
         configureCloseButton()
+        configureSkipButton()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -89,6 +90,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         }
     }
 
+    private func configureSkipButton() {
+        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        navigationItem.rightBarButtonItem = skip
+    }
+
     private func configureCloseButton() {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         closeButton.layer.cornerRadius = 15
@@ -110,8 +116,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             closeButton.backgroundColor = .quaternaryBackground
         }
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: closeButton)
+    }
 
+    @objc func skipButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
