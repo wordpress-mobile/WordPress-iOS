@@ -56,7 +56,7 @@
 - (void)toggleMessageWithText:(NSString *)text
 {
     self.labelText = text;
-    if (self.activityIndicator.isAnimating == NO) {
+    if (!self.activityIndicator.isAnimating) {
         self.drawsLabelTextIfNeeded = YES;
     }
 }
