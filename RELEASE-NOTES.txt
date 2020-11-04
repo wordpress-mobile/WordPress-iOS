@@ -1,6 +1,8 @@
 16.2
 -----
- 
+* [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
+* [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+
 16.1
 -----
 * [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.
