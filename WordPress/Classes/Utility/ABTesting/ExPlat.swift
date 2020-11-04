@@ -14,7 +14,8 @@ class ExPlat: ABTesting {
                 return
             }
 
-            UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
+            let validVariations = assignments.variations.filter { $0.value != nil }
+            UserDefaults.standard.setValue(validVariations, forKey: "ab-testing-assignments")
             completion?()
         }
     }

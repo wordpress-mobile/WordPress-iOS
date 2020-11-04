@@ -57,7 +57,8 @@ private class ExPlatServiceMock: ExPlatService {
                 ttl: 60,
                 variations: [
                     "experiment": "control",
-                    "another_experiment": "treatment"
+                    "another_experiment": "treatment",
+                    "expired_experiment": nil
                 ]
             )
         )
