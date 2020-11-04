@@ -3,6 +3,8 @@ import Foundation
 class ExPlat: ABTesting {
     let service: ExPlatService
 
+    private let assignmentsKey = "ab-testing-assignments"
+
     init(service: ExPlatService = ExPlatService.withDefaultApi()) {
         self.service = service
     }
@@ -15,13 +17,13 @@ class ExPlat: ABTesting {
             }
 
             let validVariations = assignments.variations.filter { $0.value != nil }
-            UserDefaults.standard.setValue(validVariations, forKey: "ab-testing-assignments")
+            UserDefaults.standard.setValue(validVariations, forKey: self.assignmentsKey)
             completion?()
         }
     }
 
     func experiment(_ name: String) -> Variation {
-        guard let assignments = UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?],
+        guard let assignments = UserDefaults.standard.object(forKey: assignmentsKey) as? [String: String?],
               case let variation?? = assignments[name] else {
             return .unknown
         }
