@@ -294,7 +294,7 @@ static ContextManager *_override;
 
 - (void)registerCustomValueTransformers
 {
-    if (@available(iOS 14.0, *)) {
+    if (@available(iOS 12.0, *)) {
         [CoordinateValueTransformer register];
         [NSErrorValueTransformer register];
     }
