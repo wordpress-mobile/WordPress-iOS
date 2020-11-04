@@ -144,9 +144,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             headerView.backgroundColor = .basicBackground
             footerView.backgroundColor = .basicBackground
         }
+        formatNavigationController()
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
-        formatNavigationController()
         navigationItem.backButtonTitle = NSLocalizedString("Back", comment: "Navigate back to the previous screen")
     }
 
