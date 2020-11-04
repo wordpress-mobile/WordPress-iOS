@@ -11,7 +11,7 @@ class ExPlatTests: XCTestCase {
 
         abTesting.refresh()
 
-        expect(UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?]).toEventually(equal(["experiment": "control"]))
+        expect(abTesting.experiment("experiment")).to(equal("control"))
     }
 }
 

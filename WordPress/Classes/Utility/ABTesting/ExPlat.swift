@@ -16,4 +16,12 @@ class ExPlat: ABTesting {
             UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
         }
     }
+
+    func experiment(_ name: String) -> String? {
+        guard let assignments = UserDefaults.standard.object(forKey: "ab-testing-assignments") as? [String: String?] else {
+            return nil
+        }
+
+        return assignments[name] ?? nil
+    }
 }
