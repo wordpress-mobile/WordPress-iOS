@@ -5,8 +5,15 @@ class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "splitViewControllerRestorationID"
     static let navigationControllerRestorationID = "navigationControllerRestorationID"
 
+    /// The view controller that should be presented by the tab bar controller.
+    ///
     @objc
-    private(set) lazy var splitViewController: WPSplitViewController = {
+    var rootViewController: UIViewController {
+        return splitViewController
+    }
+
+    @objc
+    private lazy var splitViewController: WPSplitViewController = {
         let splitViewController = WPSplitViewController()
 
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
@@ -20,7 +27,11 @@ class MySitesCoordinator: NSObject {
     }()
 
     private lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: rootViewController())
+        let navigationController = UINavigationController(rootViewController: rootContentViewController())
+
+        if Feature.enabled(.newNavBarAppearance) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
 
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
@@ -72,7 +83,7 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Root View Controller
 
-    private func rootViewController() -> UIViewController {
+    private func rootContentViewController() -> UIViewController {
         if Feature.enabled(.newNavBarAppearance) {
             return mySiteViewController
         } else {

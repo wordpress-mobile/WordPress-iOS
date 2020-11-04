@@ -32,8 +32,19 @@ extension BlogListViewController {
 }
 
 
+extension UIBarButtonItem {
+    class func makeMeButtonItem(email: String?, style: UIBarButtonItem.Style = .plain, target: Any?, action: Selector?) -> UIBarButtonItem {
+        let barButtonItem = UIBarButtonItem()
+
+        barButtonItem.makeMeButtonAccessible()
+        barButtonItem.customView = barButtonItem.makeGravatarTappableView(with: email, target: target, action: action)
+
+        return barButtonItem
+    }
+}
+
 /// methods to set the gravatar image on the me button
-private extension UIBarButtonItem {
+fileprivate extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
         static let radius: CGFloat = 32

@@ -1,13 +1,42 @@
 import CoreData
 import Foundation
 
+extension UIViewController {
+    func addMeButtonToNavigationBar(for blog: Blog) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
+                                                                             target: self,
+                                                                             action: #selector(presentMeScene))
+    }
+
+    @objc
+    private func presentMeScene() {
+        MeScenePresenter().present(on: self, animated: true, completion: nil)
+    }
+}
+
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Blog
 
+    /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
+    /// on whether there's a blog to show or not.
+    ///
     var blog: Blog? {
-        didSet {
-            refreshUI()
+        set {
+            guard let newBlog = newValue else {
+                showBlogDetailsForMainBlogOrNoSites()
+                return
+            }
+
+            showBlogDetails(for: newBlog)
+        }
+
+        get {
+            guard let blogDetailsViewController = blogDetailsViewController else {
+                return nil
+            }
+
+            return blogDetailsViewController.blog
         }
     }
 
@@ -16,15 +45,37 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private var blogDetailsViewController: BlogDetailsViewController? = nil
 
-    // MARK: - View LifeCycle
+    // MARK: - View Lifecycle
+
+    override func viewDidLoad() {
+        setupNavigationItem()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        showMainBlogIfNoBlogIsSelected()
+        if blog == nil {
+            showBlogDetailsForMainBlogOrNoSites()
+        }
     }
 
-    // MARK: - Blog Selection Logic
+    // MARK: - Navigation Item
+
+    private func setupNavigationItem() {
+        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
+    }
+
+    // MARK: - Main Blog
+
+    /// Convenience method to retrieve the main blog for an account when none is selected.
+    ///
+    /// - Returns:the main blog for an account (last selected, or first blog in list).
+    ///
+    private func mainBlog() -> Blog? {
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        return blogService.lastUsedOrFirstBlog()
+    }
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
     /// There's no scenario where this is shown empty, for an account that HAS blogs.
@@ -32,33 +83,22 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// In order to adhere to this logic, if this VC is shown without a blog being set, we will try to load the "main" blog (ie in order: the last used blog,
     /// the account's primary blog, or the first blog we find for the account).
     ///
-    func showMainBlogIfNoBlogIsSelected() {
-        guard blog == nil else {
-            return
-        }
-
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-        blog = blogService.lastUsedOrFirstBlog()
-    }
-
-    // MARK: - UI Logic
-
-    func refreshUI() {
-        guard let blog = blog else {
+    private func showBlogDetailsForMainBlogOrNoSites() {
+        guard let mainBlog = mainBlog() else {
             showNoSites()
             return
         }
 
-        showBlogDetails(for: blog)
+        showBlogDetails(for: mainBlog)
     }
 
     // MARK: - No Sites UI logic
 
-    func hideNoSites() {
+    private func hideNoSites() {
         hideNoResults()
     }
 
-    func showNoSites() {
+    private func showNoSites() {
         hideBlogDetails()
 
         configureAndDisplayNoResults(
@@ -93,6 +133,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
 
         add(blogDetailsViewController)
+
+        blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(blogDetailsViewController.view)
     }
 
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {

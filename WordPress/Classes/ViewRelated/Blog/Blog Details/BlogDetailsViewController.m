@@ -251,18 +251,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return nil;
     }
 
-    // If there's already a blog details view controller for this blog in the primary
-    // navigation stack, we'll return that instead of creating a new one.
-    UISplitViewController *splitViewController = [[WPTabBarController sharedInstance] blogListSplitViewController];
-    UINavigationController *navigationController = splitViewController.viewControllers.firstObject;
-    if (navigationController && [navigationController isKindOfClass:[UINavigationController class]]) {
-        BlogDetailsViewController *topViewController = (BlogDetailsViewController *)navigationController.topViewController;
-        if ([topViewController isKindOfClass:[BlogDetailsViewController class]] && topViewController.blog == restoredBlog) {
-            return topViewController;
-        }
-    }
-
-    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    BlogDetailsViewController *viewController = [[BlogDetailsViewController alloc] initWithMeScenePresenter:[MeScenePresenter new]];
     viewController.blog = restoredBlog;
 
     return viewController;

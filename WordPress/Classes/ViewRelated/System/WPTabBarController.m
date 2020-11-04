@@ -54,6 +54,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
+@property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
+
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 @property (nonatomic, strong) UIImage *meTabBarImage;
@@ -95,12 +97,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
+        
+        [self initializeMySitesCoordinator];
 
         self.meScenePresenter = [[MeScenePresenter alloc] init];
 
         [self setViewControllers:[self tabViewControllers]];
 
-        [self setSelectedViewController:self.mySitesCoordinator.splitViewController];
+        [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -134,6 +138,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                context:nil];
     }
     return self;
+}
+
+- (void)initializeMySitesCoordinator
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    _mySitesCoordinator = [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController onBecomeActiveTab:^{
+        [weakSelf showMySitesTab];
+    }];
 }
 
 - (void)dealloc
@@ -297,16 +310,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Navigation Coordinators
 
-- (MySitesCoordinator *)mySitesCoordinator
-{
-    __weak __typeof(self) weakSelf = self;
-    
-    return [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController
-                                                    onBecomeActiveTab:^{
-        [weakSelf showMySitesTab];
-    }];
-}
-
 - (ReaderCoordinator *)readerCoordinator
 {
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
@@ -320,11 +323,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     NSMutableArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.splitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.rootViewController,
         self.readerNavigationController,
         self.notificationsSplitViewController]];
     } else {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.splitViewController,
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.rootViewController,
         self.readerSplitViewController,
         self.notificationsSplitViewController]];
     }
