@@ -5,6 +5,6 @@ final class SiteDesignStep: WizardStep {
     var delegate: WizardDelegate?
 
     private(set) lazy var content: UIViewController = {
-        return SiteDesignContentCollectionViewController()
+        return SiteDesignContentViewController()
     }()
 }

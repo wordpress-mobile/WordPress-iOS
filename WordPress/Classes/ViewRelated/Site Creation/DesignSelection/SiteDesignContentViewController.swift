@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
+class SiteDesignContentViewController: CollapsableHeaderViewController {
     let itemSpacing: CGFloat = 20
     let cellSize = CGSize(width: 160, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
@@ -29,7 +29,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     init() {
         collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
+        collectionViewLayout.sectionInset = SiteDesignContentViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
         collectionViewLayout.minimumInteritemSpacing = itemSpacing
         collectionViewLayout.itemSize = cellSize
@@ -70,7 +70,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
+        let newEdgeInsets = SiteDesignContentViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
         coordinator.animate { (_) in
             self.collectionViewLayout.sectionInset = newEdgeInsets
         }
@@ -124,7 +124,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 }
 
 // MARK: - UICollectionViewDataSource
-extension SiteDesignContentCollectionViewController: UICollectionViewDataSource {
+extension SiteDesignContentViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -154,7 +154,7 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDataSource 
 }
 
 // MARK: - UICollectionViewDelegate
-extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
+extension SiteDesignContentViewController: UICollectionViewDelegate {
     private func deselectItem(_ indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         collectionView(collectionView, didDeselectItemAt: indexPath)
@@ -184,7 +184,7 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
 }
 
 // MARK: - NoResultsViewControllerDelegate
-extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
+extension SiteDesignContentViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         fetchSiteDesigns()
     }
