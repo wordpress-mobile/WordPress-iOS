@@ -48,6 +48,9 @@
         _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     }
 
+//    CGFloat height = self.frame.size.height;
+//    CGFloat width = height;
+//    _spinner.frame = CGRectMake(self.frame.size.width / 2, height / 2, height, width);
     [self addSubview:_spinner];
     [self pinSubviewAtCenter:_spinner];
 }
