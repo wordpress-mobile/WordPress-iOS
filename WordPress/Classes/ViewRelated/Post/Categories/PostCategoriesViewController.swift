@@ -12,14 +12,18 @@ import Foundation
 }
 
 @objc class PostCategoriesViewController: UITableViewController {
-    @objc var delegate: PostCategoriesViewControllerDelegate?
-    private var selectionMode: CategoriesSelectionMode
+   @objc weak var delegate: PostCategoriesViewControllerDelegate?
+
     private var blog: Blog
     private var originalSelection: [PostCategory]?
-    private var selectedCategories: [PostCategory]?
-    private var saveButtonItem: UIBarButtonItem?
+    private var selectionMode: CategoriesSelectionMode
+
     private var categories = [PostCategory]()
-    private var categoryIndentationDict = [String: NSNumber]()
+    private var categoryIndentationDict = [Int: Int]()
+    private var selectedCategories = [PostCategory]()
+
+    private var saveButtonItem: UIBarButtonItem?
+
     private var hasSyncedCategories = false
 
     @objc init(blog: Blog, currentSelection: [PostCategory]?, selectionMode: CategoriesSelectionMode) {
@@ -56,9 +60,12 @@ import Foundation
 
     private func configureView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+
         refreshControl = UIRefreshControl()
         refreshControl!.addTarget(self, action: #selector(refreshCategoriesWithInteraction), for: .valueChanged)
+
         let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-post-add"), style: .plain, target: self, action: #selector(showAddNewCategory))
+
         switch selectionMode {
         case .post:
             navigationItem.rightBarButtonItem = rightBarButtonItem
@@ -67,7 +74,7 @@ import Foundation
             navigationItem.rightBarButtonItem = rightBarButtonItem
             title = NSLocalizedString("Parent Category", comment: "Title for selecting parent category of a category")
         case .blogDefault:
-            title = NSLocalizedString("Default Category", comment: "Title for selecting a default category for a posty")
+            title = NSLocalizedString("Default Category", comment: "Title for selecting a default category for a post")
         }
     }
 
@@ -76,11 +83,15 @@ import Foundation
     }
 
     @objc private func showAddNewCategory() {
-        let addCategoriesViewController = WPAddPostCategoryViewController(blog: blog)
-        addCategoriesViewController!.delegate = self
-        let addCategoriesNavigationControlloer = UINavigationController(rootViewController: addCategoriesViewController!)
+        guard let addCategoriesViewController = WPAddPostCategoryViewController(blog: blog) else {
+            return
+        }
+
+        addCategoriesViewController.delegate = self
+
+        let addCategoriesNavigationController = UINavigationController(rootViewController: addCategoriesViewController)
         navigationController?.modalPresentationStyle = .formSheet
-        present(addCategoriesNavigationControlloer, animated: true, completion: nil)
+        present(addCategoriesNavigationController, animated: true, completion: nil)
     }
 
     private func syncCategories() {
@@ -98,57 +109,74 @@ import Foundation
     }
 
     private func reloadCategories() {
-        if selectedCategories == nil {
-            selectedCategories = originalSelection
+        if selectedCategories.isEmpty {
+            selectedCategories = originalSelection ?? []
         }
 
-        var categoryDict = [NSNumber: PostCategory]()
         // Sort categories by parent/child relationship
         let tree = WPCategoryTree(parent: nil)
-        if let sortedCategories = blog.sortedCategories() {
-            tree.getChildrenFromObjects(sortedCategories)
-        }
-
+        tree.getChildrenFromObjects(blog.sortedCategories() ?? [])
         categories = tree.getAllObjects()
+
+        var categoryDict = [Int: PostCategory]()
+        categoryIndentationDict = [:]
+
         categories.forEach { category in
-            categoryDict[category.categoryID] = category
-            let indentationLevel = indentationLevelForCategory(parentID: category.parentID, categoryCollection: categoryDict)
-            categoryIndentationDict[category.categoryID .stringValue] = NSNumber(integerLiteral: indentationLevel)
+            let categoryID = category.categoryID.intValue
+            let parentID = category.parentID.intValue
+
+            categoryDict[categoryID] = category
+            let indentationLevel = indentationLevelForCategory(parentID: parentID, categoryCollection: categoryDict)
+            categoryIndentationDict[categoryID] = indentationLevel
         }
 
         // Remove any previously selected category objects that are no longer available.
-        guard selectedCategories != nil else {
-            return
-        }
-
-        var didUpdateSelectedCategories = false
-        let updatedSelectedCategories = selectedCategories
-        self.selectedCategories = updatedSelectedCategories?.filter { category in
+        let selectedCategories = self.selectedCategories
+        self.selectedCategories = selectedCategories.filter { category in
             if let sortedCategories = blog.sortedCategories() as? [PostCategory], sortedCategories.contains(category), !category.isDeleted {
                 return true
-            } else {
-                didUpdateSelectedCategories = true
-                return false
             }
+
+            return false
         }
 
         // Notify the delegate of any changes for selectedCategories.
-        if didUpdateSelectedCategories {
-            delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
+        if selectedCategories.count != self.selectedCategories.count {
+            delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: self.selectedCategories))
         }
 
         tableView.reloadData()
     }
 
-    private func indentationLevelForCategory(parentID: NSNumber, categoryCollection: [NSNumber: PostCategory]) -> Int {
-        if parentID.intValue == 0 {
+    private func indentationLevelForCategory(parentID: Int, categoryCollection: [Int: PostCategory]) -> Int {
+        guard parentID != 0, let category = categoryCollection[parentID] else {
             return 0
         }
 
-        if let category = categoryCollection[parentID] {
-            return indentationLevelForCategory(parentID: category.parentID, categoryCollection: categoryCollection) + 1
+        return indentationLevelForCategory(parentID: category.parentID.intValue, categoryCollection: categoryCollection) + 1
+    }
+
+    private func configureNoCategoryRow(cell: WPTableViewCell) {
+        WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+        cell.textLabel?.textAlignment = .natural
+        cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
+        if selectedCategories.isEmpty {
+            cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
+        }  else {
+            cell.accessoryType = .none
+        }
+    }
+
+    private func configureRow(for category: PostCategory, cell: WPTableViewCell) {
+        let indentationLevel = categoryIndentationDict[category.categoryID.intValue]
+        cell.indentationLevel = indentationLevel ?? 0
+        cell.indentationWidth = Constants.categoryCellIndentation
+        cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
+        WPStyleGuide.configureTableViewCell(cell)
+        if selectedCategories.contains(category) {
+            cell.accessoryType = .checkmark
         } else {
-            return 0
+            cell.accessoryType = .none
         }
     }
 
@@ -172,19 +200,12 @@ import Foundation
         }
 
         var row = indexPath.row
+
         // When showing this VC in mode CategoriesSelectionModeParent, we want the first item to be
         // "No Category" and come up in red, to allow the user to select no category at all.
-
         if selectionMode == .parent {
             if row == 0 {
-                WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-                cell.textLabel?.textAlignment = .natural
-                cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
-                if selectedCategories == nil {
-                    cell.accessoryType = .checkmark
-                } else {
-                    cell.accessoryType = .none
-                }
+                configureNoCategoryRow(cell: cell)
                 return cell
             } else {
                 row = row - 1
@@ -192,19 +213,7 @@ import Foundation
         }
 
         let category = categories[row]
-        let indentationLevel = categoryIndentationDict[category.categoryID .stringValue]?.intValue
-        cell.indentationLevel = indentationLevel ?? 0
-        cell.indentationWidth = Constants.categoryCellIndentation
-        cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
-        WPStyleGuide.configureTableViewCell(cell)
-        if let selectedCategories = selectedCategories {
-            if selectedCategories.contains(category) {
-                 cell.accessoryType = .checkmark
-            } else {
-                cell.accessoryType = .none
-            }
-        }
-
+        configureRow(for: category, cell: cell)
         return cell
     }
 
@@ -228,26 +237,27 @@ import Foundation
             }
         case .post:
             category = categories[row]
-            if let category = category, selectedCategories != nil {
-                if selectedCategories!.contains(category) {
-                    selectedCategories!.remove(at: selectedCategories!.firstIndex(of: category)!)
+            if let category = category {
+                if selectedCategories.contains(category),
+                    let index = selectedCategories.firstIndex(of: category) {
+                    selectedCategories.remove(at: index)
                     tableView.cellForRow(at: indexPath)?.accessoryType = .none
                 } else {
-                    selectedCategories?.append(category)
+                    selectedCategories.append(category)
                     tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 }
 
-                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories!))
+                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
             }
 
         case .blogDefault:
             category = categories[row]
-            if let category = category, selectedCategories != nil {
-                if selectedCategories!.contains(category) {
+            if let category = category {
+                if selectedCategories.contains(category) {
                     return
                 }
-                selectedCategories!.removeAll()
-                selectedCategories!.append(category)
+                selectedCategories.removeAll()
+                selectedCategories.append(category)
                 tableView.reloadData()
                 delegate?.postCategoriesViewController?(self, didSelectCategory: category)
             }
@@ -266,13 +276,11 @@ extension PostCategoriesViewController: WPAddPostCategoryViewControllerDelegate 
     func addPostCategoryViewController(_ controller: WPAddPostCategoryViewController, didAdd category: PostCategory) {
         switch selectionMode {
         case .post, .parent:
-            selectedCategories?.append(category)
-            if let selectedCategories = selectedCategories {
-                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
-            }
+            selectedCategories.append(category)
+            delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
         case .blogDefault:
-            selectedCategories?.removeAll()
-            selectedCategories?.append(category)
+            selectedCategories.removeAll()
+            selectedCategories.append(category)
             delegate?.postCategoriesViewController?(self, didSelectCategory: category)
         }
 

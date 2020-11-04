@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-03 14:55:02+0000 */
+/* Translation-Revision-Date: 2020-10-22 19:06:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -196,12 +196,6 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Block %s. Dieser Block hat ungültigen Inhalt";
 
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for Android" = "'%s' wird in WordPress für Android noch nicht unterstützt";
-
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for iOS" = "'%s' wird in WordPress für iOS noch nicht unterstützt";
-
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "+49 (0)123 456789";
 
@@ -318,9 +312,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = "Über";
 
 /* My Profile 'About me' label */
@@ -328,9 +320,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Über WordPress für iOS";
-
-/* Category description for page templates */
-"About pages" = "„Über“-Seiten";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -397,14 +386,14 @@
 /* Add New Stats Card view title */
 "Add New Stats Card" = "Neue Statistikkarte hinzufügen";
 
-/* Button Title. Tapping subscribes the user to a new tag. */
-"Add Tag" = "Schlagwort hinzufügen";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Am Anfang hinzufügen";
 
 /* No comment provided by engineer. */
 "Add To End" = "Am Ende hinzufügen";
+
+/* Button Title. Tapping subscribes the user to a new topic. */
+"Add Topic" = "Thema hinzufügen";
 
 /* No comment provided by engineer. */
 "Add URL" = "URL hinzufügen";
@@ -418,9 +407,12 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Profilfoto hinzufügen";
 
-/* Title of a feature to add a new tag to the tags subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new tags. */
-"Add a Tag" = "Füge ein Schlagwort hinzu";
+/* Title of a feature to add a new topic to the topics subscribed by the user.
+   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+"Add a Topic" = "Ein Thema hinzufügen";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Füge hier eine individuelle CSS-URL hinzu, die im Reader geladen werden soll. Wenn du Calypso lokal ausführst, kann das etwa folgendermaßen aussehen: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "Füge eine individuelle Nachricht hinzu (optional).";
@@ -440,8 +432,8 @@
 /* No Tags View Button Label */
 "Add a site" = "Füge eine Website hinzu";
 
-/* No Tags View Button Label */
-"Add a tag" = "Ein Schlagwort hinzufügen";
+/* No Topics View Button Label */
+"Add a topic" = "Thema hinzufügen";
 
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Füge ein Kontobild hinzu.";
@@ -449,14 +441,11 @@
 /* No comment provided by engineer. */
 "Add annotation" = "Anmerkung hinzufügen";
 
-/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
-"Add any tag" = "Füge ein beliebiges Schlagwort hinzu";
+/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
+"Add any topic" = "Beliebiges Thema hinzufügen";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Füge ein Bild oder einen Avatar hinzu, der dieses neue Konto repräsentiert.";
-
-/* No comment provided by engineer. */
-"Add link text" = "Linktext hinzufügen";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Menüeintrag oben hinzufügen";
@@ -466,6 +455,12 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Bei untergeordneten Einträgen Menüeintrag hinzufügen";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "Neues Menü hinzufügen";
+
+/* Screen reader text for button that adds a menu item */
+"Add new menu item" = "Neuen Menüeintrag hinzufügen";
 
 /* Title of button to add a new site. */
 "Add new site" = "Neue Website hinzufügen";
@@ -485,6 +480,15 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Schlagwörter hinzufügen";
+
+/* No comment provided by engineer. */
+"Add this email link" = "Diesen E-Mail-Link hinzufügen";
+
+/* No comment provided by engineer. */
+"Add this link" = "Diesen Link hinzufügen";
+
+/* No comment provided by engineer. */
+"Add this telephone link" = "Diesen Telefonlink hinzufügen";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Die Website-Funktionen werden hinzugefügt";
@@ -618,6 +622,9 @@
 "An unknown error occurred. Please try again." = "Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut.";
 
 /* No comment provided by engineer. */
+"Angle" = "Winkel";
+
+/* No comment provided by engineer. */
 "Annotations Sidebar" = "Seitenleiste für Anmerkungen";
 
 /* Insights 'This Year' details view header */
@@ -719,8 +726,8 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
-/* A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag. */
-"Are you sure you wish to remove the tag '%@'?" = "Bist du sicher, dass du das Schlagwort '%@' entfernen möchtest?";
+/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
+"Are you sure you wish to remove the topic '%@'?" = "Möchtest du das Thema '%@' wirklich entfernen?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Ab 1. August 2018 lässt Facebook das direkte Teilen von Beiträgen auf Facebook-Profilen nicht mehr zu. Die Verknüpfungen zu Facebook-Seiten bleiben unverändert.";
@@ -833,6 +840,9 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "Wichtiges Update für iPhone\/iPad jetzt verfügbar";
 
+/* No comment provided by engineer. */
+"Black" = "Schwarz";
+
 /* Blacklist Title
    Settings: Comments Blacklist */
 "Blacklist" = "Sperrliste";
@@ -868,18 +878,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "Blockeinstellungen";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "Blogbeiträge";
-
-/* Category description for page templates */
-"Blog pages" = "Blogseiten";
 
 /* Create new Blog Post button title */
 "Blog post" = "Blogbeitrag";
@@ -892,6 +897,12 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Betrachter des Blogs";
+
+/* No comment provided by engineer. */
+"Blush bordeaux" = "Bordeauxrot";
+
+/* No comment provided by engineer. */
+"Blush light purple" = "Rötliches Hellviolett";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -917,6 +928,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Von %@.";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "Wenn du fortfährst, stimmst du unseren _Geschäftsbedingungen_ zu.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Wenn du diese Domain registrierst, stimmst du unseren <a>Geschäftsbedingungen<\/a> zu.";
@@ -1408,10 +1422,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Verbindungen";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "Kontakt";
-
 /* Support email label. */
 "Contact Email" = "Kontakt-E-Mail-Adresse";
 
@@ -1421,9 +1431,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "Support kontaktieren";
-
-/* Category description for page templates */
-"Contact pages" = "Kontaktseiten";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1464,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Mit Google fortfahren";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "Mit WordPress.com fortfahren";
 
 /* Title of a Quick Start Tour */
@@ -1465,6 +1473,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Weiter mit Apple";
+
+/* No comment provided by engineer. */
+"Cool to warm spectrum" = "Kühles bis warmes Spektrum";
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopierter Block";
@@ -1478,11 +1489,11 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Könnte besser sein";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Follow Tag" = "Konnte Schlagwort nicht folgen";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Follow Topic" = "Dem Thema konnte nicht gefolgt werden";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Remove Tag" = "Konnte Schlagwort nicht entfernen";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Remove Topic" = "Thema konnte nicht entfernt werden";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Die Änderungen konnten nicht gespeichert werden.";
@@ -1680,6 +1691,9 @@
 /* No comment provided by engineer. */
 "Cut block" = "Block ausschneiden";
 
+/* No comment provided by engineer. */
+"Cyan bluish gray" = "Bläuliches Cyangrau";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Dunkel";
 
@@ -1725,6 +1739,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Standard-Beitragsformat";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "Standard-﻿URL";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standardeinstellungen für neue Beiträge";
 
@@ -1755,6 +1772,9 @@
 
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Fehler beim Löschen der Website";
+
+/* Screen Reader: Button that deletes a menu. */
+"Delete menu" = "Menü löschen";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Dieses Schlagwort löschen";
@@ -1847,6 +1867,9 @@
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "%@ Schritt des Schnellstarts schließen";
 
+/* Accessibility hint for the continue button in the Feature Announcements screen. */
+"Dismiss announcements" = "Ankündigungen ausblenden";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -1895,6 +1918,9 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "Weine nicht, weil es vorbei ist, lächle, weil es passiert ist.";
+
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down" = "Um diesen Menüeintrag nach oben oder unten zu verschieben, zweimal tippen und gedrückt halten";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Zum Hinzufügen eines Blocks zweimal tippen";
@@ -2006,9 +2032,6 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Artikel bearbeiten";
 
-/* No comment provided by engineer. */
-"Edit block in web browser" = "Block in Webbrowser bearbeiten";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
 
@@ -2030,6 +2053,12 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Hiermit kannst du den Kommentar bearbeiten.";
 
+/* Screen reader hint for button to edit a menu item */
+"Edits this menu item" = "Hiermit wird dieser Menüeintrag bearbeitet";
+
+/* No comment provided by engineer. */
+"Electric grass" = "Elektrisches Gras";
+
 /* Accessibility label for the Email text field.
    Account Settings Email label
    Email address text field placeholder
@@ -2038,7 +2067,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-Mail";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-Mail-Adresse";
 
 /* Notification Settings Channel */
@@ -2123,9 +2154,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "Gib deine Kontodetails für %@ ein.";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Gib deine E-Mail-Adresse ein, um dich anzumelden, oder erstelle ein WordPress.com-Konto.";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Gib stattdessen dein Passwort ein.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "Gib deine Website-Adresse ein";
 
 /* Generic error alert title
    Generic error.
@@ -2235,7 +2272,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Vollbild verlassen";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Erweitert";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2246,6 +2284,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "Maximiert die Liste der abgeschlossenen Aufgaben.";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "Klappt auf, um ein anderes Menü auszuwählen";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "Klappt auf, um einen anderen Menübereich auszuwählen";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Erkläre worum es auf dieser Website geht.";
@@ -2372,6 +2416,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "Website folgen";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Unterhaltung folgen";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Anderen Websites folgen";
 
@@ -2380,8 +2427,8 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Abonnierte Websites";
 
-/* Followed Tags Title */
-"Followed Tags" = "Abonnierte Tags";
+/* Followed Topics Title */
+"Followed Topics" = "Themen, denen du folgst";
 
 /* User followed a site. */
 "Followed site" = "Website, der du folgst";
@@ -2408,6 +2455,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Du folgst %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "Du folgst der Unterhaltung";
+
 /* Filters Follows Notifications */
 "Follows" = "Follows";
 
@@ -2416,6 +2466,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Hiermit folgst du dem Blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "Folgt den Kommentaren zu einem Beitrag.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Folgt dem Schlagwort.";
@@ -2463,6 +2516,12 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Vorschau erstellen";
 
+/* View title for initial auth views. */
+"Get Started" = "Los geht's";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Anmelde-Link per E-Mail erhalten";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Leg los! Kommentiere Beiträge aus Blogs, denen du folgst.";
 
@@ -2472,6 +2531,9 @@ translators: sample content for \"Portfolio\" page template
 translators: sample content for \"Services\" page template
 translators: sample content for \"Team\" page template */
 "Get in Touch" = "Kontakt aufnehmen";
+
+/* Accessibility hint for the find out more button in the Feature Announcements screen. */
+"Get more details for this release" = "Weitere Details zu dieser Release erhalten";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Mach auf dich aufmerksam: Kommentiere Beiträge, die du gelesen hast.";
@@ -2488,9 +2550,6 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Website einrichten";
 
-/* View title for initial auth views. */
-"Getting Started" = "Erste Schritte";
-
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Hole Konto-Informationen";
 
@@ -2502,9 +2561,6 @@ translators: sample content for \"Team\" page template */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Zurück";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Zu „Du folgst“ wechseln";
@@ -2625,9 +2681,6 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Hilfe & Support";
 
 /* No comment provided by engineer. */
-"Help icon" = "Hilfe-Icon";
-
-/* No comment provided by engineer. */
 "Here is the panel content!" = "Hier ist der Bereichsinhalt!";
 
 /* Appended to latest post summary text when the post has data. */
@@ -2687,6 +2740,9 @@ translators: sample content for \"Team\" page template */
 
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Wenn du diesen Follower entfernst, erhält er zu dieser Website keine Benachrichtigungen mehr, außer er folgt dir aufs Neue.";
+
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Wenn du mit Apple oder Google fortfährst und noch kein WordPress.com-Konto hast, erstellst du damit ein Konto und stimmst unseren _Geschäftsbedingungen_ zu.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Wenn du %1$@ entfernst, kann dieser Benutzer nicht mehr auf diese Website zugreifen, aber alle von %2$@ erstellten Inhalte bleiben weiterhin auf der Website.";
@@ -2830,6 +2886,9 @@ translators: sample content for \"Team\" page template */
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Ungültige URL. Bitte prüfe, ob du eine gültige Website-Adresse geschrieben hast.";
 
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Ungültiger Endpunkt";
+
 /* No comment provided by engineer. */
 "Invalid username" = "Ungültiger Benutzername";
 
@@ -2958,6 +3017,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the app appearance setting for light mode */
 "Light" = "Hell";
 
+/* No comment provided by engineer. */
+"Light green cyan" = "Helles Cyangrün";
+
+/* No comment provided by engineer. */
+"Light green cyan to vivid green cyan" = "Hellgrünes Cyan bis kräftiges Cyangrün";
+
 /* Like (verb)
    Like a post.
    Likes a Comment
@@ -3011,12 +3076,6 @@ translators: sample content for \"Services\" page template */
 
 /* Image link option title. */
 "Link To" = "Link auf";
-
-/* No comment provided by engineer. */
-"Link inserted" = "Link eingefügt";
-
-/* No comment provided by engineer. */
-"Link text" = "Linktext";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Mit bestehendem Inhalt verlinken";
@@ -3156,6 +3215,21 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. */
 "Lost your password?" = "Passwort vergessen?";
 
+/* No comment provided by engineer. */
+"Luminous dusk" = "Leuchtende Abenddämmerung";
+
+/* No comment provided by engineer. */
+"Luminous vivid amber" = "Leuchtendes, kräftiges Gelb";
+
+/* No comment provided by engineer. */
+"Luminous vivid amber to luminous vivid orange" = "Leuchtendes, kräftiges Bernstein bis leuchtendes, kräftiges Orange";
+
+/* No comment provided by engineer. */
+"Luminous vivid orange" = "Leuchtendes, kräftiges Orange";
+
+/* No comment provided by engineer. */
+"Luminous vivid orange to vivid red" = "Leuchtendes, kräftiges Orange bis kräftiges Rot";
+
 /* Option to select the Apple Mail app when logging in with magic links */
 "Mail (Default)" = "Mail (Standard)";
 
@@ -3277,6 +3351,15 @@ translators: sample content for \"Services\" page template */
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Menüname";
 
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "Menübereich: %1$@, %2$d Menübereiche verfügbar";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "Menü im Bereich %1$@: %2$@, %3$d Menüs verfügbar";
+
+/* Screen Reader: Description for text field that edits the menu name. */
+"Menu name" = "Menüname";
+
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menüs";
@@ -3290,6 +3373,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Midnight" = "Mitternacht";
 
 /* Title for the mobile web preview */
 "Mobile" = "Mobil";
@@ -3356,6 +3442,9 @@ translators: sample content for \"Services\" page template */
 /* Option to move Insight down in the view. */
 "Move down" = "Nach unten verschieben";
 
+/* Screen reader text for button that will move the menu item */
+"Move menu item" = "Menüeintrag verschieben";
+
 /* Label for a button that moves a page to the draft folder
    Label for an option that moves a post to the draft folder */
 "Move to Draft" = "Verschiebe zu Entwürfe";
@@ -3421,9 +3510,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigiert zum Anpassen des Verlaufs";
-
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigiert zum vorherigen Content Sheet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Brauchst du Hilfe?";
@@ -3854,6 +3940,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "Optionale Nachricht, die in der Einladung enthalten sein soll.";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "Oder";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Oder melde dich an, indem du _deine Website-Adresse eingibst_.";
 
@@ -3945,6 +4034,15 @@ translators: sample content for \"Services\" page template */
    Discussion Settings
    Settings: Comments Paging preferences */
 "Paging" = "Seitennummerierung";
+
+/* No comment provided by engineer. */
+"Pale cyan blue" = "Helles Blau";
+
+/* No comment provided by engineer. */
+"Pale ocean" = "Blasser Ozean";
+
+/* No comment provided by engineer. */
+"Pale pink" = "Helles Rosa";
 
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
@@ -4155,13 +4253,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "Beliebte Sprachen";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "Portfolio";
-
-/* Category description for page templates */
-"Portfolio pages" = "Portfolioseiten";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "Position oder Stellenbezeichnung";
@@ -4359,9 +4452,6 @@ translators: sample content for \"Services\" page template */
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Fortfahren wird sämtliche Daten von WordPress.com von diesem Gerät entfernen und jeden lokal gespeicherten Entwurf löschen. Es geht nichts verloren, was bereits auf einem der WordPress.com-Blogs gespeichert wurde.";
 
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "Konto wird verarbeitet";
-
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "Projektname";
 
@@ -4474,8 +4564,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Reader";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "Reader-CSS-URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Rebloggen";
@@ -4596,9 +4690,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Anmerkungen entfernen";
 
-/* No comment provided by engineer. */
-"Remove block" = "Block entfernen";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Aus Einsichten entfernen";
 
@@ -4660,6 +4751,9 @@ translators: sample content for \"Services\" page template */
 /* Placeholder text for replying to a post */
 "Reply to post…" = "Antwort auf Beitrag…";
 
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "Diesen Beitrag melden";
+
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Kommentare mit mehr als dieser Anzahl von Links müssen manuell genehmigt werden.";
 
@@ -4690,7 +4784,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Filter zurücksetzen";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Dein Passwort zurücksetzen";
 
 /* Screen title. Resize and crop an image. */
@@ -4882,6 +4976,9 @@ translators: sample content for \"Services\" page template */
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "WordPress durchsuchen\nnach einer Website oder Beitrag";
 
+/* No comment provided by engineer. */
+"Search or type URL" = "URL suchen oder eingeben";
+
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Seiten suchen";
 
@@ -4973,6 +5070,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a layout" = "Layout auswählen";
 
+/* No comment provided by engineer. */
+"Select item" = "Eintrag auswählen";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Dateien auswählen";
 
@@ -5003,6 +5103,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "Wähle aus, welche Websites in der Liste der Website erscheinen sollen.";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "Ausgewählt";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Ausgewähltes Medium ist kein Video.";
 
@@ -5017,6 +5120,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Wählt diese Domain aus, um sie für deine Website zu verwenden.";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "Dieses Element auswählen";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Feedback senden";
@@ -5048,13 +5154,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Dienst";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "Dienstleistungen";
-
-/* Category description for page templates */
-"Services pages" = "Dienste-Seiten";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Beitragsbild einstellen";
@@ -5502,6 +5603,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ wurde erfolgreich installiert.";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "Kommentare erfolgreich abonniert";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "Erfolgreich aus den Kommentaren abgemeldet";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Vorschläge";
@@ -5587,13 +5694,9 @@ translators: sample content for \"Services\" page template */
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Section title of the tags reader section.
-   Tags Filter Tab Title
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Schlagwörter";
-
-/* Tags Filter Tab Title with Count */
-"Tags (%lu)" = "Schlagwörter (%lu)";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Schlagwörter und Kategorien";
@@ -5622,11 +5725,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint */
 "Tap for more detail." = "Antippen für mehr Details.";
 
-/* No comment provided by engineer. */
-"Tap here to show help" = "Zum Anzeigen der Hilfe hier tippen";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tippe, um das Hochladen abzubrechen.";
+
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "Tippe, um die Beitragsschlagwörter einzuklappen";
 
 /* Accessibility hint */
 "Tap to customize insights" = "Tippen, um Einsichten anzupassen";
@@ -5640,6 +5743,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Zum Ausblenden der Tastatur hier tippen";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "Tippe, um alle Schlagwörter für diesen Beitrag anzuzeigen";
+
 /* Accessibility hint */
 "Tap to select the next period" = "Antippen, um die nächste Periode auszuwählen";
 
@@ -5649,6 +5755,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Tippe auf den Blog auf dem veröffentlicht werden soll";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "Tippe, um Beiträge für dieses Schlagwort anzuzeigen";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "Durch Tippen kannst du die Websites verwalten, denen du folgst.";
@@ -5656,13 +5765,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Category description for page templates */
-"Team pages" = "Teamseiten";
 
 /* Section title of the teams reader section. */
 "Teams" = "Teams";
@@ -5847,6 +5951,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Beim Senden deiner Antwort ist ein unerwarteter Fehler aufgetreten.";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "Beim Abonnieren der Kommentare ist ein unerwarteter Fehler aufgetreten";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "Beim Abbestellen der Kommentare ist ein unerwarteter Fehler aufgetreten";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ein unerwarteter Fehler ist aufgetreten beim Aktualisieren der Benachrichtigungseinstellungen";
@@ -6097,6 +6207,12 @@ translators: sample content for \"Services\" page template */
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Thema nicht gefunden für ID:";
+
+/* Topics Filter Tab Title */
+"Topics" = "Themen";
+
+/* Topics Filter Tab Title with Count */
+"Topics (%lu)" = "Themen (%lu)";
 
 /* Label for total followers */
 "Total" = "Gesamt";
@@ -6529,6 +6645,9 @@ translators: sample content for \"Services\" page template */
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "Version %@ ist verfügbar";
 
+/* No comment provided by engineer. */
+"Very light gray to cyan bluish gray" = "Sehr helles Grau bis bläuliches Cyangrau";
+
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Video-Vorschau nicht verfügbar.";
 
@@ -6625,6 +6744,21 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "Die Besucher werden wissen wollen, wer auf der anderen Seite der Website steht. Nutze diesen Platz, um über dich selbst, deine Website, dein Unternehmen oder alles, was du willst zu schreiben. Verwende die unten stehenden Testimonials, um andere zu zitieren, die über dasselbe sprechen&nbsp;– in ihren eigenen Worten.";
 
+/* No comment provided by engineer. */
+"Vivid cyan blue" = "Kräftiges Cyanblau";
+
+/* No comment provided by engineer. */
+"Vivid cyan blue to vivid purple" = "Kräftiges Cyanblau bis kräftiges Lila";
+
+/* No comment provided by engineer. */
+"Vivid green cyan" = "Kräftiges Cyangrün";
+
+/* No comment provided by engineer. */
+"Vivid purple" = "Kräftiges Violett";
+
+/* No comment provided by engineer. */
+"Vivid red" = "Kräftiges Rot";
+
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
 
@@ -6657,12 +6791,6 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Wir haben Probleme beim Laden der Daten";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "Wir arbeiten intensiv daran, mit jeder Release mehr Blöcke hinzuzufügen. In der Zwischenzeit kannst du diesen Block auch über den Webbrowser deines Geräts bearbeiten.";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "Wir arbeiten intensiv daran, mit jedem Release mehr Blöcke hinzuzufügen. In der Zwischenzeit kannst du diesen Beitrag auch im Internet bearbeiten.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Wir konnten diese Aktion nicht abschließen und haben diese Seite nicht veröffentlicht.";
@@ -6794,7 +6922,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Wir senden dir per E-Mail einen magischen Link, mit dem du sofort angemeldet wirst, ohne dass du ein Passwort eingeben musst.";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "Wir senden dir einen magischen Link per E-Mail, um dein neues WordPress.com-Konto zu erstellen.";
+"We'll email you a signup link to create your new WordPress.com account." = "Wir haben dir einen Anmeldelink per E-Mail gesendet, um dein neues WordPress.com-Konto zu erstellen.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Wir werden dich benachrichtigen, wenn du Follower, Kommentare und Likes erhältst.";
@@ -6838,6 +6966,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Wir können zur Jetpack-Website unter dieser URL keine Verbindung herstellen. Wende dich an uns, um Unterstützung zu erhalten.";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Wir haben dir einen Anmeldelink per E-Mail gesendet, um dein neues WordPress.com-Konto zu erstellen. Überprüfe deine E-Mails auf diesem Gerät und tippe auf den Link in der E-Mail, die du von WordPress.com erhalten hast.";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Beim Ändern der Hauptdomain deiner Website ist ein Problem aufgetreten. Aber keine Sorge, deine Domain wurde erfolgreich gekauft.";
 
@@ -6876,9 +7007,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Wir haben weitere Aufgaben hinzugefügt, um dir zu helfen, dein Publikum zu vergrößern.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Wir haben dir einen Anmeldelink per E-Mail gesendet, um dein neues WordPress.com-Konto zu erstellen. Überprüfe deine E-Mails auf diesem Gerät und tippe auf den Link in der E-Mail, die du von WordPress.com erhalten hast.";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Wir haben einige Änderungen an deiner Checkliste vorgenommen.";
@@ -6922,6 +7050,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Welche Version möchtest du gerne bearbeiten?";
+
+/* No comment provided by engineer. */
+"White" = "Weiss";
 
 /* Whitelisted IP Addresses Title */
 "Whitelisted IP Addresses" = "IP-Adressen in der Whitelist";
@@ -7082,7 +7213,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Medien werden hochgeladen… Durch diese Aktion werden alle laufenden Uploads abgebrochen.\n\nBist du sicher?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "Du kannst dich immer mit einem magischen Link wie dem gerade verwendeten anmelden, du kannst aber auch ein Passwort einrichten, wenn du dies bevorzugst.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kannst dich immer mit einem Link wie dem gerade verwendeten anmelden, du kannst aber auch ein Passwort einrichten, wenn du dies bevorzugst.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kannst unter iOS Today\/im Mitteilungscenter die Statistik einer einzigen Website anzeigen.";
@@ -7090,8 +7221,8 @@ translators: sample content for \"Services\" page template */
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Du kannst Beiträgen einer bestimmten Website folgen, indem du ihr folgst.";
 
-/* No Tags View Label */
-"You can follow posts on a specific subject by adding a tag." = "Du kannst Beiträgen zu einem bestimmten Thema folgen, indem du ein Schlagwort hinzufügst.";
+/* No Topics View Label */
+"You can follow posts on a specific subject by adding a topic." = "Du kannst Beiträgen zu einem bestimmten Thema folgen, indem du ein Thema hinzufügst.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
@@ -7326,6 +7457,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
+
+/* No comment provided by engineer. */
+"password" = "Passwort";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonnummer";

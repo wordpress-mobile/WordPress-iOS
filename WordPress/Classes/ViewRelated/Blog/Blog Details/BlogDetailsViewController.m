@@ -262,7 +262,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
     }
 
-    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    BlogDetailsViewController *viewController = [[self alloc] init];
     viewController.blog = restoredBlog;
 
     return viewController;
@@ -368,13 +368,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
-    if([Feature enabled:FeatureFlagMeMove]) {
-        [self addMeButtonToNavigationBar];
-    }
+    [self addMeButtonToNavigationBar];
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    }
+    [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
@@ -421,8 +417,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] && [Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator showCreateButton];
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+        [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
     [self startAlertTimer];
@@ -431,21 +427,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
+    if([Feature enabled:FeatureFlagWhatIsNew]) {
+        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
+    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
 {
     if (!_createButtonCoordinator) {
-        __weak __typeof(self) weakSelf = self;
-        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
-            [((WPTabBarController *)weakSelf.tabBarController) showPostTabWithCompletion:^(void) {
-                [weakSelf startAlertTimer];
-            }];
-        } newPage:^{
-            WPTabBarController *controller = (WPTabBarController *)weakSelf.tabBarController;
-            Blog *blog = [controller currentOrLastBlog];
-            [controller showPageEditorForBlog:blog];
-        }];
+        _createButtonCoordinator = [self makeCreateButtonCoordinator];
     }
     
     return _createButtonCoordinator;
@@ -1367,7 +1357,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             break;
     }
     
-    [WPAppAnalytics track:event withProperties:@{@"tap_source": sourceString} withBlog:self.blog];
+    [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
 }
 
 - (void)preloadBlogData

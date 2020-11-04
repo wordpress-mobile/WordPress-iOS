@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-04 08:54:09+0000 */
+/* Translation-Revision-Date: 2020-10-16 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -196,12 +196,6 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 區塊含有無效內容";
 
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for Android" = "WordPress Android　版尚不支援「%s」";
-
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for iOS" = "WordPress iOS　版尚不支援「%s」";
-
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "(555)555-1234";
 
@@ -318,9 +312,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About page type template title
-   About this app (information page title)
-   Category name for page templates */
+/* About this app (information page title) */
 "About" = " 關於";
 
 /* My Profile 'About me' label */
@@ -328,9 +320,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "關於 iOS 版 WordPress";
-
-/* Category description for page templates */
-"About pages" = "關於頁面";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速行動版網頁 (AMP)";
@@ -397,14 +386,14 @@
 /* Add New Stats Card view title */
 "Add New Stats Card" = "新增統計資料卡片";
 
-/* Button Title. Tapping subscribes the user to a new tag. */
-"Add Tag" = "新增標籤";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "新增至「開始」";
 
 /* No comment provided by engineer. */
 "Add To End" = "新增至「結束」";
+
+/* Button Title. Tapping subscribes the user to a new topic. */
+"Add Topic" = "新增主題";
 
 /* No comment provided by engineer. */
 "Add URL" = "新增網址";
@@ -418,9 +407,12 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "新增個人檔案照片";
 
-/* Title of a feature to add a new tag to the tags subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new tags. */
-"Add a Tag" = "新增標籤";
+/* Title of a feature to add a new topic to the topics subscribed by the user.
+   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+"Add a Topic" = "新增主題";
+
+/* Hint for the reader CSS URL field */
+"Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Invite Footer Text */
 "Add a custom message (optional)." = "新增自訂訊息 (選用)。";
@@ -440,8 +432,8 @@
 /* No Tags View Button Label */
 "Add a site" = "Add a site";
 
-/* No Tags View Button Label */
-"Add a tag" = "新增標籤";
+/* No Topics View Button Label */
+"Add a topic" = "新增主題";
 
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "新增帳號圖片。";
@@ -449,14 +441,11 @@
 /* No comment provided by engineer. */
 "Add annotation" = "新增註解";
 
-/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
-"Add any tag" = "新增任意標籤";
+/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
+"Add any topic" = "新增任何主題";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
-
-/* No comment provided by engineer. */
-"Add link text" = "Add link text";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "新增上方的選單項目";
@@ -466,6 +455,12 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "將選單項目新增至子項目";
+
+/* Screen reader text for Menus button that adds a new menu to a site. */
+"Add new menu" = "新增選單";
+
+/* Screen reader text for button that adds a menu item */
+"Add new menu item" = "新增選單項目";
 
 /* Title of button to add a new site. */
 "Add new site" = "新增網站";
@@ -485,6 +480,15 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "新增標籤";
+
+/* No comment provided by engineer. */
+"Add this email link" = "新增此電子郵件連結";
+
+/* No comment provided by engineer. */
+"Add this link" = "新增此連結";
+
+/* No comment provided by engineer. */
+"Add this telephone link" = "新增此電話連結";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "新增網站功能";
@@ -618,6 +622,9 @@
 "An unknown error occurred. Please try again." = "發生不明的錯誤。請再試一次。";
 
 /* No comment provided by engineer. */
+"Angle" = "角度";
+
+/* No comment provided by engineer. */
 "Annotations Sidebar" = "註解側邊欄";
 
 /* Insights 'This Year' details view header */
@@ -719,8 +726,8 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否確定要更新？";
 
-/* A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag. */
-"Are you sure you wish to remove the tag '%@'?" = "你確定要移除「%@」標籤？";
+/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
+"Are you sure you wish to remove the topic '%@'?" = "確定要移除「%@」主題嗎？";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Facebook 自 2018 年 8 月 1 日起將禁止直接將文章分享至 Facebook 個人檔案。與 Facebook 粉絲專頁的連結將不受影響。";
@@ -833,9 +840,12 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "有重大的 iPhone\/iPad 更新可供使用";
 
+/* No comment provided by engineer. */
+"Black" = "黑色";
+
 /* Blacklist Title
    Settings: Comments Blacklist */
-"Blacklist" = "黑名單";
+"Blacklist" = "封鎖清單";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -868,18 +878,13 @@
 /* No comment provided by engineer. */
 "Block settings" = "區塊設定";
 
-/* Blog page type template title
-   Category name for page templates
-   Opens the WordPress Mobile Blog
+/* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
 "Blog" = "網誌";
 
 /* Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Blog Posts" = "網誌文章";
-
-/* Category description for page templates */
-"Blog pages" = "網誌頁面";
 
 /* Create new Blog Post button title */
 "Blog post" = "網誌文章";
@@ -892,6 +897,12 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "網誌的瀏覽者";
+
+/* No comment provided by engineer. */
+"Blush bordeaux" = "酒紅色";
+
+/* No comment provided by engineer. */
+"Blush light purple" = "淺紫紅色";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -917,6 +928,9 @@
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "作者：%@。";
+
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "繼續操作即代表你同意我們的_服務條款_。";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "註冊此網域，即表示你同意我們的<a>條款與條件<\/a>。";
@@ -1031,7 +1045,7 @@
 
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
-"Category" = "類別";
+"Category" = "分類";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "分類標題遺失。";
@@ -1235,7 +1249,7 @@
 
 /* Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
-"Comment" = "迴響";
+"Comment" = "留言";
 
 /* Title for the `comment likes` setting */
 "Comment Likes" = "留言的按讚次數";
@@ -1258,7 +1272,7 @@
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
-"Comments" = "迴響";
+"Comments" = "留言";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "以下內容的留言：";
@@ -1408,10 +1422,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "連結";
 
-/* Category name for page templates
-   Contact page type template title */
-"Contact" = "聯絡";
-
 /* Support email label. */
 "Contact Email" = "聯絡電子郵件";
 
@@ -1421,9 +1431,6 @@
    If a user taps this label, the app will navigate to the Support view.
    Option in Support view to contact the support team. */
 "Contact Support" = "聯絡支援團隊";
-
-/* Category description for page templates */
-"Contact pages" = "聯絡資訊頁面";
 
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
@@ -1457,7 +1464,8 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continue with Google";
 
-/* Button title. Tapping begins our normal log in process. */
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
 "Continue with WordPress.com" = "繼續使用 WordPress.com";
 
 /* Title of a Quick Start Tour */
@@ -1465,6 +1473,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "繼續使用 Apple";
+
+/* No comment provided by engineer. */
+"Cool to warm spectrum" = "冷色至暖色調";
 
 /* No comment provided by engineer. */
 "Copied block" = "複製的區塊";
@@ -1478,11 +1489,11 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "可以再好一點";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Follow Tag" = "無法關注標籤";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Follow Topic" = "Could Not Follow Topic";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Remove Tag" = "無法移除標籤";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Remove Topic" = "無法移除主題";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "無法儲存變更";
@@ -1680,6 +1691,9 @@
 /* No comment provided by engineer. */
 "Cut block" = "剪下區塊";
 
+/* No comment provided by engineer. */
+"Cyan bluish gray" = "藍灰青色";
+
 /* Title for the app appearance setting for dark mode */
 "Dark" = "深色系";
 
@@ -1725,6 +1739,9 @@
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "預設文章格式";
 
+/* Placeholder for the reader CSS URL */
+"Default URL" = "預設 URL";
+
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章預設值";
 
@@ -1755,6 +1772,9 @@
 
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "刪除網站錯誤";
+
+/* Screen Reader: Button that deletes a menu. */
+"Delete menu" = "刪除選單";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "刪除此標籤";
@@ -1847,6 +1867,9 @@
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "忽略 %@「快速入門」步驟";
 
+/* Accessibility hint for the continue button in the Feature Announcements screen. */
+"Dismiss announcements" = "關閉公告";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -1895,6 +1918,9 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "不要因為結束而哭泣，要為曾經發生過而微笑。";
+
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down" = "點兩下並按住即可上下移動此選單項目";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "按兩下以新增區塊";
@@ -2006,9 +2032,6 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "編輯文章";
 
-/* No comment provided by engineer. */
-"Edit block in web browser" = "在網頁瀏覽器編輯區塊";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
 
@@ -2030,6 +2053,12 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "編輯留言。";
 
+/* Screen reader hint for button to edit a menu item */
+"Edits this menu item" = "編輯此選單項目";
+
+/* No comment provided by engineer. */
+"Electric grass" = "電子草";
+
 /* Accessibility label for the Email text field.
    Account Settings Email label
    Email address text field placeholder
@@ -2038,7 +2067,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "電子郵件";
 
-/* Placeholder for a textfield. The user may enter their email address. */
+/* Accessibility label for the email address text field.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "電子郵件地址";
 
 /* Notification Settings Channel */
@@ -2123,9 +2154,15 @@
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
 "Enter your account information for %@." = "請輸入你的 %@ 帳號資訊。";
 
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "請輸入你的電子郵件地址以登入或建立 WordPress.com 帳號。";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "請改為輸入你的密碼。";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your site address" = "請輸入你的網站位址";
 
 /* Generic error alert title
    Generic error.
@@ -2235,7 +2272,8 @@
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "結束全螢幕";
 
-/* Accessibility indication that the current Post List style is currently Expanded. */
+/* Accessibility indication that the current Post List style is currently Expanded.
+   Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展開";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
@@ -2246,6 +2284,12 @@
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "展開已完成工作的清單。";
+
+/* Screen reader hint (non-imperative) about what does the site menu selector button do. */
+"Expands to select a different menu" = "展開以選取其他選單";
+
+/* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
+"Expands to select a different menu area" = "展開以選取其他選單區域";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "說明此網站的內容。";
@@ -2296,7 +2340,7 @@
 
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
-"Featured Image" = "特色圖片";
+"Featured Image" = "精選圖片";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色圖片選項";
@@ -2372,6 +2416,9 @@
 /* Verb. An option to follow a site. */
 "Follow Site" = "關注網站";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "關注討論";
+
 /* Title of a Quick Start Tour */
 "Follow other sites" = "關注其他網站";
 
@@ -2380,8 +2427,8 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "關注的網站";
 
-/* Followed Tags Title */
-"Followed Tags" = "關注的標籤";
+/* Followed Topics Title */
+"Followed Topics" = "關注的主題";
 
 /* User followed a site. */
 "Followed site" = "已關注網站";
@@ -2408,6 +2455,9 @@
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "正在關注 %@";
 
+/* Verb. Button title. The user is following the comments on a post. */
+"Following conversation" = "正在關注討論";
+
 /* Filters Follows Notifications */
 "Follows" = "關注";
 
@@ -2416,6 +2466,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "關注網誌。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
+"Follows the comments on a post." = "關注文章留言。";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "關注此標籤。";
@@ -2463,6 +2516,12 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "正在產生預覽";
 
+/* View title for initial auth views. */
+"Get Started" = "開始使用";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "透過電子郵件取得登入連結";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "動起來吧！在關注的網誌文章上留言。";
 
@@ -2472,6 +2531,9 @@ translators: sample content for \"Portfolio\" page template
 translators: sample content for \"Services\" page template
 translators: sample content for \"Team\" page template */
 "Get in Touch" = "與我們聯絡";
+
+/* Accessibility hint for the find out more button in the Feature Announcements screen. */
+"Get more details for this release" = "取得此版本的詳細資訊";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "接收通知：在已閱讀的文章上留言。";
@@ -2488,9 +2550,6 @@ translators: sample content for \"Team\" page template */
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "讓你的網站上線運作";
 
-/* View title for initial auth views. */
-"Getting Started" = "開始使用";
-
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "取得帳號資訊";
 
@@ -2502,9 +2561,6 @@ translators: sample content for \"Team\" page template */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往關注";
@@ -2625,9 +2681,6 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "說明與支援";
 
 /* No comment provided by engineer. */
-"Help icon" = "說明圖示";
-
-/* No comment provided by engineer. */
 "Here is the panel content!" = "這裡是面板內容！";
 
 /* Appended to latest post summary text when the post has data. */
@@ -2687,6 +2740,9 @@ translators: sample content for \"Team\" page template */
 
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "移除後，這位關注者如果沒有重新關注，就不會再收到此網站的通知。";
+
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果你繼續使用 Apple 或 Google 操作且尚未擁有 WordPress.com 帳號，即表示你正在建立帳號，並同意我們的_服務條款_。";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除，該使用者將無法再存取此網站，但其建立的所有內容仍會保留在網站上。";
@@ -2830,6 +2886,9 @@ translators: sample content for \"Team\" page template */
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "無效的 URL，請檢查你輸入的網站位址是否有效。";
 
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "無效端點";
+
 /* No comment provided by engineer. */
 "Invalid username" = "無效的使用者名稱";
 
@@ -2958,6 +3017,12 @@ translators: sample content for \"Services\" page template */
 /* Title for the app appearance setting for light mode */
 "Light" = "淡色系";
 
+/* No comment provided by engineer. */
+"Light green cyan" = "淺青色";
+
+/* No comment provided by engineer. */
+"Light green cyan to vivid green cyan" = "淺青到亮青色";
+
 /* Like (verb)
    Like a post.
    Likes a Comment
@@ -3011,12 +3076,6 @@ translators: sample content for \"Services\" page template */
 
 /* Image link option title. */
 "Link To" = "連結至";
-
-/* No comment provided by engineer. */
-"Link inserted" = "連結已插入";
-
-/* No comment provided by engineer. */
-"Link text" = "連結文字";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "連結至既有內容";
@@ -3156,6 +3215,21 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. */
 "Lost your password?" = "忘記密碼？";
 
+/* No comment provided by engineer. */
+"Luminous dusk" = "亮暮色";
+
+/* No comment provided by engineer. */
+"Luminous vivid amber" = "亮琥珀色";
+
+/* No comment provided by engineer. */
+"Luminous vivid amber to luminous vivid orange" = "亮琥珀到亮橘色";
+
+/* No comment provided by engineer. */
+"Luminous vivid orange" = "亮橘色";
+
+/* No comment provided by engineer. */
+"Luminous vivid orange to vivid red" = "亮橘到亮紅色";
+
 /* Option to select the Apple Mail app when logging in with magic links */
 "Mail (Default)" = "郵件 (預設)";
 
@@ -3277,6 +3351,15 @@ translators: sample content for \"Services\" page template */
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "選單名稱";
 
+/* Screen reader string too choose a menu area to edit. %@ is the name of the menu area (Primary, Footer, etc...). %d is a number indicating the ammount of menu areas available. */
+"Menu area: %@, %d menu areas available" = "選單區域：%1$@，可使用 %2$d 個選單區域";
+
+/* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
+"Menu in area %@: %@, %d menus available" = "%1$@ 區域的選單：%2$@，可使用 %3$d 個選單";
+
+/* Screen Reader: Description for text field that edits the menu name. */
+"Menu name" = "選單名稱";
+
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
 "Menus" = "選單";
@@ -3290,6 +3373,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Midnight" = "午夜";
 
 /* Title for the mobile web preview */
 "Mobile" = "行動裝置";
@@ -3356,6 +3442,9 @@ translators: sample content for \"Services\" page template */
 /* Option to move Insight down in the view. */
 "Move down" = "向下移動";
 
+/* Screen reader text for button that will move the menu item */
+"Move menu item" = "移動選單項目";
+
 /* Label for a button that moves a page to the draft folder
    Label for an option that moves a post to the draft folder */
 "Move to Draft" = "移至草稿";
@@ -3421,9 +3510,6 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
-
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "瀏覽至上一個內容表";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要幫助嗎？";
@@ -3854,6 +3940,9 @@ translators: sample content for \"Services\" page template */
 /* Invite: Message Hint */
 "Optional message to be included in the invitation." = "要加入至邀請中的選用訊息。";
 
+/* Divider on initial auth view separating auth options. */
+"Or" = "或者";
+
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或輸入網站位址登入。";
 
@@ -3945,6 +4034,15 @@ translators: sample content for \"Services\" page template */
    Discussion Settings
    Settings: Comments Paging preferences */
 "Paging" = "分頁";
+
+/* No comment provided by engineer. */
+"Pale cyan blue" = "淡藍綠色";
+
+/* No comment provided by engineer. */
+"Pale ocean" = "淡藍色";
+
+/* No comment provided by engineer. */
+"Pale pink" = "淡粉色";
 
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
@@ -4155,13 +4253,8 @@ translators: sample content for \"Services\" page template */
 /* Section title for Popular Languages */
 "Popular languages" = "熱門語言";
 
-/* Category name for page templates
-   Portfolio page type template title
-   translators: title for \"Portfolio\" page template */
+/* translators: title for \"Portfolio\" page template */
 "Portfolio" = "作品集";
-
-/* Category description for page templates */
-"Portfolio pages" = "作品集頁面";
 
 /* translators: sample content for \"Team\" page template */
 "Position or Job Title" = "職位或職稱";
@@ -4359,9 +4452,6 @@ translators: sample content for \"Services\" page template */
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "若繼續操作，將移除此裝置上的所有 WordPress.com 資料，並刪除儲存在本機的任何草稿。已儲存在 WordPress.com 網誌上的內容不會遺失。";
 
-/* Shown while the app waits for the account process to complete. */
-"Processing Account" = "正在處理帳號";
-
 /* translators: sample content for \"Portfolio\" page template */
 "Project Name" = "專案名稱";
 
@@ -4474,8 +4564,12 @@ translators: sample content for \"Services\" page template */
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   Title of the 'Reader' tab - used for spotlight indexing on iOS.
+   Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "閱覽";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"Reader CSS URL" = "讀取器 CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "轉發";
@@ -4596,9 +4690,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "移除註解";
 
-/* No comment provided by engineer. */
-"Remove block" = "移除區塊";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "從洞察報告中移除";
 
@@ -4660,6 +4751,9 @@ translators: sample content for \"Services\" page template */
 /* Placeholder text for replying to a post */
 "Reply to post…" = "回覆文章...";
 
+/* The title of a button that triggers reporting of a post from the user's reader. */
+"Report This Post" = "檢舉這篇文章";
+
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
 
@@ -4690,7 +4784,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "重設篩選條件";
 
-/* The secondary call-to-action button title text, for when the user can't remember their password. */
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "重設密碼";
 
 /* Screen title. Resize and crop an image. */
@@ -4882,6 +4976,9 @@ translators: sample content for \"Services\" page template */
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
+/* No comment provided by engineer. */
+"Search or type URL" = "搜尋或輸入 URL";
+
 /* Text displayed when the search controller will be presented */
 "Search pages" = "搜尋頁面";
 
@@ -4973,6 +5070,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Select a layout" = "選取版面配置";
 
+/* No comment provided by engineer. */
+"Select item" = "選取項目";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "選取媒體。";
 
@@ -5003,6 +5103,9 @@ translators: sample content for \"Services\" page template */
 /* Blog list page edit mode header label */
 "Select which sites will be shown in the site picker." = "選取要在網站挑選器中顯示的網站。";
 
+/* Screen reader text to represent the selected state of a button */
+"Selected" = "已選取";
+
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "已選取的媒體並非影片。";
 
@@ -5017,6 +5120,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "選取此網域供你的網站使用。";
+
+/* Screen reader hint (non-imperative) about what does the menu item selection button do */
+"Selects this item" = "選取此項目";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "傳送回饋意見";
@@ -5048,13 +5154,8 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "服務";
 
-/* Category name for page templates
-   Services page type template title
-   translators: title for \"Services\" page template */
+/* translators: title for \"Services\" page template */
 "Services" = "服務";
-
-/* Category description for page templates */
-"Services pages" = "服務頁面";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "設定精選圖片";
@@ -5502,6 +5603,12 @@ translators: sample content for \"Services\" page template */
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "已成功安裝 %@。";
 
+/* The app successfully subscribed to the comments for the post */
+"Successfully subscribed to the comments" = "已成功訂閱留言";
+
+/* The app successfully unsubscribed from the comments for the post */
+"Successfully unsubscribed from the comments" = "已成功取消訂閱留言";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "建議";
@@ -5587,13 +5694,9 @@ translators: sample content for \"Services\" page template */
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Section title of the tags reader section.
-   Tags Filter Tab Title
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "標籤";
-
-/* Tags Filter Tab Title with Count */
-"Tags (%lu)" = "標籤 (%lu)";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "標籤和類別";
@@ -5622,11 +5725,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint */
 "Tap for more detail." = "點選以瞭解詳細資訊。";
 
-/* No comment provided by engineer. */
-"Tap here to show help" = "點選此處顯示說明";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "點選以取消上傳";
+
+/* Accessibility hint to inform the user what action the hide button performs */
+"Tap to collapse the post tags" = "點選以收合文章標籤";
 
 /* Accessibility hint */
 "Tap to customize insights" = "點選以自訂洞察報告";
@@ -5640,6 +5743,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "點選即可隱藏鍵盤";
 
+/* VoiceOver Hint to inform the user what action the expand button performs */
+"Tap to see all the tags for this post" = "點選以查看此文章的所有標籤";
+
 /* Accessibility hint */
 "Tap to select the next period" = "點選以選擇下個期間";
 
@@ -5649,6 +5755,9 @@ translators: sample content for \"Services\" page template */
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "點選以選取要發佈文章的目標網誌";
 
+/* Accessibility hint to inform the user what action the post tag chip performs */
+"Tap to view posts for this tag" = "點選以檢視有此標籤的文章";
+
 /* Accessibility hint
    Tapping lets you manage the sites you follow. */
 "Tapping lets you manage the sites you follow." = "點按即可管理你關注的網站。";
@@ -5656,13 +5765,8 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分類法";
 
-/* Category name for page templates
-   Team page type template title
-   translators: title for \"Team\" page template */
+/* translators: title for \"Team\" page template */
 "Team" = "團隊";
-
-/* Category description for page templates */
-"Team pages" = "團隊頁面";
 
 /* Section title of the teams reader section. */
 "Teams" = "團隊";
@@ -5847,6 +5951,12 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
+
+/* The app failed to subscribe to the comments for the post */
+"There has been an unexpected error while subscribing to the comments" = "訂閱留言時發生未預期的錯誤";
+
+/* The app failed to unsubscribe from the comments for the post */
+"There has been an unexpected error while unsubscribing from the comments" = "取消訂閱留言時發生未預期的錯誤";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新你的通知設定時發生意外錯誤";
@@ -6097,6 +6207,12 @@ translators: sample content for \"Services\" page template */
 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "找不到 ID 的主題：";
+
+/* Topics Filter Tab Title */
+"Topics" = "主題";
+
+/* Topics Filter Tab Title with Count */
+"Topics (%lu)" = "主題 (%lu)";
 
 /* Label for total followers */
 "Total" = "總計";
@@ -6529,6 +6645,9 @@ translators: sample content for \"Services\" page template */
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "版本 %@ 可供使用";
 
+/* No comment provided by engineer. */
+"Very light gray to cyan bluish gray" = "極淺灰到藍灰青色";
+
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "無法預覽影片";
 
@@ -6625,6 +6744,21 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "訪客會想認識頁面作者是何許人也。利用此空間介紹你本人、你的網站、企業或任何你想說的話。使用下方的證言，即可引用他人針對同一主題發表的言論。";
 
+/* No comment provided by engineer. */
+"Vivid cyan blue" = "亮藍綠色";
+
+/* No comment provided by engineer. */
+"Vivid cyan blue to vivid purple" = "亮藍綠到亮紫色";
+
+/* No comment provided by engineer. */
+"Vivid green cyan" = "亮青色";
+
+/* No comment provided by engineer. */
+"Vivid purple" = "亮紫色";
+
+/* No comment provided by engineer. */
+"Vivid red" = "亮紅色";
+
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP 管理員";
 
@@ -6657,12 +6791,6 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "載入資料時遇到問題";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "我們正在努力開發，讓每次版本更新都可以新增更多區塊。 在此同時，你也可以使用裝置的網頁瀏覽器編輯此區塊。";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "我們正在努力開發，讓每次版本更新都可以新增更多區塊。在此期間，你也可在網路上編輯這篇文章。";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "我們無法完成此動作，因此未發表此頁面。";
@@ -6794,7 +6922,7 @@ translators: sample content for \"Services\" page template */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我們會寄給你一個神奇的連結，讓你馬上就能登入，無須輸入密碼。不用再敲著兩隻手指打字了！";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a magic link to create your new WordPress.com account." = "我們會透過電子郵件傳送連結給你，使用此連結即可建立新的 WordPress.com 帳號。";
+"We'll email you a signup link to create your new WordPress.com account." = "我們會透過電子郵件傳送註冊連結給你，使用此連結即可建立新的 WordPress.com 帳號。";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "我們會在你收到關注、留言和按讚時通知你。";
@@ -6838,6 +6966,9 @@ translators: sample content for \"Services\" page template */
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "我們無法用此 URL 連上 Jetpack 網站。如需協助，請與我們聯絡。";
 
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "變更網站的主要網域時發生問題。不過別擔心，你已成功購買網域。";
 
@@ -6876,9 +7007,6 @@ translators: sample content for \"Services\" page template */
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "我們已新增更多任務，協助你拓展讀者群。";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We’ve emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我們已透過電子郵件傳送註冊連結給你，使用此連結即可建立新的 WordPress.com 帳號。 請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。";
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "我們已稍微更動你的檢查清單";
@@ -6922,6 +7050,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "你想要編輯哪一個版本？";
+
+/* No comment provided by engineer. */
+"White" = "白色";
 
 /* Whitelisted IP Addresses Title */
 "Whitelisted IP Addresses" = "白名單上的IP位址";
@@ -7082,7 +7213,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "你目前正在上傳媒體。此動作將取消進行中的上傳。\n\n確定要執行？";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer." = "你可以像剛剛一樣隨時使用神奇連結來登入，不過也可以依你的需要設定密碼。";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "你可以像剛剛一樣隨時使用連結來登入，也可以依需要設定密碼。";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "你可以在 iOS「今天\/通知中心」檢視畫面中顯示單一網站的統計資料。";
@@ -7090,8 +7221,8 @@ translators: sample content for \"Services\" page template */
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "你可以關注網站，藉此關注特定網站的文章。";
 
-/* No Tags View Label */
-"You can follow posts on a specific subject by adding a tag." = "你可以新增標籤以關注特定主題的文章。";
+/* No Topics View Label */
+"You can follow posts on a specific subject by adding a topic." = "你可以新增主題以關注特定主題的文章。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "你可以針對不同的文章覆寫這些設定。";
@@ -7326,6 +7457,9 @@ translators: sample content for \"Services\" page template */
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "其它";
+
+/* No comment provided by engineer. */
+"password" = "密碼";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";

@@ -6,7 +6,11 @@ protocol StockPhotosPickerDelegate: AnyObject {
 
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
-    var allowMultipleSelection = true
+    var allowMultipleSelection = true {
+        didSet {
+            pickerOptions.allowMultipleSelection = allowMultipleSelection
+        }
+    }
 
     private lazy var dataSource: StockPhotosDataSource = {
         return StockPhotosDataSource(service: stockPhotosService)

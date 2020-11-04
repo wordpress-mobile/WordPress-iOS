@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="30" y="100" width="315" height="456.5"/>
+                                        <rect key="frame" x="30" y="105.5" width="315" height="456.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                                 <rect key="frame" x="38" y="0.0" width="239" height="234"/>
@@ -91,8 +91,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" constant="30" id="Gn9-QB-PCu"/>
+                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerY" secondItem="0Ae-eX-ae9" secondAttribute="centerY" id="awy-Qw-qAb"/>
                                     <constraint firstAttribute="trailing" secondItem="Mkl-mm-wtH" secondAttribute="trailing" constant="30" id="gZv-Ze-rOt"/>
-                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="100" id="kju-zT-gzN"/>
                                 </constraints>
                             </view>
                         </subviews>

@@ -90,20 +90,19 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @objc func configureHeaderImage(_ siteBlavatar: String?) {
-        let placeholder = UIImage(named: defaultBlavatar)
+        let placeholder = UIImage.siteIconPlaceholder
 
-        var path = ""
-        if siteBlavatar != nil {
-            path = siteBlavatar!
-        }
-
-        let url = URL(string: path)
-        if url != nil {
-            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        } else {
+        guard
+            let path = siteBlavatar,
+            let url = upscaledImageURL(urlString: path) else {
             avatarImageView.image = placeholder
+            return
         }
+
+        avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
     }
+
+
 
     @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
@@ -128,5 +127,33 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     @IBAction func didTapFollowButton(_ sender: UIButton) {
         delegate?.handleFollowActionForHeader(self)
+    }
+
+    // MARK: - Private: Helpers
+
+    /// Replaces the width query item (w) with an upscaled one for the image view
+    private func upscaledImageURL(urlString: String) -> URL? {
+        guard
+            let url = URL(string: urlString),
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+            let host = components.host
+        else {
+            return nil
+        }
+
+        // WP.com uses `w` and Gravatar uses `s` for the resizing query key
+        let widthKey = host.contains("gravatar") ? "s" : "w"
+        let width = Int(avatarImageView.bounds.width * UIScreen.main.scale)
+        let item = URLQueryItem(name: widthKey, value: "\(width)")
+
+        var queryItems = components.queryItems ?? []
+
+        // Remove any existing size queries
+        queryItems.removeAll(where: { $0.name == widthKey})
+
+        queryItems.append(item)
+        components.queryItems = queryItems
+
+        return components.url
     }
 }

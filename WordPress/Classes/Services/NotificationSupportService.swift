@@ -70,6 +70,23 @@ open class NotificationSupportService: NSObject {
         }
     }
 
+    /// Sets the UserID  that should be used by the Notification Service Extension to access WPCOM.
+    ///
+    /// - Parameter userID: WordPress.com userID
+    ///
+    @objc
+    class func insertServiceExtensionUserID(_ userID: String) {
+        do {
+            try SFHFKeychainUtils.storeUsername(WPNotificationServiceExtensionKeychainUserIDKey,
+                                                andPassword: userID,
+                                                forServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                accessGroup: WPAppKeychainAccessGroup,
+                                                updateExisting: true)
+        } catch {
+            DDLogDebug("Error while saving Notification Service Extension userID: \(error)")
+        }
+    }
+
     /// Attempts to delete the current WPCOM OAuth Token used by the Notification Content Extension.
     ///
     @objc
@@ -119,6 +136,19 @@ open class NotificationSupportService: NSObject {
                                              accessGroup: WPAppKeychainAccessGroup)
         } catch {
             DDLogDebug("Error while removing Notification Service Extension username: \(error)")
+        }
+    }
+
+    /// Attempts to delete the current WPCOM Username used by the Notification Service Extension.
+    ///
+    @objc
+    class func deleteServiceExtensionUserID() {
+        do {
+            try SFHFKeychainUtils.deleteItem(forUsername: WPNotificationServiceExtensionKeychainUserIDKey,
+                                             andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                             accessGroup: WPAppKeychainAccessGroup)
+        } catch {
+            DDLogDebug("Error while removing Notification Service Extension userID: \(error)")
         }
     }
 }

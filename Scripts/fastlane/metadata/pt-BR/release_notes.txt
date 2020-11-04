@@ -1,6 +1,0 @@
-Melhorias no editor de blocos! Há suporte para edição de mídia direto no bloco de galeria, também o bloco de coluna inclui suporte para alterar as larguras das colunas (extravagante!). Também corrigimos os campos de texto vazios no modelo da direita para a esquerda, para que possam ser selecionados e os marcadores de posição visíveis. 
-E simplificamos o processo de refazer/desfazer, não é mais necessário desfazer frases inteiras, um caractere de cada vez.
-
-Melhorias de login! Durante o login ou inscrição, a autenticação do Google é mais simples para garantir que você chegue à tela de que precisa. Se você tentar se inscrever com um endereço do Gmail associado a uma conta do WordPress, iremos redirecioná-lo automaticamente para fazer o login. E vice-versa, então, se você tentar fazer o login com um endereço que não tenha uma conta do WordPress correspondente, enviaremos para você se inscrever.
-
-E, finalmente, uma correção: resolvemos o bug que inadvertidamente vinculava o aplicativo a duas contas sociais, tornando o login com uma conta social instável. Não é mais instável!

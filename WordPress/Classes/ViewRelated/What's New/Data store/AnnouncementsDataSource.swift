@@ -1,5 +1,3 @@
-import WordPressFlux
-
 
 protocol AnnouncementsDataSource: UITableViewDataSource {
     func registerCells(for tableView: UITableView)
@@ -10,8 +8,6 @@ protocol AnnouncementsDataSource: UITableViewDataSource {
 class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
 
     private let store: AnnouncementsStore
-
-    private var subscription: Receipt?
 
     private let cellTypes: [String: UITableViewCell.Type]
     private var features: [WordPressKit.Feature] {
@@ -26,11 +22,6 @@ class FeatureAnnouncementsDataSource: NSObject, AnnouncementsDataSource {
         self.store = store
         self.cellTypes = cellTypes
         super.init()
-
-        subscription = store.onChange {
-            self.dataDidChange?()
-        }
-        store.getAnnouncements()
     }
 
     func registerCells(for tableView: UITableView) {

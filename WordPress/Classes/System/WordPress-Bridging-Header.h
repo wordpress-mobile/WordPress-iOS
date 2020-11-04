@@ -18,6 +18,7 @@
 
 #import "Comment.h"
 #import "CommentService.h"
+#import "CommentViewController.h"
 #import "CommentsViewController+Network.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
@@ -75,8 +76,8 @@
 #import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "StatsViewController.h"
-#import "SuggestionService.h"
 #import "SuggestionsTableView.h"
+#import "SuggestionsTableViewCell.h"
 #import "SVProgressHUD+Dismiss.h"
 
 #import "Theme.h"
@@ -93,6 +94,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAuthTokenIssueSolver.h"
+#import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
 #import "WPUploadStatusButton.h"

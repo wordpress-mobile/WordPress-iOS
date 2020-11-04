@@ -35,6 +35,10 @@ class WPCategoryTree: NSObject {
     }
 
     private func isParentChild(category: PostCategory, parent: PostCategory?) -> Bool {
-        return parent == nil ? category.parentID == 0 : parent!.categoryID == category.parentID
+        guard let parent = parent else {
+            return category.parentID == 0
+        }
+
+        return category.parentID == parent.categoryID
     }
 }

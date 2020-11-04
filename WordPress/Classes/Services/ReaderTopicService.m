@@ -360,7 +360,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+            NSDictionary *properties = @{@"tag":topicName};
+            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -377,7 +378,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+        NSDictionary *properties = @{@"tag":slug};
+        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
         if (success) {
             success();
         }
@@ -1015,18 +1017,16 @@ array are marked as being unfollowed in Core Data.
                     } else {
                         // If the user adds a locally saved tag/interest prevent it from being deleted
                         // while the user is logged out.
-                        if ([Feature enabled:FeatureFlagReaderImprovementsPhase2]) {
-                            ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+                        ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
 
-                            if (!isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
-                                DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
-                                continue;
-                            }
+                        if (!isLoggedIn && [topic isKindOfClass:ReaderTagTopic.class]) {
+                            DDLogInfo(@"Not deleting a locally saved topic: %@", topic.title);
+                            continue;
+                        }
 
-                            if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards.count > 0) {
-                                DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
-                                continue;
-                            }
+                        if ([topic isKindOfClass:ReaderTagTopic.class] && tagTopic.cards.count > 0) {
+                            DDLogInfo(@"Not deleting a topic related to a card: %@", topic.title);
+                            continue;
                         }
 
                         DDLogInfo(@"Deleting topic: %@", topic.title);

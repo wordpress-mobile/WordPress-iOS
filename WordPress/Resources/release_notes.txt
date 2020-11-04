@@ -1,11 +1,5 @@
-Your Reader experience can now be tailored just for you — with a new Discover feed reflecting your chosen interests. 
+In this update, you’ll notice some fun enhancements and improvements when both creating and consuming content that make the entire app experience better!
 
-Block settings in the Block Editor now immediately reflect any changes made in the menu sliders.
+The latest with the block editor: When composing posts, you’ll notice there’s now full-width and wide alignment support for the Video, Latest Posts, Gallery, Media & Text, and Pullquote blocks. We also made a few tweaks: one fixed an issue affecting the Classic block on Jetpack sites, and another fix resolved an issue involving unsupported blocks when a device was rotated.
 
-Improved signup and login experience — both with directing the user on the steps and connecting a self-hosted site. 
-
-There is also a brand new way to login with the iCloud Keychain feature — a password manager that remembers your WP.com accounts and passwords. 
-
-Don’t miss anything! You can now follow conversations on P2 sites. 
-
-We have also reduced memory usage when marking up an image, so media editing won’t cause a crash.   
+Your Reader, redesigned: The recently refreshed Reader includes a number of changes, including a cleaner reading experience of individual posts. Images display beautifully, and we strongly encourage you to add a featured image to all of your posts so they stand out in the feed! Reading and discovering other people’s content is all part of the creative process. In the Discover tab, we now display recommended sites to explore, and you can select interests relevant to you to see more of the content you like.

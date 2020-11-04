@@ -6,21 +6,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case unifiedSiteAddress
-    case unifiedGoogle
-    case unifiedApple
-    case unifiedWordPress
-    case unifiedKeychainLogin
-    case meMove
-    case floatingCreateButton
     case newReaderNavigation
     case swiftCoreData
     case homepageSettings
-    case readerImprovementsPhase2
     case gutenbergMentions
     case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
+    case unifiedPrologueCarousel
+    case stories
+    case siteCreationHomePagePicker
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,36 +32,26 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .unifiedAuth:
             return true
-        case .unifiedSiteAddress:
-            return true
-        case .unifiedGoogle:
-            return true
-        case .unifiedApple:
-            return true
-        case .unifiedWordPress:
-            return true
-        case .unifiedKeychainLogin:
-            return true
-        case .meMove:
-            return true
-        case .floatingCreateButton:
-            return true
         case .newReaderNavigation:
             return true
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
-        case .readerImprovementsPhase2:
-            return true
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
-            return false
+            return true
         case .whatIsNew:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
+        case .unifiedPrologueCarousel:
+            return BuildConfiguration.current == .localDeveloper
+        case .stories:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .siteCreationHomePagePicker:
+            return false
         }
     }
 
@@ -103,28 +88,12 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .unifiedSiteAddress:
-            return "Unified Auth - Site Address"
-        case .unifiedGoogle:
-            return "Unified Auth - Google"
-        case .unifiedApple:
-            return "Unified Auth - Apple"
-        case .unifiedWordPress:
-            return "Unified Auth - WordPress"
-        case .unifiedKeychainLogin:
-            return "Unified Auth - iCloud Keychain"
-        case .meMove:
-            return "Move the Me Scene to My Site"
-        case .floatingCreateButton:
-            return "Floating Create Button"
         case .newReaderNavigation:
             return "New Reader Navigation"
         case .swiftCoreData:
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
-        case .readerImprovementsPhase2:
-            return "Reader Improvements Phase 2"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         case .gutenbergModalLayoutPicker:
@@ -133,14 +102,18 @@ extension FeatureFlag {
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
+        case .unifiedPrologueCarousel:
+            return "Unified Prologue Carousel"
+        case .stories:
+            return "Stories"
+        case .siteCreationHomePagePicker:
+            return "Site Creation: Home Page Picker"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .floatingCreateButton:
             return false
         case .newReaderNavigation:
             return false

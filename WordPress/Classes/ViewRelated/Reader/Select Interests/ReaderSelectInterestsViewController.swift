@@ -9,6 +9,7 @@ class ReaderSelectInterestsViewController: UIViewController {
         static let cellSpacing: CGFloat = 6
         static let cellHeight: CGFloat = 40
         static let animationDuration: TimeInterval = 0.2
+        static let isCentered: Bool = true
     }
 
     private struct Strings {
@@ -115,6 +116,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         layout.itemSpacing = Constants.cellSpacing
         layout.cellHeight = Constants.cellHeight
+        layout.isCentered = Constants.isCentered
     }
 
     private func configureNoResultsViewController() {
@@ -173,8 +175,15 @@ class ReaderSelectInterestsViewController: UIViewController {
                 return
             }
 
+            self?.trackEvents(with: selectedInterests)
             self?.stopLoading()
             self?.didSaveInterests?()
+        }
+    }
+
+    private func trackEvents(with selectedInterests: [RemoteReaderInterest]) {
+        selectedInterests.forEach {
+            WPAnalytics.track(.readerTagFollowed, withProperties: ["tag": $0.slug])
         }
 
         WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
