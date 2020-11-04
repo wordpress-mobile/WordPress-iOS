@@ -1,41 +1,19 @@
 import Foundation
 
 class ExPlat: ABTesting {
-    let wordPressComRestApi: WordPressComRestApi
+    let service: ExPlatService
 
-    init(wordPressComRestApi: WordPressComRestApi) {
-        self.wordPressComRestApi = wordPressComRestApi
+    init(service: ExPlatService = ExPlatService.withDefaultApi()) {
+        self.service = service
     }
 
     func refresh() {
-        let assignmentsPath = "wpcom/v2/experiments/0.1.0/assignments/calypso"
+        service.getAssignments { assignments in
+            guard let assignments = assignments else {
+                return
+            }
 
-        wordPressComRestApi.GET(assignmentsPath,
-                                parameters: nil,
-                                success: { responseObject, httpResponse in
-                                    do {
-                                        let decoder = JSONDecoder()
-                                        let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
-                                        let assignments = try decoder.decode(Assignments.self, from: data)
-                                        UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
-                                    } catch {
-                                        DDLogError("Error parsing the experiment response: \(error)")
-                                    }
-        }, failure: { error, _ in
-
-        })
-    }
-}
-
-extension ExPlat {
-    class func withDefaultApi() -> ExPlat {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
-
-        let api = WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress(),
-                                              localeKey: WordPressComRestApi.LocaleKeyV2)
-        return ExPlat(wordPressComRestApi: api)
+            UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
+        }
     }
 }
