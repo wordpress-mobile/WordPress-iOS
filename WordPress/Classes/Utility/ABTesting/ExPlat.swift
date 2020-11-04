@@ -7,13 +7,15 @@ class ExPlat: ABTesting {
         self.service = service
     }
 
-    func refresh() {
+    func refresh(completion: (() -> Void)? = nil) {
         service.getAssignments { assignments in
             guard let assignments = assignments else {
+                completion?()
                 return
             }
 
             UserDefaults.standard.setValue(assignments.variations, forKey: "ab-testing-assignments")
+            completion?()
         }
     }
 

@@ -5,7 +5,7 @@ import Foundation
 protocol ABTesting {
 
     /// Refresh the assigned experiments
-    func refresh()
+    func refresh(completion: (() -> Void)?)
 
     /// Return an experiment variation
     func experiment(_ name: String) -> String?
