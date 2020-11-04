@@ -9,7 +9,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     let collectionViewLayout: UICollectionViewFlowLayout
     var isLoading = true
     var selectedIndexPath: IndexPath? = nil
-
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
             collectionView.reloadData()
@@ -97,27 +96,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        closeButton.layer.cornerRadius = 15
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-
-        if #available(iOS 13.0, *) {
-            closeButton.tintColor = .secondaryLabel
-            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.systemFill
-                } else {
-                    return UIColor.quaternarySystemFill
-                }
-            }
-        } else {
-            closeButton.tintColor = .textSubtle
-            closeButton.backgroundColor = .quaternaryBackground
-        }
-
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: closeButton)
+        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
+        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        navigationItem.leftBarButtonItem = closeButton
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
