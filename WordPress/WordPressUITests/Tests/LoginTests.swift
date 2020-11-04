@@ -95,7 +95,7 @@ class LoginTests: XCTestCase {
     // Unified self hosted login/out
     // Replaces testSelfHostedUsernamePasswordLoginLogout
     func testSelfHostedLoginLogout() {
-        _ = PrologueScreen().selectSiteAddress()
+        PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
@@ -108,7 +108,7 @@ class LoginTests: XCTestCase {
     // Old self hosted login/out
     // TODO: remove when unifiedAuth is permanent.
     func testSelfHostedUsernamePasswordLoginLogout() {
-        _ = WelcomeScreen().selectLogin()
+        WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
