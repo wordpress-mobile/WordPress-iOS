@@ -123,7 +123,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
-
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -148,6 +147,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
         formatNavigationController()
+        navigationItem.backButtonTitle = NSLocalizedString("Back", comment: "Navigate back to the previous screen")
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -168,49 +168,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillAppear(animated)
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if #available(iOS 13.0, *) {
             // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
         } else {
             restoreNavigationBar()
         }
-        super.viewDidDisappear(animated)
-    }
-
-    var originalNavBarAppearance: (barStyle: UIBarStyle?, barTintColor: UIColor?) {
-        return (navigationController?.navigationBar.barStyle, navigationController?.navigationBar.barTintColor)
-    }
-
-    func formatNavigationController() {
-        if #available(iOS 13.0, *) {
-            let newAppearance = UINavigationBarAppearance()
-            newAppearance.configureWithTransparentBackground()
-            newAppearance.backgroundColor = .clear
-            newAppearance.shadowColor = .clear
-            newAppearance.shadowImage = UIImage()
-            navigationItem.standardAppearance = newAppearance
-            navigationItem.scrollEdgeAppearance = newAppearance
-            navigationItem.compactAppearance = newAppearance
-
-        } else {
-            navigationController?.navigationBar.barStyle = .default
-            navigationController?.navigationBar.barTintColor = .white
-            navigationController?.navigationBar.isTranslucent = true
-            navigationController?.navigationBar.shadowImage = UIImage()
-        }
-    }
-
-    func restoreNavigationBar() {
-        if #available(iOS 13.0, *) { } else {
-            navigationController?.navigationBar.barStyle = originalNavBarAppearance.barStyle ?? .default
-            navigationController?.navigationBar.barTintColor = originalNavBarAppearance.barTintColor
-            navigationController?.navigationBar.isTranslucent = true
-            navigationController?.navigationBar.shadowImage = UIImage()
-        }
+        super.viewWillDisappear(animated)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -251,6 +219,50 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     @IBAction open func secondaryActionSelected(_ sender: Any) {
         /* This should be overriden in a child class in order to enable support. */
+    }
+
+    // MARK: - Format Nav Bar
+    private var originalNavBarAppearance: (barStyle: UIBarStyle, barTintColor: UIColor?, isTranslucent: Bool, shadowImage: UIImage?)?
+    private func cacheNavBarApperance() {
+        originalNavBarAppearance = (navigationController?.navigationBar.barStyle ?? .default,
+                navigationController?.navigationBar.barTintColor,
+                navigationController?.navigationBar.isTranslucent ?? true,
+                navigationController?.navigationBar.shadowImage)
+    }
+
+    func formatNavigationController() {
+        if #available(iOS 13.0, *) {
+            let newAppearance = UINavigationBarAppearance()
+            newAppearance.configureWithTransparentBackground()
+            newAppearance.backgroundColor = .clear
+            newAppearance.shadowColor = .clear
+            newAppearance.shadowImage = UIImage()
+            navigationItem.standardAppearance = newAppearance
+            navigationItem.scrollEdgeAppearance = newAppearance
+            navigationItem.compactAppearance = newAppearance
+            setNeedsStatusBarAppearanceUpdate()
+
+        } else {
+            if originalNavBarAppearance == nil {
+                cacheNavBarApperance()
+            }
+
+            navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barTintColor = .white
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.shadowImage = UIImage()
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    func restoreNavigationBar() {
+        if #available(iOS 13.0, *) { } else {
+            navigationController?.navigationBar.barStyle = originalNavBarAppearance?.barStyle ?? .default
+            navigationController?.navigationBar.barTintColor = originalNavBarAppearance?.barTintColor
+            navigationController?.navigationBar.isTranslucent = originalNavBarAppearance?.isTranslucent ?? true
+            navigationController?.navigationBar.shadowImage = originalNavBarAppearance?.shadowImage
+            setNeedsStatusBarAppearanceUpdate()
+        }
     }
 
     // MARK: - View Styling
@@ -301,6 +313,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func hideSmallTitle(_ isHidden: Bool, animated: Bool = true) {
+        guard titleView.isHidden != isHidden else { return }
         guard animated else {
             titleView.isHidden = isHidden
             return

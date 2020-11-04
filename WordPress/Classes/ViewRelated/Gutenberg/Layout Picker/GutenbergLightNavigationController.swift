@@ -1,6 +1,6 @@
 import UIKit
 
-class GutenbergLightNavigationController: UINavigationController {
+class GutenbergLightNavigationController: LightNavigationController {
 
     var separatorColor: UIColor {
         if #available(iOS 13.0, *) {
