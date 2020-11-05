@@ -1,7 +1,6 @@
 import Gridicons
 import UIKit
 
-
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
 extension BlogDetailsViewController {
     @objc
@@ -11,9 +10,9 @@ extension BlogDetailsViewController {
 
     @objc
     func addMeButtonToNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(email: blog.account?.email,
-                                                            target: self,
-                                                            action: #selector(presentHandler))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
+                                                                             target: self,
+                                                                             action: #selector(presentHandler))
     }
 }
 
@@ -25,9 +24,9 @@ extension BlogListViewController {
 
     @objc
     func addMeButtonToNavigationBar(with email: String) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(email: email,
-                                                            target: self,
-                                                            action: #selector(presentHandler))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: email,
+                                                                             target: self,
+                                                                             action: #selector(presentHandler))
     }
 }
 
@@ -52,13 +51,6 @@ fileprivate extension UIBarButtonItem {
         static let extendedRadius: CGFloat = 36
         static let tappableWidth: CGFloat = 44
         static let fallBackImage = UIImage.gridicon(.userCircle)
-    }
-
-    /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
-    convenience init(email: String?, style: UIBarButtonItem.Style = .plain, target: Any?, action: Selector?) {
-        self.init()
-        makeMeButtonAccessible()
-        customView = makeGravatarTappableView(with: email, target: target, action: action)
     }
 
     /// Create the gravatar CircluarImageView with a fade animation on tap.
