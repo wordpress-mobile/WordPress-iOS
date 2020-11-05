@@ -26,6 +26,7 @@ class ExPlat: ABTesting {
     func refreshIfNeeded(completion: (() -> Void)? = nil) {
         guard ttl > 0 else {
             completion?()
+            scheduleRefresh()
             return
         }
 
