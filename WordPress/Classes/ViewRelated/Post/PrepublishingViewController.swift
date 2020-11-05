@@ -339,7 +339,16 @@ extension PrepublishingViewController: PrepublishingDismissible {
     }
 }
 extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
-    
+    func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
+        WPAnalytics.track(.editorPostCategoryChanged, properties: ["via" : "prepublishing_nudges"])
+
+        // Save changes.
+        guard let categories = categories as? Set<PostCategory> else {
+             return
+        }
+        post.categories = categories
+        post.save()
+    }
 }
 
 extension Set {
