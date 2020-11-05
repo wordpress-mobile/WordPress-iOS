@@ -46,9 +46,11 @@ class ExPlatTests: XCTestCase {
         let abTesting = ExPlat(configuration: ExPlatTestConfiguration(), service: serviceMock)
         abTesting.refresh {
 
-            XCTAssertTrue(abTesting.scheduleTimer!.isValid)
-            XCTAssertEqual(round(abTesting.scheduleTimer!.timeInterval), 60)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                XCTAssertTrue(abTesting.scheduleTimer!.isValid)
+                XCTAssertEqual(round(abTesting.scheduleTimer!.timeInterval), 60)
+                expectation.fulfill()
+            }
 
         }
 

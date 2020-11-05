@@ -73,10 +73,22 @@ class ExPlat: ABTesting {
     private func scheduleRefresh() {
         if ttl > 0 {
             scheduleTimer?.invalidate()
-            scheduleTimer = Timer.scheduledTimer(withTimeInterval: ttl, repeats: true) { [weak self] timer in
-                self?.refresh()
-                timer.invalidate()
+
+            /// Schedule the refresh on a background thread
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+
+                self.scheduleTimer = Timer.scheduledTimer(withTimeInterval: self.ttl, repeats: true) { [weak self] timer in
+                    self?.refresh()
+                    timer.invalidate()
+                }
+
+                RunLoop.current.run()
             }
+
+
         } else {
             refresh()
         }
