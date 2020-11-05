@@ -4,20 +4,51 @@ class ExPlat: ABTesting {
     let service: ExPlatService
 
     private let assignmentsKey = "ab-testing-assignments"
+    private let ttlDateKey = "ab-testing-ttl-date"
+
+    private var ttl: TimeInterval {
+        guard let ttlDate = UserDefaults.standard.object(forKey: ttlDateKey) as? Date else {
+            return 0
+        }
+
+        return ttlDate.timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
+    }
+
+    private(set) var scheduleTimer: Timer?
 
     init(service: ExPlatService = ExPlatService.withDefaultApi()) {
         self.service = service
     }
 
+    /// Only refresh if the TTL has expired
+    ///
+    func refreshIfNeeded(completion: (() -> Void)? = nil) {
+        guard ttl > 0 else {
+            completion?()
+            return
+        }
+
+        refresh(completion: completion)
+    }
+
+    /// Force the assignments to refresh
+    ///
     func refresh(completion: (() -> Void)? = nil) {
-        service.getAssignments { assignments in
-            guard let assignments = assignments else {
+        service.getAssignments { [weak self] assignments in
+            guard let `self` = self,
+                  let assignments = assignments else {
                 completion?()
                 return
             }
 
             let validVariations = assignments.variations.filter { $0.value != nil }
             UserDefaults.standard.setValue(validVariations, forKey: self.assignmentsKey)
+
+            var ttlDate = Date()
+            ttlDate.addTimeInterval(TimeInterval(assignments.ttl))
+            UserDefaults.standard.setValue(ttlDate, forKey: self.ttlDateKey)
+            self.scheduleRefresh()
+
             completion?()
         }
     }
@@ -35,6 +66,18 @@ class ExPlat: ABTesting {
             return .treatment
         default:
             return .other(variation)
+        }
+    }
+
+    private func scheduleRefresh() {
+        if ttl > 0 {
+            scheduleTimer?.invalidate()
+            scheduleTimer = Timer.scheduledTimer(withTimeInterval: ttl, repeats: true) { [weak self] timer in
+                self?.refresh()
+                timer.invalidate()
+            }
+        } else {
+            refresh()
         }
     }
 }
