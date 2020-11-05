@@ -480,6 +480,7 @@ import "./ScreenshotFastfile"
       workspace: "../WordPress.xcworkspace",
       scheme: "WordPress",
       derived_data_path: "../DerivedData",
+      device: options[:device],
       build_for_testing: true,
     )
   end
@@ -637,6 +638,7 @@ import "./ScreenshotFastfile"
       test_without_building: true,
       xctestrun: testPlanPath,
       try_count: options[:try_count],
+      device: options[:device],
       output_directory: "../build/results",
       result_bundle: true
     )
