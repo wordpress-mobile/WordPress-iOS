@@ -61,7 +61,7 @@ class ExPlatServiceTests: XCTestCase {
     }
 
     private func stubAssignmentsResponseWithError() {
-        stubAssignments(withStatus: 503)
+        stubAssignments(withFile: "explat-malformed-assignments.json", withStatus: 503)
     }
 
     private func stubAssignments(withFile file: String = "explat-assignments.json", withStatus status: Int32? = nil) {

@@ -60,7 +60,7 @@ private class ExPlatServiceMock: ExPlatService {
     var returnAssignments = true
 
     init() {
-        super.init(wordPressComRestApi: WordPressComMockRestApi())
+        super.init(platform: "wpios")
     }
 
     override func getAssignments(completion: @escaping (Assignments?) -> Void) {
