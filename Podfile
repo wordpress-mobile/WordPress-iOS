@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.21.0-beta.1'
+    #pod 'WordPressKit', '~> 4.21.0-beta.1'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'upgrade/Alamofire-5-3-0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -57,7 +57,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-    pod 'Alamofire', '4.8.0'
+    pod 'Alamofire', '5.4.0'
     pod 'Reachability', '3.2'
 
     wordpress_kit
@@ -167,8 +167,8 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSupportSDK', '5.1.1'
-    pod 'AlamofireImage', '3.5.2'
-    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+    pod 'AlamofireImage', '4.1.0'
+    pod 'AlamofireNetworkActivityIndicator', '~> 3.1'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
     pod 'AMScrollingNavbar', '5.6.0'
@@ -198,9 +198,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.2-beta.1'
 
-    pod 'WordPressAuthenticator', '~> 1.27.0'
+    # pod 'WordPressAuthenticator', '~> 1.27.0'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/migrate-to-alamofire-5'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 

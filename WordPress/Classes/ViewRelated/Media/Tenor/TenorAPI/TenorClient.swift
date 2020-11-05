@@ -76,7 +76,7 @@ struct TenorClient {
             SearchParams.contentFilter: contentFilter.rawValue,
         ]
 
-        Alamofire.request(url, method: .get, parameters: params).responseData { response in
+        AF.request(url, method: .get, parameters: params).responseData { response in
 
             switch response.result {
             case .success:

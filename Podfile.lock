@@ -1,10 +1,10 @@
 PODS:
   - 1PasswordExtension (1.8.6)
-  - Alamofire (4.8.0)
-  - AlamofireImage (3.5.2):
-    - Alamofire (~> 4.8)
-  - AlamofireNetworkActivityIndicator (2.4.0):
-    - Alamofire (~> 4.8)
+  - Alamofire (5.4.0)
+  - AlamofireImage (4.1.0):
+    - Alamofire (~> 5.1)
+  - AlamofireNetworkActivityIndicator (3.1.0):
+    - Alamofire (~> 5.1)
   - AMScrollingNavbar (5.6.0)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
@@ -68,11 +68,11 @@ PODS:
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
-  - GTMSessionFetcher (1.4.0):
-    - GTMSessionFetcher/Full (= 1.4.0)
-  - GTMSessionFetcher/Core (1.4.0)
-  - GTMSessionFetcher/Full (1.4.0):
-    - GTMSessionFetcher/Core (= 1.4.0)
+  - GTMSessionFetcher (1.5.0):
+    - GTMSessionFetcher/Full (= 1.5.0)
+  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Full (1.5.0):
+    - GTMSessionFetcher/Core (= 1.5.0)
   - Gutenberg (1.40.0):
     - React (= 0.61.5)
     - React-CoreModules (= 0.61.5)
@@ -395,20 +395,19 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.27.0):
+  - WordPressAuthenticator (1.29.0-beta.1):
     - 1PasswordExtension (= 1.8.6)
-    - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 5.0.2)
     - Gridicons (~> 1.0)
     - lottie-ios (= 3.1.6)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.18-beta)
+    - WordPressKit (~> 4.20-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.21.0-beta.1):
-    - Alamofire (~> 4.8.0)
+  - WordPressKit (4.20.0-beta.2):
+    - Alamofire (~> 5.4.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1)
@@ -439,9 +438,9 @@ PODS:
   - ZIPFoundation (0.9.10)
 
 DEPENDENCIES:
-  - Alamofire (= 4.8.0)
-  - AlamofireImage (= 3.5.2)
-  - AlamofireNetworkActivityIndicator (~> 2.4)
+  - Alamofire (= 5.4.0)
+  - AlamofireImage (= 4.1.0)
+  - AlamofireNetworkActivityIndicator (~> 3.1)
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
@@ -506,8 +505,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.27.0)
-  - WordPressKit (~> 4.21.0-beta.1)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/migrate-to-alamofire-5`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `upgrade/Alamofire-5-3-0`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.12.0)
   - WordPressUI (~> 1.7.1)
@@ -556,8 +555,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -658,6 +655,12 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.40.0
+  WordPressAuthenticator:
+    :branch: fix/migrate-to-alamofire-5
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :branch: upgrade/Alamofire-5-3-0
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
 
@@ -676,12 +679,18 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.40.0
+  WordPressAuthenticator:
+    :commit: a62834fa551a4d829dbda14e8cb16ea99cafd97b
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: d8f52e3ae48ae60aa42b0c2aed3cb07be4dea309
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
-  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
-  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
-  AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
+  Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
+  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
@@ -702,7 +711,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: eaddc89f7210f38722de4c4c32c121da3e9738d9
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
-  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: 36d982421b1fee7e77d7259184398afb022714dd
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
@@ -756,8 +765,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 2808ae2692e9e5ded6780c7bfb74e6a1571a1906
-  WordPressKit: 98b1b095e3e312b49af0d3db5ec3c6272416eda6
+  WordPressAuthenticator: 33ba33ba93a74f37dc0e6adb4a7a10f2a73121b4
+  WordPressKit: b4852dba531b809fd00647fc9ba18ec45bff36b1
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
@@ -773,6 +782,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 8fd22e6297511af0a3db44495f46b5173bea72cb
+PODFILE CHECKSUM: 71cc5d6fe3d498522f5224257e49d91ec976821b
 
 COCOAPODS: 1.9.3
