@@ -22,6 +22,11 @@ class ExPlat: ABTesting {
         subscribeToNotifications()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
     /// Only refresh if the TTL has expired
     ///
     func refreshIfNeeded(completion: (() -> Void)? = nil) {
