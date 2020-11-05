@@ -899,7 +899,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
+        [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;

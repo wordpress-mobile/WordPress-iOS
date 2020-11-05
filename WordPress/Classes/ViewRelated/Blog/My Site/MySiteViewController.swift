@@ -207,15 +207,4 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - Me Bar Button
 
     private let meScenePresenter: ScenePresenter
-
-    private func addMeButtonToNavigationBar(for blog: Blog) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
-                                                                             target: self,
-                                                                             action: #selector(presentMeScene))
-    }
-
-    @objc
-    private func presentMeScene() {
-        meScenePresenter.present(on: self, animated: true, completion: nil)
-    }
 }

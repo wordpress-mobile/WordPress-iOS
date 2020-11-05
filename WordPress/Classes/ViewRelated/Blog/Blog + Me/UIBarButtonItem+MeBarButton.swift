@@ -2,48 +2,19 @@ import Gridicons
 import UIKit
 
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
-extension BlogDetailsViewController {
+extension UIViewController {
     @objc
-    func presentHandler() {
-        meScenePresenter.present(on: self, animated: true, completion: nil)
-    }
-
-    @objc
-    func addMeButtonToNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
-                                                                             target: self,
-                                                                             action: #selector(presentHandler))
-    }
-}
-
-extension BlogListViewController {
-    @objc
-    private func presentHandler() {
-        meScenePresenter.present(on: self, animated: true, completion: nil)
-    }
-
-    @objc
-    func addMeButtonToNavigationBar(with email: String) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: email,
-                                                                             target: self,
-                                                                             action: #selector(presentHandler))
-    }
-}
-
-
-extension UIBarButtonItem {
-    class func makeMeButtonItem(email: String?, style: UIBarButtonItem.Style = .plain, target: Any?, action: Selector?) -> UIBarButtonItem {
-        let barButtonItem = UIBarButtonItem()
-
-        barButtonItem.makeMeButtonAccessible()
-        barButtonItem.customView = barButtonItem.makeGravatarTappableView(with: email, target: target, action: action)
-
-        return barButtonItem
+    func addMeButtonToNavigationBar(with email: String?, meScenePresenter: ScenePresenter) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            email: email,
+            action: { _ in
+                meScenePresenter.present(on: self, animated: true, completion: nil)
+            })
     }
 }
 
 /// methods to set the gravatar image on the me button
-fileprivate extension UIBarButtonItem {
+private extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
         static let radius: CGFloat = 32
@@ -53,9 +24,16 @@ fileprivate extension UIBarButtonItem {
         static let fallBackImage = UIImage.gridicon(.userCircle)
     }
 
+    /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
+     convenience init(email: String?, style: UIBarButtonItem.Style = .plain, action: @escaping BindableTapGestureRecognizer.Action) {
+         self.init()
+         makeMeButtonAccessible()
+         customView = makeGravatarTappableView(with: email, action: action)
+     }
+
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?, target: Any?, action: Selector?) -> UIView {
+    func makeGravatarTappableView(with email: String?, action: @escaping BindableTapGestureRecognizer.Action) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.adjustView = { [weak self] view in
@@ -80,7 +58,7 @@ fileprivate extension UIBarButtonItem {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
 
-        let tapRecognizer = UITapGestureRecognizer(target: target, action: action)
+        let tapRecognizer = BindableTapGestureRecognizer(action: action)
         gravatarImageView.addGestureRecognizer(tapRecognizer)
 
         return embedInView(gravatarImageView)
