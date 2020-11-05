@@ -15,6 +15,7 @@ final class SiteDesignStep: WizardStep {
     }
 
     private func didSelect(_ design: RemoteSiteDesign?) {
+        creator.design = design
         delegate?.nextStep()
     }
 }
