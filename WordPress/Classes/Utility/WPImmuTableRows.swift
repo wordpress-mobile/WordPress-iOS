@@ -77,7 +77,7 @@ struct EditableTextRow: ImmuTableRow {
         self.accessoryImage = accessoryImage
         self.action = action
     }
-    
+
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
