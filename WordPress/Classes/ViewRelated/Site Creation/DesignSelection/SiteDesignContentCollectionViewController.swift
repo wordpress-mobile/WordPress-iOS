@@ -118,7 +118,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     private func handleError(_ error: Error) {
         let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 }
