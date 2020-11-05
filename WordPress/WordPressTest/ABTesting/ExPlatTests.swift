@@ -47,8 +47,8 @@ class ExPlatTests: XCTestCase {
         abTesting.refresh {
 
             DispatchQueue.main.async {
-                XCTAssertTrue(abTesting.scheduleTimer!.isValid)
-                XCTAssertEqual(round(abTesting.scheduleTimer!.timeInterval), 60)
+                XCTAssertTrue(abTesting.scheduledTimer!.isValid)
+                XCTAssertEqual(round(abTesting.scheduledTimer!.timeInterval), 60)
                 expectation.fulfill()
             }
 

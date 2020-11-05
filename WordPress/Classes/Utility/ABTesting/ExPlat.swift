@@ -14,11 +14,12 @@ class ExPlat: ABTesting {
         return ttlDate.timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
     }
 
-    private(set) var scheduleTimer: Timer?
+    private(set) var scheduledTimer: Timer?
 
     init(configuration: ExPlatConfiguration,
          service: ExPlatService? = nil) {
         self.service = service ?? ExPlatService(configuration: configuration)
+        subscribeToNotifications()
     }
 
     /// Only refresh if the TTL has expired
@@ -73,7 +74,7 @@ class ExPlat: ABTesting {
 
     private func scheduleRefresh() {
         if ttl > 0 {
-            scheduleTimer?.invalidate()
+            scheduledTimer?.invalidate()
 
             /// Schedule the refresh on a background thread
             DispatchQueue.global(qos: .background).async { [weak self] in
@@ -81,7 +82,7 @@ class ExPlat: ABTesting {
                     return
                 }
 
-                self.scheduleTimer = Timer.scheduledTimer(withTimeInterval: self.ttl, repeats: true) { [weak self] timer in
+                self.scheduledTimer = Timer.scheduledTimer(withTimeInterval: self.ttl, repeats: true) { [weak self] timer in
                     self?.refresh()
                     timer.invalidate()
                 }
@@ -93,5 +94,27 @@ class ExPlat: ABTesting {
         } else {
             refresh()
         }
+    }
+
+    /// Check if the app is entering background and/or foreground
+    /// and start/stop the timers
+    ///
+    private func subscribeToNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(applicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
+    /// When the app goes to background stop the timer
+    ///
+    @objc private func applicationDidEnterBackground() {
+        scheduledTimer?.invalidate()
+    }
+
+    /// When the app enter foreground refresh the assignments or
+    /// start the timer
+    ///
+    @objc private func applicationWillEnterForeground() {
+        refreshIfNeeded()
     }
 }
