@@ -6,8 +6,6 @@
 #import "BlogService.h"
 #import "Blog.h"
 
-#import "BlogListViewController.h"
-#import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
@@ -42,7 +40,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
-@property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) QuickStartTourGuide *tourGuide;
@@ -144,7 +141,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     __weak __typeof(self) weakSelf = self;
     
-    _mySitesCoordinator = [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController onBecomeActiveTab:^{
+    _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMeScenePresenter:self.meScenePresenter
+                                                             onBecomeActiveTab:^{
         [weakSelf showMySitesTab];
     }];
 }
@@ -443,12 +441,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
-- (void)switchMySitesTabToAddNewSite
-{
-    [self setSelectedIndex:WPTabMySites];
-    [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
-}
-
 - (void)switchNotificationsTabToNotificationSettings
 {
     [self showNotificationsTab];
@@ -547,7 +539,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return self.selectedIndex == WPTabMySites;
 }
 
 #pragma mark - Zendesk Notifications

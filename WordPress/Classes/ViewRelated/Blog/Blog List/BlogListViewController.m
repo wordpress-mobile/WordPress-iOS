@@ -37,7 +37,7 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WPTabBarController sharedInstance] blogListViewController];
+    return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
 - (instancetype)init

@@ -5,6 +5,10 @@ class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "splitViewControllerRestorationID"
     static let navigationControllerRestorationID = "navigationControllerRestorationID"
 
+    let meScenePresenter: ScenePresenter
+
+    // MARK: - VCs
+
     /// The view controller that should be presented by the tab bar controller.
     ///
     @objc
@@ -13,6 +17,10 @@ class MySitesCoordinator: NSObject {
     }
 
     @objc
+    private(set) lazy var blogListViewController: BlogListViewController = {
+        BlogListViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
     private lazy var splitViewController: WPSplitViewController = {
         let splitViewController = WPSplitViewController()
 
@@ -24,6 +32,10 @@ class MySitesCoordinator: NSObject {
         splitViewController.tabBarItem = navigationController.tabBarItem
 
         return splitViewController
+    }()
+
+    private lazy var mySiteViewController = {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
     }()
 
     private lazy var navigationController: UINavigationController = {
@@ -46,16 +58,18 @@ class MySitesCoordinator: NSObject {
         return navigationController
     }()
 
-    let mySiteViewController = MySiteViewController()
-    let blogListViewController: BlogListViewController
+    // MARK: - Callbacks
+
     let becomeActiveTab: () -> Void
+
+    // MARK: - Initializers
 
     @objc
     init(
-        blogListViewController: BlogListViewController,
+        meScenePresenter: MeScenePresenter,
         onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
 
-        self.blogListViewController = blogListViewController
+        self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
 
         super.init()

@@ -1,20 +1,21 @@
 import CoreData
 import Foundation
 
-extension UIViewController {
-    func addMeButtonToNavigationBar(for blog: Blog) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
-                                                                             target: self,
-                                                                             action: #selector(presentMeScene))
-    }
-
-    @objc
-    private func presentMeScene() {
-        MeScenePresenter().present(on: self, animated: true, completion: nil)
-    }
-}
-
 class MySiteViewController: UIViewController, NoResultsViewHost {
+
+    // MARK: - Initializers
+
+    init(meScenePresenter: ScenePresenter) {
+        self.meScenePresenter = meScenePresenter
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        meScenePresenter = MeScenePresenter()
+
+        super.init(coder: coder)
+    }
 
     // MARK: - Blog
 
@@ -201,5 +202,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
+    }
+
+    // MARK: - Me Bar Button
+
+    private let meScenePresenter: ScenePresenter
+
+    private func addMeButtonToNavigationBar(for blog: Blog) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem.makeMeButtonItem(email: blog.account?.email,
+                                                                             target: self,
+                                                                             action: #selector(presentMeScene))
+    }
+
+    @objc
+    private func presentMeScene() {
+        meScenePresenter.present(on: self, animated: true, completion: nil)
     }
 }
