@@ -506,7 +506,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/migrate-to-alamofire-5`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `upgrade/Alamofire-5-3-0`)
+  - WordPressKit (from `../WordPressKit-iOS`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.12.0)
   - WordPressUI (~> 1.7.1)
@@ -659,8 +659,7 @@ EXTERNAL SOURCES:
     :branch: fix/migrate-to-alamofire-5
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :branch: upgrade/Alamofire-5-3-0
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+    :path: "../WordPressKit-iOS"
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
 
@@ -682,9 +681,6 @@ CHECKOUT OPTIONS:
   WordPressAuthenticator:
     :commit: a62834fa551a4d829dbda14e8cb16ea99cafd97b
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: d8f52e3ae48ae60aa42b0c2aed3cb07be4dea309
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -782,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 71cc5d6fe3d498522f5224257e49d91ec976821b
+PODFILE CHECKSUM: 6781e8be1b3934885afa7930af75579abf6c768a
 
 COCOAPODS: 1.9.3
