@@ -15,7 +15,7 @@ class ExPlatServiceTests: XCTestCase {
     func testRefresh() {
         let expectation = XCTestExpectation(description: "Return assignments")
         stubAssignmentsResponseWithFile("explat-assignments.json")
-        let service = ExPlatService.withDefaultApi()
+        let service = ExPlatService(configuration: ExPlatTestConfiguration())
 
         service.getAssignments { assignments in
             XCTAssertEqual(assignments?.ttl, 60)
@@ -31,7 +31,7 @@ class ExPlatServiceTests: XCTestCase {
     func testRefreshDecodeFails() {
         let expectation = XCTestExpectation(description: "Do not return assignments")
         stubAssignmentsResponseWithFile("explat-malformed-assignments.json")
-        let service = ExPlatService.withDefaultApi()
+        let service = ExPlatService(configuration: ExPlatTestConfiguration())
 
         service.getAssignments { assignments in
             XCTAssertNil(assignments)
@@ -46,7 +46,7 @@ class ExPlatServiceTests: XCTestCase {
     func testRefreshServerFails() {
         let expectation = XCTestExpectation(description: "Do not return assignments")
         stubAssignmentsResponseWithError()
-        let service = ExPlatService.withDefaultApi()
+        let service = ExPlatService(configuration: ExPlatTestConfiguration())
 
         service.getAssignments { assignments in
             XCTAssertNil(assignments)
@@ -65,7 +65,7 @@ class ExPlatServiceTests: XCTestCase {
     }
 
     private func stubAssignments(withFile file: String = "explat-assignments.json", withStatus status: Int32? = nil) {
-        let endpoint = "wpcom/v2/experiments/0.1.0/assignments/calypso"
+        let endpoint = "wpcom/v2/experiments/0.1.0/assignments/wpios_test"
         stub(condition: { request in
             return (request.url!.absoluteString as NSString).contains(endpoint) && request.httpMethod! == "GET"
         }) { _ in
@@ -73,4 +73,14 @@ class ExPlatServiceTests: XCTestCase {
             return fixture(filePath: stubPath!, status: status ?? 200, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
     }
+}
+
+class ExPlatTestConfiguration: ExPlatConfiguration {
+    var platform = "wpios_test"
+
+    var oAuthToken: String?
+
+    var userAgent: String?
+
+    var anonId: String?
 }

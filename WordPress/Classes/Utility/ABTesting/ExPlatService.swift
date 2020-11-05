@@ -1,5 +1,12 @@
 import Foundation
 
+protocol ExPlatConfiguration {
+    var platform: String { get }
+    var oAuthToken: String? { get }
+    var userAgent: String? { get }
+    var anonId: String? { get }
+}
+
 class ExPlatService {
     let platform: String
     let oAuthToken: String?
@@ -10,14 +17,11 @@ class ExPlatService {
         return "https://public-api.wordpress.com/wpcom/v2/experiments/0.1.0/assignments/\(platform)"
     }
 
-    init(platform: String,
-         oAuthToken: String? = nil,
-         userAgent: String? = nil,
-         anonId: String? = nil) {
-        self.platform = platform
-        self.oAuthToken = oAuthToken
-        self.userAgent = userAgent
-        self.anonId = anonId
+    init(configuration: ExPlatConfiguration) {
+        self.platform = configuration.platform
+        self.oAuthToken = configuration.oAuthToken
+        self.userAgent = configuration.userAgent
+        self.anonId = configuration.anonId
     }
 
     func getAssignments(completion: @escaping (Assignments?) -> Void) {
@@ -71,15 +75,5 @@ class ExPlatService {
         }
 
         task.resume()
-    }
-}
-
-extension ExPlatService {
-    class func withDefaultApi() -> ExPlatService {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
-        let token: String? = defaultAccount?.authToken
-
-        return ExPlatService(platform: "calypso", oAuthToken: token, userAgent: WPUserAgent.wordPress())
     }
 }

@@ -16,8 +16,9 @@ class ExPlat: ABTesting {
 
     private(set) var scheduleTimer: Timer?
 
-    init(service: ExPlatService = ExPlatService.withDefaultApi()) {
-        self.service = service
+    init(configuration: ExPlatConfiguration,
+         service: ExPlatService? = nil) {
+        self.service = service ?? ExPlatService(configuration: configuration)
     }
 
     /// Only refresh if the TTL has expired
