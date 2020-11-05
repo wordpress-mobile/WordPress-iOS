@@ -47,9 +47,14 @@ final class SiteCreator {
         }
         let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
 
+        var siteDesign: String? = nil
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            siteDesign = design?.slug ?? "blank"
+        }
+
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
-            siteDesign: design?.slug,
+            siteDesign: siteDesign,
             verticalIdentifier: verticalIdentifier,
             title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
             tagline: information?.tagLine ?? "",

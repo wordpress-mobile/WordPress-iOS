@@ -169,6 +169,14 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            fetchDotComAddresses(searchTerm)
+        } else {
+            fetchAddressesBySegment(searchTerm)
+        }
+    }
+
+    private func fetchAddressesBySegment(_ searchTerm: String) {
         // It's not ideal to let the segment ID be optional at this point, but in order to avoid overcomplicating my current
         // task, I'll default to silencing this situation.  Since the segment ID should exist, this silencing should not
         // really be triggered for now.
@@ -178,6 +186,20 @@ final class WebAddressWizardContent: UIViewController {
 
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
+            self?.updateIcon(isLoading: false)
+            switch results {
+            case .failure(let error):
+                self?.handleError(error)
+            case .success(let data):
+                self?.handleData(data)
+            }
+        }
+    }
+
+    // Fetches Addresss suggestions for dotCom sites without requiring a segment.
+    private func fetchDotComAddresses(_ searchTerm: String) {
+        updateIcon(isLoading: true)
+        service.addresses(for: searchTerm) { [weak self] results in
             self?.updateIcon(isLoading: false)
             switch results {
             case .failure(let error):
