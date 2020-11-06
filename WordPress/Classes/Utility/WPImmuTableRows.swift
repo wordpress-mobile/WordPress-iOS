@@ -68,12 +68,23 @@ struct EditableTextRow: ImmuTableRow {
 
     let title: String
     let value: String
+    let accessoryImage: UIImage?
     let action: ImmuTableAction?
+
+    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?) {
+        self.title = title
+        self.value = value
+        self.accessoryImage = accessoryImage
+        self.action = action
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
         cell.accessoryType = .disclosureIndicator
+        if accessoryImage != nil {
+            cell.accessoryView = UIImageView(image: accessoryImage)
+        }
 
         WPStyleGuide.configureTableViewCell(cell)
     }
