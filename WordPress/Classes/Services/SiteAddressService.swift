@@ -6,7 +6,7 @@ typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion], Error>) -> 
 
 protocol SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion)
+    func addresses(for query: String, includeDotBlogSubdomains: Bool, completion: @escaping SiteAddressServiceCompletion)
 }
 
 // MARK: - MockSiteAddressService
@@ -16,7 +16,7 @@ final class MockSiteAddressService: SiteAddressService {
         completion(.success(mockAddresses()))
     }
 
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
+    func addresses(for query: String, includeDotBlogSubdomains: Bool, completion: @escaping SiteAddressServiceCompletion) {
         completion(.success(mockAddresses()))
     }
 
@@ -86,10 +86,10 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         })
     }
 
-    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-
+    func addresses(for query: String, includeDotBlogSubdomains: Bool, completion: @escaping SiteAddressServiceCompletion) {
+        let domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = includeDotBlogSubdomains ? .wordPressDotComAndDotBlogSubdomains : .onlyWordPressDotCom
         domainsService.getDomainSuggestions(base: query,
-                                            domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
+                                            domainSuggestionType: domainSuggestionType,
                                             success: { domainSuggestions in
                                                 completion(Result.success(domainSuggestions))
         },

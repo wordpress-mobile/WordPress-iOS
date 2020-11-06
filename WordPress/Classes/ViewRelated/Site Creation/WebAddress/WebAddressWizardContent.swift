@@ -46,6 +46,10 @@ final class WebAddressWizardContent: UIViewController {
     /// We track the last searched value so that we can retry
     private var lastSearchQuery: String? = nil
 
+    private var includeDotBlogSubdomains: Bool {
+        return siteCreator.design?.isBlog ?? false
+    }
+
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
@@ -168,9 +172,9 @@ final class WebAddressWizardContent: UIViewController {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
-    private func fetchAddresses(_ searchTerm: String) {
+    private func fetchAddresses(_ searchTerm: String, includeDotBlogSubdomains: Bool) {
         if FeatureFlag.siteCreationHomePagePicker.enabled {
-            fetchDotComAddresses(searchTerm)
+            fetchDotComAddresses(searchTerm, includeDotBlogSubdomains: includeDotBlogSubdomains)
         } else {
             fetchAddressesBySegment(searchTerm)
         }
@@ -197,9 +201,9 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     // Fetches Addresss suggestions for dotCom sites without requiring a segment.
-    private func fetchDotComAddresses(_ searchTerm: String) {
+    private func fetchDotComAddresses(_ searchTerm: String, includeDotBlogSubdomains: Bool) {
         updateIcon(isLoading: true)
-        service.addresses(for: searchTerm) { [weak self] results in
+        service.addresses(for: searchTerm, includeDotBlogSubdomains: includeDotBlogSubdomains) { [weak self] results in
             self?.updateIcon(isLoading: false)
             switch results {
             case .failure(let error):
@@ -253,7 +257,8 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         throttle.throttle { [weak self] in
-            self?.fetchAddresses(query)
+            guard let self = self else { return }
+            self.fetchAddresses(query, includeDotBlogSubdomains: self.includeDotBlogSubdomains)
         }
     }
 
