@@ -30,6 +30,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.cancelImageDownload()
+        previewURL = nil
         stopGhostAnimation()
     }
 
@@ -158,8 +159,19 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
         imageView.startGhostAnimation(style: GhostCellStyle.muriel)
-        imageView.downloadImage(from: url, success: { [weak self] _ in
+        imageView.downloadImage(from: url, success: { [weak self] image in
             self?.imageView.stopGhostAnimation()
-        }, failure: nil)
+        }, failure: { [weak self] error in
+            self?.handleError(error, forURL: imageURL)
+        })
+    }
+
+    /// This will retry the polling of the image URL in the situation where a mismatch was recieved for the requested image. This can happen for endpoints that
+    /// dynamically generate the images. This will stop retrying if the view scrolled off screen. Or if the view was updated with a new URL to fetch. It will also stop
+    /// retrying for any other error type. 
+    func handleError(_ error: Error?, forURL url: String?) {
+        guard let error = error as? UIImageView.ImageDownloadError, error == .urlMismatch else { return }
+        guard url != nil, url == previewURL else { return }
+        setImage(url)
     }
 }
