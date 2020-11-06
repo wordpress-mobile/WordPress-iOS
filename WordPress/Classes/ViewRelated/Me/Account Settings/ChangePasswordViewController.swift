@@ -13,7 +13,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
     }()
 
     convenience init(username: String, onSaveActionPress: @escaping ChangePasswordSaveAction) {
-        self.init(text: "", placeholder: "\(Constants.title)...", hint: Constants.description)
+        self.init(text: "", placeholder: "\(Constants.placeholder)", hint: Constants.description)
         self.onSaveActionPress = onSaveActionPress
         self.username = username
     }
@@ -79,6 +79,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         static let title = NSLocalizedString("Change Password", comment: "Main title")
         static let description = NSLocalizedString("Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & ).", comment: "Help text that describes how the password should be. It appears while editing the password")
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
+        static let placeholder = NSLocalizedString("New password", comment: "Placeholder text for password field")
     }
 }
 
