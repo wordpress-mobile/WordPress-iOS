@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-16 15:54:14+0000 */
+/* Translation-Revision-Date: 2020-11-04 15:26:51+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -1616,7 +1616,7 @@
 "Create Site" = "サイトを作成";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Create Story Post";
+"Create Story Post" = "ストーリー投稿を作成";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com サイトを作成";
@@ -1655,7 +1655,7 @@
 "Creates new post, or page" = "Creates new post, or page";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
+"Creates new post, page, or story" = "投稿、ページ、ストーリーを作成";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "新しいメニューを作成すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -2762,7 +2762,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "おめでとうございます。\nもうすぐ完成です。";
 
 /* How to create story description */
-"How to create a story post" = "How to create a story post";
+"How to create a story post" = "ストーリー投稿の作り方";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "満足している";
@@ -5594,7 +5594,7 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "アップロードを停止";
 
 /* Create new Story button title */
-"Story post" = "Story post";
+"Story post" = "ストーリー投稿";
 
 /* Second story intro item description */
 "Story posts don't disappear" = "Story posts don't disappear";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-03 01:16:07+0000 */
+/* Translation-Revision-Date: 2020-11-04 06:58:02+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -5027,7 +5027,7 @@ translators: sample content for \"Services\" page template */
 "See All" = "مشاهدة الكل";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"See comments and notifications in real time." = "See comments and notifications in real time.";
+"See comments and notifications in real time." = "شاهد التعليقات والإشعارات في الوقت الفعلي.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "تحديد";

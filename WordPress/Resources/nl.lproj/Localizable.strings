@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-02 21:51:51+0000 */
+/* Translation-Revision-Date: 2020-11-03 06:27:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -1261,7 +1261,7 @@
 "Collect information" = "Verzamel informatie";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combineer foto's, video's en tekst om boeiende en tikbare verhaal berichten te maken die je bezoekers geweldig zullen vinden.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Comics";
@@ -1616,7 +1616,7 @@
 "Create Site" = "Site aanmaken";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Maak een verhaal bericht";
+"Create Story Post" = "Create Story Post";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com site maken";
@@ -1640,7 +1640,7 @@
 "Create a post or page" = "Maak een bericht of pagina";
 
 /* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Maak een bericht, pagina, of verhaal";
+"Create a post, page, or story" = "Create a post, page, or story";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
@@ -1655,7 +1655,7 @@
 "Creates new post, or page" = "Maakt een nieuw bericht of pagina";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Maakt nieuw bericht, pagina, of verhaal";
+"Creates new post, page, or story" = "Creates new post, page, or story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Door een nieuw menu aan te maken, gaan wijzigingen aan het huidige menu verloren. Weet je zeker dat je wilt doorgaan?";
@@ -2281,7 +2281,7 @@
 "Everyone" = "Iedereen";
 
 /* Example story title description */
-"Example story title" = "Voorbeeld verhaaltitel";
+"Example story title" = "Example story title";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Samenvatting";
@@ -2449,7 +2449,7 @@
 "Follow other sites" = "Volg andere sites";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Volg je favorite sites en ontdek nieuwe reads.";
+"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2710,7 +2710,7 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Help & ondersteuning";
 
 /* No comment provided by engineer. */
-"Help button" = "Hulp knop";
+"Help button" = "Help button";
 
 /* No comment provided by engineer. */
 "Help icon" = "Help-icoon";
@@ -2762,7 +2762,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
 
 /* How to create story description */
-"How to create a story post" = "Hoe maak je een verhaal bericht";
+"How to create a story post" = "How to create a story post";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Ik vind dit leuk";
@@ -2913,7 +2913,7 @@ translators: sample content for \"Team\" page template */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Het installeren van de eerste plugin op je site kan maximaal een minuut duren. Terwijl dit gebeurt, kun je geen wijzigingen aan je site aanbrengen.";
 
 /* Stories intro header title */
-"Introducing Story Posts" = "Introductie verhaal berichten";
+"Introducing Story Posts" = "Introducing Story Posts";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Ongeldig site-adres";
@@ -3824,7 +3824,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Ongelezen meldingen";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Nieuwe verhalen zijn voor iedereen";
+"Now stories are for everyone" = "Now stories are for everyone";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Nu Jetpack is geïnstalleerd, hoeven we er alleen nog voor te zorgen dat alles goed ingesteld is. Dit duurt maar heel even.";
@@ -4122,7 +4122,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Kies een gebruikersnaam";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Kies je favoriete homepagina lay-out. Je kunt hem aanpassen of later wijzigen";
+"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
 
 /* The item to select during a guided tour. */
 "Plan" = "Abonnement";
@@ -4965,10 +4965,10 @@ translators: sample content for \"Services\" page template */
 "Scheduling..." = "Inplannen...";
 
 /* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrolbaar blok-menu gesloten.";
+"Scrollable block menu closed." = "Scrollable block menu closed.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollbaar blok-menu geopend. Selecteer een blok.";
+"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
 
 /* Placeholder text for the search bar
    Search
@@ -5027,7 +5027,7 @@ translators: sample content for \"Services\" page template */
 "See All" = "Toon alles";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"See comments and notifications in real time." = "Bekijk reacties en berichten in real time.";
+"See comments and notifications in real time." = "See comments and notifications in real time.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Selecteer";
@@ -5421,7 +5421,7 @@ translators: sample content for \"Services\" page template */
 "Sites (%lu)" = "Sites (%lu)";
 
 /* A suggestion of topics the user might */
-"Sites to follow" = "Sites om te volgen";
+"Sites to follow" = "Sites to follow";
 
 /* Image size option title. */
 "Size" = "Grootte";
@@ -5594,10 +5594,10 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "Stop upload";
 
 /* Create new Story button title */
-"Story post" = "Verhaal bericht";
+"Story post" = "Story post";
 
 /* Second story intro item description */
-"Story posts don't disappear" = "Verhaal berichten verdwijnen niet";
+"Story posts don't disappear" = "Story posts don't disappear";
 
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategie";
@@ -6079,7 +6079,7 @@ translators: sample content for \"Services\" page template */
 "There's a restore currently in progress, please wait before starting next one" = "Er loopt op dit moment een herstelproces, wacht alvorens de volgende te starten";
 
 /* Second story intro item description */
-"They're published as a new blog post on your site so your audience never misses out on a thing." = "Zij worden gepubliceerd als een nieuw blog bericht op je site zodat je publiek nooit iets mist.";
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "Zij worden gepubliceerd als een nieuw blogbericht op je site zodat je publiek nooit iets mist.";
 
 /* Insights 'This Year' header */
 "This Year" = "Dit jaar";
@@ -6805,7 +6805,7 @@ translators: sample content for \"Services\" page template */
 "Watch readers from around the world read and interact with your site — in real time." = "Kijk in realtime hoe lezers overal ter wereld je site lezen en bekijken.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Watch your audience grow with in-depth analytics." = "Kijk hoe je publiek groeit met in-dept analytics.";
+"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
 
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "We hebben een klein team van getalenteerde professionals met veel vaardigheden en ervaring. We houden van wat we doen, en we doen het met passie. We kijken ernaar uit met je samen te werken.";
@@ -7335,7 +7335,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "Je bent helemaal bij!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "Je hebt vroege toegang tot verhaal berichten en we zouden het heel leuk vinden als je het eens probeert.";
+"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Je hebt niet-opgeslagen wijzigingen in dit bericht";
