@@ -164,18 +164,23 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        return CreateButtonCoordinator(self, actions: [
+        var actions: [ActionSheetItem] = [
             PostAction(handler: { [weak self] in
                     self?.dismiss(animated: false, completion: nil)
                     self?.createPost()
-            }),
-            StoryAction(handler: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
             })
-        ])
+        ]
+        if Feature.enabled(.stories) && blog.supports(.stories) {
+            actions.append(
+                StoryAction(handler: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
+                })
+            )
+        }
+        return CreateButtonCoordinator(self, actions: actions)
     }()
 
     override func viewDidAppear(_ animated: Bool) {
