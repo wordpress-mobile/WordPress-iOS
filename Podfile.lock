@@ -509,7 +509,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.27.0)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issues/2721-submitSiteTemplate`)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.12.0)
+  - WordPressShared (from `../WordPress-iOS-Shared`)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json`)
@@ -558,7 +558,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -660,6 +659,8 @@ EXTERNAL SOURCES:
   WordPressKit:
     :branch: gutenberg/issues/2721-submitSiteTemplate
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :path: "../WordPress-iOS-Shared"
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
 
@@ -778,6 +779,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 45cef2b34effeadd8ce8a2ec700baa8c1790284f
+PODFILE CHECKSUM: b6185d65b03279d527085f5c17b5ed2124d3604a
 
 COCOAPODS: 1.9.3
