@@ -7,7 +7,7 @@ class ExPlatTests: XCTestCase {
     //
     func testRefresh() {
         let expectation = XCTestExpectation(description: "Save experiments")
-        let abTesting = ExPlat(service: ExPlatServiceMock())
+        let abTesting = ExPlat(configuration: ExPlatTestConfiguration(), service: ExPlatServiceMock())
 
         abTesting.refresh {
             XCTAssertEqual(abTesting.experiment("experiment"), .control)
@@ -23,7 +23,7 @@ class ExPlatTests: XCTestCase {
     func testError() {
         let expectation = XCTestExpectation(description: "Keep experiments")
         let serviceMock = ExPlatServiceMock()
-        let abTesting = ExPlat(service: serviceMock)
+        let abTesting = ExPlat(configuration: ExPlatTestConfiguration(), service: serviceMock)
         abTesting.refresh {
 
             serviceMock.returnAssignments = false
@@ -37,13 +37,32 @@ class ExPlatTests: XCTestCase {
 
         wait(for: [expectation], timeout: 2.0)
     }
+
+    // Schedule a timer to automatically refresh
+    //
+    func testScheduleRefresh() {
+        let expectation = XCTestExpectation(description: "Automatically refresh")
+        let serviceMock = ExPlatServiceMock()
+        let abTesting = ExPlat(configuration: ExPlatTestConfiguration(), service: serviceMock)
+        abTesting.refresh {
+
+            DispatchQueue.main.async {
+                XCTAssertTrue(abTesting.scheduledTimer!.isValid)
+                XCTAssertEqual(round(abTesting.scheduledTimer!.timeInterval), 60)
+                expectation.fulfill()
+            }
+
+        }
+
+        wait(for: [expectation], timeout: 2.0)
+    }
 }
 
 private class ExPlatServiceMock: ExPlatService {
     var returnAssignments = true
 
     init() {
-        super.init(wordPressComRestApi: WordPressComMockRestApi())
+        super.init(configuration: ExPlatTestConfiguration())
     }
 
     override func getAssignments(completion: @escaping (Assignments?) -> Void) {
