@@ -46,10 +46,6 @@ final class WebAddressWizardContent: UIViewController {
     /// We track the last searched value so that we can retry
     private var lastSearchQuery: String? = nil
 
-    private var includeDotBlogSubdomains: Bool {
-        return siteCreator.design?.isBlog ?? false
-    }
-
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
@@ -172,19 +168,10 @@ final class WebAddressWizardContent: UIViewController {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
-    private func fetchAddresses(_ searchTerm: String, includeDotBlogSubdomains: Bool) {
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            fetchDotComAddresses(searchTerm, includeDotBlogSubdomains: includeDotBlogSubdomains)
-        } else {
-            fetchAddressesBySegment(searchTerm)
-        }
-    }
-
-    private func fetchAddressesBySegment(_ searchTerm: String) {
-        // It's not ideal to let the segment ID be optional at this point, but in order to avoid overcomplicating my current
-        // task, I'll default to silencing this situation.  Since the segment ID should exist, this silencing should not
-        // really be triggered for now.
-        guard let segmentID = siteCreator.segment?.identifier else {
+    private func fetchAddresses(_ searchTerm: String) {
+        // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
+        guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
+            fetchDotComAddresses(searchTerm)
             return
         }
 
@@ -201,9 +188,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     // Fetches Addresss suggestions for dotCom sites without requiring a segment.
-    private func fetchDotComAddresses(_ searchTerm: String, includeDotBlogSubdomains: Bool) {
+    private func fetchDotComAddresses(_ searchTerm: String) {
+        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return }
+
         updateIcon(isLoading: true)
-        service.addresses(for: searchTerm, includeDotBlogSubdomains: includeDotBlogSubdomains) { [weak self] results in
+        service.addresses(for: searchTerm) { [weak self] results in
             self?.updateIcon(isLoading: false)
             switch results {
             case .failure(let error):
@@ -258,7 +247,7 @@ final class WebAddressWizardContent: UIViewController {
 
         throttle.throttle { [weak self] in
             guard let self = self else { return }
-            self.fetchAddresses(query, includeDotBlogSubdomains: self.includeDotBlogSubdomains)
+            self.fetchAddresses(query)
         }
     }
 
