@@ -107,7 +107,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        completion(nil)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
