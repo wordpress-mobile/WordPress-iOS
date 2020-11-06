@@ -137,13 +137,15 @@ extension NSNotification.Name {
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -153,17 +155,21 @@ extension NSNotification.Name {
             let newRequestConfig = self.createRequest()
             let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(newRequestController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -175,6 +181,8 @@ extension NSNotification.Name {
 
             let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
@@ -350,19 +358,24 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    static func createIdentity(completion: @escaping (Bool) -> Void) {
+    /// Creates a Zendesk Identity from user information.
+    /// Returns two values in the completion block:
+    ///     - Bool indicating there is an identity to use.
+    ///     - Bool indicating if a _new_ identity was created.
+    ///
+    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
                 DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
-                completion(true)
+                completion(true, false)
                 return
         }
 
         // Prompt the user for information.
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
-            completion(success)
+            completion(success, success)
         }
     }
 

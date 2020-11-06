@@ -47,7 +47,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         case .unifiedPrologueCarousel:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .stories:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
