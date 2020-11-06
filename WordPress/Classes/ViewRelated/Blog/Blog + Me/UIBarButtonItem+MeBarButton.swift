@@ -7,7 +7,11 @@ extension UIViewController {
     func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             email: email,
-            action: {
+            action: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
                 meScenePresenter.present(on: self, animated: true, completion: nil)
             })
     }
