@@ -9,7 +9,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     let collectionViewLayout: UICollectionViewFlowLayout
     var isLoading = true
     var selectedIndexPath: IndexPath? = nil
-
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
             collectionView.reloadData()
@@ -55,6 +54,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         collectionView.dataSource = self
         fetchSiteDesigns()
+        configureCloseButton()
+        configureSkipButton()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -87,6 +88,25 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                 }
             }
         }
+    }
+
+    private func configureSkipButton() {
+        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        navigationItem.rightBarButtonItem = skip
+    }
+
+    private func configureCloseButton() {
+        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
+        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        navigationItem.leftBarButtonItem = closeButton
+    }
+
+    @objc func skipButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 
     override func primaryActionSelected(_ sender: Any) {
