@@ -21,6 +21,9 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
         }
     }
 
+    /// The throttle the requests to the imageURL polling if needed.
+    private let throttle = Scheduler(seconds: 1)
+
     var previewURL: String? = nil {
         didSet {
             setImage(previewURL)
@@ -159,7 +162,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     func setImage(_ imageURL: String?) {
         guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
         imageView.startGhostAnimation(style: GhostCellStyle.muriel)
-        imageView.downloadImage(from: url, success: { [weak self] image in
+        imageView.downloadImage(from: url, success: { [weak self] _ in
             self?.imageView.stopGhostAnimation()
         }, failure: { [weak self] error in
             self?.handleError(error, forURL: imageURL)
@@ -168,10 +171,13 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
 
     /// This will retry the polling of the image URL in the situation where a mismatch was recieved for the requested image. This can happen for endpoints that
     /// dynamically generate the images. This will stop retrying if the view scrolled off screen. Or if the view was updated with a new URL to fetch. It will also stop
-    /// retrying for any other error type. 
+    /// retrying for any other error type.
     func handleError(_ error: Error?, forURL url: String?) {
         guard let error = error as? UIImageView.ImageDownloadError, error == .urlMismatch else { return }
-        guard url != nil, url == previewURL else { return }
-        setImage(url)
+        throttle.throttle { [weak self] in
+            guard let self = self else { return }
+            guard url != nil, url == self.previewURL else { return }
+            self.setImage(url)
+        }
     }
 }
