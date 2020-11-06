@@ -20,7 +20,7 @@ def wordpress_shared
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'gutenberg/hpp/2723-analytics'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
-    #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
 
 def aztec
