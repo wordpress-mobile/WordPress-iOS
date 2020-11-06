@@ -509,7 +509,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.29.0-beta)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issues/2721-submitSiteTemplate`)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (from `../WordPress-iOS-Shared`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `gutenberg/hpp/2723-analytics`)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json`)
@@ -660,7 +660,8 @@ EXTERNAL SOURCES:
     :branch: gutenberg/issues/2721-submitSiteTemplate
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
-    :path: "../WordPress-iOS-Shared"
+    :branch: gutenberg/hpp/2723-analytics
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
 
@@ -682,6 +683,9 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: 36c931bdbc66e9efd2bf16736906a292a14a202b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :commit: a24e25020d315e0cd5a743eb5fca893d11482753
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
