@@ -12,19 +12,8 @@ class PageCoordinator {
     }
 
     private static func showLayoutPicker(from controller: UIViewController, forBlog blog: Blog, _ completion: @escaping TemplateSelectionCompletion) {
-        let storyboard = UIStoryboard(name: "LayoutPickerStoryboard", bundle: Bundle.main)
-        guard let childViewController = storyboard.instantiateInitialViewController() as? GutenbergLayoutPickerViewController else {
-            completion(nil)
-            return
-        }
-
-        childViewController.completion = completion
-        childViewController.blog = blog
-
-        let container = CollapsableHeaderViewController(childViewController: childViewController)
-        childViewController.headerContentsDelegate = container
-        let navigationController = GutenbergLightNavigationController(rootViewController: container)
-
+        let rootViewController = GutenbergLayoutPickerViewController(blog: blog, completion: completion)
+        let navigationController = GutenbergLightNavigationController(rootViewController: rootViewController)
         if #available(iOS 13.0, *) {
             navigationController.modalPresentationStyle = .pageSheet
         } else {
