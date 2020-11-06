@@ -7,7 +7,7 @@ final class SiteDesignStep: WizardStep {
     private let creator: SiteCreator
 
     private(set) lazy var content: UIViewController = {
-        return SiteDesignContentViewController(self.didSelect)
+        return SiteDesignContentCollectionViewController(self.didSelect)
     }()
 
     init(creator: SiteCreator) {
