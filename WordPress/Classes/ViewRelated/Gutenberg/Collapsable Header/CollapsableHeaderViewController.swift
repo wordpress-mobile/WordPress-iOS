@@ -232,15 +232,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - Format Nav Bar
-    private var originalNavBarAppearance: (barStyle: UIBarStyle, barTintColor: UIColor?, isTranslucent: Bool, shadowImage: UIImage?)?
-    private func cacheNavBarApperance() {
-        originalNavBarAppearance = (navigationController?.navigationBar.barStyle ?? .default,
-                navigationController?.navigationBar.barTintColor,
-                navigationController?.navigationBar.isTranslucent ?? true,
-                navigationController?.navigationBar.shadowImage)
-    }
-
-    func formatNavigationController() {
+    /*
+     * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
+     * However, that space is also essential to a uniform design of the header. This function updates the design of the
+     * navigation bar. On iOS 13+, we're able to set the design to the `navigationItem`, which is ViewController specific.
+     * On iOS 12 and below, we need to set those values to the `navigationBar`. We cache the original values in
+     * `originalNavBarAppearance` and then revert the changes when the view is dismissed by calling `restoreNavigationBar`
+     */
+    private func formatNavigationController() {
         if #available(iOS 13.0, *) {
             let newAppearance = UINavigationBarAppearance()
             newAppearance.configureWithTransparentBackground()
@@ -250,22 +249,35 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             navigationItem.standardAppearance = newAppearance
             navigationItem.scrollEdgeAppearance = newAppearance
             navigationItem.compactAppearance = newAppearance
-            setNeedsStatusBarAppearanceUpdate()
-
         } else {
             if originalNavBarAppearance == nil {
-                cacheNavBarApperance()
+                cacheNavBarAppearance()
             }
 
             navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.barTintColor = .white
             navigationController?.navigationBar.isTranslucent = true
             navigationController?.navigationBar.shadowImage = UIImage()
-            setNeedsStatusBarAppearanceUpdate()
+        }
+
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private var originalNavBarAppearance: (barStyle: UIBarStyle, barTintColor: UIColor?, isTranslucent: Bool, shadowImage: UIImage?)?
+
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private func cacheNavBarAppearance() {
+        if #available(iOS 13.0, *) { } else {
+            originalNavBarAppearance = (navigationController?.navigationBar.barStyle ?? .default,
+                                        navigationController?.navigationBar.barTintColor,
+                                        navigationController?.navigationBar.isTranslucent ?? true,
+                                        navigationController?.navigationBar.shadowImage)
         }
     }
 
-    func restoreNavigationBar() {
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private func restoreNavigationBar() {
         if #available(iOS 13.0, *) { } else {
             navigationController?.navigationBar.barStyle = originalNavBarAppearance?.barStyle ?? .default
             navigationController?.navigationBar.barTintColor = originalNavBarAppearance?.barTintColor
