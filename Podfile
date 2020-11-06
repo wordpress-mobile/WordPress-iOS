@@ -45,9 +45,9 @@ end
 def wordpress_kit
     #pod 'WordPressKit', '~> 4.21.0-beta.1'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'upgrade/Alamofire-5-3-0'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'upgrade/Alamofire-5-3-0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods

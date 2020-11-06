@@ -434,14 +434,17 @@ extension WordPressAppDelegate {
         /// the host app is, effectively as of now, responsible for presenting any alert onscreen (whenever a HTTP Challenge is
         /// received). Capicci?
         ///
-        WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
-            guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
-                completionHandler(.performDefaultHandling, nil)
-                return
-            }
 
-            alertController.presentFromRootViewController()
-        }
+        // TODO - ALAMOFIRE 5: THIS CODE IS TEMPORARILY DISABLED.
+
+//        WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
+//            guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
+//                completionHandler(.performDefaultHandling, nil)
+//                return
+//            }
+//
+//            alertController.presentFromRootViewController()
+//        }
     }
 
     @objc func configureWordPressAuthenticator() {
