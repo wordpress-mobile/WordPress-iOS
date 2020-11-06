@@ -418,7 +418,7 @@ PODS:
   - WordPressShared (1.12.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.7.1)
+  - WordPressUI (1.7.3-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -510,7 +510,7 @@ DEPENDENCIES:
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issues/2721-submitSiteTemplate`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `gutenberg/hpp/2723-analytics`)
-  - WordPressUI (~> 1.7.1)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `gutenberg/hpp/addImageMismatchError`)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.1.1)
@@ -558,7 +558,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressMocks
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -662,6 +661,9 @@ EXTERNAL SOURCES:
   WordPressShared:
     :branch: gutenberg/hpp/2723-analytics
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WordPressUI:
+    :branch: gutenberg/hpp/addImageMismatchError
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
 
@@ -686,6 +688,9 @@ CHECKOUT OPTIONS:
   WordPressShared:
     :commit: a24e25020d315e0cd5a743eb5fca893d11482753
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WordPressUI:
+    :commit: ccbf9821fa73ddb1f367a8e06608ea82eafc4cbf
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -770,7 +775,7 @@ SPEC CHECKSUMS:
   WordPressKit: a019d4353b09c91f63c274302c7f0dca29da6890
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
-  WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
+  WordPressUI: 8a5c89ee60edb91b20ea757cc5a87e18d7c38a85
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
