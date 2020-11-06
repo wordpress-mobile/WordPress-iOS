@@ -49,7 +49,7 @@ final class SiteCreator {
 
         var siteDesign: String? = nil
         if FeatureFlag.siteCreationHomePagePicker.enabled {
-            siteDesign = design?.slug ?? "blank"
+            siteDesign = design?.slug ?? "default"
         }
 
         let request = SiteCreationRequest(
