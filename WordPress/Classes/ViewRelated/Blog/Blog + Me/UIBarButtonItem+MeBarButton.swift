@@ -4,10 +4,14 @@ import UIKit
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
 extension UIViewController {
     @objc
-    func addMeButtonToNavigationBar(with email: String?, meScenePresenter: ScenePresenter) {
+    func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             email: email,
-            action: { _ in
+            action: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
                 meScenePresenter.present(on: self, animated: true, completion: nil)
             })
     }
@@ -15,6 +19,8 @@ extension UIViewController {
 
 /// methods to set the gravatar image on the me button
 private extension UIBarButtonItem {
+    typealias TapAction = () -> Void
+
     /// gravatar configuration parameters
     struct GravatarConfiguration {
         static let radius: CGFloat = 32
@@ -25,15 +31,19 @@ private extension UIBarButtonItem {
     }
 
     /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
-     convenience init(email: String?, style: UIBarButtonItem.Style = .plain, action: @escaping BindableTapGestureRecognizer.Action) {
-         self.init()
-         makeMeButtonAccessible()
-         customView = makeGravatarTappableView(with: email, action: action)
+     convenience init(
+        email: String?,
+        style: UIBarButtonItem.Style = .plain,
+        action: @escaping TapAction) {
+
+        self.init()
+        makeMeButtonAccessible()
+        customView = makeGravatarTappableView(with: email, action: action)
      }
 
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?, action: @escaping BindableTapGestureRecognizer.Action) -> UIView {
+    func makeGravatarTappableView(with email: String?, action: @escaping TapAction) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.adjustView = { [weak self] view in
@@ -58,7 +68,7 @@ private extension UIBarButtonItem {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
 
-        let tapRecognizer = BindableTapGestureRecognizer(action: action)
+        let tapRecognizer = BindableTapGestureRecognizer(action: { action() })
         gravatarImageView.addGestureRecognizer(tapRecognizer)
 
         return embedInView(gravatarImageView)

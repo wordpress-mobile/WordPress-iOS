@@ -1,5 +1,7 @@
 import Foundation
 
+/// A tap gesture recognizer that works with a closure, instead of an action and target.
+///
 class BindableTapGestureRecognizer: UITapGestureRecognizer {
     typealias Action = (_ sender: BindableTapGestureRecognizer) -> Void
 
