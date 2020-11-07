@@ -163,7 +163,7 @@ class PrepublishingViewController: UITableViewController {
             self?.reloadData()
         }
 
-        tagPickerViewController.onTableViewHeightDetermined = { [weak self] in
+        tagPickerViewController.onContentViewHeightDetermined = { [weak self] in
             self?.presentedVC?.containerViewWillLayoutSubviews()
         }
 

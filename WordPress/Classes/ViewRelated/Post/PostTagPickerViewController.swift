@@ -33,7 +33,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         }
     }
 
-    var onTableViewHeightDetermined: (() -> Void)?
+    var onContentViewHeightDetermined: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,7 +170,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         textViewContainer.layoutIfNeeded()
         let contentHeight = tableView.contentSize.height + descriptionLabel.bounds.size.height + textViewContainer.bounds.height
         preferredContentSize = CGSize(width: view.bounds.width, height: max(300.0, contentHeight))
-        onTableViewHeightDetermined?()
+        onContentViewHeightDetermined?()
     }
 }
 
