@@ -33,7 +33,7 @@ class PrepublishingNavigationController: LightNavigationController {
     }
 
     private enum Constants {
-        static let iPadPreferredContentSize = CGSize(width: 300, height: 270)
+        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 300.0)
     }
 }
 
