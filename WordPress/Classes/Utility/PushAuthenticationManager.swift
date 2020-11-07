@@ -72,6 +72,21 @@ class PushAuthenticationManager {
             }
         }
     }
+
+    func handleAuthenticationApprovedAction(_ userInfo: NSDictionary?) {
+        guard isAuthenticationNotificationExpired(userInfo) == false else {
+            showLoginExpiredAlert()
+            WPAnalytics.track(.pushAuthenticationExpired)
+            return
+        }
+
+        guard let token = userInfo?["push_auth_token"] as? String else {
+            return
+        }
+
+        authorizeLogin(token, retryCount: Settings.initialRetryCount)
+        WPAnalytics.track(.pushAuthenticationApproved)
+    }
 }
 
 
