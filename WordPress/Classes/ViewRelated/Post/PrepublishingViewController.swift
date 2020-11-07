@@ -187,7 +187,6 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(categoriesViewController, animated: true)
-        presentedVC?.containerViewWillLayoutSubviews()
        }
 
     // MARK: - Visibility
