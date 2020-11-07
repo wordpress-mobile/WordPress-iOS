@@ -23,11 +23,11 @@ class PrepublishingNavigationController: LightNavigationController {
             if UIDevice.isPad() {
                 return Constants.iPadPreferredContentSize
             }
-            
+
             guard  let visibleViewController = viewControllers.last else {
                 return .zero
             }
-            
+
             return visibleViewController.preferredContentSize
         }
     }

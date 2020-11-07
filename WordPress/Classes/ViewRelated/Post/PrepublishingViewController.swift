@@ -162,7 +162,7 @@ class PrepublishingViewController: UITableViewController {
             self?.post.tags = tags
             self?.reloadData()
         }
-        
+
         tagPickerViewController.onTableViewHeightDetermined = { [weak self] in
             self?.presentedVC?.containerViewWillLayoutSubviews()
         }
@@ -181,7 +181,7 @@ class PrepublishingViewController: UITableViewController {
             self?.presentedVC?.containerViewWillLayoutSubviews()
             self?.tableView.reloadData()
         }
-        
+
         categoriesViewController.onTableViewHeightDetermined = { [weak self] in
             self?.presentedVC?.containerViewWillLayoutSubviews()
         }
@@ -360,7 +360,7 @@ extension PrepublishingViewController: PrepublishingDismissible {
 }
 extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
-        WPAnalytics.track(.editorPostCategoryChanged, properties: ["via" : "prepublishing_nudges"])
+        WPAnalytics.track(.editorPostCategoryChanged, properties: ["via": "prepublishing_nudges"])
 
         // Save changes.
         guard let categories = categories as? Set<PostCategory> else {
