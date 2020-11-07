@@ -276,6 +276,11 @@ private extension InteractiveNotificationsManager {
         return Set(categories)
     }
 
+    /// Handles approving an 2fa authentication challenge.
+    ///
+    /// - Parameter userInfo: The notification's Payload
+    /// - Returns: True if successfule. Otherwise false.
+    ///
     func approveAuthChallenge(_ userInfo: NSDictionary) -> Bool {
         return PushNotificationsManager.shared.handleAuthenticationApprovedAction(userInfo)
     }
