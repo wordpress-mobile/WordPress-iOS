@@ -68,6 +68,8 @@ class PrepublishingViewController: UITableViewController {
         setupFooterSeparator()
 
         announcePublishButton()
+
+        preferredContentSize = tableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +124,7 @@ class PrepublishingViewController: UITableViewController {
         case .schedule:
             configureScheduleCell(cell)
         case .categories:
-            break
+            configureCategoriesCell(cell)
         }
 
         return cell
@@ -160,14 +162,32 @@ class PrepublishingViewController: UITableViewController {
             self?.post.tags = tags
             self?.reloadData()
         }
+        
+        tagPickerViewController.onTableViewHeightDetermined = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+        }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
-    
+
+    private func configureCategoriesCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = post.categories?.array.map { $0.categoryName }.joined(separator: ",")
+    }
+
     private func didTapCategoriesCell() {
         let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: post.categories?.array, selectionMode: .post)
         categoriesViewController.delegate = self
+        categoriesViewController.onCategoriesChanged = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+            self?.tableView.reloadData()
+        }
+        
+        categoriesViewController.onTableViewHeightDetermined = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+        }
+
         navigationController?.pushViewController(categoriesViewController, animated: true)
+        presentedVC?.containerViewWillLayoutSubviews()
        }
 
     // MARK: - Visibility
