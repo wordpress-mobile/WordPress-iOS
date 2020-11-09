@@ -7,7 +7,9 @@ end
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '11.0'
+app_ios_deployment_target = Gem::Version.new('11.0')
+
+platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
@@ -196,7 +198,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.2-beta.1'
 
-    pod 'WordPressAuthenticator', '~> 1.27.0'
+    pod 'WordPressAuthenticator', '~> 1.29.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -217,7 +219,7 @@ target 'WordPress' do
     end
 
 
-    post_install do
+    post_install do |installer|
         project_root = File.dirname(__FILE__)
 
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
@@ -271,6 +273,17 @@ target 'WordPress' do
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
         File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+
+        # Let Pods targets inherit deployment target from the app
+        # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+        # =====================================
+        #
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |configuration|
+               pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+               configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+            end
+        end
     end
 end
 

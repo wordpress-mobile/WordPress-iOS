@@ -8,9 +8,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     let collectionView: UICollectionView
     let collectionViewLayout: UICollectionViewFlowLayout
     var isLoading = true
-
+    var selectedIndexPath: IndexPath? = nil
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
+            contentSizeWillChange()
             collectionView.reloadData()
         }
     }
@@ -23,7 +24,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
         let contentWidth = (cellsPerRowCap * cellSize.width) + (itemSpacing * spacingCounts)
         let margin = (screenWidth - contentWidth) / 2
-        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: 0, right: margin)
+        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: itemSpacing, right: margin)
     }
 
     init() {
@@ -54,6 +55,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         collectionView.dataSource = self
         fetchSiteDesigns()
+        configureCloseButton()
+        configureSkipButton()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -74,12 +77,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
+        isLoading = true
         let request = SiteDesignRequest(previewSize: cellSize, scale: UIScreen.main.nativeScale)
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
+                self?.isLoading = false
                 switch response {
                 case .success(let result):
-                    self?.isLoading = false
+                    self?.dismissNoResultsController()
                     self?.siteDesigns = result
                 case .failure(let error):
                     self?.handleError(error)
@@ -88,12 +93,33 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         }
     }
 
+    private func configureSkipButton() {
+        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        navigationItem.rightBarButtonItem = skip
+    }
+
+    private func configureCloseButton() {
+        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
+        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        navigationItem.leftBarButtonItem = closeButton
+    }
+
+    @objc func skipButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
     override func primaryActionSelected(_ sender: Any) {
         /* ToDo */
     }
 
     private func handleError(_ error: Error) {
-        /* ToDo */
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 }
 
@@ -129,9 +155,37 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDataSource 
 
 // MARK: - UICollectionViewDelegate
 extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
+    private func deselectItem(_ indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        collectionView(collectionView, didDeselectItemAt: indexPath)
+    }
 
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return false
-//        return !isLoading /* To Do - Update this in the next issue and also handle the footer showing/hiding */
+        guard !isLoading else { return false }
+
+        if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
+            deselectItem(indexPath)
+            return false
+        }
+
+        if selectedIndexPath == nil {
+            itemSelectionChanged(true)
+        }
+        selectedIndexPath = indexPath
+
+        return true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard selectedIndexPath == indexPath else { return }
+        selectedIndexPath = nil
+        itemSelectionChanged(false)
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        fetchSiteDesigns()
     }
 }

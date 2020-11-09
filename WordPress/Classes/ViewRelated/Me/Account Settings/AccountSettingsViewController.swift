@@ -90,6 +90,7 @@ private class AccountSettingsController: SettingsController {
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
+            accessoryImage: emailAccessoryImage(),
             action: presenter.push(editEmailAddress(settings, service: service))
         )
 
@@ -238,7 +239,8 @@ private class AccountSettingsController: SettingsController {
     // MARK: - Private Helpers
 
     fileprivate func noticeForAccountSettings(_ settings: AccountSettings?) -> String? {
-        guard let pendingAddress = settings?.emailPendingAddress, settings?.emailPendingChange == true else {
+        guard settings?.emailPendingChange == true,
+              let pendingAddress = settings?.emailPendingAddress else {
             return nil
         }
 
@@ -248,6 +250,13 @@ private class AccountSettingsController: SettingsController {
         return String(format: localizedNotice, pendingAddress)
     }
 
+    fileprivate func emailAccessoryImage() -> UIImage? {
+        guard settings?.emailPendingChange == true else {
+            return nil
+        }
+
+        return UIImage.gridicon(.noticeOutline).imageWithTintColor(.error)
+    }
 
     // MARK: - Constants
 
