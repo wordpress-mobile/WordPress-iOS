@@ -1429,7 +1429,6 @@
 		98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CAD295221B4ED1003E8F45 /* StatSection.swift */; };
-		98CE3D25254A22B500CEA7B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		98D31B8F2396ED7F009CFF43 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
 		98D31B992396ED7F009CFF43 /* WordPressAllTimeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D31BA52396F7BF009CFF43 /* AllTimeViewController.swift */; };
@@ -11821,7 +11820,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F526C562538CF2B0069706C /* Assets.xcassets in Resources */,
-				98CE3D25254A22B500CEA7B9 /* Localizable.strings in Resources */,
 				3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
