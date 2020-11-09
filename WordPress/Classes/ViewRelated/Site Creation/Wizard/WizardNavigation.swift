@@ -10,6 +10,13 @@ private final class EnhancedSiteCreationNavigationController: UINavigationContro
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return WPDeviceIdentification.isiPad() ? .all : .portrait
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            return .default
+        }
+        return super.preferredStatusBarStyle
+    }
 }
 
 // MARK: - WizardNavigation
