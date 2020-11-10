@@ -33,6 +33,8 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         }
     }
 
+    var onContentViewHeightDetermined: (() -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -114,6 +116,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         super.viewWillAppear(animated)
 
         textView.becomeFirstResponder()
+        updateContainerHeight()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -122,6 +125,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         loadTags()
 
         tableView.contentInset.bottom += descriptionLabel.frame.height + 20
+
         updateTableViewBottomInset()
     }
 
@@ -159,6 +163,14 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         }
 
         tableView.contentInset.bottom += presentedVC?.yPosition ?? 0
+    }
+
+    fileprivate func updateContainerHeight() {
+        descriptionLabel.layoutIfNeeded()
+        textViewContainer.layoutIfNeeded()
+        let contentHeight = tableView.contentSize.height + descriptionLabel.bounds.size.height + textViewContainer.bounds.height
+        preferredContentSize = CGSize(width: view.bounds.width, height: max(300.0, contentHeight))
+        onContentViewHeightDetermined?()
     }
 }
 
