@@ -68,7 +68,7 @@ private extension UIBarButtonItem {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
 
-        let tapRecognizer = BindableTapGestureRecognizer(action: { action() })
+        let tapRecognizer = BindableTapGestureRecognizer(action: { _ in action() })
         gravatarImageView.addGestureRecognizer(tapRecognizer)
 
         return embedInView(gravatarImageView)
