@@ -14,6 +14,17 @@ parameters:
     type: string
     default: all-lang
 
+xcode_version: &xcode_version
+  xcode-version: "12.1.0"
+
+iphone_test_device: &iphone_test_device
+  device: iPhone 11
+  ios-version: "14.1"
+
+ipad_test_device: &ipad_test_device
+  device: iPad Air (4th generation)
+  ios-version: "14.1"
+
 commands:
   fix-image:
     steps:
@@ -42,7 +53,7 @@ jobs:
         type: string
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -72,7 +83,7 @@ jobs:
         type: string
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -101,7 +112,7 @@ jobs:
         default: false
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -137,7 +148,7 @@ jobs:
   Installable Build:
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -161,9 +172,9 @@ jobs:
           path: Artifacts
           destination: Artifacts
   Release Build:
-    executor: 
+    executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -205,7 +216,7 @@ jobs:
   translation-review-build:
     executor: 
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -252,17 +263,14 @@ workflows:
     unless: << pipeline.parameters.translation_review_build >>
     jobs:
       - Build Tests:
-          device: iPhone 11
-          ios-version: "14.0"
+          <<: *iphone_test_device
       - Unit Tests:
-          device: iPhone 11
-          ios-version: "14.0"
+          <<: *iphone_test_device
           requires: [ "Build Tests" ]
       # Always run UI tests on develop and release branches
       - UI Tests:
           name: UI Tests (iPhone 11)
-          device: iPhone 11
-          ios-version: "14.0"
+          <<: *iphone_test_device
           post-to-slack: true
           requires: [ "Build Tests" ]
           filters:
@@ -291,13 +299,11 @@ workflows:
                 - /^release.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
-          device: iPhone 11
-          ios-version: "14.0"
+          <<: *iphone_test_device
           requires: [ "Optional Tests" ]
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
-          device: iPad Air \\(4th generation\\)
-          ios-version: "14.0"
+          <<: *ipad_test_device
           requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
