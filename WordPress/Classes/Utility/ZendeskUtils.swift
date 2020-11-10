@@ -137,13 +137,15 @@ extension NSNotification.Name {
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -153,17 +155,21 @@ extension NSNotification.Name {
             let newRequestConfig = self.createRequest()
             let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(newRequestController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -175,6 +181,8 @@ extension NSNotification.Name {
 
             let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
@@ -350,19 +358,24 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    static func createIdentity(completion: @escaping (Bool) -> Void) {
+    /// Creates a Zendesk Identity from user information.
+    /// Returns two values in the completion block:
+    ///     - Bool indicating there is an identity to use.
+    ///     - Bool indicating if a _new_ identity was created.
+    ///
+    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
                 DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
-                completion(true)
+                completion(true, false)
                 return
         }
 
         // Prompt the user for information.
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
-            completion(success)
+            completion(success, success)
         }
     }
 
@@ -788,6 +801,7 @@ private extension ZendeskUtils {
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
+            textField.keyboardType = .emailAddress
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -828,12 +842,15 @@ private extension ZendeskUtils {
     }
 
     static func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
-            let nameField = alertController.textFields?.last else {
-                return
+        guard !email.isEmpty else {
+            return
         }
 
-        guard !email.isEmpty else {
+        // Find the name text field if it's being displayed.
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
+              let textFields = alertController.textFields,
+              textFields.count > 1,
+              let nameField = textFields.last else {
             return
         }
 
@@ -843,14 +860,20 @@ private extension ZendeskUtils {
         }
     }
 
-    static func generateDisplayName(from rawEmail: String) -> String {
-
+    static func generateDisplayName(from rawEmail: String) -> String? {
         // Generate Name, using the same format as Signup.
 
         // step 1: lower case
         let email = rawEmail.lowercased()
+
         // step 2: remove the @ and everything after
-        let localPart = email.split(separator: "@")[0]
+
+        // Verify something exists before the @.
+        guard email.first != "@",
+              let localPart = email.split(separator: "@").first else {
+            return nil
+        }
+
         // step 3: remove all non-alpha characters
         let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
         // step 4: turn periods into spaces

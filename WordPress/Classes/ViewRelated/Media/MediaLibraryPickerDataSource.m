@@ -28,14 +28,6 @@
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    // This has been added temporarily to try and track the source of a nil object exception
-    // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14960
-    //
-    // - Diego Rey Mendez, 2 October 2020
-    if (blog == nil) {
-        DDLogError(@"MediaLibraryPickerDataSource initializing with nil blog");
-    }
-    
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
@@ -52,16 +44,7 @@
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
-{
-    // This has been added temporarily to try and track the source of a nil object exception
-    // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14960
-    //
-    // - Diego Rey Mendez, 2 October 2020
-    if (post == nil || post.blog == nil) {
-        DDLogError(@"MediaLibraryPickerDataSource initializing with a post with a nil blog");
-        DDLogError(@"Post MOC: %@", post.managedObjectContext);
-    }
-    
+{    
     self = [self initWithBlog:post.blog];
     if (self) {
         _post = post;

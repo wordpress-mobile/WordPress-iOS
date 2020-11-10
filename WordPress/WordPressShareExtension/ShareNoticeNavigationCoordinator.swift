@@ -25,7 +25,7 @@ class ShareNoticeNavigationCoordinator {
     static func navigateToPostList(with userInfo: NSDictionary) {
         fetchPost(from: userInfo, onSuccess: { post in
             if let post = post {
-                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+                WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch post from share notification.")
@@ -35,7 +35,7 @@ class ShareNoticeNavigationCoordinator {
     static func navigateToBlogDetails(with userInfo: NSDictionary) {
         fetchBlog(from: userInfo, onSuccess: { blog in
             if let blog = blog {
-                WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch blog from share notification.")

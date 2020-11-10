@@ -1,9 +1,15 @@
 source 'https://cdn.cocoapods.org/'
 
+unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
+  raise 'Please run CocoaPods via `bundle exec`'
+end
+
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '11.0'
+app_ios_deployment_target = Gem::Version.new('11.0')
+
+platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
@@ -37,10 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-
-    pod 'WordPressKit', '~> 4.19-beta.1'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    pod 'WordPressKit', '~> 4.21.0-beta.1'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -65,7 +70,7 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2-beta.1'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -149,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '5ff93360313e9919c7a4b7f0faa1cb9e5e9c3542'
+    gutenberg :tag => 'v1.40.0'
 
     ## Third party libraries
     ## =====================
@@ -161,12 +166,13 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.0.0'
+    pod 'ZendeskSupportSDK', '5.1.1'
     pod 'AlamofireImage', '3.5.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
     pod 'AMScrollingNavbar', '5.6.0'
+    pod 'CropViewController', '2.5.3'
 
     ## Automattic libraries
     ## ====================
@@ -190,9 +196,9 @@ target 'WordPress' do
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2-beta.1'
 
-    pod 'WordPressAuthenticator', '~> 1.27.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.29.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -213,7 +219,7 @@ target 'WordPress' do
     end
 
 
-    post_install do
+    post_install do |installer|
         project_root = File.dirname(__FILE__)
 
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
@@ -267,6 +273,17 @@ target 'WordPress' do
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
         File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+
+        # Let Pods targets inherit deployment target from the app
+        # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+        # =====================================
+        #
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |configuration|
+               pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+               configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+            end
+        end
     end
 end
 
@@ -366,7 +383,7 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.9-beta.1'
+  pod 'WordPressMocks', '~> 0.0.9'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'

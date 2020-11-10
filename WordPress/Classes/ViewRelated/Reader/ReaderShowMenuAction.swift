@@ -54,14 +54,17 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderFollowAction().execute(with: post, context: context) {
-                                                        guard let vc = vc as? ReaderStreamViewController else {
-                                                            return
-                                                        }
-                                                        vc.updateStreamHeaderIfNeeded()
-                                                    }
+                                                    ReaderFollowAction().execute(with: post,
+                                                                                 context: context,
+                                                                                 completion: {
+                                                                                    guard let vc = vc as? ReaderStreamViewController else {
+                                                                                        return
+                                                                                    }
+                                                                                    vc.updateStreamHeaderIfNeeded()
+                                                                                 },
+                                                                                 failure: nil)
                                                 }
-            })
+                                               })
         }
 
         // Visit
@@ -99,7 +102,7 @@ final class ReaderShowMenuAction {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || (ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.readerImprovementsPhase2.enabled)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
                 || ReaderHelpers.topicIsFreshlyPressed(topic) || (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
         }
         return false

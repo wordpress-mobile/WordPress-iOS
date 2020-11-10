@@ -10,8 +10,6 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
@@ -50,16 +48,6 @@ class ReaderTabViewController: UIViewController {
         super.viewDidAppear(animated)
 
         ReaderTracker.shared.start(.main)
-
-        displaySelectInterestsIfNeeded()
-
-        viewModel.onTabBarItemsDidChange { [weak self] items, _ in
-            self?.displaySelectInterestsIfNeeded()
-        }
-
-        if !FeatureFlag.readerImprovementsPhase2.enabled {
-            markSelectedInterestsVisited()
-        }
 
         if FeatureFlag.whatIsNew.enabled {
             WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
@@ -151,46 +139,6 @@ extension ReaderTabViewController {
         loadView()
     }
 }
-
-// MARK: - Select Interests Display
-extension ReaderTabViewController {
-    func displaySelectInterestsIfNeeded(isDisplaying: ((Bool) -> Void)? = nil) {
-        guard viewModel.itemsLoaded, isViewOnScreen(),
-            FeatureFlag.readerImprovementsPhase2.enabled else {
-            isDisplaying?(false)
-            return
-        }
-
-        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
-            if !isFollowing {
-                self.showSelectInterestsView()
-                isDisplaying?(true)
-            } else {
-                self.markSelectedInterestsVisited()
-                isDisplaying?(false)
-            }
-        }
-    }
-
-    func showSelectInterestsView() {
-        definesPresentationContext = true
-        selectInterestsViewController.modalPresentationStyle = .overCurrentContext
-        navigationController?.present(selectInterestsViewController, animated: true, completion: nil)
-
-        selectInterestsViewController.didSaveInterests = { [unowned self] in
-            self.markSelectedInterestsVisited()
-
-            self.readerTabView.selectDiscover()
-
-            self.selectInterestsViewController.dismiss(animated: true)
-        }
-    }
-
-    private func markSelectedInterestsVisited() {
-        QuickStartTourGuide.find()?.visited(.selectInterests)
-    }
-}
-
 
 // MARK: - Constants
 extension ReaderTabViewController {

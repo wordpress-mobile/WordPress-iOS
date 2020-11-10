@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-09-22 18:04:56+0000 */
+/* Translation-Revision-Date: 2020-11-02 18:06:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_GB */
@@ -196,11 +196,8 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s block. This block has invalid content";
 
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for Android" = "'%s' isn't yet supported on WordPress for Android";
-
-/* translators: %s: Name of the block */
-"'%s' isn't yet supported on WordPress for iOS" = "'%s' isn't yet supported on WordPress for iOS";
+/* translators: Missing block alert title. %s: The localized block name */
+"'%s' is not fully-supported" = "'%s' is not fully supported";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "(555)555-1234";
@@ -370,8 +367,7 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Activity Logs";
 
-/* Button to create a new post.
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Add";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -386,20 +382,23 @@
 /* No comment provided by engineer. */
 "Add Block Before" = "Add Block Before";
 
+/* Accessibility label for add comment button */
+"Add Comment" = "Add Comment";
+
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Add Contents to Post";
 
 /* Add New Stats Card view title */
 "Add New Stats Card" = "Add New Stats Card";
 
-/* Button Title. Tapping subscribes the user to a new tag. */
-"Add Tag" = "Add Tag";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Add To Beginning";
 
 /* No comment provided by engineer. */
 "Add To End" = "Add To End";
+
+/* Button Title. Tapping subscribes the user to a new topic. */
+"Add Topic" = "Add Topic";
 
 /* No comment provided by engineer. */
 "Add URL" = "Add URL";
@@ -413,9 +412,9 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Add a Profile Photo";
 
-/* Title of a feature to add a new tag to the tags subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new tags. */
-"Add a Tag" = "Add a Tag";
+/* Title of a feature to add a new topic to the topics subscribed by the user.
+   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+"Add a Topic" = "Add a Topic";
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally, this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
@@ -438,8 +437,8 @@
 /* No Tags View Button Label */
 "Add a site" = "Add a site";
 
-/* No Tags View Button Label */
-"Add a tag" = "Add a tag";
+/* No Topics View Button Label */
+"Add a topic" = "Add a topic";
 
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Add account image.";
@@ -447,14 +446,11 @@
 /* No comment provided by engineer. */
 "Add annotation" = "Add annotation";
 
-/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
-"Add any tag" = "Add any tag";
+/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
+"Add any topic" = "Add any topic";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
-
-/* No comment provided by engineer. */
-"Add link text" = "Add link text";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Add menu item above";
@@ -467,6 +463,9 @@
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Add new menu";
+
+/* Screen reader text for button that adds a menu item */
+"Add new menu item" = "Add new menu item";
 
 /* Title of button to add a new site. */
 "Add new site" = "Add new site";
@@ -486,6 +485,15 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Add tags";
+
+/* No comment provided by engineer. */
+"Add this email link" = "Add this email link";
+
+/* No comment provided by engineer. */
+"Add this link" = "Add this link";
+
+/* No comment provided by engineer. */
+"Add this telephone link" = "Add this telephone link";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adding site features";
@@ -723,8 +731,8 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Are you sure you want to update?";
 
-/* A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag. */
-"Are you sure you wish to remove the tag '%@'?" = "Are you sure you wish to remove the tag '%@'?";
+/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
+"Are you sure you wish to remove the topic '%@'?" = "Are you sure you wish to remove the topic '%@'?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged.";
@@ -800,7 +808,9 @@
 
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
-   Previous web page */
+   Dismiss view
+   Previous web page
+   Spoken accessibility label */
 "Back" = "Back";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
@@ -840,6 +850,9 @@
 /* Blacklist Title
    Settings: Comments Blacklist */
 "Blacklist" = "Blacklist";
+
+/* Notice that a page without content has been created */
+"Blank page created" = "Blank page created";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -913,6 +926,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Button Style";
+
+/* Label for the post author in the post detail. */
+"By " = "By ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "By %@.";
@@ -1097,6 +1113,9 @@
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Check your email!";
 
+/* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
+"Check your network connection and try again or create a blank page." = "Check your network connection and try again, or create a blank page.";
+
 /* Default subtitle for no-results when there is no connection */
 "Check your network connection and try again." = "Check your network connection and try again.";
 
@@ -1112,6 +1131,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Checking purchases…";
 
+/* Title for the button to progress with the selected site homepage design */
+"Choose" = "Choose";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
 
@@ -1123,6 +1145,9 @@
 
 /* Label for Publish date picker */
 "Choose a date" = "Choose a date";
+
+/* Title for the screen to pick a design and homepage for a site. */
+"Choose a design" = "Choose a design";
 
 /* Create site, step 4. Select domain name. Title */
 "Choose a domain name for your site" = "Choose a domain name for your site";
@@ -1150,6 +1175,9 @@
 
 /* No comment provided by engineer. */
 "Choose image or video" = "Choose image or video";
+
+/* No comment provided by engineer. */
+"Choose images" = "Choose images";
 
 /* No comment provided by engineer. */
 "Choose video" = "Choose video";
@@ -1232,6 +1260,9 @@
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Collect information";
 
+/* First story intro item description */
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+
 /* Menu item label for linking a comic page. */
 "Comics" = "Comics";
 
@@ -1248,7 +1279,8 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Comment has been marked as Spam";
 
-/* Filters Comments Notifications
+/* Accessibility label for comments button with no comments
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1474,11 +1506,11 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Could Be Better";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Follow Tag" = "Could Not Follow Tag";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Follow Topic" = "Could Not Follow Topic";
 
-/* Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader. */
-"Could Not Remove Tag" = "Could Not Remove Tag";
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Remove Topic" = "Could Not Remove Topic";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Could Not Save Changes";
@@ -1583,6 +1615,9 @@
    Site creation. Step 1. Screen title */
 "Create Site" = "Create Site";
 
+/* Stories intro continue button title */
+"Create Story Post" = "Create Story Post";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Create WordPress.com site";
 
@@ -1601,8 +1636,11 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.";
 
-/* The tooltip title for the Floating Create Button */
+/* Accessibility hint for create floating action button */
 "Create a post or page" = "Create a post or page";
+
+/* The tooltip title for the Floating Create Button */
+"Create a post, page, or story" = "Create a post, page, or story";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Create your own customised dashboard and choose what reports to see. Focus on the data you care most about.";
@@ -1614,7 +1652,10 @@
 "Creates a new site with the given information." = "Creates a new site with the given information.";
 
 /* Accessibility hint for create floating action button */
-"Creates new post or page" = "Creates new post or page";
+"Creates new post, or page" = "Creates new post, or page";
+
+/* Accessibility hint for create floating action button */
+"Creates new post, page, or story" = "Creates new post, page, or story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?";
@@ -1755,6 +1796,9 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Delete Site Error";
 
+/* Screen Reader: Button that deletes a menu. */
+"Delete menu" = "Delete menu";
+
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Delete this tag";
 
@@ -1846,6 +1890,9 @@
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Dismiss %@ Quick Start step";
 
+/* Accessibility hint for the continue button in the Feature Announcements screen. */
+"Dismiss announcements" = "Dismiss announcements";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -1894,6 +1941,9 @@
 
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "Don’t cry because it’s over, smile because it happened.";
+
+/* Screen reader hint for button that will move the menu item */
+"Double tap and hold to move this menu item up or down" = "Double tap and hold to move this menu item up or down";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Double tap to add a block";
@@ -2005,14 +2055,14 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Edit Post";
 
-/* No comment provided by engineer. */
-"Edit block in web browser" = "Edit block in web browser";
-
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the Block Editor.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Edit sharing buttons";
+
+/* No comment provided by engineer. */
+"Edit using web editor" = "Edit using web editor";
 
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
@@ -2028,6 +2078,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "Edits the comment.";
+
+/* Screen reader hint for button to edit a menu item */
+"Edits this menu item" = "Edits this menu item";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -2227,6 +2280,9 @@
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Everyone";
 
+/* Example story title description */
+"Example story title" = "Example story title";
+
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Excerpt";
 
@@ -2392,13 +2448,16 @@
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Follow other sites";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Follow your favorite sites and discover new reads." = "Follow your favourite sites and discover new reads.";
+
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Followed Sites";
 
-/* Followed Tags Title */
-"Followed Tags" = "Followed Tags";
+/* Followed Topics Title */
+"Followed Topics" = "Followed Topics";
 
 /* User followed a site. */
 "Followed site" = "Followed site";
@@ -2502,6 +2561,9 @@ translators: sample content for \"Services\" page template
 translators: sample content for \"Team\" page template */
 "Get in Touch" = "Get in Touch";
 
+/* Accessibility hint for the find out more button in the Feature Announcements screen. */
+"Get more details for this release" = "Get more details for this release";
+
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Get noticed: comment on posts you've read.";
 
@@ -2528,9 +2590,6 @@ translators: sample content for \"Team\" page template */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* No comment provided by engineer. */
-"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Go to Following";
@@ -2651,6 +2710,9 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Help & Support";
 
 /* No comment provided by engineer. */
+"Help button" = "Help button";
+
+/* No comment provided by engineer. */
 "Help icon" = "Help icon";
 
 /* No comment provided by engineer. */
@@ -2698,6 +2760,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
+
+/* How to create story description */
+"How to create a story post" = "How to create a story post";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "I Like It";
@@ -2846,6 +2911,9 @@ translators: sample content for \"Team\" page template */
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.";
+
+/* Stories intro header title */
+"Introducing Story Posts" = "Introducing Story Posts";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Invalid Site Address";
@@ -3044,12 +3112,6 @@ translators: sample content for \"Services\" page template */
 /* Image link option title. */
 "Link To" = "Link To";
 
-/* No comment provided by engineer. */
-"Link inserted" = "Link inserted";
-
-/* No comment provided by engineer. */
-"Link text" = "Link text";
-
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link to existing content";
 
@@ -3194,10 +3256,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Main Navigation" = "Main Navigation";
 
-/* Accessibility label for the settings button in the reader.
-   Button leading to a screen where users can manage their installed plugins
+/* Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
-   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3215,9 +3275,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Manage Sites";
-
-/* Accessibility hint for the settings button in the reader. */
-"Manage followed sites and tags" = "Manage followed sites and tags";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Manage site";
@@ -3255,7 +3312,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
-   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
@@ -3315,6 +3371,9 @@ translators: sample content for \"Services\" page template */
 /* Screen reader string too choose a menu to edit. First %@ is the name of the menu area (Primary, Footer, etc...). Second %@ is name of the menu currently selected. %d is a number indicating the ammount of menus available in the selected menu area. */
 "Menu in area %@: %@, %d menus available" = "Menu in area %1$@: %2$@, %3$d menus available";
 
+/* Screen Reader: Description for text field that edits the menu name. */
+"Menu name" = "Menu name";
+
 /* Menus option in the blog details
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
@@ -3348,7 +3407,8 @@ translators: sample content for \"Services\" page template */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More */
+   More
+   Spoken accessibility label */
 "More" = "More";
 
 /* Action button to display more available options
@@ -3393,6 +3453,9 @@ translators: sample content for \"Services\" page template */
 
 /* Option to move Insight down in the view. */
 "Move down" = "Move down";
+
+/* Screen reader text for button that will move the menu item */
+"Move menu item" = "Move menu item";
 
 /* Label for a button that moves a page to the draft folder
    Label for an option that moves a post to the draft folder */
@@ -3460,9 +3523,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigates to customise the gradient";
 
-/* No comment provided by engineer. */
-"Navigates to the previous content sheet" = "Navigates to the previous content sheet";
-
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Need Help?";
 
@@ -3478,7 +3538,8 @@ translators: sample content for \"Services\" page template */
 /* Describes a status of a plugin */
 "Needs Update" = "Needs Update";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   New button badge on Stories Post button */
 "New" = "New";
 
 /* Blacklist Keyword Insertion Title */
@@ -3493,8 +3554,7 @@ translators: sample content for \"Services\" page template */
 /* New Photo Post 3D Touch Shortcut */
 "New Photo Post" = "New Photo Post";
 
-/* New Post 3D Touch Shortcut
-   The accessibility value of the post tab. */
+/* New Post 3D Touch Shortcut */
 "New Post" = "New Post";
 
 /* Menu item title text used as default when creating a new menu item. */
@@ -3763,6 +3823,9 @@ translators: sample content for \"Services\" page template */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Notifications Unread";
 
+/* First story intro item title */
+"Now stories are for everyone" = "Now stories are for everyone";
+
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Now that Jetpack is installed, we just need to get you set up. This will only take a minute.";
 
@@ -3859,7 +3922,7 @@ translators: sample content for \"Services\" page template */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Open full media picker";
 
-/* No comment provided by engineer. */
+/* Spoken accessibility label */
 "Open in Safari" = "Open in Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -3953,6 +4016,9 @@ translators: sample content for \"Services\" page template */
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Page break block. %s";
+
+/* Notice that a page with content has been created */
+"Page created" = "Page created";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Page draft uploaded";
@@ -4054,6 +4120,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pick username";
+
+/* Prompt for the screen to pick a design and homepage for a site. */
+"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favourite homepage layout. You can customise or change it later";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -4203,8 +4272,7 @@ translators: sample content for \"Services\" page template */
 "Position or Job Title" = "Position or Job Title";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
-   Placeholder title for ReaderPostDetails. */
+   Noun. Type of content being selected is a blog post */
 "Post" = "Post";
 
 /* Title for selecting categories for a post */
@@ -4322,7 +4390,8 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected layout */
+   Title for button to preview a selected layout
+   Title for the button to preview the selected site homepage design */
 "Preview" = "Preview";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4633,9 +4702,6 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Remove annotations" = "Remove annotations";
 
-/* No comment provided by engineer. */
-"Remove block" = "Remove block";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
 
@@ -4739,7 +4805,8 @@ translators: sample content for \"Services\" page template */
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolution";
 
-/* Button title, displayed when media has failed to upload. Allows the user to try the upload again.
+/* A prompt to attempt the failed network request again
+   Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Label for a button that attempts to re-upload a page that previously failed to upload.
@@ -4897,6 +4964,12 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Scheduling...";
 
+/* No comment provided by engineer. */
+"Scrollable block menu closed." = "Scrollable block menu closed.";
+
+/* No comment provided by engineer. */
+"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+
 /* Placeholder text for the search bar
    Search
    The menu item to select during a guided tour.
@@ -4922,6 +4995,9 @@ translators: sample content for \"Services\" page template */
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
+/* No comment provided by engineer. */
+"Search or type URL" = "Search or type URL";
+
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Search pages";
 
@@ -4933,9 +5009,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Search to find free photos to add to your Media Library!";
-
-/* Placeholder message when showing mentions search field */
-"Search users..." = "Search users...";
 
 /* Menus search bar placeholder text. */
 "Search..." = "Search...";
@@ -4952,6 +5025,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "See All";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"See comments and notifications in real time." = "See comments and notifications in real time.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Select";
@@ -5012,6 +5088,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Select a layout";
+
+/* No comment provided by engineer. */
+"Select item" = "Select item";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Select media.";
@@ -5143,7 +5222,8 @@ translators: sample content for \"Services\" page template */
 /* Message to show when setting save failed */
 "Settings update failed" = "Settings update failed";
 
-/* Button label to share a post
+/* Accessibility label for share buttons in nav bars
+   Button label to share a post
    Button label to share a web page
    Share the post.
    Spoken accessibility label
@@ -5340,6 +5420,9 @@ translators: sample content for \"Services\" page template */
 /* Sites Filter Tab Title with Count */
 "Sites (%lu)" = "Sites (%lu)";
 
+/* A suggestion of topics the user might */
+"Sites to follow" = "Sites to follow";
+
 /* Image size option title. */
 "Size" = "Size";
 
@@ -5510,6 +5593,12 @@ translators: sample content for \"Services\" page template */
 /* User action to stop upload. */
 "Stop upload" = "Stop upload";
 
+/* Create new Story button title */
+"Story post" = "Story post";
+
+/* Second story intro item description */
+"Story posts don't disappear" = "Story posts don't disappear";
+
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategy";
 
@@ -5634,13 +5723,9 @@ translators: sample content for \"Services\" page template */
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Section title of the tags reader section.
-   Tags Filter Tab Title
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Tags";
-
-/* Tags Filter Tab Title with Count */
-"Tags (%lu)" = "Tags (%lu)";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Tags and Categories";
@@ -5993,6 +6078,9 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "There's a restore currently in progress, please wait before starting next one";
 
+/* Second story intro item description */
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "They're published as a new blog post on your site, so your audience never misses out on a thing.";
+
 /* Insights 'This Year' header */
 "This Year" = "This Year";
 
@@ -6155,6 +6243,12 @@ translators: sample content for \"Services\" page template */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Topic not found for ID:";
 
+/* Topics Filter Tab Title */
+"Topics" = "Topics";
+
+/* Topics Filter Tab Title with Count */
+"Topics (%lu)" = "Topics (%lu)";
+
 /* Label for total followers */
 "Total" = "Total";
 
@@ -6283,7 +6377,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Unable to load the image. Please choose a different one or try again later.";
 
-/* Default title shown for no-results when the device is offline. */
+/* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Unable to load this content right now.";
 
 /* Error shown when the app fails to load a video from the user's media library. */
@@ -6709,6 +6804,9 @@ translators: sample content for \"Services\" page template */
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "Watch readers from around the world read and interact with your site — in real time.";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you.";
 
@@ -6716,10 +6814,7 @@ translators: sample content for \"Services\" page template */
 "We are having trouble loading data" = "We are having trouble loading data";
 
 /* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser." = "We are working hard to add more blocks with each release. In the meantime, you can also edit this block using your device's web browser.";
-
-/* No comment provided by engineer. */
-"We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web." = "We are working hard to add more blocks with each release. In the meantime, you can also edit this post on the web.";
+"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "We couldn't complete this action, and didn't publish this page.";
@@ -6925,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 /* A message title */
 "Welcome to the Reader" = "Welcome to the Reader";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Welcome to the world’s most popular website builder." = "Welcome to the world’s most popular website builder.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "West";
 
@@ -7000,6 +7098,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Will not be publicly displayed.";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"With this powerful editor you can post on the go." = "With this powerful editor, you can post on the go.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress App Settings";
@@ -7086,9 +7187,6 @@ translators: sample content for \"Services\" page template */
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Would you still like to remove this person?";
 
-/* The accessibility value of the post tab. */
-"Write" = "Write";
-
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Write Post";
@@ -7147,8 +7245,8 @@ translators: sample content for \"Services\" page template */
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "You can follow posts on a specific site by following it.";
 
-/* No Tags View Label */
-"You can follow posts on a specific subject by adding a tag." = "You can follow posts on a specific subject by adding a tag.";
+/* No Topics View Label */
+"You can follow posts on a specific subject by adding a topic." = "You can follow posts on a specific subject by adding a topic.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";
@@ -7211,7 +7309,7 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
 
-/* A suggestion of topics the user might */
+/* A suggestion of topics the user might like */
 "You might like" = "You might like";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
@@ -7235,6 +7333,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "You're all up to date!";
+
+/* Story Intro welcome title */
+"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "You've made unsaved changes to this post";

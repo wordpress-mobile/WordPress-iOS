@@ -95,22 +95,6 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         expect(coordinator.postLoadFailureBlock).to(beNil())
     }
 
-    /// Inform the view to show post title after it is fetched
-    ///
-    func testShowTitleAfterPostIsFetched() {
-        let post: ReaderPost = ReaderPostBuilder().build()
-        post.postTitle = "Foobar"
-        let serviceMock = ReaderPostServiceMock()
-        serviceMock.returnPost = post
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
-        coordinator.set(postID: 1, siteID: 2, isFeed: false)
-
-        coordinator.start()
-
-        expect(viewMock.didCallShowTitleWith).to(equal("Foobar"))
-    }
-
     /// If a post is given, do not call the servce and render the content right away
     ///
     func testGivenAPostRenderItRightAway() {
@@ -123,22 +107,6 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         coordinator.start()
 
         expect(viewMock.didCallRenderWithPost).to(equal(post))
-        expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
-    }
-
-    /// If a post is given, show it's title right away
-    ///
-    func testGivenAPostShowItsTitle() {
-        let post: ReaderPost = ReaderPostBuilder().build()
-        post.postTitle = "Reader"
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
-        coordinator.post = post
-
-        coordinator.start()
-
-        expect(viewMock.didCallShowTitleWith).to(equal("Reader"))
         expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
     }
 
@@ -313,7 +281,6 @@ private class ReaderPostServiceMock: ReaderPostService {
 private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     var didCallRenderWithPost: ReaderPost?
     var didCallShowError = false
-    var didCallShowTitleWith: String?
     var didCallPresentWith: UIViewController?
     var didCallShowLoading = false
     var didCallShowErrorWithWebAction = false
@@ -342,10 +309,6 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallShowErrorWithWebAction = true
     }
 
-    func show(title: String?) {
-        didCallShowTitleWith = title
-    }
-
     func showLoading() {
         didCallShowLoading = true
     }
@@ -353,6 +316,8 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     func scroll(to: String) {
         didCallScrollToWith = to
     }
+
+    func updateHeader() { }
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallPresentWith = viewControllerToPresent

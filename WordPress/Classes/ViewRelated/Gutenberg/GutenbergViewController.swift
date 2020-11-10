@@ -387,7 +387,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var keyboardShowObserver: Any?
     private var keyboardHideObserver: Any?
     private var keyboardFrame = CGRect.zero
-    private var mentionsBottomConstraint: NSLayoutConstraint?
+    private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var previousFirstResponder: UIView?
 
     private func setupKeyboardObservers() {
@@ -835,23 +835,23 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
-        guard let mentionsBottomConstraint = mentionsBottomConstraint else {
+        guard let suggestionViewBottomConstraint = suggestionViewBottomConstraint else {
             return
         }
 
         // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
         // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
         if keyboardFrame.height < minimumKeyboardHeight {
-            mentionsBottomConstraint.constant = -self.view.safeAreaInsets.bottom
+            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
         }
         else {
-            mentionsBottomConstraint.constant = -self.keyboardFrame.height
+            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
 
     func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         DispatchQueue.main.async(execute: { [weak self] in
-            self?.mentionShow(callback: callback)
+            self?.showSuggestions(type: .mention, callback: callback)
         })
     }
 
@@ -871,38 +871,43 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 }
 
-// MARK: - Mention implementation
+// MARK: - Suggestions implementation
 
 extension GutenbergViewController {
 
-    private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = post.blog.dotComID else {
-            callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
+    private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        guard let siteID = post.blog.dotComID, let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
+            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
             return
         }
 
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: blog) else { return }
+        }
+
         previousFirstResponder = view.findFirstResponder()
-        let mentionsController = GutenbergMentionsViewController(siteID: siteID)
-        mentionsController.onCompletion = { (result) in
+        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
+        suggestionsController.onCompletion = { (result) in
             callback(result)
-            mentionsController.view.removeFromSuperview()
-            mentionsController.removeFromParent()
+            suggestionsController.view.removeFromSuperview()
+            suggestionsController.removeFromParent()
             if let previousFirstResponder = self.previousFirstResponder {
                 previousFirstResponder.becomeFirstResponder()
             }
         }
-        addChild(mentionsController)
-        view.addSubview(mentionsController.view)
-        let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        addChild(suggestionsController)
+        view.addSubview(suggestionsController.view)
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([
-            mentionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            mentionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
-            mentionsBottomConstraint,
-            mentionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
+            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            suggestionsBottomConstraint,
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
         ])
-        self.mentionsBottomConstraint = mentionsBottomConstraint
+        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
         updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
-        mentionsController.didMove(toParent: self)
+        suggestionsController.didMove(toParent: self)
     }
 }
 

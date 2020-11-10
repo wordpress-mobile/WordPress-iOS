@@ -96,9 +96,8 @@ class ReaderDetailCoordinator {
     func start() {
         view?.showLoading()
 
-        if let post = post {
+        if post != nil {
             renderPostAndBumpStats()
-            view?.show(title: post.postTitle)
         } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         } else if let postURL = postURL {
@@ -114,6 +113,8 @@ class ReaderDetailCoordinator {
         }
 
         sharingController.shareReaderPost(post, fromView: anchorView, inViewController: view)
+
+        WPAnalytics.track(.readerSharedItem)
     }
 
     /// Set a postID, siteID and isFeed
@@ -167,12 +168,15 @@ class ReaderDetailCoordinator {
     /// Open the postURL in a separated view controller
     ///
     func openInBrowser() {
-        guard let postURL = postURL else {
+        guard
+            let permaLink = post?.permaLink,
+            let postURL = URL(string: permaLink)
+        else {
             return
         }
 
+        WPAnalytics.track(.readerArticleVisited)
         presentWebViewController(postURL)
-        viewController?.navigationController?.popViewController(animated: true)
     }
 
     /// Some posts have content from private sites that need special cookies
@@ -205,7 +209,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] _ in
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
             self?.reportPostLoadFailure()
@@ -222,7 +225,6 @@ class ReaderDetailCoordinator {
                           success: { [weak self] post in
                             self?.post = post
                             self?.renderPostAndBumpStats()
-                            self?.view?.show(title: post?.postTitle)
         }, failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
             self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
@@ -286,6 +288,11 @@ class ReaderDetailCoordinator {
         let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
 
         ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
+    }
+
+    private func showTopic(_ topic: String) {
+        let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
     /// Show a list with posts contianing this tag
@@ -357,6 +364,21 @@ class ReaderDetailCoordinator {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
         viewController?.present(controller, animated: true)
+    }
+
+    private func followSite() {
+        guard let post = post else {
+            return
+        }
+
+        ReaderFollowAction().execute(with: post,
+                                     context: coreDataStack.mainContext,
+                                     completion: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     },
+                                     failure: { [weak self] in
+                                         self?.view?.updateHeader()
+                                     })
     }
 
     /// Given a URL presents it in a new Reader detail screen
@@ -453,6 +475,7 @@ class ReaderDetailCoordinator {
     }
 }
 
+// MARK: - ReaderDetailHeaderViewDelegate
 extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didTapBlogName() {
         previewSite()
@@ -470,6 +493,17 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
+    func didTapFollowButton() {
+        followSite()
+    }
+
+    func didSelectTopic(_ topic: String) {
+        showTopic(topic)
+    }
+}
+
+// MARK: - ReaderDetailFeaturedImageViewDelegate
+extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
     }

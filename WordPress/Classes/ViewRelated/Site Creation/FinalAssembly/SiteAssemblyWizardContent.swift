@@ -219,7 +219,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 return
             }
             WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
-            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+            WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)
         }

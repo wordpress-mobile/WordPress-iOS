@@ -1,7 +1,0 @@
-Neuerungen in dieser Version:
-
-- Unterstützung für breite oder volle Ausrichtung für Gruppen-, Cover- und Bildblöcke (Unterstützung für weitere Blöcke ist in Arbeit).
-- Dir gefallen Bilder mit abgerundeten Ecken?  Wir haben auch Unterstützung für den abgerundeten Stil im Bildblock hinzugefügt.
-- Bei einigen Benutzern hat die Toolbar ein unerwartetes Verhalten gezeigt, wenn ein neuer Block hinzugefügt wurde. Aber wir haben dieses Problem behoben.
-- Außerdem haben wir festgestellt, dass Bilder in der Bildvorschau nicht richtig positioniert wurden, nachdem die Geräteausrichtung geändert wurde. Auch das haben wir korrigiert.
-- Wir haben ein paar weitere Probleme im Zusammenhang mit Registrierung und Anmeldung behoben. Dazu zählen ein Problem bei der Anzeige des Benutzernamens nach der Registrierung mit Apple und eine falsche Fehlermeldung, die angezeigt wurde, wenn du die maximale Anzahl fehlgeschlagener Anmeldeversuche erreicht hast.
