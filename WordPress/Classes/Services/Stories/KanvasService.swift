@@ -33,10 +33,13 @@ class KanvasService {
         settings.crossIconInEditor = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
+        settings.animateEditorControls = false
         return settings
     }
 
     func controller() -> CameraController {
+        KanvasCameraColors.shared = KanvasCameraCustomUI.shared.cameraColors()
+        KanvasCameraFonts.shared = KanvasCameraCustomUI.shared.cameraFonts()
         let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen

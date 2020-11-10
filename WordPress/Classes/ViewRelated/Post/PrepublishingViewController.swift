@@ -205,6 +205,7 @@ class PrepublishingViewController: UITableViewController {
         cell.textField.text = post.postTitle
         cell.textField.textColor = .text
         cell.textField.placeholder = "Title"
+        cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     // MARK: - Tags
