@@ -264,47 +264,10 @@ workflows:
     jobs:
       - Build Tests:
           <<: *iphone_test_device
-      - Unit Tests:
-          <<: *iphone_test_device
-          requires: [ "Build Tests" ]
-      # Always run UI tests on develop and release branches
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
-          post-to-slack: true
           requires: [ "Build Tests" ]
-          filters:
-            branches:
-              only:
-                - develop
-                - /^release.*/
-      - UI Tests:
-          name: UI Tests (iPad Air 4th generation)
-          <<: *ipad_test_device
-          post-to-slack: true
-          requires: [ "Build Tests" ]
-          filters:
-            branches:
-              only:
-                - develop
-                - /^release.*/
-      #Optionally run UI tests on PRs
-      - Optional Tests:
-          type: approval
-          requires: [ "Build Tests" ]
-          filters:
-            branches:
-              ignore:
-                - develop
-                - /^release.*/
-      - UI Tests:
-          name: UI Tests (iPhone 11)
-          <<: *iphone_test_device
-          requires: [ "Optional Tests" ]
-      - UI Tests:
-          name: UI Tests (iPad Air 4th generation)
-          <<: *ipad_test_device
-          requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
     jobs:
