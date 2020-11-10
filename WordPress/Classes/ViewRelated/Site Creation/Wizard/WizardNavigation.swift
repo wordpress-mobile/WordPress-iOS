@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - EnhancedSiteCreationNavigationController
 
-private final class EnhancedSiteCreationNavigationController: UINavigationController {
+private final class EnhancedSiteCreationNavigationController: GutenbergLightNavigationController {
     override var shouldAutorotate: Bool {
         return WPDeviceIdentification.isiPad() ? true : false
     }
