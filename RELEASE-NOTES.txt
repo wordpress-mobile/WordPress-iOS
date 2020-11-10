@@ -2,13 +2,13 @@
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
 * [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+* [*] Fixed an issue where comments viewed in the Reader would always be italicized.
 
 16.1
 -----
 * [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.
 * [*] Fixed an issue that was causing the refresh control to show up on top of the list of sites. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15136]
 * [***] The "Floating Action Button" now appears on the list of posts and pages for quick and convenient creation. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15149l]
-* [**] Today widgets: Fixed translations for All Time and This Week. [#15185]
 
 16.0
 -----
