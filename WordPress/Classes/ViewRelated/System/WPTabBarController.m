@@ -94,10 +94,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
-        
-        [self initializeMySitesCoordinator];
 
         self.meScenePresenter = [[MeScenePresenter alloc] init];
+        
+        [self initializeMySitesCoordinator];
 
         [self setViewControllers:[self tabViewControllers]];
 
