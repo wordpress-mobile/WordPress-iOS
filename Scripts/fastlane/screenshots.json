@@ -5,8 +5,8 @@
 		{
 			"name": "iPhone Xs max",
 			"canvas_size": [1242, 2688],
-			"text_size": [710, 540],
-			"text_offset": [266, 110],
+			"text_size": [1242, 450],
+			"text_offset": [0, 110],
 			"font_size": "110px",
 			"screenshot_size": [826, 1793],
 			"screenshot_offset": [210, 731],
@@ -18,8 +18,8 @@
 		{
 			"name": "iPhone 8",
 			"canvas_size": [1242, 2208],
-			"text_size": [1055, 420],
-			"text_offset": [94, 40],
+			"text_size": [1242, 420],
+			"text_offset": [0, 40],
 			"font_size": "110px",
 			"screenshot_size": [825, 1467],
 			"screenshot_offset": [225, 741],
@@ -30,8 +30,8 @@
 		{
 			"name": "iPad Pro",
 			"canvas_size": [2732, 2048],
-			"text_size": [2538, 150],
-			"text_offset": [97, 121],
+			"text_size": [2732, 250],
+			"text_offset": [0, 71],
 			"font_size": "110px",
 			"screenshot_size": [1914, 1415],
 			"screenshot_offset": [426, 485],
@@ -42,8 +42,8 @@
 		{
 			"name": "iPad X",
 			"canvas_size": [2732, 2048],
-			"text_size": [2538, 150],
-			"text_offset": [97, 120],
+			"text_size": [2732, 250],
+			"text_offset": [0, 70],
 			"font_size": "110px",
 			"screenshot_size": [1918, 1436],
 			"screenshot_offset": [418, 465],
@@ -70,8 +70,8 @@
 				},
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_1.txt",
-					"size": [980, 420],
-					"position": [131,125],
+					"size": [1242, 420],
+					"position": [0,125],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
@@ -87,17 +87,9 @@
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-2-Reader.png",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-3.png",
-			"screenshot": "iPhone XS Max-2-dark-Discover.png",
-			"attachments": [
-				{
-					"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
-					"size": [640, 540],
-					"position": [301, 110],
-					"font-size": 110,
-					"stylesheet": "appstoreres/assets/style.css"
-				}
-			]
+			"screenshot": "iPhone XS Max-2-dark-Discover.png"
 		},
 		{
 			"device": "iPhone Xs max",
@@ -116,32 +108,16 @@
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-5-Notifications.png",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-6.png",
-			"screenshot": "iPhone XS Max-5-light-notifications.png",
-			"attachments": [
-				{
-					"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
-					"size": [610, 540],
-					"position": [316, 110],
-					"font-size": 110,
-					"stylesheet": "appstoreres/assets/style.css"
-				}
-			]
+			"screenshot": "iPhone XS Max-5-light-notifications.png"
 		},
 		{
 			"device": "iPhone Xs max",
 			"filename": "iPhone XS Max-6-Media.png",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/Circles-7.png",
-			"screenshot": "iPhone XS Max-6-dark-Media.png",
-			"attachments": [
-				{
-					"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
-					"size": [660, 540],
-					"position": [291, 110],
-					"font-size": 110,
-					"stylesheet": "appstoreres/assets/style.css"
-				}
-			]
+			"screenshot": "iPhone XS Max-6-dark-Media.png"
 		},
 		{
 			"device": "iPhone 8",
@@ -159,8 +135,8 @@
 				},
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_1.txt",
-					"size": [995, 420],
-					"position": [124,69],
+					"size": [1242, 420],
+					"position": [0,69],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
@@ -169,17 +145,9 @@
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-1-PostEditor.png",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-2.png",
-			"screenshot": "iPhone 8 Plus-1-light-Editor-With-BlockPicker.png",
-			"attachments": [
-				{
-					"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
-					"size": [990, 420],
-					"position": [124, 40],
-					"font-size": 110,
-					"stylesheet": "appstoreres/assets/style.css"
-				}
-			]
+			"screenshot": "iPhone 8 Plus-1-light-Editor-With-BlockPicker.png"
 		},
 		{
 			"device": "iPhone 8",
@@ -198,17 +166,9 @@
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-4-MySite.png",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/Circles-5.png",
-			"screenshot": "iPhone 8 Plus-4-dark-MySite.png",
-			"attachments": [
-				{
-					"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
-					"size": [705, 420],
-					"position": [269, 40],
-					"font-size": 110,
-					"stylesheet": "appstoreres/assets/style.css"
-				}
-			]
+			"screenshot": "iPhone 8 Plus-4-dark-MySite.png"
 		},
 		{
 			"device": "iPhone 8",
@@ -240,8 +200,8 @@
 				},
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_1.txt",
-					"size": [2538, 150],
-					"position": [97,120],
+					"size": [2732, 345],
+					"position": [0,52],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
@@ -305,8 +265,8 @@
 				},
 				{
 					"text": "appstoreres/metadata/%s/app_store_screenshot_1.txt",
-					"size": [2538, 150],
-					"position": [97,120],
+					"size": [2732, 345],
+					"position": [0,67],
 					"font-size": 110,
 					"stylesheet": "appstoreres/assets/style.css"
 				}
