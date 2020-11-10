@@ -1,1 +1,2 @@
-Envie arquivos em qualquer lugar
+Envie arquivos
+em qualquer lugar
