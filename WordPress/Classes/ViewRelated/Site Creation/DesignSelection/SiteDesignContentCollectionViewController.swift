@@ -31,7 +31,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
         collectionViewLayout.minimumInteritemSpacing = itemSpacing
         collectionViewLayout.itemSize = cellSize
@@ -55,6 +54,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
+        updateEdgeInsets()
         collectionView.dataSource = self
         fetchSiteDesigns()
         configureCloseButton()
@@ -76,6 +76,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         coordinator.animate { (_) in
             self.collectionViewLayout.sectionInset = newEdgeInsets
         }
+    }
+
+    private func updateEdgeInsets() {
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
     }
 
     private func fetchSiteDesigns() {
