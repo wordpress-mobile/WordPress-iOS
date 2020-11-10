@@ -57,6 +57,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 
-- (Blog *)currentOrLastBlog;
+- (Blog *)mainBlog;
 
 @end
