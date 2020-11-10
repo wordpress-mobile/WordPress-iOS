@@ -196,6 +196,9 @@
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Blok ini memiliki konten yang tidak valid";
 
+/* translators: Missing block alert title. %s: The localized block name */
+"'%s' is not fully-supported" = "'%s' is not fully-supported";
+
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "(555)555-1234";
 
@@ -364,8 +367,7 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Catatan Aktivitas";
 
-/* Button to create a new post.
-   Remove asset from media picker list */
+/* Remove asset from media picker list */
 "Add" = "Tambah";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -379,6 +381,9 @@
 
 /* No comment provided by engineer. */
 "Add Block Before" = "Tambahkan Blok Sebelum";
+
+/* Accessibility label for add comment button */
+"Add Comment" = "Add Comment";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Menambahkan Konten ke Pos";
@@ -803,7 +808,9 @@
 
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
-   Previous web page */
+   Dismiss view
+   Previous web page
+   Spoken accessibility label */
 "Back" = "Kembali";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
@@ -840,12 +847,12 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "Tersedia Pembaruan Besar untuk iPhone\/iPad";
 
-/* No comment provided by engineer. */
-"Black" = "Hitam";
-
 /* Blacklist Title
    Settings: Comments Blacklist */
 "Blacklist" = "Daftar hitam";
+
+/* Notice that a page without content has been created */
+"Blank page created" = "Blank page created";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -898,12 +905,6 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Pemirsa Blog";
 
-/* No comment provided by engineer. */
-"Blush bordeaux" = "Bordeaux merona";
-
-/* No comment provided by engineer. */
-"Blush light purple" = "Ungu muda merona";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Tebal";
@@ -925,6 +926,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Gaya Tombol";
+
+/* Label for the post author in the post detail. */
+"By " = "By ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Oleh %@.";
@@ -1109,6 +1113,9 @@
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "Periksa email Anda!";
 
+/* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
+"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+
 /* Default subtitle for no-results when there is no connection */
 "Check your network connection and try again." = "Periksa sambungan jaringan Anda dan coba lagi.";
 
@@ -1124,6 +1131,9 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Memeriksa pembelian...";
 
+/* Title for the button to progress with the selected site homepage design */
+"Choose" = "Choose";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Pilih Halaman";
 
@@ -1135,6 +1145,9 @@
 
 /* Label for Publish date picker */
 "Choose a date" = "Pilih tanggal";
+
+/* Title for the screen to pick a design and homepage for a site. */
+"Choose a design" = "Choose a design";
 
 /* Create site, step 4. Select domain name. Title */
 "Choose a domain name for your site" = "Pilih nama domain untuk situs Anda";
@@ -1162,6 +1175,9 @@
 
 /* No comment provided by engineer. */
 "Choose image or video" = "Pilih gambar atau video";
+
+/* No comment provided by engineer. */
+"Choose images" = "Choose images";
 
 /* No comment provided by engineer. */
 "Choose video" = "Pilih video";
@@ -1244,6 +1260,9 @@
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Kumpulkan informasi";
 
+/* First story intro item description */
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+
 /* Menu item label for linking a comic page. */
 "Comics" = "Komik";
 
@@ -1260,7 +1279,8 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Komentar telah ditandai sebagai Spam";
 
-/* Filters Comments Notifications
+/* Accessibility label for comments button with no comments
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1475,9 +1495,6 @@
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
 /* No comment provided by engineer. */
-"Cool to warm spectrum" = "Spektrum dingin ke hangat";
-
-/* No comment provided by engineer. */
 "Copied block" = "Blok disalin";
 
 /* Copy link to oomment button title */
@@ -1598,6 +1615,9 @@
    Site creation. Step 1. Screen title */
 "Create Site" = "Buat Situs";
 
+/* Stories intro continue button title */
+"Create Story Post" = "Create Story Post";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Buat situs WordPress.com";
 
@@ -1616,8 +1636,11 @@
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Buat situs baru untuk bisnis, majalah, atau blog personal Anda; atau hubungkan akun WordPress yang sudah ada.";
 
-/* The tooltip title for the Floating Create Button */
+/* Accessibility hint for create floating action button */
 "Create a post or page" = "Buat pos atau halaman";
+
+/* The tooltip title for the Floating Create Button */
+"Create a post, page, or story" = "Create a post, page, or story";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling Anda pedulikan.";
@@ -1629,7 +1652,10 @@
 "Creates a new site with the given information." = "Membuat situs baru dengan informasi yang ditentukan.";
 
 /* Accessibility hint for create floating action button */
-"Creates new post or page" = "Buat pos atau halaman baru";
+"Creates new post, or page" = "Creates new post, or page";
+
+/* Accessibility hint for create floating action button */
+"Creates new post, page, or story" = "Creates new post, page, or story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Membuat menu baru akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
@@ -1690,9 +1716,6 @@
 
 /* No comment provided by engineer. */
 "Cut block" = "Potong blok";
-
-/* No comment provided by engineer. */
-"Cyan bluish gray" = "Abu-abu kebiru-biruan sian";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Gelap";
@@ -2039,6 +2062,9 @@
 "Edit sharing buttons" = "Sunting tombol berbagi";
 
 /* No comment provided by engineer. */
+"Edit using web editor" = "Edit using web editor";
+
+/* No comment provided by engineer. */
 "Edit video" = "Sunting video";
 
 /* Editing GIF alert message. */
@@ -2055,9 +2081,6 @@
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Edit menu item ini";
-
-/* No comment provided by engineer. */
-"Electric grass" = "Rumput elektrik";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -2257,6 +2280,9 @@
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Setiap Orang";
 
+/* Example story title description */
+"Example story title" = "Example story title";
+
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Kutipan";
 
@@ -2421,6 +2447,9 @@
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Ikuti situs lain";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2681,6 +2710,12 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Bantuan & Dukungan";
 
 /* No comment provided by engineer. */
+"Help button" = "Help button";
+
+/* No comment provided by engineer. */
+"Help icon" = "Ikon bantuan";
+
+/* No comment provided by engineer. */
 "Here is the panel content!" = "Di sini adalah konten panel!";
 
 /* Appended to latest post summary text when the post has data. */
@@ -2725,6 +2760,9 @@ translators: sample content for \"Team\" page template */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Horeee!\nHampir selesai";
+
+/* How to create story description */
+"How to create a story post" = "How to create a story post";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Saya Menyukainya";
@@ -2874,6 +2912,9 @@ translators: sample content for \"Team\" page template */
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Menginstal plugin pertama pada situs Anda dapat memerlukan waktu hingga 1 menit. Selama penginstalan, Anda tidak dapat melakukan perubahan pada situs.";
 
+/* Stories intro header title */
+"Introducing Story Posts" = "Introducing Story Posts";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Alamat Situs Tak Sah";
 
@@ -3016,12 +3057,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Terang";
-
-/* No comment provided by engineer. */
-"Light green cyan" = "Sian hijau muda";
-
-/* No comment provided by engineer. */
-"Light green cyan to vivid green cyan" = "Sian hijau muda ke sian hijau terang";
 
 /* Like (verb)
    Like a post.
@@ -3215,31 +3250,14 @@ translators: sample content for \"Services\" page template */
 /* Title of a button. */
 "Lost your password?" = "Lupa sandi Anda?";
 
-/* No comment provided by engineer. */
-"Luminous dusk" = "Jingga berkilau";
-
-/* No comment provided by engineer. */
-"Luminous vivid amber" = "Amber terang berkilau";
-
-/* No comment provided by engineer. */
-"Luminous vivid amber to luminous vivid orange" = "Amber terang berkilau ke oranye terang berkilau";
-
-/* No comment provided by engineer. */
-"Luminous vivid orange" = "Oranye terang berkilau";
-
-/* No comment provided by engineer. */
-"Luminous vivid orange to vivid red" = "Oranye terang berkilau ke merah terang";
-
 /* Option to select the Apple Mail app when logging in with magic links */
 "Mail (Default)" = "Mail (Asal)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigasi Utama";
 
-/* Accessibility label for the settings button in the reader.
-   Button leading to a screen where users can manage their installed plugins
+/* Button leading to a screen where users can manage their installed plugins
    Button title. Tapping lets the user manage the sites they follow.
-   Label for managing sites and filters in the Reader tab
    Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3257,9 +3275,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button title. Tapping lets the user manage the sites they follow. */
 "Manage Sites" = "Kelola Situs";
-
-/* Accessibility hint for the settings button in the reader. */
-"Manage followed sites and tags" = "Kelola situs dan tag yang diikuti";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Kelola situs";
@@ -3297,7 +3312,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
    Me page title
-   The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Saya";
 
@@ -3374,9 +3388,6 @@ translators: sample content for \"Services\" page template */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Midnight" = "Tengah Malam";
-
 /* Title for the mobile web preview */
 "Mobile" = "Seluler";
 
@@ -3396,7 +3407,8 @@ translators: sample content for \"Services\" page template */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More */
+   More
+   Spoken accessibility label */
 "More" = "Lainnya";
 
 /* Action button to display more available options
@@ -3526,7 +3538,8 @@ translators: sample content for \"Services\" page template */
 /* Describes a status of a plugin */
 "Needs Update" = "Perlu Pembaruan";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   New button badge on Stories Post button */
 "New" = "Baru";
 
 /* Blacklist Keyword Insertion Title */
@@ -3541,8 +3554,7 @@ translators: sample content for \"Services\" page template */
 /* New Photo Post 3D Touch Shortcut */
 "New Photo Post" = "Pos Foto Baru";
 
-/* New Post 3D Touch Shortcut
-   The accessibility value of the post tab. */
+/* New Post 3D Touch Shortcut */
 "New Post" = "Postingan Baru";
 
 /* Menu item title text used as default when creating a new menu item. */
@@ -3811,6 +3823,9 @@ translators: sample content for \"Services\" page template */
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Pemberitahuan Tidak Terbaca";
 
+/* First story intro item title */
+"Now stories are for everyone" = "Now stories are for everyone";
+
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Sekarang Jetpack telah terinstal, kami hanya perlu Anda menyiapkannya. Ini hanya memerlukan waktu satu menit.";
 
@@ -3907,7 +3922,7 @@ translators: sample content for \"Services\" page template */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Buka pemilih media penuh";
 
-/* No comment provided by engineer. */
+/* Spoken accessibility label */
 "Open in Safari" = "Buka di Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -4002,6 +4017,9 @@ translators: sample content for \"Services\" page template */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok pemisah halaman. %s";
 
+/* Notice that a page with content has been created */
+"Page created" = "Page created";
+
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Konsep halaman diunggah";
 
@@ -4034,15 +4052,6 @@ translators: sample content for \"Services\" page template */
    Discussion Settings
    Settings: Comments Paging preferences */
 "Paging" = "Penentuan halaman";
-
-/* No comment provided by engineer. */
-"Pale cyan blue" = "Biru sian pucat";
-
-/* No comment provided by engineer. */
-"Pale ocean" = "Biru laut pucat";
-
-/* No comment provided by engineer. */
-"Pale pink" = "Merah muda pucat";
 
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
@@ -4111,6 +4120,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pilih nama pengguna";
+
+/* Prompt for the screen to pick a design and homepage for a site. */
+"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
 
 /* The item to select during a guided tour. */
 "Plan" = "Paket";
@@ -4260,8 +4272,7 @@ translators: sample content for \"Services\" page template */
 "Position or Job Title" = "Posisi atau Jabatan";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post
-   Placeholder title for ReaderPostDetails. */
+   Noun. Type of content being selected is a blog post */
 "Post" = "Postingan";
 
 /* Title for selecting categories for a post */
@@ -4379,7 +4390,8 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected layout */
+   Title for button to preview a selected layout
+   Title for the button to preview the selected site homepage design */
 "Preview" = "Pratampil";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4793,7 +4805,8 @@ translators: sample content for \"Services\" page template */
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolusi";
 
-/* Button title, displayed when media has failed to upload. Allows the user to try the upload again.
+/* A prompt to attempt the failed network request again
+   Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Label for a button that attempts to re-upload a page that previously failed to upload.
@@ -4951,6 +4964,12 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Menjadwalkan";
 
+/* No comment provided by engineer. */
+"Scrollable block menu closed." = "Scrollable block menu closed.";
+
+/* No comment provided by engineer. */
+"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+
 /* Placeholder text for the search bar
    Search
    The menu item to select during a guided tour.
@@ -4991,9 +5010,6 @@ translators: sample content for \"Services\" page template */
 /* Title for placeholder in Free Photos */
 "Search to find free photos to add to your Media Library!" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
 
-/* Placeholder message when showing mentions search field */
-"Search users..." = "Cari pengguna...";
-
 /* Menus search bar placeholder text. */
 "Search..." = "Pencarian...";
 
@@ -5009,6 +5025,9 @@ translators: sample content for \"Services\" page template */
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Lihat Semuanya";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"See comments and notifications in real time." = "See comments and notifications in real time.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Pilih";
@@ -5203,7 +5222,8 @@ translators: sample content for \"Services\" page template */
 /* Message to show when setting save failed */
 "Settings update failed" = "Pembaruan pengaturan gagal";
 
-/* Button label to share a post
+/* Accessibility label for share buttons in nav bars
+   Button label to share a post
    Button label to share a web page
    Share the post.
    Spoken accessibility label
@@ -5400,6 +5420,9 @@ translators: sample content for \"Services\" page template */
 /* Sites Filter Tab Title with Count */
 "Sites (%lu)" = "Situs (%lu)";
 
+/* A suggestion of topics the user might */
+"Sites to follow" = "Sites to follow";
+
 /* Image size option title. */
 "Size" = "Ukuran";
 
@@ -5570,6 +5593,12 @@ translators: sample content for \"Services\" page template */
 /* User action to stop upload. */
 "Stop upload" = "Berhenti mengunggah";
 
+/* Create new Story button title */
+"Story post" = "Story post";
+
+/* Second story intro item description */
+"Story posts don't disappear" = "Story posts don't disappear";
+
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategi";
 
@@ -5724,6 +5753,9 @@ translators: sample content for \"Services\" page template */
 
 /* Accessibility hint */
 "Tap for more detail." = "ketuk untuk detail selengkapnya.";
+
+/* No comment provided by engineer. */
+"Tap here to show help" = "Ketuk di sini untuk menampilkan bantuan";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Ketuk untuk membatalkan unggahan.";
@@ -6046,6 +6078,9 @@ translators: sample content for \"Services\" page template */
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "Ada pemulihan yang sedang berlangsung, harap tunggu sebelum memulai yang berikutnya";
 
+/* Second story intro item description */
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "They're published as a new blog post on your site so your audience never misses out on a thing.";
+
 /* Insights 'This Year' header */
 "This Year" = "Tahun Ini";
 
@@ -6342,7 +6377,8 @@ translators: sample content for \"Services\" page template */
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Tidak dapat memuat gambar. Pilih yang lainnya atau coba lagi nanti.";
 
-/* Default title shown for no-results when the device is offline. */
+/* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Tidak dapat memuat konten ini sekarang.";
 
 /* Error shown when the app fails to load a video from the user's media library. */
@@ -6645,9 +6681,6 @@ translators: sample content for \"Services\" page template */
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "Versi %@ tersedia";
 
-/* No comment provided by engineer. */
-"Very light gray to cyan bluish gray" = "Abu-abu sangat terang ke abu-abu kebiruan sian";
-
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Pratinjau Video Tidak Tersedia";
 
@@ -6744,21 +6777,6 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "Pengunjung mungkin ingin tahu sosok di balik halaman ini. Gunakan bagian ini untuk menulis tentang diri Anda, situs, bisnis, atau apa pun yang Anda inginkan. Gunakan testimoni di bawah ini untuk mencantumkan kutipan orang lain, membicarakan tentang hal yang sama – dengan kata-kata mereka sendiri.";
 
-/* No comment provided by engineer. */
-"Vivid cyan blue" = "Biru sian terang";
-
-/* No comment provided by engineer. */
-"Vivid cyan blue to vivid purple" = "Biru sian terang ke ungu terang";
-
-/* No comment provided by engineer. */
-"Vivid green cyan" = "SIan hijau terang";
-
-/* No comment provided by engineer. */
-"Vivid purple" = "Ungu terang";
-
-/* No comment provided by engineer. */
-"Vivid red" = "Merah terang";
-
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Admin WP";
 
@@ -6786,11 +6804,17 @@ translators: sample content for \"Services\" page template */
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "Lihat pembaca dari seluruh dunia membaca dan berinteraksi dengan situs Anda, secara real time.";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Kami adalah tim kecil beranggotakan para profesional berbakat dengan cakupan keterampilan dan pengalaman yang luas. Kami mencintai apa yang kami lakukan, dan kami melakukannya dengan penuh dedikasi. Kami tidak sabar untuk bekerja sama dengan Anda.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Kami mengalami kesulitan memuat data";
+
+/* No comment provided by engineer. */
+"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak memublikasikan halaman ini.";
@@ -6996,6 +7020,9 @@ translators: sample content for \"Services\" page template */
 /* A message title */
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"Welcome to the world’s most popular website builder." = "Welcome to the world’s most popular website builder.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Barat";
 
@@ -7051,9 +7078,6 @@ translators: sample content for \"Services\" page template */
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Versi apa yang ingin Anda edit?";
 
-/* No comment provided by engineer. */
-"White" = "Putih";
-
 /* Whitelisted IP Addresses Title */
 "Whitelisted IP Addresses" = "Alamat IP dalam Daftar Putih";
 
@@ -7074,6 +7098,9 @@ translators: sample content for \"Services\" page template */
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Tidak akan ditampilkan secara publik.";
+
+/* Shown in the prologue carousel (promotional screens) during first launch. */
+"With this powerful editor you can post on the go." = "With this powerful editor you can post on the go.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Pengaturan Aplikasi WordPress";
@@ -7159,9 +7186,6 @@ translators: sample content for \"Services\" page template */
 
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Apakah Anda masih ingin menghapus orang ini?";
-
-/* The accessibility value of the post tab. */
-"Write" = "Menulis";
 
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
@@ -7285,7 +7309,7 @@ translators: sample content for \"Services\" page template */
 /* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Anda dapat membuat daftar putih untuk alamat IP atau serangkaian alamat agar tidak diblokir oleh Jetpack. IPv4 dan IPv6 diterima. Untuk menentukan rentang, masukkan nilai rendah dan nilai tinggi yang dipisahkan oleh tanda hubung. Misalnya: 12.12.12.1-12.12.12.100.";
 
-/* A suggestion of topics the user might */
+/* A suggestion of topics the user might like */
 "You might like" = "Anda mungkin suka";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
@@ -7309,6 +7333,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Semua sudah diperbarui!";
+
+/* Story Intro welcome title */
+"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
