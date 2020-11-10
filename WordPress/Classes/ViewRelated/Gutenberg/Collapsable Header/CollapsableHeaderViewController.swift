@@ -1,12 +1,18 @@
 import UIKit
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
+    enum SeperatorStyle {
+        case visibile
+        case hidden
+    }
+
     let scrollableView: UIScrollView
     let mainTitle: String
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
+    private let seperatorStyle: SeperatorStyle
     private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
@@ -28,6 +34,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var secondaryActionButton: UIButton!
     @IBOutlet weak var primaryActionButton: UIButton!
     @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
+    @IBOutlet weak var seperator: UIView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -132,7 +139,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
         self.hasDefaultAction = (defaultActionTitle != nil)
-
+        self.seperatorStyle = hasFilterBar ? .visibile : .hidden
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -342,22 +349,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         primaryActionButton.layer.cornerRadius = 8
     }
 
-    private func hideSmallTitle(_ isHidden: Bool, animated: Bool = true) {
-        guard titleView.isHidden != isHidden else { return }
-        guard animated else {
-            titleView.isHidden = isHidden
-            return
-        }
-
-        titleView.isHidden = false
-        let alpha: CGFloat = isHidden ? 0 : 1
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.titleView.alpha = alpha
-        }) { (_) in
-            self.titleView.isHidden = isHidden
-        }
-    }
-
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
@@ -499,6 +490,19 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         filterBar.allowsMultipleSelection = !isLoading
         filterBar.reloadData()
     }
+
+    // MARK: - Seperator styling
+    private func updateSeperatorStyle(animated: Bool = true) {
+        let shouldBeHidden: Bool
+        switch seperatorStyle {
+        case .hidden:
+            shouldBeHidden = seperator.frame.minY > minHeaderHeight
+        case .visibile:
+            shouldBeHidden = false
+        }
+
+        seperator.updateVisibility(shouldBeHidden, animated: animated)
+    }
 }
 
 // MARK: - UIScrollViewDelegate
@@ -514,7 +518,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
-            hideSmallTitle(false, animated: true)
+            titleView.updateVisibility(false, animated: true)
             return
         }
         disableInitialLayoutHelpers()
@@ -529,7 +533,8 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
 
         let shouldHide = (largeTitleView.frame.maxY > 0)
-        hideSmallTitle(shouldHide, animated: true)
+        titleView.updateVisibility(shouldHide, animated: true)
+        updateSeperatorStyle()
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -558,17 +563,36 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
         let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
-        hideSmallTitle(shouldHide, animated: animated)
+        titleView.updateVisibility(shouldHide, animated: animated)
 
         guard animated else {
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
+            updateSeperatorStyle()
             return
         }
-
+        updateSeperatorStyle()
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
+    }
+}
+
+fileprivate extension UIView {
+    func updateVisibility(_ isHidden: Bool, animated: Bool = true) {
+        guard self.isHidden != isHidden else { return }
+        guard animated else {
+            self.isHidden = isHidden
+            return
+        }
+
+        self.isHidden = false
+        let alpha: CGFloat = isHidden ? 0 : 1
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.alpha = alpha
+        }) { (_) in
+            self.isHidden = isHidden
+        }
     }
 }

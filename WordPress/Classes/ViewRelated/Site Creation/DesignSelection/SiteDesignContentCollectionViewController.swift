@@ -25,7 +25,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
         let contentWidth = (cellsPerRowCap * cellSize.width) + (itemSpacing * spacingCounts)
         let margin = (screenWidth - contentWidth) / 2
-        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: itemSpacing, right: margin)
+        return UIEdgeInsets(top: 1, left: margin, bottom: itemSpacing, right: margin)
     }
 
     init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
