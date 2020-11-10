@@ -54,11 +54,15 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
-        updateEdgeInsets()
         collectionView.dataSource = self
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEdgeInsets()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -72,14 +76,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
-        coordinator.animate { (_) in
-            self.collectionViewLayout.sectionInset = newEdgeInsets
+        coordinator.animate(alongsideTransition: nil) { (_) in
+            self.updateEdgeInsets()
         }
     }
 
     private func updateEdgeInsets() {
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
+        let screenSize = view.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
