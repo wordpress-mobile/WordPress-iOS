@@ -301,21 +301,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
-    self = [self init];
-    self.meScenePresenter = meScenePresenter;
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = WPBlogDetailsRestorationID;
+        self.restorationClass = [self class];
+        _meScenePresenter = meScenePresenter;
+    }
+    
     return self;
 }
 
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        self.restorationIdentifier = WPBlogDetailsRestorationID;
-        self.restorationClass = [self class];
-    }
-    return self;
+    return [self initWithMeScenePresenter:[MeScenePresenter new]];
 }
 
 - (void)viewDidLoad
