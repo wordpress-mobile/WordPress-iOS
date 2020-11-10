@@ -67,6 +67,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
     }
 
+    // MARK: - Account
+
+    private func defaultAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()
+    }
+
     // MARK: - Main Blog
 
     /// Convenience method to retrieve the main blog for an account when none is selected.
@@ -102,6 +111,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func showNoSites() {
         hideBlogDetails()
 
+        addMeButtonToNavigationBar(email: defaultAccount()?.email, meScenePresenter: meScenePresenter)
+
         configureAndDisplayNoResults(
             on: view,
             title: NSLocalizedString(
@@ -132,6 +143,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private func showBlogDetails(for blog: Blog) {
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
+
+        addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
         add(blogDetailsViewController)
 
