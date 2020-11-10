@@ -66,7 +66,7 @@ class MySitesCoordinator: NSObject {
 
     @objc
     init(
-        meScenePresenter: MeScenePresenter,
+        meScenePresenter: ScenePresenter,
         onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
 
         self.meScenePresenter = meScenePresenter
