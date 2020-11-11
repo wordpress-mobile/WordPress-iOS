@@ -10,7 +10,7 @@ class ActivityListViewModelTests: XCTestCase {
     func testLoadMore() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel.init(site: jetpackSiteRef, store: activityStoreMock)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
 
         activityListViewModel.loadMore()
 
@@ -24,19 +24,14 @@ class ActivityListViewModelTests: XCTestCase {
     func testLoadMoreOffset() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel.init(site: jetpackSiteRef, store: activityStoreMock)
-        activityStoreMock.state.activities[jetpackSiteRef] = [mockedActivity(), mockedActivity(), mockedActivity()]
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
+        activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
 
         activityListViewModel.loadMore()
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.quantity, 20)
         XCTAssertEqual(activityStoreMock.offset, 3)
-    }
-
-    private func mockedActivity() -> Activity {
-        let dictionary = ["activity_id": "1", "summary": "", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String : AnyObject]
-        return try! Activity(dictionary: dictionary)
     }
 }
 
@@ -60,5 +55,12 @@ class ActivityStoreMock: ActivityStore {
         default:
             break
         }
+    }
+}
+
+extension Activity {
+    static func mock() -> Activity {
+        let dictionary = ["activity_id": "1", "summary": "", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String : AnyObject]
+        return try! Activity(dictionary: dictionary)
     }
 }

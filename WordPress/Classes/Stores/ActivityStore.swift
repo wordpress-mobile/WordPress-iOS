@@ -61,15 +61,18 @@ private enum ActivityStoreError: Error {
 
 class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
-    fileprivate let refreshInterval: TimeInterval = 60 // seconds
+    private let refreshInterval: TimeInterval = 60 // seconds
+
+    private let activityServiceRemote: ActivityServiceRemote?
 
     override func queriesChanged() {
         super.queriesChanged()
         processQueries()
     }
 
-    init() {
-        super.init(initialState: ActivityStoreState())
+    init(dispatcher: ActionDispatcher = .global, activityServiceRemote: ActivityServiceRemote? = nil) {
+        self.activityServiceRemote = activityServiceRemote
+        super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 
     override func logError(_ error: String) {
@@ -392,6 +395,10 @@ private extension ActivityStore {
     // MARK: - Helpers
 
     func remote(site: JetpackSiteRef) -> ActivityServiceRemote? {
+        guard activityServiceRemote == nil else {
+            return activityServiceRemote!
+        }
+
         guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }
