@@ -84,6 +84,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows([ActivityListRow.self, RewindStatusRow.self], tableView: tableView)
 
         tableView.tableFooterView = spinner
+        tableView.tableFooterView?.isHidden = true
 
         WPAnalytics.track(.activityLogViewed)
     }
@@ -113,8 +114,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
             if isUserTriggeredRefresh {
                 refreshControl.beginRefreshing()
                 isUserTriggeredRefresh = false
+            } else if tableView.numberOfSections > 0 {
+                tableView.tableFooterView?.isHidden = false
             }
-            tableView.tableFooterView?.isHidden = false
         case (false, true):
             refreshControl.endRefreshing()
         default:
@@ -291,6 +293,7 @@ private extension ActivityListViewController {
         noResultsViewController.bindViewModel(viewModel)
 
         if noResultsViewController.view.superview != tableView {
+            noResultsViewController.view.frame = tableView.frame
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         }
 
