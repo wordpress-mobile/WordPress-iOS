@@ -11,6 +11,7 @@ class SiteDesignPreviewViewController: UIViewController {
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
         ghost.hidesToolbar = true
+        ghost.translatesAutoresizingMaskIntoConstraints = false
         return ghost
     }()
 
@@ -73,18 +74,19 @@ class SiteDesignPreviewViewController: UIViewController {
 
     private func addGhostView() {
         let top = NSLayoutConstraint(item: ghostView, attribute: .top, relatedBy: .equal, toItem: webView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: ghostView, attribute: .bottom, relatedBy: .equal, toItem: webView, attribute: .bottom, multiplier: 1, constant: 1)
+        let bottom = NSLayoutConstraint(item: ghostView, attribute: .bottom, relatedBy: .equal, toItem: footerView, attribute: .top, multiplier: 1, constant: 1)
         let leading = NSLayoutConstraint(item: ghostView, attribute: .leading, relatedBy: .equal, toItem: webView, attribute: .leading, multiplier: 1, constant: 1)
         let trailing = NSLayoutConstraint(item: ghostView, attribute: .trailing, relatedBy: .equal, toItem: webView, attribute: .trailing, multiplier: 1, constant: 1)
         view.addSubview(ghostView)
-        ghostView.addConstraints([top, bottom, leading, trailing])
+        view.addConstraints([top, bottom, leading, trailing])
     }
 }
 
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        ghostView.stopGhostAnimation()
-        ghostView.animatableSetIsHidden(true)
+        ghostView.animatableSetIsHidden(true) { _ in
+            self.ghostView.stopGhostAnimation()
+        }
     }
 }

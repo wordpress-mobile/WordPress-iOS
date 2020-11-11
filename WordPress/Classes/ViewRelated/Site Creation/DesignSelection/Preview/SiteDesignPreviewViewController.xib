@@ -27,7 +27,7 @@
                     <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO">
-                        <dataDetectorTypes key="dataDetectorTypes"/>
+                        <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                         <wkPreferences key="preferences"/>
                     </wkWebViewConfiguration>
