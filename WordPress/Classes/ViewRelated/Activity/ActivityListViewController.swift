@@ -14,7 +14,14 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     var isUserTriggeredRefresh: Bool = false
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: self)
+    }()
+
+    private lazy var spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .gray)
+        spinner.startAnimating()
+        spinner.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
+        return spinner
     }()
 
     fileprivate var viewModel: ActivityListViewModel
@@ -75,8 +82,8 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
         ImmuTable.registerRows([ActivityListRow.self, RewindStatusRow.self], tableView: tableView)
-        // Magic to avoid cell separators being displayed while a plain table loads
-        tableView.tableFooterView = UIView()
+
+        tableView.tableFooterView = spinner
 
         WPAnalytics.track(.activityLogViewed)
     }
@@ -107,9 +114,11 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
                 refreshControl.beginRefreshing()
                 isUserTriggeredRefresh = false
             }
+            tableView.tableFooterView?.isHidden = false
         case (false, true):
             refreshControl.endRefreshing()
         default:
+            tableView.tableFooterView?.isHidden = true
             break
         }
     }
@@ -178,6 +187,16 @@ extension ActivityListViewController {
         rewindAction.backgroundColor = .primary(.shade40)
 
         return [rewindAction]
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let shouldLoadMore = offsetY > contentHeight - (2 * scrollView.frame.size.height) && viewModel.hasMore
+
+        if shouldLoadMore {
+            viewModel.loadMore()
+        }
     }
 
 }
