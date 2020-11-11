@@ -49,6 +49,7 @@ extension WPTabBarController {
     }
 
     private func getTabButton(at index: Int) -> UIView? {
+        tabBar.layoutIfNeeded()
         var tabs = tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
         tabs.sort { $0.frame.origin.x < $1.frame.origin.x }
         return tabs[safe: index]

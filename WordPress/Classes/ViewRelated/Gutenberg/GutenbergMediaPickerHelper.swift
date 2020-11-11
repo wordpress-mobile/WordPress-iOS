@@ -39,7 +39,7 @@ class GutenbergMediaPickerHelper: NSObject {
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
         options.allowMultipleSelection = false
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         return options
     }()
 

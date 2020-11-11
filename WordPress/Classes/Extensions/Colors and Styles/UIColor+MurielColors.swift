@@ -196,7 +196,29 @@ extension UIColor {
     }
 
     /// Muriel/iOS navigation color
-    static var appBar = UIColor(light: .brand, dark: .gray(.shade100))
+    static var appBarBackground: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return UIColor(light: white, dark: .gray(.shade100))
+        }
+
+        return UIColor(light: .brand, dark: .gray(.shade100))
+    }
+
+    static var appBarTint: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .primary
+        }
+
+        return .white
+    }
+
+    static var appBarText: UIColor {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .text
+        }
+
+        return .white
+    }
 
     // MARK: - Table Views
 

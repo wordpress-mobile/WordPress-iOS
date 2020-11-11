@@ -1038,11 +1038,15 @@ private extension StatsPeriodStore {
     // MARK: - Helpers
 
     func statsRemote() -> StatsServiceRemoteV2? {
-
-        if statsServiceRemote == nil {
+        // initialize the service if it's nil
+        guard let statsService = statsServiceRemote else {
+            initializeStatsRemote()
+            return statsServiceRemote
+        }
+        // also re-initialize the service if the site has changed
+        if let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue, siteID != statsService.siteID {
             initializeStatsRemote()
         }
-
         return statsServiceRemote
     }
 

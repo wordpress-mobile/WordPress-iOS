@@ -214,17 +214,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
 extension ShareModularViewController {
     fileprivate func dismiss() {
-        // In regular width size classes (iPad), action extensions are displayed
-        // in a small modal, which looks strange when this VC is dismissed
-        // before the main / presenting controller with its white background.
-        // This workaround simply dismisses the modular VC along with the main extension VC.
-        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/8646 for more info.
-        guard UIDevice.isPad() == false && originatingExtension != .saveToDraft else {
-            dismissalCompletionBlock?()
-            return
-        }
-
-        dismiss(animated: true, completion: dismissalCompletionBlock)
+        dismissalCompletionBlock?(true)
     }
 
     @objc func cancelWasPressed() {

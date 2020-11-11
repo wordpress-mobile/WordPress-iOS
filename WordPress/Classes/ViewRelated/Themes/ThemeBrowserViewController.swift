@@ -352,10 +352,6 @@ public protocol ThemePresenter: class {
         unregisterForKeyboardNotifications()
     }
 
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     fileprivate func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)),

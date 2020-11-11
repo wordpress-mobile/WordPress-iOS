@@ -20,6 +20,7 @@ extern NSString * const WPAppAnalyticsKeyQuickAction;
 extern NSString * const WPAppAnalyticsKeyFollowAction;
 extern NSString * const WPAppAnalyticsKeySource;
 extern NSString * const WPAppAnalyticsKeyPostType;
+extern NSString * const WPAppAnalyticsKeyTapSource;
 
 /**
  *  @class      WPAppAnalytics

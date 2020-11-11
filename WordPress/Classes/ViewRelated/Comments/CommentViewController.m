@@ -9,7 +9,7 @@
 #import "PostService.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
+#import "WordPress-Swift.h"
 #import <WordPressUI/WordPressUI.h>
 
 
@@ -104,9 +104,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
     
-    self.suggestionsTableView = [SuggestionsTableView new];
-    self.suggestionsTableView.siteID = self.comment.blog.dotComID;
-    self.suggestionsTableView.suggestionsDelegate = self;
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.dotComID suggestionType:SuggestionTypeMention delegate:self];
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
 }
@@ -698,7 +696,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
+    return [self shouldShowSuggestionsFor:self.comment.blog.dotComID];
 }
 
 - (void)reloadData

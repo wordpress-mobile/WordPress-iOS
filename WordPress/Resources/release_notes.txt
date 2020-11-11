@@ -1,1 +1,3 @@
-New! Username @mentions now auto-complete in the Block Editor for WordPress.com and Jetpack sites. Type the “@” character to see a pop-up displaying usernames and make your selection! In this version, we’ve added support for media editing in the Cover block and fixed a Heading block bug where a heading with a link and string formatting displayed a white shadow in dark mode. Lastly, site headings in the WordPress.com Reader now have a modern new look.
+- Choose from a variety of predesigned page templates when you create a new page on a Gutenberg-enabled site.
+- Create posts and pages right from the posts and pages list with the ever-present action button.
+- Fixed an issue that caused refresh control to appear on top of the list of sites.

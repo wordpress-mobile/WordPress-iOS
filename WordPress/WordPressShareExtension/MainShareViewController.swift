@@ -13,6 +13,10 @@ fileprivate extension OriginatingExtension {
     }
 }
 
+enum SharingErrors: Error {
+    case canceled
+}
+
 class MainShareViewController: UIViewController {
 
     fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
@@ -75,15 +79,19 @@ private extension MainShareViewController {
 
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
-        navigationBarAppearace.tintColor = .white
-        navigationBarAppearace.barTintColor = .appBar
+        navigationBarAppearace.tintColor = .appBarTint
+        navigationBarAppearace.barTintColor = .appBarBackground
         navigationBarAppearace.barStyle = .default
     }
 
     func loadAndPresentNavigationVC() {
-        editorController.context = self.extensionContext
-        editorController.dismissalCompletionBlock = {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        editorController.context = extensionContext
+        editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
+            if exitSharing {
+                self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            } else {
+                self?.extensionContext?.cancelRequest(withError: SharingErrors.canceled)
+            }
         }
 
         let shareNavController = UINavigationController(rootViewController: editorController)

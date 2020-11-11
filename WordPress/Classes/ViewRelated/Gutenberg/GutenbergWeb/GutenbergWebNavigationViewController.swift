@@ -9,7 +9,8 @@ class GutenbergWebNavigationController: UINavigationController {
     init(with post: AbstractPost, block: Block) throws {
         gutenbergWebController = try GutenbergWebViewController(with: post, block: block)
         blockName = block.name
-        super.init(rootViewController: gutenbergWebController)
+        super.init(nibName: nil, bundle: nil)
+        viewControllers = [gutenbergWebController]
         gutenbergWebController.delegate = self
     }
 

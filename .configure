@@ -1,6 +1,6 @@
 {
   "project_name": "WordPress-iOS",
-  "branch": "main",
+  "branch": "trunk",
   "pinned_hash": "63b94d21658bbe9f7abfd5dd66f37ed861233ac2",
   "files_to_copy": [
     {

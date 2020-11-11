@@ -94,7 +94,11 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc init(configuration: WebViewControllerConfiguration) {
-        webView = WKWebView()
+        let config = WKWebViewConfiguration()
+        // The default on iPad is true. We want the iPhone to be true as well.
+        config.allowsInlineMediaPlayback = true
+
+        webView = WKWebView(frame: .zero, configuration: config)
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -317,7 +321,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBarBackground)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 

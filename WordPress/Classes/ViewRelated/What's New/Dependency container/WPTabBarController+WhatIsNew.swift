@@ -2,59 +2,39 @@
 /// dependency container for the What's New / Feature Announcements scene
 extension WPTabBarController {
 
-    func makeWhatIsNewViewController() -> WhatIsNewViewController {
-        return WhatIsNewViewController(whatIsNewViewFactory: makeWhatIsNewView)
+    @objc func presentWhatIsNew(on viewController: UIViewController) {
+
+        DispatchQueue.main.async { [weak viewController] in
+            guard let viewController = viewController else {
+                return
+            }
+            self.whatIsNewScenePresenter.present(on: viewController, animated: true, completion: nil)
+        }
     }
 
-    private func makeWhatIsNewView() -> WhatIsNewView {
-
-        let version = Bundle.main.shortVersionString() != nil ?
-            WhatIsNewStrings.versionPrefix + Bundle.main.shortVersionString() : ""
-
-        let viewTitles = WhatIsNewViewTitles(header: WhatIsNewStrings.title,
-                                             version: version,
-                                             continueButtonTitle: WhatIsNewStrings.continueButtonTitle)
-
-        return WhatIsNewView(viewTitles: viewTitles, dataSource: makeDataSource())
+    @objc func makeWhatIsNewPresenter() -> ScenePresenter {
+        return WhatIsNewScenePresenter(store: makeAnnouncementStore())
     }
 
-    private func makeDataSource() -> AnnouncementsDataSource {
-        return FeatureAnnouncementsDataSource(announcements: WhatIsNewStrings.fakeAnnouncements,
-                                              cellTypes: ["announcementCell": AnnouncementCell.self, "findOutMoreCell": FindOutMoreCell.self],
-                                              findOutMoreLink: WhatIsNewStrings.temporaryAnnouncementsLink)
+    private func makeAnnouncementStore() -> AnnouncementsStore {
+        return CachedAnnouncementsStore(cache: makeCache(), service: makeAnnouncementsService())
     }
 
-    private enum WhatIsNewStrings {
-        static let title = NSLocalizedString("What's New in WordPress", comment: "Title of the What's new page.")
-        static let versionPrefix = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.")
-        static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
+    private func makeAnnouncementsService() -> AnnouncementServiceRemote {
+        return AnnouncementServiceRemote(wordPressComRestApi: makeApi())
+    }
 
-        // TODO - WHATSNEW: to be removed when the real data come in
-        static let fakeAnnouncements = [Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Try to write subheadings that run to a max of three lines. See how the icon is centered.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Subheading with only one line.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Try write headings that don't go beyond 2 lines",
-                                                     subHeading: "If combined with three lines of subheading this is the longest an item should be.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Try to write subheadings that run to a max of three lines. See how the icon is centered.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Heading with a single line",
-                                                     subHeading: "Subheading with only one line.",
-                                                     image: nil,
-                                                     imageUrl: nil),
-                                        Announcement(heading: "Try write headings that don't go beyond 2 lines",
-                                                     subHeading: "If combined with three lines of subheading this is the longest an item should be.",
-                                                     image: nil,
-                                                     imageUrl: nil)]
-        // TODO - WHATSNEW: to be removed when the real data come in
-        static let temporaryAnnouncementsLink = "https://wordpress.com/"
+    private func makeCache() -> AnnouncementsCache {
+        return UserDefaultsAnnouncementsCache()
+    }
+
+    private func makeApi() -> WordPressComRestApi {
+        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+        let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
+
+        return WordPressComRestApi.defaultApi(oAuthToken: token,
+                                              userAgent: WPUserAgent.wordPress(),
+                                              localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 }

@@ -2,6 +2,25 @@ import Foundation
 import WordPressShared
 
 extension WPStyleGuide {
+    @objc
+    public class var preferredStatusBarStyle: UIStatusBarStyle {
+        if FeatureFlag.newNavBarAppearance.enabled {
+            return .default
+        }
+
+        return .lightContent
+    }
+
+    @objc
+    public class var navigationBarStandardFont: UIFont {
+        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+    }
+
+    @objc
+    public class var navigationBarLargeFont: UIFont {
+        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+    }
+
     // MARK: - styles used before Muriel colors are enabled
     public class func navigationBarBackgroundImage() -> UIImage {
         return UIImage(color: WPStyleGuide.wordPressBlue())
@@ -23,34 +42,49 @@ extension WPStyleGuide {
     class func configureNavigationAppearance() {
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
-        navigationAppearance.tintColor = .white
-        navigationAppearance.barTintColor = .appBar
-        navigationAppearance.barStyle = .black
+        navigationAppearance.tintColor = .appBarTint
+        navigationAppearance.barTintColor = .appBarBackground
+        navigationAppearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
+
+        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
+        if FeatureFlag.newNavBarAppearance.enabled {
+            textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
+        }
+
+        navigationAppearance.titleTextAttributes = textAttributes
 
         if #available(iOS 13.0, *) {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .appBar
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.backgroundColor = .appBarBackground
+            appearance.titleTextAttributes = textAttributes
+
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
-        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
-        barButtonItemAppearance.tintColor = .barButtonItemTitle
-        barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
+        if FeatureFlag.newNavBarAppearance.enabled {
+            let buttonBarAppearance = UIBarButtonItem.appearance()
+            buttonBarAppearance.tintColor = .appBarTint
+        } else {
+            navigationAppearance.barStyle = .black
 
-        let buttonBarAppearance = UIBarButtonItem.appearance()
-        buttonBarAppearance.tintColor = .white
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor.white],
-                                                   for: .normal)
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.25)],
-                                                   for: .disabled)
+            let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+            barButtonItemAppearance.tintColor = .barButtonItemTitle
+            barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
+
+            let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
+            buttonBarAppearance.tintColor = .white
+            buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                        NSAttributedString.Key.foregroundColor: UIColor.white],
+                                                       for: .normal)
+            buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                        NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.25)],
+                                                       for: .disabled)
+        }
     }
 
     /// Style the tab bar using Muriel colors

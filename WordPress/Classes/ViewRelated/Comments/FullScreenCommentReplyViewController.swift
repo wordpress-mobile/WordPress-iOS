@@ -68,9 +68,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
             return
         }
 
-        let tableView = SuggestionsTableView()
-        tableView.siteID = siteID
-        tableView.suggestionsDelegate = self
+        guard let siteID = siteID else { return }
+        let tableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         tableView.useTransparentHeader = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -358,11 +357,8 @@ private extension FullScreenCommentReplyViewController {
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {
-        guard let siteID = self.siteID else {
-            return false
-        }
-
-        return SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
+        guard let siteID = self.siteID, let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return false }
+        return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 
     // This should be moved elsewhere

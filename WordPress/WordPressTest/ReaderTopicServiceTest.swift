@@ -213,7 +213,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
         // Setup
         var expect = expectation(description: "topics saved expectation")
         let service = ReaderTopicService(managedObjectContext: context)
-        service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
+        service.mergeMenuTopics(remoteTopics, isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
@@ -226,7 +226,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
         // Merge new set of topics
         expect = expectation(description: "topics saved expectation")
         let foo = remoteTopics.first as RemoteReaderTopic?
-        service.mergeMenuTopics([foo!], withSuccess: { () -> Void in
+        service.mergeMenuTopics([foo!], isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
@@ -260,7 +260,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
         // Setup
         var expect = expectation(description: "topics saved expectation")
         let service = ReaderTopicService(managedObjectContext: context)
-        service.mergeMenuTopics(startingTopics, withSuccess: { () -> Void in
+        service.mergeMenuTopics(startingTopics, isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
@@ -274,7 +274,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
         // Merge new set of topics
         expect = expectation(description: "topics saved expectation")
-        service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
+        service.mergeMenuTopics(remoteTopics, isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)

@@ -365,7 +365,9 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [self centerImage];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self centerImage];
+    } completion:nil];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden

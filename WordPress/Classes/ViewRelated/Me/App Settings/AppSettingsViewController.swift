@@ -308,10 +308,8 @@ class AppSettingsViewController: UITableViewController {
             guard let self = self else {
                 return
             }
-            let controller = WPTabBarController.sharedInstance().makeWhatIsNewViewController()
-
-            self.present(controller, animated: true)
-            self.tableView.deselectSelectedRowWithAnimation(false)
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
         }
     }
 }
@@ -473,8 +471,6 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
-        let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal"), action: presentWhatIsNew())
-
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
         if #available(iOS 10.3, *),
             UIApplication.shared.supportsAlternateIcons {
@@ -485,7 +481,12 @@ private extension AppSettingsViewController {
             rows.append(debugRow)
         }
 
-        if FeatureFlag.whatIsNew.enabled {
+        if FeatureFlag.whatIsNew.enabled,
+            let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+            presenter.versionHasAnnouncements {
+            let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
+                                                                          comment: "Opens the What's New / Feature Announcement modal"),
+                                                 action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
 

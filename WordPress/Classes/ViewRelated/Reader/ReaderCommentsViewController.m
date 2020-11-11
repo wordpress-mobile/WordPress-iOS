@@ -10,7 +10,6 @@
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
@@ -161,8 +160,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewDidAppear:animated];
     [self.tableView reloadData];
-}
 
+    if(self.promptToAddComment){
+        [self.replyTextView becomeFirstResponder];
+
+        // Reset the value to prevent prompting again if the user leaves and comes back
+        self.promptToAddComment = NO;
+    }
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -380,9 +385,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSNumber *siteID = self.siteID;
     NSParameterAssert(siteID);
 
-    self.suggestionsTableView = [SuggestionsTableView new];
-    self.suggestionsTableView.siteID = siteID;
-    self.suggestionsTableView.suggestionsDelegate = self;
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:siteID suggestionType:SuggestionTypeMention delegate:self];
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
 }
@@ -581,7 +584,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)shouldDisplaySuggestionsTableView
 {
-    return self.shouldDisplayReplyTextView && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
+    return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
 

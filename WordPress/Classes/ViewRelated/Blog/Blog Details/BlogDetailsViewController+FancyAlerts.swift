@@ -85,9 +85,7 @@ extension BlogDetailsViewController {
             return
         }
 
-        if shouldShowCreateButtonAnnouncement() {
-            showCreateButtonAnnouncementAlert()
-        } else if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
             tourGuide.didShowUpgradeToV2Notice(for: blog)
@@ -162,30 +160,6 @@ extension BlogDetailsViewController {
         let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section
-    }
-
-    private func shouldShowCreateButtonAnnouncement() -> Bool {
-        return AppRatingUtility.shared.didUpgradeVersion && !UserDefaults.standard.createButtonAlertWasDisplayed
-    }
-
-    private func showCreateButtonAnnouncementAlert() {
-        guard noPresentedViewControllers else {
-            return
-        }
-
-        UserDefaults.standard.createButtonAlertWasDisplayed = true
-
-        let alert = FancyAlertViewController.makeCreateButtonAnnouncementAlertController { [weak self] (controller) in
-            controller.dismiss(animated: true)
-            if let url = URL(string: "https://wordpress.com/blog/2020/06/01/improved-navigation-in-the-wordpress-apps/") {
-                let webViewController = WebViewControllerFactory.controller(url: url)
-                let navController = LightNavigationController(rootViewController: webViewController)
-                self?.tabBarController?.present(navController, animated: true)
-            }
-        }
-        alert.modalPresentationStyle = .custom
-        alert.transitioningDelegate = self
-        tabBarController?.present(alert, animated: true)
     }
 
     private func showUpgradeToV2Alert(for blog: Blog) {

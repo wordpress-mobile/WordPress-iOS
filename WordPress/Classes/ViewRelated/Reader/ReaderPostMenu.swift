@@ -5,6 +5,7 @@ import SVProgressHUD
 struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
     static let blockSite = NSLocalizedString("Block This Site", comment: "The title of a button that triggers blocking a site from the user's reader.")
+    static let reportPost = NSLocalizedString("Report This Post", comment: "The title of a button that triggers reporting of a post from the user's reader.")
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
     static let unfollow = NSLocalizedString("Unfollow Site", comment: "Verb. An option to unfollow a site.")
@@ -88,6 +89,8 @@ open class ReaderPostMenu {
         } else {
             viewController.present(alertController, animated: true)
         }
+
+        WPAnalytics.track(.readerArticleDetailMoreTapped)
     }
 
     fileprivate class func existingObject<T>(for objectID: NSManagedObjectID?, context: NSManagedObjectContext?) -> T? {

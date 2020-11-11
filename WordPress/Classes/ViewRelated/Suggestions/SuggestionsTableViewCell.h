@@ -1,12 +1,12 @@
 #import <UIKit/UIKit.h>
 
-extern NSInteger const SuggestionsTableViewCellAvatarSize;
+extern NSInteger const SuggestionsTableViewCellIconSize;
 
 @interface SuggestionsTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *usernameLabel;
-@property (nonatomic, strong) UILabel *displayNameLabel;
-@property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, assign) NSUInteger imageDownloadHash;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *subtitleLabel;
+@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, assign) NSInteger imageDownloadHash;
 
 @end

@@ -34,6 +34,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var pingHubManager: PingHubManager?
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
+    private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
 
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
@@ -84,6 +85,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureReachability()
         configureSelfHostedChallengeHandler()
+        remoteFeatureFlagStore.update()
 
         window?.makeKeyAndVisible()
 
@@ -91,6 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
+        configureAnalytics()
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
@@ -105,16 +108,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
-        let queue = DispatchQueue(label: "asd", qos: .background)
-        let deviceInformation = TracksDeviceInformation()
-
-        queue.async {
-            let height = deviceInformation.statusBarHeight
-            let orientation = deviceInformation.orientation!
-
-            print("Height: \(height); orientation: \(orientation)")
+        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
+            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
+            // Please refer to the documentation of the called method to learn the details and know
+            // how to tell if this call can be removed.
+            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
         }
-
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
@@ -244,7 +243,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
-        configureAnalytics()
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -722,11 +720,6 @@ extension WordPressAppDelegate {
                        object: nil)
 
         nc.addObserver(self,
-                       selector: #selector(handleUIContentSizeCategoryDidChangeNotification(_:)),
-                       name: UIContentSizeCategory.didChangeNotification,
-                       object: nil)
-
-        nc.addObserver(self,
                        selector: #selector(saveRecentSitesForExtensions),
                        name: .WPRecentSitesChanged,
                        object: nil)
@@ -760,10 +753,6 @@ extension WordPressAppDelegate {
 
     @objc fileprivate func handleLowMemoryWarningNotification(_ notification: NSNotification) {
         WPAnalytics.track(.lowMemoryWarning)
-    }
-
-    @objc fileprivate func handleUIContentSizeCategoryDidChangeNotification(_ notification: NSNotification) {
-        customizeAppearanceForTextElements()
     }
 }
 
@@ -818,6 +807,7 @@ extension WordPressAppDelegate {
 
             NotificationSupportService.insertServiceExtensionToken(authToken)
             NotificationSupportService.insertServiceExtensionUsername(account.username)
+            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
         }
     }
 
@@ -827,6 +817,7 @@ extension WordPressAppDelegate {
 
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
+        NotificationSupportService.deleteServiceExtensionUserID()
     }
 }
 
@@ -837,13 +828,17 @@ extension WordPressAppDelegate {
         window?.backgroundColor = .black
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
+        // iOS 14 started rendering backgrounds for stack views, when previous versions
+        // of iOS didn't show them. This is a little hacky, but ensures things keep
+        // looking the same on newer versions of iOS.
+        UIStackView.appearance().backgroundColor = .clear
+
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureDefaultTint()
         WPStyleGuide.configureLightNavigationBarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
-        UIToolbar.appearance().barTintColor = .primary
         UISwitch.appearance().onTintColor = .primary
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
@@ -865,7 +860,6 @@ extension WordPressAppDelegate {
         barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
         UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
 
-
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         cellAppearance.loadingBackgroundColor = .listBackground
         cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
@@ -875,19 +869,6 @@ extension WordPressAppDelegate {
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
-
-        customizeAppearanceForTextElements()
-    }
-
-    private func customizeAppearanceForTextElements() {
-        let maximumPointSize = WPStyleGuide.maxFontSize
-
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
-                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.semibold)]
-
-        WPStyleGuide.configureSearchBarTextAppearance()
-
-        SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
 }
 

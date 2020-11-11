@@ -18,10 +18,27 @@ struct ReaderCSS {
 
     static let updatedKey = "ReaderCSSLastUpdated"
 
+    /// Returns a custom Reader CSS URL
+    /// This value can be changed under Settings > Debug
+    ///
+    var customAddress: String? {
+        get {
+            return store.object(forKey: "reader-css-url") as? String
+        }
+        set {
+            store.set(newValue, forKey: "reader-css-url")
+        }
+    }
+
     /// Returns the Reader CSS appending a timestamp
     /// We force it to update based on the `expirationDays` property
     ///
     var address: String {
+        // Always returns a fresh CSS if the flag is enabled
+        guard !FeatureFlag.readerCSS.enabled else {
+            return url(appendingTimestamp: now)
+        }
+
         guard let lastUpdated = store.object(forKey: type(of: self).updatedKey) as? Int,
                 (now - lastUpdated < expirationDaysInSeconds
                 || !isInternetReachable()) else {
@@ -45,7 +62,12 @@ struct ReaderCSS {
     }
 
     private func url(appendingTimestamp appending: Int) -> String {
+        guard let customURL = customAddress, !customURL.isEmpty else {
+            let timestamp = String(appending)
+            return "https://wordpress.com/calypso/reader-mobile.css?\(timestamp)"
+        }
+
         let timestamp = String(appending)
-        return "https://wordpress.com/calypso/reader-mobile.css?\(timestamp)"
+        return "\(customURL)?\(timestamp)"
     }
 }

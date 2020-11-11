@@ -10,6 +10,7 @@ require 'yaml'
 require 'digest'
 
 PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
+abort("Project directory contains one or more spaces – unable to continue.") if PROJECT_DIR.include?(' ')
 
 task default: %w[test]
 
