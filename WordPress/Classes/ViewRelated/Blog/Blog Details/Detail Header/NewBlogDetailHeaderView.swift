@@ -1,12 +1,12 @@
 class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
-    
+
     // MARK: - Child Views
-    
+
     private let actionRow: ActionRow
     private let titleView: TitleView
-    
+
     // MARK: - Delegate
-    
+
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
     // Temporary method for migrating to NewBlogDetailHeaderView
@@ -89,7 +89,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let top: CGFloat = 24
         static let belowActionRow: CGFloat = 16
         static let betweenTitleViewAndActionRow: CGFloat = 32
-        
+
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
         static let minimumSideSpacing: CGFloat = 8
@@ -97,7 +97,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
     }
-    
+
     // MARK: - Initializers
 
     required init(items: [ActionRow.Item]) {
@@ -108,21 +108,21 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             subtitleLabel,
         ])*/
         titleView = TitleView(frame: .zero)
-        
+
         super.init(frame: .zero)
 
         // Temporary so we can differentiate between this and the old blog details in the PR review.
         backgroundColor = .white
-        
+
         setupChildViews(items: items)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Child View Initialization
-    
+
     private func setupChildViews(items: [ActionRow.Item]) {
         titleView.siteIconView.tapped = { [weak self] in
             QuickStartTourGuide.find()?.visited(.siteIcon)
@@ -142,19 +142,19 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         addSubview(titleView)
         addSubview(actionRow)
-        
+
         setupConstraintsForChildViews()
     }
-    
+
     // MARK: - Constraints
-    
+
     private func setupConstraintsForChildViews() {
         let actionRowConstraints = constraintsForActionRow()
         let titleViewContraints = constraintsForTitleView()
-            
+
         NSLayoutConstraint.activate(actionRowConstraints + titleViewContraints)
     }
-    
+
     private func constraintsForActionRow() -> [NSLayoutConstraint] {
         [
             actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow),
@@ -163,14 +163,14 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             actionRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
         ]
     }
-    
+
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
         [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
         ]
-        
+
         /*
         titleView.setCustomSpacing(LayoutSpacing.spacingBelowIcon, after: siteIconView)
         titleView.setCustomSpacing(LayoutSpacing.spacingBelowTitle, after: titleButton)
@@ -185,7 +185,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         
         NSLayoutConstraint.activate(stackViewConstraints)*/
     }
-    
+
     // MARK: - User Action Handlers
 
     @objc private func titleButtonTapped() {
@@ -198,25 +198,25 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
 fileprivate extension NewBlogDetailHeaderView {
     class TitleView: UIView {
-        
+
         private enum Dimensions {
             static let siteIconHeight: CGFloat = 48
             static let siteIconWidth: CGFloat = 48
         }
-        
+
         private enum LayoutSpacing {
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
         }
-        
+
         // MARK: - Child Views
-        
+
         let siteIconView: SiteIconView = {
             let siteIconView = SiteIconView(frame: .zero)
             siteIconView.translatesAutoresizingMaskIntoConstraints = false
             return siteIconView
         }()
-        
+
         let subtitleLabel: UILabel = {
             let label = UILabel()
             label.font = WPStyleGuide.fontForTextStyle(.footnote)
@@ -225,7 +225,7 @@ fileprivate extension NewBlogDetailHeaderView {
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
-        
+
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
@@ -236,54 +236,54 @@ fileprivate extension NewBlogDetailHeaderView {
             //button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
             return button
         }()
-        
+
         private(set) lazy var titleStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [
                 titleButton,
                 subtitleLabel
             ])
-            
+
             stackView.alignment = .leading
             stackView.axis = .vertical
             stackView.translatesAutoresizingMaskIntoConstraints = false
-            
+
             return stackView
         }()
-        
+
         // MARK: - Initializers
-        
+
         override init(frame: CGRect) {
             super.init(frame: frame)
-            
+
             backgroundColor = .systemPink
-            
+
             setupChildViews()
         }
-        
+
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         // MARK: - Child View Setup
-        
+
         private func setupChildViews() {
             addSubview(siteIconView)
             addSubview(titleStackView)
-            
+
             titleStackView.backgroundColor = .green
-            
+
             setupConstraintsForChildViews()
         }
-        
+
         // MARK: - Constraints
-        
+
         private func setupConstraintsForChildViews() {
             let siteIconConstraints = constraintsForSiteIcon()
             let titleStackViewConstraints = constraintsForTitleStackView()
-            
+
             NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints)
         }
-        
+
         private func constraintsForSiteIcon() -> [NSLayoutConstraint] {
             [
                 siteIconView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -293,7 +293,7 @@ fileprivate extension NewBlogDetailHeaderView {
                 siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight)
             ]
         }
-        
+
         private func constraintsForTitleStackView() -> [NSLayoutConstraint] {
             [
                 titleStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
