@@ -1,23 +1,44 @@
-diff --git a/node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheetManager.m b/node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheetManager.m
-index 65fa2bb..c5f265b 100644
---- a/node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheetManager.m
-+++ b/node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheetManager.m
-@@ -66,6 +66,7 @@ - (void)presentViewController:(UIViewController *)alertController
-   NSArray<NSString *> *buttons = [RCTConvert NSStringArray:options[@"options"]];
-   NSInteger cancelButtonIndex = options[@"cancelButtonIndex"] ? [RCTConvert NSInteger:options[@"cancelButtonIndex"]] : -1;
+diff --git a/node_modules/react-native/React/CoreModules/RCTActionSheetManager.mm b/node_modules/react-native/React/CoreModules/RCTActionSheetManager.mm
+index 04a150c..5cfbb12 100644
+--- a/node_modules/react-native/React/CoreModules/RCTActionSheetManager.mm
++++ b/node_modules/react-native/React/CoreModules/RCTActionSheetManager.mm
+@@ -75,7 +75,13 @@ - (void)presentViewController:(UIViewController *)alertController
+   });
+   NSInteger cancelButtonIndex =
+       options.cancelButtonIndex() ? [RCTConvert NSInteger:@(*options.cancelButtonIndex())] : -1;
++  NSArray<NSNumber *> *disabledButtonIndices;
    NSArray<NSNumber *> *destructiveButtonIndices;
-+  NSArray<NSNumber *> *disabledButtonIndices = [RCTConvert NSArray:options[@"disabledButtonIndices"]];
-   if ([options[@"destructiveButtonIndex"] isKindOfClass:[NSArray class]]) {
-     destructiveButtonIndices = [RCTConvert NSArray:options[@"destructiveButtonIndex"]];
-   } else {
-@@ -108,6 +109,10 @@ - (void)presentViewController:(UIViewController *)alertController
-       callback(@[@(localIndex)]);
-     }]];
- 
-+    if ([disabledButtonIndices containsObject:@(localIndex)]) {
-+        [alertController.actions[localIndex] setEnabled:false];
-+    }
-+
++  if (options.disabledButtonIndices()) {
++    disabledButtonIndices = RCTConvertVecToArray(*options.disabledButtonIndices(), ^id(double element) {
++      return @(element);
++    });
++  }
+   if (options.destructiveButtonIndices()) {
+     destructiveButtonIndices = RCTConvertVecToArray(*options.destructiveButtonIndices(), ^id(double element) {
+       return @(element);
+@@ -98,6 +104,7 @@ - (void)presentViewController:(UIViewController *)alertController
+       @"destructiveButtonIndices" : destructiveButtonIndices,
+       @"anchor" : anchor,
+       @"tintColor" : tintColor,
++      @"disabledButtonIndices" : disabledButtonIndices,
+     });
+     return;
+   }
+@@ -132,6 +139,17 @@ - (void)presentViewController:(UIViewController *)alertController
      index++;
    }
  
++  if (disabledButtonIndices) {
++    for (NSNumber *disabledButtonIndex in disabledButtonIndices) {
++      if ([disabledButtonIndex integerValue] < buttons.count) {
++        [alertController.actions[[disabledButtonIndex integerValue]] setEnabled:false];
++      } else {
++        RCTLogError(@"Index %@ from `disabledButtonIndices` is out of bounds. Maximum index value is %@.", @([disabledButtonIndex integerValue]), @(buttons.count - 1));
++        return;
++      }
++    }
++  }
++
+   alertController.view.tintColor = tintColor;
+ #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && defined(__IPHONE_13_0) && \
+     __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
