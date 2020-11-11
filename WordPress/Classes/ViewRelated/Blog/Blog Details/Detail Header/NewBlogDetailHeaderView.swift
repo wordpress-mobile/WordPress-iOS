@@ -1,5 +1,12 @@
 class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
-
+    
+    // MARK: - Child Views
+    
+    private let actionRow: ActionRow
+    private let titleView: TitleView
+    
+    // MARK: - Delegate
+    
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
     // Temporary method for migrating to NewBlogDetailHeaderView
@@ -26,23 +33,18 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         return label
     }()
 
-    private let siteIconView: SiteIconView = {
-        let view = SiteIconView(frame: .zero)
-        return view
-    }()
-
     @objc var updatingIcon: Bool = false {
         didSet {
             if updatingIcon {
-                siteIconView.activityIndicator.startAnimating()
+                titleView.siteIconView.activityIndicator.startAnimating()
             } else {
-                siteIconView.activityIndicator.stopAnimating()
+                titleView.siteIconView.activityIndicator.stopAnimating()
             }
         }
     }
 
     @objc var blavatarImageView: UIImageView {
-        return siteIconView.imageView
+        return titleView.siteIconView.imageView
     }
 
     @objc var blog: Blog? {
@@ -52,16 +54,16 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             refreshSiteTitle()
             subtitleLabel.text = blog?.displayURL as String?
 
-            siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
+            titleView.siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
         }
     }
 
     @objc func refreshIconImage() {
         if let blog = blog,
             blog.hasIcon == true {
-            siteIconView.imageView.downloadSiteIcon(for: blog)
+            titleView.siteIconView.imageView.downloadSiteIcon(for: blog)
         } else {
-            siteIconView.imageView.image = UIImage.siteIconPlaceholder
+            titleView.siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
 
         toggleSpotlightOnSiteIcon()
@@ -70,7 +72,8 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     func refreshSiteTitle() {
         let blogName = blog?.settings?.name
         let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
-        titleButton.setTitle(title, for: .normal)
+        //titleButton.setTitle(title, for: .normal)
+        titleView.titleButton.setTitle(title, for: .normal)
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
@@ -78,10 +81,15 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
-    private enum Constants {
+    private enum LayoutSpacing {
+        static let atSides: CGFloat = 16
+        static let top: CGFloat = 24
+        static let belowActionRow: CGFloat = 16
+        static let betweenTitleViewAndActionRow: CGFloat = 32
+        
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
         static let minimumSideSpacing: CGFloat = 8
@@ -89,87 +97,211 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
     }
+    
+    // MARK: - Initializers
 
-    convenience init(items: [ActionRow.Item]) {
-
-        self.init(frame: .zero)
-
-        // Temporary so we can differentiate between this and the old blog details in the PR review.
-        backgroundColor = .white
-
-        siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.find()?.visited(.siteIcon)
-            self?.siteIconView.spotlightIsShown = false
-
-            self?.delegate?.siteIconTapped()
-        }
-
-        siteIconView.dropped = { [weak self] images in
-            self?.delegate?.siteIconReceivedDroppedImage(images.first)
-        }
-
-        let buttonsStackView = ActionRow(items: items)
-
-        let stackView = UIStackView(arrangedSubviews: [
+    required init(items: [ActionRow.Item]) {
+        actionRow = ActionRow(items: items)
+        /*titleView = UIStackView(arrangedSubviews: [
             siteIconView,
             titleButton,
             subtitleLabel,
-        ])
+        ])*/
+        titleView = TitleView(frame: .zero)
+        
+        super.init(frame: .zero)
 
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(stackView)
-
-        addSubview(buttonsStackView)
-
-        stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
-        stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleButton)
-
-        /// Constraints for constrained widths (iPad portrait)
-        let minimumPaddingSideConstraints: [NSLayoutConstraint] = [
-            buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 0),
-            buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: 0),
-        ]
-
-        let bottomConstraint = buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding)
-        bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
-
-        let widthConstraint = buttonsStackView.widthAnchor.constraint(equalToConstant: 320)
-        widthConstraint.priority = .defaultHigh
-
-        let stackViewConstraints = [
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
-            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ]
-        stackViewConstraints.forEach { $0.priority = UILayoutPriority(999) }
-
-        let edgeConstraints = [
-            buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
-            buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            bottomConstraint,
-            widthConstraint
-        ]
-
-        NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints + stackViewConstraints)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        // Temporary so we can differentiate between this and the old blog details in the PR review.
+        backgroundColor = .white
+        
+        setupChildViews(items: items)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Child View Initialization
+    
+    private func setupChildViews(items: [ActionRow.Item]) {
+        titleView.siteIconView.tapped = { [weak self] in
+            QuickStartTourGuide.find()?.visited(.siteIcon)
+            self?.titleView.siteIconView.spotlightIsShown = false
+
+            self?.delegate?.siteIconTapped()
+        }
+
+        titleView.siteIconView.dropped = { [weak self] images in
+            self?.delegate?.siteIconReceivedDroppedImage(images.first)
+        }
+
+        //titleView.axis = .vertical
+        //titleView.alignment = .center
+        //titleView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        titleView.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(titleView)
+        addSubview(actionRow)
+        
+        setupConstraintsForChildViews()
+    }
+    
+    // MARK: - Constraints
+    
+    private func setupConstraintsForChildViews() {
+        let actionRowConstraints = constraintsForActionRow()
+        let titleViewContraints = constraintsForTitleView()
+            
+        NSLayoutConstraint.activate(actionRowConstraints + titleViewContraints)
+    }
+    
+    private func constraintsForActionRow() -> [NSLayoutConstraint] {
+        [
+            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow),
+            actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
+            actionRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
+            actionRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
+        ]
+    }
+    
+    private func constraintsForTitleView() -> [NSLayoutConstraint] {
+        [
+            titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
+            titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
+            titleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
+        ]
+        
+        /*
+        titleView.setCustomSpacing(LayoutSpacing.spacingBelowIcon, after: siteIconView)
+        titleView.setCustomSpacing(LayoutSpacing.spacingBelowTitle, after: titleButton)
+
+        let stackViewConstraints = [
+            titleView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
+            titleView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: LayoutSpacing.minimumSideSpacing),
+            titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.interSectionSpacing),
+            titleView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
+        ]
+        stackViewConstraints.forEach { $0.priority = UILayoutPriority(999) }
+        
+        NSLayoutConstraint.activate(stackViewConstraints)*/
+    }
+    
+    // MARK: - User Action Handlers
 
     @objc private func titleButtonTapped() {
         QuickStartTourGuide.find()?.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()
+    }
+}
+
+fileprivate extension NewBlogDetailHeaderView {
+    class TitleView: UIView {
+        
+        private enum Dimensions {
+            static let siteIconHeight: CGFloat = 48
+            static let siteIconWidth: CGFloat = 48
+        }
+        
+        private enum LayoutSpacing {
+            static let betweenSiteIconAndTitle: CGFloat = 16
+            static let betweenTitleAndSiteSwitcher: CGFloat = 16
+        }
+        
+        // MARK: - Child Views
+        
+        let siteIconView: SiteIconView = {
+            let siteIconView = SiteIconView(frame: .zero)
+            siteIconView.translatesAutoresizingMaskIntoConstraints = false
+            return siteIconView
+        }()
+        
+        let subtitleLabel: UILabel = {
+            let label = UILabel()
+            label.font = WPStyleGuide.fontForTextStyle(.footnote)
+            label.textColor = UIColor.textSubtle
+            label.adjustsFontForContentSizeCategory = true
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        let titleButton: SpotlightableButton = {
+            let button = SpotlightableButton(type: .custom)
+            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.lineBreakMode = .byTruncatingTail
+            button.setTitleColor(.text, for: .normal)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            //button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
+            return button
+        }()
+        
+        private(set) lazy var titleStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [
+                titleButton,
+                subtitleLabel
+            ])
+            
+            stackView.alignment = .leading
+            stackView.axis = .vertical
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            
+            return stackView
+        }()
+        
+        // MARK: - Initializers
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            backgroundColor = .systemPink
+            
+            setupChildViews()
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: - Child View Setup
+        
+        private func setupChildViews() {
+            addSubview(siteIconView)
+            addSubview(titleStackView)
+            
+            titleStackView.backgroundColor = .green
+            
+            setupConstraintsForChildViews()
+        }
+        
+        // MARK: - Constraints
+        
+        private func setupConstraintsForChildViews() {
+            let siteIconConstraints = constraintsForSiteIcon()
+            let titleStackViewConstraints = constraintsForTitleStackView()
+            
+            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints)
+        }
+        
+        private func constraintsForSiteIcon() -> [NSLayoutConstraint] {
+            [
+                siteIconView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+                siteIconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+                siteIconView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+                siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
+                siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight)
+            ]
+        }
+        
+        private func constraintsForTitleStackView() -> [NSLayoutConstraint] {
+            [
+                titleStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+                titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+                titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
+                titleStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
+                titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor, constant: 0),
+            ]
+        }
     }
 }
