@@ -109,9 +109,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
-        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
