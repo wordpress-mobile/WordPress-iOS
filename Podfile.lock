@@ -509,8 +509,8 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.29.0-beta)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issues/2721-submitSiteTemplate`)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `gutenberg/hpp/2723-analytics`)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `gutenberg/hpp/addImageMismatchError`)
+  - WordPressShared (~> 1.12.0)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `gutenberg/hpp/viewVisibilityHelper`)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.1.1)
@@ -662,7 +662,7 @@ EXTERNAL SOURCES:
     :branch: gutenberg/hpp/2723-analytics
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
-    :branch: gutenberg/hpp/addImageMismatchError
+    :branch: gutenberg/hpp/viewVisibilityHelper
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.40.0/third-party-podspecs/Yoga.podspec.json
@@ -685,11 +685,8 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: 36c931bdbc66e9efd2bf16736906a292a14a202b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressShared:
-    :commit: a24e25020d315e0cd5a743eb5fca893d11482753
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
-    :commit: ccbf9821fa73ddb1f367a8e06608ea82eafc4cbf
+    :commit: 9696e494b0951177a75d6c21ea61d579ad757e5e
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
@@ -788,6 +785,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 49a2807d26d5b97d39c53fa659910eca291528f8
+PODFILE CHECKSUM: 96363fd1ed798eceb96a4a2f6f6e4e7ec9a4d088
 
 COCOAPODS: 1.9.3
