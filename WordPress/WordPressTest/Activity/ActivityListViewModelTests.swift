@@ -60,7 +60,7 @@ class ActivityStoreMock: ActivityStore {
 
 extension Activity {
     static func mock() -> Activity {
-        let dictionary = ["activity_id": "1", "summary": "", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String : AnyObject]
+        let dictionary = ["activity_id": "1", "summary": "", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String: AnyObject]
         return try! Activity(dictionary: dictionary)
     }
 }
