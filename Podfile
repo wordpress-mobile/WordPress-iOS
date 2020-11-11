@@ -39,7 +39,7 @@ def wordpress_ui
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'gutenberg/hpp/addImageMismatchError'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
-    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
