@@ -464,11 +464,11 @@ import "./ScreenshotFastfile"
     ios_merge_translators_strings(strings_folder:"../WordPress/Resources/")
     sh("cd ../.. && ./Scripts/extract-framework-translations.swift")
 
-    xcbuild(
-        workspace: "../WordPress.xcworkspace",
+    gym(
         scheme: "WordPress",
+        workspace: "../WordPress.xcworkspace",
         configuration: "Debug",
-        xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
+        destination: "platform=iOS Simulator,name=iPhone 11",
     )
 
     zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
