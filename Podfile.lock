@@ -675,7 +675,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.40.0
   KanvasCamera:
-    :commit: f07a4ca19196b467348d43d098b572b7f3646139
+    :commit: 8c45ceed1fb1b9f9625fb51f33eb13df4a918903
     :git: "git@github.com:tumblr/kanvas-ios.git"
   RNCMaskedView:
     :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
