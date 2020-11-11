@@ -139,7 +139,7 @@ jobs:
                 when: always
                 command: |
                   # Get the name of the device that is running.
-                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on '<< parameters.device >>' in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPlease reach out in #platform9 if you think this failure is not caused by your changes, so we can investigate.'" >> $BASH_ENV
+                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on '<< parameters.device >>' in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPLEASE IGNORE, this is just a test.'" >> $BASH_ENV
             - slack/status:
                 fail_only: true
                 include_job_number_field: false
@@ -267,6 +267,7 @@ workflows:
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
+          post-to-slack: true
           requires: [ "Build Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
