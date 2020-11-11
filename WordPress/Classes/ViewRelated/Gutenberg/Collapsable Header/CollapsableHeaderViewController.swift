@@ -528,7 +528,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             shouldBeHidden = false
         }
 
-        seperator.animatableSetIsHiddenanimatableSetIsHidden(shouldBeHidden, animated: animated)
+        seperator.animatableSetIsHidden(shouldBeHidden, animated: animated)
     }
 }
 
