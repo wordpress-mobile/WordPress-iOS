@@ -50,6 +50,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
+        subscribeToModelChanges()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -172,11 +173,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Model Changes
 
+    private func subscribeToNotifications() {
+        subscribeToModelChanges()
+    }
+
     private func subscribeToModelChanges() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleDataModelChange(notification:)),
-                                               name: .NSManagedObjectContextObjectsDidChange,
-                                               object: ContextManager.shared.mainContext)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleDataModelChange(notification:)),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: ContextManager.shared.mainContext)
     }
 
     @objc
@@ -184,7 +190,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if let blog = blog {
             handlePossibleDeletion(of: blog, notification: notification)
         } else {
-            handlePossiblePrimaryBlogCreation()
+            handlePossiblePrimaryBlogCreation(notification: notification)
         }
     }
 
@@ -204,13 +210,39 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Model Changes: Blog Creation
 
+    /// This method ensures that the received notification includes inserted blogs.
+    /// It's useful because when we call `lastUsedOrFirstBlog()` a chain of calls that ends with:
+    ///
+    ///     `AccountService.defaultWordPressComAccount()`
+    ///     > `AccountService.accountWithUUID()`
+    ///     > `NSManagedObjectContext.executeFetchRequest(...)`.
+    ///
+    /// The issue is that `executeFetchRequest` updates the managed object context, thus triggering
+    /// a `NSManagedObjectContextObjectsDidChange` notification, which caused a neverending
+    /// loop in the observer in this VC.
+    ///
+    private func verifyThatBlogsWereInserted(in notification: NSNotification) -> Bool {
+        guard let insertedObjects = notification.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>,
+              insertedObjects.contains(where: { $0 as? Blog != nil }) else {
+            return false
+        }
+
+        return true
+    }
+
     /// This method takes care of figuring out if a primary blog was created, in order to show the details for such
     /// blog.
     ///
-    private func handlePossiblePrimaryBlogCreation() {
+    private func handlePossiblePrimaryBlogCreation(notification: NSNotification) {
+        // WORKAROUND: At first sight this guard should not be needed.
+        // Please read the documentation for this method carefully.
+        guard verifyThatBlogsWereInserted(in: notification) else {
+            return
+        }
+
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
-        guard let blog = blogService.primaryBlog() else {
+        guard let blog = blogService.lastUsedOrFirstBlog() else {
             return
         }
 
