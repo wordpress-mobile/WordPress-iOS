@@ -1,5 +1,3 @@
-import CoreData
-import Foundation
 import WordPressAuthenticator
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
