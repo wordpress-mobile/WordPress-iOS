@@ -24,13 +24,22 @@ class GutenbergLightNavigationController: UINavigationController {
             navigationBar.standardAppearance = appearance
         } else {
             navigationBar.backgroundColor = .white
+            navigationBar.titleTextAttributes = [ .foregroundColor: UIColor.text ]
         }
 
         navigationBar.barStyle = .default
         navigationBar.barTintColor = .white
 
+        let tintColor = UIColor(light: .brand, dark: .white)
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [GutenbergLightNavigationController.self])
-        barButtonItemAppearance.tintColor = UIColor(light: .brand, dark: .white)
+        barButtonItemAppearance.tintColor = tintColor
+        barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: tintColor],
+                                                   for: .normal)
+        barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
+                                                   for: .disabled)
+
 
         setNeedsStatusBarAppearanceUpdate()
     }

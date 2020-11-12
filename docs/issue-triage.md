@@ -17,9 +17,9 @@ Bug reports (issues with the  `[Type] Bug` label) should also have a Priority la
 
 | |**Low Severity**|**Medium Severity**|**High Severity**|**Critical Severity**|
 |-|-|-|-|-|
-|**Low Impact**|Low|Low|Normal|High|
-|**Medium Impact**|Low|Normal|High|Blocking|
-|**High Impact**|Normal|High|Blocking|Blocking|
+|**Low Impact**|Low|Low|Medium|High|
+|**Medium Impact**|Low|Medium|High|Blocking|
+|**High Impact**|Medium|High|Blocking|Blocking|
 
 ### Severity
 

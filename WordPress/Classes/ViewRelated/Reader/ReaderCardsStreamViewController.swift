@@ -24,6 +24,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
 
+    /// Whether the current view controller is visible
+    private var isVisible: Bool {
+        return isViewLoaded && view.window != nil
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
@@ -99,7 +104,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: success, failure: failure)
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
+            self?.trackApiResponse()
+            success(cardsCount, hasMore)
+        }, failure: { [weak self] error in
+            self?.trackApiResponse()
+            failure(error)
+        })
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
@@ -128,6 +139,17 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         if isTableViewAtTheTop() {
             super.syncIfAppropriate(forceSync: forceSync)
         }
+    }
+
+    /// Track when the API returned the cards and the user is still on the screen
+    /// This is used to create a funnel to check if users are leaving the screen
+    /// before the API response
+    private func trackApiResponse() {
+        guard isVisible else {
+            return
+        }
+
+        WPAnalytics.track(.readerDiscoverContentPresented)
     }
 
     // MARK: - TableViewHandler

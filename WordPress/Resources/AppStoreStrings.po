@@ -40,13 +40,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v15.9-whats-new"
+msgctxt "v16.1-whats-new"
 msgid ""
-"Block editor improvements:\n"
-"On Jetpack sites, you can now edit unsupported blocks by enabling Jetpack SSO from the missing block alert. Use the handy link picker to add URLs to posts. We’ve also increased the size of the tap target on the primary action on unsupported blocks.\n"
-"\n"
-"Fixes:\n"
-"Zapped bugs that caused the page editor to become an invisible overlay and eliminated duplicate views generated when requesting a login link. In the Reader, tapping a link with an anchor now works as expected.\n"
+"- Choose from a variety of predesigned page templates when you create a new page on a Gutenberg-enabled site.\n"
+"- Create posts and pages right from the posts and pages list with the ever-present action button.\n"
+"- Fixed an issue that caused refresh control to appear on top of the list of sites.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

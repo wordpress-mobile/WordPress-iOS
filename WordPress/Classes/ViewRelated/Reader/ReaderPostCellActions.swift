@@ -110,11 +110,13 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
-        ReaderFollowAction().execute(with: post, context: context) { [weak self] in
-            if toFollow {
-                self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-            }
-        }
+        ReaderFollowAction().execute(with: post, context: context,
+                                     completion: { [weak self] in
+                                        if toFollow {
+                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+                                        }
+                                     },
+                                     failure: nil)
     }
 
     func toggleSavedForLater(for post: ReaderPost) {

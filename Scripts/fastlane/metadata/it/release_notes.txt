@@ -1,7 +1,0 @@
-Dai un'occhiata alle novità di questo rilascio:
-
-- Supporto per l'allineamento "a larghezza intera" e "largo" per i blocchi Gruppo, Copertina e Immagine (con supporto per altri blocchi in arrivo).
-- Ti piacciono gli angoli arrotondati nelle immagini? Abbiamo anche aggiunto il supporto per lo stile arrotondato nel blocco Immagine
-- Alcune persone potrebbero aver riscontrato un comportamento anomalo della barra degli strumenti durante l'aggiunta di un nuovo blocco, ma questo problema è stato risolto.
-- Abbiamo anche notato che nell'anteprima dell'immagine, le immagini non venivano posizionate correttamente dopo la modifica dell'orientamento del dispositivo, ma anche questo problema è stato risolto.
-- Abbiamo risolto alcuni altri problemi relativi all'iscrizione e all'accesso, incluso un problema con la visualizzazione del nome utente dopo l'iscrizione con Apple e con un messaggio di errore non corretto che veniva visualizzato al raggiungimento del numero massimo di tentativi di accesso non riusciti.

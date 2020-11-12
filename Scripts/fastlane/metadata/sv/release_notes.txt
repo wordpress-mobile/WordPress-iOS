@@ -1,7 +1,0 @@
-Kolla in nyheterna i denna utgåva:
-
-- Stöd för fullbredd och brett innehåll i blocken grupp, omslag och bild (och stöd för fler block är på väg).
-- Gillar du rundade hörn på dina bilder? Nu har bildblocket stöd för runda hörn.
-- Vissa användare kan ha haft strul med ett verktygsfält som uppträdde konstigt när du skulle lägga till ett nytt block. Nu har vi löst det.
-- Vi upptäckte också att i förhandsvisning av bilder kunde bilderna hamna lite fel efter att man vridit sin enhet mellan stående och liggande. Men det är också fixat nu.
-- Vi har rättat några fler fel kring registrering och inloggning, inklusive ett problem med visning av användarnamnet efter att man registrerat sig via Apple, samt ett felaktigt felmeddelande som visades när man nått taket för antalet misslyckade inloggningsförsök.

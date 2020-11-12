@@ -15,6 +15,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
+    case siteCreationHomePagePicker
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,15 +41,17 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergMentions:
             return true
         case .gutenbergModalLayoutPicker:
-            return false
+            return true
         case .whatIsNew:
             return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         case .unifiedPrologueCarousel:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .stories:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .siteCreationHomePagePicker:
+            return false
         }
     }
 
@@ -103,6 +106,8 @@ extension FeatureFlag {
             return "Unified Prologue Carousel"
         case .stories:
             return "Stories"
+        case .siteCreationHomePagePicker:
+            return "Site Creation: Home Page Picker"
         }
     }
 

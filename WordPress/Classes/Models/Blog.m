@@ -85,6 +85,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
