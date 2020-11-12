@@ -126,7 +126,7 @@ import WordPressFlux
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
             viewController.present(actionSheetVC, animated: true, completion: {
                 WPAnalytics.track(.createSheetShown)
-                QuickStartTourGuide.find()?.visited(.newpost)
+                QuickStartTourGuide.shared.visited(.newpost)
             })
         }
     }

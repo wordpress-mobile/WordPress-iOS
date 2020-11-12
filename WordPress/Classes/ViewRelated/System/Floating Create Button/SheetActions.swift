@@ -4,7 +4,7 @@ struct PostAction: ActionSheetItem {
     let handler: () -> Void
 
     func makeButton() -> ActionSheetButton {
-        let highlight: Bool = QuickStartTourGuide.find()?.shouldSpotlight(.newpost) ?? false
+        let highlight: Bool = QuickStartTourGuide.shared.shouldSpotlight(.newpost)
         return ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
                                  image: .gridicon(.posts),
                                  identifier: "blogPostButton",

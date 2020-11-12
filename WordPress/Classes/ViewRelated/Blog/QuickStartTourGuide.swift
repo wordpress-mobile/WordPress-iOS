@@ -11,13 +11,10 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
-    @objc static func find() -> QuickStartTourGuide? {
-        guard let tabBarController = WPTabBarController.sharedInstance(),
-            let tourGuide = tabBarController.tourGuide else {
-            return nil
-        }
-        return tourGuide
-    }
+
+    @objc static let shared = QuickStartTourGuide()
+
+    private override init() {}
 
     func setup(for blog: Blog) {
         didShowUpgradeToV2Notice(for: blog)
