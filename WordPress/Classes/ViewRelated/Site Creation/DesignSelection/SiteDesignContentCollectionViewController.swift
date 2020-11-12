@@ -137,7 +137,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         guard let selectedIndexPath = selectedIndexPath else { return }
 
         let design = siteDesigns[selectedIndexPath.row]
-        let previewVC = SiteDesignPreviewViewController(url: design.demoURL, completion: completion)
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
         navigationController?.pushViewController(previewVC, animated: true)
     }
 

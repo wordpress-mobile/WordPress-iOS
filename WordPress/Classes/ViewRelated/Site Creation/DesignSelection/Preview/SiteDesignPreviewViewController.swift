@@ -3,7 +3,7 @@ import WordPressUI
 
 class SiteDesignPreviewViewController: UIViewController {
     let completion: SiteDesignStep.SiteDesignSelection
-    let demoURL: URL?
+    let siteDesign: RemoteSiteDesign
     @IBOutlet weak var primaryActionButton: UIButton!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var footerView: UIView!
@@ -29,9 +29,9 @@ class SiteDesignPreviewViewController: UIViewController {
         }
     }
 
-    init(url: String, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign, completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
-        demoURL = URL(string: url)
+        self.siteDesign = siteDesign
         super.init(nibName: "\(SiteDesignPreviewViewController.self)", bundle: .main)
         self.title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
@@ -58,10 +58,11 @@ class SiteDesignPreviewViewController: UIViewController {
     }
 
     @IBAction func actionButtonSelected(_ sender: Any) {
+        completion(siteDesign)
     }
 
     private func configureWebView() {
-        guard let demoURL = demoURL else { return }
+        guard let demoURL = URL(string: siteDesign.demoURL) else { return }
         let request = URLRequest(url: demoURL)
         webView.load(request)
     }
