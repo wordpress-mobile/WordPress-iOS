@@ -49,6 +49,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
         webView.backgroundColor = .basicBackground
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign)
         observeProgressEstimations()
     }
 
@@ -61,6 +62,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     }
 
     @IBAction func actionButtonSelected(_ sender: Any) {
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
         completion(siteDesign)
     }
 
@@ -77,7 +79,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     }
 
     private func handleError(_ error: Error) {
-        let top = NSLayoutConstraint(item: ghostView, attribute: .top, relatedBy: .equal, toItem: webView, attribute: .top, multiplier: 1, constant: 1)
+        SiteCreationAnalyticsHelper.trackError(error)
         configureAndDisplayNoResults(on: webView,
                                      title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
@@ -99,6 +101,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading()
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -110,7 +113,7 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        ghostView.animatableSetIsHidden(true) { _ in
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded()
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
     }
