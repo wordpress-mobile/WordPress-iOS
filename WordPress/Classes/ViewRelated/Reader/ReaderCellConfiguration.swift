@@ -41,7 +41,9 @@ final class ReaderCellConfiguration {
             return
         }
 
-        let postCell = cell as! ReaderPostCardCell
+        guard let postCell = cell as? ReaderPostCardCell else {
+            return
+        }
 
         postCell.delegate = delegate
         postCell.topicChipsDelegate = topicChipsDelegate
