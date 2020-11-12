@@ -73,13 +73,20 @@ class SiteIconView: UIView {
         }
     }
 
-    override init(frame: CGRect) {
+    init(frame: CGRect, padImage: Bool = true) {
         super.init(frame: frame)
 
         let paddingInsets = UIEdgeInsets(top: Constants.imagePadding, left: Constants.imagePadding, bottom: Constants.imagePadding, right: Constants.imagePadding)
 
         button.addSubview(imageView)
-        button.pinSubviewToAllEdges(imageView, insets: paddingInsets)
+        
+        if padImage {
+            button.pinSubviewToAllEdges(imageView, insets: paddingInsets)
+        } else {
+            button.pinSubviewToAllEdges(imageView)
+        }
+        
+        
         button.addTarget(self, action: #selector(touchedButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
 

@@ -1,3 +1,5 @@
+import Gridicons
+
 class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     // MARK: - Child Views
@@ -52,7 +54,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             refreshIconImage()
             toggleSpotlightOnSiteTitle()
             refreshSiteTitle()
-            subtitleLabel.text = blog?.displayURL as String?
+            //titleView.subtitleLabel.text = blog?.displayURL as String?
+            if let displayURL = blog?.displayURL as String? {
+                titleView.set(url: displayURL)
+            }
 
             titleView.siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
         }
@@ -200,29 +205,37 @@ fileprivate extension NewBlogDetailHeaderView {
     class TitleView: UIView {
 
         private enum Dimensions {
-            static let siteIconHeight: CGFloat = 48
-            static let siteIconWidth: CGFloat = 48
+            static let siteIconHeight: CGFloat = 64
+            static let siteIconWidth: CGFloat = 64
+            static let siteSwitcherHeight: CGFloat = 24
+            static let siteSwitcherWidth: CGFloat = 24
         }
 
         private enum LayoutSpacing {
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
+            static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
+            static let betweenSubtitleAndExternalIcon: CGFloat = 4
         }
+        
+        private let externalIconHeight: NSLayoutConstraint
 
         // MARK: - Child Views
 
         let siteIconView: SiteIconView = {
-            let siteIconView = SiteIconView(frame: .zero)
+            let siteIconView = SiteIconView(frame: .zero, padImage: false)
             siteIconView.translatesAutoresizingMaskIntoConstraints = false
             return siteIconView
         }()
 
         let subtitleLabel: UILabel = {
             let label = UILabel()
+            
             label.font = WPStyleGuide.fontForTextStyle(.footnote)
             label.textColor = UIColor.textSubtle
             label.adjustsFontForContentSizeCategory = true
             label.translatesAutoresizingMaskIntoConstraints = false
+            
             return label
         }()
 
@@ -236,6 +249,27 @@ fileprivate extension NewBlogDetailHeaderView {
             //button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
             return button
         }()
+        
+        let siteSwitcherButton: UIButton = {
+            let button = UIButton(frame: .zero)
+            let image = UIImage.gridicon(.chevronDown)
+            
+            button.setImage(image, for: .normal)
+            button.contentMode = .center
+            button.translatesAutoresizingMaskIntoConstraints = false
+            
+            return button
+        }()
+        
+        let externalLinkImage: UIImageView = {
+            let image = UIImage.gridicon(.external, size: CGSize(width: subtitleLabel.font.pointSize, height: subtitleLabel.font.pointSize))
+            let imageView = UIImageView(image: image)
+            
+            imageView.contentMode = .scaleAspectFit
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            return imageView
+        }()
 
         private(set) lazy var titleStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [
@@ -244,6 +278,7 @@ fileprivate extension NewBlogDetailHeaderView {
             ])
 
             stackView.alignment = .leading
+            stackView.distribution = .equalSpacing
             stackView.axis = .vertical
             stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -255,13 +290,27 @@ fileprivate extension NewBlogDetailHeaderView {
         override init(frame: CGRect) {
             super.init(frame: frame)
 
-            backgroundColor = .systemPink
-
             setupChildViews()
         }
 
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: - Configuration
+        
+        func set(url: String) {
+            subtitleLabel.text = url
+            /*
+            let displayURL = NSMutableAttributedString(string: url)
+            let externalLinkAttachment = NSTextAttachment()
+            externalLinkAttachment.image =  UIImage.gridicon(.external, size: CGSize(width: subtitleLabel.font.pointSize, height: subtitleLabel.font.pointSize))
+            
+            let attachmentString = NSMutableAttributedString(attachment: externalLinkAttachment)
+            displayURL.append(NSAttributedString(string: " "))
+            displayURL.append(attachmentString)
+            
+            subtitleLabel.attributedText = displayURL*/
         }
 
         // MARK: - Child View Setup
@@ -269,8 +318,12 @@ fileprivate extension NewBlogDetailHeaderView {
         private func setupChildViews() {
             addSubview(siteIconView)
             addSubview(titleStackView)
+            addSubview(siteSwitcherButton)
+            addSubview(externalLinkImage)
 
-            titleStackView.backgroundColor = .green
+            //backgroundColor = .systemPink
+            //titleStackView.backgroundColor = .green
+            //siteSwitcherButton.backgroundColor = .blue
 
             setupConstraintsForChildViews()
         }
@@ -280,17 +333,37 @@ fileprivate extension NewBlogDetailHeaderView {
         private func setupConstraintsForChildViews() {
             let siteIconConstraints = constraintsForSiteIcon()
             let titleStackViewConstraints = constraintsForTitleStackView()
+            let siteSwitcherButtonConstraints = constraintsForSiteSwitcherButton()
+            let externalIconConstraints = constraintsForExternalImage()
 
-            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints)
+            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints + externalIconConstraints)
+        }
+        
+        private func constraintsForExternalImage() -> [NSLayoutConstraint] {
+            [
+                externalLinkImage.heightAnchor.constraint(equalTo: subtitleLabel.heightAnchor),
+                externalLinkImage.bottomAnchor.constraint(equalTo: subtitleLabel.bottomAnchor),
+                externalLinkImage.leadingAnchor.constraint(equalTo: subtitleLabel.trailingAnchor, constant: LayoutSpacing.betweenSubtitleAndExternalIcon),
+            ]
         }
 
         private func constraintsForSiteIcon() -> [NSLayoutConstraint] {
             [
-                siteIconView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-                siteIconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-                siteIconView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+                siteIconView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+                siteIconView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+                siteIconView.leftAnchor.constraint(equalTo: leftAnchor),
+                siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight),
                 siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
-                siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight)
+            ]
+        }
+
+        private func constraintsForSiteSwitcherButton() -> [NSLayoutConstraint] {
+            [
+                siteSwitcherButton.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
+                siteSwitcherButton.leadingAnchor.constraint(equalTo: titleStackView.trailingAnchor, constant: LayoutSpacing.betweenTitleAndSiteSwitcher),
+                siteSwitcherButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.betweenSiteSwitcherAndRightPadding),
+                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth),
             ]
         }
 
@@ -299,8 +372,7 @@ fileprivate extension NewBlogDetailHeaderView {
                 titleStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
                 titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
                 titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
-                titleStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
-                titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor, constant: 0),
+                titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
             ]
         }
     }
