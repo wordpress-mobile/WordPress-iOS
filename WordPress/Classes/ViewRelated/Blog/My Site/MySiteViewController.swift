@@ -187,7 +187,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func makeBlogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
-        let blogDetailsViewController = BlogDetailsViewController(meScenePresenter: MeScenePresenter())
+        let blogDetailsViewController = BlogDetailsViewController(meScenePresenter: meScenePresenter)
         blogDetailsViewController.blog = blog
 
         return blogDetailsViewController
