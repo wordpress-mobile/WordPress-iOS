@@ -293,13 +293,14 @@ private extension ActivityListViewController {
         noResultsViewController.bindViewModel(viewModel)
 
         if noResultsViewController.view.superview != tableView {
-            noResultsViewController.view.frame = tableView.frame
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         }
 
         addChild(noResultsViewController)
         noResultsViewController.didMove(toParent: self)
 
+        noResultsViewController.view.frame = tableView.frame
+        noResultsViewController.view.frame.origin.y = 0
     }
 
 }
