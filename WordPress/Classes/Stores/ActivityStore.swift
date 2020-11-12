@@ -396,7 +396,7 @@ private extension ActivityStore {
 
     func remote(site: JetpackSiteRef) -> ActivityServiceRemote? {
         guard activityServiceRemote == nil else {
-            return activityServiceRemote!
+            return activityServiceRemote
         }
 
         guard let token = CredentialsService().getOAuthToken(site: site) else {
