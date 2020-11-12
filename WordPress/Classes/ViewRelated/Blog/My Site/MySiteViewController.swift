@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import WordPressAuthenticator
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
@@ -122,7 +123,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             buttonTitle: NSLocalizedString(
                 "Add new site",
                 comment: "Title of button to add a new site."),
-            image: "mysites-nosites")
+            image: "mysites-nosites") { noResultsViewController in
+
+            noResultsViewController.actionButtonHandler = { [weak self] in
+                self?.showAddSiteAlert()
+            }
+        }
+    }
+
+    // MARK: - Add Site Alert
+
+    private func showAddSiteAlert() {
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
+            self?.launchSiteCreation()
+        } addSelfHostedSite: {
+            WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        }
+
+        if let sourceView = noResultsViewController.actionButton,
+           let popoverPresentationController = addSiteAlert.popoverPresentationController {
+
+            popoverPresentationController.sourceView = sourceView
+            popoverPresentationController.sourceRect = sourceView.bounds
+            popoverPresentationController.permittedArrowDirections = .up
+        }
+
+        present(addSiteAlert, animated: true)
     }
 
     // MARK: - Blog Details UI Logic
@@ -143,6 +169,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///         - blog: The blog to show the details of.
     ///
     private func showBlogDetails(for blog: Blog) {
+        hideNoSites()
+
         let blogDetailsViewController = self.blogDetailsViewController(for: blog)
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)

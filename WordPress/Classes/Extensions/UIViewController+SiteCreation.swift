@@ -1,4 +1,4 @@
-extension BlogListViewController {
+extension UIViewController {
     @objc
     func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
