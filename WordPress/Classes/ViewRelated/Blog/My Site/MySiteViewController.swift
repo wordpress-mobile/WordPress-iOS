@@ -32,11 +32,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         get {
-            guard let blogDetailsViewController = blogDetailsViewController else {
-                return nil
-            }
-
-            return blogDetailsViewController.blog
+            return blogDetailsViewController?.blog
         }
     }
 
