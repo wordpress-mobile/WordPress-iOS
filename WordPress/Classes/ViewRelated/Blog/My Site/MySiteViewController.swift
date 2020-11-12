@@ -45,7 +45,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
     /// Please keep this in mind when making modifications.
     ///
-    private var blogDetailsViewController: BlogDetailsViewController? = nil
+    private var blogDetailsViewController: BlogDetailsViewController?
 
     // MARK: - View Lifecycle
 
