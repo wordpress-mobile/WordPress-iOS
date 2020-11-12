@@ -505,7 +505,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
             case WPTabMySites: {
-                [self.mySitesCoordinator showMainViewControllerWithCanBypassBlogList:true];
+                [self.mySitesCoordinator showMainViewControllerWithCanBypassBlogList:YES];
                 break;
             }
             case WPTabReader: {
@@ -535,11 +535,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     [self setSelectedIndex:WPTabNotifications];
     [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
-}
-
-- (BOOL)isNavigatingMySitesTab
-{
-    return self.selectedIndex == WPTabMySites;
 }
 
 #pragma mark - Zendesk Notifications
