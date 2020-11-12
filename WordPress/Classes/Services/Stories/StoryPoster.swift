@@ -43,7 +43,19 @@ class StoryPoster {
     func post(media: [Media], title: String, date: Date = Date(), to blog: Blog, completion: @escaping (Result<Post, Error>) -> Void) {
 
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        post.content = ""
+
+        let mediaItems: [MediaItem] = media.map { item in
+            return MediaItem(alt: "",
+                             caption: "",
+                             id: 0,
+                             link: "",
+                             mime: item.mimeType,
+                             type: String(item.mimeType.split(separator: "/").first ?? ""),
+                             url: item.url.absoluteString
+            )
+        }
+
+        post.content = json(items: mediaItems)
 
         media.forEach { item in
             let asset = item.url as ExportableAsset
@@ -54,28 +66,45 @@ class StoryPoster {
     }
 
     func update(post: AbstractPost) {
-        let mediaItems: [MediaItem] = post.media.compactMap { item in
-            return MediaItem(alt: item.alt ?? "",
-                             caption: item.caption ?? "",
-                             id: item.mediaID?.doubleValue ?? 0,
-                             link: item.remoteURL ?? "",
-                             mime: item.mimeType() ?? "",
-                             type: String(item.mimeType()?.split(separator: "/").first ?? ""),
-                             url: item.remoteURL ?? "")
+        let jsonString = post.content
+
+        let decoder = JSONDecoder()
+        let mediaItems = try! decoder.decode(Story.self, from: jsonString!.data(using: .utf8)!).mediaFiles
+
+        let newItems: [MediaItem] = mediaItems.map { item in
+            let media = post.media.first(where: { mediaItem in
+                let itemFilename = URL(string: item.url)?.lastPathComponent.lowercased() ?? ""
+                return	 mediaItem.filename?.caseInsensitiveCompare(itemFilename) == .orderedSame
+            })!
+            return MediaItem(alt: media.alt ?? "",
+                             caption: media.caption ?? "",
+                             id: media.mediaID?.doubleValue ?? 0,
+                             link: media.remoteURL ?? "",
+                             mime: media.mimeType() ?? "",
+                             type: String(media.mimeType()?.split(separator: "/").first ?? ""),
+                             url: media.remoteURL ?? "")
+
         }
-        let story = Story(mediaFiles: mediaItems)
-        let encoder = JSONEncoder()
-        let json = String(data: (try! encoder.encode(story)), encoding: .utf8) ?? ""
+
+        let mediaJSON = json(items: newItems)
         let content = """
         <!-- wp:jetpack/story
-        \(json)
+        \(mediaJSON)
         -->
         <div class="wp-story wp-block-jetpack-story"></div>
         <!-- /wp:jetpack/story -->
         """
-
         post.content = content
+
         post.status = .publish
         PostCoordinator.shared.save(post)
     }
+
+    private func json(items: [MediaItem]) -> String {
+        let story = Story(mediaFiles: items)
+        let encoder = JSONEncoder()
+        let json = String(data: (try! encoder.encode(story)), encoding: .utf8) ?? ""
+        return json
+    }
+
 }
