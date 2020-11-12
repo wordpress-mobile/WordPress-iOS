@@ -61,7 +61,7 @@ private enum ActivityStoreError: Error {
 
 class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
-    private let refreshInterval: TimeInterval = 60 // seconds
+    private let refreshInterval: TimeInterval = 60
 
     private let activityServiceRemote: ActivityServiceRemote?
 
