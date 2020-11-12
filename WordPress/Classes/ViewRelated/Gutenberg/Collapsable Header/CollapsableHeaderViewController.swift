@@ -190,7 +190,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         formatNavigationController()
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
-        navigationItem.backButtonTitle = NSLocalizedString("Back", comment: "Navigate back to the previous screen")
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
