@@ -9,6 +9,7 @@ private struct Constants {
     static let featuredMediaTopSpacing: CGFloat = 8
     static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
+    static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
 }
 
 protocol ReaderTopicsChipsDelegate: class {
@@ -37,10 +38,11 @@ protocol ReaderTopicsChipsDelegate: class {
 
     @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
-    // Header realated Views
-
+    // Header related Views
     @IBOutlet weak var headerStackView: UIStackView!
+    @IBOutlet fileprivate weak var avatarStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var authorAvatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
@@ -59,7 +61,6 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-
     @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
@@ -86,6 +87,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
     weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
     var displayTopics: Bool = false
+    var isWPForTeams: Bool = false
 
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
@@ -159,7 +161,8 @@ protocol ReaderTopicsChipsDelegate: class {
         applyStyles()
         setupMenuButton()
         configureFeaturedImageView()
-        configureAvatarImageView()
+        configureAvatarImageView(avatarImageView)
+        configureAvatarImageView(authorAvatarImageView)
     }
 
     open override func prepareForReuse() {
@@ -252,7 +255,8 @@ protocol ReaderTopicsChipsDelegate: class {
 
         configureTopicsCollectionView()
         configureHeader()
-        configureAvatarImageView()
+        configureAvatarImageView(avatarImageView)
+        configureAvatarImageView(authorAvatarImageView)
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
@@ -278,51 +282,82 @@ protocol ReaderTopicsChipsDelegate: class {
         topicsCollectionView.isHidden = false
     }
 
-    fileprivate func configureHeader() {
+    private func configureHeader() {
+
+        // Always reset
+        avatarImageView.image = Constants.avatarPlaceholderImage
+        authorAvatarImageView.image = Constants.avatarPlaceholderImage
+
+        setSiteIcon()
+        setAuthorAvatar()
+        setBlogLabels()
+
+        avatarStackView.isHidden = avatarImageView.isHidden && authorAvatarImageView.isHidden
+    }
+
+    private func setSiteIcon() {
+        let size = avatarImageView.frame.size.width * UIScreen.main.scale
+
+        guard let contentProvider = contentProvider,
+              let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
+            avatarImageView.isHidden = true
+            return
+        }
+
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: contentProvider, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
+
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: url,
+            from: host,
+            onComplete: { request in
+                self.avatarImageView.downloadImage(usingRequest: request)
+                self.avatarImageView.isHidden = false
+            },
+            onFailure: { error in
+                CrashLogging.logError(error)
+                self.avatarImageView.isHidden = true
+            })
+    }
+
+    private func setAuthorAvatar() {
+        guard isWPForTeams,
+              let contentProvider = contentProvider,
+              let url = contentProvider.avatarURLForDisplay() else {
+            authorAvatarImageView.isHidden = true
+            return
+        }
+
+        authorAvatarImageView.isHidden = false
+        authorAvatarImageView.downloadImage(from: url, placeholderImage: Constants.avatarPlaceholderImage)
+    }
+
+    private func setBlogLabels() {
         guard let contentProvider = contentProvider else {
             return
         }
-        //
 
-        // Always reset
-        avatarImageView.image = nil
-
-        let size = avatarImageView.frame.size.width * UIScreen.main.scale
-        if let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) {
-
-            let mediaRequestAuthenticator = MediaRequestAuthenticator()
-            let host = MediaHost(with: contentProvider, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
-
-            mediaRequestAuthenticator.authenticatedRequest(
-                for: url,
-                from: host,
-                onComplete: { request in
-                    self.avatarImageView.downloadImage(usingRequest: request)
-                    self.avatarImageView.isHidden = false
-            },
-                onFailure: { error in
-                    CrashLogging.logError(error)
-                    self.avatarImageView.isHidden = true
-            })
+        if isWPForTeams {
+            let arrow = "  \u{25B8}  " // black arrow surrounded by 2 spaces.
+            blogNameLabel.text = contentProvider.authorForDisplay() + arrow + contentProvider.blogNameForDisplay()
         } else {
-            avatarImageView.isHidden = true
+            blogNameLabel.text = contentProvider.blogNameForDisplay()
         }
 
-        blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
-        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
+        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
 
         let dateString: String = datePublished()
         bylineSeparatorLabel.isHidden = dateString.isEmpty
         bylineLabel.text = dateString
     }
 
-    fileprivate func configureAvatarImageView() {
-        avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
-        avatarImageView.layer.borderWidth = Constants.imageBorderWidth
-        avatarImageView.layer.masksToBounds = true
+    private func configureAvatarImageView(_ imageView: UIImageView) {
+        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        imageView.layer.borderWidth = Constants.imageBorderWidth
+        imageView.layer.masksToBounds = true
     }
 
     private func configureFeaturedImageView() {
