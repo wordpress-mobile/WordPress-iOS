@@ -11,9 +11,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     required init?(coder: NSCoder) {
-        meScenePresenter = MeScenePresenter()
-
-        super.init(coder: coder)
+        fatalError("Initializer not implemented!")
     }
 
     // MARK: - Blog
