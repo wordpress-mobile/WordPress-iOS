@@ -33,6 +33,19 @@ class ActivityListViewModelTests: XCTestCase {
         XCTAssertEqual(activityStoreMock.quantity, 20)
         XCTAssertEqual(activityStoreMock.offset, 3)
     }
+
+    // Should not load more if already loading
+    //
+    func testLoadMoreDoesntTriggeredWhenAlreadyFetching() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
+        let activityStoreMock = ActivityStoreMock()
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
+        activityStoreMock.isFetching = true
+
+        activityListViewModel.loadMore()
+
+        XCTAssertNil(activityStoreMock.dispatchedAction)
+    }
 }
 
 class ActivityStoreMock: ActivityStore {
@@ -40,6 +53,11 @@ class ActivityStoreMock: ActivityStore {
     var site: JetpackSiteRef?
     var quantity: Int?
     var offset: Int?
+    var isFetching = false
+
+    override func isFetching(site: JetpackSiteRef) -> Bool {
+        return isFetching
+    }
 
     override func onDispatch(_ action: Action) {
         guard let activityAction = action as? ActivityAction else {
