@@ -2,6 +2,7 @@
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
 * [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+* [*] Fixed an issue where comments viewed in the Reader would always be italicized.
 
 16.1
 -----
