@@ -1603,7 +1603,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 -(void)showJetpackSettings
 {
     [WPAnalytics trackEvent:WPAnalyticsEventJetpackSettingsViewed];
-    JetpackSecuritySettingsViewController *controller = [[JetpackSecuritySettingsViewController alloc] initWithBlog:self.blog];
+    JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 

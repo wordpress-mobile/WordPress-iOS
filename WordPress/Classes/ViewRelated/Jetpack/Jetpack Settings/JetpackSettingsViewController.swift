@@ -5,7 +5,7 @@ import WordPressShared
 
 /// The purpose of this class is to render and modify the Jetpack Settings associated to a site.
 ///
-open class JetpackSecuritySettingsViewController: UITableViewController {
+open class JetpackSettingsViewController: UITableViewController {
 
     // MARK: - Private Properties
 
@@ -25,7 +25,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
 
     fileprivate static let footerHeight = CGFloat(34.0)
     fileprivate static let learnMoreUrl = "https://jetpack.com/support/sso/"
-    fileprivate static let wordPressLoginSection = 2
+    fileprivate static let wordPressLoginSection = 3
 
     // MARK: - Initializer
 
@@ -39,7 +39,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Security", comment: "Title for the Jetpack Security Settings Screen")
+        title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -125,6 +125,14 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
                           onChange: self.requireTwoStepAuthenticationChanged())
             )
         }
+        
+        var manageConnectionRows = [ImmuTableRow]()
+        manageConnectionRows.append(
+            NavigationItemRow(title: NSLocalizedString("Manage Connection",
+                                comment: "Jetpack Settings: Manage Connection"),
+                              action: self.pressedManageConnection())
+        )
+        
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -137,6 +145,10 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
                 rows: bruteForceAttackRows,
                 footerText: nil),
             ImmuTableSection(
+                headerText: "",
+                rows: manageConnectionRows,
+                footerText: nil),
+            ImmuTableSection(
                 headerText: NSLocalizedString("WordPress.com login",
                                               comment: "Jetpack Settings: WordPress.com Login settings"),
                 rows: wordPressLoginRows,
@@ -147,18 +159,18 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     // MARK: Learn More footer
 
     open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == JetpackSecuritySettingsViewController.wordPressLoginSection {
-            return JetpackSecuritySettingsViewController.footerHeight
+        if section == JetpackSettingsViewController.wordPressLoginSection {
+            return JetpackSettingsViewController.footerHeight
         }
         return 0.0
     }
 
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == JetpackSecuritySettingsViewController.wordPressLoginSection {
+        if section == JetpackSettingsViewController.wordPressLoginSection {
             let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
                                                                    y: 0.0,
                                                                    width: tableView.frame.width,
-                                                                   height: JetpackSecuritySettingsViewController.footerHeight))
+                                                                   height: JetpackSettingsViewController.footerHeight))
             footer.textLabel?.text = NSLocalizedString("Learn more...",
                                                        comment: "Jetpack Settings: WordPress.com Login WordPress login footer text")
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
@@ -285,11 +297,19 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
                                                       })
         }
     }
+    
+    fileprivate func pressedManageConnection() -> ImmuTableAction {
+        return { [unowned self] row in
+            let jetpackConnectionVC = JetpackConnectionViewController(blog: blog)
+            jetpackConnectionVC.delegate = self
+            self.navigationController?.pushViewController(jetpackConnectionVC, animated: true)
+        }
+    }
 
     // MARK: - Footer handler
 
     @objc fileprivate func handleLearnMoreTap(_ sender: UITapGestureRecognizer) {
-        guard let url =  URL(string: JetpackSecuritySettingsViewController.learnMoreUrl) else {
+        guard let url =  URL(string: JetpackSettingsViewController.learnMoreUrl) else {
             return
         }
         let webViewController = WebViewControllerFactory.controller(url: url)
@@ -324,4 +344,12 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
         refreshSettings()
     }
 
+}
+
+extension JetpackSettingsViewController: JetpackConnectionDelegate {
+    func jetpackDisconnectedForBlog(_ blog: Blog) {
+        if (blog == self.blog) {
+            navigationController?.popToRootViewController(animated: true)
+        }
+    }
 }
