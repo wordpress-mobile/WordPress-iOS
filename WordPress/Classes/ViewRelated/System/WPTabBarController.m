@@ -319,15 +319,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    NSMutableArray<UIViewController *> *allViewControllers;
+    NSArray<UIViewController *> *allViewControllers;
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.rootViewController,
-        self.readerNavigationController,
-        self.notificationsSplitViewController]];
+        allViewControllers = @[self.mySitesCoordinator.rootViewController,
+                               self.readerNavigationController,
+                               self.notificationsSplitViewController];
     } else {
-        allViewControllers = [NSMutableArray arrayWithArray:@[self.mySitesCoordinator.rootViewController,
-        self.readerSplitViewController,
-        self.notificationsSplitViewController]];
+        allViewControllers = @[self.mySitesCoordinator.rootViewController,
+                               self.readerSplitViewController,
+                               self.notificationsSplitViewController];
     }
 
     return allViewControllers;
