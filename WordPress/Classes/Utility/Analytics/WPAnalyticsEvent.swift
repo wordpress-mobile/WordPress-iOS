@@ -83,6 +83,13 @@ import Foundation
     case storyIntroShown
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
+    
+    // Jetpack
+    case jetpackSettingsViewed
+    case jetpackSecuritySettingsViewed
+    case jetpackManageConnectionViewed
+    case jetpackDisconnectTapped
+    case jetpackDisconnectComplete
 
     /// A String that represents the event
     var value: String {
@@ -220,6 +227,18 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+            
+        // Jetpack
+        case .jetpackSettingsViewed:
+            return "jetpack_settings_viewed"
+        case .jetpackSecuritySettingsViewed:
+            return "jetpack_security_settings_viewed"
+        case .jetpackManageConnectionViewed:
+            return "jetpack_manage_connection_viewed"
+        case .jetpackDisconnectTapped:
+            return "jetpack_disconnect_tapped"
+        case .jetpackDisconnectComplete:
+            return "jetpack_disconnect_complete"
         }
     }
 
