@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="footerView" destination="xQJ-wn-FN2" id="ksr-oU-2lR"/>
                 <outlet property="primaryActionButton" destination="Rb5-2w-Ka5" id="SI7-0l-d70"/>
+                <outlet property="progressBar" destination="y0V-mR-YiE" id="VSk-OF-qXa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="webView" destination="8Yh-6W-krr" id="mnd-oW-HRp"/>
             </connections>
@@ -25,7 +26,7 @@
             <subviews>
                 <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Yh-6W-krr">
                     <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" systemColor="systemFillColor"/>
                     <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO">
                         <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -73,10 +74,14 @@
                         <constraint firstAttribute="trailing" secondItem="uH2-9y-Nix" secondAttribute="trailing" id="yCs-y6-Eds"/>
                     </constraints>
                 </view>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y0V-mR-YiE">
+                    <rect key="frame" x="0.0" y="88" width="414" height="4"/>
+                </progressView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="y0V-mR-YiE" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="2xn-QL-jvC"/>
                 <constraint firstItem="xQJ-wn-FN2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3mM-AD-ka2"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Rb5-2w-Ka5" secondAttribute="bottom" constant="16" id="79U-Oy-9Oi"/>
                 <constraint firstItem="8Yh-6W-krr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="8Un-te-VX9"/>
@@ -84,7 +89,9 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8Yh-6W-krr" secondAttribute="trailing" id="FYF-2r-Nw5"/>
                 <constraint firstItem="8Yh-6W-krr" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="SKf-pn-upR"/>
                 <constraint firstItem="Rb5-2w-Ka5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="T05-bO-A3V"/>
+                <constraint firstItem="y0V-mR-YiE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="UEB-dI-A5p"/>
                 <constraint firstItem="duO-Uf-Fc2" firstAttribute="bottom" secondItem="xQJ-wn-FN2" secondAttribute="top" id="V1i-rj-cuM"/>
+                <constraint firstItem="y0V-mR-YiE" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="X6W-vq-2ZI"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Rb5-2w-Ka5" secondAttribute="trailing" constant="20" id="ZLV-Ja-ryO"/>
                 <constraint firstAttribute="trailing" secondItem="xQJ-wn-FN2" secondAttribute="trailing" id="eqE-Iu-6i4"/>
                 <constraint firstAttribute="bottom" secondItem="xQJ-wn-FN2" secondAttribute="bottom" id="hmt-il-qCU"/>
@@ -92,7 +99,7 @@
                 <constraint firstItem="duO-Uf-Fc2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ouL-Wa-Jlb"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-            <point key="canvasLocation" x="139" y="104"/>
+            <point key="canvasLocation" x="137.68115942028987" y="103.79464285714285"/>
         </view>
     </objects>
     <resources>
@@ -104,6 +111,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -1,12 +1,14 @@
 import UIKit
 import WordPressUI
 
-class SiteDesignPreviewViewController: UIViewController {
+class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     let completion: SiteDesignStep.SiteDesignSelection
     let siteDesign: RemoteSiteDesign
     @IBOutlet weak var primaryActionButton: UIButton!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    private var estimatedProgressObserver: NSKeyValueObservation?
 
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
@@ -42,19 +44,20 @@ class SiteDesignPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addGhostView()
         configureWebView()
         styleButtons()
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
+        webView.backgroundColor = .basicBackground
+        observeProgressEstimations()
+    }
+
+    deinit {
+        removeProgressObserver()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if webView.isLoading {
-            ghostView.startAnimation()
-        }
     }
 
     @IBAction func actionButtonSelected(_ sender: Any) {
@@ -73,21 +76,42 @@ class SiteDesignPreviewViewController: UIViewController {
         primaryActionButton.layer.cornerRadius = 8
     }
 
-    private func addGhostView() {
+    private func handleError(_ error: Error) {
         let top = NSLayoutConstraint(item: ghostView, attribute: .top, relatedBy: .equal, toItem: webView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: ghostView, attribute: .bottom, relatedBy: .equal, toItem: footerView, attribute: .top, multiplier: 1, constant: 1)
-        let leading = NSLayoutConstraint(item: ghostView, attribute: .leading, relatedBy: .equal, toItem: webView, attribute: .leading, multiplier: 1, constant: 1)
-        let trailing = NSLayoutConstraint(item: ghostView, attribute: .trailing, relatedBy: .equal, toItem: webView, attribute: .trailing, multiplier: 1, constant: 1)
-        view.addSubview(ghostView)
-        view.addConstraints([top, bottom, leading, trailing])
+        configureAndDisplayNoResults(on: webView,
+                                     title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection."))
+        progressBar.animatableSetIsHidden(true)
+        removeProgressObserver()
+    }
+
+    private func observeProgressEstimations() {
+        estimatedProgressObserver = webView.observe(\.estimatedProgress, options: [.new]) { [weak self] (webView, _) in
+            self?.progressBar.progress = Float(webView.estimatedProgress)
+        }
+    }
+
+    private func removeProgressObserver() {
+        estimatedProgressObserver?.invalidate()
+        estimatedProgressObserver = nil
     }
 }
 
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        handleError(error)
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        handleError(error)
+    }
+
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         ghostView.animatableSetIsHidden(true) { _ in
-            self.ghostView.stopGhostAnimation()
-        }
+        progressBar.animatableSetIsHidden(true)
+        removeProgressObserver()
     }
 }
