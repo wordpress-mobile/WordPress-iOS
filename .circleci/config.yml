@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@1.0
+  ios: wordpress-mobile/ios@dev:remove/specs-cache-restoration
   git: wordpress-mobile/git@1.0
   slack: circleci/slack@3.4.2
 
