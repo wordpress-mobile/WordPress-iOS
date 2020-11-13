@@ -43,6 +43,13 @@ extension TodayWidgetView {
 }
 
 struct TodayWidgetView_Previews: PreviewProvider {
+    // TODO - TODAYWIDGET: this has been added here for preview purposes only. 
+    static let staticContent = TodayWidgetContent(date: Date(),
+                                           siteTitle: "Places you should visit",
+                                           stats: TodayWidgetStats(views: 5980,
+                                                                   visitors: 4208,
+                                                                   likes: 107,
+                                                                   comments: 5))
     static var previews: some View {
         TodayWidgetView(content: staticContent)
             .previewContext(WidgetPreviewContext(family: .systemSmall))

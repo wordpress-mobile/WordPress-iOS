@@ -50,13 +50,14 @@ private extension Provider {
 
         let date = Date()
         let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date)
-        // TODO - TODAYWIDGET: This is a sample data set to test timeline updates
+        // TODO - TODAYWIDGET: This is just a sample data set to test timeline updates
+        let randomNumber = Int.random(in: 4 ... 100)
         let entries = [TodayWidgetContent(date: date,
-                                          siteTitle: "My Site + \(Int.random(in: 4 ... 100))",
-                                          stats: TodayWidgetStats(views: 5980,
-                                                                  visitors: 4208,
-                                                                  likes: 107,
-                                                                  comments: 5))]
+                                          siteTitle: "My Site + \(randomNumber)",
+                                          stats: TodayWidgetStats(views: randomNumber,
+                                                                  visitors: randomNumber,
+                                                                  likes: randomNumber,
+                                                                  comments: randomNumber))]
 
         let timeline = Timeline(entries: entries, policy: .after(nextRefreshDate!))
         completion(timeline)
