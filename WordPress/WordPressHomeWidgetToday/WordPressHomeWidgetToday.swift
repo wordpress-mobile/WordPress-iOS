@@ -49,7 +49,7 @@ private extension Provider {
     func getTimelineData(completion: @escaping (Timeline<Entry>) -> ()) {
 
         let date = Date()
-        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date)
+        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date) ?? date
         // TODO - TODAYWIDGET: This is just a sample data set to test timeline updates
         let randomNumber = Int.random(in: 4 ... 100)
         let entries = [TodayWidgetContent(date: date,
@@ -59,7 +59,7 @@ private extension Provider {
                                                                   likes: randomNumber,
                                                                   comments: randomNumber))]
 
-        let timeline = Timeline(entries: entries, policy: .after(nextRefreshDate!))
+        let timeline = Timeline(entries: entries, policy: .after(nextRefreshDate))
         completion(timeline)
     }
 }
