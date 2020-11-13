@@ -209,7 +209,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong, readwrite) id<BlogDetailHeader> headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -262,7 +262,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
     }
 
-    BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    BlogDetailsViewController *viewController = [[self alloc] init];
     viewController.blog = restoredBlog;
 
     return viewController;
@@ -301,21 +301,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
-    self = [self init];
-    self.meScenePresenter = meScenePresenter;
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = WPBlogDetailsRestorationID;
+        self.restorationClass = [self class];
+        _meScenePresenter = meScenePresenter;
+    }
+    
     return self;
 }
 
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        self.restorationIdentifier = WPBlogDetailsRestorationID;
-        self.restorationClass = [self class];
-    }
-    return self;
+    return [self initWithMeScenePresenter:[MeScenePresenter new]];
 }
 
 - (void)viewDidLoad
@@ -368,7 +369,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
-    [self addMeButtonToNavigationBar];
+    [self addMeButtonToNavigationBarWithEmail:self.blog.account.email meScenePresenter:self.meScenePresenter];
     
     [self.createButtonCoordinator addTo:self.view trailingAnchor:self.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
 }
@@ -418,7 +419,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [self.createButtonCoordinator showCreateButton];
+        [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
     [self startAlertTimer];
@@ -768,7 +769,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     statsRow.quickStartIdentifier = QuickStartTourElementStats;
     [rows addObject:statsRow];
 
-    if ([self.blog supports:BlogFeatureActivity]) {
+    if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
                                                      callback:^{
@@ -777,7 +778,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
 // Temporarily disabled
-//    if ([self.blog supports:BlogFeaturePlans]) {
+//    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
 //        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
 //                                                         identifier:BlogDetailsPlanCellIdentifier
 //                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
@@ -841,7 +842,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
+    if ([self.blog supports:BlogFeatureThemeBrowsing] && ![self.blog isWPForTeams]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
                                                               image:[UIImage gridiconOfType:GridiconTypeThemes]
                                                            callback:^{
@@ -984,12 +985,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
-    BlogDetailHeaderView *headerView = [self configureHeaderView];
+    id<BlogDetailHeader> headerView = [self configureHeaderView];
     headerView.delegate = self;
 
     self.headerView = headerView;
 
-    self.tableView.tableHeaderView = headerView;
+    self.tableView.tableHeaderView = headerView.asView;
 }
 
 #pragma mark BlogDetailHeaderViewDelegate

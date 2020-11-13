@@ -1,7 +1,0 @@
-Lihat apa yang baru di rilis ini:
-
-- Dukungan untuk perataan lebar penuh dan lebar untuk blok Dikelompokkan, Sampul, dan Gambar (dan akan ada dukungan untuk lebih banyak blok).
-- Suka memberi sudut bulat pada gambar?  Kami juga menambahkan dukungan untuk gaya Bulat di blok Gambar.
-- Sebagian orang mungkin pernah mengalami bilah peralatan yang berjalan tidak semestinya saat menambahkan blok baru, tetapi kami telah memperbaiki masalah ini.
-- Kami juga mendapati bahwa di Pratinjau Gambar, gambar tidak ditempatkan dengan benar setelah mengubah orientasi perangkat, tetapi masalah ini juga telah kami atasi.
-- Kami menyelesaikan beberapa masalah lain seputar pendaftaran dan login, termasuk masalah tampilan nama pengguna setelah mendaftar dengan Apple, dan kesalahan penampilan pesan error saat percobaan login mencapai jumlah maksimum.

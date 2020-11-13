@@ -4,48 +4,25 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
-static NSTimeInterval const PulseAnimationDuration = 0.35;
-
-@protocol MenuItemSourceLoadingDrawViewDelegate <NSObject>
-
-- (void)drawViewDrawRect:(CGRect)rect;
-
-@end
-
-@interface MenuItemSourceLoadingDrawView : UIView
-
-@property (nonatomic, weak) id <MenuItemSourceLoadingDrawViewDelegate> drawDelegate;
-
-@end
-
-@interface MenuItemSourceFooterView () <MenuItemSourceLoadingDrawViewDelegate>
+@interface MenuItemSourceFooterView ()
 
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, assign) BOOL drawsLabelTextIfNeeded;
 @property (nonatomic, strong) MenuItemSourceCell *sourceCell;
-@property (nonatomic, strong) MenuItemSourceLoadingDrawView *drawView;
-@property (nonatomic, strong) NSTimer *beginLoadingAnimationsTimer;
-@property (nonatomic, strong) NSTimer *endLoadingAnimationsTimer;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation MenuItemSourceFooterView
-
-- (void)dealloc
-{
-    [self.beginLoadingAnimationsTimer invalidate];
-    [self.endLoadingAnimationsTimer invalidate];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
 
-        self.backgroundColor = [UIColor murielListBackground];
+        self.backgroundColor = [UIColor murielBasicBackground];
 
         [self setupSourceCell];
-        [self setupDrawView];
     }
 
     return self;
@@ -60,23 +37,26 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     [cell setTitle:@"Dummy Text For Sizing the Label"];
     [self addSubview:cell];
     self.sourceCell = cell;
+    [self setupActivityIndicator];
 }
 
-- (void)setupDrawView
+- (void)setupActivityIndicator
 {
-    MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
-    drawView.backgroundColor = [UIColor murielListBackground];
-    drawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    drawView.drawDelegate = self;
-    drawView.contentMode = UIViewContentModeRedraw;
-    [self.sourceCell addSubview:drawView];
-    self.drawView = drawView;
+    if (@available(iOS 13.0, *)) {
+        _activityIndicator = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
+    } else {
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    }
+
+    _activityIndicator.translatesAutoresizingMaskIntoConstraints = false;
+    [self addSubview: _activityIndicator];
+    [self pinSubviewAtCenter: _activityIndicator];
 }
 
 - (void)toggleMessageWithText:(NSString *)text
 {
     self.labelText = text;
-    if (!self.beginLoadingAnimationsTimer && !self.endLoadingAnimationsTimer) {
+    if (!self.activityIndicator.isAnimating) {
         self.drawsLabelTextIfNeeded = YES;
     }
 }
@@ -89,19 +69,9 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
     self.drawsLabelTextIfNeeded = NO;
 
-    [self.beginLoadingAnimationsTimer invalidate];
-    self.beginLoadingAnimationsTimer = nil;
-    [self.endLoadingAnimationsTimer invalidate];
-    self.endLoadingAnimationsTimer = nil;
-
+    [self.activityIndicator startAnimating];
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
-
-    // Will begin animations on next runloop incase there are upcoming layout upates in-which the animation won't play.
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.0 target:self selector:@selector(beginCellAnimations) userInfo:nil repeats:NO];
-    self.beginLoadingAnimationsTimer = timer;
-    // Add the timer to the runloop scheduling under common modes, to not pause for UIScrollView scrolling.
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopLoadingIndicatorAnimation
@@ -110,37 +80,8 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         return;
     }
 
-    [self.beginLoadingAnimationsTimer invalidate];
-    self.beginLoadingAnimationsTimer = nil;
-    [self.endLoadingAnimationsTimer invalidate];
-    self.endLoadingAnimationsTimer = nil;
-
+    [self.activityIndicator stopAnimating];
     self.isAnimating = NO;
-    // Let the animation play for just a bit before ending it. This avoids flickering.
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(endCellAnimations) userInfo:nil repeats:NO];
-    self.endLoadingAnimationsTimer = timer;
-    // Add the timer to the runloop scheduling under common modes so it does not pause while a UIScrollView scrolls.
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)beginCellAnimations
-{
-    CABasicAnimation *animation = [CABasicAnimation new];
-    animation.fromValue = @(0.0);
-    animation.toValue = @(1.0);
-    animation.keyPath = @"opacity";
-    animation.autoreverses = YES;
-    animation.repeatCount = HUGE_VALF;
-    animation.duration = PulseAnimationDuration;
-    [self.sourceCell.layer addAnimation:animation forKey:@"pulse"];
-}
-
-- (void)endCellAnimations
-{
-    self.drawsLabelTextIfNeeded = YES;
-
-    [self.sourceCell.layer removeAllAnimations];
-    self.sourceCell.hidden = YES;
 }
 
 - (void)setLabelText:(NSString *)labelText
@@ -174,25 +115,6 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
                                      };
         [self.labelText drawInRect:textRect withAttributes:attributes];
     }
-}
-
-#pragma mark - MenuItemSourceLoadingDrawViewDelegate
-
-- (void)drawViewDrawRect:(CGRect)rect
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[UIColor murielNeutral0] CGColor]);
-    CGRect labelRect = self.sourceCell.drawingRectForLabel;
-    CGContextFillRect(context, labelRect);
-}
-
-@end
-
-@implementation MenuItemSourceLoadingDrawView
-
-- (void)drawRect:(CGRect)rect
-{
-    [self.drawDelegate drawViewDrawRect:rect];
 }
 
 @end

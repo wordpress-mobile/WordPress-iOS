@@ -5,9 +5,15 @@
     func siteTitleTapped()
 }
 
-class BlogDetailHeaderView: UIView {
+class BlogDetailHeaderView: UIView, BlogDetailHeader {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
+
+    // Temporary method for migrating to NewBlogDetailHeaderView
+    @objc
+    var asView: UIView {
+        return self
+    }
 
     private let titleButton: SpotlightableButton = {
         let button = SpotlightableButton(type: .custom)

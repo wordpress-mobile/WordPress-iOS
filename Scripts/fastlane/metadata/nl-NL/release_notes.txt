@@ -1,7 +1,0 @@
-Bekijk wat er nieuw is in deze release:
-
-- Ondersteuning voor volledige breedte en brede uitlijning voor de groep-, cover- en afbeelding blokken (met ondersteuning voor nog meer blokken).
-- Ben je dol op afgeronde hoeken op je afbeeldingen? We hebben ook ondersteuning toegevoegd voor de stijl Afgerond in het afbeelding blok.
-- Sommige mensen hebben mogelijk te maken gehad met een toolbar die zichzelf niet goed gedroeg bij het toevoegen van een nieuw blok, maar we hebben dit probleem opgelost.
-- We hebben ook gemerkt dat afbeeldingen in Afbeelding voorbeeld niet correct waren gepositioneerd na het wijzigen van de apparaat oriëntatie, maar dit is ook verholpen.
-- We hebben een paar andere problemen met het aanmelden en inloggen opgelost, waaronder een probleem met het weergeven van de gebruikersnaam na het aanmelden bij Apple, en een onjuist foutbericht dat werd weergegeven wanneer je een maximum aantal mislukte login pogingen hebt bereikt.

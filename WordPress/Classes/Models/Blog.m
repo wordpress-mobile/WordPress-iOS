@@ -85,6 +85,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -589,7 +590,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsStories
 {
-    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"8.9"];
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"9.1"];
     return hasRequiredJetpack || self.isHostedAtWPcom;
 }
 

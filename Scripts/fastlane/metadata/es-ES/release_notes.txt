@@ -1,7 +1,0 @@
-Echa un vistazo a las novedades de esta versión:
-
-- Compatibilidad para la alineación de ancho completo y amplia para los bloques de grupo, fondo e imagen (con compatibilidad para más bloques futuros).
-- ¿Te gustan las esquinas redondeadas en tus imágenes? También hemos añadido compatibilidad para el estilo redondeado en el bloque de imagen.
-- Algunas personas pueden haber experimentado un mal comportamiento de la barra de herramientas al añadir un nuevo bloque, pero hemos corregido este problema.
-- También hemos notado que en la vista previa de la imagen, las imágenes no se colocaban correctamente después de cambiar la orientación del dispositivo, pero esto también ha sido tratado.
-- Hemos resuelto algunos otros problemas sobre el registro y el acceso, incluyendo un problema de visualización del nombre de usuario después del registro en Apple y un mensaje de error incorrecto que se mostraba al alcanzar un número máximo de intentos de acceso fallidos.
