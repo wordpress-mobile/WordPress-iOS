@@ -14,6 +14,17 @@ parameters:
     type: string
     default: all-lang
 
+xcode_version: &xcode_version
+  xcode-version: "12.1.0"
+
+iphone_test_device: &iphone_test_device
+  device: iPhone 11
+  ios-version: "14.1"
+
+ipad_test_device: &ipad_test_device
+  device: iPad Air (4th generation)
+  ios-version: "14.1"
+
 commands:
   fix-image:
     steps:
@@ -33,9 +44,16 @@ commands:
 
 jobs:
   Build Tests:
+    parameters:
+      device:
+        type: string
+        description: The device (e.g. "iPhone 11") to use when compiling the build.
+      ios-version:
+        description: The iOS deployment target (e.g. "13.0") used to compile the build that will be used for testing.
+        type: string
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -48,7 +66,7 @@ jobs:
           command: rake dependencies
       - run:
           name: Build for Testing
-          command: cd ./Scripts && bundle exec fastlane build_for_testing
+          command: cd ./Scripts && bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - persist_to_workspace:
           root: ./
           paths:
@@ -56,30 +74,37 @@ jobs:
             - Pods/WordPressMocks
             - vendor/bundle
   Unit Tests:
+    parameters:
+      device:
+        type: string
+        description: The device (e.g. "iPhone 11") to use when running unit tests.
+      ios-version:
+        description: The iOS version (e.g. "14.0") of the device used to run tests.
+        type: string
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
-      - ios/boot-simulator:
-          xcode-version: "12.0.0"
-          device: iPhone 11
       - attach_workspace:
           at: ./
       - run:
           name: Prepare Bundle
           command: bundle --path vendor/bundle
-      - ios/wait-for-simulator
       - run:
           name: Run Unit Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
   UI Tests:
     parameters:
       device:
+        type: string
+        description: The device (e.g. "iPhone 11") to use when running tests.
+      ios-version:
+        description: The iOS version (e.g. "14.0") of the device used to run tests.
         type: string
       post-to-slack:
         description: Post to Slack when tests fail. SLACK_WEBHOOK ENV variable must be set.
@@ -87,13 +112,10 @@ jobs:
         default: false
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
-      - ios/boot-simulator:
-          xcode-version: "12.0.0"
-          device: << parameters.device >>
       - attach_workspace:
           at: ./
       - run:
@@ -103,11 +125,10 @@ jobs:
           name: Run mocks
           command: ./Pods/WordPressMocks/scripts/start.sh 8282
           background: true
-      - ios/wait-for-simulator
       - run:
           name: Run UI Tests
           working_directory: Scripts
-          command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3
+          command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
       - when:
@@ -117,9 +138,8 @@ jobs:
                 name: Prepare Slack message
                 when: always
                 command: |
-                  # Get the name of the device that is running. Using "<< parameters.device >>" can cause slack formatting errors.
-                  DEVICE_NAME=$(xcrun simctl list -j | jq -r --arg UDID $SIMULATOR_UDID '.devices[] | .[] | select(.udid == "\($UDID)") | .name')
-                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on ${DEVICE_NAME} in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPlease reach out in #platform9 if you think this failure is not caused by your changes, so we can investigate.'" >> $BASH_ENV
+                  # Get the name of the device that is running.
+                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on << parameters.device >> in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPlease reach out in #platform9 if you think this failure is not caused by your changes, so we can investigate.'" >> $BASH_ENV
             - slack/status:
                 fail_only: true
                 include_job_number_field: false
@@ -128,7 +148,7 @@ jobs:
   Installable Build:
     executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     steps:
       - fix-image
       - git/shallow-checkout
@@ -152,9 +172,9 @@ jobs:
           path: Artifacts
           destination: Artifacts
   Release Build:
-    executor: 
+    executor:
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -196,7 +216,7 @@ jobs:
   translation-review-build:
     executor: 
       name: ios/default
-      xcode-version: "12.0.0"
+      <<: *xcode_version
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -242,13 +262,15 @@ workflows:
   wordpress_ios:
     unless: << pipeline.parameters.translation_review_build >>
     jobs:
-      - Build Tests
+      - Build Tests:
+          <<: *iphone_test_device
       - Unit Tests:
+          <<: *iphone_test_device
           requires: [ "Build Tests" ]
       # Always run UI tests on develop and release branches
       - UI Tests:
           name: UI Tests (iPhone 11)
-          device: iPhone 11
+          <<: *iphone_test_device
           post-to-slack: true
           requires: [ "Build Tests" ]
           filters:
@@ -257,8 +279,8 @@ workflows:
                 - develop
                 - /^release.*/
       - UI Tests:
-          name: UI Tests (iPad Air 3rd generation)
-          device: iPad Air \\(3rd generation\\)
+          name: UI Tests (iPad Air 4th generation)
+          <<: *ipad_test_device
           post-to-slack: true
           requires: [ "Build Tests" ]
           filters:
@@ -277,11 +299,11 @@ workflows:
                 - /^release.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
-          device: iPhone 11
+          <<: *iphone_test_device
           requires: [ "Optional Tests" ]
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
-          device: iPad Air \\(4th generation\\)
+          <<: *ipad_test_device
           requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
