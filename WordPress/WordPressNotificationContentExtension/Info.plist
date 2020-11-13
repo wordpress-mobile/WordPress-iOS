@@ -33,6 +33,7 @@
 				<string>automattcher</string>
 				<string>comment_like</string>
 				<string>like</string>
+				<string>push_auth</string>
 			</array>
 			<key>UNNotificationExtensionDefaultContentHidden</key>
 			<true/>
