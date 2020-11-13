@@ -469,6 +469,7 @@ import "./ScreenshotFastfile"
         workspace: "../WordPress.xcworkspace",
         configuration: "Debug",
         destination: "platform=iOS Simulator,name=iPhone 11",
+        output_directory: "/var/tmp",
     )
 
     zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
