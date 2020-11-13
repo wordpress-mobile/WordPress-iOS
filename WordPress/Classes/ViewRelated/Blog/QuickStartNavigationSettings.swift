@@ -3,14 +3,11 @@ class QuickStartNavigationSettings: NSObject {
     private var spotlightView: QuickStartSpotlightView?
 
     func updateWith(navigationController: UINavigationController, andViewController viewController: UIViewController) {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
 
         switch viewController {
         case is BlogListViewController:
-            tourGuide.visited(.noSuchElement)
-            tourGuide.endCurrentTour()
+            QuickStartTourGuide.shared.visited(.noSuchElement)
+            QuickStartTourGuide.shared.endCurrentTour()
         default:
             break
         }

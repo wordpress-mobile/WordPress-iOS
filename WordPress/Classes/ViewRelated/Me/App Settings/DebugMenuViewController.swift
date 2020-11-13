@@ -127,7 +127,7 @@ class DebugMenuViewController: UITableViewController {
     }
 
     private func enableQuickStart(for blog: Blog) {
-        QuickStartTourGuide.find()?.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog)
     }
 
     // MARK: Reader

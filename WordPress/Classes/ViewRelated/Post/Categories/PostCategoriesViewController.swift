@@ -14,6 +14,9 @@ import Foundation
 @objc class PostCategoriesViewController: UITableViewController {
    @objc weak var delegate: PostCategoriesViewControllerDelegate?
 
+    var onCategoriesChanged: (() -> Void)?
+    var onTableViewHeightDetermined: (() -> Void)?
+
     private var blog: Blog
     private var originalSelection: [PostCategory]?
     private var selectionMode: CategoriesSelectionMode
@@ -49,6 +52,14 @@ import Foundation
         if !hasSyncedCategories {
             syncCategories()
         }
+
+        preferredContentSize = tableView.contentSize
+        onTableViewHeightDetermined?()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        onCategoriesChanged?()
     }
 
     private func configureTableView() {

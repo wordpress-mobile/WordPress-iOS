@@ -31,8 +31,9 @@
 				<string>replyto-comment</string>
 				<string>replyto-like-comment</string>
 				<string>automattcher</string>
-                <string>comment_like</string>
-                <string>like</string>
+				<string>comment_like</string>
+				<string>like</string>
+				<string>push_auth</string>
 			</array>
 			<key>UNNotificationExtensionDefaultContentHidden</key>
 			<true/>

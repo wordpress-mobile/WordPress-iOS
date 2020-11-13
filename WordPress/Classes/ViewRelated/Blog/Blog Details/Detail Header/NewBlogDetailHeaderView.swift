@@ -1,11 +1,4 @@
-@objc protocol BlogDetailHeaderViewDelegate {
-    func siteIconTapped()
-    func siteIconReceivedDroppedImage(_ image: UIImage?)
-    func siteIconShouldAllowDroppedImages() -> Bool
-    func siteTitleTapped()
-}
-
-class BlogDetailHeaderView: UIView, BlogDetailHeader {
+class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
@@ -81,11 +74,11 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
+        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
     private enum Constants {
@@ -101,8 +94,11 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
 
         self.init(frame: .zero)
 
+        // Temporary so we can differentiate between this and the old blog details in the PR review.
+        backgroundColor = .white
+
         siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.shared.visited(.siteIcon)
+            QuickStartTourGuide.find()?.visited(.siteIcon)
             self?.siteIconView.spotlightIsShown = false
 
             self?.delegate?.siteIconTapped()
@@ -171,7 +167,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc private func titleButtonTapped() {
-        QuickStartTourGuide.shared.visited(.siteTitle)
+        QuickStartTourGuide.find()?.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()
