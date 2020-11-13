@@ -685,6 +685,9 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: 36c931bdbc66e9efd2bf16736906a292a14a202b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :commit: a24e25020d315e0cd5a743eb5fca893d11482753
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: b9a4c0ea6d916f583db8154d8864f9d79e332919
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS

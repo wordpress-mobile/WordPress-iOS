@@ -51,6 +51,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         webView.backgroundColor = .basicBackground
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign)
         observeProgressEstimations()
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     deinit {
@@ -63,6 +64,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
 
     @IBAction func actionButtonSelected(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
+        dismiss(animated: true)
         completion(siteDesign)
     }
 
@@ -95,6 +97,10 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     private func removeProgressObserver() {
         estimatedProgressObserver?.invalidate()
         estimatedProgressObserver = nil
+    }
+
+    @objc func closeButtonTapped() {
+        dismiss(animated: true)
     }
 }
 

@@ -138,7 +138,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         let design = siteDesigns[selectedIndexPath.row]
         let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
-        navigationController?.pushViewController(previewVC, animated: true)
+        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        if #available(iOS 13.0, *) {
+            navController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+            navController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+        navigationController?.present(navController, animated: true)
     }
 
     private func handleError(_ error: Error) {
