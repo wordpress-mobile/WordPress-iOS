@@ -170,6 +170,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
         imageLoader.prepareForReuse()
         displayTopics = false
+        isWPForTeams = false
 
         topicsCollectionView.collapse()
     }

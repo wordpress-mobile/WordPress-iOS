@@ -62,7 +62,7 @@
                                 <rect key="frame" x="16" y="16" width="288" height="40"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="z25-Q5-35K" userLabel="Avatar Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                         <subviews>
                                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-iX-iqv" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -72,7 +72,7 @@
                                                     <constraint firstAttribute="width" secondItem="7Qj-iX-iqv" secondAttribute="height" multiplier="1:1" id="EEk-WN-bIC"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="X3v-d3-Adn" userLabel="Author Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="X3v-d3-Adn" userLabel="Author Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="0.0" width="40" height="40"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -86,17 +86,17 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-I0-BNp" userLabel="Label Stack View">
-                                        <rect key="frame" x="70" y="0.0" width="164" height="40"/>
+                                        <rect key="frame" x="50" y="0.0" width="184" height="40"/>
                                         <subviews>
                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Author, Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
-                                                <rect key="frame" x="0.0" y="0.0" width="164" height="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="184" height="17"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="c3n-LO-Igq" userLabel="Host Name / Time Stack View">
-                                                <rect key="frame" x="0.0" y="18" width="164" height="22"/>
+                                                <rect key="frame" x="0.0" y="18" width="184" height="22"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="740" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCZ-4n-fDW" userLabel="Blog Host Name">
                                                         <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="14.333333333333334"/>
@@ -116,7 +116,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="749" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="740" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
-                                                        <rect key="frame" x="98.333333333333343" y="0.0" width="65.666666666666657" height="14.333333333333334"/>
+                                                        <rect key="frame" x="98.333333333333343" y="0.0" width="85.666666666666657" height="14.333333333333334"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
