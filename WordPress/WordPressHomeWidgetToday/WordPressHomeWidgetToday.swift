@@ -1,20 +1,12 @@
 import WidgetKit
 import SwiftUI
 
-// TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
-// we should define what to put in here
-let staticContent = TodayWidgetContent(date: Date(),
-                                       siteTitle: "Places you should visit",
-                                       stats: TodayWidgetStats(views: 5980,
-                                                               visitors: 4208,
-                                                               likes: 107,
-                                                               comments: 5))
 
 struct Provider: TimelineProvider {
     // TODO - TODAYWIDGET: Kept these methods simple on purpose, for now.
     // They might complicate depending on Context
     func placeholder(in context: Context) -> TodayWidgetContent {
-        staticContent
+        Constants.staticContent
     }
 
     func getSnapshot(in context: Context, completion: @escaping (TodayWidgetContent) -> ()) {
@@ -48,7 +40,7 @@ private extension Provider {
     func getSnapshotData(completion: @escaping (TodayWidgetContent) -> ()) {
         // TODO - TODAYWIDGET: Using the "old widget" configuration, for now.
         guard let initialStats = TodayWidgetStats.loadSavedData() else {
-            completion(staticContent)
+            completion(Constants.staticContent)
             return
         }
         completion(TodayWidgetContent(date: Date(), siteTitle: siteName, stats: initialStats))
@@ -57,7 +49,7 @@ private extension Provider {
     func getTimelineData(completion: @escaping (Timeline<Entry>) -> ()) {
 
         let date = Date()
-        let nextRefreshDate = Calendar.current.date(byAdding: .hour, value: 1, to: date)
+        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date)
         // TODO - TODAYWIDGET: This is a sample data set to test timeline updates
         let entries = [TodayWidgetContent(date: date,
                                           siteTitle: "My Site + \(Int.random(in: 4 ... 100))",
@@ -68,6 +60,22 @@ private extension Provider {
 
         let timeline = Timeline(entries: entries, policy: .after(nextRefreshDate!))
         completion(timeline)
+    }
+}
+
+// MARK: - Constants
+private extension Provider {
+    enum Constants {
+        // TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
+        // we should define what to put in here
+        static let staticContent = TodayWidgetContent(date: Date(),
+                                                      siteTitle: "Places you should visit",
+                                                      stats: TodayWidgetStats(views: 5980,
+                                                                              visitors: 4208,
+                                                                              likes: 107,
+                                                                              comments: 5))
+        // refresh interval of the widget, in minutes
+        static let refreshInterval = 60
     }
 }
 
