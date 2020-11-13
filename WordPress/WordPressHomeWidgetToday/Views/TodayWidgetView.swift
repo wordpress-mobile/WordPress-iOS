@@ -44,10 +44,10 @@ extension TodayWidgetView {
 
 struct TodayWidgetView_Previews: PreviewProvider {
     static var previews: some View {
-        TodayWidgetView(content: staticModel)
+        TodayWidgetView(content: staticContent)
             .previewContext(WidgetPreviewContext(family: .systemSmall))
 
-        TodayWidgetView(content: staticModel)
+        TodayWidgetView(content: staticContent)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
