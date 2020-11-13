@@ -83,7 +83,7 @@ import Foundation
     case storyIntroShown
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
-    
+
     // Jetpack
     case jetpackSettingsViewed
     case jetpackManageConnectionViewed
@@ -226,7 +226,7 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
-            
+
         // Jetpack
         case .jetpackSettingsViewed:
             return "jetpack_settings_viewed"

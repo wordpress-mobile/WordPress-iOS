@@ -125,14 +125,13 @@ open class JetpackSettingsViewController: UITableViewController {
                           onChange: self.requireTwoStepAuthenticationChanged())
             )
         }
-        
+
         var manageConnectionRows = [ImmuTableRow]()
         manageConnectionRows.append(
             NavigationItemRow(title: NSLocalizedString("Manage Connection",
                                 comment: "Jetpack Settings: Manage Connection"),
                               action: self.pressedManageConnection())
         )
-        
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -297,7 +296,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                                       })
         }
     }
-    
+
     fileprivate func pressedManageConnection() -> ImmuTableAction {
         return { [unowned self] row in
             WPAnalytics.trackEvent(.jetpackManageConnectionViewed)
@@ -349,7 +348,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
 extension JetpackSettingsViewController: JetpackConnectionDelegate {
     func jetpackDisconnectedForBlog(_ blog: Blog) {
-        if (blog == self.blog) {
+        if blog == self.blog {
             navigationController?.popToRootViewController(animated: true)
         }
     }
