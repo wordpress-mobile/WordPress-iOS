@@ -554,7 +554,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                            post: post,
                                            multipleSelection: allowMultipleSelection,
                                            callback: callback)
-        case .filesApp:
+        case .otherApp, .allFiles:
             filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
         }
@@ -572,13 +572,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 mediaType = mediaType | WPMediaType.audio.rawValue
             case .other:
                 mediaType = mediaType | WPMediaType.other.rawValue
+            case .all:
+                mediaType = mediaType | WPMediaType.all.rawValue
             }
         }
-        if mediaType == 0 {
-            return WPMediaType.all
-        } else {
-            return WPMediaType(rawValue: mediaType)
-        }
+
+        return WPMediaType(rawValue: mediaType)
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -947,7 +946,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
             .tenor,
-            .filesApp,
+            .otherApp,
+            .allFiles,
         ].compactMap { $0 }
     }
 
@@ -1064,7 +1064,8 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
-    static let filesApp = Gutenberg.MediaSource(id: "wpios-files-app", label: .files, types: [.image, .video, .audio, .other])
+    static let otherApp = Gutenberg.MediaSource(id: "wpios-other-files", label: .otherApps, types: [.image, .video, .audio, .other])
+    static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .allFiles, types: [.all])
     static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 
