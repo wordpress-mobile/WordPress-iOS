@@ -555,7 +555,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                            multipleSelection: allowMultipleSelection,
                                            callback: callback)
         case .filesApp:
-            filesAppMediaPicker.presentPicker(origin: self, filters: filter, multipleSelection: allowMultipleSelection, callback: callback)
+            filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
         }
     }
