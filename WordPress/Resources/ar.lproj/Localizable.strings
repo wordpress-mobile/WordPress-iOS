@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-07 23:51:21+0000 */
+/* Translation-Revision-Date: 2020-11-13 14:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -197,7 +197,7 @@
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
 
 /* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully-supported";
+"'%s' is not fully-supported" = "لم يتم دعم \"%s\" بالكامل";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "+96692000000";
@@ -1114,7 +1114,7 @@
 "Check your email!" = "التحقق من بريدك الإلكتروني!";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
-"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+"Check your network connection and try again or create a blank page." = "تحقَّق من اتصال الشبكة وحاول مرة أخرى أو أنشئ صفحة فارغة.";
 
 /* Default subtitle for no-results when there is no connection */
 "Check your network connection and try again." = "تحقق من اتصال الشبكة والمحاولة مرة أخرى.";
@@ -1261,7 +1261,7 @@
 "Collect information" = "جمع المعلومات";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "اجمع بين الصور ومقاطع الفيديو والنصوص لإنشاء مقالات قصة جذابة وقابلة للنقر سيحبها زائروك.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "كوميكات";
@@ -2449,7 +2449,7 @@
 "Follow other sites" = "متابعة مواقع أخرى";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
+"Follow your favorite sites and discover new reads." = "تابع مواقعك المفضَّلة واكتشف مواضيع جديدة.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -4965,10 +4965,10 @@ translators: sample content for \"Services\" page template */
 "Scheduling..." = "جاري الجدولة...";
 
 /* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrollable block menu closed.";
+"Scrollable block menu closed." = "تم قفل قائمة المكوّن القابلة للتمرير.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+"Scrollable block menu opened. Select a block." = "تم فتح قائمة المكوّن القابلة للتمرير. حدد مكوّنًا.";
 
 /* Placeholder text for the search bar
    Search
@@ -6805,7 +6805,7 @@ translators: sample content for \"Services\" page template */
 "Watch readers from around the world read and interact with your site — in real time." = "راقب القرّاء من جميع أنحاء العالم وهم يقرؤون ويتفاعلون مع موقعك — بالوقت الفعلي.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+"Watch your audience grow with in-depth analytics." = "شاهد جمهورك يتزايد من خلال التحليلات المتعمقة.";
 
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "نحن فريق صغير من الاحترافيين الموهوبين الذين يتمتعون بمجموعة كبيرة من المهارات والخبرات. نحب ما نفعله ونقوم به بشغف. نتطلع إلى العمل معك.";
@@ -7335,7 +7335,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "تم تحديثك!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
+"You've got early access to story posts and we'd love for you to give it a try." = "يحق لك الوصول مبكرًا إلى مقالات القصص، ويسعدنا أن نجربها.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "لقد أجريتَ تغييرات غير محفوظة على هذه المقالة";
