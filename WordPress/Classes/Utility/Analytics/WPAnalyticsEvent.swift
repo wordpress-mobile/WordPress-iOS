@@ -86,10 +86,9 @@ import Foundation
     
     // Jetpack
     case jetpackSettingsViewed
-    case jetpackSecuritySettingsViewed
     case jetpackManageConnectionViewed
     case jetpackDisconnectTapped
-    case jetpackDisconnectComplete
+    case jetpackDisconnectRequested
 
     /// A String that represents the event
     var value: String {
@@ -231,14 +230,12 @@ import Foundation
         // Jetpack
         case .jetpackSettingsViewed:
             return "jetpack_settings_viewed"
-        case .jetpackSecuritySettingsViewed:
-            return "jetpack_security_settings_viewed"
         case .jetpackManageConnectionViewed:
             return "jetpack_manage_connection_viewed"
         case .jetpackDisconnectTapped:
             return "jetpack_disconnect_tapped"
-        case .jetpackDisconnectComplete:
-            return "jetpack_disconnect_complete"
+        case .jetpackDisconnectRequested:
+            return "jetpack_disconnect_requested"
         }
     }
 

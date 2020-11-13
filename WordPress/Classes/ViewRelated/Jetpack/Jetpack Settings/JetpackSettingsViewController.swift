@@ -300,6 +300,7 @@ open class JetpackSettingsViewController: UITableViewController {
     
     fileprivate func pressedManageConnection() -> ImmuTableAction {
         return { [unowned self] row in
+            WPAnalytics.trackEvent(.jetpackManageConnectionViewed)
             let jetpackConnectionVC = JetpackConnectionViewController(blog: blog)
             jetpackConnectionVC.delegate = self
             self.navigationController?.pushViewController(jetpackConnectionVC, animated: true)
