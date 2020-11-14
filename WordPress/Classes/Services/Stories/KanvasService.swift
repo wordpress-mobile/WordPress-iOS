@@ -34,6 +34,9 @@ class KanvasService {
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
         settings.animateEditorControls = false
+        settings.fontSelectorUsesFont = true
+        settings.features.muteButton = true
+
         return settings
     }
 

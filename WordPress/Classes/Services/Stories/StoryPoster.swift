@@ -43,13 +43,11 @@ class StoryPoster {
     /// - Parameters:
     ///   - media: The set of MediaItems which compose the story.
     ///   - title: The title of the story.
-    ///   - date: The date to publish the story on.
     ///   - blog: The blog to publish the post to.
     /// - Returns: A `Result` containing either the created `Post` or an `Error`.
-    func post(media: [MediaItem], title: String, date: Date = Date(), to blog: Blog) -> Result<Post, Error> {
+    func post(media: [MediaItem], title: String, to blog: Blog) -> Result<Post, Error> {
 
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        post.dateCreated = date
 
         let mediaFiles: [MediaFile] = media.map { item in
             return MediaFile(alt: "",
