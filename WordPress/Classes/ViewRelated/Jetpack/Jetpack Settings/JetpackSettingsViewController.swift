@@ -39,6 +39,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+        WPAnalytics.trackEvent(.jetpackSettingsViewed)
         title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
