@@ -54,7 +54,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Reply Suggestions
     ///
-    @IBOutlet var suggestionsTableView: SuggestionsTableView!
+    @IBOutlet var suggestionsTableView: SuggestionsTableView?
 
     /// Embedded Media Downloader
     ///
@@ -436,7 +436,7 @@ extension NotificationDetailsViewController {
     func setupSuggestionsView() {
         guard let siteID = note.metaSiteID else { return }
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
-        suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
+        suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func setupKeyboardManager() {
@@ -528,8 +528,8 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
     func attachSuggestionsViewIfNeeded() {
-        guard shouldAttachSuggestionsView else {
-            suggestionsTableView.removeFromSuperview()
+        guard shouldAttachSuggestionsView, let suggestionsTableView = self.suggestionsTableView else {
+            self.suggestionsTableView?.removeFromSuperview()
             return
         }
 
@@ -540,7 +540,7 @@ private extension NotificationDetailsViewController {
             suggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             suggestionsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             suggestionsTableView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
-            ])
+        ])
     }
 
     var shouldAttachSuggestionsView: Bool {
@@ -1180,11 +1180,11 @@ private extension NotificationDetailsViewController {
 //
 extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func textView(_ textView: UITextView, didTypeWord word: String) {
-        suggestionsTableView.showSuggestions(forWord: word)
+        suggestionsTableView?.showSuggestions(forWord: word)
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = note.metaSiteID, let suggestionsTableView = self.suggestionsTableView else {
             return
         }
 
