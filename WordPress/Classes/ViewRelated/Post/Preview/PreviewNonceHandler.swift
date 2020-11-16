@@ -5,11 +5,8 @@ struct PreviewNonceHandler {
             return nil
         }
 
-        if postNeedsPreviewParam(post: post) {
+        if shouldUnmapAndAddPreviewParam(post: post) {
             url = addPreviewIfNecessary(url: url) ?? url
-        }
-
-        if shouldUseUnmappedDomain(url: url, for: post) {
             url = unmapURL(post: post, url: url) ?? url
         }
 
@@ -45,7 +42,7 @@ struct PreviewNonceHandler {
         return components.url
     }
 
-    private static func postNeedsPreviewParam(post: AbstractPost) -> Bool {
+    private static func shouldUnmapAndAddPreviewParam(post: AbstractPost) -> Bool {
         // If the post is not published, add the preview param.
         if post.status!.rawValue != PostStatusPublish {
             return true
@@ -53,24 +50,6 @@ struct PreviewNonceHandler {
 
         // If the post is published, but has changes, add the preview param.
         if post.hasUnsavedChanges() || post.hasRemoteChanges() {
-            return true
-        }
-
-        return false
-    }
-
-    private static func shouldUseUnmappedDomain(url: URL, for post: AbstractPost) -> Bool {
-        // Always used the unmapped domain when previewing.
-        if postNeedsPreviewParam(post: post) {
-            return true
-        }
-
-        // Now it gets a little tricky. We'd like to have users authenticated,
-        // but we also want use a custom domain that smoeone has bought.
-        // RequestAuthenticator currently can't authenticate a custom domain.
-        // So until it can, unmap the domain when authentication is required,
-        // e.g. for private sites, or coming soon..
-        if post.blog.isPrivate() {
             return true
         }
 
