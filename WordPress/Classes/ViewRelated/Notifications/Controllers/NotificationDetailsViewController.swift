@@ -529,7 +529,7 @@ private extension NotificationDetailsViewController {
 private extension NotificationDetailsViewController {
     func attachSuggestionsViewIfNeeded() {
         guard shouldAttachSuggestionsView, let suggestionsTableView = self.suggestionsTableView else {
-            self.suggestionsTableView?.removeFromSuperview()
+            suggestionsTableView.removeFromSuperview()
             return
         }
 
