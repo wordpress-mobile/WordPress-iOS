@@ -1333,7 +1333,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     NSParameterAssert(blog);
 
-    JetpackSecuritySettingsViewController *settings = [[JetpackSecuritySettingsViewController alloc] initWithBlog:blog];
+    JetpackSettingsViewController *settings = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
 }
 
