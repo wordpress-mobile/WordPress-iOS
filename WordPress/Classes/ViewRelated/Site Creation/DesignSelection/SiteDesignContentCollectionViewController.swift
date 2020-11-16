@@ -58,6 +58,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
+        SiteCreationAnalyticsHelper.trackSiteDesignViewed()
         navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
     }
 
@@ -114,6 +115,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
+        SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
     }
 
@@ -127,10 +129,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             return
         }
         let design = siteDesigns[selectedIndexPath.row]
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
         completion(design)
     }
 
     private func handleError(_ error: Error) {
+        SiteCreationAnalyticsHelper.trackError(error)
         let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
         let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
