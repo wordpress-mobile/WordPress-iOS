@@ -26,11 +26,7 @@ extension FancyAlertViewController {
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             controller.dismiss(animated: true)
 
-            guard let tourGuide = QuickStartTourGuide.find() else {
-                return
-            }
-
-            tourGuide.setup(for: blog)
+            QuickStartTourGuide.shared.setup(for: blog)
 
             WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
         }

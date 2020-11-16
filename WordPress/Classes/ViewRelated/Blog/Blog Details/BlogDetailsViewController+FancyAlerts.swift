@@ -16,8 +16,7 @@ extension BlogDetailsViewController {
             self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
-            if let index = QuickStartTourGuide.find()?.currentElementInt(),
-                let element = QuickStartTourElement(rawValue: index) {
+            if let element = QuickStartTourElement(rawValue: QuickStartTourGuide.shared.currentElementInt()) {
                 self?.scroll(to: element)
             }
 
@@ -81,16 +80,13 @@ extension BlogDetailsViewController {
     }
 
     private func showNoticeOrAlertAsNeeded() {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
 
-        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+        if QuickStartTourGuide.shared.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
-            tourGuide.didShowUpgradeToV2Notice(for: blog)
-        } else if let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
-            tourGuide.suggest(tourToSuggest, for: blog)
+            QuickStartTourGuide.shared.didShowUpgradeToV2Notice(for: blog)
+        } else if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
+            QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
     }
 
@@ -113,7 +109,7 @@ extension BlogDetailsViewController {
             self?.toggleSpotlightOnHeaderView()
         }
 
-        QuickStartTourGuide.find()?.visited(.checklist)
+        QuickStartTourGuide.shared.visited(.checklist)
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
@@ -133,10 +129,9 @@ extension BlogDetailsViewController {
                                            }
         customizeRow.quickStartIdentifier = .checklist
         customizeRow.showsSelectionState = false
-         if let customizeDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.customizeListTours, for: blog) {
-             customizeRow.detail = String(format: detailFormatStr, customizeDetailCount, QuickStartTourGuide.customizeListTours.count)
-             customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
-        }
+        let customizeDetailCount = QuickStartTourGuide.shared.countChecklistCompleted(in: QuickStartTourGuide.customizeListTours, for: blog)
+        customizeRow.detail = String(format: detailFormatStr, customizeDetailCount, QuickStartTourGuide.customizeListTours.count)
+        customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
 
         let growTitle = NSLocalizedString("Grow Your Audience",
                                           comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
@@ -151,10 +146,9 @@ extension BlogDetailsViewController {
                                      }
         growRow.quickStartIdentifier = .checklist
         growRow.showsSelectionState = false
-         if let growDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.growListTours, for: blog) {
-             growRow.detail = String(format: detailFormatStr, growDetailCount, QuickStartTourGuide.growListTours.count)
-             growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
-        }
+        let growDetailCount = QuickStartTourGuide.shared.countChecklistCompleted(in: QuickStartTourGuide.growListTours, for: blog)
+        growRow.detail = String(format: detailFormatStr, growDetailCount, QuickStartTourGuide.growListTours.count)
+        growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
 
         let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
         let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)

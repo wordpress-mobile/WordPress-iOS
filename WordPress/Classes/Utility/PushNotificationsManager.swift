@@ -294,6 +294,20 @@ extension PushNotificationsManager {
         return true
     }
 
+    /// A handler for a 2fa auth notification approval action.
+    ///
+    /// - Parameter userInfo: The Notification's Payload
+    /// - Returns: True if successful. False otherwise.
+    ///
+    @objc func handleAuthenticationApprovedAction(_ userInfo: NSDictionary) -> Bool {
+        let authenticationManager = PushAuthenticationManager()
+        guard authenticationManager.isAuthenticationNotification(userInfo) else {
+            return false
+        }
+        authenticationManager.handleAuthenticationApprovedAction(userInfo)
+        return true
+    }
+
 
     /// Handles a Notification while in Inactive Mode
     ///
