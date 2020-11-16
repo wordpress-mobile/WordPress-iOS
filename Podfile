@@ -35,7 +35,7 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.7.1'
+    pod 'WordPressUI', '~> 1.7.3-beta.1'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
