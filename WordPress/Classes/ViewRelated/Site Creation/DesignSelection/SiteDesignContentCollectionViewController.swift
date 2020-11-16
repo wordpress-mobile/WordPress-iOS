@@ -2,6 +2,7 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
+    let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
     let cellSize = CGSize(width: 160, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
@@ -24,12 +25,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
         let contentWidth = (cellsPerRowCap * cellSize.width) + (itemSpacing * spacingCounts)
         let margin = (screenWidth - contentWidth) / 2
-        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: itemSpacing, right: margin)
+        return UIEdgeInsets(top: 1, left: margin, bottom: itemSpacing, right: margin)
     }
 
-    init() {
+    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.completion = completion
         collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
         collectionViewLayout.minimumInteritemSpacing = itemSpacing
         collectionViewLayout.itemSize = cellSize
@@ -57,6 +58,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
+        navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEdgeInsets()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -70,10 +77,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
-        coordinator.animate { (_) in
-            self.collectionViewLayout.sectionInset = newEdgeInsets
+        coordinator.animate(alongsideTransition: nil) { (_) in
+            self.updateEdgeInsets()
         }
+    }
+
+    private func updateEdgeInsets() {
+        let screenSize = view.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
@@ -99,13 +110,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
-        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        completion(nil)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
@@ -113,7 +122,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     override func primaryActionSelected(_ sender: Any) {
-        /* ToDo */
+        guard let selectedIndexPath = selectedIndexPath else {
+            completion(nil)
+            return
+        }
+        let design = siteDesigns[selectedIndexPath.row]
+        completion(design)
     }
 
     private func handleError(_ error: Error) {
