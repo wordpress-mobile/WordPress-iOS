@@ -147,6 +147,26 @@ extension URL {
     }
 
 
+    /// Handle the common link protocols.
+    /// - tel: open a prompt to call the phone number
+    /// - sms: compose new message in iMessage app
+    /// - facetime: open a prompt to start facetime
+    /// - mailto: compose new email in Mail app
+    ///
+    var isLinkProtocol: Bool {
+        guard let urlScheme = scheme else {
+            return false
+        }
+
+        let linkProtocols = ["tel", "sms", "facetime", "mailto"]
+        if linkProtocols.contains(urlScheme) && UIApplication.shared.canOpenURL(self) {
+            return true
+        }
+
+        return false
+    }
+
+
     /// Does a quick test to see if 2 urls are equal to each other by
     /// using just the hosts and paths. This ignores any query items, or hashes
     /// on the urls
