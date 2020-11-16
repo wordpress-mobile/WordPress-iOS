@@ -1,3 +1,7 @@
+16.3
+-----
+* [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-17+%22Home+Page+Picker%22&type=Issues)
+
 16.2
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
