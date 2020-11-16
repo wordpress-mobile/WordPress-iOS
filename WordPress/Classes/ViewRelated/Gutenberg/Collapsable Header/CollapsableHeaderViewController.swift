@@ -7,11 +7,16 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     let scrollableView: UIScrollView
+    let accessoryView: UIView?
     let mainTitle: String
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
+    open var accessoryBarHeight: CGFloat {
+        return 44
+    }
+
     private let seperatorStyle: SeperatorStyle
     private let hasDefaultAction: Bool
 
@@ -26,8 +31,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }()
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
-    @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
-    @IBOutlet weak var filterBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var accessoryBar: UIView!
+    @IBOutlet weak var accessoryBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
@@ -70,9 +75,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private let hasFilterBar: Bool
-    private var shouldHideFilterBar: Bool {
-        return isShowingNoResults || !hasFilterBar
+    private let hasAccessoryBar: Bool
+    private var shouldHideAccessoryBar: Bool {
+        return isShowingNoResults || !hasAccessoryBar
     }
 
     private var shouldUseCompactLayout: Bool {
@@ -148,7 +153,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///   - primaryActionTitle: The button title for the right most button when an item is selected. Required.
     ///   - secondaryActionTitle: The button title for the left most button when an item is selected. Optional - nil results in the left most button being hidden when an item is selected.
     ///   - defaultActionTitle: The button title for the button that is displayed when no item is selected. Optional - nil results in the footer being hidden when no item is selected.
-    ///   - hasFilterBar: Determines if the filter bar should be shown or not. Optional - The default is shown.
+    ///   - accessoryView: The view to be placed in the placeholder of the accessory bar. Optional - The default is nil.
     ///
     init(scrollableView: UIScrollView,
          mainTitle: String,
@@ -156,16 +161,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
          defaultActionTitle: String? = nil,
-         hasFilterBar: Bool = true) {
+         accessoryView: UIView? = nil) {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
-        self.hasFilterBar = hasFilterBar
+        self.hasAccessoryBar = (accessoryView != nil)
         self.hasDefaultAction = (defaultActionTitle != nil)
-        self.seperatorStyle = hasFilterBar ? .visibile : .hidden
+        self.seperatorStyle = self.hasAccessoryBar ? .visibile : .hidden
+        self.accessoryView = accessoryView
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -176,6 +182,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         insertChildView()
+        insertAccessoryView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         toggleFilterBarConstraints()
@@ -229,7 +236,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         guard isShowingNoResults else { return }
         coordinator.animate { (_) in
             self.updateHeaderDisplay()
-            if self.shouldHideFilterBar {
+            if self.shouldHideAccessoryBar {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
             }
@@ -354,6 +361,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         containerView.addConstraints([top, bottom, leading, trailing])
     }
 
+    private func insertAccessoryView() {
+        guard let accessoryView = accessoryView else { return }
+        accessoryView.translatesAutoresizingMaskIntoConstraints = false
+        let top = NSLayoutConstraint(item: accessoryView, attribute: .top, relatedBy: .equal, toItem: accessoryBar, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: accessoryView, attribute: .bottom, relatedBy: .equal, toItem: accessoryBar, attribute: .bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: accessoryView, attribute: .leading, relatedBy: .equal, toItem: accessoryBar, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: accessoryView, attribute: .trailing, relatedBy: .equal, toItem: accessoryBar, attribute: .trailing, multiplier: 1, constant: 0)
+        accessoryBar.addSubview(accessoryView)
+        accessoryBar.addConstraints([top, bottom, leading, trailing])
+    }
+
     private func styleButtons() {
         let seperator: UIColor
         if #available(iOS 13.0, *) {
@@ -376,29 +394,29 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
-        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-        maxHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 24
-        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
+        accessoryBarHeightConstraint.constant = shouldHideAccessoryBar ? 0 : accessoryBarHeight
+        maxHeaderBottomSpacing.constant = shouldHideAccessoryBar ? 1 : 24
+        minHeaderBottomSpacing.constant = shouldHideAccessoryBar ? 1 : 9
     }
 
     private func updateHeaderDisplay() {
         headerHeightConstraint.isActive = false
         initialHeaderTopConstraint.isActive = true
         toggleFilterBarConstraints()
-        filterBar.layoutIfNeeded()
+        accessoryBar.layoutIfNeeded()
         headerView.layoutIfNeeded()
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
     }
 
     private func calculateHeaderSnapPoints() {
-        if shouldHideFilterBar {
+        if shouldHideAccessoryBar {
             minHeaderHeight = 1
             _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + minHeaderHeight
             _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
         } else {
-            minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
-            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
+            minHeaderHeight = accessoryBarHeightConstraint.constant + minHeaderBottomSpacing.constant
+            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + accessoryBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
             _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
         }
     }
@@ -507,13 +525,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             self.defaultActionButton.isHidden = hasSelectedItem
             self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
         }
-    }
-
-    /// A public interface to notify the container that the content view is loading content still
-    public func loadingStateChanged(_ isLoading: Bool) {
-        filterBar.shouldShowGhostContent = isLoading
-        filterBar.allowsMultipleSelection = !isLoading
-        filterBar.reloadData()
     }
 
     // MARK: - Seperator styling

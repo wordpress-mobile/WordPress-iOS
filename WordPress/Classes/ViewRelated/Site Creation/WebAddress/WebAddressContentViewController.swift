@@ -11,13 +11,11 @@ class WebAddressContentViewController: CollapsableHeaderViewController {
         self.siteCreator = creator
         self.service = service
         self.completion = selection
-        
         tableView = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: tableView,
                    mainTitle: NSLocalizedString("Choose a domain", comment: "Select domain name. Title"),
                    prompt: NSLocalizedString("This is where people will find you on the internet", comment: "Select domain name. Subtitle"),
-                   primaryActionTitle: NSLocalizedString("Create Site", comment: "Button to progress to the next step"),
-                   hasFilterBar: false)
+                   primaryActionTitle: NSLocalizedString("Create Site", comment: "Button to progress to the next step"))
     }
 
     required init?(coder: NSCoder) {

@@ -12,10 +12,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CollapsableHeaderViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="accessoryBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
+                <outlet property="accessoryBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
                 <outlet property="containerView" destination="WmP-bw-ceT" id="lul-gs-fMI"/>
                 <outlet property="defaultActionButton" destination="dmc-kV-0d8" id="NfO-bU-Zl7"/>
-                <outlet property="filterBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
-                <outlet property="filterBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
                 <outlet property="footerHeightContraint" destination="lle-48-IUZ" id="CV2-G2-ryj"/>
                 <outlet property="footerView" destination="UfV-hu-KZx" id="LZu-HT-o4b"/>
                 <outlet property="headerHeightConstraint" destination="dks-Bz-gRQ" id="PfP-C9-RWM"/>
@@ -75,20 +75,13 @@
                             <nil key="highlightedColor"/>
                             <variation key="heightClass=compact" hidden="YES"/>
                         </label>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB" customClass="CollapsableHeaderFilterBar" customModule="WordPress" customModuleProvider="target">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB">
                             <rect key="frame" x="0.0" y="137.5" width="414" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Eej-Tm-ddy"/>
                             </constraints>
-                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="12" id="2U8-JP-Gbh">
-                                <size key="itemSize" width="105" height="44"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                            <cells/>
-                        </collectionView>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-KC-2W9" userLabel="Seperator">
                             <rect key="frame" x="0.0" y="205" width="414" height="0.5"/>
                             <color key="backgroundColor" systemColor="separatorColor"/>

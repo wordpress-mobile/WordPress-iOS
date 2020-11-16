@@ -43,8 +43,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         super.init(scrollableView: collectionView,
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
                    prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
-                   primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-                   hasFilterBar: false)
+                   primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"))
     }
 
     required init?(coder: NSCoder) {
