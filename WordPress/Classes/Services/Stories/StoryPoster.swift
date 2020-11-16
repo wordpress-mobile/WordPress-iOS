@@ -61,7 +61,8 @@ class StoryPoster {
         }
 
         do {
-            post.content = try json(files: mediaFiles)
+            let mediaJSON = try json(files: mediaFiles)
+            post.content = StoryBlock.wrap(mediaJSON)
         } catch let error {
             CrashLogging.logMessage("Failed to encode Story")
             let error = StoryPosterError.jsonEncodeError(error)
