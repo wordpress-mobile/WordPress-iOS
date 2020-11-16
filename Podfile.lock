@@ -387,7 +387,6 @@ PODS:
   - Sentry (4.5.0):
     - Sentry/Core (= 4.5.0)
   - Sentry/Core (4.5.0)
-  - SimulatorStatusMagic (2.4.1)
   - Sodium (0.8.0)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -502,7 +501,6 @@ DEPENDENCIES:
   - RNScreens (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.41.0/third-party-podspecs/RNScreens.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.41.0/third-party-podspecs/RNSVG.podspec.json`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.41.0`)
-  - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
@@ -549,7 +547,6 @@ SPEC REPOS:
     - OHHTTPStubs
     - Reachability
     - Sentry
-    - SimulatorStatusMagic
     - Sodium
     - Starscream
     - SVProgressHUD
@@ -749,7 +746,6 @@ SPEC CHECKSUMS:
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 06df57c4e8e38a16bab29d329d7d8c895bb176bf
   Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
-  SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -773,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 220f7793b6facebfda501c88cb380e0f09284e87
+PODFILE CHECKSUM: bd628bcc739c475bd1f0314c8d6093be9dca7004
 
 COCOAPODS: 1.9.3
