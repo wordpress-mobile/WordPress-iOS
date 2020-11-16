@@ -160,7 +160,7 @@ class ReaderCommentCell: UITableViewCell {
         guard let comment = comment else {
             return
         }
-
+        avatarImageView.cancelImageDownload()
         let placeholder = UIImage(named: "gravatar")
         if let url = comment.avatarURLForDisplay() {
             avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
