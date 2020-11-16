@@ -16,9 +16,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    #pod 'WordPressShared', '~> 1.12.0'
+    pod 'WordPressShared', '~> 1.13.0-beta.1'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'gutenberg/hpp/2723-analytics'
+    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
     #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.21.0-beta.2'
+    pod 'WordPressKit', '~> 4.21.0-beta.2'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'gutenberg/issues/2721-submitSiteTemplate'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.40.0'
+    gutenberg :tag => 'v1.41.0'
 
     ## Third party libraries
     ## =====================
@@ -198,7 +198,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0.2-beta.1'
 
-    pod 'WordPressAuthenticator', '~> 1.27.0'
+    pod 'WordPressAuthenticator', '~> 1.29.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

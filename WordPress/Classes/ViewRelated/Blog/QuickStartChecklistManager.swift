@@ -190,9 +190,6 @@ private extension QuickStartChecklistManager {
     }
 
     func tableView(_ tableView: UITableView, completeTourAt indexPath: IndexPath) {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
         let tour = todoTours[indexPath.row]
         todoTours.remove(at: indexPath.row)
         completedTours.append(tour)
@@ -213,7 +210,7 @@ private extension QuickStartChecklistManager {
                 if self.shouldShowCompleteTasksScreen() {
                     self.didTapHeader(self.completedSectionCollapse)
                 }
-                tourGuide.complete(tour: tour, for: self.blog, postNotification: false)
+                QuickStartTourGuide.shared.complete(tour: tour, for: self.blog, postNotification: false)
                 let sections = IndexSet(integer: Sections.todo.rawValue)
                 tableView.reloadSections(sections, with: .automatic)
             }

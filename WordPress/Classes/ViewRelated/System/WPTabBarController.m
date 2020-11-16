@@ -47,7 +47,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
-@property (nonatomic, strong) QuickStartTourGuide *tourGuide;
 
 @property (nonatomic, strong) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
@@ -92,8 +91,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self = [super init];
     if (self) {
         [self setDelegate:self];
-        self.tourGuide = [[QuickStartTourGuide alloc] init];
-
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];

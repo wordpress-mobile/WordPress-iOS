@@ -119,7 +119,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if QuickStartTourGuide.find()?.isCurrentElement(.newPage) ?? false {
+        if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
             updateFilterWithPostStatus(.publish)
         }
 
@@ -477,7 +477,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
         present(editorViewController, animated: false)
 
-        QuickStartTourGuide.find()?.visited(.newPage)
+        QuickStartTourGuide.shared.visited(.newPage)
     }
 
     fileprivate func editPage(_ page: Page) {

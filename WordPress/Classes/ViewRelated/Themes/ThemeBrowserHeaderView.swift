@@ -107,11 +107,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     private func spotlightCustomizeButtonIfTourIsActive() {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
 
-        if tourGuide.isCurrentElement(.customize) {
+        if QuickStartTourGuide.shared.isCurrentElement(.customize) {
             customizeButton.addSubview(quickStartSpotlightView)
             quickStartSpotlightView.translatesAutoresizingMaskIntoConstraints = false
             addConstraints([
