@@ -59,7 +59,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed()
-        navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
     }
 
     override func viewWillAppear(_ animated: Bool) {

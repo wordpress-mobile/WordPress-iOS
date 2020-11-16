@@ -647,6 +647,7 @@
 		465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */; };
 		46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */; };
 		4666534A2501552A00165DD4 /* LayoutPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466653492501552A00165DD4 /* LayoutPreviewViewController.swift */; };
+		4695E47E25630F9E00C512E1 /* WebAddressContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */; };
 		46963F5924649542000D356D /* EditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46963F5824649542000D356D /* EditorTheme.swift */; };
 		469CE06D24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */; };
 		469CE06E24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */; };
@@ -3121,6 +3122,7 @@
 		465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergLightNavigationController.swift; sourceTree = "<group>"; };
 		46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBlockProcessor.swift; sourceTree = "<group>"; };
 		466653492501552A00165DD4 /* LayoutPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPreviewViewController.swift; sourceTree = "<group>"; };
+		4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressContentViewController.swift; sourceTree = "<group>"; };
 		46963F5824649542000D356D /* EditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTheme.swift; sourceTree = "<group>"; };
 		469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerSectionTableViewCell.swift; sourceTree = "<group>"; };
 		469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPickerSectionTableViewCell.xib; sourceTree = "<group>"; };
@@ -10140,6 +10142,7 @@
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
 				D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */,
+				4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */,
 			);
 			path = WebAddress;
 			sourceTree = "<group>";
@@ -12614,6 +12617,7 @@
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
+				4695E47E25630F9E00C512E1 /* WebAddressContentViewController.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */,
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
