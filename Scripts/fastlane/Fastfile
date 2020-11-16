@@ -137,6 +137,7 @@ import "./ScreenshotFastfile"
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt"),
       "app_store_screenshot-6" => File.join(source_metadata_folder, "promo_screenshot_6.txt"),
       "app_store_screenshot-7" => File.join(source_metadata_folder, "promo_screenshot_7.txt"),
+      "app_store_screenshot-8" => File.join(source_metadata_folder, "promo_screenshot_8.txt"),
     }
 
     ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po",
@@ -481,6 +482,8 @@ import "./ScreenshotFastfile"
       scheme: "WordPress",
       derived_data_path: "../DerivedData",
       build_for_testing: true,
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
     )
   end
   #####################################################################################
@@ -634,6 +637,8 @@ import "./ScreenshotFastfile"
     multi_scan(
       workspace: "../WordPress.xcworkspace",
       scheme: "WordPress",
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
       test_without_building: true,
       xctestrun: testPlanPath,
       try_count: options[:try_count],

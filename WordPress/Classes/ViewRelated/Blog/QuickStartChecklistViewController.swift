@@ -99,11 +99,10 @@ class QuickStartChecklistViewController: UITableViewController {
                     return
                 }
 
-                let tourGuide = QuickStartTourGuide.find()
-                tourGuide?.prepare(tour: tour, for: self.blog)
+                QuickStartTourGuide.shared.prepare(tour: tour, for: self.blog)
 
                 self.dismiss(animated: true) {
-                    tourGuide?.begin()
+                    QuickStartTourGuide.shared.begin()
                 }
             }
         }, didTapHeader: { [unowned self] expand in

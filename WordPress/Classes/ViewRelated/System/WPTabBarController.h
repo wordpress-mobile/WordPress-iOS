@@ -19,7 +19,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class ReaderMenuViewController;
 @class ReaderTabViewModel;
 @class WPSplitViewController;
-@class QuickStartTourGuide;
 @protocol ScenePresenter;
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
@@ -30,7 +29,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
-@property (nonatomic, strong, readonly) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
