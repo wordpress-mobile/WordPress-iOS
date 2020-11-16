@@ -5,9 +5,15 @@
     func siteTitleTapped()
 }
 
-class BlogDetailHeaderView: UIView {
+class BlogDetailHeaderView: UIView, BlogDetailHeader {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
+
+    // Temporary method for migrating to NewBlogDetailHeaderView
+    @objc
+    var asView: UIView {
+        return self
+    }
 
     private let titleButton: SpotlightableButton = {
         let button = SpotlightableButton(type: .custom)
@@ -75,11 +81,11 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
     private enum Constants {
@@ -96,7 +102,7 @@ class BlogDetailHeaderView: UIView {
         self.init(frame: .zero)
 
         siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.find()?.visited(.siteIcon)
+            QuickStartTourGuide.shared.visited(.siteIcon)
             self?.siteIconView.spotlightIsShown = false
 
             self?.delegate?.siteIconTapped()
@@ -165,7 +171,7 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc private func titleButtonTapped() {
-        QuickStartTourGuide.find()?.visited(.siteTitle)
+        QuickStartTourGuide.shared.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()

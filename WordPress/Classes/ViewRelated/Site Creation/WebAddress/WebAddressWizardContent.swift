@@ -169,15 +169,30 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        // It's not ideal to let the segment ID be optional at this point, but in order to avoid overcomplicating my current
-        // task, I'll default to silencing this situation.  Since the segment ID should exist, this silencing should not
-        // really be triggered for now.
-        guard let segmentID = siteCreator.segment?.identifier else {
+        // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
+        guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
+            fetchDotComAddresses(searchTerm)
             return
         }
 
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
+            self?.updateIcon(isLoading: false)
+            switch results {
+            case .failure(let error):
+                self?.handleError(error)
+            case .success(let data):
+                self?.handleData(data)
+            }
+        }
+    }
+
+    // Fetches Addresss suggestions for dotCom sites without requiring a segment.
+    private func fetchDotComAddresses(_ searchTerm: String) {
+        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return }
+
+        updateIcon(isLoading: true)
+        service.addresses(for: searchTerm) { [weak self] results in
             self?.updateIcon(isLoading: false)
             switch results {
             case .failure(let error):
@@ -231,7 +246,8 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         throttle.throttle { [weak self] in
-            self?.fetchAddresses(query)
+            guard let self = self else { return }
+            self.fetchAddresses(query)
         }
     }
 

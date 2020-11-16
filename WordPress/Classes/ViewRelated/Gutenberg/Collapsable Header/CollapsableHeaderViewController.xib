@@ -28,6 +28,7 @@
                 <outlet property="promptView" destination="bxz-wi-I73" id="O9L-j8-Peu"/>
                 <outlet property="secondaryActionButton" destination="HeJ-NR-hHA" id="afV-HA-5GH"/>
                 <outlet property="selectedStateButtonsContainer" destination="3RE-1V-jrs" id="wSU-hi-pPd"/>
+                <outlet property="seperator" destination="9w9-KC-2W9" id="641-sa-WZa"/>
                 <outlet property="subtitleToCategoryBarSpacing" destination="LOU-MU-PJx" id="jgY-Bn-wH6"/>
                 <outlet property="titleToSubtitleSpacing" destination="yo1-TE-BW8" id="uQ6-LG-Y3O"/>
                 <outlet property="view" destination="U3M-sT-nKQ" id="MUQ-Hw-DWi"/>

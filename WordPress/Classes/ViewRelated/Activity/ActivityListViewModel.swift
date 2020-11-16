@@ -19,6 +19,9 @@ class ActivityListViewModel: Observable {
     private let rewindStatusReceipt: Receipt
     private var storeReceipt: Receipt?
 
+    private let count = 20
+    private var offset = 0
+
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
         didSet {
@@ -26,6 +29,10 @@ class ActivityListViewModel: Observable {
                 emitChange()
             }
         }
+    }
+
+    var hasMore: Bool {
+        store.state.hasMore
     }
 
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
@@ -46,7 +53,14 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh() {
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count))
+    }
+
+    public func loadMore() {
+        if !store.isFetching(site: site) {
+            offset = store.state.activities[site]?.count ?? 0
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset))
+        }
     }
 
     func noResultsViewModel() -> NoResultsViewController.Model? {

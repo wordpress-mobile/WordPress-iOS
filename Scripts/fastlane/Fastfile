@@ -148,6 +148,7 @@ import "./ScreenshotFastfile"
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt"),
       "app_store_screenshot-6" => File.join(source_metadata_folder, "promo_screenshot_6.txt"),
       "app_store_screenshot-7" => File.join(source_metadata_folder, "promo_screenshot_7.txt"),
+      "app_store_screenshot-8" => File.join(source_metadata_folder, "promo_screenshot_8.txt"),
     }
 
     ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po",

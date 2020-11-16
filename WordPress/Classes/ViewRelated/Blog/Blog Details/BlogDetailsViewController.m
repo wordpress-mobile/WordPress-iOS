@@ -209,7 +209,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong, readwrite) id<BlogDetailHeader> headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -394,7 +394,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
-    if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+    if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
         self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
     } else {
         self.additionalSafeAreaInsets = UIEdgeInsetsZero;
@@ -985,12 +985,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
-    BlogDetailHeaderView *headerView = [self configureHeaderView];
+    id<BlogDetailHeader> headerView = [self configureHeaderView];
     headerView.delegate = self;
 
     self.headerView = headerView;
 
-    self.tableView.tableHeaderView = headerView;
+    self.tableView.tableHeaderView = headerView.asView;
 }
 
 #pragma mark BlogDetailHeaderViewDelegate
@@ -1235,7 +1235,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [WPStyleGuide configureTableViewCell:cell];
     }
-    if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
+    if ([[QuickStartTourGuide shared] isCurrentElement:row.quickStartIdentifier]) {
         row.accessoryView = [QuickStartSpotlightView new];
     } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
         row.accessoryView = nil;
@@ -1310,7 +1310,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
         
-        [[QuickStartTourGuide find] removeFrom:self.blog];
+        [[QuickStartTourGuide shared] removeFrom:self.blog];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1479,7 +1479,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.blog = self.blog;
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source
@@ -1488,7 +1488,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source
@@ -1497,7 +1497,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementPages];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementPages];
 }
 
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
@@ -1506,7 +1506,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPeople
@@ -1515,7 +1515,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPlugins
@@ -1524,7 +1524,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPlans
@@ -1533,7 +1533,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementPlans];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementPlans];
 }
 
 - (void)showSettings
@@ -1542,7 +1542,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showSharing
@@ -1559,7 +1559,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementSharing];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementSharing];
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
@@ -1579,7 +1579,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self showDetailViewController:statsView sender:self];
     }
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementStats];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
 }
 
 - (void)showActivity
@@ -1587,7 +1587,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showThemes
@@ -1599,7 +1599,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     };
     [self showDetailViewController:viewController sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
 }
 
 - (void)showMenus
@@ -1608,7 +1608,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
     [self showDetailViewController:viewController sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showViewSite
@@ -1632,7 +1632,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self toggleSpotlightOnHeaderView];
     }];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
@@ -1653,7 +1653,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 #pragma mark - Remove Site
