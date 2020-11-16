@@ -407,7 +407,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.21.0-beta.2):
+  - WordPressKit (4.21.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -415,7 +415,7 @@ PODS:
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9.0)
   - WordPressMocks (0.0.9)
-  - WordPressShared (1.12.0):
+  - WordPressShared (1.13.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.7.1)
@@ -507,9 +507,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.29.0-beta)
-  - WordPressKit (~> 4.21.0-beta.2)
+  - WordPressKit (~> 4.21.0-beta.3)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.12.0)
+  - WordPressShared (~> 1.13.0-beta.1)
   - WordPressUI (~> 1.7.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.41.1/third-party-podspecs/Yoga.podspec.json`)
@@ -757,9 +757,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
   WordPressAuthenticator: af62de7e961bdb71e15be2557f7d1a6240cd2bbb
-  WordPressKit: a019d4353b09c91f63c274302c7f0dca29da6890
+  WordPressKit: 82c32858d0f41ec1783ee8c65f054af94e6bb89c
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
-  WordPressShared: 38cb62e9cb998d4dc3c1611f17934c6875a6b3e8
+  WordPressShared: 6bf70224d0679d62326fba15631f3141991b6feb
   WordPressUI: 9da5d966b8beb091950cd96880db398d7f30e246
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
@@ -773,6 +773,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 04523da3475a64a2da7e598262d127ff50ff09b1
+PODFILE CHECKSUM: ca72a63fc1fce91587f601470c978a6ecde94f00
 
 COCOAPODS: 1.9.3

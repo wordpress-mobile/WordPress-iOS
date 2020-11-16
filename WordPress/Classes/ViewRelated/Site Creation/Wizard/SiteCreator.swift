@@ -25,13 +25,10 @@ enum SiteCreationRequestAssemblyError: Error {
 final class SiteCreator {
 
     // MARK: Properties
-
     var segment: SiteSegment?
-
+    var design: RemoteSiteDesign?
     var vertical: SiteVertical?
-
     var information: SiteInformation?
-
     var address: DomainSuggestion?
 
     /// Generates the final object that will be posted to the backend
@@ -39,8 +36,7 @@ final class SiteCreator {
     /// - Returns: an Encodable object
     ///
     func build() throws -> SiteCreationRequest {
-
-        guard let segmentIdentifier = segment?.identifier else {
+        guard FeatureFlag.siteCreationHomePagePicker.enabled || segment?.identifier != nil else {
             throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
         }
 
@@ -51,8 +47,14 @@ final class SiteCreator {
         }
         let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
 
+        var siteDesign: String? = nil
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            siteDesign = design?.slug ?? "default"
+        }
+
         let request = SiteCreationRequest(
-            segmentIdentifier: segmentIdentifier,
+            segmentIdentifier: segment?.identifier,
+            siteDesign: siteDesign,
             verticalIdentifier: verticalIdentifier,
             title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
             tagline: information?.tagLine ?? "",
