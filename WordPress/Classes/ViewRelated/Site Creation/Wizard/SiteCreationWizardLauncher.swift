@@ -41,7 +41,11 @@ final class SiteCreationWizardLauncher {
             return nil
         }
 
-        wizardContent.modalPresentationStyle = .fullScreen
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        } else {
+            wizardContent.modalPresentationStyle = .fullScreen
+        }
         return wizardContent
     }()
 }
