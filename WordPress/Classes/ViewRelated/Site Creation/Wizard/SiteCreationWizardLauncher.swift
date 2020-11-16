@@ -10,7 +10,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var designStep: WizardStep = {
-        return SiteDesignStep()
+        return SiteDesignStep(creator: self.creator)
     }()
 
     private lazy var addressStep: WizardStep = {
@@ -41,7 +41,11 @@ final class SiteCreationWizardLauncher {
             return nil
         }
 
-        wizardContent.modalPresentationStyle = .fullScreen
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        } else {
+            wizardContent.modalPresentationStyle = .fullScreen
+        }
         return wizardContent
     }()
 }

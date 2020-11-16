@@ -6,12 +6,17 @@ typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion], Error>) -> 
 
 protocol SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
+    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion)
 }
 
 // MARK: - MockSiteAddressService
 
 final class MockSiteAddressService: SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
+        completion(.success(mockAddresses()))
+    }
+
+    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
         completion(.success(mockAddresses()))
     }
 
@@ -68,6 +73,22 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
         domainsService.getDomainSuggestions(base: query,
                                             segmentID: segmentID,
+                                            success: { domainSuggestions in
+                                                completion(Result.success(domainSuggestions))
+        },
+                                            failure: { error in
+                                                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
+                                                    completion(Result.success([]))
+                                                    return
+                                                }
+
+                                                completion(Result.failure(error))
+        })
+    }
+
+    func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
+        domainsService.getDomainSuggestions(base: query,
+                                            domainSuggestionType: .onlyWordPressDotCom,
                                             success: { domainSuggestions in
                                                 completion(Result.success(domainSuggestions))
         },
