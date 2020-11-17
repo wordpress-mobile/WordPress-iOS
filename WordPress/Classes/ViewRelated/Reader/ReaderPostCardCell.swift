@@ -356,13 +356,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
         if isWPForTeams {
             authorNameLabel.text = contentProvider.authorForDisplay()
-            arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(WPStyleGuide.readerCardBlogNameLabelTextColor())
-
-            let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
-                Constants.rotate90Degrees :
-                Constants.rotate270Degrees
-
-            arrowImageView.transform = CGAffineTransform(rotationAngle: imageRotationAngle)
+            configureArrowImage()
         }
 
         blogNameLabel.text = contentProvider.blogNameForDisplay()
@@ -371,6 +365,16 @@ protocol ReaderTopicsChipsDelegate: class {
         let dateString: String = datePublished()
         bylineSeparatorLabel.isHidden = dateString.isEmpty
         bylineLabel.text = dateString
+    }
+
+    private func configureArrowImage() {
+        arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(WPStyleGuide.readerCardBlogNameLabelTextColor())
+
+        let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
+            Constants.rotate90Degrees :
+            Constants.rotate270Degrees
+
+        arrowImageView.transform = CGAffineTransform(rotationAngle: imageRotationAngle)
     }
 
     private func configureAvatarImageView(_ imageView: UIImageView) {
