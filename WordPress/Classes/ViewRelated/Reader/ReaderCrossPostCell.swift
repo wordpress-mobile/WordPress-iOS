@@ -13,7 +13,7 @@ open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var borderView: UIView!
 
-    @objc open weak var contentProvider: ReaderPostContentProvider?
+    private weak var contentProvider: ReaderPostContentProvider?
 
     // MARK: - Accessors
 
@@ -115,7 +115,6 @@ private extension ReaderCrossPostCell {
 
         guard let contentProvider = contentProvider,
             let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
-                blavatarImageView.image = placeholder
                 return
         }
 
@@ -158,13 +157,17 @@ private extension ReaderCrossPostCell {
     }
 
     func configureLabel() {
+        guard let contentProvider = contentProvider else {
+            return
+        }
+
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
-        let template = contentProvider!.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
+        let template = contentProvider.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
 
-        let authorName: NSString = contentProvider!.authorForDisplay() as NSString
-        let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
-        let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
+        let authorName: NSString = contentProvider.authorForDisplay() as NSString
+        let siteName = subDomainNameFromPath(contentProvider.siteURLForDisplay())
+        let originName = subDomainNameFromPath(contentProvider.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template as NSString, authorName, originName, siteName) as String
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
@@ -183,11 +186,12 @@ private extension ReaderCrossPostCell {
     }
 
     func subDomainNameFromPath(_ path: String) -> String {
-        if let url = URL(string: path), let host = url.host {
-            let arr = host.components(separatedBy: ".")
-            return arr.first!
+        guard let url = URL(string: path),
+              let host = url.host else {
+            return ""
         }
-        return ""
+
+        return host.components(separatedBy: ".").first ?? ""
     }
 
 }
