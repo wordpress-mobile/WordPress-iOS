@@ -15,14 +15,6 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
-    private struct Constants {
-        static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
-        static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
-        static let xPostTitlePrefix = "X-post: "
-        static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
-        static let siteTemplate = "%@ cross-posted from %@ to %@"
-    }
-
     // MARK: - Accessors
 
     private lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
@@ -61,9 +53,34 @@ open class ReaderCrossPostCell: UITableViewCell {
         applyStyles()
     }
 
+    // MARK: - Configuration
+
+    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
+        self.contentProvider = contentProvider
+
+        configureTitleLabel()
+        configureLabel()
+        configureBlavatarImage()
+        configureAvatarImageView()
+    }
+
+}
+
+// MARK: - Private Methods
+
+private extension ReaderCrossPostCell {
+
+    struct Constants {
+        static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+        static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+        static let xPostTitlePrefix = "X-post: "
+        static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
+        static let siteTemplate = "%@ cross-posted from %@ to %@"
+    }
+
     // MARK: - Appearance
 
-    private func applyStyles() {
+    func applyStyles() {
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderView?.backgroundColor = .listForeground
@@ -71,7 +88,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         titleLabel?.backgroundColor = .listForeground
     }
 
-    private func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
+    func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
             label.alpha = highlighted ? 0.50 : WPAlphaFull
             titleLabel.alpha = highlighted ? 0.50 : WPAlphaFull
@@ -88,16 +105,7 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Configuration
 
-    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        self.contentProvider = contentProvider
-
-        configureTitleLabel()
-        configureLabel()
-        configureBlavatarImage()
-        configureAvatarImageView()
-    }
-
-    private func configureBlavatarImage() {
+    func configureBlavatarImage() {
 
         let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
@@ -124,7 +132,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    private func configureAvatarImageView() {
+    func configureAvatarImageView() {
         let placeholder = Constants.avatarPlaceholderImage
 
         // Always reset
@@ -135,7 +143,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    private func configureTitleLabel() {
+    func configureTitleLabel() {
          if var title = contentProvider?.titleForDisplay(), !title.isEmpty() {
             if let prefixRange = title.range(of: Constants.xPostTitlePrefix) {
                 title.removeSubrange(prefixRange)
@@ -149,7 +157,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    private func configureLabel() {
+    func configureLabel() {
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
         let template = contentProvider!.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
@@ -174,11 +182,12 @@ open class ReaderCrossPostCell: UITableViewCell {
         label.attributedText = attrSubtitle
     }
 
-    private func subDomainNameFromPath(_ path: String) -> String {
+    func subDomainNameFromPath(_ path: String) -> String {
         if let url = URL(string: path), let host = url.host {
             let arr = host.components(separatedBy: ".")
             return arr.first!
         }
         return ""
     }
+
 }
