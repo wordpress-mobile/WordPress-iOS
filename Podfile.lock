@@ -64,7 +64,7 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Gridicons (1.0.2-beta.1)
+  - Gridicons (1.0.2)
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
@@ -395,7 +395,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.29.0-beta.1):
+  - WordPressAuthenticator (1.29.0):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -407,7 +407,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7.0)
-  - WordPressKit (4.21.0-beta.3):
+  - WordPressKit (4.21.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -415,10 +415,10 @@ PODS:
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9.0)
   - WordPressMocks (0.0.9)
-  - WordPressShared (1.13.0-beta.1):
+  - WordPressShared (1.13.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.7.3-beta.1)
+  - WordPressUI (1.7.3)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -456,7 +456,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.42.0-alpha2/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.0.2-beta.1)
+  - Gridicons (~> 1.0.2)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.42.0-alpha2`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.2.1)
@@ -506,11 +506,11 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.29.0-beta)
-  - WordPressKit (~> 4.21.0-beta.3)
+  - WordPressAuthenticator (~> 1.29.0)
+  - WordPressKit (~> 4.21.0)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.13.0-beta.1)
-  - WordPressUI (~> 1.7.3-beta.1)
+  - WordPressShared (~> 1.13.0)
+  - WordPressUI (~> 1.7.3)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.42.0-alpha2/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.1.1)
@@ -700,7 +700,7 @@ SPEC CHECKSUMS:
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  Gridicons: eaddc89f7210f38722de4c4c32c121da3e9738d9
+  Gridicons: 7085561c06c2bda3a78f4a14f6590e61c3bfd09a
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: 74a57d7039b81a60cf51ae799da2718d5de75255
@@ -756,11 +756,11 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a79ccdfc940373835a7d8e9fc7541e6bf61b6319
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: af62de7e961bdb71e15be2557f7d1a6240cd2bbb
-  WordPressKit: 82c32858d0f41ec1783ee8c65f054af94e6bb89c
+  WordPressAuthenticator: c8bd7279b38e1c56dd620b8f05535e350117c99e
+  WordPressKit: d3b78d26af69a402974fd1489511f63518956a49
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
-  WordPressShared: 6bf70224d0679d62326fba15631f3141991b6feb
-  WordPressUI: 8a5c89ee60edb91b20ea757cc5a87e18d7c38a85
+  WordPressShared: 532ad68f954d37ea901e8c7e3ca62913c43ff787
+  WordPressUI: 07ad23f17631bdce0171383e533eb7c4c29280aa
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -773,6 +773,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 319fa7cbf2a7833979829fec176dafc98e8ecae6
+PODFILE CHECKSUM: 2b54f1451b6328c09f82a7fe7730a9ae956dd490
 
 COCOAPODS: 1.9.3
