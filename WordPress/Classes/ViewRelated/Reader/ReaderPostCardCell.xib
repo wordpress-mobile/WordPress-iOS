@@ -88,15 +88,33 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-I0-BNp" userLabel="Label Stack View">
                                         <rect key="frame" x="50" y="0.0" width="184" height="40"/>
                                         <subviews>
-                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Author, Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
-                                                <rect key="frame" x="0.0" y="0.0" width="184" height="17"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="nmf-Gu-jLG" userLabel="Author / Blog Name Stack View">
+                                                <rect key="frame" x="0.0" y="0.0" width="184" height="24"/>
+                                                <subviews>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Gk-4n-1vI" userLabel="Author Name Label">
+                                                        <rect key="frame" x="0.0" y="0.0" width="43.333333333333336" height="24"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="251" image="dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="7dJ-PC-Ihr">
+                                                        <rect key="frame" x="46.333333333333329" y="0.0" width="16" height="24"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="16" id="ttY-Kx-Ufk"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="749" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
+                                                        <rect key="frame" x="65.333333333333343" y="0.0" width="118.66666666666666" height="24"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="c3n-LO-Igq" userLabel="Host Name / Time Stack View">
-                                                <rect key="frame" x="0.0" y="18" width="184" height="22"/>
+                                                <rect key="frame" x="0.0" y="25.666666666666661" width="184" height="14.333333333333332"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="740" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCZ-4n-fDW" userLabel="Blog Host Name">
                                                         <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="14.333333333333334"/>
@@ -125,6 +143,9 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="7dJ-PC-Ihr" firstAttribute="centerY" secondItem="Pv6-I0-BNp" secondAttribute="centerY" id="CEI-Mx-Muh"/>
+                                        </constraints>
                                     </stackView>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
                                         <rect key="frame" x="244" y="0.0" width="44" height="40"/>
@@ -341,8 +362,10 @@
             <gestureRecognizers/>
             <connections>
                 <outlet property="actionStackView" destination="Wzi-SV-nkT" id="4lH-Qh-6iA"/>
+                <outlet property="arrowImageView" destination="7dJ-PC-Ihr" id="Jxx-N1-CPe"/>
                 <outlet property="attributionView" destination="nU7-76-6MV" id="Pjl-4F-R7r"/>
                 <outlet property="authorAvatarImageView" destination="X3v-d3-Adn" id="mVo-WI-68y"/>
+                <outlet property="authorNameLabel" destination="2Gk-4n-1vI" id="0GK-nh-b6j"/>
                 <outlet property="avatarImageView" destination="7Qj-iX-iqv" id="sjW-0m-Xxe"/>
                 <outlet property="avatarStackView" destination="z25-Q5-35K" id="f2Y-JF-Ejn"/>
                 <outlet property="blogHostNameLabel" destination="BCZ-4n-fDW" id="VZF-uH-r5z"/>
@@ -373,6 +396,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="dropdown" width="24" height="24"/>
         <image name="icon-menu-vertical-ellipsis" width="4" height="18"/>
         <image name="icon-reader-comment" width="24" height="24"/>
         <image name="icon-reader-like" width="24" height="24"/>

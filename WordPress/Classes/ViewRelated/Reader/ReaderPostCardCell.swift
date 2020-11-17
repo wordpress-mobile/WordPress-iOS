@@ -10,6 +10,8 @@ private struct Constants {
     static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
     static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+    static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
+    static let rotate90Degrees: CGFloat = CGFloat.pi / 2
 }
 
 protocol ReaderTopicsChipsDelegate: class {
@@ -42,12 +44,16 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var authorAvatarImageView: UIImageView!
+    @IBOutlet private weak var authorAvatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
+
+    @IBOutlet private weak var authorNameLabel: UILabel!
+    @IBOutlet private weak var arrowImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet weak var bylineSeparatorLabel: UILabel!
+    @IBOutlet private weak var bylineSeparatorLabel: UILabel!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -224,9 +230,12 @@ protocol ReaderTopicsChipsDelegate: class {
         borderedView.backgroundColor = .listForeground
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
+        WPStyleGuide.applyReaderCardBlogNameStyle(authorNameLabel)
+
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineSeparatorLabel)
+
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
 
@@ -242,6 +251,7 @@ protocol ReaderTopicsChipsDelegate: class {
     */
     fileprivate func applyOpaqueBackgroundColors() {
         blogNameLabel.backgroundColor = .listForeground
+        authorNameLabel.backgroundColor = .listForeground
         blogHostNameLabel.backgroundColor = .listForeground
         bylineLabel.backgroundColor = .listForeground
         titleLabel.backgroundColor = .listForeground
@@ -341,13 +351,21 @@ protocol ReaderTopicsChipsDelegate: class {
             return
         }
 
+        authorNameLabel.isHidden = !isWPForTeams
+        arrowImageView.isHidden = !isWPForTeams
+
         if isWPForTeams {
-            let arrow = "  \u{25B8}  " // black arrow surrounded by 2 spaces.
-            blogNameLabel.text = contentProvider.authorForDisplay() + arrow + contentProvider.blogNameForDisplay()
-        } else {
-            blogNameLabel.text = contentProvider.blogNameForDisplay()
+            authorNameLabel.text = contentProvider.authorForDisplay()
+            arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(WPStyleGuide.readerCardBlogNameLabelTextColor())
+
+            let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
+                Constants.rotate90Degrees :
+                Constants.rotate270Degrees
+
+            arrowImageView.transform = CGAffineTransform(rotationAngle: imageRotationAngle)
         }
 
+        blogNameLabel.text = contentProvider.blogNameForDisplay()
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
 
         let dateString: String = datePublished()
