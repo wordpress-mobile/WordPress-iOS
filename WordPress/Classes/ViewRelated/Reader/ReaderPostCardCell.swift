@@ -107,8 +107,12 @@ protocol ReaderTopicsChipsDelegate: class {
                 headerBlogButton.isEnabled = newValue
                 if newValue {
                     blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+                    configureArrowImage()
                 } else {
                     blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+                    configureArrowImage(withTint: WPStyleGuide.readerCardBlogNameLabelDisabledTextColor())
                 }
             }
         }
@@ -367,8 +371,8 @@ protocol ReaderTopicsChipsDelegate: class {
         bylineLabel.text = dateString
     }
 
-    private func configureArrowImage() {
-        arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(WPStyleGuide.readerCardBlogNameLabelTextColor())
+    private func configureArrowImage(withTint tint: UIColor = WPStyleGuide.readerCardBlogNameLabelTextColor()) {
+        arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(tint)
 
         let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
             Constants.rotate90Degrees :
@@ -660,10 +664,14 @@ protocol ReaderTopicsChipsDelegate: class {
 
     @IBAction func blogButtonTouchesDidHighlight(_ sender: UIButton) {
         blogNameLabel.isHighlighted = true
+        authorNameLabel.isHighlighted = true
+        configureArrowImage(withTint: .primaryLight)
     }
 
     @IBAction func blogButtonTouchesDidEnd(_ sender: UIButton) {
         blogNameLabel.isHighlighted = false
+        authorNameLabel.isHighlighted = false
+        configureArrowImage()
     }
 
 
