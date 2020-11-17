@@ -4,7 +4,8 @@ import AutomatticTracks
 import WordPressShared.WPStyleGuide
 
 private struct Constants {
-    static let blavatarPlaceholder: String = "post-blavatar-placeholder"
+    static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+    static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
     static let xPostTitlePrefix = "X-post: "
     static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
     static let siteTemplate = "%@ cross-posted from %@ to %@"
@@ -100,7 +101,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         // Always reset
         blavatarImageView.image = nil
 
-        let placeholder = UIImage(named: Constants.blavatarPlaceholder)
+        let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
 
         guard let contentProvider = contentProvider,
@@ -123,16 +124,13 @@ open class ReaderCrossPostCell: UITableViewCell {
     }
 
     fileprivate func configureAvatarImageView() {
+        let placeholder = Constants.avatarPlaceholderImage
+
         // Always reset
-        avatarImageView.image = nil
+        avatarImageView.image = placeholder
 
-        let placeholder = UIImage(named: Constants.blavatarPlaceholder)
-
-        let url = contentProvider?.avatarURLForDisplay()
-        if url != nil {
+        if let url = contentProvider?.avatarURLForDisplay() {
             avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        } else {
-            avatarImageView.image = placeholder
         }
     }
 
