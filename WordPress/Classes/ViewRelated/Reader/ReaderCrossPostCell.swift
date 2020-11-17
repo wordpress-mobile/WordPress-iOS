@@ -3,15 +3,10 @@ import Foundation
 import AutomatticTracks
 import WordPressShared.WPStyleGuide
 
-private struct Constants {
-    static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
-    static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
-    static let xPostTitlePrefix = "X-post: "
-    static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
-    static let siteTemplate = "%@ cross-posted from %@ to %@"
-}
-
 open class ReaderCrossPostCell: UITableViewCell {
+
+    // MARK: - Properties
+
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
@@ -19,6 +14,14 @@ open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet weak var borderView: UIView!
 
     @objc open weak var contentProvider: ReaderPostContentProvider?
+
+    private struct Constants {
+        static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+        static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+        static let xPostTitlePrefix = "X-post: "
+        static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
+        static let siteTemplate = "%@ cross-posted from %@ to %@"
+    }
 
     // MARK: - Accessors
 
@@ -51,14 +54,12 @@ open class ReaderCrossPostCell: UITableViewCell {
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
     }
-
 
     // MARK: - Appearance
 
@@ -85,7 +86,6 @@ open class ReaderCrossPostCell: UITableViewCell {
             animations: updateBorder)
     }
 
-
     // MARK: - Configuration
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
@@ -98,11 +98,12 @@ open class ReaderCrossPostCell: UITableViewCell {
     }
 
     fileprivate func configureBlavatarImage() {
-        // Always reset
-        blavatarImageView.image = nil
 
         let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
+
+        // Always reset
+        blavatarImageView.image = placeholder
 
         guard let contentProvider = contentProvider,
             let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {

@@ -3,18 +3,6 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-private struct Constants {
-    static let featuredMediaCornerRadius: CGFloat = 4
-    static let imageBorderWidth: CGFloat = 1
-    static let featuredMediaTopSpacing: CGFloat = 8
-    static let headerBottomSpacing: CGFloat = 8
-    static let summaryMaxNumberOfLines: NSInteger = 2
-    static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
-    static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
-    static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
-    static let rotate90Degrees: CGFloat = CGFloat.pi / 2
-}
-
 protocol ReaderTopicsChipsDelegate: class {
     func didSelect(topic: String)
     func heightDidChange()
@@ -34,11 +22,11 @@ protocol ReaderTopicsChipsDelegate: class {
 }
 
 @objc open class ReaderPostCardCell: UITableViewCell {
+
     // MARK: - Properties
 
     // Wrapper views
     @IBOutlet fileprivate weak var contentStackView: UIStackView!
-
     @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     // Header related Views
@@ -96,7 +84,20 @@ protocol ReaderTopicsChipsDelegate: class {
     var displayTopics: Bool = false
     var isWPForTeams: Bool = false
 
+    private struct Constants {
+        static let featuredMediaCornerRadius: CGFloat = 4
+        static let imageBorderWidth: CGFloat = 1
+        static let featuredMediaTopSpacing: CGFloat = 8
+        static let headerBottomSpacing: CGFloat = 8
+        static let summaryMaxNumberOfLines: NSInteger = 2
+        static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+        static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+        static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
+        static let rotate90Degrees: CGFloat = CGFloat.pi / 2
+    }
+
     // MARK: - Accessors
+
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
     @objc open var headerBlogButtonIsEnabled: Bool {
@@ -136,6 +137,7 @@ protocol ReaderTopicsChipsDelegate: class {
     }()
 
     // MARK: - Lifecycle Methods
+
     open override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -225,6 +227,7 @@ protocol ReaderTopicsChipsDelegate: class {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
     }
+
 
     /**
         Applies the default styles to the cell's subviews
