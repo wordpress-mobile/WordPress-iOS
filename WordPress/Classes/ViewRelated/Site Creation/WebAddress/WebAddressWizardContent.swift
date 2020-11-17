@@ -370,14 +370,14 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
     }
 
-    private func addBorder(cell: UITableViewCell, at: IndexPath) {
+    private func addBorder(cell: AddressCell, at: IndexPath) {
         let row = at.row
         if row == 0 {
-            cell.addTopBorder(withColor: .neutral(.shade10))
+            cell.addBorder(at: .top)
         }
 
         if row == data.count - 1 {
-            cell.addBottomBorder(withColor: .neutral(.shade10))
+            cell.addBorder(at: .bottom)
         }
     }
 }
