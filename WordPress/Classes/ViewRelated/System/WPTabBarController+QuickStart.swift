@@ -36,11 +36,11 @@ extension WPTabBarController {
     }
 
     @objc func alertQuickStartThatReaderWasTapped() {
-        tourGuide.visited(.readerTab)
+        QuickStartTourGuide.shared.visited(.readerTab)
     }
 
     @objc func alertQuickStartThatOtherTabWasTapped() {
-        tourGuide.visited(.tabFlipped)
+        QuickStartTourGuide.shared.visited(.tabFlipped)
     }
 
     @objc func stopWatchingQuickTours() {

@@ -2,11 +2,13 @@
 
 @class Blog;
 @class BlogDetailHeaderView;
+@protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryDomainCredit,
     BlogDetailsSectionCategoryQuickStart,
     BlogDetailsSectionCategoryGeneral,
+    BlogDetailsSectionCategoryJetpack,
     BlogDetailsSectionCategoryPublish,
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
@@ -24,6 +26,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionMedia,
     BlogDetailsSubsectionPages,
     BlogDetailsSubsectionActivity,
+    BlogDetailsSubsectionJetpackSettings,
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
@@ -129,7 +132,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
-@property (nonatomic, strong, readonly) BlogDetailHeaderView * _Nonnull headerView;
+@property (nonatomic, strong, readonly) id<BlogDetailHeader> _Nonnull headerView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;

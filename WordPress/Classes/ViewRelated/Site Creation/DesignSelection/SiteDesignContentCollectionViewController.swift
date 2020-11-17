@@ -2,15 +2,17 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
+    let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
     let cellSize = CGSize(width: 160, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
     let collectionView: UICollectionView
     let collectionViewLayout: UICollectionViewFlowLayout
     var isLoading = true
-
+    var selectedIndexPath: IndexPath? = nil
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
+            contentSizeWillChange()
             collectionView.reloadData()
         }
     }
@@ -23,12 +25,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
         let contentWidth = (cellsPerRowCap * cellSize.width) + (itemSpacing * spacingCounts)
         let margin = (screenWidth - contentWidth) / 2
-        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: 0, right: margin)
+        return UIEdgeInsets(top: 1, left: margin, bottom: itemSpacing, right: margin)
     }
 
-    init() {
+    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.completion = completion
         collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
         collectionViewLayout.minimumInteritemSpacing = itemSpacing
         collectionViewLayout.itemSize = cellSize
@@ -54,6 +56,15 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         collectionView.dataSource = self
         fetchSiteDesigns()
+        configureCloseButton()
+        configureSkipButton()
+        SiteCreationAnalyticsHelper.trackSiteDesignViewed()
+        navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEdgeInsets()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -67,19 +78,25 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
-        coordinator.animate { (_) in
-            self.collectionViewLayout.sectionInset = newEdgeInsets
+        coordinator.animate(alongsideTransition: nil) { (_) in
+            self.updateEdgeInsets()
         }
     }
 
+    private func updateEdgeInsets() {
+        let screenSize = view.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
+    }
+
     private func fetchSiteDesigns() {
+        isLoading = true
         let request = SiteDesignRequest(previewSize: cellSize, scale: UIScreen.main.nativeScale)
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
+                self?.isLoading = false
                 switch response {
                 case .success(let result):
-                    self?.isLoading = false
+                    self?.dismissNoResultsController()
                     self?.siteDesigns = result
                 case .failure(let error):
                     self?.handleError(error)
@@ -88,12 +105,39 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         }
     }
 
+    private func configureSkipButton() {
+        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        navigationItem.rightBarButtonItem = skip
+    }
+
+    private func configureCloseButton() {
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+    }
+
+    @objc func skipButtonTapped(_ sender: Any) {
+        SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
+        completion(nil)
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
     override func primaryActionSelected(_ sender: Any) {
-        /* ToDo */
+        guard let selectedIndexPath = selectedIndexPath else {
+            completion(nil)
+            return
+        }
+        let design = siteDesigns[selectedIndexPath.row]
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
+        completion(design)
     }
 
     private func handleError(_ error: Error) {
-        /* ToDo */
+        SiteCreationAnalyticsHelper.trackError(error)
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 }
 
@@ -129,9 +173,37 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDataSource 
 
 // MARK: - UICollectionViewDelegate
 extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
+    private func deselectItem(_ indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        collectionView(collectionView, didDeselectItemAt: indexPath)
+    }
 
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return false
-//        return !isLoading /* To Do - Update this in the next issue and also handle the footer showing/hiding */
+        guard !isLoading else { return false }
+
+        if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
+            deselectItem(indexPath)
+            return false
+        }
+
+        if selectedIndexPath == nil {
+            itemSelectionChanged(true)
+        }
+        selectedIndexPath = indexPath
+
+        return true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard selectedIndexPath == indexPath else { return }
+        selectedIndexPath = nil
+        itemSelectionChanged(false)
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        fetchSiteDesigns()
     }
 }

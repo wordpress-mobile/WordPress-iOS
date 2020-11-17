@@ -1,27 +1,40 @@
 import UIKit
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
+    enum SeperatorStyle {
+        case visibile
+        case hidden
+    }
+
     let scrollableView: UIScrollView
     let mainTitle: String
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
+    private let seperatorStyle: SeperatorStyle
+    private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var headerBar: UIView!
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var titleView: UILabel!
+    let titleView: UILabel = {
+        let title = UILabel(frame: .zero)
+        title.adjustsFontForContentSizeCategory = true
+        title.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
+        title.isHidden = true
+        return title
+    }()
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
     @IBOutlet weak var filterBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
     @IBOutlet weak var secondaryActionButton: UIButton!
     @IBOutlet weak var primaryActionButton: UIButton!
-    @IBOutlet weak var selectedStateButtonsContainer: UIView!
+    @IBOutlet weak var selectedStateButtonsContainer: UIStackView!
+    @IBOutlet weak var seperator: UIView!
 
     /// This  is used as a means to adapt to different text sizes to force the desired layout and then active `headerHeightConstraint`
     /// when scrolling begins to allow pushing the non static items out of the scrollable area.
@@ -42,6 +55,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                 }
             }
         }
+    }
+    private var footerHeight: CGFloat {
+        let verticalMargins: CGFloat = 16
+        let buttonHeight: CGFloat = 44
+        let safeArea = (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        return verticalMargins + buttonHeight + verticalMargins + safeArea
     }
     private var isShowingNoResults: Bool = false {
         didSet {
@@ -94,6 +113,32 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    // MARK: - Static Helpers
+    public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
+        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        closeButton.layer.cornerRadius = 15
+        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
+        closeButton.addTarget(target, action: action, for: .touchUpInside)
+
+        if #available(iOS 13.0, *) {
+            closeButton.tintColor = .secondaryLabel
+            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return UIColor.systemFill
+                } else {
+                    return UIColor.quaternarySystemFill
+                }
+            }
+        } else {
+            closeButton.tintColor = .textSubtle
+            closeButton.backgroundColor = .quaternaryBackground
+        }
+
+        return UIBarButtonItem(customView: closeButton)
+    }
+
+    // MARK: - Initializers
     /// Configure and display the no results view controller
     ///
     /// - Parameters:
@@ -119,7 +164,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
         self.hasFilterBar = hasFilterBar
-
+        self.hasDefaultAction = (defaultActionTitle != nil)
+        self.seperatorStyle = hasFilterBar ? .visibile : .hidden
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -130,19 +176,20 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         insertChildView()
+        navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
-        titleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
-        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         toggleFilterBarConstraints()
         styleButtons()
         setStaticText()
         scrollableView.delegate = self
 
         if #available(iOS 13.0, *) {} else {
-            headerBar.backgroundColor = .basicBackground
             headerView.backgroundColor = .basicBackground
             footerView.backgroundColor = .basicBackground
         }
+        formatNavigationController()
+        extendedLayoutIncludesOpaqueBars = true
+        edgesForExtendedLayout = .top
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -152,16 +199,28 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        if #available(iOS 13.0, *) {
+            // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
+        } else {
+            formatNavigationController()
+        }
         if !isViewOnScreen() {
             layoutHeader()
         }
         super.viewWillAppear(animated)
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = false
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        if #available(iOS 13.0, *) {
+            // For iOS 13 the navigation item is being set so there is no need to revert everytime we're dismissing the controller.
+        } else {
+            restoreNavigationBar()
+        }
+        super.viewWillDisappear(animated)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -191,11 +250,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - Header Actions
-    @IBAction open func closeSelected(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-
     // MARK: - Footer Actions
     @IBAction open func defaultActionSelected(_ sender: Any) {
         /* This should be overriden in a child class in order to enable support. */
@@ -209,24 +263,89 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         /* This should be overriden in a child class in order to enable support. */
     }
 
+    // MARK: - Format Nav Bar
+    /*
+     * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
+     * However, that space is also essential to a uniform design of the header. This function updates the design of the
+     * navigation bar. On iOS 13+, we're able to set the design to the `navigationItem`, which is ViewController specific.
+     * On iOS 12 and below, we need to set those values to the `navigationBar`. We cache the original values in
+     * `originalNavBarAppearance` and then revert the changes when the view is dismissed by calling `restoreNavigationBar`
+     */
+    private func formatNavigationController() {
+        if #available(iOS 13.0, *) {
+            let newAppearance = UINavigationBarAppearance()
+            newAppearance.configureWithTransparentBackground()
+            newAppearance.backgroundColor = .clear
+            newAppearance.shadowColor = .clear
+            newAppearance.shadowImage = UIImage()
+            navigationItem.standardAppearance = newAppearance
+            navigationItem.scrollEdgeAppearance = newAppearance
+            navigationItem.compactAppearance = newAppearance
+        } else {
+            if originalNavBarAppearance == nil {
+                cacheNavBarAppearance()
+            }
+
+            navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barTintColor = .white
+            navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.shadowImage = UIImage()
+        }
+
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private var originalNavBarAppearance: (barStyle: UIBarStyle, barTintColor: UIColor?, isTranslucent: Bool, shadowImage: UIImage?)?
+
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private func cacheNavBarAppearance() {
+        if #available(iOS 13.0, *) { } else {
+            originalNavBarAppearance = (navigationController?.navigationBar.barStyle ?? .default,
+                                        navigationController?.navigationBar.barTintColor,
+                                        navigationController?.navigationBar.isTranslucent ?? true,
+                                        navigationController?.navigationBar.shadowImage)
+        }
+    }
+
+    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
+    private func restoreNavigationBar() {
+        if #available(iOS 13.0, *) { } else {
+            navigationController?.navigationBar.barStyle = originalNavBarAppearance?.barStyle ?? .default
+            navigationController?.navigationBar.barTintColor = originalNavBarAppearance?.barTintColor
+            navigationController?.navigationBar.isTranslucent = originalNavBarAppearance?.isTranslucent ?? true
+            navigationController?.navigationBar.shadowImage = originalNavBarAppearance?.shadowImage
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
     // MARK: - View Styling
     private func setStaticText() {
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
         titleView.text = mainTitle
+        titleView.sizeToFit()
         largeTitleView.text = mainTitle
         promptView.text = prompt
-        secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
         if let defaultActionTitle = defaultActionTitle {
             defaultActionButton.setTitle(defaultActionTitle, for: .normal)
         } else {
-            footerView.isHidden = true
+            footerHeightContraint.constant = 0
+            footerView.layoutIfNeeded()
+            defaultActionButton.isHidden = true
+            selectedStateButtonsContainer.isHidden = false
+        }
+
+        if let secondaryActionTitle = secondaryActionTitle {
+            secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
+        } else {
+            secondaryActionButton.isHidden = true
         }
     }
 
     private func insertChildView() {
         scrollableView.translatesAutoresizingMaskIntoConstraints = false
+        scrollableView.clipsToBounds = false
         let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
         let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
         let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
@@ -234,7 +353,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         containerView.addSubview(scrollableView)
         containerView.addConstraints([top, bottom, leading, trailing])
     }
-
 
     private func styleButtons() {
         let seperator: UIColor
@@ -254,34 +372,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
-
-        if #available(iOS 13.0, *) {
-            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.systemFill
-                } else {
-                    return UIColor.quaternarySystemFill
-                }
-            }
-        } else {
-            closeButton.tintColor = .textSubtle
-            closeButton.backgroundColor = .quaternaryBackground
-        }
-    }
-
-    private func hideSmallTitle(_ isHidden: Bool, animated: Bool = true) {
-        guard animated else {
-            titleView.isHidden = isHidden
-            return
-        }
-
-        titleView.isHidden = false
-        let alpha: CGFloat = isHidden ? 0 : 1
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.titleView.alpha = alpha
-        }) { (_) in
-            self.titleView.isHidden = isHidden
-        }
     }
 
     // MARK: - Header and Footer Sizing
@@ -313,21 +403,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private var isFullscreen: Bool {
-        guard !shouldUseCompactLayout else { return true }
-        let targetViewController = parent ?? self
-        let presenationStyle: UIModalPresentationStyle = targetViewController.modalPresentationStyle
-        return !(Set([.pageSheet, .formSheet, .popover]).contains(presenationStyle))
-    }
-
     private func layoutHeaderInsets() {
-        let topInset: CGFloat
-        if isFullscreen {
-            topInset = maxHeaderHeight + headerBar.frame.height + UIApplication.shared.statusBarFrame.height
-        } else {
-            topInset = maxHeaderHeight + headerBar.frame.height
-        }
-
+        let topInset: CGFloat = maxHeaderHeight
         if let tableView = scrollableView as? UITableView {
             tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: topInset))
             tableView.tableHeaderView?.backgroundColor = .clear
@@ -344,11 +421,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
      * at the bottome of the tableView when multiple cells are rendered.
      */
     private func updateFooterInsets() {
-        let minimumFooterSize = footerView.frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        /// Update the footer height if it's being displayed. 
+        if footerHeightContraint.constant > 0 {
+            footerHeightContraint.constant = footerHeight
+        }
 
         /// The needed distance to fill the rest of the screen to allow the header to still collapse when scrolling (or to maintain a collapsed header if it was already collapsed when selecting a filter)
-        let distanceToBottom = scrollableView.frame.height - headerBar.frame.height - minHeaderHeight - estimatedContentSize().height
-        let newHeight: CGFloat = max(minimumFooterSize, distanceToBottom)
+        let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
+        let newHeight: CGFloat = max(footerHeight, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
@@ -359,7 +439,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func layoutHeader() {
-        [headerBar, headerView, footerView].forEach({
+        [headerView, footerView].forEach({
             $0?.setNeedsLayout()
             $0?.layoutIfNeeded()
         })
@@ -401,6 +481,16 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     /// A public interface to notify the container that the selected state for an items has changed.
     public func itemSelectionChanged(_ hasSelectedItem: Bool) {
+        let animationSpeed = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed
+        guard hasDefaultAction else {
+            UIView.animate(withDuration: animationSpeed, delay: 0, options: .curveEaseInOut, animations: {
+                self.footerHeightContraint.constant = hasSelectedItem ? self.footerHeight : 0
+                self.footerView.setNeedsLayout()
+                self.footerView.layoutIfNeeded()
+            })
+            return
+        }
+
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
@@ -410,7 +500,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let alpha: CGFloat = hasSelectedItem ? 0 : 1
         let selectedStateContainerAlpha: CGFloat = hasSelectedItem ? 1 : 0
 
-        UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
+        UIView.animate(withDuration: animationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
             self.defaultActionButton.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
         }) { (_) in
@@ -424,6 +514,19 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         filterBar.shouldShowGhostContent = isLoading
         filterBar.allowsMultipleSelection = !isLoading
         filterBar.reloadData()
+    }
+
+    // MARK: - Seperator styling
+    private func updateSeperatorStyle(animated: Bool = true) {
+        let shouldBeHidden: Bool
+        switch seperatorStyle {
+        case .hidden:
+            shouldBeHidden = seperator.frame.minY > minHeaderHeight
+        case .visibile:
+            shouldBeHidden = false
+        }
+
+        seperator.updateVisibility(shouldBeHidden, animated: animated)
     }
 }
 
@@ -440,7 +543,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
-            hideSmallTitle(false, animated: true)
+            titleView.updateVisibility(false, animated: true)
             return
         }
         disableInitialLayoutHelpers()
@@ -455,7 +558,8 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
 
         let shouldHide = (largeTitleView.frame.maxY > 0)
-        hideSmallTitle(shouldHide, animated: true)
+        titleView.updateVisibility(shouldHide, animated: true)
+        updateSeperatorStyle()
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -484,17 +588,36 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
         let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
-        hideSmallTitle(shouldHide, animated: animated)
+        titleView.updateVisibility(shouldHide, animated: animated)
 
         guard animated else {
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
+            updateSeperatorStyle()
             return
         }
-
+        updateSeperatorStyle()
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
+    }
+}
+
+fileprivate extension UIView {
+    func updateVisibility(_ isHidden: Bool, animated: Bool = true) {
+        guard self.isHidden != isHidden else { return }
+        guard animated else {
+            self.isHidden = isHidden
+            return
+        }
+
+        self.isHidden = false
+        let alpha: CGFloat = isHidden ? 0 : 1
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.alpha = alpha
+        }) { (_) in
+            self.isHidden = isHidden
+        }
     }
 }

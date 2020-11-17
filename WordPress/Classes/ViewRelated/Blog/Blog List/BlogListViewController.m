@@ -42,22 +42,22 @@ static NSInteger HideSearchMinSites = 3;
 
 - (instancetype)init
 {
+    return [self initWithMeScenePresenter:[MeScenePresenter new]];
+}
+
+- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+{
     self = [super init];
+    
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        _meScenePresenter = meScenePresenter;
+        
         [self configureDataSource];
         [self configureNavigationBar];
     }
-    return self;
-}
-
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
-{
-    self = [self init];
-    if (self) {
-        self.meScenePresenter = meScenePresenter;
-    }
+    
     return self;
 }
 
@@ -899,7 +899,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
+        [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;

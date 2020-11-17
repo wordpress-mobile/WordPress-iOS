@@ -75,6 +75,16 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         filterBar.filterDelegate = self
         tableView.dataSource = self
         fetchLayouts()
+        configureCloseButton()
+        navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
+    }
+
+    private func configureCloseButton() {
+        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 
     private func presentPreview() {
