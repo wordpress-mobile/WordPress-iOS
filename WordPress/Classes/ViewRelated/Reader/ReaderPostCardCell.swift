@@ -56,7 +56,7 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet private var actionButtons: [UIButton]! // why is this iboutlet?
+    @IBOutlet private var actionButtons: [UIButton]!
     @IBOutlet private weak var saveForLaterButton: UIButton!
     @IBOutlet private weak var likeActionButton: UIButton!
     @IBOutlet private weak var commentActionButton: UIButton!
@@ -70,7 +70,7 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet private weak var ghostPlaceholderView: UIView!
 
     @objc open weak var delegate: ReaderPostCellDelegate?
-    @objc open weak var contentProvider: ReaderPostContentProvider?
+    private weak var contentProvider: ReaderPostContentProvider?
 
     private var featuredImageDesiredWidth = CGFloat()
 
@@ -562,7 +562,7 @@ private extension ReaderPostCardCell {
 
         likeActionButton.tag = CardAction.like.rawValue
         likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
-        likeActionButton.isSelected = contentProvider!.isLiked()
+        likeActionButton.isSelected = contentProvider?.isLiked() ?? false
     }
 
     var shouldShowCommentActionButton: Bool {
@@ -653,9 +653,12 @@ extension ReaderPostCardCell {
     // MARK: - Header Tapped
 
     @objc func notifyDelegateHeaderWasTapped() {
-        if headerBlogButtonIsEnabled {
-            delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+        guard headerBlogButtonIsEnabled,
+              let contentProvider = contentProvider else {
+            return
         }
+
+        delegate?.readerCell(self, headerActionForProvider: contentProvider)
     }
 
     // MARK: - Actions
@@ -665,19 +668,24 @@ extension ReaderPostCardCell {
     }
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
-        delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
+        guard let contentProvider = contentProvider else {
+            return
+        }
+
+        delegate?.readerCell(self, menuActionForProvider: contentProvider, fromView: sender)
     }
 
     @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
-        guard let provider = contentProvider else {
+        guard let contentProvider = contentProvider else {
             return
         }
-        delegate?.readerCell(self, saveActionForProvider: provider)
+
+        delegate?.readerCell(self, saveActionForProvider: contentProvider)
         configureSaveForLaterButton()
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
-        guard let contentProvider = self.contentProvider,
+        guard let contentProvider = contentProvider,
             let tag = CardAction(rawValue: sender.tag) else {
             return
         }
