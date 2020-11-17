@@ -35,6 +35,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
         didSet {
+            contentSizeWillChange()
             table.reloadData()
         }
     }
@@ -130,6 +131,13 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         header.textField.resignFirstResponder()
     }
 
+    override func estimatedContentSize() -> CGSize {
+        guard data.count > 0 else { return .zero }
+        let estimatedSectionHeaderHeight: CGFloat = 85
+        let height = estimatedSectionHeaderHeight + (CGFloat(data.count) * AddressCell.estimatedSize.height)
+        return CGSize(width: view.frame.width, height: height)
+    }
+
     // MARK: Private behavior
     private func clearContent() {
         throttle.cancel()
@@ -186,10 +194,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupEmptyTableProvider()
     }
 
-    private func hideSeparators() {
-        table.tableFooterView = UIView(frame: .zero)
-    }
-
     private func performSearchIfNeeded(query: String) {
         guard !query.isEmpty else {
             return
@@ -225,25 +229,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         let cellName = AddressCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
-
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+        table.cellLayoutMarginsFollowReadableWidth = true
     }
 
     private func restoreSearchIfNeeded() {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return
-        }
-
-        search(withInputFrom: header.textField)
+        search(withInputFrom: searchHeader)
     }
 
     private func prepareViewIfNeeded() {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return
-        }
-
-        let textField = header.textField
-        textField.becomeFirstResponder()
+        searchHeader.becomeFirstResponder()
     }
 
     private func setupEmptyTableProvider() {
@@ -287,12 +282,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupTableBackground()
         setupTableSeparator()
         setupCells()
-        setupConstraints()
         setupHeaderAndNoResultsMessage()
-        hideSeparators()
-        table.delegate = self
         table.dataSource = self
-        table.reloadData()
+        table.showsVerticalScrollIndicator = false
     }
 
     private func setupTableBackground() {
@@ -301,17 +293,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = .divider
-    }
-
-    private func setupConstraints() {
-        table.cellLayoutMarginsFollowReadableWidth = true
-
-        NSLayoutConstraint.activate([
-            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
-            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
-        ])
     }
 
     private func query(from textField: UITextField?) -> String? {
@@ -346,10 +327,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     func updateIcon(isLoading: Bool) {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return
-        }
-        header.textField.setIcon(isLoading: isLoading)
+        searchHeader.setIcon(isLoading: isLoading)
     }
 
     private func search(withInputFrom textField: UITextField) {
@@ -451,9 +429,5 @@ extension WebAddressWizardContent: UITableViewDelegate {
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
         searchHeader.resignFirstResponder()
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1.0))
     }
 }

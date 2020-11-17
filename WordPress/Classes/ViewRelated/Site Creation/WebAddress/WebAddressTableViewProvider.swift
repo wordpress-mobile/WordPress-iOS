@@ -63,7 +63,6 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
-
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
         }
