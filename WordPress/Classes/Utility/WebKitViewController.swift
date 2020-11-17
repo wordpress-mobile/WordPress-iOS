@@ -491,7 +491,7 @@ extension WebKitViewController: WKNavigationDelegate {
 
         // Check for link protocols such as `tel:` and set the correct behavior
         if let url = navigationAction.request.url, let scheme = url.scheme {
-            let linkProtocols = ["tel", "sms", "facetime", "mailto"]
+            let linkProtocols = ["tel", "sms", "mailto"]
             if linkProtocols.contains(scheme) && UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 decisionHandler(.cancel)
