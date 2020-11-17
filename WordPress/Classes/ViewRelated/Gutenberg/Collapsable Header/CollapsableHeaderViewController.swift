@@ -17,7 +17,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         return 44
     }
 
-    private let seperatorStyle: SeperatorStyle
+    open var seperatorStyle: SeperatorStyle {
+        return self.hasAccessoryBar ? .visibile : .hidden
+    }
+
     private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
@@ -170,7 +173,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         self.defaultActionTitle = defaultActionTitle
         self.hasAccessoryBar = (accessoryView != nil)
         self.hasDefaultAction = (defaultActionTitle != nil)
-        self.seperatorStyle = self.hasAccessoryBar ? .visibile : .hidden
         self.accessoryView = accessoryView
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }

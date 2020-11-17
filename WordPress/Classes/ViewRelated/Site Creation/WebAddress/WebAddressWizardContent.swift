@@ -3,7 +3,7 @@ import WordPressAuthenticator
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
-final class WebAddressWizardContent: UIViewController {
+final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     // MARK: Properties
 
@@ -12,33 +12,32 @@ final class WebAddressWizardContent: UIViewController {
         static let noResultsTopInset    = CGFloat(64)
     }
 
+    override var seperatorStyle: SeperatorStyle {
+        return .hidden
+    }
+
     /// The creator collects user input as they advance through the wizard flow.
     private let siteCreator: SiteCreator
-
     private let service: SiteAddressService
-
     private let selection: (DomainSuggestion) -> Void
 
     /// Tracks the site address selected by users
-    private var selectedDomain: DomainSuggestion?
+    private var selectedDomain: DomainSuggestion? {
+        didSet {
+            itemSelectionChanged(selectedDomain != nil)
+        }
+    }
 
     /// The table view renders our server content
-    @IBOutlet private weak var table: UITableView!
+    private let table: UITableView
+    private let searchHeader: SearchTextField
 
-    /// The view wrapping the skip button
-    @IBOutlet private weak var buttonWrapper: ShadowView!
-
-    /// The Create Site button
-    @IBOutlet private weak var createSite: NUXButton!
-
-    /// The constraint between the bottom of the buttonWrapper and this view controller's view
-    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
-
-    /// Serves as both the data source & delegate of the table view
-    private(set) var tableViewProvider: TableViewProvider?
-
-    /// Manages header visibility, keyboard management, and table view offset
-    private(set) var tableViewOffsetCoordinator: TableViewOffsetCoordinator?
+    /// The underlying data represented by the provider
+    var data: [DomainSuggestion] {
+        didSet {
+            table.reloadData()
+        }
+    }
 
     /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
@@ -48,16 +47,6 @@ final class WebAddressWizardContent: UIViewController {
 
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
-
-    private lazy var headerData: SiteCreationHeaderData = {
-        let title = NSLocalizedString("Choose a domain name for your site",
-                                      comment: "Create site, step 4. Select domain name. Title")
-
-        let subtitle = NSLocalizedString("This is where people will find you on the internet",
-                                         comment: "Create site, step 4. Select domain name. Subtitle")
-
-        return SiteCreationHeaderData(title: title, subtitle: subtitle)
-    }()
 
     /// This message advises the user that
     private let noResultsLabel: UILabel
@@ -70,7 +59,7 @@ final class WebAddressWizardContent: UIViewController {
         self.siteCreator = creator
         self.service = service
         self.selection = selection
-
+        self.data = []
         self.noResultsLabel = {
             let label = UILabel()
 
@@ -89,8 +78,13 @@ final class WebAddressWizardContent: UIViewController {
 
             return label
         }()
-
-        super.init(nibName: String(describing: type(of: self)), bundle: nil)
+        self.searchHeader = SearchTextField()
+        table = UITableView(frame: .zero, style: .grouped)
+        super.init(scrollableView: table,
+                   mainTitle: NSLocalizedString("Choose a domain", comment: "Select domain name. Title"),
+                   prompt: NSLocalizedString("This is where people will find you on the internet", comment: "Select domain name. Subtitle"),
+                   primaryActionTitle: NSLocalizedString("Create Site", comment: "Button to progress to the next step"),
+                   accessoryView: searchHeader)
     }
 
     // MARK: UIViewController
@@ -101,15 +95,7 @@ final class WebAddressWizardContent: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
-
-        toggleBottomToolbar(enabled: false)
-
-        applyTitle()
         setupBackground()
-        setupButtonWrapper()
-        setupCreateSiteButton()
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
     }
@@ -117,13 +103,12 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         observeNetworkStatus()
-        tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
         prepareViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        resignTextFieldResponderIfNeeded()
+        searchHeader.resignFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -134,8 +119,6 @@ final class WebAddressWizardContent: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
-        tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
     }
 
@@ -148,24 +131,10 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     // MARK: Private behavior
-
-    private func applyTitle() {
-        title = NSLocalizedString("2 of 2", comment: "Site creation. Step 2. Screen title")
-    }
-
     private func clearContent() {
         throttle.cancel()
-
-        toggleBottomToolbar(enabled: false)
-
-        guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
-            setupTableDataProvider(isShowingImplicitSuggestions: true)
-            return
-        }
-
-        validDataProvider.data = []
-        validDataProvider.isShowingImplicitSuggestions = true
-        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        itemSelectionChanged(false)
+        data = []
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -204,25 +173,13 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
-        let header = self.table.tableHeaderView as! TitleSubtitleTextfieldHeader
-        let isShowingImplicitSuggestions = header.textField.text!.isEmpty
-
-        if let validDataProvider = tableViewProvider as? WebAddressTableViewProvider {
-            validDataProvider.data = data
-            validDataProvider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
-        } else {
-            setupTableDataProvider(data, isShowingImplicitSuggestions: isShowingImplicitSuggestions)
-        }
-
+        self.data = data
         if data.isEmpty {
             noResultsLabel.isHidden = false
         } else {
             noResultsLabel.isHidden = true
         }
-
-        if !isShowingImplicitSuggestions {
-            postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty)
-        }
+        postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty)
     }
 
     private func handleError(_ error: Error) {
@@ -255,24 +212,7 @@ final class WebAddressWizardContent: UIViewController {
         view.backgroundColor = .listBackground
     }
 
-    private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = .listBackground
-    }
-
-    private func setupCreateSiteButton() {
-        createSite.addTarget(self, action: #selector(commitSelection), for: .touchUpInside)
-
-        let buttonTitle = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
-        createSite.setTitle(buttonTitle, for: .normal)
-        createSite.accessibilityLabel = buttonTitle
-        createSite.accessibilityHint = NSLocalizedString("Creates a new site with the given information.",
-                                                         comment: "Accessibility hint for the Create Site button in Site Creation.")
-
-        createSite.isPrimary = true
-    }
-
-    @objc
-    private func commitSelection() {
+    override func primaryActionSelected(_ sender: Any) {
         guard let selectedDomain = selectedDomain else {
             return
         }
@@ -287,15 +227,6 @@ final class WebAddressWizardContent: UIViewController {
         table.register(nib, forCellReuseIdentifier: cellName)
 
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
-    }
-
-    private func resignTextFieldResponderIfNeeded() {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return
-        }
-
-        let textField = header.textField
-        textField.resignFirstResponder()
     }
 
     private func restoreSearchIfNeeded() {
@@ -328,41 +259,28 @@ final class WebAddressWizardContent: UIViewController {
             self?.performSearchIfNeeded(query: retryQuery)
         }
 
-        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
+//        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
     }
 
     private func setupHeaderAndNoResultsMessage() {
-        let header = TitleSubtitleTextfieldHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
-
-        header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-        header.textField.delegate = self
-
-        header.accessibilityTraits = .header
+        searchHeader.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        searchHeader.delegate = self
+        searchHeader.accessibilityTraits = .searchField
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        header.textField.attributedPlaceholder = attributedPlaceholder
+        searchHeader.attributedPlaceholder = attributedPlaceholder
 
-        header.textField.accessibilityHint = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
-
-        table.tableHeaderView = header
+        searchHeader.accessibilityHint = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
 
         view.addSubview(noResultsLabel)
 
         NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.topAnchor),
-            noResultsLabel.widthAnchor.constraint(equalTo: header.textField.widthAnchor),
+            noResultsLabel.widthAnchor.constraint(equalTo: headerView.widthAnchor),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noResultsLabel.topAnchor.constraint(equalTo: header.textField.bottomAnchor, constant: Metrics.noResultsTopInset)
+            noResultsLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Metrics.noResultsTopInset)
         ])
-
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
     }
 
     private func setupTable() {
@@ -372,10 +290,13 @@ final class WebAddressWizardContent: UIViewController {
         setupConstraints()
         setupHeaderAndNoResultsMessage()
         hideSeparators()
+        table.delegate = self
+        table.dataSource = self
+        table.reloadData()
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .listBackground
+        table.backgroundColor = .basicBackground
     }
 
     private func setupTableSeparator() {
@@ -391,24 +312,6 @@ final class WebAddressWizardContent: UIViewController {
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
-    }
-
-    private func setupTableDataProvider(_ data: [DomainSuggestion] = [], isShowingImplicitSuggestions: Bool) {
-        let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
-            guard let self = self, let provider = self.tableViewProvider as? WebAddressTableViewProvider else {
-                return
-            }
-
-            let domainSuggestion = provider.data[selectedIndexPath.row]
-            self.selectedDomain = domainSuggestion
-            self.resignTextFieldResponderIfNeeded()
-            self.toggleBottomToolbar(enabled: true)
-        }
-
-        let provider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
-        provider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
-
-        self.tableViewProvider = provider
     }
 
     private func query(from textField: UITextField?) -> String? {
@@ -428,7 +331,7 @@ final class WebAddressWizardContent: UIViewController {
     private func clearSelectionAndCreateSiteButton() {
         selectedDomain = nil
         table.deselectSelectedRowWithAnimation(true)
-        toggleBottomToolbar(enabled: false)
+        itemSelectionChanged(false)
     }
 
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
@@ -456,21 +359,6 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         performSearchIfNeeded(query: query)
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
-    }
-
-    // MARK: - Toolbar
-
-    private func toggleBottomToolbar(enabled: Bool) {
-        createSite.isEnabled = enabled
-
-        if enabled {
-            tableViewOffsetCoordinator?.showBottomToolbar()
-        } else {
-            if !isBottomToolbarAlwaysVisible {
-                tableViewOffsetCoordinator?.hideBottomToolbar()
-            }
-        }
     }
 
     // MARK: - Others
@@ -480,6 +368,17 @@ final class WebAddressWizardContent: UIViewController {
                                                           comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
+    }
+
+    private func addBorder(cell: UITableViewCell, at: IndexPath) {
+        let row = at.row
+        if row == 0 {
+            cell.addTopBorder(withColor: .neutral(.shade10))
+        }
+
+        if row == data.count - 1 {
+            cell.addBottomBorder(withColor: .neutral(.shade10))
+        }
     }
 }
 
@@ -495,26 +394,12 @@ extension WebAddressWizardContent: NetworkStatusDelegate {
 
 extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         clearSelectionAndCreateSiteButton()
         return true
-    }
-}
-
-extension WebAddressWizardContent {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            preferredContentSizeDidChange()
-        }
-    }
-
-    func preferredContentSizeDidChange() {
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
@@ -528,5 +413,47 @@ private extension WebAddressWizardContent {
     func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool) {
         let message: String = listIsEmpty ? Strings.noResults : Strings.suggestionsUpdated
         UIAccessibility.post(notification: .announcement, argument: message)
+    }
+}
+
+// MARK: UITableViewDataSource
+extension WebAddressWizardContent: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard data.count > 0 else {
+            return nil
+        }
+
+        return NSLocalizedString("Suggestions", comment: "Suggested domains")
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
+            assertionFailure("This is a programming error - AddressCell has not been properly registered!")
+            return UITableViewCell()
+        }
+
+        let domainSuggestion = data[indexPath.row]
+        cell.model = domainSuggestion
+
+        addBorder(cell: cell, at: indexPath)
+
+        return cell
+    }
+}
+
+// MARK: UITableViewDelegate
+extension WebAddressWizardContent: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let domainSuggestion = data[indexPath.row]
+        self.selectedDomain = domainSuggestion
+        searchHeader.resignFirstResponder()
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1.0))
     }
 }
