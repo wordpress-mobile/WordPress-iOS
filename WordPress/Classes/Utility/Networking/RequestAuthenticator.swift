@@ -229,23 +229,29 @@ class RequestAuthenticator: NSObject {
         func done() {
             guard
                 let host = url.host,
-                !host.contains("wordpress.com")
+                !host.contains(WPComDomain)
             else {
                 // The requested URL is to the unmapped version of the domain,
                 // so skip proxying the request through r-login.
-                let request = URLRequest(url: url)
-                completion(request)
+                completion(URLRequest(url: url))
                 return
             }
 
             let rlogin = "https://r-login.wordpress.com/remote-login.php?action=auth"
-            var components = URLComponents(string: rlogin)
-            var queryItems = components?.queryItems ?? []
-            queryItems.append(URLQueryItem(name: "host", value: host))
-            queryItems.append(URLQueryItem(name: "id", value: String(siteID)))
-            queryItems.append(URLQueryItem(name: "back", value: url.absoluteString))
-            components?.queryItems = queryItems
-            let requestURL = components?.url ?? url
+            guard var components = URLComponents(string: rlogin) else {
+                // Safety net in case something unexpected changes in the future.
+                DDLogError("There was an unexpected problem initializing URLComponents via the rlogin string.")
+                completion(URLRequest(url: url))
+                return
+            }
+            var queryItems = components.queryItems ?? []
+            queryItems.append(contentsOf: [
+                URLQueryItem(name: "host", value: host),
+                URLQueryItem(name: "id", value: String(siteID)),
+                URLQueryItem(name: "back", value: url.absoluteString)
+            ])
+            components.queryItems = queryItems
+            let requestURL = components.url ?? url
 
             let request = URLRequest(url: requestURL)
             completion(request)
