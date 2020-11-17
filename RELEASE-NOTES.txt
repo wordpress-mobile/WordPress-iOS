@@ -2,6 +2,7 @@
 -----
 * [*] Reader bug fix: tapping a telephone, sms or email link in a detail post in Reader will now respond with the correct action. [#15307]
 
+ 
 16.2
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
