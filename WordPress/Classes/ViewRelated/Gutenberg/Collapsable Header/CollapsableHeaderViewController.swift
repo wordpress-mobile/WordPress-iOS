@@ -3,6 +3,7 @@ import UIKit
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     enum SeperatorStyle {
         case visibile
+        case automatic
         case hidden
     }
 
@@ -18,7 +19,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     open var seperatorStyle: SeperatorStyle {
-        return self.hasAccessoryBar ? .visibile : .hidden
+        return self.hasAccessoryBar ? .visibile : .automatic
     }
 
     private let hasDefaultAction: Bool
@@ -199,6 +200,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         formatNavigationController()
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
+        updateSeperatorStyle()
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -397,8 +399,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
         accessoryBarHeightConstraint.constant = shouldHideAccessoryBar ? 0 : accessoryBarHeight
-        maxHeaderBottomSpacing.constant = shouldHideAccessoryBar ? 1 : 24
-        minHeaderBottomSpacing.constant = shouldHideAccessoryBar ? 1 : 9
+        let collapseBottomSpacing = shouldHideAccessoryBar || (seperatorStyle == .hidden)
+        maxHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 24
+        minHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 9
     }
 
     private func updateHeaderDisplay() {
@@ -533,10 +536,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func updateSeperatorStyle(animated: Bool = true) {
         let shouldBeHidden: Bool
         switch seperatorStyle {
-        case .hidden:
+        case .automatic:
             shouldBeHidden = seperator.frame.minY > minHeaderHeight
         case .visibile:
             shouldBeHidden = false
+        case .hidden:
+            shouldBeHidden = true
         }
 
         seperator.updateVisibility(shouldBeHidden, animated: animated)
