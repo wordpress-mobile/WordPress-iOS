@@ -26,56 +26,56 @@ protocol ReaderTopicsChipsDelegate: class {
     // MARK: - Properties
 
     // Wrapper views
-    @IBOutlet fileprivate weak var contentStackView: UIStackView!
-    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
+    @IBOutlet private weak var contentStackView: UIStackView!
+    @IBOutlet private weak var topicsCollectionView: TopicsCollectionView!
 
     // Header related Views
-    @IBOutlet weak var headerStackView: UIStackView!
-    @IBOutlet fileprivate weak var avatarStackView: UIStackView!
-    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var headerStackView: UIStackView!
+    @IBOutlet private weak var avatarStackView: UIStackView!
+    @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var authorAvatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var headerBlogButton: UIButton!
+    @IBOutlet private weak var headerBlogButton: UIButton!
 
     @IBOutlet private weak var authorNameLabel: UILabel!
     @IBOutlet private weak var arrowImageView: UIImageView!
-    @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+    @IBOutlet private weak var blogNameLabel: UILabel!
 
-    @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
-    @IBOutlet fileprivate weak var bylineLabel: UILabel!
+    @IBOutlet private weak var blogHostNameLabel: UILabel!
+    @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var bylineSeparatorLabel: UILabel!
 
     // Card views
-    @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet fileprivate weak var titleLabel: ReaderPostCardContentLabel!
-    @IBOutlet fileprivate weak var summaryLabel: ReaderPostCardContentLabel!
-    @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
-    @IBOutlet fileprivate weak var actionStackView: UIStackView!
+    @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
+    @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
+    @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
+    @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
+    @IBOutlet private weak var actionStackView: UIStackView!
 
     // Helper Views
-    @IBOutlet fileprivate weak var borderedView: UIView!
-    @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
+    @IBOutlet private weak var borderedView: UIView!
+    @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet var actionButtons: [UIButton]!
-    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
-    @IBOutlet fileprivate weak var likeActionButton: UIButton!
-    @IBOutlet fileprivate weak var commentActionButton: UIButton!
-    @IBOutlet fileprivate weak var menuButton: UIButton!
-    @IBOutlet fileprivate weak var reblogActionButton: UIButton!
+    @IBOutlet private var actionButtons: [UIButton]! // why is this iboutlet?
+    @IBOutlet private weak var saveForLaterButton: UIButton!
+    @IBOutlet private weak var likeActionButton: UIButton!
+    @IBOutlet private weak var commentActionButton: UIButton!
+    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet private weak var reblogActionButton: UIButton!
 
     // Layout Constraints
-    @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
     // Ghost cells placeholders
-    @IBOutlet weak var ghostPlaceholderView: UIView!
+    @IBOutlet private weak var ghostPlaceholderView: UIView!
 
     @objc open weak var delegate: ReaderPostCellDelegate?
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
-    fileprivate var featuredImageDesiredWidth = CGFloat()
+    private var featuredImageDesiredWidth = CGFloat()
 
-    fileprivate var currentLoadedCardImageURL: String?
-    fileprivate var isSmallWidth: Bool {
+    private var currentLoadedCardImageURL: String?
+    private var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
         return  width <= 320
     }
@@ -120,19 +120,19 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate lazy var imageLoader: ImageLoader = {
+    private lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImageView)
     }()
 
-    fileprivate lazy var readerCardTitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCardTitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
 
-    fileprivate lazy var readerCardSummaryAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCardSummaryAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    fileprivate lazy var readerCardReadingTimeAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCardReadingTimeAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
 
@@ -190,16 +190,16 @@ protocol ReaderTopicsChipsDelegate: class {
 
     // MARK: - Configuration
 
-    fileprivate func setupAttributionView() {
+    private func setupAttributionView() {
         attributionView.delegate = self
     }
 
-    fileprivate func setupSummaryLabel() {
+    private func setupSummaryLabel() {
         summaryLabel.numberOfLines = Constants.summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .byTruncatingTail
     }
 
-    fileprivate func setupMenuButton() {
+    private func setupMenuButton() {
         guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
             return
         }
@@ -217,7 +217,7 @@ protocol ReaderTopicsChipsDelegate: class {
         menuButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    fileprivate func adjustInsetsForTextDirection() {
+    private func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
             likeActionButton,
             commentActionButton,
@@ -228,11 +228,9 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-
-    /**
-        Applies the default styles to the cell's subviews
-    */
-    fileprivate func applyStyles() {
+    /// Applies the default styles to the cell's subviews
+    ///
+    private func applyStyles() {
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderedView.backgroundColor = .listForeground
@@ -254,10 +252,9 @@ protocol ReaderTopicsChipsDelegate: class {
         WPStyleGuide.applyReaderCardCommentButtonStyle(commentActionButton)
     }
 
-    /**
-        Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
-    */
-    fileprivate func applyOpaqueBackgroundColors() {
+    /// Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
+    ///
+    private func applyOpaqueBackgroundColors() {
         blogNameLabel.backgroundColor = .listForeground
         authorNameLabel.backgroundColor = .listForeground
         blogHostNameLabel.backgroundColor = .listForeground
@@ -398,7 +395,7 @@ protocol ReaderTopicsChipsDelegate: class {
         featuredImageView.layer.borderWidth = Constants.imageBorderWidth
     }
 
-    fileprivate func configureFeaturedImageIfNeeded() {
+    private func configureFeaturedImageIfNeeded() {
         guard let content = contentProvider else {
             return
         }
@@ -422,7 +419,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate func configureFeaturedImage(_ featuredImageURL: URL) {
+    private func configureFeaturedImage(_ featuredImageURL: URL) {
         guard let contentProvider = contentProvider else {
             return
         }
@@ -441,7 +438,7 @@ protocol ReaderTopicsChipsDelegate: class {
         imageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: size)
     }
 
-    fileprivate func configureTitle() {
+    private func configureTitle() {
         if let title = contentProvider?.titleForDisplay(), !title.isEmpty() {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCardTitleAttributes)
             titleLabel.isHidden = false
@@ -451,7 +448,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate func configureSummary() {
+    private func configureSummary() {
         if let summary = contentProvider?.contentPreviewForDisplay(), !summary.isEmpty() {
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: readerCardSummaryAttributes)
             summaryLabel.isHidden = false
@@ -461,7 +458,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate func configureAttribution() {
+    private func configureAttribution() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.none {
             attributionView.configureView(nil)
             attributionView.isHidden = true
@@ -471,7 +468,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate func configureActionButtons() {
+    private func configureActionButtons() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
@@ -488,7 +485,7 @@ protocol ReaderTopicsChipsDelegate: class {
         configureActionButtonsInsets()
     }
 
-    fileprivate func resetActionButton(_ button: UIButton) {
+    private func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControl.State())
         button.isSelected = false
         button.isEnabled = false
@@ -505,7 +502,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
     }
 
-    fileprivate func configureLikeActionButton() {
+    private func configureLikeActionButton() {
         // Show likes if logged in, or if likes exist, but not if external
         guard shouldShowLikeActionButton else {
             resetActionButton(likeActionButton)
@@ -517,7 +514,7 @@ protocol ReaderTopicsChipsDelegate: class {
         likeActionButton.isSelected = contentProvider!.isLiked()
     }
 
-    fileprivate var shouldShowLikeActionButton: Bool {
+    private var shouldShowLikeActionButton: Bool {
         guard loggedInActionVisibility != .hidden else {
             return false
         }
@@ -538,7 +535,7 @@ protocol ReaderTopicsChipsDelegate: class {
         return !contentProvider.isExternal()
     }
 
-    fileprivate func configureCommentActionButton() {
+    private func configureCommentActionButton() {
         guard shouldShowCommentActionButton else {
             resetActionButton(commentActionButton)
             return
@@ -548,7 +545,7 @@ protocol ReaderTopicsChipsDelegate: class {
         commentActionButton.isEnabled = true
     }
 
-    fileprivate var shouldShowCommentActionButton: Bool {
+    private var shouldShowCommentActionButton: Bool {
         guard loggedInActionVisibility != .hidden else {
             return false
         }
@@ -568,18 +565,18 @@ protocol ReaderTopicsChipsDelegate: class {
     }
 
 
-    fileprivate func configureSaveForLaterButton() {
+    private func configureSaveForLaterButton() {
         saveForLaterButton.isEnabled = true
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.isSelected = postIsSavedForLater
     }
 
-    fileprivate func configureReblogActionButton() {
+    private func configureReblogActionButton() {
         reblogActionButton.tag = CardAction.reblog.rawValue
         reblogActionButton.isEnabled = shouldShowReblogActionButton
     }
 
-    fileprivate var shouldShowReblogActionButton: Bool {
+    private var shouldShowReblogActionButton: Bool {
         // reblog button is hidden if there's no content
         guard let provider = contentProvider,
             !provider.isPrivate(),
@@ -589,7 +586,7 @@ protocol ReaderTopicsChipsDelegate: class {
         return true
     }
 
-    fileprivate func configureButtonTitles() {
+    private func configureButtonTitles() {
         guard let provider = contentProvider else {
             return
         }
@@ -620,14 +617,13 @@ protocol ReaderTopicsChipsDelegate: class {
 
     }
 
-    // MARK: -
+    // MARK: - Header Tapped
 
     @objc func notifyDelegateHeaderWasTapped() {
         if headerBlogButtonIsEnabled {
             delegate?.readerCell(self, headerActionForProvider: contentProvider!)
         }
     }
-
 
     // MARK: - Actions
 
@@ -681,7 +677,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
     // MARK: - Private Types
 
-    fileprivate enum CardAction: Int {
+    private enum CardAction: Int {
         case comment = 1
         case like
         case reblog

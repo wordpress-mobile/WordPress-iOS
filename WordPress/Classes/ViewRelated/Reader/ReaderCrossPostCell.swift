@@ -7,11 +7,11 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Properties
 
-    @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var label: UILabel!
-    @IBOutlet weak var borderView: UIView!
+    @IBOutlet private weak var blavatarImageView: UIImageView!
+    @IBOutlet private weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var borderView: UIView!
 
     @objc open weak var contentProvider: ReaderPostContentProvider?
 
@@ -25,15 +25,15 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Accessors
 
-    fileprivate lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostTitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostSubtitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
@@ -63,7 +63,7 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Appearance
 
-    fileprivate func applyStyles() {
+    private func applyStyles() {
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderView?.backgroundColor = .listForeground
@@ -71,7 +71,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         titleLabel?.backgroundColor = .listForeground
     }
 
-    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
+    private func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
             label.alpha = highlighted ? 0.50 : WPAlphaFull
             titleLabel.alpha = highlighted ? 0.50 : WPAlphaFull
@@ -97,7 +97,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         configureAvatarImageView()
     }
 
-    fileprivate func configureBlavatarImage() {
+    private func configureBlavatarImage() {
 
         let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
@@ -124,7 +124,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    fileprivate func configureAvatarImageView() {
+    private func configureAvatarImageView() {
         let placeholder = Constants.avatarPlaceholderImage
 
         // Always reset
@@ -149,7 +149,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    fileprivate func configureLabel() {
+    private func configureLabel() {
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
         let template = contentProvider!.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
@@ -174,7 +174,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         label.attributedText = attrSubtitle
     }
 
-    fileprivate func subDomainNameFromPath(_ path: String) -> String {
+    private func subDomainNameFromPath(_ path: String) -> String {
         if let url = URL(string: path), let host = url.host {
             let arr = host.components(separatedBy: ".")
             return arr.first!
