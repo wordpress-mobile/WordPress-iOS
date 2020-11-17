@@ -72,7 +72,7 @@
                                                     <constraint firstAttribute="width" secondItem="7Qj-iX-iqv" secondAttribute="height" multiplier="1:1" id="EEk-WN-bIC"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="X3v-d3-Adn" userLabel="Author Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="X3v-d3-Adn" userLabel="Author Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="0.0" width="40" height="40"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -394,6 +394,7 @@
     </objects>
     <resources>
         <image name="dropdown" width="24" height="24"/>
+        <image name="gravatar" width="85" height="85"/>
         <image name="icon-menu-vertical-ellipsis" width="4" height="18"/>
         <image name="icon-reader-comment" width="24" height="24"/>
         <image name="icon-reader-like" width="24" height="24"/>

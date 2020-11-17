@@ -10,6 +10,7 @@ private struct Constants {
     static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
     static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+    static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
     static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
     static let rotate90Degrees: CGFloat = CGFloat.pi / 2
 }
@@ -301,7 +302,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
         // Always reset
         avatarImageView.image = Constants.avatarPlaceholderImage
-        authorAvatarImageView.image = Constants.avatarPlaceholderImage
+        authorAvatarImageView.image = Constants.authorAvatarPlaceholderImage
 
         setSiteIcon()
         setAuthorAvatar()
@@ -347,7 +348,7 @@ protocol ReaderTopicsChipsDelegate: class {
         }
 
         authorAvatarImageView.isHidden = false
-        authorAvatarImageView.downloadImage(from: url, placeholderImage: Constants.avatarPlaceholderImage)
+        authorAvatarImageView.downloadImage(from: url, placeholderImage: Constants.authorAvatarPlaceholderImage)
     }
 
     private func setBlogLabels() {
