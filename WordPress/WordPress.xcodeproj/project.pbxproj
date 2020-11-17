@@ -647,7 +647,6 @@
 		465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */; };
 		46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */; };
 		4666534A2501552A00165DD4 /* LayoutPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466653492501552A00165DD4 /* LayoutPreviewViewController.swift */; };
-		4695E47E25630F9E00C512E1 /* WebAddressContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */; };
 		46963F5924649542000D356D /* EditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46963F5824649542000D356D /* EditorTheme.swift */; };
 		469CE06D24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */; };
 		469CE06E24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */; };
@@ -1817,7 +1816,6 @@
 		D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */; };
 		D82253DC2199411F0014D0E2 /* SiteAddressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253DB2199411F0014D0E2 /* SiteAddressService.swift */; };
 		D82253DF2199418B0014D0E2 /* WebAddressWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */; };
-		D82253E02199418B0014D0E2 /* WebAddressWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */; };
 		D82253E5219956540014D0E2 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E3219956540014D0E2 /* AddressCell.swift */; };
 		D82253E6219956540014D0E2 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253E4219956540014D0E2 /* AddressCell.xib */; };
 		D8225409219AB2030014D0E2 /* SiteInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8225407219AB0520014D0E2 /* SiteInformation.swift */; };
@@ -3122,7 +3120,6 @@
 		465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergLightNavigationController.swift; sourceTree = "<group>"; };
 		46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBlockProcessor.swift; sourceTree = "<group>"; };
 		466653492501552A00165DD4 /* LayoutPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPreviewViewController.swift; sourceTree = "<group>"; };
-		4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressContentViewController.swift; sourceTree = "<group>"; };
 		46963F5824649542000D356D /* EditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTheme.swift; sourceTree = "<group>"; };
 		469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerSectionTableViewCell.swift; sourceTree = "<group>"; };
 		469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPickerSectionTableViewCell.xib; sourceTree = "<group>"; };
@@ -4430,7 +4427,6 @@
 		D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableContentGroupTests.swift; sourceTree = "<group>"; };
 		D82253DB2199411F0014D0E2 /* SiteAddressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAddressService.swift; sourceTree = "<group>"; };
 		D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressWizardContent.swift; sourceTree = "<group>"; };
-		D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebAddressWizardContent.xib; sourceTree = "<group>"; };
 		D82253E3219956540014D0E2 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		D82253E4219956540014D0E2 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
 		D8225407219AB0520014D0E2 /* SiteInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteInformation.swift; sourceTree = "<group>"; };
@@ -10141,8 +10137,6 @@
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
-				D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */,
-				4695E47D25630F9E00C512E1 /* WebAddressContentViewController.swift */,
 			);
 			path = WebAddress;
 			sourceTree = "<group>";
@@ -11640,7 +11634,6 @@
 				1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */,
 				40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */,
 				8BD8201924BCCE8600FF25FD /* ReaderWelcomeBanner.xib in Resources */,
-				D82253E02199418B0014D0E2 /* WebAddressWizardContent.xib in Resources */,
 				17DC4C5A22C5E6D60059CA11 /* open_source_icon_76pt.png in Resources */,
 				17DC4C5622C5E6D60059CA11 /* open_source_icon_29pt@3x.png in Resources */,
 				17DC4C3B22C5E6910059CA11 /* open_source_dark_icon_76pt.png in Resources */,
@@ -12617,7 +12610,6 @@
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
-				4695E47E25630F9E00C512E1 /* WebAddressContentViewController.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */,
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
