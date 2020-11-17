@@ -576,7 +576,6 @@ private extension ReaderDetailViewController {
 
         let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
-        button.width = 44
         return button
     }
 
@@ -589,8 +588,11 @@ private extension ReaderDetailViewController {
 
     func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
         let image = image.withRenderingMode(.alwaysTemplate)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44.0, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: action, for: .touchUpInside)
 
-        return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
+        return UIBarButtonItem(customView: button)
     }
 }
 
