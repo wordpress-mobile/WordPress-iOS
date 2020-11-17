@@ -314,7 +314,7 @@ class ReaderDetailCoordinator {
     /// If it's an image, shows it fullscreen.
     /// If it's a fullscreen Story link, open it in the webview controller.
     /// If it's a post, open a new detail screen.
-    /// If it's a link protocol (tel: / sms: / mailto: / facetime:), take the correct action.
+    /// If it's a link protocol (tel: / sms: / mailto:), take the correct action.
     /// If it's a regular URL, open it in the webview controller.
     ///
     /// - Parameter url: the URL to be handled
