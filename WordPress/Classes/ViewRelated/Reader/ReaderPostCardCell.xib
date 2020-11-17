@@ -114,7 +114,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="c3n-LO-Igq" userLabel="Host Name / Time Stack View">
-                                                <rect key="frame" x="0.0" y="25.666666666666661" width="184" height="14.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="25" width="184" height="15"/>
                                                 <subviews>
                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="740" text="blog.host.name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCZ-4n-fDW" userLabel="Blog Host Name">
                                                         <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="14.333333333333334"/>
@@ -143,9 +143,6 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="7dJ-PC-Ihr" firstAttribute="centerY" secondItem="Pv6-I0-BNp" secondAttribute="centerY" id="CEI-Mx-Muh"/>
-                                        </constraints>
                                     </stackView>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
                                         <rect key="frame" x="244" y="0.0" width="44" height="40"/>
