@@ -2,13 +2,13 @@
 import XCTest
 
 extension JetpackSiteRef {
-    static func mock(siteID: Int, username: String) -> JetpackSiteRef {
+    static func mock(siteID: Int = 9001, username: String = "test") -> JetpackSiteRef {
         let payload: NSString = """
         {
-            "siteID": 9001,
-            "username": "test"
+            "siteID": \(siteID),
+            "username": "\(username)"
         }
-        """
+        """ as NSString
 
 
         return try! JSONDecoder().decode(JetpackSiteRef.self, from: payload.data(using: 8)!)

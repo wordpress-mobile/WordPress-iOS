@@ -538,7 +538,7 @@ import WordPressShared
         }
 
         if menuItem.type == .search {
-            QuickStartTourGuide.find()?.visited(.readerSearch)
+            QuickStartTourGuide.shared.visited(.readerSearch)
         }
 
         if menuItem.type == .addItem {
@@ -591,7 +591,7 @@ import WordPressShared
         WPStyleGuide.configureTableViewCell(cell)
         cell.accessoryView = nil
         cell.accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
-        if menuItem.type == .search && QuickStartTourGuide.find()?.isCurrentElement(.readerSearch) ?? false {
+        if menuItem.type == .search && QuickStartTourGuide.shared.isCurrentElement(.readerSearch) {
             cell.accessoryView = QuickStartSpotlightView()
         }
 
