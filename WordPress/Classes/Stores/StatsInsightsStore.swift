@@ -947,15 +947,34 @@ extension StatsInsightsStore {
 private extension InsightStoreState {
 
     func storeTodayWidgetData() {
-        guard widgetUsingCurrentSite() else {
-            return
-        }
+
 
         let data = TodayWidgetStats(views: todaysStats?.viewsCount,
                                     visitors: todaysStats?.visitorsCount,
                                     likes: todaysStats?.likesCount,
                                     comments: todaysStats?.commentsCount)
+        saveHomeWidgetTodayData(stats: data)
+
+        guard widgetUsingCurrentSite() else {
+            return
+        }
         data.saveData()
+    }
+
+    private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
+
+
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int, let timeZoneName = SiteStatsInformation.sharedInstance.siteTimeZone?.identifier else {
+            return
+        }
+
+        var homeWidgetTodayCache = HomeWidgetTodayData.read() ?? [Int: HomeWidgetTodayData]()
+
+        let newData = HomeWidgetTodayData(siteID: siteID, siteName: "", url: "", timeZoneName: timeZoneName, date: Date(), stats: stats)
+
+        homeWidgetTodayCache[newData.siteID] = newData
+
+        HomeWidgetTodayData.write(data: homeWidgetTodayCache)
     }
 
     func storeAllTimeWidgetData() {
