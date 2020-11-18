@@ -961,22 +961,6 @@ private extension InsightStoreState {
         data.saveData()
     }
 
-    private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
-
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int, let timeZoneName = SiteStatsInformation.sharedInstance.siteTimeZone?.identifier else {
-            return
-        }
-
-        var homeWidgetTodayCache = HomeWidgetTodayData.read() ?? [Int: HomeWidgetTodayData]()
-
-        let newData = HomeWidgetTodayData(siteID: siteID, siteName: "", url: "", timeZoneName: timeZoneName, date: Date(), stats: stats)
-
-        homeWidgetTodayCache[newData.siteID] = newData
-
-        HomeWidgetTodayData.write(data: homeWidgetTodayCache)
-    }
-
     func storeAllTimeWidgetData() {
         guard widgetUsingCurrentSite() else {
             return
@@ -999,4 +983,57 @@ private extension InsightStoreState {
         return true
     }
 
+}
+
+// MARK: - iOS 14 Widgets Data
+private extension InsightStoreState {
+
+    private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
+
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int,
+              let timeZoneName = SiteStatsInformation.sharedInstance.siteTimeZone?.identifier else {
+            return
+        }
+
+        var homeWidgetTodayCache = HomeWidgetTodayData.read() ?? initializeHomeWidgetTodayData()
+
+        guard let oldData = homeWidgetTodayCache[siteID] else {
+            DDLogError("HomeWidgetToday: Failed to find a matching site")
+            return
+        }
+
+        homeWidgetTodayCache[oldData.siteID] = HomeWidgetTodayData(siteID: oldData.siteID,
+                                                                   siteName: oldData.siteName,
+                                                                   url: oldData.url,
+                                                                   timeZoneName: timeZoneName,
+                                                                   date: Date(),
+                                                                   stats: stats)
+
+        HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+    }
+
+    // TODO - TODAYWIDGET: this isn't the right place for this initialization to happen. Putting it here for now
+    // as it's suitable to test cache updates from the stats in the app and have to figure out exactly how to handle the
+    // initialization overall
+    private func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
+
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        return blogService.blogsForAllAccounts().reduce(into: [Int: HomeWidgetTodayData]()) {
+            if let blogID = $1.dotComID,
+               let url = $1.url,
+               let blog = blogService.blog(byBlogId: blogID) {
+
+                let title = ($1.title ?? url).isEmpty ? url : $1.title ?? url
+                let timeZoneName = blogService.timeZone(for: blog).identifier
+
+                $0[Int(truncating: blogID)] = HomeWidgetTodayData(siteID: Int(truncating: blogID),
+                                                                  siteName: title,
+                                                                  url: url,
+                                                                  timeZoneName: timeZoneName,
+                                                                  date: Date(),
+                                                                  stats: nil)
+            }
+        }
+    }
 }

@@ -8,7 +8,7 @@ protocol HomeWidgetData: Codable {
     var siteID: Int { get }
     var url: String { get }
     var timeZoneName: String { get }
-    var stats: WidgetStats { get }
+    var stats: WidgetStats? { get }
 }
 
 
@@ -23,15 +23,17 @@ struct HomeWidgetTodayData: HomeWidgetData {
     let url: String
     let timeZoneName: String
     let date: Date
-    let stats: WidgetStats
+    let stats: WidgetStats?
 }
 
 
 // MARK: - Local cache
 extension HomeWidgetTodayData {
 
-    static func readData(from cache: HomeWidgetCache<Self>? = nil) -> [Int: HomeWidgetTodayData]? {
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName, appGroup: WPAppGroupName)
+    static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: HomeWidgetTodayData]? {
+
+        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+                                                                  appGroup: WPAppGroupName)
         do {
             return try cache.read()
         } catch {
@@ -41,7 +43,9 @@ extension HomeWidgetTodayData {
     }
 
     static func write(data: [Int: HomeWidgetTodayData], to cache: HomeWidgetCache<Self>? = nil) {
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName, appGroup: WPAppGroupName)
+
+        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+                                                                  appGroup: WPAppGroupName)
 
         do {
             try cache.write(widgetData: data)
