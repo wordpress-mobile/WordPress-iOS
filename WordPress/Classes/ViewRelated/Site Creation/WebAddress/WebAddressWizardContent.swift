@@ -352,7 +352,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let serverError: String = NSLocalizedString("There was a problem",
                                                                        comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
         static let mainTitle: String = NSLocalizedString("Choose a domain", comment: "Select domain name. Title")
-        static let prompt: String = NSLocalizedString("This is where people will find you on the internet", comment: "Select domain name. Subtitle")
+        static let prompt: String = NSLocalizedString("This is where people will find you on the internet.", comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
         static let searchPlaceholder: String = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
