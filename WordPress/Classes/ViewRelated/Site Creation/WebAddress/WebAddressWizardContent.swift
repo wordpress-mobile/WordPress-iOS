@@ -160,12 +160,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
-            self?.updateIcon(isLoading: false)
-            switch results {
-            case .failure(let error):
-                self?.handleError(error)
-            case .success(let data):
-                self?.handleData(data)
+            DispatchQueue.main.async {
+                self?.handleResult(results)
             }
         }
     }
@@ -176,13 +172,19 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm) { [weak self] results in
-            self?.updateIcon(isLoading: false)
-            switch results {
-            case .failure(let error):
-                self?.handleError(error)
-            case .success(let data):
-                self?.handleData(data)
+            DispatchQueue.main.async {
+                self?.handleResult(results)
             }
+        }
+    }
+
+    private func handleResult(_ results: Result<[DomainSuggestion], Error>) {
+        updateIcon(isLoading: false)
+        switch results {
+        case .failure(let error):
+            handleError(error)
+        case .success(let data):
+            handleData(data)
         }
     }
 
