@@ -6,7 +6,6 @@ import WordPressAuthenticator
 final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     // MARK: Properties
-
     private struct Metrics {
         static let maxLabelWidth        = CGFloat(290)
         static let noResultsTopInset    = CGFloat(64)
@@ -51,6 +50,21 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     /// This message advises the user that
     private let noResultsLabel: UILabel
+    private var isShowingError: Bool = false {
+        didSet {
+            if isShowingError {
+                contentSizeWillChange()
+                table.reloadData()
+            }
+        }
+    }
+    private var errorMessage: String {
+        if isNetworkActive {
+            return Strings.serverError
+        } else {
+            return Strings.noConnection
+        }
+    }
 
     private let isBottomToolbarAlwaysVisible = UIAccessibility.isVoiceOverRunning
 
@@ -82,9 +96,9 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         self.searchHeader = SearchTextField()
         table = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: table,
-                   mainTitle: NSLocalizedString("Choose a domain", comment: "Select domain name. Title"),
-                   prompt: NSLocalizedString("This is where people will find you on the internet", comment: "Select domain name. Subtitle"),
-                   primaryActionTitle: NSLocalizedString("Create Site", comment: "Button to progress to the next step"),
+                   mainTitle: Strings.mainTitle,
+                   prompt: Strings.prompt,
+                   primaryActionTitle: Strings.createSite,
                    accessoryView: searchHeader)
     }
 
@@ -132,6 +146,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     override func estimatedContentSize() -> CGSize {
+        guard isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let height = estimatedSectionHeaderHeight + (CGFloat(data.count) * AddressCell.estimatedSize.height)
@@ -146,6 +161,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
+        isShowingError = false
         // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
         guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
             fetchDotComAddresses(searchTerm)
@@ -191,7 +207,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleError(_ error: Error) {
-        setupEmptyTableProvider()
+        isShowingError = true
     }
 
     private func performSearchIfNeeded(query: String) {
@@ -202,7 +218,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         lastSearchQuery = query
 
         guard isNetworkActive == true else {
-            setupEmptyTableProvider()
+            isShowingError = true
             return
         }
 
@@ -241,33 +257,16 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchHeader.becomeFirstResponder()
     }
 
-    private func setupEmptyTableProvider() {
-        let message: InlineErrorMessage
-        if isNetworkActive {
-            message = InlineErrorMessages.serverError
-        } else {
-            message = InlineErrorMessages.noConnection
-        }
-
-        let handler: CellSelectionHandler = { [weak self] _ in
-            let retryQuery = self?.lastSearchQuery ?? ""
-            self?.performSearchIfNeeded(query: retryQuery)
-        }
-
-//        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
-    }
-
     private func setupHeaderAndNoResultsMessage() {
         searchHeader.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         searchHeader.delegate = self
         searchHeader.accessibilityTraits = .searchField
 
-        let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
+        let placeholderText = Strings.searchPlaceholder
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         searchHeader.attributedPlaceholder = attributedPlaceholder
-
-        searchHeader.accessibilityHint = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
+        searchHeader.accessibilityHint = Strings.searchAccessibility
 
         view.addSubview(noResultsLabel)
 
@@ -346,6 +345,17 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                           comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
+        static let noConnection: String = NSLocalizedString("No connection",
+                                                                           comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
+
+        static let serverError: String = NSLocalizedString("There was a problem",
+                                                                       comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
+        static let mainTitle: String = NSLocalizedString("Choose a domain", comment: "Select domain name. Title")
+        static let prompt: String = NSLocalizedString("This is where people will find you on the internet", comment: "Select domain name. Subtitle")
+        static let createSite: String = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
+        static let searchPlaceholder: String = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
+        static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
+        static let suggestions: String = NSLocalizedString("Suggestions", comment: "Suggested domains")
     }
 
     private func addBorder(cell: AddressCell, at: IndexPath) {
@@ -397,6 +407,7 @@ private extension WebAddressWizardContent {
 // MARK: UITableViewDataSource
 extension WebAddressWizardContent: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard !isShowingError else { return 1 }
         return data.count
     }
 
@@ -405,10 +416,18 @@ extension WebAddressWizardContent: UITableViewDataSource {
             return nil
         }
 
-        return NSLocalizedString("Suggestions", comment: "Suggested domains")
+        return Strings.suggestions
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if isShowingError {
+            return configureErrorCell(tableView, cellForRowAt: indexPath)
+        } else {
+            return configureAddressCell(tableView, cellForRowAt: indexPath)
+        }
+    }
+
+    func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AddressCell.cellReuseIdentifier()) as? AddressCell else {
             assertionFailure("This is a programming error - AddressCell has not been properly registered!")
             return UITableViewCell()
@@ -421,13 +440,34 @@ extension WebAddressWizardContent: UITableViewDataSource {
 
         return cell
     }
+
+    func configureErrorCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier()) as? InlineErrorRetryTableViewCell else {
+            assertionFailure("This is a programming error - InlineErrorRetryTableViewCell has not been properly registered!")
+            return UITableViewCell()
+        }
+
+        cell.setMessage(errorMessage)
+
+        return cell
+    }
 }
 
 // MARK: UITableViewDelegate
 extension WebAddressWizardContent: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !isShowingError else {
+            retry()
+            return
+        }
+
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
         searchHeader.resignFirstResponder()
+    }
+
+    func retry() {
+        let retryQuery = lastSearchQuery ?? ""
+        performSearchIfNeeded(query: retryQuery)
     }
 }

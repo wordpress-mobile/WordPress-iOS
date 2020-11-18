@@ -328,9 +328,7 @@
 		2F605FAA25145F7200F99544 /* WPCategoryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F605FA925145F7200F99544 /* WPCategoryTree.swift */; };
 		2FA37B1A215724E900C80377 /* LongPressGestureLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */; };
 		2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511621F26A24009AA935 /* ChangePasswordViewController.swift */; };
-		2FA6511A21F26A57009AA935 /* InlineErrorTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511821F26A57009AA935 /* InlineErrorTableViewProvider.swift */; };
 		2FA6511B21F26A57009AA935 /* InlineErrorRetryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511921F26A57009AA935 /* InlineErrorRetryTableViewCell.swift */; };
-		2FA6511D21F26A7C009AA935 /* WebAddressTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511C21F26A7C009AA935 /* WebAddressTableViewProvider.swift */; };
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
@@ -2800,9 +2798,7 @@
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGestureLabel.swift; sourceTree = "<group>"; };
 		2FA6511621F26A24009AA935 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
-		2FA6511821F26A57009AA935 /* InlineErrorTableViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorTableViewProvider.swift; sourceTree = "<group>"; };
 		2FA6511921F26A57009AA935 /* InlineErrorRetryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorRetryTableViewCell.swift; sourceTree = "<group>"; };
-		2FA6511C21F26A7C009AA935 /* WebAddressTableViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebAddressTableViewProvider.swift; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate_old.html; path = Resources/HTML/defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "xhtml1-transitional.dtd"; path = "Resources/HTML/xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = xhtmlValidatorTemplate.xhtml; path = Resources/HTML/xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
@@ -7232,7 +7228,6 @@
 			isa = PBXGroup;
 			children = (
 				2FA6511921F26A57009AA935 /* InlineErrorRetryTableViewCell.swift */,
-				2FA6511821F26A57009AA935 /* InlineErrorTableViewProvider.swift */,
 				731E88C721C9A10A0055C014 /* ErrorStateView.swift */,
 				731E88C621C9A10A0055C014 /* ErrorStateViewConfiguration.swift */,
 				731E88C821C9A10A0055C014 /* ErrorStateViewController.swift */,
@@ -10132,7 +10127,6 @@
 		D8380CA72194287B00250609 /* WebAddress */ = {
 			isa = PBXGroup;
 			children = (
-				2FA6511C21F26A7C009AA935 /* WebAddressTableViewProvider.swift */,
 				D82253E3219956540014D0E2 /* AddressCell.swift */,
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
@@ -12833,7 +12827,6 @@
 				46183D20251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift in Sources */,
 				CE1CCB2D204DDD18000EE3AC /* MyProfileHeaderView.swift in Sources */,
 				98906502237CC1DF00218CD2 /* WidgetUnconfiguredCell.swift in Sources */,
-				2FA6511D21F26A7C009AA935 /* WebAddressTableViewProvider.swift in Sources */,
 				FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */,
 				E66E2A691FE432BC00788F22 /* TitleBadgeDisclosureCell.swift in Sources */,
 				7E4123BF20F4097B00DF8486 /* FormattableContent.swift in Sources */,
@@ -13520,7 +13513,6 @@
 				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
-				2FA6511A21F26A57009AA935 /* InlineErrorTableViewProvider.swift in Sources */,
 				D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */,
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,

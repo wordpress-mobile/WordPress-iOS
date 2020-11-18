@@ -113,7 +113,7 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
 
     // MARK: Internal behavior
 
-    func setMessage(_ message: InlineErrorMessage) {
+    func setMessage(_ message: String) {
         textLabel?.text = message
     }
 
