@@ -575,7 +575,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
 
-        let shouldHide = (largeTitleView.frame.maxY > 0)
+        let shouldHide = newHeaderViewHeight > midHeaderHeight
         titleView.updateVisibility(shouldHide, animated: true)
         updateSeperatorStyle()
     }
