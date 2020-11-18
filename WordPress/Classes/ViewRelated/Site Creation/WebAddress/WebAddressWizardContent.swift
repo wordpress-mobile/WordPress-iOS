@@ -66,8 +66,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         }
     }
 
-    private let isBottomToolbarAlwaysVisible = UIAccessibility.isVoiceOverRunning
-
     // MARK: WebAddressWizardContent
 
     init(creator: SiteCreator, service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
@@ -135,14 +133,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         clearContent()
-    }
-
-    private func textFieldResignFirstResponder() {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return
-        }
-
-        header.textField.resignFirstResponder()
     }
 
     override func estimatedContentSize() -> CGSize {
