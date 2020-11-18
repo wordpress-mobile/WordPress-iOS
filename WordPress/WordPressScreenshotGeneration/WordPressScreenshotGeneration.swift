@@ -1,6 +1,5 @@
 import UIKit
 import XCTest
-import SimulatorStatusMagic
 
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
@@ -9,7 +8,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        SDStatusBarManager.sharedInstance()?.enableOverrides()
 
         // This does the shared setup including injecting mocks and launching the app
         setUpTestSuite()
@@ -29,8 +27,6 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        SDStatusBarManager.sharedInstance()?.disableOverrides()
-
         super.tearDown()
     }
 

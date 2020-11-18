@@ -397,7 +397,6 @@ target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_mocks
-    pod 'SimulatorStatusMagic'
 end
 
 ## UI Tests
