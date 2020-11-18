@@ -230,8 +230,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             return
         }
 
-        selection(selectedDomain)
         trackDomainsSelection(selectedDomain)
+        selection(selectedDomain)
     }
 
     private func setupCells() {
@@ -271,11 +271,12 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func setupTable() {
+        table.dataSource = self
+        table.estimatedRowHeight = AddressCell.estimatedSize.height
         setupTableBackground()
         setupTableSeparator()
         setupCells()
         setupHeaderAndNoResultsMessage()
-        table.dataSource = self
         table.showsVerticalScrollIndicator = false
     }
 
@@ -339,27 +340,21 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         static let noResults = NSLocalizedString("No available addresses matching your search",
                                                  comment: "Advises the user that no Domain suggestions could be found for the search query.")
         static let noConnection: String = NSLocalizedString("No connection",
-                                                                           comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
-
+                                                            comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
         static let serverError: String = NSLocalizedString("There was a problem",
-                                                                       comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
-        static let mainTitle: String = NSLocalizedString("Choose a domain", comment: "Select domain name. Title")
-        static let prompt: String = NSLocalizedString("This is where people will find you on the internet.", comment: "Select domain name. Subtitle")
-        static let createSite: String = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
-        static let searchPlaceholder: String = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
-        static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
-        static let suggestions: String = NSLocalizedString("Suggestions", comment: "Suggested domains")
-    }
-
-    private func addBorder(cell: AddressCell, at: IndexPath) {
-        let row = at.row
-        if row == 0 {
-            cell.addBorder(at: .top)
-        }
-
-        if row == data.count - 1 {
-            cell.addBorder(at: .bottom)
-        }
+                                                           comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
+        static let mainTitle: String = NSLocalizedString("Choose a domain",
+                                                         comment: "Select domain name. Title")
+        static let prompt: String = NSLocalizedString("This is where people will find you on the internet.",
+                                                      comment: "Select domain name. Subtitle")
+        static let createSite: String = NSLocalizedString("Create Site",
+                                                          comment: "Button to progress to the next step")
+        static let searchPlaceholder: String = NSLocalizedString("Search Domains",
+                                                                 comment: "Site creation. Seelect a domain, search field placeholder")
+        static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.",
+                                                                   comment: "Accessibility hint for the domains search field in Site Creation.")
+        static let suggestions: String = NSLocalizedString("Suggestions",
+                                                           comment: "Suggested domains")
     }
 }
 
@@ -405,10 +400,7 @@ extension WebAddressWizardContent: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard data.count > 0 else {
-            return nil
-        }
-
+        guard data.count > 0 else { return nil }
         return Strings.suggestions
     }
 
@@ -428,8 +420,7 @@ extension WebAddressWizardContent: UITableViewDataSource {
 
         let domainSuggestion = data[indexPath.row]
         cell.model = domainSuggestion
-
-        addBorder(cell: cell, at: indexPath)
+        cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
 
         return cell
     }

@@ -2,10 +2,6 @@ import UIKit
 import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
-    enum BorderPosition {
-        case top
-        case bottom
-    }
     static var estimatedSize: CGSize {
         return CGSize(width: 320, height: 45)
     }
@@ -80,15 +76,6 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
         return completeDomainName
-    }
-
-    func addBorder(at: BorderPosition) {
-        switch at {
-        case .top:
-            border = addTopBorder(withColor: .neutral(.shade10))
-        case .bottom:
-            border = addBottomBorder(withColor: .neutral(.shade10))
-        }
     }
 }
 
