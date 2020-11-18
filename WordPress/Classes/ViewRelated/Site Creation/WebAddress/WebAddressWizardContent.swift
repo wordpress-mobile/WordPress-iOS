@@ -207,6 +207,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleError(_ error: Error) {
+        SiteCreationAnalyticsHelper.trackError(error)
         isShowingError = true
     }
 
