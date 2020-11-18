@@ -73,6 +73,7 @@ private extension ReaderCrossPostCell {
     struct Constants {
         static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
         static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+        static let imageBorderWidth: CGFloat = 1
         static let xPostTitlePrefix = "X-post: "
         static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
         static let siteTemplate = "%@ cross-posted from %@ to %@"
@@ -106,7 +107,7 @@ private extension ReaderCrossPostCell {
     // MARK: - Configuration
 
     func configureBlavatarImage() {
-
+        configureAvatarBorder(blavatarImageView)
         let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
 
@@ -132,6 +133,7 @@ private extension ReaderCrossPostCell {
     }
 
     func configureAvatarImageView() {
+        configureAvatarBorder(avatarImageView)
         let placeholder = Constants.avatarPlaceholderImage
 
         // Always reset
@@ -140,6 +142,12 @@ private extension ReaderCrossPostCell {
         if let url = contentProvider?.avatarURLForDisplay() {
             avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         }
+    }
+
+    func configureAvatarBorder(_ imageView: UIImageView) {
+        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        imageView.layer.borderWidth = Constants.imageBorderWidth
+        imageView.layer.masksToBounds = true
     }
 
     func configureTitleLabel() {
