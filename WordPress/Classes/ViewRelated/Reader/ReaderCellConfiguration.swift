@@ -41,13 +41,16 @@ final class ReaderCellConfiguration {
             return
         }
 
-        let postCell = cell as! ReaderPostCardCell
+        guard let postCell = cell as? ReaderPostCardCell else {
+            return
+        }
 
         postCell.delegate = delegate
         postCell.topicChipsDelegate = topicChipsDelegate
 
         postCell.loggedInActionVisibility = loggedInActionVisibility
         postCell.displayTopics = displayTopics
+        postCell.isWPForTeams = post.blog?.isWPForTeams() ?? false
         postCell.configureCell(post)
         postCell.layoutIfNeeded()
     }
