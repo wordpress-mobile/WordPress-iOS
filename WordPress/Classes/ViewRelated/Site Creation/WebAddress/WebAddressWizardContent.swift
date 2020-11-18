@@ -146,7 +146,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     override func estimatedContentSize() -> CGSize {
-        guard isShowingError else { return CGSize(width: view.frame.width, height: 44) }
+        guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let height = estimatedSectionHeaderHeight + (CGFloat(data.count) * AddressCell.estimatedSize.height)
