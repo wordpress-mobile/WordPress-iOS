@@ -481,7 +481,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         let blog = post.blog
         let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
         if JetpackSSOEnabled == false {
-            let controller = JetpackSecuritySettingsViewController(blog: blog)
+            let controller = JetpackSettingsViewController(blog: blog)
             controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
             let navController = UINavigationController(rootViewController: controller)
             present(navController, animated: true)
@@ -555,7 +555,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                            multipleSelection: allowMultipleSelection,
                                            callback: callback)
         case .filesApp:
-            filesAppMediaPicker.presentPicker(origin: self, filters: filter, multipleSelection: allowMultipleSelection, callback: callback)
+            filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
         }
     }

@@ -9,6 +9,10 @@ private struct Constants {
     static let featuredMediaTopSpacing: CGFloat = 8
     static let headerBottomSpacing: CGFloat = 8
     static let summaryMaxNumberOfLines: NSInteger = 2
+    static let avatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+    static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+    static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
+    static let rotate90Degrees: CGFloat = CGFloat.pi / 2
 }
 
 protocol ReaderTopicsChipsDelegate: class {
@@ -37,15 +41,20 @@ protocol ReaderTopicsChipsDelegate: class {
 
     @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
-    // Header realated Views
-
+    // Header related Views
     @IBOutlet weak var headerStackView: UIStackView!
+    @IBOutlet fileprivate weak var avatarStackView: UIStackView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var authorAvatarImageView: UIImageView!
     @IBOutlet fileprivate weak var headerBlogButton: UIButton!
+
+    @IBOutlet private weak var authorNameLabel: UILabel!
+    @IBOutlet private weak var arrowImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+
     @IBOutlet fileprivate weak var blogHostNameLabel: UILabel!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet weak var bylineSeparatorLabel: UILabel!
+    @IBOutlet private weak var bylineSeparatorLabel: UILabel!
 
     // Card views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
@@ -59,7 +68,6 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-
     @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
@@ -86,6 +94,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
     weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
     var displayTopics: Bool = false
+    var isWPForTeams: Bool = false
 
     // MARK: - Accessors
     var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
@@ -99,8 +108,12 @@ protocol ReaderTopicsChipsDelegate: class {
                 headerBlogButton.isEnabled = newValue
                 if newValue {
                     blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
+                    configureArrowImage()
                 } else {
                     blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+                    authorNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
+                    configureArrowImage(withTint: WPStyleGuide.readerCardBlogNameLabelDisabledTextColor())
                 }
             }
         }
@@ -159,7 +172,8 @@ protocol ReaderTopicsChipsDelegate: class {
         applyStyles()
         setupMenuButton()
         configureFeaturedImageView()
-        configureAvatarImageView()
+        configureAvatarImageView(avatarImageView)
+        configureAvatarImageView(authorAvatarImageView)
     }
 
     open override func prepareForReuse() {
@@ -167,6 +181,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
         imageLoader.prepareForReuse()
         displayTopics = false
+        isWPForTeams = false
 
         topicsCollectionView.collapse()
     }
@@ -220,9 +235,12 @@ protocol ReaderTopicsChipsDelegate: class {
         borderedView.backgroundColor = .listForeground
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
+        WPStyleGuide.applyReaderCardBlogNameStyle(authorNameLabel)
+
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogHostNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineSeparatorLabel)
+
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
 
@@ -238,6 +256,7 @@ protocol ReaderTopicsChipsDelegate: class {
     */
     fileprivate func applyOpaqueBackgroundColors() {
         blogNameLabel.backgroundColor = .listForeground
+        authorNameLabel.backgroundColor = .listForeground
         blogHostNameLabel.backgroundColor = .listForeground
         bylineLabel.backgroundColor = .listForeground
         titleLabel.backgroundColor = .listForeground
@@ -252,7 +271,8 @@ protocol ReaderTopicsChipsDelegate: class {
 
         configureTopicsCollectionView()
         configureHeader()
-        configureAvatarImageView()
+        configureAvatarImageView(avatarImageView)
+        configureAvatarImageView(authorAvatarImageView)
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
@@ -278,51 +298,94 @@ protocol ReaderTopicsChipsDelegate: class {
         topicsCollectionView.isHidden = false
     }
 
-    fileprivate func configureHeader() {
+    private func configureHeader() {
+
+        // Always reset
+        avatarImageView.image = Constants.avatarPlaceholderImage
+        authorAvatarImageView.image = Constants.authorAvatarPlaceholderImage
+
+        setSiteIcon()
+        setAuthorAvatar()
+        setBlogLabels()
+
+        avatarStackView.isHidden = avatarImageView.isHidden && authorAvatarImageView.isHidden
+    }
+
+    private func setSiteIcon() {
+        let size = avatarImageView.frame.size.width * UIScreen.main.scale
+
+        guard let contentProvider = contentProvider,
+              let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
+            avatarImageView.isHidden = true
+            return
+        }
+
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: contentProvider, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
+
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: url,
+            from: host,
+            onComplete: { request in
+                self.avatarImageView.downloadImage(usingRequest: request)
+                self.avatarImageView.isHidden = false
+            },
+            onFailure: { error in
+                CrashLogging.logError(error)
+                self.avatarImageView.isHidden = true
+            })
+    }
+
+    private func setAuthorAvatar() {
+        guard isWPForTeams,
+              let contentProvider = contentProvider,
+              let url = contentProvider.avatarURLForDisplay() else {
+            authorAvatarImageView.isHidden = true
+            return
+        }
+
+        authorAvatarImageView.isHidden = false
+        authorAvatarImageView.downloadImage(from: url, placeholderImage: Constants.authorAvatarPlaceholderImage)
+    }
+
+    private func setBlogLabels() {
         guard let contentProvider = contentProvider else {
             return
         }
-        //
 
-        // Always reset
-        avatarImageView.image = nil
+        authorNameLabel.isHidden = !isWPForTeams
+        arrowImageView.isHidden = !isWPForTeams
 
-        let size = avatarImageView.frame.size.width * UIScreen.main.scale
-        if let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) {
-
-            let mediaRequestAuthenticator = MediaRequestAuthenticator()
-            let host = MediaHost(with: contentProvider, failure: { error in
-                // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
-            })
-
-            mediaRequestAuthenticator.authenticatedRequest(
-                for: url,
-                from: host,
-                onComplete: { request in
-                    self.avatarImageView.downloadImage(usingRequest: request)
-                    self.avatarImageView.isHidden = false
-            },
-                onFailure: { error in
-                    CrashLogging.logError(error)
-                    self.avatarImageView.isHidden = true
-            })
-        } else {
-            avatarImageView.isHidden = true
+        if isWPForTeams {
+            authorNameLabel.text = contentProvider.authorForDisplay()
+            configureArrowImage()
         }
 
-        blogNameLabel.text = contentProvider.blogNameForDisplay() ?? ""
-        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay() ?? ""
+        blogNameLabel.text = contentProvider.blogNameForDisplay()
+        blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
 
         let dateString: String = datePublished()
         bylineSeparatorLabel.isHidden = dateString.isEmpty
         bylineLabel.text = dateString
     }
 
-    fileprivate func configureAvatarImageView() {
-        avatarImageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
-        avatarImageView.layer.borderWidth = Constants.imageBorderWidth
-        avatarImageView.layer.masksToBounds = true
+    private func configureArrowImage(withTint tint: UIColor = WPStyleGuide.readerCardBlogNameLabelTextColor()) {
+        arrowImageView.image = UIImage.gridicon(.dropdown).imageWithTintColor(tint)
+
+        let imageRotationAngle = (userInterfaceLayoutDirection() == .rightToLeft) ?
+            Constants.rotate90Degrees :
+            Constants.rotate270Degrees
+
+        arrowImageView.transform = CGAffineTransform(rotationAngle: imageRotationAngle)
+    }
+
+    private func configureAvatarImageView(_ imageView: UIImageView) {
+        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        imageView.layer.borderWidth = Constants.imageBorderWidth
+        imageView.layer.masksToBounds = true
     }
 
     private func configureFeaturedImageView() {
@@ -602,10 +665,14 @@ protocol ReaderTopicsChipsDelegate: class {
 
     @IBAction func blogButtonTouchesDidHighlight(_ sender: UIButton) {
         blogNameLabel.isHighlighted = true
+        authorNameLabel.isHighlighted = true
+        configureArrowImage(withTint: .primaryLight)
     }
 
     @IBAction func blogButtonTouchesDidEnd(_ sender: UIButton) {
         blogNameLabel.isHighlighted = false
+        authorNameLabel.isHighlighted = false
+        configureArrowImage()
     }
 
 
