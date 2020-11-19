@@ -152,7 +152,7 @@
     ///
     /// REF: https://github.com/wordpress-mobile/WordPress-iOS/issues/15335
     ///
-    if (blog == nil || blog.objectID == nil) {
+    if (self.blog == nil || self.blog.objectID == nil) {
         DDLogError(@"🔴 Error: missing object ID (please contact @diegoreymendez with this log)");
         DDLogError(@"%@", [NSThread callStackSymbols]);
     }
