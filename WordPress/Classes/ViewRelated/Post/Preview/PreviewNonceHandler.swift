@@ -5,22 +5,24 @@ struct PreviewNonceHandler {
             return nil
         }
 
-        if shouldUnmapAndAddPreviewParam(post: post) {
+        if shouldComposePreviewURL(post: post) {
             url = addPreviewIfNecessary(url: url) ?? url
             url = unmapURL(post: post, url: url) ?? url
+            url = addNonceIfNecessary(post: post, url: url) ?? url
         }
 
-        if post.blog.supports(.noncePreviews), let nonce = post.blog.getOptionValue("frame_nonce") as? String {
-            return addNonce(nonce, to: url)
-        } else {
-            return url
-        }
+        return url
     }
 
-    private static func addNonce(_ nonce: String, to url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-            return nil
+    private static func addNonceIfNecessary(post: AbstractPost, url: URL) -> URL? {
+        guard
+            post.blog.supports(.noncePreviews),
+            let nonce = post.blog.getOptionValue("frame_nonce") as? String,
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        else {
+            return url
         }
+
         var queryItems = components.queryItems ?? []
         queryItems.append(URLQueryItem(name: "frame-nonce", value: nonce))
         components.queryItems = queryItems
@@ -42,7 +44,7 @@ struct PreviewNonceHandler {
         return components.url
     }
 
-    private static func shouldUnmapAndAddPreviewParam(post: AbstractPost) -> Bool {
+    private static func shouldComposePreviewURL(post: AbstractPost) -> Bool {
         // If the post is not published, add the preview param.
         if post.status!.rawValue != PostStatusPublish {
             return true
