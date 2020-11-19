@@ -991,28 +991,28 @@ private extension InsightStoreState {
 
     private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
 
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
 
         var homeWidgetTodayCache = HomeWidgetTodayData.read() ?? initializeHomeWidgetTodayData()
 
-        guard let oldData = homeWidgetTodayCache[siteID] else {
+        guard let oldData = homeWidgetTodayCache[siteID.intValue] else {
             DDLogError("HomeWidgetToday: Failed to find a matching site")
             return
         }
         // TODO - TODAYWIDGET: it might be better to move the blog updates in SiteStatsInformation
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
-        guard let blog = blogService.blog(byBlogId: NSNumber(value: siteID)) else {
+        guard let blog = blogService.blog(byBlogId: siteID) else {
             DDLogError("HomeWidgetToday: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
-            homeWidgetTodayCache.removeValue(forKey: siteID)
+            homeWidgetTodayCache.removeValue(forKey: siteID.intValue)
             HomeWidgetTodayData.write(data: homeWidgetTodayCache)
             return
         }
         // refresh stats and update any blog info, if they had changed
-        homeWidgetTodayCache[siteID] = HomeWidgetTodayData(siteID: siteID,
+        homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                            siteName: blog.title ?? oldData.siteName,
                                                            url: blog.url ?? oldData.url,
                                                            timeZoneName: blogService.timeZone(for: blog).identifier,
@@ -1038,7 +1038,7 @@ private extension InsightStoreState {
                 let title = ($1.title ?? url).isEmpty ? url : $1.title ?? url
                 let timeZoneName = blogService.timeZone(for: blog).identifier
 
-                $0[Int(truncating: blogID)] = HomeWidgetTodayData(siteID: Int(truncating: blogID),
+                $0[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
                                                                   url: url,
                                                                   timeZoneName: timeZoneName,
