@@ -51,7 +51,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         webView.backgroundColor = .basicBackground
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign)
         observeProgressEstimations()
-        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     deinit {
