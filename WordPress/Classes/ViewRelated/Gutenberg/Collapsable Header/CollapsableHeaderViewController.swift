@@ -498,9 +498,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         hideNoResults()
     }
 
+    /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
+    /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
+    private var stashedOffset: CGPoint? = nil
+
     /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
     /// view to still be scrollable with the content size is less than the total space of the expanded screen.
     public func contentSizeWillChange() {
+        stashedOffset = scrollableView.contentOffset
         updateFooterInsets()
     }
 
@@ -560,14 +565,21 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout,
-              !isShowingNoResults else {
-            titleView.updateVisibility(false, animated: true)
-            return
-        }
-        disableInitialLayoutHelpers()
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        /// Clear the stashed offset because the user has initiated a change
+        stashedOffset = nil
+    }
 
+    /// Restores the stashed content offset if it appears as if it's been reset.
+    private func restorContentOffsetIfNeeded(_ scrollView: UIScrollView) {
+        guard let stashedOffset = stashedOffset else { return }
+        if scrollView.contentOffset.y == 0 { // Offset has probably been reset
+            scrollView.contentOffset = stashedOffset
+        }
+        self.stashedOffset = nil
+    }
+
+    private func resizeHeaderIfNeeded(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset.y + topInset
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
@@ -576,9 +588,24 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         } else {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
+    }
 
-        let shouldHide = newHeaderViewHeight > midHeaderHeight
-        titleView.updateVisibility(shouldHide, animated: true)
+    fileprivate func updateTitleViewVisibility(_ animated: Bool = true) {
+        let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
+        titleView.updateVisibility(shouldHide, animated: animated)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        restorContentOffsetIfNeeded(scrollView)
+
+        guard !shouldUseCompactLayout,
+              !isShowingNoResults else {
+            titleView.updateVisibility(false, animated: true)
+            return
+        }
+        disableInitialLayoutHelpers()
+        resizeHeaderIfNeeded(scrollView)
+        updateTitleViewVisibility()
         updateSeperatorStyle()
     }
 
@@ -607,16 +634,14 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {
         scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
-        let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
-        titleView.updateVisibility(shouldHide, animated: animated)
+        updateTitleViewVisibility(animated)
+        updateSeperatorStyle(animated: animated)
 
         guard animated else {
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
-            updateSeperatorStyle()
             return
         }
-        updateSeperatorStyle()
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
