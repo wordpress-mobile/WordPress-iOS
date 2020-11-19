@@ -84,8 +84,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func updateEdgeInsets() {
-        let screenSize = view.frame.size
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
+        let screenSize = collectionView.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize,
+                                                                                                 itemSpacing: itemSpacing,
+                                                                                                 screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
