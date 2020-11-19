@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressFlux
+import WidgetKit
 
 enum InsightAction: Action {
 
@@ -990,8 +991,7 @@ private extension InsightStoreState {
 
     private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
 
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int,
-              let timeZoneName = SiteStatsInformation.sharedInstance.siteTimeZone?.identifier else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID as? Int else {
             return
         }
 
@@ -1002,19 +1002,30 @@ private extension InsightStoreState {
             return
         }
 
-        homeWidgetTodayCache[oldData.siteID] = HomeWidgetTodayData(siteID: oldData.siteID,
-                                                                   siteName: oldData.siteName,
-                                                                   url: oldData.url,
-                                                                   timeZoneName: timeZoneName,
-                                                                   date: Date(),
-                                                                   stats: stats)
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        guard let blog = blogService.blog(byBlogId: NSNumber(value: siteID)) else {
+            DDLogError("HomeWidgetToday: the site does not exist anymore")
+            // if for any reason that site does not exist anymore, remove it from the cache.
+            homeWidgetTodayCache.removeValue(forKey: siteID)
+            HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+            return
+        }
+        // refresh stats and update any blog info, if they had changed
+        homeWidgetTodayCache[siteID] = HomeWidgetTodayData(siteID: siteID,
+                                                           siteName: blog.title ?? oldData.siteName,
+                                                           url: blog.url ?? oldData.url,
+                                                           timeZoneName: blogService.timeZone(for: blog).identifier,
+                                                           date: Date(),
+                                                           stats: stats)
 
         HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+        if #available(iOS 14.0, *) {
+            WidgetCenter.shared.reloadTimelines(ofKind: "WordPressHomeWidgetToday")
+        }
     }
 
-    // TODO - TODAYWIDGET: this isn't the right place for this initialization to happen. Putting it here for now
-    // as it's suitable to test cache updates from the stats in the app and have to figure out exactly how to handle the
-    // initialization overall
+    // TODO - TODAYWIDGET: this method will likely be exposed in the future to handle the creation of the file at login
     private func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
 
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
@@ -1032,7 +1043,7 @@ private extension InsightStoreState {
                                                                   url: url,
                                                                   timeZoneName: timeZoneName,
                                                                   date: Date(),
-                                                                  stats: nil)
+                                                                  stats: TodayWidgetStats())
             }
         }
     }
