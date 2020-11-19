@@ -1,6 +1,50 @@
+16.3
+-----
+* [*] Fixed an issue where `tel:` and `mailto:` links weren't launching actions in the webview found in Reader > post > more > Visit. [#15310]
+* [*] Reader bug fix: tapping a telephone, sms or email link in a detail post in Reader will now respond with the correct action. [#15307]
+
+ 
+16.2
+-----
+* [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
+* [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+* [*] Fixed an issue where comments viewed in the Reader would always be italicized.
+* [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
+
+16.1
+-----
+* [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.
+* [*] Fixed an issue that was causing the refresh control to show up on top of the list of sites. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15136]
+* [***] The "Floating Action Button" now appears on the list of posts and pages for quick and convenient creation. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15149l]
+
+16.0
+-----
+* [***] Block Editor: Full-width and wide alignment support for Video, Latest-posts, Gallery, Media & text, and Pullquote block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2605]
+* [***] Block Editor: Fix unsupported block bottom sheet is triggered when device is rotated. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2710]
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack site. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2709]
+* [**] Reader: Select interests is now displayed under the Discover tab. [#15097]
+* [**] Reader: The reader now displays site recommendations in the Discover feed [#15116]
+* [***] Reader: The new redesigned Reader detail shows your post as beautiful as ever. And if you add a featured image it would be twice as beautiful! [#15107]
+
+15.9
+-----
+* [*] Fixed issue that caused duplicate views to be displayed when requesting a login link. [#14975]
+* [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
+* [*] Fixed an issue that caused page editor to become an invisible overlay. [#15012]
+* [**] Block Editor: Increase tap-target of primary action on unsupported blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2608]
+* [***] Block Editor: On Jetpack connected sites, Unsupported Block Editor can be enabled via enabling Jetpack SSO setting directly from within the missing block alert. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2610]
+* [***] Block Editor: Add support for selecting user's post when configuring the link [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2484]
+* [*] Reader: Fixed an issue that resulted in no action when tapping a link with an anchor. [#15027]
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/issues/2695]
+
 15.8
 -----
 * [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
+* [***] Block Editor: Full-width and wide alignment support for Group, Cover and Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2559]
+* [**] Block Editor: Add support for rounded style in Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2591]
+* [*] Fixed an issue where the username didn't display on the Signup Epilogue after signing up with Apple and hiding the email address. [#14882]
+* [*] Login: display correct error message when the max number of failed login attempts is reached. [#14914]
+* [**] Block Editor: Fixed a case where adding a block made the toolbar jump [https://github.com/WordPress/gutenberg/pull/24573]
 
 15.7
 -----
@@ -11,7 +55,8 @@
        Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
 * [**] Added iCloud Keychain login functionality. (#14770)
 * [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
-* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash. 
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash.
+* [**] Block Editor: Fixed Dark Mode transition for editor menus.
 
 15.6
 -----

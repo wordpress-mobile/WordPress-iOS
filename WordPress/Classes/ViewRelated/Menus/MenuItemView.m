@@ -30,6 +30,7 @@
         [self setupCancelButton];
 
         self.highlighted = NO;
+        self.textLabel.accessibilityHint = NSLocalizedString(@"Edits this menu item", @"Screen reader hint for button to edit a menu item");
     }
 
     return self;
@@ -38,6 +39,7 @@
 - (void)setupAddButton
 {
     UIButton *button = [self addAccessoryButtonIconViewWithImage:[UIImage gridiconOfType:GridiconTypePlus]];
+    button.accessibilityLabel = NSLocalizedString(@"Add new menu item", @"Screen reader text for button that adds a menu item");
     [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     _addButton = button;
 }
@@ -46,6 +48,8 @@
 {
     UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
+    button.accessibilityLabel = NSLocalizedString(@"Move menu item", @"Screen reader text for button that will move the menu item");
+    button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down", @"Screen reader hint for button that will move the menu item");
     button.userInteractionEnabled = NO;
     _orderingButton = button;
 }

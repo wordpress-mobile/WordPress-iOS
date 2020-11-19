@@ -1,18 +1,17 @@
 import UIKit
-import AMScrollingNavbar
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
     func showLoading()
     func showError()
     func showErrorWithWebAction()
-    func show(title: String?)
     func scroll(to: String)
+    func updateHeader()
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Content scroll view
-    @IBOutlet weak var scrollView: ReaderScrollView!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     /// A ReaderWebView
     @IBOutlet weak var webView: ReaderWebView!
@@ -23,17 +22,20 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
-    /// Wrapper for the attribution view
-    @IBOutlet weak var attributionViewContainer: UIStackView!
-
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var loadingView: UIView!
 
+    /// The loading view, which contains all the ghost views
+    @IBOutlet weak var actionStackView: UIStackView!
+
     /// Attribution view for Discovery posts
-    private let attributionView: ReaderCardDiscoverAttributionView = .loadFromNib()
+    @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
+
+    /// The actual header
+    private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
     private let header: ReaderDetailHeaderView = .loadFromNib()
@@ -41,14 +43,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
+    /// Comment view, add action bar
+    private let commentAction: ReaderDetailCommentsView = .loadFromNib()
+
+    /// A view that fills the bottom portion outside of the safe area
+    @IBOutlet weak var toolbarSafeAreaView: UIView!
+
     /// View used to show errors
     private let noResultsViewController = NoResultsViewController.controller()
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
-
-    /// If we're following the scrollview to hide/show nav and toolbar
-    private var isFollowingScrollView = false
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -72,37 +77,76 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentPreferredStatusBarStyle
+    }
+
+    override var hidesBottomBarWhenPushed: Bool {
+        set { }
+        get { true }
+    }
+
+    /// Tracks whether the webview has called -didFinish:navigation
+    var isLoadingWebView = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureNavigationBar()
         applyStyles()
         configureWebView()
-        configureShareButton()
+        configureFeaturedImage()
         configureHeader()
         configureToolbar()
-        configureScrollView()
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
+        configureCommentAction()
+
         coordinator?.start()
+
+        // Fixes swipe to go back not working when leftBarButtonItem is set
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureFeaturedImage()
 
-        followScrollView()
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
+
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        featuredImage.viewWillDisappear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         ReaderTracker.shared.start(.readerPost)
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        stopFollowingScrollView()
+        // Reapply the appearance, this reset the navbar after presenting a view
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -111,13 +155,38 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         ReaderTracker.shared.stop(.readerPost)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.featuredImage.deviceDidRotate()
+        })
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
+
+        featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        commentAction.configure(for: post, in: self)
+
+        if let postURLString = post.permaLink,
+           let postURL = URL(string: postURLString) {
+            webView.postURL = postURL
+        }
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
+        }
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [weak self] in
+            self?.hideLoading()
         }
     }
 
@@ -132,8 +201,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Hide the ghost cells
     func hideLoading() {
-        loadingView.stopGhostAnimation()
-        loadingView.isHidden = true
+        guard !featuredImage.isLoading, !isLoadingWebView else {
+            return
+        }
+
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingView.alpha = 0.0
+        }) { (_) in
+            self.loadingView.isHidden = true
+            self.loadingView.stopGhostAnimation()
+            self.loadingView.alpha = 1.0
+        }
     }
 
     /// Shown an error
@@ -154,17 +232,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         ReaderTracker.shared.start(.readerPost)
     }
 
-    /// Show a given title
-    ///
-    /// - Parameter title: a optional String containing the title
-    func show(title: String?) {
-        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
-        let titleView = UILabel()
-
-        titleView.attributedText = NSAttributedString(string: title ?? placeholder, attributes: UINavigationBar.standardTitleTextAttributes())
-        navigationItem.titleView = titleView
-    }
-
     /// Scroll the content to a given #hash
     ///
     func scroll(to hash: String) {
@@ -175,6 +242,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
         })
+    }
+
+    func updateHeader() {
+        header.refreshFollowButton()
     }
 
     deinit {
@@ -226,17 +297,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    /// Adds the sahre button at the right of the nav bar
-    ///
-    private func configureShareButton() {
-        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControl.State())
-        button.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
+    private func configureFeaturedImage() {
+        guard featuredImage.superview == nil else {
+            return
+        }
 
-        let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+        featuredImage.delegate = coordinator
+
+        view.insertSubview(featuredImage, belowSubview: loadingView)
+
+        NSLayoutConstraint.activate([
+            featuredImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            featuredImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            featuredImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+        ])
+
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureHeader() {
@@ -251,6 +327,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
+        toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
+    }
+
+    private func configureCommentAction() {
+        actionStackView.insertArrangedSubview(commentAction, at: 0)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -258,20 +339,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             attributionView.isHidden = true
         } else {
             attributionView.displayAsLink = true
-            attributionViewContainer.addSubview(attributionView)
-            attributionViewContainer.pinSubviewToAllEdges(attributionView)
             attributionView.translatesAutoresizingMaskIntoConstraints = false
             attributionView.configureViewWithVerboseSiteAttribution(post)
             attributionView.delegate = self
+            attributionView.backgroundColor = .clear
         }
-    }
-
-    /// Add content and scroll insets based on the toolbar height
-    ///
-    private func configureScrollView() {
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.bottomMargin + Constants.toolbarHeight, right: 0)
-        scrollView.navigationBar = navigationController?.navigationBar
-        scrollView.delegate = self
     }
 
     /// Configure the NoResultsViewController
@@ -290,35 +362,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.share(fromView: sender)
     }
 
-    /// Start following the scroll view to hide nav bar and toolbar
-    /// Only if VoiceOver is not active
-    ///
-    private func followScrollView() {
-        if isFollowingScrollView,
-            UIAccessibility.isVoiceOverRunning {
-            return
-        }
-
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(scrollView, delay: Constants.delay, followers: [NavigationBarFollower(view: toolbarContainerView, direction: .scrollDown)])
-            navigationController.shouldUpdateContentInset = false
-            isFollowingScrollView = true
-        }
+    @objc func didTapMenuButton(_ sender: UIButton) {
+        coordinator?.didTapMenuButton(sender)
     }
 
-    /// Stop following the scroll view to hide nav bar and toolbar
-    ///
-    private func stopFollowingScrollView() {
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.stopFollowingScrollView(showingNavbar: true)
-            isFollowingScrollView = false
-        }
-    }
-
-    /// Update scroll view insets to take into account if toolbar is visible or not
-    private func updateScrollInsets(toolbarVisible: Bool) {
-        let bottomInset: CGFloat = toolbarVisible ? Constants.toolbarHeight : 0
-        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
+    @objc func didTapBrowserButton(_ sender: UIButton) {
+        coordinator?.openInBrowser()
     }
 
     /// A View Controller that displays a Post content.
@@ -388,11 +437,29 @@ extension ReaderDetailViewController: StoryboardLoadable {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
+extension ReaderDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+
 // MARK: - Reader Card Discover
 
 extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
+    }
+}
+
+// MARK: - UpdatableStatusBarStyle
+extension ReaderDetailViewController: UpdatableStatusBarStyle {
+    func updateStatusBarStyle(to style: UIStatusBarStyle) {
+        guard style != currentPreferredStatusBarStyle else {
+            return
+        }
+
+        currentPreferredStatusBarStyle = style
     }
 }
 
@@ -412,7 +479,10 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        coordinator?.webViewDidLoad()
         self.webView.loadMedia()
+
+        isLoadingWebView = false
         hideLoading()
     }
 
@@ -461,40 +531,76 @@ private extension ReaderDetailViewController {
 
 }
 
+// MARK: - Navigation Bar Configuration
+private extension ReaderDetailViewController {
+    struct Strings {
+        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
+        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
+    }
+
+    func configureNavigationBar() {
+        let rightItems = [
+            moreButtonItem(),
+            shareButtonItem(),
+            safariButtonItem()
+        ]
+
+        navigationItem.leftBarButtonItem = backButtonItem()
+        navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
+    }
+
+    func backButtonItem() -> UIBarButtonItem {
+        let button = barButtonItem(with: .gridicon(.chevronLeft), action: #selector(didTapBackButton(_:)))
+        button.accessibilityLabel = Strings.backButtonAccessibilityLabel
+
+        return button
+    }
+
+    @objc func didTapBackButton(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+
+    func safariButtonItem() -> UIBarButtonItem? {
+        let button = barButtonItem(with: .gridicon(.globe), action: #selector(didTapBrowserButton(_:)))
+        button.accessibilityLabel = Strings.safariButtonAccessibilityLabel
+
+        return button
+    }
+
+    func moreButtonItem() -> UIBarButtonItem? {
+        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
+            return nil
+        }
+
+        let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
+        button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
+        return button
+    }
+
+    func shareButtonItem() -> UIBarButtonItem? {
+        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
+        button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
+
+        return button
+    }
+
+    func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
+        let image = image.withRenderingMode(.alwaysTemplate)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44.0, height: image.size.height))
+        button.setImage(image, for: UIControl.State())
+        button.addTarget(self, action: action, for: .touchUpInside)
+
+        return UIBarButtonItem(customView: button)
+    }
+}
+
 // MARK: - NoResultsViewControllerDelegate
 ///
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
-    }
-}
-
-// MARK: - Scroll View Delegate
-
-extension ReaderDetailViewController: UIScrollViewDelegate {
-    // If we're at the end of the article, show nav bar and toolbar when the user stops scrolling
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height - toolbar.frame.height {
-            guard let navigationController = self.navigationController as? ScrollingNavigationController,
-                navigationController.state != .expanded else {
-                    return
-            }
-
-            stopFollowingScrollView()
-            updateScrollInsets(toolbarVisible: true)
-        } else {
-            followScrollView()
-            updateScrollInsets(toolbarVisible: false)
-        }
-    }
-
-    /// Show the nav bar when scrolling to top
-    ///
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.showNavbar(animated: true, scrollToTop: true)
-        }
-        return true
     }
 }
 
@@ -519,13 +625,3 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         return super.awakeAfter(using: aDecoder)
     }
 }
-
-// MARK: - PrefersFullscreenDisplay (iPad)
-
-// Expand this view controller to full screen if possible
-extension ReaderDetailViewController: PrefersFullscreenDisplay {}
-
-// MARK: - DefinesVariableStatusBarStyle (iPad)
-
-// Let's the split view know this vc changes the status bar style.
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}

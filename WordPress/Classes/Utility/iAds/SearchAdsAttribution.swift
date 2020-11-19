@@ -123,7 +123,7 @@ import AutomatticTracks
     private func didReceiveError(_ error: Error) {
         let nsError = error as NSError
 
-        guard nsError.code == ADClientError.Code.limitAdTracking.rawValue else {
+        guard nsError.code == ADClientError.Code.trackingRestrictedOrDenied.rawValue else {
             tryAgain(after: 5) // Possible connectivity issues
             return
         }

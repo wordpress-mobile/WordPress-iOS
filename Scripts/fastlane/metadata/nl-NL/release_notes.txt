@@ -1,5 +1,3 @@
-Verbeteringen in de blok-editor! Er is ondersteuning voor mediabewerking direct in het galerij-blok en het kolom-blok bevat ondersteuning voor het wijzigen van kolombreedtes (mooi!). We hebben ook de lege tekstvelden in de lay-out van rechts naar links gerepareerd, zodat ze selecteerbaar zijn en plaatshouders zichtbaar zijn. En we hebben het proces voor opnieuw uitvoeren/ongedaan maken gestroomlijnd - niet langer hele zinnen met één teken tegelijk ongedaan maken.
-
-Login verbeteringen! Tijdens het inloggen of aanmelden is Google verificatie eenvoudiger om ervoor te zorgen dat je op het scherm komt dat je nodig hebt. Als je je probeert aan te melden met een Gmail adres dat is gekoppeld aan een WordPress account, sturen we je automatisch door naar het inloggen. En vice versa, dus als je probeert in te loggen met een adres dat geen overeenkomend WordPress account heeft, sturen we je door naar het inschrijven.
-
-En tot slot, een oplossing: We hebben een bug opgelost die de app onbedoeld aan twee sociale accounts koppelde, waardoor inloggen met een sociaal account onhandig werd. Het is niet meer onhandig!
+- Kies uit een aantal voorontworpen paginasjablonen op het moment dat je een nieuwe pagina maakt op een website met Gutenberg.
+- Schrijf berichten en maak pagina's rechtstreeks uit de lijst met berichten en pagina's met de alom aanwezige actieknop.
+- Een probleem opgelost waardoor vernieuwingsfuncties verschenen boven de lijst met sites.

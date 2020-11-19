@@ -1,5 +1,3 @@
-Blok düzenleyici ile ilgili iyileştirmeler. Doğrudan Galeri bloğuna medya düzenleme desteği, Sütun bloğuna ise sütun genişliklerini değiştirme desteği eklenmiştir (bir hayal edin). Ayrıca sağdan sola düzendeki boş metin alanları düzeltilerek, seçilebilir olmaları sağlanmış ve yer tutucular görünür hale getirilmiştir. Yineleme/geri alma eylemleri kolaylaştırılmış, artık tüm cümleleri her seferinde bir karakter geri alma zahmetine son verilmiştir.
-
-Oturum açma işleminde iyileştirmeler. Oturum açma veya kayıt sırasında, ihtiyacınız olan ekrana ulaşmanızı sağlamak için Google kimlik doğrulaması daha kolay hale getirilmiştir. Bir WordPress hesabıyla ilişkili bir Gmail adresi kullanarak kaydolmaya çalışırsanız otomatik olarak oturum açmaya yönlendirilirsiniz. Bunun tersi de geçerlidir, eşleşen bir WordPress hesabına sahip olmayan bir adresle oturum açmaya çalışırsanız kayıt sayfasına yönlendirilirsiniz.
-
-Son olarak, bir düzeltme: Uygulamayı istenmeden iki sosyal hesapla ilişkilendiren, dolayısıyla bir sosyal hesapla oturum açmayı riskli hale getiren hata düzeltilmiştir. Artık risk yok.
+- Gutenberg özellikli bir sitede yeni bir sayfa oluştururken, önceden tasarlanmış çeşitli sayfa şablonlarından seçim yapın.
+- Her zaman mevcut işlem düğmesiyle doğrudan yazılar ve sayfalar listesinden yazılar ve sayfalar oluşturun.
+- Yenileme kontrolünün site listesinin en üstünde görünmesine neden olan bir sorun düzeltildi.

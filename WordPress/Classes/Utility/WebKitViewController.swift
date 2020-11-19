@@ -94,7 +94,11 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc init(configuration: WebViewControllerConfiguration) {
-        webView = WKWebView()
+        let config = WKWebViewConfiguration()
+        // The default on iPad is true. We want the iPhone to be true as well.
+        config.allowsInlineMediaPlayback = true
+
+        webView = WKWebView(frame: .zero, configuration: config)
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -483,6 +487,16 @@ extension WebKitViewController: WKNavigationDelegate {
         if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
             decisionHandler(.allow)
             return
+        }
+
+        // Check for link protocols such as `tel:` and set the correct behavior
+        if let url = navigationAction.request.url, let scheme = url.scheme {
+            let linkProtocols = ["tel", "sms", "mailto"]
+            if linkProtocols.contains(scheme) && UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+                return
+            }
         }
 
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)

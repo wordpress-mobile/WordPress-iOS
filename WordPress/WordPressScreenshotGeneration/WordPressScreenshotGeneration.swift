@@ -1,6 +1,5 @@
 import UIKit
 import XCTest
-import SimulatorStatusMagic
 
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
@@ -9,7 +8,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        SDStatusBarManager.sharedInstance()?.enableOverrides()
 
         // This does the shared setup including injecting mocks and launching the app
         setUpTestSuite()
@@ -29,60 +27,97 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        SDStatusBarManager.sharedInstance()?.disableOverrides()
-
         super.tearDown()
     }
 
     func testGenerateScreenshots() {
 
-        let mySite = MySiteScreen()
+        // Get post editor screenshot
+        let postList = MySiteScreen()
             .showSiteSwitcher()
-            .switchToSite(withTitle: "infocusphotographers.com")
-
-        let postList = mySite
+            .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let firstPostEditorScreenshot = postList.selectPost(withSlug: "summer-band-jam")
-        snapshot("1-PostEditor")
-        firstPostEditorScreenshot.close()
-
-        // Get a screenshot of the drafts feature
-        let secondPostEditorScreenshot = postList.selectPost(withSlug: "ideas")
-        snapshot("5-DraftEditor")
-        secondPostEditorScreenshot.close()
-
-        // Get a screenshot of the full-screen editor
+        let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        sleep(imagesWaitTime) // wait for post images to load
         if isIpad {
-            let ipadScreenshot = postList.selectPost(withSlug: "now-booking-summer-sessions")
-            snapshot("6-No-Keyboard-Editor")
-            ipadScreenshot.close()
+            BlockEditorScreen()
+                .thenTakeScreenshot(1, named: "Editor")
+        } else {
+            BlockEditorScreen()
+                .openBlockPicker()
+                .thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
+                .closeBlockPicker()
         }
+        postEditorScreenshot.close()
 
-        if !isIpad {
+        // Get a screenshot of the editor with keyboard (iPad only)
+        if isIpad {
+            let ipadScreenshot = MySiteScreen()
+                .showSiteSwitcher()
+                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .gotoPostsScreen()
+                .showOnly(.drafts)
+                .selectPost(withSlug: "easy-blueberry-muffins")
+            BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            sleep(imagesWaitTime) // wait for post images to load
+            BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
+            ipadScreenshot.close()
+        } else {
             postList.pop()
         }
 
+        // Get My Site screenshot
+        let mySite = MySiteScreen()
+            .showSiteSwitcher()
+            .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
+            .thenTakeScreenshot(4, named: "MySite")
+
+        // Get Media screenshot
         _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
-        snapshot("4-Media")
+        mySite.thenTakeScreenshot(6, named: "Media")
 
         if !isIpad {
             postList.pop()
         }
+
         // Get Stats screenshot
         let statsScreen = mySite.gotoStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
-            .switchTo(mode: .years)
+            .switchTo(mode: .months)
+            .thenTakeScreenshot(3, named: "Stats")
 
-        snapshot("2-Stats")
-
+        // Get Discover screenshot
+        // Currently, the view includes the "You Might Like" section
         TabNavComponent()
-            .gotoNotificationsScreen()
-            .dismissNotificationMessageIfNeeded()
+            .gotoReaderScreen()
+            .openDiscover()
+            .thenTakeScreenshot(2, named: "Discover")
 
-        snapshot("3-Notifications")
+        // Get Notifications screenshot
+        let notificationList = TabNavComponent()
+            .gotoNotificationsScreen()
+            .dismissNotificationAlertIfNeeded()
+        if isIpad {
+            notificationList
+                .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
+                .replyToNotification()
+        }
+        notificationList.thenTakeScreenshot(5, named: "Notifications")
+    }
+}
+
+extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = isDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
     }
 }

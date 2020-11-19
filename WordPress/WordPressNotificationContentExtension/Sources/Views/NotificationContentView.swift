@@ -43,6 +43,8 @@ class NotificationContentView: UIView {
             view.heightAnchor.constraint(equalToConstant: Metrics.avatarDimension)
         ])
 
+        view.isHidden = self.viewModel.gravatarURLString == nil
+
         return view
     }()
 
@@ -60,6 +62,8 @@ class NotificationContentView: UIView {
             noticonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noticonView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
+
+        view.isHidden = self.viewModel.gravatarURLString == nil
 
         return view
     }()

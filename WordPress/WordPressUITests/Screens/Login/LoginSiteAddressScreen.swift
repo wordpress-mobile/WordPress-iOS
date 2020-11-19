@@ -37,6 +37,14 @@ class LoginSiteAddressScreen: BaseScreen {
         return LoginUsernamePasswordScreen()
     }
 
+    func proceedWithWP(siteUrl: String) -> GetStartedScreen {
+        siteAddressTextField.tap()
+        siteAddressTextField.typeText(siteUrl)
+        nextButton.tap()
+
+        return GetStartedScreen()
+    }
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
     }

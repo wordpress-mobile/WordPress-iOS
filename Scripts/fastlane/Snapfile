@@ -34,7 +34,6 @@ reinstall_app true
 erase_simulator true
 localize_simulator true
 concurrent_simulators false
-clear_previous_screenshots true
 
 # By default, the latest version should be used automatically. If you want to change it, do it here
 # ios_version '8.1'

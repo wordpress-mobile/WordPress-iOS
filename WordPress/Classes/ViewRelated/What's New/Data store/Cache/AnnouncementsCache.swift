@@ -11,31 +11,16 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
 
     var announcements: [Announcement]? {
         get {
-            guard let announcements = UserDefaults.standard.announcements, versionIsValid(for: announcements) else {
-                    UserDefaults.standard.announcements = nil
-                    return nil
-            }
-            return announcements
+            return UserDefaults.standard.announcements
         }
         set {
             UserDefaults.standard.announcements = newValue
         }
     }
-
-    private func versionIsValid(for announcements: [Announcement]) -> Bool {
-        guard let minimumVersion = announcements.first?.minimumAppVersion, // there should not be more than one announcement
-            let maximumVersion = announcements.first?.maximumAppVersion,   // per version, but if there is, each of them must match the version
-            let targetVersions = announcements.first?.appVersionTargets,   // so we might as well choose the first
-            let version = Bundle.main.shortVersionString(),
-            ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)) else { // if version has changed, clean up the announcements cache
-                UserDefaults.standard.announcements = nil
-                return false
-        }
-        return true
-    }
 }
 
 
+// MARK: - Cache on disk
 private extension UserDefaults {
 
     static let currentAnnouncementsKey = "currentAnnouncements"
@@ -43,8 +28,8 @@ private extension UserDefaults {
     var announcements: [Announcement]? {
         get {
             guard let encodedAnnouncements = value(forKey: UserDefaults.currentAnnouncementsKey) as? Data,
-                let announcements = try? PropertyListDecoder().decode([Announcement].self, from: encodedAnnouncements) else {
-                    return nil
+                  let announcements = try? PropertyListDecoder().decode([Announcement].self, from: encodedAnnouncements) else {
+                return nil
             }
             return announcements
         }

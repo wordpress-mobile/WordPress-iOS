@@ -79,6 +79,11 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         ].compactMap { $0 }
     }
 
+    override func onGutenbergReady() {
+        super.onGutenbergReady()
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+
     private func loadCustomScript(named name: String, with argument: String? = nil) -> WKUserScript? {
         do {
             return try SourceFile(name: name, type: .js).jsScript(with: argument)
@@ -96,6 +101,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             target: self,
             action: #selector(onSaveButtonPressed)
         )
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     private func startObservingWebView() {
@@ -110,5 +116,14 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+    }
+}
+
+extension GutenbergWebViewController {
+    override func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        super.webView(webView, didCommit: navigation)
+        if webView.url?.absoluteString.contains("reauth=1") ?? false {
+            removeCoverViewAnimated()
+        }
     }
 }

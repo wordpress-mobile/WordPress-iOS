@@ -44,7 +44,7 @@
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
-{
+{    
     self = [self initWithBlog:post.blog];
     if (self) {
         _post = post;

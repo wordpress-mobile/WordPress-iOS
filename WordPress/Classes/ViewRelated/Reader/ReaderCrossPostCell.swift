@@ -3,33 +3,29 @@ import Foundation
 import AutomatticTracks
 import WordPressShared.WPStyleGuide
 
-private struct Constants {
-    static let blavatarPlaceholder: String = "post-blavatar-placeholder"
-    static let xPostTitlePrefix = "X-post: "
-    static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
-    static let siteTemplate = "%@ cross-posted from %@ to %@"
-}
-
 open class ReaderCrossPostCell: UITableViewCell {
-    @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var label: UILabel!
-    @IBOutlet weak var borderView: UIView!
 
-    @objc open weak var contentProvider: ReaderPostContentProvider?
+    // MARK: - Properties
+
+    @IBOutlet private weak var blavatarImageView: UIImageView!
+    @IBOutlet private weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var borderView: UIView!
+
+    private weak var contentProvider: ReaderPostContentProvider?
 
     // MARK: - Accessors
 
-    fileprivate lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostTitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostSubtitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
+    private lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
@@ -50,7 +46,6 @@ open class ReaderCrossPostCell: UITableViewCell {
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-
     // MARK: - Lifecycle Methods
 
     open override func awakeFromNib() {
@@ -58,10 +53,35 @@ open class ReaderCrossPostCell: UITableViewCell {
         applyStyles()
     }
 
+    // MARK: - Configuration
+
+    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
+        self.contentProvider = contentProvider
+
+        configureTitleLabel()
+        configureLabel()
+        configureBlavatarImage()
+        configureAvatarImageView()
+    }
+
+}
+
+// MARK: - Private Methods
+
+private extension ReaderCrossPostCell {
+
+    struct Constants {
+        static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
+        static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
+        static let imageBorderWidth: CGFloat = 1
+        static let xPostTitlePrefix = "X-post: "
+        static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
+        static let siteTemplate = "%@ cross-posted from %@ to %@"
+    }
 
     // MARK: - Appearance
 
-    fileprivate func applyStyles() {
+    func applyStyles() {
         backgroundColor = .clear
         contentView.backgroundColor = .listBackground
         borderView?.backgroundColor = .listForeground
@@ -69,7 +89,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         titleLabel?.backgroundColor = .listForeground
     }
 
-    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
+    func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
             label.alpha = highlighted ? 0.50 : WPAlphaFull
             titleLabel.alpha = highlighted ? 0.50 : WPAlphaFull
@@ -84,28 +104,18 @@ open class ReaderCrossPostCell: UITableViewCell {
             animations: updateBorder)
     }
 
-
     // MARK: - Configuration
 
-    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        self.contentProvider = contentProvider
-
-        configureTitleLabel()
-        configureLabel()
-        configureBlavatarImage()
-        configureAvatarImageView()
-    }
-
-    fileprivate func configureBlavatarImage() {
-        // Always reset
-        blavatarImageView.image = nil
-
-        let placeholder = UIImage(named: Constants.blavatarPlaceholder)
+    func configureBlavatarImage() {
+        configureAvatarBorder(blavatarImageView)
+        let placeholder = Constants.blavatarPlaceholderImage
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
+
+        // Always reset
+        blavatarImageView.image = placeholder
 
         guard let contentProvider = contentProvider,
             let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
-                blavatarImageView.image = placeholder
                 return
         }
 
@@ -122,21 +132,25 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    fileprivate func configureAvatarImageView() {
+    func configureAvatarImageView() {
+        configureAvatarBorder(avatarImageView)
+        let placeholder = Constants.avatarPlaceholderImage
+
         // Always reset
-        avatarImageView.image = nil
+        avatarImageView.image = placeholder
 
-        let placeholder = UIImage(named: Constants.blavatarPlaceholder)
-
-        let url = contentProvider?.avatarURLForDisplay()
-        if url != nil {
+        if let url = contentProvider?.avatarURLForDisplay() {
             avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        } else {
-            avatarImageView.image = placeholder
         }
     }
 
-    private func configureTitleLabel() {
+    func configureAvatarBorder(_ imageView: UIImageView) {
+        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
+        imageView.layer.borderWidth = Constants.imageBorderWidth
+        imageView.layer.masksToBounds = true
+    }
+
+    func configureTitleLabel() {
          if var title = contentProvider?.titleForDisplay(), !title.isEmpty() {
             if let prefixRange = title.range(of: Constants.xPostTitlePrefix) {
                 title.removeSubrange(prefixRange)
@@ -150,14 +164,18 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
     }
 
-    fileprivate func configureLabel() {
+    func configureLabel() {
+        guard let contentProvider = contentProvider else {
+            return
+        }
+
         // Compose the subtitle
         // These templates are deliberately not localized (for now) given the intended audience.
-        let template = contentProvider!.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
+        let template = contentProvider.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
 
-        let authorName: NSString = contentProvider!.authorForDisplay() as NSString
-        let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
-        let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
+        let authorName: NSString = contentProvider.authorForDisplay() as NSString
+        let siteName = subDomainNameFromPath(contentProvider.siteURLForDisplay())
+        let originName = subDomainNameFromPath(contentProvider.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template as NSString, authorName, originName, siteName) as String
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
@@ -175,11 +193,13 @@ open class ReaderCrossPostCell: UITableViewCell {
         label.attributedText = attrSubtitle
     }
 
-    fileprivate func subDomainNameFromPath(_ path: String) -> String {
-        if let url = URL(string: path), let host = url.host {
-            let arr = host.components(separatedBy: ".")
-            return arr.first!
+    func subDomainNameFromPath(_ path: String) -> String {
+        guard let url = URL(string: path),
+              let host = url.host else {
+            return ""
         }
-        return ""
+
+        return host.components(separatedBy: ".").first ?? ""
     }
+
 }

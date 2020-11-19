@@ -38,28 +38,26 @@ platform :ios do
       derived_data_path: derived_data_path,
     )
 
-    # By default, clear previous screenshots
-    should_clear_previous_screenshots = true
-    languages = "da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" ")
+    languages = "da de-DE en-AU en-CA en-GB es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US".split(" ")
 
     # Allow creating screenshots for just one languages
     if options[:language] != nil
       languages.keep_if { |language|
         language.casecmp(options[:language]) == 0
       }
-
-      # Don't clear, because we might just be fixing one locale
-      should_clear_previous_screenshots = false
     end
 
     puts languages
 
-    capture_ios_screenshots(
-      test_without_building: true,
-      derived_data_path: derived_data_path,
-      languages: languages,
-      clear_previous_screenshots: should_clear_previous_screenshots,
-    )
+    [true, false].each { | dark_mode_enabled |
+      capture_ios_screenshots(
+        test_without_building: true,
+        derived_data_path: derived_data_path,
+        languages: languages,
+        dark_mode: dark_mode_enabled,
+        override_status_bar: true,
+      )
+    }
   end
 
   #####################################################################################
@@ -105,11 +103,14 @@ platform :ios do
   desc "Downloads translated promo strings from GlotPress"
   lane :download_promo_strings do |options| 
     files = {
-      "app_store_screenshot-1" => {desc: "app_store_screenshot_2.txt"},
-      "app_store_screenshot-2" => {desc: "app_store_screenshot_5.txt"},
+      "app_store_screenshot-1" => {desc: "app_store_screenshot_1.txt"},
+      "app_store_screenshot-2" => {desc: "app_store_screenshot_2.txt"},
       "app_store_screenshot-3" => {desc: "app_store_screenshot_3.txt"},
-      "app_store_screenshot-4" => {desc: "app_store_screenshot_1.txt"},
-      "app_store_screenshot-5" => {desc: "app_store_screenshot_4.txt"},
+      "app_store_screenshot-4" => {desc: "app_store_screenshot_4.txt"},
+      "app_store_screenshot-5" => {desc: "app_store_screenshot_5.txt"},
+      "app_store_screenshot-6" => {desc: "app_store_screenshot_6.txt"},
+      "app_store_screenshot-7" => {desc: "app_store_screenshot_7.txt"},
+      "app_store_screenshot-8" => {desc: "app_store_screenshot_8.txt"},
 
       "enhanced_app_store_screenshot-1" => {desc: "app_store_screenshot_1.html"},
       "enhanced_app_store_screenshot-2" => {desc: "app_store_screenshot_2.html"},

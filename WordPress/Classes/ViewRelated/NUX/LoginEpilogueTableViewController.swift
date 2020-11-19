@@ -59,6 +59,10 @@ class LoginEpilogueTableViewController: UITableViewController {
         // Remove separator line on last row
         tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
 
+        // To facilitate the button blur effect, the table is extended under the button view.
+        // So the last cells can be seen when scrolled, move the content up above the button view.
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
     }
@@ -209,6 +213,7 @@ extension LoginEpilogueTableViewController {
         }
 
         tracker.track(click: .connectSite)
+        tracker.set(flow: .loginWithSiteAddress)
         onConnectSite?()
     }
 }

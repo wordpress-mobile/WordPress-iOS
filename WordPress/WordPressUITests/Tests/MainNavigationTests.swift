@@ -6,7 +6,7 @@ class MainNavigationTests: XCTestCase {
     override func setUp() {
         setUpTestSuite()
 
-        _ = LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
+        _ = LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         mySiteScreen = TabNavComponent()
          .gotoMySiteScreen()
     }
@@ -27,6 +27,7 @@ class MainNavigationTests: XCTestCase {
 
         _ = mySiteScreen
             .tabBar.gotoNotificationsScreen()
+            .dismissNotificationAlertIfNeeded()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
             XCTAssert(NotificationsScreen.isLoaded(), "Notifications screen isn't loaded.")

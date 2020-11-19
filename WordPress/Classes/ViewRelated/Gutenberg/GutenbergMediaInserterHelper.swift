@@ -69,6 +69,7 @@ class GutenbergMediaInserterHelper: NSObject {
         options.deliveryMode = .fastFormat
         options.version = .current
         options.resizeMode = .fast
+        options.isNetworkAccessAllowed = true
         let mediaUploadID = media.gutenbergUploadID
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
@@ -249,8 +250,6 @@ class GutenbergMediaInserterHelper: NSObject {
                 break
             }
             switch media.mediaType {
-            case .image:
-                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             case .video:
                 EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                     guard let strongSelf = self else {
@@ -264,7 +263,7 @@ class GutenbergMediaInserterHelper: NSObject {
                     }
                 }
             default:
-                break
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             }
         case .failed(let error):
             if error.code == NSURLErrorCancelled {

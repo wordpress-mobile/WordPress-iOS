@@ -1,5 +1,3 @@
-Förbättringar i blockredigeraren! Nu finns det stöd för redigering av media direkt i galleriblocket och kolumnblocket har stöd för varierande kolumnbredder (snitsigt!). Vi har även rättat till de tomma textfälten som förekom vid layout från höger-till-vänster, nu går de att markera och platshållarna är synliga. Dessutom har vi gjort arbetsgången effektivare för ångra/gör om – nu behöver man inte längre ångra ett tecken i taget för att ta bort hela meningar.
-
-Förbättrad inloggningsrutin! Autentisering via Google har förenklats så att du verkligen kommer till den sida du behöver nå. Om du försöker registrera dig med en gmail-adress som är förknippad med ett WordPress-konto kommer vi automatiskt att skicka över dig till inloggningen i stället. På motsvarande sätt: om du försöker logga in med en adress som inte har något motsvarande WordPress-konto skickar vi dig till registreringssidan.
-
-Slutligen har vi även en rättelse: Appen var av misstag kopplade appen till konton hos två sociala nätverk, vilket gjorde att inloggning via socialt nätverk strulade. Detta strul är nu ett minne blott!
+- Du kan välja bland ett antal fördesignade sidmallar när du skapar en ny sida på en webbplats som använder Gutenberg.
+- Skapa inlägg och sidor direkt från listan med inlägg och sidor via den ständigt närvarande åtgärdsknappen.
+- Rättat ett problem som gjorde att styrningen av uppdateringar visades längst upp i listan över webbplatser.

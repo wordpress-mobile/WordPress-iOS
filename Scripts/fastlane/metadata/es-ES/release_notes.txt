@@ -1,5 +1,3 @@
-¡Mejoras en el editor de bloques! Hay compatibilidad con la edición de medios justo en el bloque de galería y el bloque de columnas incluye compatibilidad para cambiar el ancho de las columnas (¡fantástico!). También hemos corregido los campos de texto vacíos en el diseño de derecha a izquierda para que se puedan seleccionar y los marcadores de posición sean visibles. Y hemos agilizado el proceso de rehacer/deshacer: no deshacer más frases enteras carácter por carácter.
-
-¡Mejoras en el acceso! Durante el acceso o el registro, la identificación de Google es más sencilla para asegurarte de que llegas a la pantalla que necesitas. Si intentas registrarte con una dirección de Gmail asociada a una cuenta de WordPress, te redirigiremos automáticamente al acceso. Y viceversa, por lo que, si intentas acceder con una dirección que no tiene una cuenta de WordPress coincidente, te enviaremos al registro.
-
-Y, finalmente, una corrección: Nos hemos ocupado del fallo que enlazaba inadvertidamente la aplicación con dos cuentas sociales, por lo que el acceso con una cuenta social se hacía difícil. ¡Ya no hay dificultad!
+- Elige entre una variedad de plantillas de páginas prediseñadas cuando crees una nueva página en un sitio con Gutenberg activado.
+- Crea entradas y páginas directamente desde la lista de entradas y páginas con el botón de acción siempre presente.
+- Corregido un problema que causaba que el control de recarga apareciera en la parte superior de la lista de sitios.

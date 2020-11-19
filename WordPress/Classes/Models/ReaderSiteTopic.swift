@@ -17,6 +17,7 @@ import Foundation
     @NSManaged open var siteID: NSNumber
     @NSManaged open var siteURL: String
     @NSManaged open var subscriberCount: NSNumber
+    @NSManaged open var cards: NSOrderedSet?
 
     override open class var TopicType: String {
         return "site"
@@ -34,5 +35,48 @@ import Foundation
 
     @objc open var isSubscribedForPostNotifications: Bool {
         return postSubscription?.sendPosts ?? false
+    }
+
+
+    /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
+    convenience init(remoteInfo: RemoteReaderSiteInfo, context: NSManagedObjectContext) {
+        self.init(context: context)
+
+        feedID = remoteInfo.feedID ?? 0
+        feedURL = remoteInfo.feedURL ?? ""
+        following = remoteInfo.isFollowing
+        isJetpack = remoteInfo.isJetpack
+        isPrivate = remoteInfo.isPrivate
+        isVisible = remoteInfo.isVisible
+        postCount = remoteInfo.postCount ?? 0
+        showInMenu = false
+        siteBlavatar = remoteInfo.siteBlavatar ?? ""
+        siteDescription = remoteInfo.siteDescription ?? ""
+        siteID = remoteInfo.siteID ?? 0
+        siteURL = remoteInfo.siteURL ?? ""
+        subscriberCount = remoteInfo.subscriberCount ?? 0
+        title = remoteInfo.siteName ?? ""
+        type = Self.TopicType
+        path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath ?? ""
+
+        postSubscription = ReaderSiteInfoSubscriptionPost.createOrUpdate(from: remoteInfo, topic: self, context: context)
+        emailSubscription = ReaderSiteInfoSubscriptionEmail.createOrUpdate(from: remoteInfo, topic: self, context: context)
+    }
+
+    class func createIfNeeded(from remoteInfo: RemoteReaderSiteInfo, context: NSManagedObjectContext) -> ReaderSiteTopic {
+        guard let path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath else {
+            return ReaderSiteTopic(remoteInfo: remoteInfo, context: context)
+        }
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
+        fetchRequest.predicate = NSPredicate(format: "path = %@ OR path ENDSWITH %@", path, path)
+
+        let topics = try? context.fetch(fetchRequest) as? [ReaderSiteTopic]
+
+        guard let topic = topics?.first else {
+            return ReaderSiteTopic(remoteInfo: remoteInfo, context: context)
+        }
+
+        return topic
     }
 }

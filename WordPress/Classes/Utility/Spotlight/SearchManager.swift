@@ -320,7 +320,7 @@ fileprivate extension SearchManager {
     }
 
     func openSiteDetailsScreen(for blog: Blog) {
-        WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation
@@ -402,9 +402,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
         } else if let page = apost as? Page {
-            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPages(for: page.blog)
         }
     }
 
@@ -441,32 +441,9 @@ fileprivate extension SearchManager {
     func openEditor(for page: Page) {
         closePreviewIfNeeded(for: page)
         openListView(for: page)
-        let editorFactory = EditorFactory()
 
-        let editor = editorFactory.instantiateEditor(
-            for: page,
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        open(editor)
-    }
-
-    private func open(_ editor: EditorViewController) {
-        editor.onClose = { [unowned editor] changesSaved, _ in
-            editor.dismiss(animated: true)
-        }
-
-        let navController = UINavigationController(rootViewController: editor)
-        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
-        navController.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(navController, animated: true)
-    }
-
-    func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
-        editor.dismiss(animated: true) { [weak self] in
-            self?.open(replacement)
-        }
+        let editorViewController = EditPageViewController(page: page)
+        WPTabBarController.sharedInstance().present(editorViewController, animated: false)
     }
 
     // MARK: - Preview

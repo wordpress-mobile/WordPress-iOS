@@ -6,16 +6,26 @@ class WhatIsNewViewController: UIViewController {
 
     private let makeWhatIsNewView: () -> WhatIsNewView
 
+    private let onContinue: () -> Void
+    private let onDismiss: (() -> Void)?
+
     private lazy var whatIsNewView: WhatIsNewView = {
         let view = makeWhatIsNewView()
         view.continueAction = { [weak self] in
+            self?.onContinue()
+            self?.dismiss(animated: true)
+        }
+        view.dismissAction = { [weak self] in
+            self?.onDismiss?()
             self?.dismiss(animated: true)
         }
         return view
     }()
 
-    init(whatIsNewViewFactory: @escaping () -> WhatIsNewView) {
+    init(whatIsNewViewFactory: @escaping () -> WhatIsNewView, onContinue: @escaping () -> Void, onDismiss: (() -> Void)? = nil) {
         self.makeWhatIsNewView = whatIsNewViewFactory
+        self.onContinue = onContinue
+        self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
     }
 

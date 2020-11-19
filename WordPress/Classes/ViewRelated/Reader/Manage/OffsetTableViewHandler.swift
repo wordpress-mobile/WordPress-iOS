@@ -1,4 +1,4 @@
-// A table view handler offset by 1 (for Add a Tag in Reader Tags)
+// A table view handler offset by 1 (for Add a Topic in Reader Tags)
 class OffsetTableViewHandler: WPTableViewHandler {
 
     func object(at indexPath: IndexPath) -> NSFetchRequestResult? {

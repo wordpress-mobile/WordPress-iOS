@@ -95,7 +95,7 @@ extension ReaderTabViewTests {
 
     private func validateButtonsStackView(_ view: UIView) {
         XCTAssert(view is UIStackView)
-        XCTAssertEqual(view.subviews.count, 4)
+        XCTAssertEqual(view.subviews.count, 2)
         XCTAssertTrue(view.subviews.contains(where: { $0 is PostMetaButton }))
     }
 

@@ -1,5 +1,3 @@
-Améliorations de l’éditeur de blocs : il y a le support d’édition des médias directement dans le bloc Galerie, et le bloc de Colonne inclut la prise en charge pour changer les largeurs de colonne (Classe !). Nous avons aussi corriger les champs de texte vide dans les mises en page de droite à gauche, donc ils sont sélectionnable et les textes indicatifs sont visibles. Et nous avons rationalisé le processus Annuler/Rétablir, plus question d’annuler une phrase entière, un caractère à la fois.
-
-Améliorations de la connexion ! Pendant la connexion ou l’inscription, l’authentification Google est plus simple pour être sûr d’obtenir l’écran dont vous avez besoin. Si vous essayez de vous inscrire avec une adresse Gmail qui est associée avec votre compte WordPress, nous vous redirigerons automatiquement vers la page de connexion. Et vice et versa, donc si vous tentez de vous connecter avec une adresse qui ne correspond pas avec un compte WordPress, nous cous redirigerons vers la page d’inscription.
-
-Et finalement un correctif : nous nous sommes occupé d’un bug qui a par inadvertance lié l’application avec deux comptes sociaux.
+- Choisissez parmi une variété de modèles de pages prédéfinis lors de la création d’une nouvelle page sur un site conçu avec Gutenberg.
+- Créer de nouveaux articles ou pages directement depuis la liste des articles ou des pages avec le bouton d’action toujours présent.
+- Correction d’un problème qui faisait apparaître l’actualiseur de contrôle en haut de la liste de sites.

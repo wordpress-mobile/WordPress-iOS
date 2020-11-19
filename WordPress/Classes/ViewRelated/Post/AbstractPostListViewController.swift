@@ -128,12 +128,6 @@ class AbstractPostListViewController: UIViewController,
 
     @IBOutlet var filterTabBar: FilterTabBar!
 
-    @objc lazy var addButton: UIBarButtonItem = {
-        let addButton = UIBarButtonItem(image: .gridicon(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
-        addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Button to create a new post.")
-        return addButton
-    }()
-
     @objc var searchController: UISearchController!
     @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
@@ -229,7 +223,6 @@ class AbstractPostListViewController: UIViewController,
         //
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = addButton
     }
 
     func configureFilterBar() {
@@ -571,10 +564,6 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListPullToRefresh, withProperties: propertiesForAnalytics())
     }
 
-    @objc func handleAddButtonTapped() {
-        createPost()
-    }
-
     // MARK: - Synching
 
     @objc func automaticallySyncIfAppropriate() {
@@ -808,7 +797,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        ghostableTableView.startGhostAnimation()
+        if isViewOnScreen() {
+            ghostableTableView.startGhostAnimation()
+        }
         ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }
