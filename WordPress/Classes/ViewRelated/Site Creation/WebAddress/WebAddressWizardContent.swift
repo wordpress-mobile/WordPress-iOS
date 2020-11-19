@@ -108,7 +108,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
     }
@@ -219,10 +218,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             guard let self = self else { return }
             self.fetchAddresses(query)
         }
-    }
-
-    private func setupBackground() {
-        view.backgroundColor = .listBackground
     }
 
     override func primaryActionSelected(_ sender: Any) {
