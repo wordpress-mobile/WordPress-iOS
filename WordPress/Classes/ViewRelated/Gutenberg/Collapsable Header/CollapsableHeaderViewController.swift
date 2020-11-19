@@ -240,7 +240,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillTransition(to: size, with: coordinator)
 
         guard isShowingNoResults else { return }
-        coordinator.animate { (_) in
+        coordinator.animate(alongsideTransition: nil) { (_) in
             self.updateHeaderDisplay()
             if self.shouldHideAccessoryBar {
                 self.disableInitialLayoutHelpers()
