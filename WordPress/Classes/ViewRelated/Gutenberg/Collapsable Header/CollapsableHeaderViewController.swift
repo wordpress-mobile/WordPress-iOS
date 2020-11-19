@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     enum SeperatorStyle {
@@ -346,10 +347,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func insertChildView() {
         scrollableView.translatesAutoresizingMaskIntoConstraints = false
         scrollableView.clipsToBounds = false
-        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
-        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
-        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
+        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 0)
         containerView.addSubview(scrollableView)
         containerView.addConstraints([top, bottom, leading, trailing])
     }
@@ -526,7 +527,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             shouldBeHidden = false
         }
 
-        seperator.updateVisibility(shouldBeHidden, animated: animated)
+        seperator.animatableSetIsHidden(shouldBeHidden, animated: animated)
     }
 }
 
@@ -543,7 +544,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
-            titleView.updateVisibility(false, animated: true)
+            titleView.animatableSetIsHidden(false, animated: true)
             return
         }
         disableInitialLayoutHelpers()
@@ -558,7 +559,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
 
         let shouldHide = (largeTitleView.frame.maxY > 0)
-        titleView.updateVisibility(shouldHide, animated: true)
+        titleView.animatableSetIsHidden(shouldHide, animated: true)
         updateSeperatorStyle()
     }
 
@@ -588,7 +589,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
         let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
-        titleView.updateVisibility(shouldHide, animated: animated)
+        titleView.animatableSetIsHidden(shouldHide, animated: animated)
 
         guard animated else {
             headerView.setNeedsLayout()
@@ -601,23 +602,5 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
-    }
-}
-
-fileprivate extension UIView {
-    func updateVisibility(_ isHidden: Bool, animated: Bool = true) {
-        guard self.isHidden != isHidden else { return }
-        guard animated else {
-            self.isHidden = isHidden
-            return
-        }
-
-        self.isHidden = false
-        let alpha: CGFloat = isHidden ? 0 : 1
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.alpha = alpha
-        }) { (_) in
-            self.isHidden = isHidden
-        }
     }
 }
