@@ -29,7 +29,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     /// The table view renders our server content
     private let table: UITableView
-    private let searchHeader: SearchTextField
+    private let searchHeader: UIView
+    private let searchTextField: SearchTextField
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -91,7 +92,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
             return label
         }()
-        self.searchHeader = SearchTextField()
+        searchTextField = SearchTextField()
+        searchHeader = UIView(frame: .zero)
         table = UITableView(frame: .zero, style: .grouped)
         super.init(scrollableView: table,
                    mainTitle: Strings.mainTitle,
@@ -110,6 +112,18 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         super.viewDidLoad()
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
+        loadHeaderView()
+    }
+
+    private func loadHeaderView() {
+        let top = NSLayoutConstraint(item: searchTextField, attribute: .top, relatedBy: .equal, toItem: searchHeader, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: searchTextField, attribute: .bottom, relatedBy: .equal, toItem: searchHeader, attribute: .bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: searchTextField, attribute: .leading, relatedBy: .equal, toItem: searchHeader, attribute: .leadingMargin, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: searchTextField, attribute: .trailing, relatedBy: .equal, toItem: searchHeader, attribute: .trailingMargin, multiplier: 1, constant: 0)
+        searchHeader.addSubview(searchTextField)
+        searchHeader.addConstraints([top, bottom, leading, trailing])
+        searchHeader.addTopBorder(withColor: .divider)
+        searchHeader.addBottomBorder(withColor: .divider)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +134,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        searchHeader.resignFirstResponder()
+        searchTextField.resignFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -238,23 +252,23 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        search(withInputFrom: searchHeader)
+        search(withInputFrom: searchTextField)
     }
 
     private func prepareViewIfNeeded() {
-        searchHeader.becomeFirstResponder()
+        searchTextField.becomeFirstResponder()
     }
 
     private func setupHeaderAndNoResultsMessage() {
-        searchHeader.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-        searchHeader.delegate = self
-        searchHeader.accessibilityTraits = .searchField
+        searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        searchTextField.delegate = self
+        searchTextField.accessibilityTraits = .searchField
 
         let placeholderText = Strings.searchPlaceholder
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        searchHeader.attributedPlaceholder = attributedPlaceholder
-        searchHeader.accessibilityHint = Strings.searchAccessibility
+        searchTextField.attributedPlaceholder = attributedPlaceholder
+        searchTextField.accessibilityHint = Strings.searchAccessibility
 
         view.addSubview(noResultsLabel)
 
@@ -315,7 +329,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     // MARK: - Search logic
 
     func updateIcon(isLoading: Bool) {
-        searchHeader.setIcon(isLoading: isLoading)
+        searchTextField.setIcon(isLoading: isLoading)
     }
 
     private func search(withInputFrom textField: UITextField) {
@@ -442,7 +456,7 @@ extension WebAddressWizardContent: UITableViewDelegate {
 
         let domainSuggestion = data[indexPath.row]
         self.selectedDomain = domainSuggestion
-        searchHeader.resignFirstResponder()
+        searchTextField.resignFirstResponder()
     }
 
     func retry() {
