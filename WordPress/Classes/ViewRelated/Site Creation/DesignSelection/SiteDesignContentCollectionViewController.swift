@@ -67,6 +67,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         updateEdgeInsets()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateEdgeInsets()
+    }
+
     override func estimatedContentSize() -> CGSize {
         guard isLoading || siteDesigns.count > 1 else { return .zero }
         let cellCount = isLoading ? 1 : siteDesigns.count

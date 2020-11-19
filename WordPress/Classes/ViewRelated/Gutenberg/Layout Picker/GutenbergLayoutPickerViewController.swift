@@ -97,16 +97,6 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         navigationController?.pushViewController(destination, animated: true)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
-            if let visibleRow = tableView.indexPathsForVisibleRows?.first {
-                tableView.scrollToRow(at: visibleRow, at: .top, animated: true)
-            }
-        }
-    }
-
     private func createPage(layout: PageTemplateLayout?) {
         dismiss(animated: true) {
             self.completion(layout)

@@ -199,14 +199,12 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="qxH-Si-bGn" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" id="4y3-db-p8j"/>
-                        <constraint firstAttribute="trailing" secondItem="3RE-1V-jrs" secondAttribute="trailing" constant="20" id="6zP-OQ-cLj"/>
                         <constraint firstItem="3RE-1V-jrs" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" constant="16" id="By8-S6-dPm"/>
                         <constraint firstAttribute="trailing" secondItem="jCA-DJ-MgS" secondAttribute="trailing" id="Msd-NV-Dt9"/>
                         <constraint firstItem="qxH-Si-bGn" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" id="Sdv-Fh-3JR"/>
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" id="jdx-th-4uc"/>
                         <constraint firstItem="dmc-kV-0d8" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" constant="16" id="lU4-Sj-dcL"/>
                         <constraint firstAttribute="height" constant="110" id="lle-48-IUZ"/>
-                        <constraint firstItem="3RE-1V-jrs" firstAttribute="leading" secondItem="UfV-hu-KZx" secondAttribute="leading" constant="20" id="rsX-3D-0xz"/>
                         <constraint firstItem="jCA-DJ-MgS" firstAttribute="top" secondItem="UfV-hu-KZx" secondAttribute="top" id="v6p-Jz-Saz"/>
                         <constraint firstAttribute="trailing" secondItem="qxH-Si-bGn" secondAttribute="trailing" id="yT0-ne-uGv"/>
                     </constraints>
@@ -226,12 +224,14 @@
                 <constraint firstAttribute="top" secondItem="U3M-sT-nKQ" secondAttribute="top" id="Wkr-ux-jJa"/>
                 <constraint firstAttribute="trailing" secondItem="0Qq-k5-kWr" secondAttribute="trailing" id="XxU-6u-RcX"/>
                 <constraint firstItem="0a4-LI-57Y" firstAttribute="trailing" secondItem="dmc-kV-0d8" secondAttribute="trailing" constant="20" id="cxE-O8-ska"/>
+                <constraint firstItem="0a4-LI-57Y" firstAttribute="trailing" secondItem="3RE-1V-jrs" secondAttribute="trailing" constant="20" id="fwl-OM-nLV"/>
                 <constraint firstItem="dmc-kV-0d8" firstAttribute="leading" secondItem="0a4-LI-57Y" secondAttribute="leading" constant="20" id="gMc-5F-M6S"/>
                 <constraint firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="i7c-8T-4PJ"/>
                 <constraint firstItem="UfV-hu-KZx" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="msf-aW-ktk"/>
                 <constraint firstItem="0Qq-k5-kWr" firstAttribute="bottom" secondItem="LGN-fD-c9Q" secondAttribute="bottom" id="p8r-IQ-pZK"/>
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="top" secondItem="0a4-LI-57Y" secondAttribute="top" id="sGi-xD-H1K"/>
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="uNo-VY-vcT"/>
+                <constraint firstItem="3RE-1V-jrs" firstAttribute="leading" secondItem="0a4-LI-57Y" secondAttribute="leading" constant="20" id="xx9-kd-Yte"/>
                 <constraint firstItem="WmP-bw-ceT" firstAttribute="top" secondItem="0a4-LI-57Y" secondAttribute="top" id="yIx-Dt-kfa"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
