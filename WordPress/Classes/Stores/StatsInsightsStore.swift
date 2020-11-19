@@ -1001,7 +1001,7 @@ private extension InsightStoreState {
             DDLogError("HomeWidgetToday: Failed to find a matching site")
             return
         }
-
+        // TODO - TODAYWIDGET: it might be better to move the blog updates in SiteStatsInformation
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         guard let blog = blogService.blog(byBlogId: NSNumber(value: siteID)) else {
