@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     enum SeperatorStyle {
@@ -551,7 +552,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             shouldBeHidden = true
         }
 
-        seperator.updateVisibility(shouldBeHidden, animated: animated)
+        seperator.animatableSetIsHidden(shouldBeHidden, animated: animated)
     }
 }
 
@@ -592,7 +593,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
     fileprivate func updateTitleViewVisibility(_ animated: Bool = true) {
         let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
-        titleView.updateVisibility(shouldHide, animated: animated)
+        titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -600,7 +601,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
-            titleView.updateVisibility(false, animated: true)
+            updateTitleViewVisibility(true)
             return
         }
         disableInitialLayoutHelpers()
@@ -646,23 +647,5 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
-    }
-}
-
-fileprivate extension UIView {
-    func updateVisibility(_ isHidden: Bool, animated: Bool = true) {
-        guard self.isHidden != isHidden else { return }
-        guard animated else {
-            self.isHidden = isHidden
-            return
-        }
-
-        self.isHidden = false
-        let alpha: CGFloat = isHidden ? 0 : 1
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.alpha = alpha
-        }) { (_) in
-            self.isHidden = isHidden
-        }
     }
 }
