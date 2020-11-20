@@ -13,7 +13,7 @@ class GutenbergFilesAppMediaSource: NSObject {
 
     func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
 
-        let uttypeFilters = filters.contains(.all) ? allowedTypesOnBlog : filters.compactMap { $0.typeIdentifier }
+        let uttypeFilters = filters.contains(.any) ? allowedTypesOnBlog : filters.compactMap { $0.typeIdentifier }
 
         mediaPickerCallback = callback
         let docPicker = UIDocumentPickerViewController(documentTypes: uttypeFilters, in: .import)
@@ -67,7 +67,7 @@ extension Gutenberg.MediaType {
             return String(kUTTypeMovie)
         case .audio:
             return String(kUTTypeAudio)
-        case .other, .all: // needs to be specified by the blog's allowed types.
+        case .other, .any: // needs to be specified by the blog's allowed types.
             return nil
         }
     }
