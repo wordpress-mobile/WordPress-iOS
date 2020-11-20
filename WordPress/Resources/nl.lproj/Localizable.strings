@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 14:54:09+0000 */
+/* Translation-Revision-Date: 2020-11-19 17:43:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -364,6 +364,9 @@
    Title for the activity list */
 "Activity" = "Activiteit";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Activiteitenlog";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Activiteiten Logs";
 
@@ -627,9 +630,6 @@
 "An unknown error occurred. Please try again." = "Een onbekende fout heeft zich voorgedaan. Probeer opnieuw.";
 
 /* No comment provided by engineer. */
-"Angle" = "Hoek";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Aantekeningen zijbalk";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +658,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Toestaan";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -1044,7 +1045,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Volg je favoriete sites en neem altijd en overal deel aan het gesprek.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorieën";
 
 /* Category menu item in share extension.
@@ -1116,7 +1118,8 @@
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Controleer je netwerkverbinding en probeer opnieuw. Of maak een lege pagina.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Controleer je netwerkverbinding en probeer het nogmaals.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1158,6 +1161,9 @@
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
 
+/* Shortened version of the main title to be used in back navigation */
+"Choose design" = "Kies ontwerp";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Kies domein";
 
@@ -1178,6 +1184,9 @@
 
 /* No comment provided by engineer. */
 "Choose images" = "Kies afbeeldingen";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Kies lay-out";
 
 /* No comment provided by engineer. */
 "Choose video" = "Kies video";
@@ -1261,7 +1270,7 @@
 "Collect information" = "Verzamel informatie";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combineer foto's, video's en tekst om boeiende en tikbare verhalen te maken die je bezoekers geweldig zullen vinden.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Comics";
@@ -1616,7 +1625,7 @@
 "Create Site" = "Site aanmaken";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Verhaalbericht maken";
+"Create Story Post" = "Verhaal maken";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com site maken";
@@ -1810,6 +1819,9 @@
 
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Verwijderen...";
+
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Weigeren";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2024,6 +2036,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2281,7 +2294,7 @@
 "Everyone" = "Iedereen";
 
 /* Example story title description */
-"Example story title" = "Example story title";
+"Example story title" = "Voorbeeld verhaaltitel";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Samenvatting";
@@ -2352,8 +2365,14 @@
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Invoegen media is mislukt.\nTik voor opties.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Opslaan van bestanden mislukt.\nTik voor opties.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Aanvraag naar de REST API serialiseren mislukt.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Uploaden van bestanden mislukt.\nTik voor opties.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2762,7 +2781,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
 
 /* How to create story description */
-"How to create a story post" = "Hoe maak je een verhaalbericht";
+"How to create a story post" = "Hoe maak je een verhaal";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Ik vind dit leuk";
@@ -2913,7 +2932,7 @@ translators: sample content for \"Team\" page template */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Het installeren van de eerste plugin op je site kan maximaal een minuut duren. Terwijl dit gebeurt, kun je geen wijzigingen aan je site aanbrengen.";
 
 /* Stories intro header title */
-"Introducing Story Posts" = "Verhaal berichten introductie";
+"Introducing Story Posts" = "Introductie verhalen";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Ongeldig site-adres";
@@ -2961,7 +2980,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "J.K. Rowling";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +2990,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Veelgestelde vragen Jetpack";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Jetpack Instellingen";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
@@ -3231,6 +3254,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "Login op je WordPress.com account met je e-mailadres.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Log in met je WordPress.com gebruikersnaam en wachtwoord.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Uitloggen van WordPress?";
 
@@ -3266,7 +3292,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Beheren";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Beheer connectie";
 
@@ -3559,6 +3586,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nieuw item";
+
+/* Placeholder text for password field */
+"New password" = "Nieuw wachtwoord";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Nieuwe berichten";
@@ -4014,6 +4044,10 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Pagina teruggezet naar Gepland";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Pagina-instellingen";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok Pagina-einde. %s";
 
@@ -4391,7 +4425,7 @@ translators: sample content for \"Services\" page template */
 /* Displays the Post Preview Interface
    Section title for related posts section preview
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a static content. */
 "Preview" = "Voorbeeld";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4968,7 +5002,7 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu closed." = "Scrolbaar blokmenu gesloten.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrolbaar blokmenu geopend. Een blok selecteren.";
+"Scrollable block menu opened. Select a block." = "Scrolbaar blokmenu geopend. Selecteer een blok.";
 
 /* Placeholder text for the search bar
    Search
@@ -5019,8 +5053,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Beveiligde tekst";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Beveiliging";
 
 /* Button in Plugin Directory letting users see more plugins */
@@ -5205,9 +5238,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Thema instellen";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "Instellingen";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5376,6 +5409,9 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Sitedoorverwijzing";
 
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Site-instellingen";
+
 /* Default title for a site
    Label for site title blog setting
    Site info. Title
@@ -5421,13 +5457,14 @@ translators: sample content for \"Services\" page template */
 "Sites (%lu)" = "Sites (%lu)";
 
 /* A suggestion of topics the user might */
-"Sites to follow" = "Sites to follow";
+"Sites to follow" = "Te volgen sites";
 
 /* Image size option title. */
 "Size" = "Grootte";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "Overslaan";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5594,10 +5631,10 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "Stop upload";
 
 /* Create new Story button title */
-"Story post" = "Verhaal plaatsen";
+"Story post" = "Verhaal";
 
 /* Second story intro item description */
-"Story posts don't disappear" = "Verhaalberichten verdwijnen niet";
+"Story posts don't disappear" = "Verhalen verdwijnen niet";
 
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategie";
@@ -7021,7 +7058,7 @@ translators: sample content for \"Services\" page template */
 "Welcome to the Reader" = "Welkom bij de Reader";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "Welkom bij de wereld's meest populaire sitebouwer.";
+"Welcome to the world’s most popular website builder." = "Welkom bij de meest populaire sitebouwer van de wereld.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "West";
@@ -7335,7 +7372,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "Je bent helemaal bij!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "Je hebt vroegtijdige toegang tot verhaalberichten! We zouden het tof vinden als je deze eens zou proberen.";
+"You've got early access to story posts and we'd love for you to give it a try." = "Je hebt vroegtijdige toegang tot verhalen! We zouden het tof vinden als je deze eens zou proberen.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Je hebt niet-opgeslagen wijzigingen in dit bericht";
