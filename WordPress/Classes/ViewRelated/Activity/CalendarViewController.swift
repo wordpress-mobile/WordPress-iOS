@@ -1,6 +1,17 @@
 import UIKit
 
+protocol CalendarViewControllerDelegate: class {
+    func didCancel(calendar: CalendarViewController)
+    func didSelect(calendar: CalendarViewController, startDate: Date, endDate: Date)
+}
+
 class CalendarViewController: UINavigationController {
+    init(delegate: CalendarViewControllerDelegate?) {
+        let yearCalendarViewController = YearCalendarViewController()
+        yearCalendarViewController.delegate = delegate
+        super.init(rootViewController: yearCalendarViewController)
+    }
+
     init() {
         super.init(rootViewController: YearCalendarViewController())
     }
@@ -16,6 +27,11 @@ class YearCalendarViewController: UIViewController {
     private var startDateLabel: UILabel!
     private var separatorDateLabel: UILabel!
     private var endDateLabel: UILabel!
+
+    private var startDate: Date?
+    private var endDate: Date?
+
+    weak var delegate: CalendarViewControllerDelegate?
 
     private enum Constants {
         static let headerPadding: CGFloat = 16
@@ -46,11 +62,11 @@ class YearCalendarViewController: UIViewController {
         setupNavButtons()
 
         calendarCollectionView.calDataSource.didSelect = { [weak self] startDate, endDate in
-            self?.updateLabels(startDate: startDate, endDate: endDate)
+            self?.updateDates(startDate: startDate, endDate: endDate)
         }
 
         calendarCollectionView.calDataSource.didDeselectAllDates = { [weak self] in
-            self?.updateLabels(startDate: nil, endDate: nil)
+            self?.updateDates(startDate: nil, endDate: nil)
         }
 
         calendarCollectionView.scrollsToTop = false
@@ -69,7 +85,14 @@ class YearCalendarViewController: UIViewController {
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel)), animated: false)
     }
 
-    private func updateLabels(startDate: Date?, endDate: Date?) {
+    private func updateDates(startDate: Date?, endDate: Date?) {
+        self.startDate = startDate
+        self.endDate = endDate
+
+        updateLabels()
+    }
+
+    private func updateLabels() {
         guard let startDate = startDate else {
             resetLabels()
             return
@@ -142,10 +165,19 @@ class YearCalendarViewController: UIViewController {
     }
 
     @objc private func done() {
+        guard let startDate = startDate, let endDate = endDate,
+              let calendar = navigationController as? CalendarViewController else {
+            return
+        }
 
+        delegate?.didSelect(calendar: calendar, startDate: startDate, endDate: endDate)
     }
 
     @objc private func cancel() {
-        dismiss(animated: true, completion: nil)
+        guard let calendar = navigationController as? CalendarViewController else {
+            return
+        }
+
+        delegate?.didCancel(calendar: calendar)
     }
 }

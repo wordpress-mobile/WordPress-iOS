@@ -73,7 +73,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let vc = CalendarViewController()
+        let vc = CalendarViewController(delegate: self)
         present(vc, animated: true, completion: nil)
     }
 
@@ -310,4 +310,16 @@ private extension ActivityListViewController {
         noResultsViewController.view.frame.origin.y = 0
     }
 
+}
+
+// MARK: - Calendar Handling
+extension ActivityListViewController: CalendarViewControllerDelegate {
+    func didCancel(calendar: CalendarViewController) {
+        calendar.dismiss(animated: true, completion: nil)
+    }
+
+    func didSelect(calendar: CalendarViewController, startDate: Date, endDate: Date) {
+        print("Start date: \(startDate) - End Date: \(endDate)")
+        calendar.dismiss(animated: true, completion: nil)
+    }
 }
