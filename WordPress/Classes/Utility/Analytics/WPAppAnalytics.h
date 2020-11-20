@@ -56,6 +56,11 @@ extern NSString * const WPAppAnalyticsKeyTapSource;
  */
 + (NSInteger)sessionCount;
 
+/**
+ *  @brief      Returns the site type for the blogID. Default is "blog".
+ */
++ (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID;
+
 #pragma mark - User Opt Out
 
 /**
