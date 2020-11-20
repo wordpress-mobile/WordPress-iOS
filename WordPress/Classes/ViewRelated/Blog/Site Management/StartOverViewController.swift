@@ -15,7 +15,15 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
     @objc let headerView: TableViewHeaderDetailView = {
         let header = NSLocalizedString("Let Us Help", comment: "Heading for instructions on Start Over settings page")
-        let detail = NSLocalizedString("If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.", comment: "Detail for instructions on Start Over settings page")
+        let detail1 = NSLocalizedString("If you want a site but don't want any of the posts and pages you have now, " +
+                                        "our support team can delete your posts, pages, media, and comments for you.",
+                                        comment: "Detailed instructions on Start Over settings page. This is the first paragraph.")
+        let doubleNewline = "\n\n"
+        let detail2 = NSLocalizedString("This will keep your site and URL active, " +
+                                        "but give you a fresh start on your content creation. " +
+                                        "Just contact us to have your current content cleared out.",
+                                        comment: "Detailed instructions on Start Over settings page. This is the second paragraph.")
+        let detail = String.localizedStringWithFormat("%@%@%@", detail1, doubleNewline, detail2)
 
        return TableViewHeaderDetailView(title: header, detail: detail)
     }()
