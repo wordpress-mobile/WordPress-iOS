@@ -4,7 +4,7 @@ import WidgetKit
 struct TodayWidgetView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
 
-    let content: TodayWidgetContent
+    let content: HomeWidgetTodayData
 
     @ViewBuilder
     var body: some View {
@@ -44,12 +44,15 @@ extension TodayWidgetView {
 
 struct TodayWidgetView_Previews: PreviewProvider {
     // TODO - TODAYWIDGET: this has been added here for preview purposes only. 
-    static let staticContent = TodayWidgetContent(date: Date(),
-                                           siteTitle: "Places you should visit",
-                                           stats: TodayWidgetStats(views: 5980,
-                                                                   visitors: 4208,
-                                                                   likes: 107,
-                                                                   comments: 5))
+    static let staticContent = HomeWidgetTodayData(siteID: 0,
+                                                   siteName: "Places you should visit",
+                                                   url: "",
+                                                   timeZoneName: "GMT",
+                                                   date: Date(),
+                                                   stats: TodayWidgetStats(views: 5980,
+                                                                           visitors: 4208,
+                                                                           likes: 107,
+                                                                           comments: 5))
     static var previews: some View {
         TodayWidgetView(content: staticContent)
             .previewContext(WidgetPreviewContext(family: .systemSmall))
