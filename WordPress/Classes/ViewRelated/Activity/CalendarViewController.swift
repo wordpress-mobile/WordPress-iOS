@@ -72,8 +72,9 @@ class YearCalendarViewController: UIViewController {
         calendarCollectionView.scrollsToTop = false
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
         calendarCollectionView.reloadData()
         scrollToCurrentDate()
     }
