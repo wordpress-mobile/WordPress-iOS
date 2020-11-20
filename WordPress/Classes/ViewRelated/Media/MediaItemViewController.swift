@@ -161,6 +161,7 @@ class MediaItemViewController: UITableViewController {
                                             style: .plain,
                                             target: self,
                                             action: #selector(trashTapped(_:)))
+            trashItem.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash buttons in nav bars")
 
             if media.blog.supports(.mediaDeletion) {
                 navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
