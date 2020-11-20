@@ -15,6 +15,9 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
     @objc let headerView: TableViewHeaderDetailView = {
         let header = NSLocalizedString("Let Us Help", comment: "Heading for instructions on Start Over settings page")
+        /// GlotPress breaks if iOS keys are longer than 256 characters, and additionally if a string reaches
+        /// 256 characters in English, it does not leave any flexibility for languages with longer words.
+        /// So lets support our translators and keep GlotPress happy :) 
         let detail1 = NSLocalizedString("If you want a site but do not want any of the posts and pages you have now, " +
                                         "our support team can delete your posts, pages, media, and comments for you.",
                                         comment: "Detailed instructions on Start Over settings page. This is the first paragraph.")
