@@ -577,12 +577,9 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     /// Restores the stashed content offset if it appears as if it's been reset.
-    private func restorContentOffsetIfNeeded(_ scrollView: UIScrollView) {
+    private func restoreContentOffsetIfNeeded(_ scrollView: UIScrollView) {
         guard let stashedOffset = stashedOffset else { return }
-        if scrollView.contentOffset.y == 0 { // Offset has probably been reset
-            scrollView.contentOffset = stashedOffset
-        }
-        self.stashedOffset = nil
+        scrollView.contentOffset = stashedOffset
     }
 
     private func resizeHeaderIfNeeded(_ scrollView: UIScrollView) {
@@ -602,7 +599,10 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        restorContentOffsetIfNeeded(scrollView)
+        guard stashedOffset == nil else {
+            restoreContentOffsetIfNeeded(scrollView)
+            return
+        }
 
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
