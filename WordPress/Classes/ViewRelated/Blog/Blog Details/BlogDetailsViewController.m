@@ -529,6 +529,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionJetpackSettings:
+            if ([self.blog supports:BlogFeatureActivity]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showJetpackSettings];
+            }
+            break;
         case BlogDetailsSubsectionComments:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -579,6 +588,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionStats:
             return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
+        case BlogDetailsSubsectionJetpackSettings:
             return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPosts:
             return [NSIndexPath indexPathForRow:0 inSection:section];
@@ -740,7 +751,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
-    [marr addObject:[self generalSectionViewModel]];
+    if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
+        [marr addObject:[self jetpackSectionViewModel]];
+    } else {
+        [marr addObject:[self generalSectionViewModel]];
+    }
+
     [marr addObject:[self publishTypeSectionViewModel]];
     if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
         [marr addObject:[self personalizeSectionViewModel]];
@@ -793,6 +809,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
+
+- (BlogDetailsSection *)jetpackSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                  accessibilityIdentifier:@"Stats Row"
+                                                    image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
+                                                 callback:^{
+        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
+                                                 }];
+    statsRow.quickStartIdentifier = QuickStartTourElementStats;
+    [rows addObject:statsRow];
+
+    if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                     callback:^{
+                                                         [weakSelf showActivity];
+                                                     }]];
+    }
+
+    if ([self.blog supports:BlogFeatureJetpackSettings]) {
+        BlogDetailsRow *settingsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Jetpack Settings", @"Noun. Title. Links to the blog's Settings screen.")
+                                                         identifier:BlogDetailsSettingsCellIdentifier
+                                            accessibilityIdentifier:@"Jetpack Settings Row"
+                                                              image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                           callback:^{
+                                                               [weakSelf showJetpackSettings];
+                                                           }];
+
+        [rows addObject:settingsRow];
+    }
+
+    NSString *title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
+}
+
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
 {
@@ -893,7 +948,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                         accessibilityIdentifier:@"Settings Row"
                                                           image:[UIImage gridiconOfType:GridiconTypeCog]
@@ -1543,6 +1598,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+-(void)showJetpackSettings
+{
+    JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSharing

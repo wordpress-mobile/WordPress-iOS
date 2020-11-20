@@ -1,0 +1,3 @@
+- Wähle bei der Erstellung einer neuen Seite auf einer Website, für die Gutenberg aktiviert ist, aus einer Vielfalt an Seitenvorlagen.
+- Erstelle Beiträge und Seiten direkt von der Liste mit Beiträgen uns Seiten mit dem stets präsenten Aktions-Button.
+- Es wurde ein Fehler behoben, der dazu führte, dass die Aktualisierungskontrolle oben in der Liste der Websites erschien.
