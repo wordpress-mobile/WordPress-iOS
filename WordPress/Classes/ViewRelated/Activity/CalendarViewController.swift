@@ -140,10 +140,10 @@ class YearCalendarViewController: UIViewController {
         endDateLabel = endDate
         endDate.font = .preferredFont(forTextStyle: .body)
         if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
-            // swiftlint:disable:next inverse_text_alignment
+            // swiftlint:disable:next natural_text_alignment
             endDate.textAlignment = .left
         } else {
-            // swiftlint:disable:next natural_text_alignment
+            // swiftlint:disable:next inverse_text_alignment
             endDate.textAlignment = .right
         }
         header.addArrangedSubview(endDate)
