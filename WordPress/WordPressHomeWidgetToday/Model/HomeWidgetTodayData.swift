@@ -1,22 +1,4 @@
-import WidgetKit
 
-// TODO - TODAYWIDGET: we might change this and use only one type for all three widgets
-/// protocol that generalizes home widgets data
-protocol HomeWidgetData: Codable, TimelineEntry {
-
-    associatedtype WidgetStats
-
-    var siteID: Int { get }
-    var siteName: String { get }
-    var url: String { get }
-    var timeZoneName: String { get }
-    var date: Date { get }
-    var stats: WidgetStats { get }
-}
-
-
-// TODO - TODAYWIDGET: we might change this and use only one type for all three widgets
-/// Type that contains all the relevant data of a Today Home Wifget
 struct HomeWidgetTodayData: HomeWidgetData {
 
     typealias WidgetStats = TodayWidgetStats
@@ -24,7 +6,7 @@ struct HomeWidgetTodayData: HomeWidgetData {
     let siteID: Int
     let siteName: String
     let url: String
-    let timeZoneName: String
+    let timeZone: TimeZone
     let date: Date
     let stats: WidgetStats
 }
