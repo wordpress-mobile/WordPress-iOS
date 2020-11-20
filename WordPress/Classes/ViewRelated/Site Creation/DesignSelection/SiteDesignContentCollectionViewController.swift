@@ -42,10 +42,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         super.init(scrollableView: collectionView,
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
+                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
                    primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-                   secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design"),
-                   hasFilterBar: false)
+                   secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design"))
     }
 
     required init?(coder: NSCoder) {
@@ -60,7 +59,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed()
-        navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
     }
 
     override func viewWillAppear(_ animated: Bool) {

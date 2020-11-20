@@ -2,13 +2,16 @@ import UIKit
 import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
+    static var estimatedSize: CGSize {
+        return CGSize(width: 320, height: 45)
+    }
     private struct TextStyleAttributes {
         static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                               .foregroundColor: UIColor.textSubtle]
         static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                                 .foregroundColor: UIColor.text]
     }
-
+    var border: UIView?
     @IBOutlet weak var title: UILabel!
 
     var model: DomainSuggestion? {
@@ -54,6 +57,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     override func prepareForReuse() {
         title.attributedText = nil
+        border?.removeFromSuperview()
     }
 
     private func processName(_ domainName: String?) -> NSAttributedString? {

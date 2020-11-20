@@ -12,15 +12,16 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CollapsableHeaderViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="accessoryBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
+                <outlet property="accessoryBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
                 <outlet property="containerView" destination="WmP-bw-ceT" id="lul-gs-fMI"/>
                 <outlet property="defaultActionButton" destination="dmc-kV-0d8" id="NfO-bU-Zl7"/>
-                <outlet property="filterBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
-                <outlet property="filterBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
                 <outlet property="footerHeightContraint" destination="lle-48-IUZ" id="CV2-G2-ryj"/>
                 <outlet property="footerView" destination="UfV-hu-KZx" id="LZu-HT-o4b"/>
                 <outlet property="headerHeightConstraint" destination="dks-Bz-gRQ" id="PfP-C9-RWM"/>
                 <outlet property="headerView" destination="LGN-fD-c9Q" id="sXv-v4-bqj"/>
                 <outlet property="initialHeaderTopConstraint" destination="tcz-y3-AwH" id="Vs9-Bf-urr"/>
+                <outlet property="largeTitleTopSpacingConstraint" destination="tcz-y3-AwH" id="pYL-lg-Sil"/>
                 <outlet property="largeTitleView" destination="nio-Wp-Ebw" id="cep-fi-6vl"/>
                 <outlet property="maxHeaderBottomSpacing" destination="MbU-Zk-mLK" id="LVn-jl-g9N"/>
                 <outlet property="minHeaderBottomSpacing" destination="wOf-4J-lXq" id="8Pp-zi-ErG"/>
@@ -46,9 +47,9 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qq-k5-kWr">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="293.5"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="303.5"/>
                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999998807907104" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JJ1-pb-5F1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="293.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="303.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -56,10 +57,10 @@
                     <blurEffect style="regular"/>
                 </visualEffectView>
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LGN-fD-c9Q" userLabel="Header View">
-                    <rect key="frame" x="0.0" y="88" width="414" height="205.5"/>
+                    <rect key="frame" x="0.0" y="88" width="414" height="215.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73">
-                            <rect key="frame" x="67" y="53" width="280" height="64.5"/>
+                            <rect key="frame" x="67" y="63" width="280" height="64.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" priority="750" constant="280" id="bav-Si-etZ"/>
                             </constraints>
@@ -69,28 +70,21 @@
                             <variation key="heightClass=compact" hidden="YES"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw">
-                            <rect key="frame" x="84.5" y="0.0" width="245" height="41"/>
+                            <rect key="frame" x="84.5" y="10" width="245" height="41"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                             <variation key="heightClass=compact" hidden="YES"/>
                         </label>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB" customClass="CollapsableHeaderFilterBar" customModule="WordPress" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="137.5" width="414" height="44"/>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB">
+                            <rect key="frame" x="0.0" y="147.5" width="414" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Eej-Tm-ddy"/>
                             </constraints>
-                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="12" id="2U8-JP-Gbh">
-                                <size key="itemSize" width="105" height="44"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                            <cells/>
-                        </collectionView>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-KC-2W9" userLabel="Seperator">
-                            <rect key="frame" x="0.0" y="205" width="414" height="0.5"/>
+                            <rect key="frame" x="0.0" y="215" width="414" height="0.5"/>
                             <color key="backgroundColor" systemColor="separatorColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="Q9V-Av-JqM"/>
@@ -113,7 +107,7 @@
                         </constraint>
                         <constraint firstAttribute="bottom" secondItem="9w9-KC-2W9" secondAttribute="bottom" id="ntw-Of-ryN"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="leading" secondItem="LGN-fD-c9Q" secondAttribute="leading" id="qOR-nT-mJQ"/>
-                        <constraint firstItem="nio-Wp-Ebw" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" id="tcz-y3-AwH"/>
+                        <constraint firstItem="nio-Wp-Ebw" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" constant="10" id="tcz-y3-AwH"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" id="uVe-Ze-eIF"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="top" id="wKv-4h-bvX"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DE5-R9-8tB" secondAttribute="bottom" priority="999" constant="9" id="wOf-4J-lXq"/>
