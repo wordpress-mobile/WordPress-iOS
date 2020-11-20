@@ -44,6 +44,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
                    prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
                    primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
+                   secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design"),
                    hasFilterBar: false)
     }
 
@@ -131,6 +132,21 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let design = siteDesigns[selectedIndexPath.row]
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
         completion(design)
+    }
+
+    override func secondaryActionSelected(_ sender: Any) {
+        guard let selectedIndexPath = selectedIndexPath else { return }
+
+        let design = siteDesigns[selectedIndexPath.row]
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
+        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        if #available(iOS 13.0, *) {
+            navController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+            navController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+        navigationController?.present(navController, animated: true)
     }
 
     private func handleError(_ error: Error) {

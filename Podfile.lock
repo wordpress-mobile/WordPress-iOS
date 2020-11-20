@@ -387,7 +387,6 @@ PODS:
   - Sentry (4.5.0):
     - Sentry/Core (= 4.5.0)
   - Sentry/Core (4.5.0)
-  - SimulatorStatusMagic (2.4.1)
   - Sodium (0.8.0)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -418,7 +417,7 @@ PODS:
   - WordPressShared (1.13.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.7.3)
+  - WordPressUI (1.7.4-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -502,7 +501,6 @@ DEPENDENCIES:
   - RNScreens (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/4a709594f4a585384a8b77d02c7197eb583afd60/third-party-podspecs/RNScreens.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/4a709594f4a585384a8b77d02c7197eb583afd60/third-party-podspecs/RNSVG.podspec.json`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `4a709594f4a585384a8b77d02c7197eb583afd60`)
-  - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
@@ -510,7 +508,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.21.0)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.13.0)
-  - WordPressUI (~> 1.7.3)
+  - WordPressUI (~> 1.7.4-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/4a709594f4a585384a8b77d02c7197eb583afd60/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.1.1)
@@ -549,7 +547,6 @@ SPEC REPOS:
     - OHHTTPStubs
     - Reachability
     - Sentry
-    - SimulatorStatusMagic
     - Sodium
     - Starscream
     - SVProgressHUD
@@ -749,7 +746,6 @@ SPEC CHECKSUMS:
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 6528dc19b67821dcfdc9ee22c661dae2690e5484
   Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
-  SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -760,7 +756,7 @@ SPEC CHECKSUMS:
   WordPressKit: d3b78d26af69a402974fd1489511f63518956a49
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 532ad68f954d37ea901e8c7e3ca62913c43ff787
-  WordPressUI: 07ad23f17631bdce0171383e533eb7c4c29280aa
+  WordPressUI: 8e33da6093701c1c9b6ed5a3ee2de80d73849d8a
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -773,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 6a0ed3b459a922084b1f035f3c91a73214ff8c64
+PODFILE CHECKSUM: 9d30c7e9b85ba81261334501da4469d2528df971
 
 COCOAPODS: 1.9.3
