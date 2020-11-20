@@ -1,3 +1,0 @@
-- Elige entre una variedad de plantillas de páginas prediseñadas cuando crees una nueva página en un sitio con Gutenberg activado.
-- Crea entradas y páginas directamente desde la lista de entradas y páginas con el botón de acción siempre presente.
-- Corregido un problema que causaba que el control de recarga apareciera en la parte superior de la lista de sitios.

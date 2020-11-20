@@ -1,3 +1,0 @@
-- Pilih dari beragam templat desain halaman saat Anda membuat halaman baru pada situs yang fungsi Gutenberg-nya diaktifkan.
-- Buat pos dan halaman langsung dari daftar pos dan halaman dengan tombol tindakan yang ada.
-- Memperbaiki masalah yang meyebabkan kontrol muat ulang muncul di atas daftar situs.
