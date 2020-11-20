@@ -174,7 +174,12 @@ class DateCell: JTACDayCell {
     struct Constants {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
-        static let selectedColor = UIColor(red: 0.91, green: 0.94, blue: 0.96, alpha: 1.00)
+        static var selectedColor: UIColor {
+            UIColor(
+                light: UIColor(red: 0.91, green: 0.94, blue: 0.96, alpha: 1.00),
+                dark: UIColor(red: 0.02, green: 0.22, blue: 0.35, alpha: 1.00)
+            )
+        }
     }
 
     let dateLabel = UILabel()
@@ -253,11 +258,11 @@ extension DateCell {
             rightPlaceholder.backgroundColor = Constants.selectedColor
             dateLabel.backgroundColor = .clear
         case .left:
-            textColor = .textInverted
+            textColor = .white
             dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
-            textColor = .textInverted
+            textColor = .white
             dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
