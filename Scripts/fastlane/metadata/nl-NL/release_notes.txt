@@ -1,0 +1,3 @@
+- Kies uit een aantal voorontworpen paginasjablonen op het moment dat je een nieuwe pagina maakt op een website met Gutenberg.
+- Schrijf berichten en maak pagina's rechtstreeks uit de lijst met berichten en pagina's met de alom aanwezige actieknop.
+- Een probleem opgelost waardoor vernieuwingsfuncties verschenen boven de lijst met sites.

@@ -1032,7 +1032,7 @@ private extension InsightStoreState {
             if let blogID = element.dotComID,
                let url = element.url,
                let blog = blogService.blog(byBlogId: blogID) {
-
+                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
                 let timeZone = blogService.timeZone(for: blog)
 
