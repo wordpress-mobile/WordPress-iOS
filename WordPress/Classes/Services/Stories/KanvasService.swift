@@ -12,10 +12,10 @@ class KanvasService {
     var cameraSettings: CameraSettings {
         let settings = CameraSettings()
         settings.features.ghostFrame = true
-//        settings.features.metalPreview = true
-//        settings.features.metalFilters = true
-        settings.features.openGLPreview = true
-        settings.features.openGLCapture = true
+        settings.features.metalPreview = true
+        settings.features.metalFilters = true
+        settings.features.openGLPreview = false
+        settings.features.openGLCapture = false
         settings.features.cameraFilters = false
         settings.features.experimentalCameraFilters = true
         settings.features.editor = true
@@ -43,7 +43,7 @@ class KanvasService {
     func controller() -> CameraController {
         KanvasCameraColors.shared = KanvasCameraCustomUI.shared.cameraColors()
         KanvasCameraFonts.shared = KanvasCameraCustomUI.shared.cameraFonts()
-        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil)
+        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil, tagCollection: nil)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve

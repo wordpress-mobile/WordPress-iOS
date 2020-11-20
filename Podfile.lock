@@ -460,7 +460,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.0.2-beta.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.41.1`)
   - JTAppleCalendar (~> 8.0.2)
-  - KanvasCamera (from `../Kanvas-iOS`)
+  - "KanvasCamera (from `git@github.com:tumblr/kanvas-ios.git`, branch `stories/build`)"
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -591,7 +591,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.41.1
   KanvasCamera:
-    :path: "../Kanvas-iOS"
+    :branch: stories/build
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.41.1/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -673,6 +674,9 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.41.1
+  KanvasCamera:
+    :commit: a792dd515640bc1347402ba8ab5fb7ac70c386e2
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RNCMaskedView:
     :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
     :git: https://github.com/react-native-community/react-native-masked-view.git
@@ -778,6 +782,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: ca44af9d15ed8e6c6f73a46564d662bb45b05078
+PODFILE CHECKSUM: 4b10f158d2766e4d42d06330a6b77804168937b7
 
 COCOAPODS: 1.9.3
