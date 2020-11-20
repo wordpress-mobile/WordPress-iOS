@@ -78,6 +78,9 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPressTodayWidgetSiteUrl";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
 
+/// iOS 14 Widget Constants
+NSString *const WPHomeWidgetTodayKind                               =@"WordPressHomeWidgetToday";
+
 /// Apple ID Constants
 ///
 NSString *const WPAppleIDKeychainUsernameKey                        = @"Username";

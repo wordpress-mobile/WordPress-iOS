@@ -72,10 +72,9 @@ private extension Provider {
 
 @main
 struct WordPressHomeWidgetToday: Widget {
-    private let kind: String = "WordPressHomeWidgetToday"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        StaticConfiguration(kind: WPHomeWidgetTodayKind, provider: Provider()) { entry in
             TodayWidgetView(content: entry)
         }
         .configurationDisplayName("Today")
