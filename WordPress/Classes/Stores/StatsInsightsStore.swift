@@ -77,7 +77,13 @@ struct InsightStoreState {
 
     var todaysStats: StatsTodayInsight? {
         didSet {
-            storeTodayWidgetData()
+            let todayWidgetStats = TodayWidgetStats(views: todaysStats?.viewsCount,
+                                                    visitors: todaysStats?.visitorsCount,
+                                                    likes: todaysStats?.likesCount,
+                                                    comments: todaysStats?.commentsCount)
+
+            storeTodayWidgetData(data: todayWidgetStats)
+            storeHomeWidgetTodayData(stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -947,18 +953,11 @@ extension StatsInsightsStore {
 
 private extension InsightStoreState {
 
-    func storeTodayWidgetData() {
-
-
-        let data = TodayWidgetStats(views: todaysStats?.viewsCount,
-                                    visitors: todaysStats?.visitorsCount,
-                                    likes: todaysStats?.likesCount,
-                                    comments: todaysStats?.commentsCount)
-        saveHomeWidgetTodayData(stats: data)
-
+    func storeTodayWidgetData(data: TodayWidgetStats) {
         guard widgetUsingCurrentSite() else {
             return
         }
+
         data.saveData()
     }
 
@@ -989,9 +988,10 @@ private extension InsightStoreState {
 // MARK: - iOS 14 Widgets Data
 private extension InsightStoreState {
 
-    private func saveHomeWidgetTodayData(stats: TodayWidgetStats) {
+    private func storeHomeWidgetTodayData(stats: TodayWidgetStats) {
 
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+        guard #available(iOS 14.0, *),
+              let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
 
@@ -1020,9 +1020,7 @@ private extension InsightStoreState {
                                                            stats: stats)
 
         HomeWidgetTodayData.write(data: homeWidgetTodayCache)
-        if #available(iOS 14.0, *) {
-            WidgetCenter.shared.reloadTimelines(ofKind: "WordPressHomeWidgetToday")
-        }
+        WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
     }
 
     // TODO - TODAYWIDGET: this method will likely be exposed in the future to handle the creation of the file at login
@@ -1030,15 +1028,15 @@ private extension InsightStoreState {
 
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
-        return blogService.blogsForAllAccounts().reduce(into: [Int: HomeWidgetTodayData]()) {
-            if let blogID = $1.dotComID,
-               let url = $1.url,
+        return blogService.blogsForAllAccounts().reduce(into: [Int: HomeWidgetTodayData]()) { result, element in
+            if let blogID = element.dotComID,
+               let url = element.url,
                let blog = blogService.blog(byBlogId: blogID) {
 
-                let title = ($1.title ?? url).isEmpty ? url : $1.title ?? url
+                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
                 let timeZoneName = blogService.timeZone(for: blog).identifier
 
-                $0[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
+                result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
                                                                   url: url,
                                                                   timeZoneName: timeZoneName,
