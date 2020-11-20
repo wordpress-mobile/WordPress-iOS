@@ -240,7 +240,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillTransition(to: size, with: coordinator)
 
         guard isShowingNoResults else { return }
-        coordinator.animate { (_) in
+        coordinator.animate(alongsideTransition: nil) { (_) in
             self.updateHeaderDisplay()
             if self.shouldHideAccessoryBar {
                 self.disableInitialLayoutHelpers()
@@ -260,6 +260,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             layoutHeaderInsets()
+
+            // This helps reset the header changes after a rotation.
+            scrollViewDidScroll(scrollableView)
+            scrollViewDidEndDecelerating(scrollableView)
         }
     }
 
@@ -472,6 +476,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
+        updateTitleViewVisibility(false)
     }
 
     // MARK: - Subclass callbacks
@@ -545,7 +550,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let shouldBeHidden: Bool
         switch seperatorStyle {
         case .automatic:
-            shouldBeHidden = seperator.frame.minY > minHeaderHeight
+            shouldBeHidden = headerHeightConstraint.constant > minHeaderHeight && !shouldUseCompactLayout
         case .visibile:
             shouldBeHidden = false
         case .hidden:
@@ -602,6 +607,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         guard !shouldUseCompactLayout,
               !isShowingNoResults else {
             updateTitleViewVisibility(true)
+            updateSeperatorStyle()
             return
         }
         disableInitialLayoutHelpers()

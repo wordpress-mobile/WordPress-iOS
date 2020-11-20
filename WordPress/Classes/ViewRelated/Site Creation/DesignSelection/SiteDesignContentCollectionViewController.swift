@@ -67,6 +67,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         updateEdgeInsets()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateEdgeInsets()
+    }
+
     override func estimatedContentSize() -> CGSize {
         guard isLoading || siteDesigns.count > 1 else { return .zero }
         let cellCount = isLoading ? 1 : siteDesigns.count
@@ -84,8 +89,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func updateEdgeInsets() {
-        let screenSize = view.frame.size
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
+        let screenSize = collectionView.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize,
+                                                                                                 itemSpacing: itemSpacing,
+                                                                                                 screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
@@ -111,7 +118,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
