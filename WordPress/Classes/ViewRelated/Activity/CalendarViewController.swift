@@ -121,7 +121,13 @@ class YearCalendarViewController: UIViewController {
         let startDate = UILabel()
         startDateLabel = startDate
         startDate.font = .preferredFont(forTextStyle: .body)
-        startDate.textAlignment = .right
+        if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            startDate.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            startDate.textAlignment = .left
+        }
         header.addArrangedSubview(startDate)
 
         let separator = UILabel()
@@ -133,7 +139,13 @@ class YearCalendarViewController: UIViewController {
         let endDate = UILabel()
         endDateLabel = endDate
         endDate.font = .preferredFont(forTextStyle: .body)
-        endDate.textAlignment = .left
+        if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            endDate.textAlignment = .left
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            endDate.textAlignment = .right
+        }
         header.addArrangedSubview(endDate)
 
         resetLabels()
