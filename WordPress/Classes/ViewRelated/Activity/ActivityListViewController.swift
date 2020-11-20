@@ -70,6 +70,13 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - View lifecycle
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let vc = CalendarViewController()
+        present(vc, animated: true, completion: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
