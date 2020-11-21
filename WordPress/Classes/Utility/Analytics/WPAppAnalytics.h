@@ -21,6 +21,7 @@ extern NSString * const WPAppAnalyticsKeyFollowAction;
 extern NSString * const WPAppAnalyticsKeySource;
 extern NSString * const WPAppAnalyticsKeyPostType;
 extern NSString * const WPAppAnalyticsKeyTapSource;
+extern NSString * const WPAppAnalyticsKeyReplyingTo;
 
 /**
  *  @class      WPAppAnalytics
