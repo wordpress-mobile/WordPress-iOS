@@ -1,3 +1,0 @@
-- Du kan välja bland ett antal fördesignade sidmallar när du skapar en ny sida på en webbplats som använder Gutenberg.
-- Skapa inlägg och sidor direkt från listan med inlägg och sidor via den ständigt närvarande åtgärdsknappen.
-- Rättat ett problem som gjorde att styrningen av uppdateringar visades längst upp i listan över webbplatser.

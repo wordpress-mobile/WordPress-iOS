@@ -1,3 +1,0 @@
-- Scegli tra svariati modelli di pagina predefiniti quando crei una nuova pagina su un sito abilitato Gutenberg.
-- Crea articoli e pagine direttamente dall'elenco degli articoli e delle pagine con il pulsante di azione sempre presente.
-- È stato risolto un problema che causava la visualizzazione del controllo di aggiornamento in cima all'elenco dei siti.

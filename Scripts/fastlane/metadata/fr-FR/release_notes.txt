@@ -1,3 +1,0 @@
-- Choisissez parmi une variété de modèles de pages prédéfinis lors de la création d’une nouvelle page sur un site conçu avec Gutenberg.
-- Créer de nouveaux articles ou pages directement depuis la liste des articles ou des pages avec le bouton d’action toujours présent.
-- Correction d’un problème qui faisait apparaître l’actualiseur de contrôle en haut de la liste de sites.
