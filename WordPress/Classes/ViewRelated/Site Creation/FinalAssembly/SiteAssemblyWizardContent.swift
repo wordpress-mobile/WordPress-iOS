@@ -42,7 +42,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
-        self.contentView = SiteAssemblyContentView(siteDesign: siteCreator.design)
+        self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
     }
