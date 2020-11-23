@@ -1,26 +1,34 @@
 import Foundation
 
-@objc class CommentAnalytics: NSObject{
+@objc class CommentAnalytics: NSObject {
+
+    struct Constants {
+        static let sites = "sites"
+        static let reader = "reader"
+        static let notifications = "notifications"
+        static let unknown = "unknown"
+        static let context = "context"
+    }
 
     static func trackingContext() -> String {
-        let screen = WPTabBarController.sharedInstance()?.currentlySelectedScreen() ?? "unknown"
+        let screen = WPTabBarController.sharedInstance()?.currentlySelectedScreen() ?? Constants.unknown
         switch screen {
         case WPTabBarCurrentlySelectedScreenSites:
-            return "sites"
+            return Constants.sites
         case WPTabBarCurrentlySelectedScreenReader:
-            return "reader"
+            return Constants.reader
         case WPTabBarCurrentlySelectedScreenNotifications:
-            return "notifications"
+            return Constants.notifications
         default:
-            return "unknown"
+            return Constants.unknown
         }
     }
 
     static func defaultProperties(comment: Comment) -> [AnyHashable: Any] {
         return [
-            "context": trackingContext(),
-            "post_id": comment.postID.intValue,
-            "comment_id": comment.commentID.intValue
+            Constants.context: trackingContext(),
+            WPAppAnalyticsKeyPostID: comment.postID.intValue,
+            WPAppAnalyticsKeyCommentID: comment.commentID.intValue
         ]
     }
 
@@ -72,6 +80,22 @@ import Foundation
     @objc static func trackCommentRepliedTo(comment: Comment) {
         let properties = defaultProperties(comment: comment)
         WPAnalytics.track(.commentRepliedTo, properties: properties, blog: comment.blog)
+    }
+
+    static func trackCommentEditorOpened(block: FormattableCommentContent) {
+        WPAnalytics.track(.commentEditorOpened, properties: [
+            Constants.context: CommentAnalytics.trackingContext(),
+            WPAppAnalyticsKeyBlogID: block.metaSiteID?.intValue ?? 0,
+            WPAppAnalyticsKeyCommentID: block.metaCommentID?.intValue ?? 0
+        ])
+    }
+
+    static func trackCommentEdited(block: FormattableCommentContent) {
+        WPAnalytics.track(.commentEdited, properties: [
+            Constants.context: CommentAnalytics.trackingContext(),
+            WPAppAnalyticsKeyBlogID: block.metaSiteID?.intValue ?? 0,
+            WPAppAnalyticsKeyCommentID: block.metaCommentID?.intValue ?? 0
+        ])
     }
 
 }
