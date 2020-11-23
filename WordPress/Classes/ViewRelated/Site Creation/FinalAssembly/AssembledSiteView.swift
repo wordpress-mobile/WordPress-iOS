@@ -27,6 +27,9 @@ final class AssembledSiteView: UIView {
     /// This value displays in the address bar.
     private let siteName: String
 
+    /// The site design used to generate the 
+    private let siteDesign: RemoteSiteDesign?
+
     /// This value is what the web view loads.
     private let siteURLString: String
 
@@ -74,9 +77,10 @@ final class AssembledSiteView: UIView {
     /// The designated initializer.
     ///
     /// - Parameter domainName: the domain associated with the site pending assembly.
-    init(domainName: String, siteURLString: String) {
+    init(domainName: String, siteURLString: String, siteDesign: RemoteSiteDesign?) {
         self.siteName = domainName
         self.siteURLString = siteURLString
+        self.siteDesign = siteDesign
 
         textField = {
             let textField = UITextField(frame: .zero)
@@ -194,7 +198,7 @@ extension AssembledSiteView: UIGestureRecognizerDelegate {
 extension AssembledSiteView: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteDesign)
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
@@ -210,7 +214,7 @@ extension AssembledSiteView: WKNavigationDelegate {
         activityIndicator.stopAnimating()
         webView.prepareWPComPreview()
         generator.notificationOccurred(.success)
-        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoaded(siteDesign)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

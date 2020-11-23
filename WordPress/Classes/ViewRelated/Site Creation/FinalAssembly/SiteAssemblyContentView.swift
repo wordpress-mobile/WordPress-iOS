@@ -103,10 +103,13 @@ final class SiteAssemblyContentView: UIView {
         }
     }
 
+    let siteDesign: RemoteSiteDesign?
+
     // MARK: SiteAssemblyContentView
 
     /// The designated initializer.
-    init() {
+    init(siteDesign: RemoteSiteDesign?) {
+        self.siteDesign = siteDesign
         self.completionLabel = {
             let label = UILabel()
 
@@ -297,7 +300,7 @@ final class SiteAssemblyContentView: UIView {
             return
         }
 
-        let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString)
+        let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString, siteDesign: siteDesign)
         addSubview(assembledSiteView)
 
         if let buttonContainer = buttonContainerContainer {

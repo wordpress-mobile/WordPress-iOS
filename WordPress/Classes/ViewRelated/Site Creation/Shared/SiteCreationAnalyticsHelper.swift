@@ -30,6 +30,19 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
     }
 
+    // MARK: - Final Assembly
+    static func trackSiteCreationSuccessViewed(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessLoading(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessLoaded(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
+    }
+
     // MARK: - Error
     static func trackError(_ error: Error) {
         let errorProperties: [String: AnyObject] = [
@@ -40,7 +53,8 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func commonProperties(_ siteDesign: RemoteSiteDesign) -> [AnyHashable: Any] {
+    private static func commonProperties(_ siteDesign: RemoteSiteDesign?) -> [AnyHashable: Any] {
+        guard let siteDesign = siteDesign else { return [:] }
         return  [siteDesignKey: siteDesign.slug]
     }
 }

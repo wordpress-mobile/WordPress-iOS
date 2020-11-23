@@ -21,7 +21,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private var createdBlog: Blog?
 
     /// The content view serves as the root view of this view controller.
-    private let contentView = SiteAssemblyContentView()
+    private let contentView: SiteAssemblyContentView
 
     /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
     private let buttonViewController = NUXButtonViewController.instance()
@@ -42,6 +42,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
+        self.contentView = SiteAssemblyContentView(siteDesign: siteCreator.design)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +63,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         hidesBottomBarWhenPushed = true
         installButtonViewController()
-        WPAnalytics.track(.enhancedSiteCreationSuccessLoading)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessViewed(siteCreator.design)
     }
 
     override func viewWillAppear(_ animated: Bool) {
