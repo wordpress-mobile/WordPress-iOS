@@ -29,6 +29,7 @@ class ReaderCoordinator: NSObject {
 
         super.init()
     }
+
     private func prepareToNavigate() {
         WPTabBarController.sharedInstance().showReaderTab()
 
@@ -42,7 +43,7 @@ class ReaderCoordinator: NSObject {
     func showDiscover() {
         WPTabBarController.sharedInstance().switchToDiscover()
     }
-    
+
     func showSearch() {
         WPTabBarController.sharedInstance().navigateToReaderSearch()
     }
@@ -76,26 +77,14 @@ class ReaderCoordinator: NSObject {
         WPTabBarController.sharedInstance()?.switchToTopic(where: { $0 == topic })
     }
 
-    // here
     func showTag(named tagName: String) {
-        if !isNavigatingFromSource, !FeatureFlag.newReaderNavigation.enabled {
-            prepareToNavigate()
-        }
-
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            getTagTopic(tagSlug: slug) { result in
-                guard let topic = try? result.get() else { return }
-                WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
-            }
-            return
-        }
-        let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
-        controller.streamLoadFailureBlock = failureBlock
 
-        readerSplitViewController.showDetailViewController(controller, sender: nil)
-        readerMenuViewController.deselectSelectedRow(animated: false)
+        getTagTopic(tagSlug: slug) { result in
+            guard let topic = try? result.get() else { return }
+            WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
+        }
     }
 
     private func getTagTopic(tagSlug: String, completion: @escaping (Result<ReaderTagTopic, Error>) -> Void) {
@@ -122,7 +111,7 @@ class ReaderCoordinator: NSObject {
             guard let topic = try? result.get() else {
                 return
             }
-            
+
             WPTabBarController.sharedInstance()?.navigateToReaderSite(topic)
         }
     }
