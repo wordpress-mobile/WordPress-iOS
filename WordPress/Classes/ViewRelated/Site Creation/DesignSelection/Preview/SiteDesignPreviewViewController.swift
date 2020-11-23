@@ -71,6 +71,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     private func configureWebView() {
         guard let demoURL = URL(string: siteDesign.demoURL) else { return }
         let request = URLRequest(url: demoURL)
+        webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(request)
     }
 
