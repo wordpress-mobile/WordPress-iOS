@@ -108,7 +108,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading()
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -120,7 +120,7 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded()
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign)
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
     }
