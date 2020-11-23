@@ -843,8 +843,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         [rows addObject:settingsRow];
     }
+    NSString *title = @"";
 
-    NSString *title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    if ([self.blog supports:BlogFeatureJetpackSettings]) {
+        title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    }
+
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
 }
 
