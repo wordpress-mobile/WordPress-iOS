@@ -322,7 +322,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
         guard let startDate = startDate, let endDate = endDate else {
             return
         }
-        
+
         print("Start date: \(startDate) - End Date: \(endDate)")
         calendar.dismiss(animated: true, completion: nil)
     }
