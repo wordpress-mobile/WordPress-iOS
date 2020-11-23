@@ -53,7 +53,6 @@ class YearCalendarViewController: UIViewController {
         // Configure Calendar
         let calendar = Calendar.current
         self.calendarCollectionView = CalendarCollectionView(calendar: calendar, style: .year)
-        scrollToCurrentDate()
 
         // Configure headers and add the calendar to the view
         let header = startEndDateHeader()
@@ -82,11 +81,16 @@ class YearCalendarViewController: UIViewController {
         calendarCollectionView.scrollsToTop = false
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        scrollToCurrentDate()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
         calendarCollectionView.reloadData()
-        scrollToCurrentDate()
     }
 
     private func setupNavButtons() {
@@ -162,16 +166,14 @@ class YearCalendarViewController: UIViewController {
     }
 
     private func scrollToCurrentDate() {
-        calendarCollectionView.scrollToDate(Date(),
-                                            animateScroll: false,
-                                            preferredScrollPosition: .centeredVertically) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            // Manually center the current date vertically (centeredVertically is not working)
-            self.calendarCollectionView.setContentOffset(CGPoint(x: 0, y: self.calendarCollectionView.contentOffset.y - self.calendarCollectionView.frame.height / 2), animated: false)
+        if calendarCollectionView.frame.height == 0 {
+            calendarCollectionView.superview?.layoutIfNeeded()
         }
+
+        calendarCollectionView.scrollToDate(Date(),
+                                            animateScroll: true,
+                                            preferredScrollPosition: .centeredVertically,
+                                            extraAddedOffset: -(self.calendarCollectionView.frame.height / 2))
     }
 
     private func resetLabels() {

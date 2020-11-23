@@ -83,6 +83,19 @@ class CalendarDataSource: JTACMonthViewDataSource {
     }
 
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
+        /// When style is year, display the last 20 years and the next one
+        if style == .year {
+            var dateComponent = DateComponents()
+            dateComponent.year = -20
+            let startDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+            dateComponent.year = 1
+            let endDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+
+            if let startDate = startDate, let endDate = endDate {
+                return ConfigurationParameters(startDate: startDate, endDate: endDate, calendar: self.calendar)
+            }
+        }
+
         let startDate = Date.farPastDate
         let endDate = Date.farFutureDate
         return ConfigurationParameters(startDate: startDate, endDate: endDate, calendar: self.calendar)
