@@ -571,15 +571,24 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        /// Clear the stashed offset because the user has initiated a change
-        stashedOffset = nil
-    }
-
     /// Restores the stashed content offset if it appears as if it's been reset.
     private func restoreContentOffsetIfNeeded(_ scrollView: UIScrollView) {
-        guard let stashedOffset = stashedOffset else { return }
+        guard var stashedOffset = stashedOffset else { return }
+        stashedOffset = resolveContentOffsetCollisions(scrollView, cachedOffset: stashedOffset)
         scrollView.contentOffset = stashedOffset
+    }
+
+    private func resolveContentOffsetCollisions(_ scrollView: UIScrollView, cachedOffset: CGPoint) -> CGPoint {
+        var adjustedOffset = cachedOffset
+
+        /// If the content size has changed enough to where the cached offset would scroll beyond the allowable bounds then we reset to the minum scroll height to
+        /// maintain the header's size.
+        if scrollView.contentSize.height - cachedOffset.y < scrollView.frame.height {
+            adjustedOffset.y = maxHeaderHeight - headerHeightConstraint.constant
+            stashedOffset = adjustedOffset
+        }
+
+        return adjustedOffset
     }
 
     private func resizeHeaderIfNeeded(_ scrollView: UIScrollView) {
@@ -593,9 +602,14 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    fileprivate func updateTitleViewVisibility(_ animated: Bool = true) {
+    private func updateTitleViewVisibility(_ animated: Bool = true) {
         let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        /// Clear the stashed offset because the user has initiated a change
+        stashedOffset = nil
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
