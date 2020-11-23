@@ -22,6 +22,9 @@ extern NSString * const WPAppAnalyticsKeySource;
 extern NSString * const WPAppAnalyticsKeyPostType;
 extern NSString * const WPAppAnalyticsKeyTapSource;
 extern NSString * const WPAppAnalyticsKeyReplyingTo;
+extern NSString * const WPAppAnalyticsKeySiteType;
+extern NSString * const WPAppAnalyticsValueSiteTypeBlog;
+extern NSString * const WPAppAnalyticsValueSiteTypeP2;
 
 /**
  *  @class      WPAppAnalytics
@@ -56,6 +59,11 @@ extern NSString * const WPAppAnalyticsKeyReplyingTo;
  *  @brief      The current session count.
  */
 + (NSInteger)sessionCount;
+
+/**
+ *  @brief      Returns the site type for the blogID. Default is "blog".
+ */
++ (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID;
 
 #pragma mark - User Opt Out
 
