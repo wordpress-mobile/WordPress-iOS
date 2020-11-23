@@ -53,6 +53,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
+@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -252,6 +253,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return _blogListSplitViewController;
+}
+
+- (ReaderTabViewModel *)readerTabViewModel
+{
+    if (!_readerTabViewModel) {
+        _readerTabViewModel = [self makeReaderTabViewModel];
+    }
+    return _readerTabViewModel;
 }
 
 - (UISplitViewController *)notificationsSplitViewController
