@@ -37,6 +37,12 @@ class YearCalendarViewController: UIViewController {
 
     weak var delegate: CalendarViewControllerDelegate?
 
+    private lazy var formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
+        return formatter
+    }()
+
     private enum Constants {
         static let headerPadding: CGFloat = 16
     }
@@ -103,8 +109,6 @@ class YearCalendarViewController: UIViewController {
             return
         }
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy"
         startDateLabel.text = formatter.string(from: startDate)
         startDateLabel.textColor = .text
 
@@ -171,13 +175,13 @@ class YearCalendarViewController: UIViewController {
     }
 
     private func resetLabels() {
-        startDateLabel.text = "Start Date"
+        startDateLabel.text = NSLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
         startDateLabel.textColor = .textSubtle
 
         separatorDateLabel.text = "-"
         separatorDateLabel.textColor = .textSubtle
 
-        endDateLabel.text = "End Date"
+        endDateLabel.text = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
         endDateLabel.textColor = .textSubtle
     }
 
