@@ -293,6 +293,7 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 
