@@ -35,15 +35,15 @@ extension ReaderStreamViewController {
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
         if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
-            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
+            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)?.first as? ReaderTagStreamHeader
         }
 
         if ReaderHelpers.isTopicList(topic) {
-            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
+            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
         }
 
         if ReaderHelpers.isTopicSite(topic) {
-            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
+            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
         }
 
         return nil
