@@ -71,6 +71,9 @@ class CalendarDataSource: JTACMonthViewDataSource {
     // First selected date
     var firstDate: Date?
 
+    // End selected date
+    var endDate: Date?
+
     private let calendar: Calendar
     private let style: CalendarCollectionViewStyle
 
@@ -109,11 +112,10 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
     func calendar(_ calendar: JTACMonthView, didSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
         if style == .year, let firstDate = firstDate {
-            calendar.selectDates(from: firstDate,
-                                 to: date,
-                                 triggerSelectionDelegate: false,
-                                 keepSelectionIfMultiSelectionAllowed: true)
-            didSelect?(firstDate, date)
+            self.firstDate = min(firstDate, date)
+            endDate = max(firstDate, date)
+            calendar.reloadItems(at: calendar.indexPathsForVisibleItems)
+            didSelect?(self.firstDate!, self.endDate!)
         } else {
             firstDate = date
             didSelect?(date, nil)
@@ -124,30 +126,6 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
     func calendar(_ calendar: JTACMonthView, didDeselectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
         configure(cell: cell, with: cellState)
-    }
-
-    func calendar(_ calendar: JTACMonthView, shouldSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) -> Bool {
-        if style == .year, calendar.selectedDates.count > 1 && cellState.selectionType != .programatic || firstDate != nil && !calendar.selectedDates.isEmpty && date < calendar.selectedDates[0] {
-            firstDate = nil
-            let retval = !calendar.selectedDates.contains(date)
-            didDeselectAllDates?()
-            calendar.deselectAllDates()
-            return retval
-        }
-        return true
-    }
-
-    func calendar(_ calendar: JTACMonthView, shouldDeselectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) -> Bool {
-        if style == .year, calendar.selectedDates.count > 1 && cellState.selectionType != .programatic {
-            firstDate = nil
-            calendar.deselectAllDates()
-            didDeselectAllDates?()
-            return false
-        }
-
-        didDeselectAllDates?()
-
-        return true
     }
 
     func calendarSizeForMonths(_ calendar: JTACMonthView?) -> MonthSize? {
@@ -165,7 +143,7 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
     private func configure(cell: JTACDayCell?, with state: CellState) {
         let cell = cell as? DateCell
-        cell?.configure(with: state, hideInOutDates: style == .year)
+        cell?.configure(with: state, startDate: firstDate, endDate: endDate, hideInOutDates: style == .year)
     }
 }
 
@@ -239,11 +217,14 @@ class DateCell: JTACDayCell {
 }
 
 extension DateCell {
-    func configure(with state: CellState, hideInOutDates: Bool = false) {
+    func configure(with state: CellState,
+                   startDate: Date? = nil,
+                   endDate: Date? = nil,
+                   hideInOutDates: Bool = false) {
 
         dateLabel.text = state.text
 
-        let textColor: UIColor
+        var textColor: UIColor
 
         if hideInOutDates && state.dateBelongsTo != .thisMonth {
             isHidden = true
@@ -251,7 +232,13 @@ extension DateCell {
             isHidden = false
         }
 
-        switch state.selectedPosition() {
+        // Reset state
+        leftPlaceholder.backgroundColor = .clear
+        rightPlaceholder.backgroundColor = .clear
+        dateLabel.backgroundColor = .clear
+        textColor = .text
+
+        switch position(for: state.date, startDate: startDate, endDate: endDate) {
         case .middle:
             textColor = .text
             leftPlaceholder.backgroundColor = Constants.selectedColor
@@ -282,6 +269,24 @@ extension DateCell {
         }
 
         dateLabel.textColor = textColor
+    }
+
+    func position(for date: Date, startDate: Date?, endDate: Date?) -> SelectionRangePosition {
+        if let startDate = startDate, let endDate = endDate {
+            if date == startDate {
+                return .left
+            } else if date == endDate {
+                return .right
+            } else if date > startDate && date < endDate {
+                return .middle
+            }
+        } else if let startDate = startDate {
+            if date == startDate {
+                return .full
+            }
+        }
+
+        return .none
     }
 }
 
