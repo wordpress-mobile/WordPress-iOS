@@ -3,19 +3,12 @@ import UIKit
 @objc
 class ReaderCoordinator: NSObject {
     let readerNavigationController: UINavigationController
-    let readerSplitViewController: WPSplitViewController
-    let readerMenuViewController: ReaderMenuViewController
 
     var failureBlock: (() -> Void)? = nil
 
     @objc
-    init(readerNavigationController: UINavigationController,
-         readerSplitViewController: WPSplitViewController,
-         readerMenuViewController: ReaderMenuViewController) {
+    init(readerNavigationController: UINavigationController) {
         self.readerNavigationController = readerNavigationController
-        self.readerSplitViewController = readerSplitViewController
-        self.readerMenuViewController = readerMenuViewController
-
         super.init()
     }
 
