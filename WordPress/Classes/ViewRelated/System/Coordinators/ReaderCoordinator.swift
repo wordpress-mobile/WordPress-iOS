@@ -8,17 +8,6 @@ class ReaderCoordinator: NSObject {
 
     var failureBlock: (() -> Void)? = nil
 
-    var source: UIViewController? = nil {
-        didSet {
-            let hasSource = source != nil
-            let sourceIsTopViewController = source == topNavigationController?.topViewController
-
-            isNavigatingFromSource = hasSource && (sourceIsTopViewController || readerIsNotCurrentlySelected)
-        }
-    }
-
-    private var isNavigatingFromSource = false
-
     @objc
     init(readerNavigationController: UINavigationController,
          readerSplitViewController: WPSplitViewController,
@@ -28,12 +17,6 @@ class ReaderCoordinator: NSObject {
         self.readerMenuViewController = readerMenuViewController
 
         super.init()
-    }
-
-    private func prepareToNavigate() {
-        WPTabBarController.sharedInstance().showReaderTab()
-
-        topNavigationController?.popToRootViewController(animated: isNavigatingFromSource)
     }
 
     func showReaderTab() {
@@ -150,22 +133,6 @@ class ReaderCoordinator: NSObject {
         WPTabBarController.sharedInstance().navigateToReader(detailViewController)
     }
 
-    private var topNavigationController: UINavigationController? {
-        guard readerIsNotCurrentlySelected == false else {
-            return source?.navigationController
-        }
-
-        if readerMenuViewController.splitViewControllerIsHorizontallyCompact == false,
-            let navigationController = readerSplitViewController.topDetailViewController?.navigationController {
-            return navigationController
-        }
-
-        return readerNavigationController
-    }
-
-    private var readerIsNotCurrentlySelected: Bool {
-        return WPTabBarController.sharedInstance().selectedViewController != readerSplitViewController
-    }
 }
 
 extension ReaderTopicService {
