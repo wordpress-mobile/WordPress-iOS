@@ -39,9 +39,9 @@ NSString * const WPNewPostURLParamContentKey = @"content";
 NSString * const WPNewPostURLParamTagsKey = @"tags";
 NSString * const WPNewPostURLParamImageKey = @"image";
 
-static NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
-static NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
-static NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications";
+NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
+NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
+NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications";
 
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
