@@ -318,7 +318,11 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
         calendar.dismiss(animated: true, completion: nil)
     }
 
-    func didSelect(calendar: CalendarViewController, startDate: Date, endDate: Date) {
+    func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
+        guard let startDate = startDate, let endDate = endDate else {
+            return
+        }
+        
         print("Start date: \(startDate) - End Date: \(endDate)")
         calendar.dismiss(animated: true, completion: nil)
     }

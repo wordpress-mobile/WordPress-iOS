@@ -2,7 +2,7 @@ import UIKit
 
 protocol CalendarViewControllerDelegate: class {
     func didCancel(calendar: CalendarViewController)
-    func didSelect(calendar: CalendarViewController, startDate: Date, endDate: Date)
+    func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?)
 }
 
 class CalendarViewController: UINavigationController {
@@ -186,8 +186,7 @@ class YearCalendarViewController: UIViewController {
     }
 
     @objc private func done() {
-        guard let startDate = startDate, let endDate = endDate,
-              let calendar = navigationController as? CalendarViewController else {
+        guard let calendar = navigationController as? CalendarViewController else {
             return
         }
 
