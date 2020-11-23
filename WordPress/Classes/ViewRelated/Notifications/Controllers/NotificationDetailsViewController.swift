@@ -785,7 +785,6 @@ private extension NotificationDetailsViewController {
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
             self?.focusOnReplyTextViewWithBlock(commentBlock)
-            WPAppAnalytics.track(.notificationsCommentRepliedTo)
         }
 
         cell.onLikeClick = { [weak self] _ in
@@ -1077,6 +1076,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             if success {
+                WPAppAnalytics.track(.notificationsCommentRepliedTo)
                 let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
                 self?.displayNotice(title: message)
             } else {
@@ -1099,6 +1099,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             guard success == false else {
+                CommentAnalytics.trackCommentEdited(block: block)
                 return
             }
 
@@ -1151,6 +1152,7 @@ private extension NotificationDetailsViewController {
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 
+        CommentAnalytics.trackCommentEditorOpened(block: block)
         present(navController, animated: true)
     }
 
