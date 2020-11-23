@@ -121,11 +121,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                      name:WordPressAuthenticator.WPSigninDidFinishNotification
                                                    object:nil];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(switchReaderTabToSavedPosts)
-                                                     name:NSNotification.ShowAllSavedForLaterPostsNotification
-                                                   object:nil];
-
         // Watch for application badge number changes
         [[UIApplication sharedApplication] addObserver:self
                                             forKeyPath:WPApplicationIconBadgeNumberKeyPath
@@ -465,11 +460,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 
     [self.notificationsViewController showNotificationSettings];
-}
-
-- (void)switchReaderTabToSavedPosts
-{
-    [self switchToSavedPosts];
 }
 
 - (NSString *)currentlySelectedScreen
