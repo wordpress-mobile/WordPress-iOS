@@ -74,10 +74,6 @@ class YearCalendarViewController: UIViewController {
             self?.updateDates(startDate: startDate, endDate: endDate)
         }
 
-        calendarCollectionView.calDataSource.didDeselectAllDates = { [weak self] in
-            self?.updateDates(startDate: nil, endDate: nil)
-        }
-
         calendarCollectionView.scrollsToTop = false
     }
 

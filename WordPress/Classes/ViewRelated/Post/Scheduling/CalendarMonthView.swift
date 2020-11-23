@@ -62,6 +62,10 @@ class CalendarMonthView: UIView {
             }
         }
         calendarCollectionView.calDataSource.didSelect = { [weak self] dateSegment, _ in
+            guard let dateSegment = dateSegment else {
+                return
+            }
+
             self?.updated?(dateSegment)
         }
     }

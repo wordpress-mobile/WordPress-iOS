@@ -65,8 +65,7 @@ class CalendarDataSource: JTACMonthViewDataSource {
 
     var willScroll: ((DateSegmentInfo) -> Void)?
     var didScroll: ((DateSegmentInfo) -> Void)?
-    var didSelect: ((Date, Date?) -> Void)?
-    var didDeselectAllDates: (() -> Void)?
+    var didSelect: ((Date?, Date?) -> Void)?
 
     // First selected date
     var firstDate: Date?
@@ -124,14 +123,41 @@ extension CalendarDataSource: JTACMonthViewDelegate {
     }
 
     func calendar(_ calendar: JTACMonthView, didSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
-        if style == .year, let firstDate = firstDate {
-            self.firstDate = min(firstDate, date)
-            endDate = max(firstDate, date)
-            calendar.reloadItems(at: calendar.indexPathsForVisibleItems)
-            didSelect?(self.firstDate!, self.endDate!)
+        if style == .year {
+            if let firstDate = firstDate {
+                if let endDate = endDate {
+                    // When tapping a selected firstDate or endDate reset the rest
+                    if date == firstDate || date == endDate {
+                        self.firstDate = date
+                        self.endDate = nil
+                    // Increase the range at the left side
+                    } else if date < firstDate {
+                        self.firstDate = date
+                    // Increase the range at the right side
+                    } else {
+                        self.endDate = date
+                    }
+                // When tapping a single selected date, deselect everything
+                } else if date == firstDate {
+                    self.firstDate = nil
+                    self.endDate = nil
+                // When selecting a second date
+                } else {
+                    self.firstDate = min(firstDate, date)
+                    endDate = max(firstDate, date)
+                }
+            // When selecting the first date
+            } else {
+                firstDate = date
+            }
+        // Monthly calendar only selects a single date
         } else {
             firstDate = date
-            didSelect?(date, nil)
+        }
+
+        didSelect?(firstDate, endDate)
+        UIView.performWithoutAnimation {
+            calendar.reloadItems(at: calendar.indexPathsForVisibleItems)
         }
 
         configure(cell: cell, with: cellState)
