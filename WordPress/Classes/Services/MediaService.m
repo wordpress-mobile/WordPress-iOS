@@ -577,6 +577,16 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {    
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
+    
+    /// Temporary logging to try and narrow down an issue:
+    ///
+    /// REF: https://github.com/wordpress-mobile/WordPress-iOS/issues/15335
+    ///
+    if (blog == nil || blog.objectID == nil) {
+        DDLogError(@"🔴 Error: missing object ID (please contact @diegoreymendez with this log)");
+        DDLogError(@"%@", [NSThread callStackSymbols]);
+    }
+    
     [self.managedObjectContext performBlock:^{
         NSError *error = nil;
         Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];

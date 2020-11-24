@@ -364,6 +364,9 @@
    Title for the activity list */
 "Activity" = "Activity";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Activity Log";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "log กิจกรรม";
 
@@ -627,9 +630,6 @@
 "An unknown error occurred. Please try again." = "An unknown error occurred. Please try again.";
 
 /* No comment provided by engineer. */
-"Angle" = "Angle";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Annotations Sidebar";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +658,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "อนุมัติ";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -1044,7 +1045,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Catch up with your favorite sites and join the conversation anywhere, any time.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "หมวดหมู่";
 
 /* Category menu item in share extension.
@@ -1116,7 +1118,8 @@
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Check your network connection and try again.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1158,6 +1161,9 @@
 /* Label for Publish time picker */
 "Choose a time" = "Choose a time";
 
+/* Shortened version of the main title to be used in back navigation */
+"Choose design" = "Choose design";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Choose domain";
 
@@ -1178,6 +1184,9 @@
 
 /* No comment provided by engineer. */
 "Choose images" = "Choose images";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Choose layout";
 
 /* No comment provided by engineer. */
 "Choose video" = "Choose video";
@@ -1811,6 +1820,9 @@
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Deleting...";
 
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Deny";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2024,6 +2036,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2352,8 +2365,14 @@
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Failed to serialize request to the REST API.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2961,7 +2980,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "J.K. Rowling";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +2990,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "การตั้งค่า Jetpack";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack could not be installed at this time.";
@@ -3231,6 +3254,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "Log in to your WordPress.com account with your email address.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Log out of WordPress?";
 
@@ -3266,7 +3292,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "จัดการ";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Manage Connection";
 
@@ -3559,6 +3586,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "New item";
+
+/* Placeholder text for password field */
+"New password" = "New password";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "New posts";
@@ -4014,6 +4044,10 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Page Restored to Scheduled";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Page Settings";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Page break block. %s";
 
@@ -4391,7 +4425,7 @@ translators: sample content for \"Services\" page template */
 /* Displays the Post Preview Interface
    Section title for related posts section preview
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a static content. */
 "Preview" = "ดูก่อน";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -5019,8 +5053,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Secure text";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Security";
 
 /* Button in Plugin Directory letting users see more plugins */
@@ -5205,9 +5238,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Setting up theme";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "ตั้งค่า";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5376,6 +5409,9 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
 
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Site Settings";
+
 /* Default title for a site
    Label for site title blog setting
    Site info. Title
@@ -5427,7 +5463,8 @@ translators: sample content for \"Services\" page template */
 "Size" = "ขนาด";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "ข้าม";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */

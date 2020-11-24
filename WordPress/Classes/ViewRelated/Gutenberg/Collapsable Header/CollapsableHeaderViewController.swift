@@ -1,18 +1,28 @@
 import UIKit
+import WordPressUI
 
 class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     enum SeperatorStyle {
         case visibile
+        case automatic
         case hidden
     }
 
     let scrollableView: UIScrollView
+    let accessoryView: UIView?
     let mainTitle: String
     let prompt: String
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
-    private let seperatorStyle: SeperatorStyle
+    open var accessoryBarHeight: CGFloat {
+        return 44
+    }
+
+    open var seperatorStyle: SeperatorStyle {
+        return self.hasAccessoryBar ? .visibile : .automatic
+    }
+
     private let hasDefaultAction: Bool
 
     @IBOutlet weak var containerView: UIView!
@@ -24,10 +34,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         title.isHidden = true
         return title
     }()
+    @IBOutlet weak var largeTitleTopSpacingConstraint: NSLayoutConstraint!
     @IBOutlet weak var largeTitleView: UILabel!
     @IBOutlet weak var promptView: UILabel!
-    @IBOutlet weak var filterBar: CollapsableHeaderFilterBar!
-    @IBOutlet weak var filterBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var accessoryBar: UIView!
+    @IBOutlet weak var accessoryBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
@@ -70,9 +81,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    private let hasFilterBar: Bool
-    private var shouldHideFilterBar: Bool {
-        return isShowingNoResults || !hasFilterBar
+    private let hasAccessoryBar: Bool
+    private var shouldHideAccessoryBar: Bool {
+        return isShowingNoResults || !hasAccessoryBar
     }
 
     private var shouldUseCompactLayout: Bool {
@@ -148,7 +159,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     ///   - primaryActionTitle: The button title for the right most button when an item is selected. Required.
     ///   - secondaryActionTitle: The button title for the left most button when an item is selected. Optional - nil results in the left most button being hidden when an item is selected.
     ///   - defaultActionTitle: The button title for the button that is displayed when no item is selected. Optional - nil results in the footer being hidden when no item is selected.
-    ///   - hasFilterBar: Determines if the filter bar should be shown or not. Optional - The default is shown.
+    ///   - accessoryView: The view to be placed in the placeholder of the accessory bar. Optional - The default is nil.
     ///
     init(scrollableView: UIScrollView,
          mainTitle: String,
@@ -156,16 +167,16 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
          defaultActionTitle: String? = nil,
-         hasFilterBar: Bool = true) {
+         accessoryView: UIView? = nil) {
         self.scrollableView = scrollableView
         self.mainTitle = mainTitle
         self.prompt = prompt
         self.primaryActionTitle = primaryActionTitle
         self.secondaryActionTitle = secondaryActionTitle
         self.defaultActionTitle = defaultActionTitle
-        self.hasFilterBar = hasFilterBar
+        self.hasAccessoryBar = (accessoryView != nil)
         self.hasDefaultAction = (defaultActionTitle != nil)
-        self.seperatorStyle = hasFilterBar ? .visibile : .hidden
+        self.accessoryView = accessoryView
         super.init(nibName: "\(CollapsableHeaderViewController.self)", bundle: .main)
     }
 
@@ -176,6 +187,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         insertChildView()
+        insertAccessoryView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
         toggleFilterBarConstraints()
@@ -190,6 +202,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         formatNavigationController()
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
+        updateSeperatorStyle()
     }
 
     /// The estimated content size of the scroll view. This is used to adjust the content insests to allow the header to be scrollable to be collapsable still when
@@ -227,9 +240,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillTransition(to: size, with: coordinator)
 
         guard isShowingNoResults else { return }
-        coordinator.animate { (_) in
+        coordinator.animate(alongsideTransition: nil) { (_) in
             self.updateHeaderDisplay()
-            if self.shouldHideFilterBar {
+            if self.shouldHideAccessoryBar {
                 self.disableInitialLayoutHelpers()
                 self.snapToHeight(self.scrollableView, height: self.minHeaderHeight, animated: false)
             }
@@ -247,6 +260,10 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             layoutHeaderInsets()
+
+            // This helps reset the header changes after a rotation.
+            scrollViewDidScroll(scrollableView)
+            scrollViewDidEndDecelerating(scrollableView)
         }
     }
 
@@ -346,12 +363,23 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func insertChildView() {
         scrollableView.translatesAutoresizingMaskIntoConstraints = false
         scrollableView.clipsToBounds = false
-        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 1)
-        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 1)
-        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 1)
-        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 1)
+        let top = NSLayoutConstraint(item: scrollableView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: scrollableView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: scrollableView, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: scrollableView, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 0)
         containerView.addSubview(scrollableView)
         containerView.addConstraints([top, bottom, leading, trailing])
+    }
+
+    private func insertAccessoryView() {
+        guard let accessoryView = accessoryView else { return }
+        accessoryView.translatesAutoresizingMaskIntoConstraints = false
+        let top = NSLayoutConstraint(item: accessoryView, attribute: .top, relatedBy: .equal, toItem: accessoryBar, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: accessoryView, attribute: .bottom, relatedBy: .equal, toItem: accessoryBar, attribute: .bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: accessoryView, attribute: .leading, relatedBy: .equal, toItem: accessoryBar, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: accessoryView, attribute: .trailing, relatedBy: .equal, toItem: accessoryBar, attribute: .trailing, multiplier: 1, constant: 0)
+        accessoryBar.addSubview(accessoryView)
+        accessoryBar.addConstraints([top, bottom, leading, trailing])
     }
 
     private func styleButtons() {
@@ -376,31 +404,33 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Header and Footer Sizing
     private func toggleFilterBarConstraints() {
-        filterBarHeightConstraint.constant = shouldHideFilterBar ? 0 : 44
-        maxHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 24
-        minHeaderBottomSpacing.constant = shouldHideFilterBar ? 1 : 9
+        accessoryBarHeightConstraint.constant = shouldHideAccessoryBar ? 0 : accessoryBarHeight
+        let collapseBottomSpacing = shouldHideAccessoryBar || (seperatorStyle == .hidden)
+        maxHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 24
+        minHeaderBottomSpacing.constant = collapseBottomSpacing ? 1 : 9
     }
 
     private func updateHeaderDisplay() {
         headerHeightConstraint.isActive = false
         initialHeaderTopConstraint.isActive = true
         toggleFilterBarConstraints()
-        filterBar.layoutIfNeeded()
+        accessoryBar.layoutIfNeeded()
         headerView.layoutIfNeeded()
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
     }
 
     private func calculateHeaderSnapPoints() {
-        if shouldHideFilterBar {
+        let accessoryBarSpacing: CGFloat
+        if shouldHideAccessoryBar {
             minHeaderHeight = 1
-            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + minHeaderHeight
-            _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+            accessoryBarSpacing = minHeaderHeight
         } else {
-            minHeaderHeight = filterBarHeightConstraint.constant + minHeaderBottomSpacing.constant
-            _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + filterBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
-            _maxHeaderHeight = largeTitleView.frame.height + _midHeaderHeight
+            minHeaderHeight = accessoryBarHeightConstraint.constant + minHeaderBottomSpacing.constant
+            accessoryBarSpacing = accessoryBarHeightConstraint.constant + maxHeaderBottomSpacing.constant
         }
+        _midHeaderHeight = titleToSubtitleSpacing.constant + promptView.frame.height + subtitleToCategoryBarSpacing.constant + accessoryBarSpacing
+        _maxHeaderHeight = largeTitleTopSpacingConstraint.constant + largeTitleView.frame.height + _midHeaderHeight
     }
 
     private func layoutHeaderInsets() {
@@ -446,6 +476,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         calculateHeaderSnapPoints()
         layoutHeaderInsets()
+        updateTitleViewVisibility(false)
     }
 
     // MARK: - Subclass callbacks
@@ -473,9 +504,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         hideNoResults()
     }
 
+    /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
+    /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
+    private var stashedOffset: CGPoint? = nil
+
     /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
     /// view to still be scrollable with the content size is less than the total space of the expanded screen.
     public func contentSizeWillChange() {
+        stashedOffset = scrollableView.contentOffset
         updateFooterInsets()
     }
 
@@ -509,24 +545,19 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    /// A public interface to notify the container that the content view is loading content still
-    public func loadingStateChanged(_ isLoading: Bool) {
-        filterBar.shouldShowGhostContent = isLoading
-        filterBar.allowsMultipleSelection = !isLoading
-        filterBar.reloadData()
-    }
-
     // MARK: - Seperator styling
     private func updateSeperatorStyle(animated: Bool = true) {
         let shouldBeHidden: Bool
         switch seperatorStyle {
-        case .hidden:
-            shouldBeHidden = seperator.frame.minY > minHeaderHeight
+        case .automatic:
+            shouldBeHidden = headerHeightConstraint.constant > minHeaderHeight && !shouldUseCompactLayout
         case .visibile:
             shouldBeHidden = false
+        case .hidden:
+            shouldBeHidden = true
         }
 
-        seperator.updateVisibility(shouldBeHidden, animated: animated)
+        seperator.animatableSetIsHidden(shouldBeHidden, animated: animated)
     }
 }
 
@@ -540,14 +571,21 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !shouldUseCompactLayout,
-              !isShowingNoResults else {
-            titleView.updateVisibility(false, animated: true)
-            return
-        }
-        disableInitialLayoutHelpers()
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        /// Clear the stashed offset because the user has initiated a change
+        stashedOffset = nil
+    }
 
+    /// Restores the stashed content offset if it appears as if it's been reset.
+    private func restorContentOffsetIfNeeded(_ scrollView: UIScrollView) {
+        guard let stashedOffset = stashedOffset else { return }
+        if scrollView.contentOffset.y == 0 { // Offset has probably been reset
+            scrollView.contentOffset = stashedOffset
+        }
+        self.stashedOffset = nil
+    }
+
+    private func resizeHeaderIfNeeded(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset.y + topInset
         let newHeaderViewHeight = maxHeaderHeight - scrollOffset
 
@@ -556,9 +594,25 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         } else {
             headerHeightConstraint.constant = newHeaderViewHeight
         }
+    }
 
-        let shouldHide = (largeTitleView.frame.maxY > 0)
-        titleView.updateVisibility(shouldHide, animated: true)
+    fileprivate func updateTitleViewVisibility(_ animated: Bool = true) {
+        let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
+        titleView.animatableSetIsHidden(shouldHide, animated: animated)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        restorContentOffsetIfNeeded(scrollView)
+
+        guard !shouldUseCompactLayout,
+              !isShowingNoResults else {
+            updateTitleViewVisibility(true)
+            updateSeperatorStyle()
+            return
+        }
+        disableInitialLayoutHelpers()
+        resizeHeaderIfNeeded(scrollView)
+        updateTitleViewVisibility()
         updateSeperatorStyle()
     }
 
@@ -587,37 +641,17 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {
         scrollView.contentOffset.y = maxHeaderHeight - height - topInset
         headerHeightConstraint.constant = height
-        let shouldHide = (height >= maxHeaderHeight) && !shouldUseCompactLayout
-        titleView.updateVisibility(shouldHide, animated: animated)
+        updateTitleViewVisibility(animated)
+        updateSeperatorStyle(animated: animated)
 
         guard animated else {
             headerView.setNeedsLayout()
             headerView.layoutIfNeeded()
-            updateSeperatorStyle()
             return
         }
-        updateSeperatorStyle()
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
-    }
-}
-
-fileprivate extension UIView {
-    func updateVisibility(_ isHidden: Bool, animated: Bool = true) {
-        guard self.isHidden != isHidden else { return }
-        guard animated else {
-            self.isHidden = isHidden
-            return
-        }
-
-        self.isHidden = false
-        let alpha: CGFloat = isHidden ? 0 : 1
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            self.alpha = alpha
-        }) { (_) in
-            self.isHidden = isHidden
-        }
     }
 }
