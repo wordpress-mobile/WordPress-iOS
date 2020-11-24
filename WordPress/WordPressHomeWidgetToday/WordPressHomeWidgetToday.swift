@@ -80,11 +80,56 @@ private extension Provider {
     }
 }
 
+struct SiteListProvider: IntentTimelineProvider {
+    
+    struct SiteDetailEntry: TimelineEntry {
+        var date: Date
+        var name: String
+    }
+    
+    func placeholder(in context: Context) -> SiteDetailEntry {
+        SiteDetailEntry(date: Date(), name: "Ahoi")
+    }
+    
+    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (SiteDetailEntry) -> Void) {
+        completion(SiteDetailEntry(date: Date(), name: "Ahoi"))
+    }
+    
+    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<SiteDetailEntry>) -> Void) {
+        
+        // Access the customized properties of the intent.
+        let sites = [
+            SiteDetailEntry(date: Date(), name: "Antonio"),
+            SiteDetailEntry(date: Date(), name: "Ruben"),
+        ]
+
+        // Create the timeline and call the completion handler. The .never reload
+        // policy indicates that the containing app will use WidgetCenter methods
+        // to reload the widget's timeline when the details change.
+        let timeline = Timeline(entries: sites, policy: .never)
+        completion(timeline)
+    }
+}
+
 
 @main
 struct WordPressHomeWidgetToday: Widget {
     private let kind: String = "WordPressHomeWidgetToday"
 
+    var body: some WidgetConfiguration {
+        IntentConfiguration(
+            kind: kind,
+            intent: SelectSiteIntent.self,
+            provider: SiteListProvider()
+        ) { entry in
+            TodayWidgetView(content: Provider.Constants.staticContent)
+        }
+        .configurationDisplayName("Today")
+        .description("Stay up to date with today's activity on your WordPress site.")
+        .supportedFamilies([.systemSmall, .systemMedium])
+    }
+    
+    /*
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             TodayWidgetView(content: entry)
@@ -93,4 +138,5 @@ struct WordPressHomeWidgetToday: Widget {
         .description("Stay up to date with today's activity on your WordPress site.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
+ */
 }
