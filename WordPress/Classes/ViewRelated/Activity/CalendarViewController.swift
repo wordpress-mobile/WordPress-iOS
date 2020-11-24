@@ -5,27 +5,7 @@ protocol CalendarViewControllerDelegate: class {
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?)
 }
 
-class CalendarViewController: UINavigationController {
-    init(delegate: CalendarViewControllerDelegate?) {
-        let yearCalendarViewController = YearCalendarViewController()
-        yearCalendarViewController.delegate = delegate
-        super.init(rootViewController: yearCalendarViewController)
-    }
-
-    init() {
-        super.init(rootViewController: YearCalendarViewController())
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-}
-
-class YearCalendarViewController: UIViewController {
+class CalendarViewController: UIViewController {
 
     private var calendarCollectionView: CalendarCollectionView!
     private var startDateLabel: UILabel!
@@ -184,18 +164,10 @@ class YearCalendarViewController: UIViewController {
     }
 
     @objc private func done() {
-        guard let calendar = navigationController as? CalendarViewController else {
-            return
-        }
-
-        delegate?.didSelect(calendar: calendar, startDate: startDate, endDate: endDate)
+        delegate?.didSelect(calendar: self, startDate: startDate, endDate: endDate)
     }
 
     @objc private func cancel() {
-        guard let calendar = navigationController as? CalendarViewController else {
-            return
-        }
-
-        delegate?.didCancel(calendar: calendar)
+        delegate?.didCancel(calendar: self)
     }
 }

@@ -73,8 +73,10 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let vc = CalendarViewController(delegate: self)
-        present(vc, animated: true, completion: nil)
+        let calendarViewController = CalendarViewController()
+        calendarViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: calendarViewController)
+        present(navigationController, animated: true, completion: nil)
     }
 
     override func viewDidLoad() {
