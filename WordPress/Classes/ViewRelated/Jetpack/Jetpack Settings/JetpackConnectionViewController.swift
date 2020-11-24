@@ -84,11 +84,13 @@ open class JetpackConnectionViewController: UITableViewController {
                                                           handler: { action in
                                                               self.disconnectJetpack()
                                                           })
+            WPAnalytics.trackEvent(.jetpackDisconnectTapped)
             self.present(alertController, animated: true)
         }
     }
 
     @objc func disconnectJetpack() {
+        WPAnalytics.trackEvent(.jetpackDisconnectRequested)
         self.service.disconnectJetpackFromBlog(self.blog,
                                                success: { [weak self] in
                                                    if let blog = self?.blog {

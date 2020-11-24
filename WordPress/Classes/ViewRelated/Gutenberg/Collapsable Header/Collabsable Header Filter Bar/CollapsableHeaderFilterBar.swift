@@ -11,17 +11,36 @@ class CollapsableHeaderFilterBar: UICollectionView {
     var filterDelegate: CollapsableHeaderFilterBarDelegate?
     private let defaultCellHeight: CGFloat = 44
     private let defaultCellWidth: CGFloat = 105
+
     var shouldShowGhostContent: Bool = false {
         didSet {
             reloadData()
         }
     }
 
+    init() {
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        collectionViewLayout.minimumInteritemSpacing = 12
+        collectionViewLayout.minimumLineSpacing = 10
+        collectionViewLayout.scrollDirection = .horizontal
+        super.init(frame: .zero, collectionViewLayout: collectionViewLayout)
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
+        commonInit()
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        commonInit()
+    }
+
+    private func commonInit() {
         register(CollabsableHeaderFilterCollectionViewCell.nib, forCellWithReuseIdentifier: CollabsableHeaderFilterCollectionViewCell.cellReuseIdentifier)
         self.delegate = self
         self.dataSource = self
+        self.backgroundColor = .clear
+        self.isOpaque = false
     }
 
     private func deselectItem(_ indexPath: IndexPath) {

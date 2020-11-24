@@ -42,7 +42,12 @@ final class SiteCreationWizardLauncher {
         }
 
         if FeatureFlag.siteCreationHomePagePicker.enabled {
-            wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+            if #available(iOS 13.0, *) {
+                wizardContent.modalPresentationStyle = .pageSheet
+            } else {
+                // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+                wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+            }
         } else {
             wizardContent.modalPresentationStyle = .fullScreen
         }

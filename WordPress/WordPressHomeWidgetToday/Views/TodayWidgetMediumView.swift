@@ -1,7 +1,7 @@
  import SwiftUI
 
  struct TodayWidgetMediumView: View {
-    let content: TodayWidgetContent
+    let content: HomeWidgetTodayData
     let widgetTitle: LocalizedStringKey
     let viewsTitle: LocalizedStringKey
     let visitorsTitle: LocalizedStringKey
@@ -12,7 +12,7 @@
         VStack(alignment: .leading) {
             FlexibleCard(axis: .horizontal,
                          title: widgetTitle,
-                         value: content.siteTitle)
+                         value: content.siteName)
             Spacer()
             HStack {
                 makeColumn(upperTitle: viewsTitle,
