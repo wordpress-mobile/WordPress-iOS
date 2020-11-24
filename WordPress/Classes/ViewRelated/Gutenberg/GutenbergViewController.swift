@@ -875,14 +875,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController {
 
     private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = post.blog.dotComID, let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
+        guard let siteID = post.blog.dotComID else {
             callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
             return
-        }
-
-        switch type {
-        case .mention:
-            guard SuggestionService.shared.shouldShowSuggestions(for: blog) else { return }
         }
 
         previousFirstResponder = view.findFirstResponder()
@@ -955,7 +950,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            .mentions: post.blog.isAccessibleThroughWPCom() && FeatureFlag.gutenbergMentions.enabled,
+            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,

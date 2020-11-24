@@ -1,5 +1,6 @@
 16.3
 -----
+* [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
  
 16.2
 -----
