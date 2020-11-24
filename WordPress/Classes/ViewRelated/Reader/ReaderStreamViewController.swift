@@ -531,13 +531,11 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        if FeatureFlag.newReaderNavigation.enabled {
-            headerWidthConstraint.priority = UILayoutPriority(999)
-        }
+        headerWidthConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             centerConstraint,
@@ -750,15 +748,7 @@ import WordPressFlux
     }
 
     private func showFollowing() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().switchToFollowedSites()
-            return
-        }
-        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
-            return
-        }
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: true)
+        WPTabBarController.sharedInstance().switchToFollowedSites()
     }
 
     // MARK: - Blocking
