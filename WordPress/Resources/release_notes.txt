@@ -1,3 +1,5 @@
-- Choose from a variety of predesigned page templates when you create a new page on a Gutenberg-enabled site.
-- Create posts and pages right from the posts and pages list with the ever-present action button.
-- Fixed an issue that caused refresh control to appear on top of the list of sites.
+All About Jetpack: Access all of your Jetpack features quickly and easily, including your stats, activity log, and settings.
+
+Getting Help & Support: We fixed a few issues that occurred if you tried to contact our support team. When contacting us, you can now include non-alpha characters, and your app will no longer crash when entering your email address.
+
+Reader Updates: We also fixed a display issue in the Reader, and comments are no longer italicized by default.
