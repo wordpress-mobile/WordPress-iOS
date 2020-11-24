@@ -140,7 +140,7 @@ final class AssembledSiteView: UIView {
         self.initialSiteRequest = siteRequest
 
         generator.prepare()
-
+        webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(siteRequest)
     }
 
