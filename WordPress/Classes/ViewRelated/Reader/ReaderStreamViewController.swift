@@ -132,8 +132,7 @@ import WordPressFlux
     }
 
     private var isLoadingDiscover: Bool {
-        return FeatureFlag.newReaderNavigation.enabled &&
-            readerTopic == nil &&
+        return readerTopic == nil &&
             contentType == .topic &&
             siteID == ReaderHelpers.discoverSiteID
     }
@@ -198,7 +197,7 @@ import WordPressFlux
     ///
     @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
         // if a default discover topic is provided, treat it as a site to retrieve the header
-        if ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.newReaderNavigation.enabled {
+        if ReaderHelpers.topicIsDiscover(topic) {
             return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
         }
 
@@ -572,8 +571,9 @@ import WordPressFlux
             // need to refresh.
             tableViewController.refreshControl = nil
         }
+
         // saved posts are local so do not need a pull to refresh
-        if FeatureFlag.newReaderNavigation.enabled, contentType == .saved {
+        if contentType == .saved {
             tableViewController.refreshControl = nil
         }
 
@@ -1874,9 +1874,6 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 private extension ReaderStreamViewController {
 
     var shouldDisplayNoTopicController: Bool {
-        guard FeatureFlag.newReaderNavigation.enabled else {
-            return false
-        }
         switch contentType {
         case .selfHostedFollowing:
             displaySelfHostedFollowingController()
