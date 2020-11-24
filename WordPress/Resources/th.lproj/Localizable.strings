@@ -2636,7 +2636,7 @@ translators: sample content for \"Team\" page template */
 "Great!\n We love to hear from happy users \n😁" = "";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "เยี่ยมมาก! คุณจะช่วยเขียนรีวิวดี ๆ ให้เราได้หรือไม่?\n\n\nมันจะช่วยเราได้มาก";
+"Great! Could you leave us a nice review?\n\nIt really helps." = "Great! Could you leave us a nice review?\n\nIt really helps.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */

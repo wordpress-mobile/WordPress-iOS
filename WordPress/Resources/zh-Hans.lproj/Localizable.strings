@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-19 08:54:07+0000 */
+/* Translation-Revision-Date: 2020-11-24 20:47:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -188,7 +188,7 @@
 "%li words, %li characters" = "%1$l 个字词，%2$l 个字符";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s block options";
+"%s block options" = "%s区块选项";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 区块。空白";
@@ -322,7 +322,7 @@
 "About Me" = "关于我";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "About WordPress for iOS";
+"About WordPress for iOS" = "关于 WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -331,7 +331,7 @@
 "Account" = "帐户";
 
 /* Header for account details, shown after signing up. */
-"Account Details" = "Account Details";
+"Account Details" = "帐户详细信息";
 
 /* Accessibility description for account information after logging in. */
 "Account Information. %@. %@." = "帐户信息。%1$@。%2$@。";
@@ -438,7 +438,7 @@
 "Add a shortcode…" = "添加短代码…";
 
 /* No Tags View Button Label */
-"Add a site" = "Add a site";
+"Add a site" = "添加站点";
 
 /* No Topics View Button Label */
 "Add a topic" = "添加主题";
@@ -578,7 +578,7 @@
 "Alternatively:" = "其他方式：";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
-"Always Send Crash Logs" = "Always Send Crash Logs";
+"Always Send Crash Logs" = "始终发送崩溃日志";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "必须连接互联网";
@@ -640,7 +640,7 @@
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
-"App Icon" = "App Icon";
+"App Icon" = "App 图标";
 
 /* App Settings Title
    Link to App Settings section
@@ -863,13 +863,13 @@
 "Block This Site" = "阻止此站点";
 
 /* translators: displayed right after the block is copied. */
-"Block copied" = "Block copied";
+"Block copied" = "区块已拷贝";
 
 /* translators: displayed right after the block is cut. */
-"Block cut" = "Block cut";
+"Block cut" = "区块已剪切";
 
 /* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Block duplicated";
+"Block duplicated" = "区块已复制";
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "已启用区块编辑器";
@@ -878,13 +878,13 @@
 "Block malicious login attempts" = "阻止恶意登录尝试";
 
 /* translators: displayed right after the block is pasted. */
-"Block pasted" = "Block pasted";
+"Block pasted" = "区块已粘贴";
 
 /* translators: displayed right after the block is removed. */
 "Block removed" = "区块已删除";
 
 /* No comment provided by engineer. */
-"Block settings" = "Block settings";
+"Block settings" = "区块设置";
 
 /* Opens the WordPress Mobile Blog
    translators: title for \"Blog\" page template */
@@ -1029,7 +1029,7 @@
 "Cancel sharing" = "取消共享";
 
 /* The action was canceled */
-"Canceled" = "Canceled";
+"Canceled" = "已取消";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消...";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "选择时间";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "选择设计";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "选择域";
@@ -1186,7 +1186,7 @@
 "Choose images" = "选择图片";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "选择布局";
 
 /* No comment provided by engineer. */
 "Choose video" = "选择视频";
@@ -1243,7 +1243,7 @@
 "Close Commenting" = "关闭评论";
 
 /* Accessibility label for button that closes the media picker on formatting toolbar */
-"Close Media Picker" = "Close Media Picker";
+"Close Media Picker" = "关闭媒体选择器";
 
 /* Close comments after a given number of days */
 "Close after" = "在指定天数后关闭";
@@ -1439,7 +1439,7 @@
 
 /* Message to show when Publicize authorization is canceled
    Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Connection canceled";
+"Connection canceled" = "连接已取消";
 
 /* Message to show when Publicize authorization failed
    Message to show when Publicize connect failed */
@@ -1488,10 +1488,10 @@
 "Continue reading" = "继续阅读";
 
 /* Button title. Tapping begins log in using Apple. */
-"Continue with Apple" = "Continue with Apple";
+"Continue with Apple" = "继续使用 Apple";
 
 /* Button title. Tapping begins log in using Google. */
-"Continue with Google" = "Continue with Google";
+"Continue with Google" = "继续使用 Google";
 
 /* Button title. Takes the user to the login by email flow.
    Button title. Tapping begins our normal log in process. */
@@ -1614,7 +1614,7 @@
 
 /* Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
-"Create Page" = "Create Page";
+"Create Page" = "创建页面";
 
 /* Button title, encourages users to create post on their blog.
    Label for action to create a new post. */
@@ -1637,10 +1637,10 @@
 "Create a Tag" = "创建标签";
 
 /* Title of a Quick Start Tour */
-"Create a new page" = "Create a new page";
+"Create a new page" = "创建新页面";
 
 /* Title for a button that when tapped starts the site creation process */
-"Create a new site" = "Create a new site";
+"Create a new site" = "创建新站点";
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "为您的业务、杂志或个人博客创建新站点；或连接现有的 WordPress 站点。";
@@ -1661,7 +1661,7 @@
 "Creates a new site with the given information." = "使用给定的信息创建新站点。";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "创建新文章或页面";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "创建文章、页面或故事";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "正在删除...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "拒绝";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2078,7 +2078,7 @@
 "Edit using web editor" = "使用 Web 编辑器进行编辑";
 
 /* No comment provided by engineer. */
-"Edit video" = "Edit video";
+"Edit video" = "编辑视频";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
@@ -2087,7 +2087,7 @@
 "Editor" = "编辑器";
 
 /* Edit Action Spoken hint. */
-"Edits a comment" = "Edits a comment";
+"Edits a comment" = "编辑评论";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
 "Edits the comment." = "编辑该评论。";
@@ -2153,7 +2153,7 @@
 "Enable site notifications?" = "是否启用站点通知？";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
-"Encrypted Logs" = "Encrypted Logs";
+"Encrypted Logs" = "已加密日志";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "进入全屏";
@@ -2926,7 +2926,7 @@ translators: sample content for \"Team\" page template */
 "Installing Jetpack" = "正在安装 Jetpack";
 
 /* The Jetpack view message used while the state is installing */
-"Installing Jetpack on your site. This can take up to a few minutes to complete." = "Installing Jetpack on your site. This can take up to a few minutes to complete.";
+"Installing Jetpack on your site. This can take up to a few minutes to complete." = "我们需要几分钟时间在您的网站上安装Jetpack。";
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "在站点上安装第一个插件最多需要 1 分钟。在此期间，您将无法更改自己的站点。";
@@ -2989,16 +2989,16 @@ translators: sample content for \"Team\" page template */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "需要安装 Jetpack %@ 或更高版本。要更新 Jetpack 吗？";
 
 /* Title of the button which opens the Jetpack FAQ page. */
-"Jetpack FAQ" = "Jetpack FAQ";
+"Jetpack FAQ" = "Jetpack 常见问答";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
+"Jetpack Settings" = "Jetpack设置";
 
 /* The default Jetpack view message used when an error occurred */
-"Jetpack could not be installed at this time." = "Jetpack could not be installed at this time.";
+"Jetpack could not be installed at this time." = "当前无法安装Jetpack";
 
 /* The Jetpack view title for the success state */
-"Jetpack installed" = "Jetpack installed";
+"Jetpack installed" = "Jetpack 安装成功";
 
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack 将优化您的图片，并通过距离访客最近的服务器位置提供。使用我们的全球内容交付网络将大大提升站点的加载速度。";
@@ -3255,7 +3255,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "使用您的电子邮件地址登录 WordPress.com 帐户。";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "使用您的 WordPress.com 用户名和密码登录。";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "注销 WordPress？";
@@ -3349,7 +3349,7 @@ translators: sample content for \"Services\" page template */
 "Media" = "媒体";
 
 /* Label for size of media cache in the app. */
-"Media Cache Size" = "Media Cache Size";
+"Media Cache Size" = "媒体缓存大小";
 
 /* Title for alert when access to media capture is not granted */
 "Media Capture" = "媒体拍摄";
@@ -3375,7 +3375,7 @@ translators: sample content for \"Services\" page template */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒体文件 (%1$@) 过大，无法上传。大小上限为 %2$@";
 
 /* Alert title when there is issues loading an asset to preview. */
-"Media preview failed." = "Media preview failed.";
+"Media preview failed." = "媒体预览加载失败。";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "已上传媒体（%ld 个文件）";
@@ -3588,7 +3588,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "新建项目";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "新密码";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "新文章";
@@ -3937,7 +3937,7 @@ translators: sample content for \"Services\" page template */
 "Open Block Actions Menu" = "打开区块操作菜单";
 
 /* Opens iOS's Device Settings for WordPress App */
-"Open Device Settings" = "Open Device Settings";
+"Open Device Settings" = "打开设备设置";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4046,7 +4046,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "页面设置";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分页符区块。%s";
@@ -4101,7 +4101,7 @@ translators: sample content for \"Services\" page template */
 "Password" = "密码";
 
 /* Password field placeholder text */
-"Password (optional)" = "Password (optional)";
+"Password (optional)" = "密码 (可选)";
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "密码修改成功";
@@ -4336,7 +4336,7 @@ translators: sample content for \"Services\" page template */
 "Post by %@, from %@" = "作者：%1$@，来源：%2$@";
 
 /* The footer text appears within the footer displaying when the post has been created. */
-"Post created on %@" = "Post created on %@";
+"Post created on %@" = "文章创建日期：%@";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post draft uploaded" = "文章草稿已上传";
@@ -4530,7 +4530,7 @@ translators: sample content for \"Services\" page template */
 
 /* Label for Publish date
    Label for the publish date button. */
-"Publish Date" = "Publish Date";
+"Publish Date" = "发布日期";
 
 /* A short phrase indicating a post is due to be immedately published.
    Label for a button that moves a page to the published folder, publishing with the current date/time. */
@@ -4539,7 +4539,7 @@ translators: sample content for \"Services\" page template */
 /* Label for a button that publishes the post
    Label for an option that moves a publishes a post immediately
    Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publish Now";
+"Publish Now" = "立即发布";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "发布文章";
@@ -4707,7 +4707,7 @@ translators: sample content for \"Services\" page template */
 
 /* Remove Person Alert Title
    Remove User. Verb */
-"Remove @%@" = "Remove @%@";
+"Remove @%@" = "删除 @%@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "移除推荐图片";
@@ -4831,7 +4831,7 @@ translators: sample content for \"Services\" page template */
 "Reset filter" = "重置过滤器";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
-"Reset your password" = "Reset your password";
+"Reset your password" = "重置密码";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "调整大小和裁剪";
@@ -4937,7 +4937,7 @@ translators: sample content for \"Services\" page template */
 
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
-"Save as Draft" = "Save as Draft";
+"Save as Draft" = "保存为草稿";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "在以下网站上保存草稿文章：";
@@ -5186,13 +5186,13 @@ translators: sample content for \"Services\" page template */
 "Send Link by Email" = "通过电子邮件发送链接";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
-"Send Log Message" = "Send Log Message";
+"Send Log Message" = "发送日志信息";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "发送 Pingback";
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
-"Send Test Crash" = "Send Test Crash";
+"Send Test Crash" = "发送测试崩溃";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "通过电子邮件发送通知";
@@ -5207,7 +5207,7 @@ translators: sample content for \"Services\" page template */
 "Service" = "服务";
 
 /* translators: title for \"Services\" page template */
-"Services" = "Services";
+"Services" = "服务";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "设置特色图像";
@@ -5232,7 +5232,7 @@ translators: sample content for \"Services\" page template */
 "Set up Jetpack" = "设置 Jetpack";
 
 /* Title of a Quick Start Tour */
-"Set your site title" = "Set your site title";
+"Set your site title" = "设置您的站点标题";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "正在设置主题";
@@ -5312,7 +5312,7 @@ translators: sample content for \"Services\" page template */
 "Show password" = "显示密码";
 
 /* No comment provided by engineer. */
-"Show post content" = "Show post content";
+"Show post content" = "显示文章内容";
 
 /* translators: Checkbox toggle label */
 "Show section" = "显示分区";
@@ -5372,7 +5372,7 @@ translators: sample content for \"Services\" page template */
 "Sidebar title plugin" = "边栏标题插件";
 
 /* View title during the sign up process. */
-"Sign Up" = "Sign Up";
+"Sign Up" = "注册";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "注册";
@@ -5410,7 +5410,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "站点重定向";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "站点设置";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5441,7 +5441,7 @@ translators: sample content for \"Services\" page template */
 "Site not found" = "未找到站点";
 
 /* Create new Site Page button title */
-"Site page" = "Site page";
+"Site page" = "站点页面";
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "站点时区 (UTC%1$@%2$d%3$@)";
@@ -5518,7 +5518,7 @@ translators: sample content for \"Services\" page template */
 "Sorry, that email address is not allowed!" = "抱歉，这个 E-mail 地址不能使用！";
 
 /* This error message occurs when a user tries to create an account with a weak password. */
-"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols.";
+"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "抱歉，此密码不符合我们安全指引的要求。请选择一个最小长度为 6 位，混合大写、小写字母、数字和符号的密码。";
 
 /* No comment provided by engineer. */
 "Sorry, that site already exists!" = "抱歉，这个站点已经存在！";
@@ -5597,7 +5597,7 @@ translators: sample content for \"Services\" page template */
 "State" = "州\/省\/自治区\/直辖市";
 
 /* Name of setting configured when a site uses a static page as its homepage */
-"Static Homepage" = "Static Homepage";
+"Static Homepage" = "静态主页";
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
@@ -5709,10 +5709,10 @@ translators: sample content for \"Services\" page template */
 "Switch to Visual Preview" = "切换到可视预览";
 
 /* Switches from the classic editor to block editor. */
-"Switch to block editor" = "Switch to block editor";
+"Switch to block editor" = "切换到区块编辑器";
 
 /* Switches from Gutenberg mobile to the classic editor */
-"Switch to classic editor" = "Switch to classic editor";
+"Switch to classic editor" = "切换到经典编辑器";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "切换为标题 1 号字";
@@ -5789,7 +5789,7 @@ translators: sample content for \"Services\" page template */
 "Tap [bookmark-outline] to save a post to your list." = "轻点“[bookmark-outline]”以将文章保存到您的列表中。";
 
 /* Accessibility hint */
-"Tap for more detail." = "Tap for more detail.";
+"Tap for more detail." = "点按以获取更多细节。";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
@@ -6110,7 +6110,7 @@ translators: sample content for \"Services\" page template */
 "There was an error saving the username" = "保存用户名时出错";
 
 /* Updating Role failed error message */
-"There was an error updating @%@" = "There was an error updating @%@";
+"There was an error updating @%@" = "更新 @%@时出错";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "目前正在进行恢复，请稍等片刻再继续下一步";
@@ -6228,7 +6228,7 @@ translators: sample content for \"Services\" page template */
 "To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "要启用通知功能，请执行以下操作：\n\n1.打开 **iOS 设置**\n2.轻点**通知**\n3.选择 **WordPress**\n4.打开**允许接收通知**";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
-"To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.";
+"To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "为了在您的手机上获取来自您的WordPress网站的通知，您需要首先安装Jetpack插件。";
 
 /* Informational text for Report Crashes setting */
 "To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "为帮助我们提升应用程序的性能并修复偶发性错误，请启用自动发送崩溃报告功能。";
@@ -6249,7 +6249,7 @@ translators: sample content for \"Services\" page template */
 "To take photos or videos to use in your posts." = "拍摄要在文章内使用的照片或视频。";
 
 /* Message asking the user if they want to set up Jetpack from stats */
-"To use stats on your site, you'll need to install the Jetpack plugin." = "To use stats on your site, you'll need to install the Jetpack plugin.";
+"To use stats on your site, you'll need to install the Jetpack plugin." = "要在您的网站上使用“统计”功能，您需要安装Jetpack插件。";
 
 /* Insights 'Today' header
    Label for most recent stat row.
@@ -6269,7 +6269,7 @@ translators: sample content for \"Services\" page template */
 "Toggles the unordered list style" = "切换无序的列表样式";
 
 /* Title of the Tools section of the debug screen used in debug builds of the app */
-"Tools" = "Tools";
+"Tools" = "工具";
 
 /* Cell title for the Top Level option case */
 "Top level" = "最上级";
@@ -6290,13 +6290,13 @@ translators: sample content for \"Services\" page template */
 "Total" = "总计";
 
 /* 'This Year' label for total number of comments. */
-"Total Comments" = "Total Comments";
+"Total Comments" = "评论总数";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "电子邮件粉丝总数：%@";
 
 /* 'This Year' label for total number of likes. */
-"Total Likes" = "Total Likes";
+"Total Likes" = "总赞数";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "文章总数";
@@ -6305,7 +6305,7 @@ translators: sample content for \"Services\" page template */
 "Total WordPress.com Followers: %@" = "WordPress.com 粉丝总数：%@";
 
 /* 'This Year' label for total number of words. */
-"Total Words" = "Total Words";
+"Total Words" = "总字数";
 
 /* Title for the traffic section in site settings screen */
 "Traffic" = "浏览量";
@@ -6440,7 +6440,7 @@ translators: sample content for \"Services\" page template */
 "Unable to trash posts while offline. Please try again later." = "离线时无法将文章放入回收站。请稍后重试。";
 
 /* Error informing the user that their homepage settings could not be updated */
-"Unable to update homepage settings" = "Unable to update homepage settings";
+"Unable to update homepage settings" = "无法更新首页设置";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "无法更新套餐价格。提供的博客存在问题。";
@@ -6660,7 +6660,7 @@ translators: sample content for \"Services\" page template */
 "Use Current Location" = "使用当前位置";
 
 /* Option to enable the block editor for new posts */
-"Use block editor" = "Use block editor";
+"Use block editor" = "使用区块编辑器";
 
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
@@ -6836,7 +6836,7 @@ translators: sample content for \"Services\" page template */
 "Warning" = "警告";
 
 /* No comment provided by engineer. */
-"Warning Message" = "Warning Message";
+"Warning Message" = "警告信息";
 
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "实时观看世界各地的读者阅读您的站点以及与您的站点交互。";
@@ -6879,11 +6879,11 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed after the app fails to upload a page, it will attempt to upload it later.
    Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "We couldn't complete this action, but we'll try again later.";
+"We couldn't complete this action, but we'll try again later." = "我们无法完成此操作，但我们会稍后重试。";
 
 /* Text displayed after the app fails to upload a page, no new attempt will be made.
    Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "We couldn't complete this action.";
+"We couldn't complete this action." = "我们无法完成此操作。";
 
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "我们未找到任何与您输入的字词相关的可用地址 - 请重试。";
@@ -6901,7 +6901,7 @@ translators: sample content for \"Services\" page template */
 "We couldn't publish this private post, but we'll try again later." = "We couldn't publish this private post, but we'll try again later.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
-"We couldn't retrieve this media.\nPlease tap to retry." = "We couldn't retrieve this media.\nPlease tap to retry.";
+"We couldn't retrieve this media.\nPlease tap to retry." = "我们无法获取此媒体。\n请轻触以重试。";
 
 /* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
 "We couldn't schedule this page, but we'll try again later." = "我们无法安排此页面的发布时间，但我们稍后会重试。";
@@ -6919,7 +6919,7 @@ translators: sample content for \"Services\" page template */
 "We couldn't upload this media, and didn't publish the page." = "我们无法上传此媒体，因而未发布此页面。";
 
 /* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "We couldn't upload this media, and didn't publish the post.";
+"We couldn't upload this media, and didn't publish the post." = "我们无法上传此媒体，因而未发布此文章。";
 
 /* Text displayed if a media couldn't be uploaded for a private page. */
 "We couldn't upload this media, and didn't publish this private page." = "我们无法上传此媒体，因而未发布此私密页面。";
@@ -6937,7 +6937,7 @@ translators: sample content for \"Services\" page template */
 "We couldn't upload this media, and didn't submit this page for review." = "我们无法上传此媒体，因而未提交此页面以进行审核。";
 
 /* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "We couldn't upload this media, and didn't submit this post for review.";
+"We couldn't upload this media, and didn't submit this post for review." = "我们无法上传此媒体，因而未提交此文章以进行审核。";
 
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "我们无法上传此媒体。";
@@ -7113,7 +7113,7 @@ translators: sample content for \"Services\" page template */
 "When you make changes to your site you'll be able to see your activity history here." = "在对站点进行更改时，您可在此处查看您的活动历史记录。";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Which version would you like to edit?";
+"Which version would you like to edit?" = "您想要编辑哪个版本？";
 
 /* Whitelisted IP Addresses Title */
 "Whitelisted IP Addresses" = "已加入白名单的 IP 地址";
@@ -7353,11 +7353,11 @@ translators: sample content for \"Services\" page template */
 "You must be signed in to a WordPress.com account to perform this action." = "您必须登录 WordPress.com 帐户才能执行此操作。";
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
+"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "您需要验证您的帐户方可发布文章。\n别担心，您的文章仍会自动储存为草稿。";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "您最近对这篇文章进行了更改，但没有保存。 选择要加载的版本：\n\n从这个装置\n保存于 %1$@\n\n从另一台设备\n保存于 %2$@\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "您回复了此评论。";
@@ -7375,7 +7375,7 @@ translators: sample content for \"Services\" page template */
 "You've got early access to story posts and we'd love for you to give it a try." = "您可以抢先体验故事文章，我们也希望您能亲身感受一下故事文章的创作乐趣。";
 
 /* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "You've made unsaved changes to this post";
+"You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
 
 /* Header title for your domains section of Domains. */
 "Your Domains" = "您的域";

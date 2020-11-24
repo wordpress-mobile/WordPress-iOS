@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-18 16:05:40+0000 */
+/* Translation-Revision-Date: 2020-11-24 17:29:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -1162,7 +1162,7 @@
 "Choose a time" = "Elige una hora";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Elegir diseño";
+"Choose design" = "Elegir el diseño";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Elegir dominio";
@@ -1186,7 +1186,7 @@
 "Choose images" = "Elegir imágenes";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Elegir estructura";
+"Choose layout" = "Elegir la estructura";
 
 /* No comment provided by engineer. */
 "Choose video" = "Elegir un vídeo";
@@ -3255,7 +3255,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "Accede a tu cuenta de WordPress.com con tu dirección de correo electrónico.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Accede con tu usuario y contraseña de WordPress.com.";
+"Log in with your WordPress.com username and password." = "Accede con tu nombre de usuario y contraseña de WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "¿Salir de WordPress?";
@@ -4046,7 +4046,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Ajustes de página";
+"Page Settings" = "Ajustes de la página";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bloque de salto de página. %s";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-19 17:43:59+0000 */
+/* Translation-Revision-Date: 2020-11-24 18:04:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -2614,7 +2614,7 @@ translators: sample content for \"Team\" page template */
 "Go to Following" = "Ga naar Volgers";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
-"Go to Reader" = "Ga naar Lezer";
+"Go to Reader" = "Ga naar Reader";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -2636,7 +2636,7 @@ translators: sample content for \"Team\" page template */
 "Great!\n We love to hear from happy users \n😁" = "Geweldig!\n We houden van blije gebruikers \n😁";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Fantastisch! Zou jij een mooie recensie willen schrijven?\n\nHet helpt écht.";
+"Great! Could you leave us a nice review?\n\nIt really helps." = "Fantastisch! Zou jij een mooie beoordeling achter willen laten?\n\nHet helpt écht.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -4612,10 +4612,10 @@ translators: sample content for \"Services\" page template */
    The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS.
    Title of the Reader section of the debug screen used in debug builds of the app */
-"Reader" = "Lezer";
+"Reader" = "Reader";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "Lezer CSS URL";
+"Reader CSS URL" = "Reader CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Herblog";
@@ -5954,7 +5954,7 @@ translators: sample content for \"Services\" page template */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "De server heeft een lege respons teruggestuurd. Dat betekent meestal dat je de geheugenlimiet voor je site moet verhogen.";
 
 /* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
+"The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je reader. Tik om ongedaan te maken.";
 
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "De site-adres moet korter zijn dan 64 karakters.";
@@ -7046,7 +7046,7 @@ translators: sample content for \"Services\" page template */
 "Weeks" = "Weken";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Lezer. Ontdek miljoenen blogs met je vingertoppen.";
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Reader. Ontdek miljoenen van blogs aan je vingertoppen.";
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Welkom bij WordPress";
@@ -7170,7 +7170,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Profile" = "WordPress profiel";
 
 /* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress lezer";
+"WordPress Reader" = "WordPress Reader";
 
 /* Siri Suggestion to open My Sites */
 "WordPress Site Details" = "WordPress site details";

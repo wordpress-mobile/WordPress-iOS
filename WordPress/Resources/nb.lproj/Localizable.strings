@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-12 01:19:04+0000 */
+/* Translation-Revision-Date: 2020-11-21 14:37:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -365,7 +365,7 @@
 "Activity" = "Aktivitet";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "Aktivitetslogg";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Aktivitetslogger";
@@ -465,7 +465,7 @@
 "Add menu item to children" = "Legg til menyobjekt i undermeny";
 
 /* Screen reader text for Menus button that adds a new menu to a site. */
-"Add new menu" = "Add new menu";
+"Add new menu" = "Legg til ny meny";
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Add new menu item";
@@ -929,7 +929,7 @@
 "Button Style" = "Knappestil";
 
 /* Label for the post author in the post detail. */
-"By " = "By ";
+"By " = "Av";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Av %@.";
@@ -1135,7 +1135,7 @@
 "Checking purchases…" = "Sjekker kjøp...";
 
 /* Title for the button to progress with the selected site homepage design */
-"Choose" = "Choose";
+"Choose" = "Velg";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Velg sider";
@@ -1150,7 +1150,7 @@
 "Choose a date" = "Velg en dato";
 
 /* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Choose a design";
+"Choose a design" = "Velg en utforming";
 
 /* Create site, step 4. Select domain name. Title */
 "Choose a domain name for your site" = "Velg et domenenavn for ditt nettsted";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "Velg en tid";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "Velg utforming";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Velg domene";
@@ -1183,10 +1183,10 @@
 "Choose image or video" = "Velg bilde eller video";
 
 /* No comment provided by engineer. */
-"Choose images" = "Choose images";
+"Choose images" = "Velg bilder";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "Velg oppsett";
 
 /* No comment provided by engineer. */
 "Choose video" = "Velg video";
@@ -1661,7 +1661,7 @@
 "Creates a new site with the given information." = "Oppretter en ny side med oppgitt informasjon.";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "Oppretter nytt innlegg eller ny side";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "Creates new post, page, or story";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "Sletter...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "Nekte";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -1872,7 +1872,7 @@
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Å koble fra denne kontoen vil si at publiserte innlegg ikke lenger vil deles automatisk til %@";
 
 /* Discover tab name */
-"Discover" = "Discover";
+"Discover" = "Oppdag";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Oppdag nettsteder";
@@ -2636,7 +2636,7 @@ translators: sample content for \"Team\" page template */
 "Great!\n We love to hear from happy users \n😁" = "Supert!\nVi elsker å høre fra glade brukere\n😁";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Fint! Kan du gi oss en god vurdering?\n\nDet hjelper veldig.";
+"Great! Could you leave us a nice review?\n\nIt really helps." = "Great! Could you leave us a nice review?\n\nIt really helps.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -2992,7 +2992,7 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "Jetpack FAQ";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
+"Jetpack Settings" = "Jetpack-innstillinger";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kunne ikke installeres på dette tidspunktet.";
@@ -3588,7 +3588,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "Nytt objekt";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "Nytt passord";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Nye innlegg";
@@ -3986,7 +3986,7 @@ translators: sample content for \"Services\" page template */
 "Optional message to be included in the invitation." = "Valgfri melding som skal inkluderes i invitasjonen.";
 
 /* Divider on initial auth view separating auth options. */
-"Or" = "Or";
+"Or" = "Eller";
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Eller logg inn ved å _oppgi adressen til nettstedet_.";
@@ -4046,13 +4046,13 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "Sideinnstillinger";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sideskilleblokk. %s";
 
 /* Notice that a page with content has been created */
-"Page created" = "Page created";
+"Page created" = "Side opprettet";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Sidekladd lastet opp";
@@ -5120,7 +5120,7 @@ translators: sample content for \"Services\" page template */
 "Select a few to continue" = "Velg noen for å fortsette";
 
 /* No comment provided by engineer. */
-"Select a layout" = "Select a layout";
+"Select a layout" = "Velg et oppsett";
 
 /* No comment provided by engineer. */
 "Select item" = "Select item";
@@ -5156,7 +5156,7 @@ translators: sample content for \"Services\" page template */
 "Select which sites will be shown in the site picker." = "Velg hvilke nettsteder som skal vises i nettstedsvelgeren.";
 
 /* Screen reader text to represent the selected state of a button */
-"Selected" = "Selected";
+"Selected" = "Valgt";
 
 /* Error message when user tries to preview an image media like a video */
 "Selected media is not a video." = "Valgte medie er ikke en video.";
@@ -5174,7 +5174,7 @@ translators: sample content for \"Services\" page template */
 "Selects this domain to use for your site." = "Velger dette domenet for bruk til nettstedet.";
 
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
-"Selects this item" = "Selects this item";
+"Selects this item" = "Velg dette elementet";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Send tilbakemelding";
@@ -5410,7 +5410,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "Sideomdirigering";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "Nettstedsinnstillinger";
 
 /* Default title for a site
    Label for site title blog setting
@@ -6821,7 +6821,7 @@ translators: sample content for \"Services\" page template */
 "Waiting for Google to complete…" = "Venter på at Google skal fullføre...";
 
 /* View title during the Google auth process. */
-"Waiting..." = "Waiting...";
+"Waiting..." = "Venter...";
 
 /* translators: sample content for \"About\" page template */
 "Walt Disney" = "Walt Disney";
@@ -7046,7 +7046,7 @@ translators: sample content for \"Services\" page template */
 "Weeks" = "Uker";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welcome to Reader. Discover millions of blogs at your fingertips.";
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Velkommen til Leser. Oppdag millioner av blogger fra fingertuppene.";
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Velkommen til WordPress";
@@ -7347,7 +7347,7 @@ translators: sample content for \"Services\" page template */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan hviteliste en IP-adresse eller series med adresses for å forhindre at de blir blokkert av Jetpack. IPv4 og IPv6 aksepteres. For å spesifisere et utvalg, skriv in den laveste og høyeste verdien med bindestrek mellom. Eksemepl: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
-"You might like" = "You might like";
+"You might like" = "Du vil kanskje like";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Du må være logget inn i en WordPress.com-konto for å gjøre dette.";
