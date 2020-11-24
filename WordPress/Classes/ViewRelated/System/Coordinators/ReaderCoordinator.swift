@@ -26,10 +26,7 @@ class ReaderCoordinator: NSObject {
 
     func showA8CTeam() {
         WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
-            guard (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cTeamSlug else {
-                return false
-            }
-            return true
+            return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cTeamSlug
         })
     }
 
