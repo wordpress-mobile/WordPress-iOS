@@ -366,6 +366,18 @@ target 'WordPressHomeWidgetToday' do
     wordpress_ui
 end
 
+## Intents
+## ============
+##
+target 'WordPressIntents' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
 ## Notification Content Extension
 ## ==============================
 ##

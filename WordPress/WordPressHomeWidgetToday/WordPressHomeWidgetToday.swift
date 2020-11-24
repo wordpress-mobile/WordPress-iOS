@@ -70,22 +70,22 @@ private extension Provider {
 }
 
 struct SiteListProvider: IntentTimelineProvider {
-    
+
     struct SiteDetailEntry: TimelineEntry {
         var date: Date
         var name: String
     }
-    
+
     func placeholder(in context: Context) -> SiteDetailEntry {
         SiteDetailEntry(date: Date(), name: "Ahoi")
     }
-    
+
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (SiteDetailEntry) -> Void) {
         completion(SiteDetailEntry(date: Date(), name: "Ahoi"))
     }
-    
+
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<SiteDetailEntry>) -> Void) {
-        
+
         // Access the customized properties of the intent.
         let sites = [
             SiteDetailEntry(date: Date(), name: "Antonio"),
@@ -106,7 +106,7 @@ struct WordPressHomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: kind,
+            kind: WPHomeWidgetTodayKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider()
         ) { entry in
@@ -116,7 +116,7 @@ struct WordPressHomeWidgetToday: Widget {
         .description("Stay up to date with today's activity on your WordPress site.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
-    
+
     /*
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WPHomeWidgetTodayKind, provider: Provider()) { entry in
