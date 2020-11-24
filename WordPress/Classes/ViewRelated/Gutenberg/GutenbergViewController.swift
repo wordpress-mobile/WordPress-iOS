@@ -343,9 +343,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
-            print("---> Success syncing JETPACK: Enabled=\(self!.post.blog.settings!.jetpackSSOEnabled)")
         }, failure: { (error) in
-            print("---> ERROR syncking JETPACK")
+            DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
     }
 
