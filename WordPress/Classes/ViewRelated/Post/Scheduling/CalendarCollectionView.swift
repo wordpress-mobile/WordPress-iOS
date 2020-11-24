@@ -11,8 +11,16 @@ class CalendarCollectionView: JTACMonthView {
     let calDataSource: CalendarDataSource
     let style: CalendarCollectionViewStyle
 
-    init(calendar: Calendar, style: CalendarCollectionViewStyle = .month) {
-        calDataSource = CalendarDataSource(calendar: calendar, style: style)
+    init(calendar: Calendar,
+         style: CalendarCollectionViewStyle = .month,
+         startDate: Date? = nil,
+         endDate: Date? = nil) {
+        calDataSource = CalendarDataSource(
+            calendar: calendar,
+            style: style,
+            startDate: startDate,
+            endDate: endDate
+        )
 
         self.style = style
         super.init()
@@ -76,9 +84,14 @@ class CalendarDataSource: JTACMonthViewDataSource {
     private let calendar: Calendar
     private let style: CalendarCollectionViewStyle
 
-    init(calendar: Calendar, style: CalendarCollectionViewStyle) {
+    init(calendar: Calendar,
+         style: CalendarCollectionViewStyle,
+         startDate: Date? = nil,
+         endDate: Date? = nil) {
         self.calendar = calendar
         self.style = style
+        self.firstDate = startDate
+        self.endDate = endDate
     }
 
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {

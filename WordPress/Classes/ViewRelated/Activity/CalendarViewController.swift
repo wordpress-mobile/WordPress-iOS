@@ -27,12 +27,32 @@ class CalendarViewController: UIViewController {
         static let headerPadding: CGFloat = 16
     }
 
+    /// Creates a full screen year calendar controller
+    ///
+    /// - Parameters:
+    ///   - startDate: An optional Date representing the first selected date
+    ///   - endDate: An optional Date representing the end selected date
+    init(startDate: Date? = nil, endDate: Date? = nil) {
+        self.startDate = startDate
+        self.endDate = endDate
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
     override func viewDidLoad() {
         title = NSLocalizedString("Choose date range", comment: "Title to choose date range in a calendar")
 
         // Configure Calendar
         let calendar = Calendar.current
-        self.calendarCollectionView = CalendarCollectionView(calendar: calendar, style: .year)
+        self.calendarCollectionView = CalendarCollectionView(
+            calendar: calendar,
+            style: .year,
+            startDate: startDate,
+            endDate: endDate
+        )
 
         // Configure headers and add the calendar to the view
         let header = startEndDateHeader()
