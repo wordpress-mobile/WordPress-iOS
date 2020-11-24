@@ -34,26 +34,18 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
-        if ReaderHelpers.topicIsFollowing(topic), !FeatureFlag.newReaderNavigation.enabled {
-            return Bundle.main.loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
-        }
-
-        // if tag
         if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
-            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
+            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)?.first as? ReaderTagStreamHeader
         }
 
-        // if list
         if ReaderHelpers.isTopicList(topic) {
-            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
+            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
         }
 
-        // if site
         if ReaderHelpers.isTopicSite(topic) {
-            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
+            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
         }
 
-        // if anything else return nil
         return nil
     }
 

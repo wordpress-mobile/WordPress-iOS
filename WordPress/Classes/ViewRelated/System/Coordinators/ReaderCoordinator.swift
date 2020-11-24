@@ -3,36 +3,13 @@ import UIKit
 @objc
 class ReaderCoordinator: NSObject {
     let readerNavigationController: UINavigationController
-    let readerSplitViewController: WPSplitViewController
-    let readerMenuViewController: ReaderMenuViewController
 
     var failureBlock: (() -> Void)? = nil
 
-    var source: UIViewController? = nil {
-        didSet {
-            let hasSource = source != nil
-            let sourceIsTopViewController = source == topNavigationController?.topViewController
-
-            isNavigatingFromSource = hasSource && (sourceIsTopViewController || readerIsNotCurrentlySelected)
-        }
-    }
-
-    private var isNavigatingFromSource = false
-
     @objc
-    init(readerNavigationController: UINavigationController,
-         readerSplitViewController: WPSplitViewController,
-         readerMenuViewController: ReaderMenuViewController) {
+    init(readerNavigationController: UINavigationController) {
         self.readerNavigationController = readerNavigationController
-        self.readerSplitViewController = readerSplitViewController
-        self.readerMenuViewController = readerMenuViewController
-
         super.init()
-    }
-    private func prepareToNavigate() {
-        WPTabBarController.sharedInstance().showReaderTab()
-
-        topNavigationController?.popToRootViewController(animated: isNavigatingFromSource)
     }
 
     func showReaderTab() {
@@ -40,65 +17,25 @@ class ReaderCoordinator: NSObject {
     }
 
     func showDiscover() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().switchToDiscover()
-            return
-        }
-        prepareToNavigate()
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover,
-                                                               animated: isNavigatingFromSource)
+        WPTabBarController.sharedInstance().switchToDiscover()
     }
 
     func showSearch() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().navigateToReaderSearch()
-            return
-        }
-        prepareToNavigate()
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .search,
-                                                               animated: isNavigatingFromSource)
+        WPTabBarController.sharedInstance().navigateToReaderSearch()
     }
 
     func showA8CTeam() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
-                guard (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cTeamSlug else {
-                    return false
-                }
-                return true
-            })
-            return
-        }
-        prepareToNavigate()
-
-        readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: isNavigatingFromSource)
+        WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
+            return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cTeamSlug
+        })
     }
 
     func showMyLikes() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().switchToMyLikes()
-            return
-        }
-        prepareToNavigate()
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .likes,
-                                                               animated: isNavigatingFromSource)
+        WPTabBarController.sharedInstance().switchToMyLikes()
     }
 
     func showManageFollowing() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance()?.switchToFollowedSites()
-            return
-        }
-        prepareToNavigate()
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: false)
-
-        if let followedViewController = topNavigationController?.topViewController as? ReaderStreamViewController {
-            followedViewController.showManageSites(animated: isNavigatingFromSource)
-        }
+        WPTabBarController.sharedInstance()?.switchToFollowedSites()
     }
 
     func showList(named listName: String, forUser user: String) {
@@ -110,42 +47,17 @@ class ReaderCoordinator: NSObject {
             return
         }
 
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance()?.switchToTopic(where: { $0 == topic })
-            return
-        }
-
-        if !isNavigatingFromSource {
-            prepareToNavigate()
-        }
-
-        let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-
-        streamViewController.streamLoadFailureBlock = failureBlock
-
-        readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
-        readerMenuViewController.deselectSelectedRow(animated: false)
+        WPTabBarController.sharedInstance()?.switchToTopic(where: { $0 == topic })
     }
 
     func showTag(named tagName: String) {
-        if !isNavigatingFromSource, !FeatureFlag.newReaderNavigation.enabled {
-            prepareToNavigate()
-        }
-
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            getTagTopic(tagSlug: slug) { result in
-                guard let topic = try? result.get() else { return }
-                WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
-            }
-            return
-        }
-        let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
-        controller.streamLoadFailureBlock = failureBlock
 
-        readerSplitViewController.showDetailViewController(controller, sender: nil)
-        readerMenuViewController.deselectSelectedRow(animated: false)
+        getTagTopic(tagSlug: slug) { result in
+            guard let topic = try? result.get() else { return }
+            WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
+        }
     }
 
     private func getTagTopic(tagSlug: String, completion: @escaping (Result<ReaderTagTopic, Error>) -> Void) {
@@ -168,25 +80,12 @@ class ReaderCoordinator: NSObject {
     }
 
     func showStream(with siteID: Int, isFeed: Bool) {
-
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { result in
-                guard let topic = try? result.get() else { return }
-                WPTabBarController.sharedInstance()?.navigateToReaderSite(topic)
+        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { result in
+            guard let topic = try? result.get() else {
+                return
             }
-            return
-        }
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
-        controller.streamLoadFailureBlock = failureBlock
-
-        if isNavigatingFromSource {
-            topNavigationController?.pushViewController(controller, animated: true)
-        } else {
-            prepareToNavigate()
-
-            readerSplitViewController.showDetailViewController(controller, sender: nil)
-            readerMenuViewController.deselectSelectedRow(animated: false)
+            WPTabBarController.sharedInstance()?.navigateToReaderSite(topic)
         }
     }
 
@@ -212,11 +111,7 @@ class ReaderCoordinator: NSObject {
 
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
         let postLoadFailureBlock = { [weak self, failureBlock] in
-            if FeatureFlag.newReaderNavigation.enabled {
-                self?.readerNavigationController.popToRootViewController(animated: false)
-            } else {
-                self?.topNavigationController?.popViewController(animated: false)
-            }
+            self?.readerNavigationController.popToRootViewController(animated: false)
             failureBlock?()
         }
 
@@ -225,38 +120,9 @@ class ReaderCoordinator: NSObject {
                                                                                    isFeed: isFeed)
 
         detailViewController.postLoadFailureBlock = postLoadFailureBlock
-
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().navigateToReader(detailViewController)
-            return
-        }
-
-        if isNavigatingFromSource {
-            topNavigationController?.pushFullscreenViewController(detailViewController, animated: isNavigatingFromSource)
-        } else {
-            prepareToNavigate()
-
-            topNavigationController?.pushFullscreenViewController(detailViewController, animated: isNavigatingFromSource)
-            readerMenuViewController.deselectSelectedRow(animated: false)
-        }
+        WPTabBarController.sharedInstance().navigateToReader(detailViewController)
     }
 
-    private var topNavigationController: UINavigationController? {
-        guard readerIsNotCurrentlySelected == false else {
-            return source?.navigationController
-        }
-
-        if readerMenuViewController.splitViewControllerIsHorizontallyCompact == false,
-            let navigationController = readerSplitViewController.topDetailViewController?.navigationController {
-            return navigationController
-        }
-
-        return readerNavigationController
-    }
-
-    private var readerIsNotCurrentlySelected: Bool {
-        return WPTabBarController.sharedInstance().selectedViewController != readerSplitViewController
-    }
 }
 
 extension ReaderTopicService {

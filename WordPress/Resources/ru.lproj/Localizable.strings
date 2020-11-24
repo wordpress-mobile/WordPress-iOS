@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-02 18:47:55+0000 */
+/* Translation-Revision-Date: 2020-11-17 21:13:22+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -364,6 +364,9 @@
    Title for the activity list */
 "Activity" = "Активность";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Журнал активности";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Журналы активности";
 
@@ -627,9 +630,6 @@
 "An unknown error occurred. Please try again." = "Произошла неизвестная ошибка. Повторите попытку.";
 
 /* No comment provided by engineer. */
-"Angle" = "Угол";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Боковая панель аннотаций";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +658,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Одобрить";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -1044,7 +1045,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Следите за обновлениями любимых сайтов и присоединяйтесь к беседе в любом месте и в любое время.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "Рубрики";
 
 /* Category menu item in share extension.
@@ -1116,7 +1118,8 @@
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
 "Check your network connection and try again or create a blank page." = "Проверьте ваше подключение к сети и попробуйте снова, или создайте пустую страницу.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Проверьте ваше подключение к сети и попробуйте снова.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1158,6 +1161,9 @@
 /* Label for Publish time picker */
 "Choose a time" = "Выберите время";
 
+/* Shortened version of the main title to be used in back navigation */
+"Choose design" = "Выбрать оформление";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Выберите домен";
 
@@ -1178,6 +1184,9 @@
 
 /* No comment provided by engineer. */
 "Choose images" = "Выбрать изображения";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Выбрать макет";
 
 /* No comment provided by engineer. */
 "Choose video" = "Выбор видео";
@@ -1811,6 +1820,9 @@
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Удаление...";
 
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Отклонить";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2024,6 +2036,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2352,8 +2365,14 @@
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Ошибка вставки медиафайла.\nНажмите для выбора вариантов.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Невозможно сохранить файлы.\nНажмите для выбора вариантов.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Не удалось сериализировать запрос в API-интерфейс REST.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Невозможно загрузить файлы.\nНажмите для выбора вариантов.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2961,7 +2980,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "Дж. К. Роулинг";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +2990,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Параметры Jetpack";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack сейчас не может быть установлен.";
@@ -3231,6 +3254,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "Войдите в учётную запись WordPress.com с вашим email адресом.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Войдите, указав имя пользователя WordPress.com и пароль.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Выйти из WordPress?";
 
@@ -3266,7 +3292,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Управление";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Управление подключением";
 
@@ -3559,6 +3586,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Новый элемент";
+
+/* Placeholder text for password field */
+"New password" = "Новый пароль";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Новые записи";
@@ -4014,6 +4044,10 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Страница восстановлена в списке \"Планируемые публикации\"";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Настройки страницы";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Блок разрыва страницы. %s";
 
@@ -4391,7 +4425,7 @@ translators: sample content for \"Services\" page template */
 /* Displays the Post Preview Interface
    Section title for related posts section preview
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a static content. */
 "Preview" = "Просмотр";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -5019,8 +5053,7 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Секретный текст";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Безопасность";
 
 /* Button in Plugin Directory letting users see more plugins */
@@ -5205,9 +5238,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Настройка темы";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "Настройки";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5376,6 +5409,9 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Перенаправление сайта";
 
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Настройки сайта";
+
 /* Default title for a site
    Label for site title blog setting
    Site info. Title
@@ -5427,7 +5463,8 @@ translators: sample content for \"Services\" page template */
 "Size" = "Размер";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "Пропустить";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
