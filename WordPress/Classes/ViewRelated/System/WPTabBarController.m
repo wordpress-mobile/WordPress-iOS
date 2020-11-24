@@ -39,6 +39,10 @@ NSString * const WPNewPostURLParamContentKey = @"content";
 NSString * const WPNewPostURLParamTagsKey = @"tags";
 NSString * const WPNewPostURLParamImageKey = @"image";
 
+NSString * const WPTabBarCurrentlySelectedScreenSites = @"Blog List";
+NSString * const WPTabBarCurrentlySelectedScreenReader = @"Reader";
+NSString * const WPTabBarCurrentlySelectedScreenNotifications = @"Notifications";
+
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
@@ -468,13 +472,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSString *currentlySelectedScreen = @"";
     switch (self.selectedIndex) {
         case WPTabMySites:
-            currentlySelectedScreen = @"Blog List";
+            currentlySelectedScreen = WPTabBarCurrentlySelectedScreenSites;
             break;
         case WPTabReader:
-            currentlySelectedScreen = @"Reader";
+            currentlySelectedScreen = WPTabBarCurrentlySelectedScreenReader;
             break;
         case WPTabNotifications:
-            currentlySelectedScreen = @"Notifications";
+            currentlySelectedScreen = WPTabBarCurrentlySelectedScreenNotifications;
             break;
         default:
             break;

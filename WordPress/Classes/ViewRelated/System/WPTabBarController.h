@@ -2,6 +2,9 @@
 
 extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
+extern NSString * const WPTabBarCurrentlySelectedScreenSites;
+extern NSString * const WPTabBarCurrentlySelectedScreenReader;
+extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
