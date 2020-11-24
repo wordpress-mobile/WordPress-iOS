@@ -108,20 +108,21 @@ class IntentHandler: INExtension, /* INSendMessageIntentHandling, INSearchForMes
     // MARK: - SelectSiteIntentHandling
 
     func resolveSite(for intent: SelectSiteIntent, with completion: @escaping (SiteResolutionResult) -> Void) {
-
+        print("asd!")
     }
 
     func provideSiteOptionsCollection(for intent: SelectSiteIntent, with completion: @escaping (INObjectCollection<Site>?, Error?) -> Void) {
 
-        let data = HomeWidgetTodayData.read()
+        guard let data = HomeWidgetTodayData.read() else {
+            return
+        }
+        
+        let sites = data.map { (key: Int, value: HomeWidgetTodayData) -> Site in
+            Site(identifier: String(key), display: value.siteName, subtitle: nil, image: nil)
+        }
+        
+        let sitesCollection = INObjectCollection<Site>(items: sites)
 
-        let sites = INObjectCollection<Site>(items: [
-            Site(identifier: "1", display: "Site 1", subtitle: "A great site", image: nil),
-            Site(identifier: "2", display: "Site 2", subtitle: "A great site", image: nil),
-            Site(identifier: "3", display: "Site 3", subtitle: "A great site", image: nil),
-            Site(identifier: "4", display: "Site 4", subtitle: "A great site", image: nil),
-        ])
-
-        completion(sites, nil)
+        completion(sitesCollection, nil)
     }
 }

@@ -259,6 +259,7 @@
 	<string>To add photos or videos to your posts.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>SelectSiteIntent</string>
 		<string>org.wordpress.me</string>
 		<string>org.wordpress.me.appsettings</string>
 		<string>org.wordpress.me.notificationsettings</string>
