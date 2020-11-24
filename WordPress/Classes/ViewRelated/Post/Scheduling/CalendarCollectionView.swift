@@ -269,6 +269,14 @@ class DateCell: JTACDayCell {
 }
 
 extension DateCell {
+    /// Configure the DateCell
+    ///
+    /// - Parameters:
+    ///   - state: the representation of the cell state
+    ///   - startDate: the first Date selected
+    ///   - endDate: the last Date selected
+    ///   - hideInOutDates: a Bool to hide/display dates outside of the current month (filling the entire row)
+    /// - Returns: UIColor. Red in cases of error
     func configure(with state: CellState,
                    startDate: Date? = nil,
                    endDate: Date? = nil,
