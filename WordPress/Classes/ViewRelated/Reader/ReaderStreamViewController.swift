@@ -1847,17 +1847,6 @@ extension ReaderStreamViewController: ReaderContentViewController {
     }
 }
 
-
-// MARK: - Saved Posts Delegate
-extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: ReaderPostCardCell) {
-        if let cellIndex = tableView.indexPath(for: cell) {
-            tableView.reloadRows(at: [cellIndex], with: .fade)
-        }
-    }
-}
-
-
 // MARK: - Undo
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
