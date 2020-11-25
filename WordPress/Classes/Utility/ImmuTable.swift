@@ -234,7 +234,7 @@ public enum ImmuTableCell {
 ///         reference to the handler from your view controller.
 ///
 open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
-    typealias UIViewControllerWithTableView = ImmuTableView & UITableViewDataSource & UITableViewDelegate & UIViewController
+    typealias UIViewControllerWithTableView = TableViewContainer & UITableViewDataSource & UITableViewDelegate & UIViewController
 
     @objc unowned let target: UIViewControllerWithTableView
     private weak var passthroughScrollViewDelegate: UIScrollViewDelegate?
@@ -453,8 +453,8 @@ extension UITableView: CellRegistrar {
 
 // MARK: - UITableViewController conformance
 
-@objc public protocol ImmuTableView: class {
+@objc public protocol TableViewContainer: class {
     var tableView: UITableView! { get set }
 }
 
-extension UITableViewController: ImmuTableView {}
+extension UITableViewController: TableViewContainer {}

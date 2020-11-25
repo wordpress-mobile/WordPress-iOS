@@ -4,7 +4,7 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
-class ActivityListViewController: UIViewController, ImmuTableView, ImmuTablePresenter {
+class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
     let isFreeWPCom: Bool
