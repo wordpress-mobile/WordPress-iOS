@@ -76,13 +76,6 @@ extension ReaderMenuViewController {
     }
 }
 
-// TODO: - READERNAV - nix this with ReaderSavedPostsViewController.
-extension ReaderSavedPostsViewController {
-    func trackSavedPostNavigation() {
-        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
-    }
-}
-
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
         if contentType == .saved {

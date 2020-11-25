@@ -1205,7 +1205,6 @@ import WordPressFlux
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
         postCellActions?.isLoggedIn = isLoggedIn
-        postCellActions?.savedPostsDelegate = self
 
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
