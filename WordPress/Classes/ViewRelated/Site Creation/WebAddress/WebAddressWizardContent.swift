@@ -202,6 +202,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
+        if !resultsHavePreviousSelection {
+            clearSelectionAndCreateSiteButton()
+        }
+
         self.data = data
         if data.isEmpty {
             noResultsLabel.isHidden = false

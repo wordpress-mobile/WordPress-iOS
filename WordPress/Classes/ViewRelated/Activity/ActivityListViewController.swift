@@ -4,14 +4,16 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
-class ActivityListViewController: UITableViewController, ImmuTablePresenter {
-
+class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
     let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
     var isUserTriggeredRefresh: Bool = false
+
+    var tableView: UITableView = UITableView()
+    let refreshControl = UIRefreshControl()
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: self)
@@ -41,14 +43,18 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         self.isFreeWPCom = isFreeWPCom
         self.viewModel = ActivityListViewModel(site: site, store: store)
 
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
 
         self.changeReceipt = viewModel.onChange { [weak self] in
             self?.refreshModel()
         }
 
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
+        view.addSubview(tableView)
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(tableView)
+
+        refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
     }
@@ -114,10 +120,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     private func updateRefreshControl() {
-        guard let refreshControl = refreshControl else {
-            return
-        }
-
         switch (viewModel.refreshing, refreshControl.isRefreshing) {
         case (true, false):
             if isUserTriggeredRefresh {
@@ -136,11 +138,21 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
 }
 
+extension ActivityListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        handler.tableView(tableView, numberOfRowsInSection: section)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        handler.tableView(tableView, cellForRowAt: indexPath)
+    }
+}
+
 // MARK: - UITableViewDelegate
 
-extension ActivityListViewController {
+extension ActivityListViewController: UITableViewDelegate {
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isLastSection = handler.viewModel.sections.count == section + 1
 
         guard isFreeWPCom, isLastSection, let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
@@ -153,7 +165,7 @@ extension ActivityListViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let isLastSection = handler.viewModel.sections.count == section + 1
 
         guard isFreeWPCom, isLastSection else {
@@ -163,7 +175,7 @@ extension ActivityListViewController {
         return UITableView.automaticDimension
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
             return nil
         }
@@ -173,11 +185,11 @@ extension ActivityListViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return ActivityListSectionHeaderView.height
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow else {
             return false
         }
@@ -185,7 +197,7 @@ extension ActivityListViewController {
         return row.activity.isRewindable
     }
 
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
             return nil
         }
@@ -200,7 +212,7 @@ extension ActivityListViewController {
         return [rewindAction]
     }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let shouldLoadMore = offsetY > contentHeight - (2 * scrollView.frame.size.height) && viewModel.hasMore

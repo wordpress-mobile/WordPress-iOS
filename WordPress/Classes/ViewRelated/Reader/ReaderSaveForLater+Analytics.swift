@@ -76,6 +76,7 @@ extension ReaderMenuViewController {
     }
 }
 
+// TODO: - READERNAV - nix this with ReaderSavedPostsViewController.
 extension ReaderSavedPostsViewController {
     func trackSavedPostNavigation() {
         WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
@@ -84,10 +85,13 @@ extension ReaderSavedPostsViewController {
 
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
-        if FeatureFlag.newReaderNavigation.enabled, contentType == .saved {
-            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
+        if contentType == .saved {
+            WPAppAnalytics.track(.readerSavedPostOpened,
+                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue])
         } else {
-            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue ])
+            // TODO: - READERNAV - See refactor note in ReaderSaveForLater+Analytics.viewAllPostsValue.
+            WPAppAnalytics.track(.readerSavedPostOpened,
+                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue])
         }
     }
 }

@@ -14,20 +14,20 @@ class SiteCreationAnalyticsHelper {
     }
 
     static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: [siteDesignKey: siteDesign.slug])
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign))
     }
 
     // MARK: - Site Design Preview
     static func trackSiteDesignPreviewViewed(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: [siteDesignKey: siteDesign.slug])
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign))
     }
 
-    static func trackSiteDesignPreviewLoading() {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading)
+    static func trackSiteDesignPreviewLoading(_ siteDesign: RemoteSiteDesign) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign))
     }
 
-    static func trackSiteDesignPreviewLoaded() {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded)
+    static func trackSiteDesignPreviewLoaded(_ siteDesign: RemoteSiteDesign) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
     }
 
     // MARK: - Error
@@ -37,5 +37,10 @@ class SiteCreationAnalyticsHelper {
         ]
 
         WPAnalytics.track(.enhancedSiteCreationErrorShown, withProperties: errorProperties)
+    }
+
+    // MARK: - Common
+    private static func commonProperties(_ siteDesign: RemoteSiteDesign) -> [AnyHashable: Any] {
+        return  [siteDesignKey: siteDesign.slug]
     }
 }
