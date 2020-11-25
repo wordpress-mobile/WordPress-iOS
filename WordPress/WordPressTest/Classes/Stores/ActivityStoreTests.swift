@@ -23,6 +23,19 @@ class ActivityStoreTests: XCTestCase {
         super.tearDown()
     }
 
+    // Check if refreshActivities call the service with the correct after and before date
+    //
+    func testRefreshActivities() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        let afterDate = Date()
+        let beforeDate = Date.init(timeIntervalSinceNow: 86400)
+
+        dispatch(.refreshActivities(site: jetpackSiteRef, quantity: 10, afterDate: afterDate, beforeDate: beforeDate))
+
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithAfterDate, afterDate)
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithBeforeDate, beforeDate)
+    }
+
     // Check if loadMoreActivities call the service with the correct params
     //
     func testLoadMoreActivities() {
@@ -60,6 +73,8 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
     var getActivityForSiteCalledWithSiteID: Int?
     var getActivityForSiteCalledWithOffset: Int?
     var getActivityForSiteCalledWithCount: Int?
+    var getActivityForSiteCalledWithAfterDate: Date?
+    var getActivityForSiteCalledWithBeforeDate: Date?
 
     var activitiesToReturn: [Activity]?
     var hasMore = false
@@ -75,6 +90,8 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         getActivityForSiteCalledWithSiteID = siteID
         getActivityForSiteCalledWithCount = count
         getActivityForSiteCalledWithOffset = offset
+        getActivityForSiteCalledWithAfterDate = after
+        getActivityForSiteCalledWithBeforeDate = before
 
         if let activitiesToReturn = activitiesToReturn {
             success(activitiesToReturn, hasMore)

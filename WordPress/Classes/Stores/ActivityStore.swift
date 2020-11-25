@@ -5,7 +5,7 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
-    case refreshActivities(site: JetpackSiteRef, quantity: Int)
+    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?)
     case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int)
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
@@ -155,8 +155,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             loadMoreActivities(site: site, quantity: quantity, offset: offset)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
-        case .refreshActivities(let site, let quantity):
-            refreshActivities(site: site, quantity: quantity)
+        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
+            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
         case .rewindStarted(let site, let rewindID, let restoreID):
@@ -200,13 +200,19 @@ extension ActivityStore {
 }
 
 private extension ActivityStore {
-    func fetchActivities(site: JetpackSiteRef, count: Int = 20, offset: Int = 0) {
+    func fetchActivities(site: JetpackSiteRef,
+                         count: Int = 20,
+                         offset: Int = 0,
+                         afterDate: Date? = nil,
+                         beforeDate: Date? = nil) {
         state.fetchingActivities[site] = true
 
         remote(site: site)?.getActivityForSite(
             site.siteID,
             offset: offset,
             count: count,
+            after: afterDate,
+            before: beforeDate,
             success: { [actionDispatcher] (activities, hasMore) in
                 let loadingMore = offset > 0
                 actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
@@ -233,12 +239,12 @@ private extension ActivityStore {
         }
     }
 
-    func refreshActivities(site: JetpackSiteRef, quantity: Int) {
+    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?) {
         guard !isFetching(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity)
+        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate)
     }
 
     func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int) {

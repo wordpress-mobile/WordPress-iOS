@@ -53,7 +53,7 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh() {
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: nil, beforeDate: nil))
     }
 
     public func loadMore() {
