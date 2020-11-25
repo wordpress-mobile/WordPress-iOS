@@ -194,6 +194,7 @@ open class ReaderPostMenu {
 
         let configuration = WebViewControllerConfiguration(url: siteURL)
         configuration.addsWPComReferrer = true
+        configuration.authenticateWithDefaultAccount()
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         viewController.present(navController, animated: true)
