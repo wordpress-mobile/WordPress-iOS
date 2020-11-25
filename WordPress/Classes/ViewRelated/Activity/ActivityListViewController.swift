@@ -341,8 +341,8 @@ private extension ActivityListViewController {
         addChild(noResultsViewController)
         noResultsViewController.didMove(toParent: self)
 
-        noResultsViewController.view.frame = tableView.frame
-        noResultsViewController.view.frame.origin.y = 0
+        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        tableView.pinSubviewToSafeArea(noResultsViewController.view)
     }
 
 }
