@@ -8,6 +8,7 @@
 * [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
 * [*] Fixed an issue where comments viewed in the Reader would always be italicized.
 * [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
+* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392] 
 
 16.1
 -----
