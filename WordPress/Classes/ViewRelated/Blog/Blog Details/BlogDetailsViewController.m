@@ -209,7 +209,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong, readwrite) id<BlogDetailHeader> headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -301,21 +301,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
-    self = [self init];
-    self.meScenePresenter = meScenePresenter;
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = WPBlogDetailsRestorationID;
+        self.restorationClass = [self class];
+        _meScenePresenter = meScenePresenter;
+    }
+    
     return self;
 }
 
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        self.restorationIdentifier = WPBlogDetailsRestorationID;
-        self.restorationClass = [self class];
-    }
-    return self;
+    return [self initWithMeScenePresenter:[MeScenePresenter new]];
 }
 
 - (void)viewDidLoad
@@ -393,7 +394,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
-    if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+    if ([[QuickStartTourGuide shared] currentElementInt] != NSNotFound) {
         self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, [BlogDetailsViewController bottomPaddingForQuickStartNotices], 0);
     } else {
         self.additionalSafeAreaInsets = UIEdgeInsetsZero;
@@ -528,6 +529,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionJetpackSettings:
+            if ([self.blog supports:BlogFeatureActivity]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showJetpackSettings];
+            }
+            break;
         case BlogDetailsSubsectionComments:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -578,6 +588,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionStats:
             return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
+        case BlogDetailsSubsectionJetpackSettings:
             return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPosts:
             return [NSIndexPath indexPathForRow:0 inSection:section];
@@ -739,7 +751,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
-    [marr addObject:[self generalSectionViewModel]];
+    if (([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) || [self.blog supports:BlogFeatureJetpackSettings]) {
+        [marr addObject:[self jetpackSectionViewModel]];
+    } else {
+        [marr addObject:[self generalSectionViewModel]];
+    }
+
     [marr addObject:[self publishTypeSectionViewModel]];
     if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
         [marr addObject:[self personalizeSectionViewModel]];
@@ -768,7 +785,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     statsRow.quickStartIdentifier = QuickStartTourElementStats;
     [rows addObject:statsRow];
 
-    if ([self.blog supports:BlogFeatureActivity]) {
+    if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
                                                      callback:^{
@@ -777,7 +794,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
 // Temporarily disabled
-//    if ([self.blog supports:BlogFeaturePlans]) {
+//    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
 //        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
 //                                                         identifier:BlogDetailsPlanCellIdentifier
 //                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
@@ -792,6 +809,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
+
+- (BlogDetailsSection *)jetpackSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                  accessibilityIdentifier:@"Stats Row"
+                                                    image:[UIImage gridiconOfType:GridiconTypeStatsAlt]
+                                                 callback:^{
+        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
+                                                 }];
+    statsRow.quickStartIdentifier = QuickStartTourElementStats;
+    [rows addObject:statsRow];
+
+    if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                     callback:^{
+                                                         [weakSelf showActivity];
+                                                     }]];
+    }
+
+    if ([self.blog supports:BlogFeatureJetpackSettings]) {
+        BlogDetailsRow *settingsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Jetpack Settings", @"Noun. Title. Links to the blog's Settings screen.")
+                                                         identifier:BlogDetailsSettingsCellIdentifier
+                                            accessibilityIdentifier:@"Jetpack Settings Row"
+                                                              image:[UIImage gridiconOfType:GridiconTypeCog]
+                                                           callback:^{
+                                                               [weakSelf showJetpackSettings];
+                                                           }];
+
+        [rows addObject:settingsRow];
+    }
+
+    NSString *title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
+}
+
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
 {
@@ -841,7 +897,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
+    if ([self.blog supports:BlogFeatureThemeBrowsing] && ![self.blog isWPForTeams]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
                                                               image:[UIImage gridiconOfType:GridiconTypeThemes]
                                                            callback:^{
@@ -892,7 +948,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                         accessibilityIdentifier:@"Settings Row"
                                                           image:[UIImage gridiconOfType:GridiconTypeCog]
@@ -984,12 +1040,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
-    BlogDetailHeaderView *headerView = [self configureHeaderView];
+    id<BlogDetailHeader> headerView = [self configureHeaderView];
     headerView.delegate = self;
 
     self.headerView = headerView;
 
-    self.tableView.tableHeaderView = headerView;
+    self.tableView.tableHeaderView = headerView.asView;
 }
 
 #pragma mark BlogDetailHeaderViewDelegate
@@ -1234,7 +1290,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         [WPStyleGuide configureTableViewCell:cell];
     }
-    if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
+    if ([[QuickStartTourGuide shared] isCurrentElement:row.quickStartIdentifier]) {
         row.accessoryView = [QuickStartSpotlightView new];
     } else if ([row.accessoryView isKindOfClass:[QuickStartSpotlightView class]]) {
         row.accessoryView = nil;
@@ -1309,7 +1365,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
         
-        [[QuickStartTourGuide find] removeFrom:self.blog];
+        [[QuickStartTourGuide shared] removeFrom:self.blog];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1478,7 +1534,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     controller.blog = self.blog;
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source
@@ -1487,7 +1543,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source
@@ -1496,7 +1552,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementPages];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementPages];
 }
 
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
@@ -1505,7 +1561,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPeople
@@ -1514,7 +1570,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPlugins
@@ -1523,7 +1579,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showPlans
@@ -1532,7 +1588,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementPlans];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementPlans];
 }
 
 - (void)showSettings
@@ -1541,7 +1597,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+-(void)showJetpackSettings
+{
+    JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showSharing
@@ -1558,7 +1620,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementSharing];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementSharing];
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
@@ -1578,7 +1640,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self showDetailViewController:statsView sender:self];
     }
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementStats];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
 }
 
 - (void)showActivity
@@ -1586,7 +1648,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showThemes
@@ -1598,7 +1660,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     };
     [self showDetailViewController:viewController sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
 }
 
 - (void)showMenus
@@ -1607,7 +1669,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
     [self showDetailViewController:viewController sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showViewSite
@@ -1631,7 +1693,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self toggleSpotlightOnHeaderView];
     }];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 
@@ -1652,7 +1714,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 #pragma mark - Remove Site

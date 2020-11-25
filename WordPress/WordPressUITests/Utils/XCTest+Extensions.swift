@@ -74,7 +74,13 @@ extension XCTestCase {
         app.activate()
 
         // Media permissions alert handler
-        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+        let alertButtonTitle: String
+        if #available(iOS 14.0, *) {
+            alertButtonTitle = "Allow Access to All Photos"
+        } else {
+            alertButtonTitle = "OK"
+        }
+        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
     }
 
     public func takeScreenshotOfFailedTest() {

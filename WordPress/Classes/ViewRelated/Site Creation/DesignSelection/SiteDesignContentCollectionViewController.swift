@@ -2,6 +2,7 @@ import UIKit
 import WordPressKit
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
+    let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
     let cellSize = CGSize(width: 160, height: 230)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
@@ -24,12 +25,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let spacingCounts: CGFloat = (cellsPerRowCap == 3) ? 2 : 1 //If there are three rows account for 2 spacers and 1 if not.
         let contentWidth = (cellsPerRowCap * cellSize.width) + (itemSpacing * spacingCounts)
         let margin = (screenWidth - contentWidth) / 2
-        return UIEdgeInsets(top: itemSpacing, left: margin, bottom: itemSpacing, right: margin)
+        return UIEdgeInsets(top: 1, left: margin, bottom: itemSpacing, right: margin)
     }
 
-    init() {
+    init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
+        self.completion = completion
         collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing)
         collectionViewLayout.minimumLineSpacing = itemSpacing
         collectionViewLayout.minimumInteritemSpacing = itemSpacing
         collectionViewLayout.itemSize = cellSize
@@ -41,9 +42,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         super.init(scrollableView: collectionView,
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
+                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
                    primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-                   hasFilterBar: false)
+                   secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design"))
     }
 
     required init?(coder: NSCoder) {
@@ -57,6 +58,18 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
+        SiteCreationAnalyticsHelper.trackSiteDesignViewed()
+        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEdgeInsets()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateEdgeInsets()
     }
 
     override func estimatedContentSize() -> CGSize {
@@ -70,10 +83,16 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        let newEdgeInsets = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: size)
-        coordinator.animate { (_) in
-            self.collectionViewLayout.sectionInset = newEdgeInsets
+        coordinator.animate(alongsideTransition: nil) { (_) in
+            self.updateEdgeInsets()
         }
+    }
+
+    private func updateEdgeInsets() {
+        let screenSize = collectionView.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize,
+                                                                                                 itemSpacing: itemSpacing,
+                                                                                                 screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
@@ -99,13 +118,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        let closeButton = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(closeButtonTapped))
-        closeButton.title = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
+        completion(nil)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
@@ -113,10 +131,32 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     override func primaryActionSelected(_ sender: Any) {
-        /* ToDo */
+        guard let selectedIndexPath = selectedIndexPath else {
+            completion(nil)
+            return
+        }
+        let design = siteDesigns[selectedIndexPath.row]
+        SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
+        completion(design)
+    }
+
+    override func secondaryActionSelected(_ sender: Any) {
+        guard let selectedIndexPath = selectedIndexPath else { return }
+
+        let design = siteDesigns[selectedIndexPath.row]
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
+        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        if #available(iOS 13.0, *) {
+            navController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+            navController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+        navigationController?.present(navController, animated: true)
     }
 
     private func handleError(_ error: Error) {
+        SiteCreationAnalyticsHelper.trackError(error)
         let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
         let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)

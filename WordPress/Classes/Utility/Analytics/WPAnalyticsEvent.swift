@@ -84,6 +84,24 @@ import Foundation
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
 
+    // Jetpack
+    case jetpackSettingsViewed
+    case jetpackManageConnectionViewed
+    case jetpackDisconnectTapped
+    case jetpackDisconnectRequested
+
+    // Comments
+    case commentViewed
+    case commentApproved
+    case commentUnApproved
+    case commentLiked
+    case commentUnliked
+    case commentTrashed
+    case commentSpammed
+    case commentEditorOpened
+    case commentEdited
+    case commentRepliedTo
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -220,6 +238,39 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+
+        // Jetpack
+        case .jetpackSettingsViewed:
+            return "jetpack_settings_viewed"
+        case .jetpackManageConnectionViewed:
+            return "jetpack_manage_connection_viewed"
+        case .jetpackDisconnectTapped:
+            return "jetpack_disconnect_tapped"
+        case .jetpackDisconnectRequested:
+            return "jetpack_disconnect_requested"
+
+        // Comments
+        case .commentViewed:
+            return "comment_viewed"
+        case .commentApproved:
+            return "comment_approved"
+        case .commentUnApproved:
+            return "comment_unapproved"
+        case .commentLiked:
+            return "comment_liked"
+        case .commentUnliked:
+            return "comment_unliked"
+        case .commentTrashed:
+            return "comment_trashed"
+        case .commentSpammed:
+            return "comment_spammed"
+        case .commentEditorOpened:
+            return "comment_editor_opened"
+        case .commentEdited:
+            return "comment_edited"
+        case .commentRepliedTo:
+            return "comment_replied_to"
+
         }
     }
 
@@ -277,6 +328,7 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 

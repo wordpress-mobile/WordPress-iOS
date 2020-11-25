@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-19 12:54:08+0000 */
+/* Translation-Revision-Date: 2020-11-13 14:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -197,7 +197,7 @@
 "%s block. This block has invalid content" = "Blocco %s. Questo blocco ha contenuti non validi";
 
 /* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully-supported";
+"'%s' is not fully-supported" = "'%s' non è pienamente supportato";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "(555)555-1234";
@@ -364,6 +364,9 @@
    Title for the activity list */
 "Activity" = "Attività";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Activity Log";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "I log di attività";
 
@@ -383,7 +386,7 @@
 "Add Block Before" = "Aggiungi blocco prima";
 
 /* Accessibility label for add comment button */
-"Add Comment" = "Add Comment";
+"Add Comment" = "Aggiungi commento";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Aggiungi contenuti all'articolo";
@@ -627,9 +630,6 @@
 "An unknown error occurred. Please try again." = "Si è verificato un errore sconosciuto. Riprova.";
 
 /* No comment provided by engineer. */
-"Angle" = "Angolo";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Barra laterale delle annotazioni";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +658,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Approva";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -852,7 +853,7 @@
 "Blacklist" = "Blacklist";
 
 /* Notice that a page without content has been created */
-"Blank page created" = "Blank page created";
+"Blank page created" = "Pagina bianca creata";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -928,7 +929,7 @@
 "Button Style" = "Stile del pulsante";
 
 /* Label for the post author in the post detail. */
-"By " = "By ";
+"By " = "Di";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Di %@.";
@@ -1044,7 +1045,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Tieni il passo con i tuoi siti preferiti e partecipa a una conversazione ovunque e in qualsiasi momento.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorie";
 
 /* Category menu item in share extension.
@@ -1114,9 +1116,10 @@
 "Check your email!" = "Controlla l'e-mail.";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
-"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+"Check your network connection and try again or create a blank page." = "Controlla la connessione di rete e riprova oppure crea una pagina vuota.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Controlla la connessione di rete e riprova.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1132,7 +1135,7 @@
 "Checking purchases…" = "Ricerca di elementi acqistati in corso ...";
 
 /* Title for the button to progress with the selected site homepage design */
-"Choose" = "Choose";
+"Choose" = "Scegli";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Scegli le pagine";
@@ -1147,7 +1150,7 @@
 "Choose a date" = "Scegli una data";
 
 /* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Choose a design";
+"Choose a design" = "Scegli un design";
 
 /* Create site, step 4. Select domain name. Title */
 "Choose a domain name for your site" = "Scegli il nome del dominio per il tuo sito";
@@ -1157,6 +1160,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "Scegli un'ora";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose design" = "Choose design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Scegli il dominio";
@@ -1177,7 +1183,10 @@
 "Choose image or video" = "Scegli immagine o video";
 
 /* No comment provided by engineer. */
-"Choose images" = "Choose images";
+"Choose images" = "Scegli immagini";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Choose layout";
 
 /* No comment provided by engineer. */
 "Choose video" = "Scegli video";
@@ -1261,7 +1270,7 @@
 "Collect information" = "Raccogli informazioni";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combina foto, video e testo per creare articoli della storia coinvolgenti e che si possono toccare che i visitatori ameranno.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Fumetti";
@@ -1616,7 +1625,7 @@
 "Create Site" = "Crea sito";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Create Story Post";
+"Create Story Post" = "Crea articolo della storia";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Crea un sito WordPress.com";
@@ -1640,7 +1649,7 @@
 "Create a post or page" = "Crea un articolo o una pagina";
 
 /* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
+"Create a post, page, or story" = "Crea un articolo, una pagina o una storia";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crea la tua bacheca personalizzata e scegli quali rapporti visualizzare. Concentrati sui dati che ti interessano di più.";
@@ -1655,7 +1664,7 @@
 "Creates new post, or page" = "Creates new post, or page";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
+"Creates new post, page, or story" = "Crea un nuovo articolo oppure una nuova pagina o storia";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creando un nuovo menu si perderanno tutte le modifiche fatte al menu corrente. Sei sicuro di voler proseguire?";
@@ -1810,6 +1819,9 @@
 
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Eliminazione...";
+
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Deny";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2024,6 +2036,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2062,7 +2075,7 @@
 "Edit sharing buttons" = "Modifica i pulsanti di condivisione";
 
 /* No comment provided by engineer. */
-"Edit using web editor" = "Edit using web editor";
+"Edit using web editor" = "Modifica utilizzando l'editor web";
 
 /* No comment provided by engineer. */
 "Edit video" = "Modifica video";
@@ -2281,7 +2294,7 @@
 "Everyone" = "Tutti";
 
 /* Example story title description */
-"Example story title" = "Example story title";
+"Example story title" = "Esempio titolo storia";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Riassunto";
@@ -2352,8 +2365,14 @@
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Inserimento media fallito.\nPremi per le opzioni.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Tentativo di richiesta di serializzazione all'API REST non riuscito.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2449,7 +2468,7 @@
 "Follow other sites" = "Segui altri siti";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
+"Follow your favorite sites and discover new reads." = "Segui i tuoi siti preferiti e scopri nuove letture.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2710,7 +2729,7 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Aiuto e supporto";
 
 /* No comment provided by engineer. */
-"Help button" = "Help button";
+"Help button" = "Pulsante di assistenza";
 
 /* No comment provided by engineer. */
 "Help icon" = "Icona della guida";
@@ -2762,7 +2781,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "Hooray!\nQuasi fatto";
 
 /* How to create story description */
-"How to create a story post" = "How to create a story post";
+"How to create a story post" = "Come creare un articolo della storia";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Mi piace";
@@ -2913,7 +2932,7 @@ translators: sample content for \"Team\" page template */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "L'installazione del primo plugin sul tuo sito può richiedere fino a 1 minuto. In questo periodo di tempo non potrai apportare modifiche al sito.";
 
 /* Stories intro header title */
-"Introducing Story Posts" = "Introducing Story Posts";
+"Introducing Story Posts" = "Introduzione agli articoli della storia";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Indirizzo del sito non valido";
@@ -2961,7 +2980,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "J.K. Rowling";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +2990,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ Jetpack";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Impostazioni Jetpack";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack non può essere installato in questo momento.";
@@ -3231,6 +3254,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "Accedi al tuo account WordPress.com con il tuo indirizzo e-mail.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Desideri disconnetterti da WordPress?";
 
@@ -3266,7 +3292,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Gestisci";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gestisci la connessione";
 
@@ -3560,6 +3587,9 @@ translators: sample content for \"Services\" page template */
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nuova voce";
 
+/* Placeholder text for password field */
+"New password" = "New password";
+
 /* Noun. The title of an item in a list. */
 "New posts" = "Nuovi articoli";
 
@@ -3824,7 +3854,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Notifiche non lette";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Now stories are for everyone";
+"Now stories are for everyone" = "Le storie ora sono per tutti";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Ora che Jetpack è installato, dobbiamo solo configurarlo. Ci vorrà solo un minuto.";
@@ -4014,11 +4044,15 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Pagina ripristinata in Programmate";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Page Settings";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blocco Interruzione di pagina. %s";
 
 /* Notice that a page with content has been created */
-"Page created" = "Page created";
+"Page created" = "Pagina creata";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Bozza pagina caricata";
@@ -4122,7 +4156,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Scegli il nome utente";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
+"Pick your favorite homepage layout. You can customize or change it later" = "Scegli il layout che preferisci per la tua homepage. Puoi personalizzarlo o modificarlo in un secondo momento.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Piano";
@@ -4391,7 +4425,7 @@ translators: sample content for \"Services\" page template */
 /* Displays the Post Preview Interface
    Section title for related posts section preview
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a static content. */
 "Preview" = "Anteprima";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4965,10 +4999,10 @@ translators: sample content for \"Services\" page template */
 "Scheduling..." = "Programmo...";
 
 /* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrollable block menu closed.";
+"Scrollable block menu closed." = "Menu del blocco a scorrimento chiuso.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+"Scrollable block menu opened. Select a block." = "Menu del blocco a scorrimento aperto. Seleziona un blocco.";
 
 /* Placeholder text for the search bar
    Search
@@ -5019,15 +5053,14 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Testo sicuro";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Sicurezza";
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Visualizza tutti";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"See comments and notifications in real time." = "See comments and notifications in real time.";
+"See comments and notifications in real time." = "Vedi i commenti e le notifiche in tempo reale.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Seleziona";
@@ -5205,9 +5238,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Impostazione del tema";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "Impostazioni";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5376,6 +5409,9 @@ translators: sample content for \"Services\" page template */
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirect del sito";
 
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Site Settings";
+
 /* Default title for a site
    Label for site title blog setting
    Site info. Title
@@ -5421,13 +5457,14 @@ translators: sample content for \"Services\" page template */
 "Sites (%lu)" = "Siti (%lu)";
 
 /* A suggestion of topics the user might */
-"Sites to follow" = "Sites to follow";
+"Sites to follow" = "Siti da seguire";
 
 /* Image size option title. */
 "Size" = "Dimensione";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "Salta";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5594,10 +5631,10 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "Ferma il caricamento";
 
 /* Create new Story button title */
-"Story post" = "Story post";
+"Story post" = "Articolo della storia";
 
 /* Second story intro item description */
-"Story posts don't disappear" = "Story posts don't disappear";
+"Story posts don't disappear" = "Gli articoli della storia non scompaiono";
 
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategia";
@@ -6079,7 +6116,7 @@ translators: sample content for \"Services\" page template */
 "There's a restore currently in progress, please wait before starting next one" = "Al momento è in corso un ripristino, attendi prima di iniziare il prossimo";
 
 /* Second story intro item description */
-"They're published as a new blog post on your site so your audience never misses out on a thing." = "They're published as a new blog post on your site so your audience never misses out on a thing.";
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "Vengono pubblicati come un nuovo articolo del blog sul sito, quindi il pubblico non perderà mai nulla.";
 
 /* Insights 'This Year' header */
 "This Year" = "Quest'anno";
@@ -6805,7 +6842,7 @@ translators: sample content for \"Services\" page template */
 "Watch readers from around the world read and interact with your site — in real time." = "Guarda i lettori da tutto il mondo leggere e interagire con il tuo sito, in tempo reale.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+"Watch your audience grow with in-depth analytics." = "Guarda il tuo pubblico crescere con analisi approfondite.";
 
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Abbiamo un piccolo team di professionisti di talento con una vasta gamma di competenze ed esperienze. Amiamo il nostro lavoro e lo facciamo con passione. Non vediamo l'ora di lavorare con te.";
@@ -6814,7 +6851,7 @@ translators: sample content for \"Services\" page template */
 "We are having trouble loading data" = "Stiamo riscontrando difficoltà con il caricamento dei dati";
 
 /* No comment provided by engineer. */
-"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
+"We are working hard to add more blocks with each release." = "Stiamo lavorando duramente per aggiungere più blocchi con ogni versione.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Impossibile completare questa azione e pubblicare questa pagina.";
@@ -7021,7 +7058,7 @@ translators: sample content for \"Services\" page template */
 "Welcome to the Reader" = "Benvenuto al Reader";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "Welcome to the world’s most popular website builder.";
+"Welcome to the world’s most popular website builder." = "Benvenuto nel costruttore di siti web più popolare del mondo.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Ovest";
@@ -7100,7 +7137,7 @@ translators: sample content for \"Services\" page template */
 "Will not be publicly displayed." = "Non sarà mostrato pubblicamente.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"With this powerful editor you can post on the go." = "With this powerful editor you can post on the go.";
+"With this powerful editor you can post on the go." = "Con questo editor potente puoi pubblicare anche durante i tuoi spostamenti.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Impostazioni dell’app WordPress";
@@ -7335,7 +7372,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "È tutto aggiornato!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
+"You've got early access to story posts and we'd love for you to give it a try." = "Hai accesso anticipato agli articoli della storia e ci piacerebbe che tu provassi questa funzionalità.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Hai apportato modifiche non salvate a questo articolo";
