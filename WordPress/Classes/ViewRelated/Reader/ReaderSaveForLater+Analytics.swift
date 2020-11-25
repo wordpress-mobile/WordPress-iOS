@@ -70,12 +70,6 @@ extension ReaderSaveForLaterAction {
     }
 }
 
-extension ReaderMenuViewController {
-    func trackSavedPostsNavigation() {
-        WPAnalytics.track(.readerSavedListShown, properties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue ])
-    }
-}
-
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
         if contentType == .saved {
