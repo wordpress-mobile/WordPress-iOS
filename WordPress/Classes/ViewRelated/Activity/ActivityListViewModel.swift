@@ -21,6 +21,8 @@ class ActivityListViewModel: Observable {
 
     private let count = 20
     private var offset = 0
+    private var after: Date?
+    private var before: Date?
 
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
@@ -52,14 +54,17 @@ class ActivityListViewModel: Observable {
         refreshing = store.isFetching(site: site)
     }
 
-    public func refresh() {
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: nil, beforeDate: nil))
+    public func refresh(after: Date? = nil, before: Date? = nil) {
+        self.after = after
+        self.before = before
+
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before))
     }
 
     public func loadMore() {
         if !store.isFetching(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: nil, beforeDate: nil))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before))
         }
     }
 
