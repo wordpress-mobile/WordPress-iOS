@@ -59,7 +59,7 @@ class ActivityListViewModel: Observable {
     public func loadMore() {
         if !store.isFetching(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: nil, beforeDate: nil))
         }
     }
 

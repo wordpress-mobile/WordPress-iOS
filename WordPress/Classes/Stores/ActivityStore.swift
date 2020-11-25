@@ -6,7 +6,7 @@ import WordPressFlux
 
 enum ActivityAction: Action {
     case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?)
-    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int)
+    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?)
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
 
@@ -151,8 +151,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         switch activityAction {
         case .receiveActivities(let site, let activities, let hasMore, let loadingMore):
             receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore)
-        case .loadMoreActivities(let site, let quantity, let offset):
-            loadMoreActivities(site: site, quantity: quantity, offset: offset)
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
+            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
         case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
@@ -247,12 +247,12 @@ private extension ActivityStore {
         fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate)
     }
 
-    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int) {
+    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?) {
         guard !isFetching(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, offset: offset)
+        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {

@@ -28,7 +28,7 @@ class ActivityStoreTests: XCTestCase {
     func testRefreshActivities() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         let afterDate = Date()
-        let beforeDate = Date.init(timeIntervalSinceNow: 86400)
+        let beforeDate = Date(timeIntervalSinceNow: 86400)
 
         dispatch(.refreshActivities(site: jetpackSiteRef, quantity: 10, afterDate: afterDate, beforeDate: beforeDate))
 
@@ -40,12 +40,16 @@ class ActivityStoreTests: XCTestCase {
     //
     func testLoadMoreActivities() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        let afterDate = Date()
+        let beforeDate = Date(timeIntervalSinceNow: 86400)
 
-        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20))
+        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: afterDate, beforeDate: beforeDate))
 
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithSiteID, 9)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithCount, 10)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithOffset, 20)
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithAfterDate, afterDate)
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithBeforeDate, beforeDate)
     }
 
     // Check if loadMoreActivities keep the activies and add the new retrieved ones
@@ -56,7 +60,7 @@ class ActivityStoreTests: XCTestCase {
         activityServiceMock.activitiesToReturn = [Activity.mock(), Activity.mock()]
         activityServiceMock.hasMore = true
 
-        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20))
+        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil))
 
         XCTAssertEqual(store.state.activities[jetpackSiteRef]?.count, 3)
         XCTAssertTrue(store.state.hasMore)

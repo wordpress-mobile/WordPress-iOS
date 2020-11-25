@@ -65,7 +65,7 @@ class ActivityStoreMock: ActivityStore {
         }
 
         switch activityAction {
-        case .loadMoreActivities(let site, let quantity, let offset):
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
             dispatchedAction = "loadMoreActivities"
             self.site = site
             self.quantity = quantity
