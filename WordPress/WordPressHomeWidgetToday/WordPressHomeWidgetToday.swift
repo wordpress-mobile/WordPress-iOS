@@ -50,18 +50,17 @@ private extension Provider {
             case .failure(let error):
                 DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
             case .success(let widgetData):
-                entry = widgetData
+
                 DispatchQueue.global().async {
                     // update the item in the local cache
                     HomeWidgetTodayData.setItem(item: entry)
                 }
+                entry = widgetData
             }
 
             let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
             completion(timeline)
         }
-
-
     }
 
     private var defaultSiteID: Int? {
