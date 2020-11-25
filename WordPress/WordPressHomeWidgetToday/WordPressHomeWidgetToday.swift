@@ -57,6 +57,7 @@ private extension Provider {
         // we should define what to put in here
         static let staticContent = HomeWidgetTodayData(siteID: 0,
                                                        siteName: "Places you should visit",
+                                                       iconURL: nil,
                                                        url: "",
                                                        timeZoneName: "GMT",
                                                        date: Date(),

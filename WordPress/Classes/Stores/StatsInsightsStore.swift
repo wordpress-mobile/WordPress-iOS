@@ -1014,6 +1014,7 @@ private extension InsightStoreState {
         // refresh stats and update any blog info, if they had changed
         homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                            siteName: blog.title ?? oldData.siteName,
+                                                           iconURL: blog.icon ?? oldData.iconURL,
                                                            url: blog.url ?? oldData.url,
                                                            timeZoneName: blogService.timeZone(for: blog).identifier,
                                                            date: Date(),
@@ -1037,11 +1038,12 @@ private extension InsightStoreState {
                 let timeZoneName = blogService.timeZone(for: blog).identifier
 
                 result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZoneName: timeZoneName,
-                                                                  date: Date(),
-                                                                  stats: TodayWidgetStats())
+                                                              siteName: title,
+                                                              iconURL: blog.icon,
+                                                              url: url,
+                                                              timeZoneName: timeZoneName,
+                                                              date: Date(),
+                                                              stats: TodayWidgetStats())
             }
         }
     }

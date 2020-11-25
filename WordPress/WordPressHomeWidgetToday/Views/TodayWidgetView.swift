@@ -38,7 +38,6 @@ extension TodayWidgetView {
         static let visitorsTitle: LocalizedStringKey = "Visitors"
         static let likesTitle: LocalizedStringKey = "Likes"
         static let commentsTitle: LocalizedStringKey = "Comments"
-
     }
 }
 
@@ -46,6 +45,7 @@ struct TodayWidgetView_Previews: PreviewProvider {
     // TODO - TODAYWIDGET: this has been added here for preview purposes only. 
     static let staticContent = HomeWidgetTodayData(siteID: 0,
                                                    siteName: "Places you should visit",
+                                                   iconURL: nil,
                                                    url: "",
                                                    timeZoneName: "GMT",
                                                    date: Date(),

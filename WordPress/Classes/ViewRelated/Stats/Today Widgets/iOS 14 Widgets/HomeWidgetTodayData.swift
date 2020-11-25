@@ -23,6 +23,7 @@ struct HomeWidgetTodayData: HomeWidgetData {
 
     let siteID: Int
     let siteName: String
+    let iconURL: String?
     let url: String
     let timeZoneName: String
     let date: Date
