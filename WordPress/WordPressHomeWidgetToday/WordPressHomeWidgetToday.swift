@@ -3,8 +3,9 @@ import SwiftUI
 
 
 struct Provider: TimelineProvider {
-    // TODO - TODAYWIDGET: Kept these methods simple on purpose, for now.
-    // They might complicate depending on Context
+
+    let service = HomeWidgetTodayRemoteService()
+
     func placeholder(in context: Context) -> HomeWidgetTodayData {
         Constants.staticContent
     }
@@ -31,10 +32,30 @@ private extension Provider {
         let date = Date()
         let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date) ?? date
 
-        let entry = widgetData ?? Constants.staticContent
+        var entry = widgetData ?? Constants.staticContent
 
-        let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
-        completion(timeline)
+        let elapsedTime = Calendar.current.dateComponents([.minute], from: date, to: entry.date).minute ?? 0
+
+        guard elapsedTime > Constants.minElapsedTimeToRefresh else {
+            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
+            completion(timeline)
+            return
+        }
+
+        service.fetchStats(for: entry) {
+
+            switch $0 {
+            case .failure(let error):
+                DDLogError("TODAY WIDGET: ERROR \(error.localizedDescription)")
+            case .success(let data):
+                entry = data
+            }
+
+            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
+            completion(timeline)
+        }
+
+
     }
 
     private var defaultSiteID: Int? {
@@ -66,6 +87,8 @@ private extension Provider {
                                                                                comments: 5))
         // refresh interval of the widget, in minutes
         static let refreshInterval = 60
+        // minimum elapsed time, in minutes, between the current date and a cached date to trigger a remote fetch
+        static let minElapsedTimeToRefresh = 10
     }
 }
 
