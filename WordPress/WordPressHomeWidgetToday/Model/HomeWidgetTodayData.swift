@@ -27,13 +27,13 @@ extension HomeWidgetTodayData {
         }
     }
 
-    static func write(data: [Int: HomeWidgetTodayData], to cache: HomeWidgetCache<Self>? = nil) {
+    static func write(items: [Int: HomeWidgetTodayData], to cache: HomeWidgetCache<Self>? = nil) {
 
         let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
                                                                   appGroup: WPAppGroupName)
 
         do {
-            try cache.write(widgetData: data)
+            try cache.write(items: items)
         } catch {
             DDLogError("HomeWidgetToday: Failed writing data: \(error.localizedDescription)")
         }
@@ -48,6 +48,18 @@ extension HomeWidgetTodayData {
         } catch {
             DDLogError("HomeWidgetToday: Failed deleting data: \(error.localizedDescription)")
         }
+    }
+
+    static func setItem(item: HomeWidgetTodayData, to cache: HomeWidgetCache<Self>? = nil) {
+        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+                                                                  appGroup: WPAppGroupName)
+
+        do {
+            try cache.setItem(item: item)
+        } catch {
+            DDLogError("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
+        }
+
     }
 }
 

@@ -1008,7 +1008,7 @@ private extension InsightStoreState {
             DDLogError("HomeWidgetToday: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
             homeWidgetTodayCache.removeValue(forKey: siteID.intValue)
-            HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+            HomeWidgetTodayData.write(items: homeWidgetTodayCache)
             return
         }
         // refresh stats and update any blog info, if they had changed
@@ -1019,7 +1019,7 @@ private extension InsightStoreState {
                                                            date: Date(),
                                                            stats: stats)
 
-        HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+        HomeWidgetTodayData.write(items: homeWidgetTodayCache)
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
     }
 

@@ -21,7 +21,7 @@ class HomeWidgetTodayRemoteService {
     private var state: State = .ready
 
 
-    func fetchStats(for data: HomeWidgetTodayData,
+    func fetchStats(for widgetData: HomeWidgetTodayData,
                     completion: @escaping (Result<HomeWidgetTodayData, Error>) -> Void) {
 
         guard !state.isLoading else {
@@ -35,7 +35,7 @@ class HomeWidgetTodayRemoteService {
                                                                      accessGroup: WPAppKeychainAccessGroup)
 
             let wpApi = WordPressComRestApi(oAuthToken: token)
-            let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: data.siteID, siteTimezone: data.timeZone)
+            let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
 
             service.getInsight { [weak self] (insight: StatsTodayInsight?, error) in
                 guard let self = self else {
@@ -54,16 +54,16 @@ class HomeWidgetTodayRemoteService {
                     return
                 }
 
-                let widgetData = HomeWidgetTodayData(siteID: data.siteID,
-                                                     siteName: data.siteName,
-                                                     url: data.url,
-                                                     timeZone: data.timeZone,
-                                                     date: Date(),
-                                                     stats: TodayWidgetStats(views: insight.viewsCount,
-                                                                             visitors: insight.visitorsCount,
-                                                                             likes: insight.likesCount,
-                                                                             comments: insight.commentsCount))
-                completion(.success(widgetData))
+                let newWidgetData = HomeWidgetTodayData(siteID: widgetData.siteID,
+                                                        siteName: widgetData.siteName,
+                                                        url: widgetData.url,
+                                                        timeZone: widgetData.timeZone,
+                                                        date: Date(),
+                                                        stats: TodayWidgetStats(views: insight.viewsCount,
+                                                                                visitors: insight.visitorsCount,
+                                                                                likes: insight.likesCount,
+                                                                                comments: insight.commentsCount))
+                completion(.success(newWidgetData))
                 self.state = .ready
             }
         } catch {

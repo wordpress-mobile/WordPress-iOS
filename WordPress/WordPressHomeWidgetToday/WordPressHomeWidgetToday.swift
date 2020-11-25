@@ -34,21 +34,27 @@ private extension Provider {
 
         var entry = widgetData ?? Constants.staticContent
 
-        let elapsedTime = Calendar.current.dateComponents([.minute], from: date, to: entry.date).minute ?? 0
+        let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: entry.date, to: date).minute ?? 0)
 
+        // if cached data are "too old", refresh them from the backend, otherwise keep them
         guard elapsedTime > Constants.minElapsedTimeToRefresh else {
+
             let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
             completion(timeline)
             return
         }
 
-        service.fetchStats(for: entry) {
+        service.fetchStats(for: entry) { result in
 
-            switch $0 {
+            switch result {
             case .failure(let error):
                 DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-            case .success(let data):
-                entry = data
+            case .success(let widgetData):
+                entry = widgetData
+                DispatchQueue.global().async {
+                    // update the item in the local cache
+                    HomeWidgetTodayData.setItem(item: entry)
+                }
             }
 
             let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
@@ -87,7 +93,7 @@ private extension Provider {
                                                                                comments: 5))
         // refresh interval of the widget, in minutes
         static let refreshInterval = 60
-        // minimum elapsed time, in minutes, between the current date and a cached date to trigger a remote fetch
+        // minimum elapsed time, in minutes, before new data are fetched from the backend.
         static let minElapsedTimeToRefresh = 10
     }
 }
