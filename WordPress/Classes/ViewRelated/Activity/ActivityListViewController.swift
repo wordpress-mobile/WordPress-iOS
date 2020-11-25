@@ -74,7 +74,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     @objc private func showCalendar() {
-        let calendarViewController = CalendarViewController()
+        let calendarViewController = CalendarViewController(startDate: viewModel.after, endDate: viewModel.before)
         calendarViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: calendarViewController)
         present(navigationController, animated: true, completion: nil)
@@ -122,7 +122,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh()
+        viewModel.refresh(after: viewModel.after, before: viewModel.before)
     }
 
     func refreshModel() {
@@ -345,11 +345,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
-        guard let startDate = startDate, let endDate = endDate else {
-            return
-        }
-
-        print("Start date: \(startDate) - End Date: \(endDate)")
+        viewModel.refresh(after: startDate, before: endDate)
         calendar.dismiss(animated: true, completion: nil)
     }
 }

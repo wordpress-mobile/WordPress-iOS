@@ -21,8 +21,8 @@ class ActivityListViewModel: Observable {
 
     private let count = 20
     private var offset = 0
-    private var after: Date?
-    private var before: Date?
+    private(set) var after: Date?
+    private(set) var before: Date?
 
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
