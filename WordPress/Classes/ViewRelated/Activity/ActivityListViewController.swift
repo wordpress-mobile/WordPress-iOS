@@ -12,6 +12,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     var changeReceipt: Receipt?
     var isUserTriggeredRefresh: Bool = false
 
+    let containerStackView = UIStackView()
+    let filterStackView = UIStackView()
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
 
@@ -49,14 +51,33 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             self?.refreshModel()
         }
 
-        view.addSubview(tableView)
+        view.addSubview(containerStackView)
+        containerStackView.axis = .vertical
 
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(tableView)
+        if FeatureFlag.activityLogFilters.enabled {
+            let label = UIButton.init(type: .system)
+            label.setTitle("Filter range", for: .normal)
+            label.addTarget(self, action: #selector(showCalendar), for: .touchUpInside)
+            containerStackView.addArrangedSubview(filterStackView)
+            filterStackView.addArrangedSubview(label)
+        }
 
+        containerStackView.addArrangedSubview(tableView)
+
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(containerStackView)
+
+        tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
+    }
+
+    @objc private func showCalendar() {
+        let calendarViewController = CalendarViewController()
+        calendarViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: calendarViewController)
+        present(navigationController, animated: true, completion: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -75,15 +96,6 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     // MARK: - View lifecycle
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        let calendarViewController = CalendarViewController()
-        calendarViewController.delegate = self
-        let navigationController = UINavigationController(rootViewController: calendarViewController)
-        present(navigationController, animated: true, completion: nil)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
