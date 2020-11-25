@@ -55,11 +55,20 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         containerStackView.axis = .vertical
 
         if FeatureFlag.activityLogFilters.enabled {
+            let scrollView = UIScrollView()
             let label = UIButton.init(type: .system)
             label.setTitle("Filter range", for: .normal)
             label.addTarget(self, action: #selector(showCalendar), for: .touchUpInside)
-            containerStackView.addArrangedSubview(filterStackView)
             filterStackView.addArrangedSubview(label)
+            scrollView.addSubview(filterStackView)
+            containerStackView.addArrangedSubview(scrollView)
+            filterStackView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+                filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+                filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
+            ])
         }
 
         containerStackView.addArrangedSubview(tableView)
