@@ -46,7 +46,7 @@ private extension Provider {
 
             switch $0 {
             case .failure(let error):
-                DDLogError("TODAY WIDGET: ERROR \(error.localizedDescription)")
+                DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
             case .success(let data):
                 entry = data
             }
