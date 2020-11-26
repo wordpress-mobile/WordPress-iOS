@@ -37,6 +37,10 @@ class ActivityListViewModel: Observable {
         store.state.hasMore
     }
 
+    var dateFilterIsActive: Bool {
+        return after != nil || before != nil
+    }
+
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
         self.site = site
         self.store = store
@@ -122,6 +126,24 @@ class ActivityListViewModel: Observable {
         // showing plugin updates/CTA's and other things like this.
     }
 
+    func dateRangeDescription() -> String? {
+        guard after != nil || before != nil else {
+            return nil
+        }
+
+        var formattedDateRanges: [String] = []
+
+        if let after = after {
+            formattedDateRanges.append(dateFormatter.string(from: after))
+        }
+
+        if let before = before {
+            formattedDateRanges.append(dateFormatter.string(from: before))
+        }
+
+        return formattedDateRanges.joined(separator: " - ")
+    }
+
     private func restoreStatusSection() -> ImmuTableSection? {
         guard let restore = store.getRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
@@ -173,5 +195,11 @@ class ActivityListViewModel: Observable {
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
+    }()
+
+    lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d")
+        return dateFormatter
     }()
 }

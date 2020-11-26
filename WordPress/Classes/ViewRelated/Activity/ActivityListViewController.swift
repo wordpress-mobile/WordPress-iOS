@@ -13,7 +13,10 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     var isUserTriggeredRefresh: Bool = false
 
     let containerStackView = UIStackView()
+
     let filterStackView = UIStackView()
+    let dateFilterChip = FilterChipButton()
+
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
 
@@ -55,20 +58,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         containerStackView.axis = .vertical
 
         if FeatureFlag.activityLogFilters.enabled {
-            let scrollView = UIScrollView()
-            let label = UIButton.init(type: .system)
-            label.setTitle("Filter range", for: .normal)
-            label.addTarget(self, action: #selector(showCalendar), for: .touchUpInside)
-            filterStackView.addArrangedSubview(label)
-            scrollView.addSubview(filterStackView)
-            containerStackView.addArrangedSubview(scrollView)
-            filterStackView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-                filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
-            ])
+            setupFilterBar()
         }
 
         containerStackView.addArrangedSubview(tableView)
@@ -138,6 +128,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
+        updateFilters()
     }
 
     private func updateRefreshControl() {
@@ -154,6 +145,43 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         default:
             tableView.tableFooterView?.isHidden = true
             break
+        }
+    }
+
+    private func updateFilters() {
+        if viewModel.dateFilterIsActive {
+            dateFilterChip.enableResetButton()
+            dateFilterChip.title = viewModel.dateRangeDescription()
+        } else {
+            dateFilterChip.disableResetButton()
+            dateFilterChip.title = "Date Range"
+        }
+    }
+
+    private func setupFilterBar() {
+        let scrollView = UIScrollView()
+        filterStackView.addArrangedSubview(dateFilterChip)
+        scrollView.addSubview(filterStackView)
+        containerStackView.addArrangedSubview(scrollView)
+        filterStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
+        ])
+
+        setupDateFilter()
+    }
+
+    private func setupDateFilter() {
+        dateFilterChip.tapped = { [weak self] in
+            self?.showCalendar()
+        }
+
+        dateFilterChip.resetTapped = { [weak self] in
+            self?.viewModel.refresh()
+            self?.dateFilterChip.disableResetButton()
         }
     }
 
