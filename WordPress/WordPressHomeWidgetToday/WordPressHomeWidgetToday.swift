@@ -78,19 +78,19 @@ struct SiteListProvider: IntentTimelineProvider {
         // This will be updated with the configuration intent.
         UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
     }
-    
+
     private func widgetData(for siteID: String) -> HomeWidgetTodayData? {
         // TODO - TODAYWIDGET: we might change this, but for now an ID equal to zero should not return any valid data
         //HomeWidgetTodayData.read()?[siteID ?? 0]
-        
+
         /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
         guard let siteID = Int(siteID) else {
             return nil
         }
-        
+
         return HomeWidgetTodayData.read()?[siteID]
     }
-    
+
     // TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
     // we should define what to put in here
     static let staticContent = HomeWidgetTodayData(siteID: 0,
@@ -103,41 +103,41 @@ struct SiteListProvider: IntentTimelineProvider {
                                                                            visitors: 4208,
                                                                            likes: 107,
                                                                            comments: 5))
-    
+
     // refresh interval of the widget, in minutes
     static let refreshInterval = 60
-    
+
     func placeholder(in context: Context) -> HomeWidgetTodayData {
         Self.staticContent
     }
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (HomeWidgetTodayData) -> Void) {
-        
+
         /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
         ///
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
-            
+
             completion(Self.staticContent)
             return
         }
-        
+
         completion(widgetData)
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<HomeWidgetTodayData>) -> Void) {
-        
+
         /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
         ///
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
-            
+
             completion(Timeline(entries: [Self.staticContent], policy: .never))
             return
         }
-        
+
         let date = Date()
         let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Self.refreshInterval, to: date) ?? date
 

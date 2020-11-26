@@ -3,16 +3,16 @@ import IntentsUI
 
 class SitesDataProvider {
     private(set) var sites = [Site]()
-    
+
     init() {
         initializeSites()
     }
-    
+
     var defaultSite: Site {
         // TODO: return the default site correctly... this is lazy :P
         sites[0]
     }
-    
+
     private func initializeSites() {
         guard let data = HomeWidgetTodayData.read() else {
             sites = []
@@ -29,7 +29,7 @@ class SitesDataProvider {
                 image: icon)
         }
     }
-    
+
     // MARK: - Site Icons
 
     private func icon(from data: HomeWidgetTodayData) -> INImage {
@@ -47,7 +47,7 @@ class SitesDataProvider {
 class IntentHandler: INExtension, SelectSiteIntentHandling {
 
     let sitesDataProvider = SitesDataProvider()
-    
+
     // MARK: - INIntentHandlerProviding
 
     override func handler(for intent: INIntent) -> Any {
