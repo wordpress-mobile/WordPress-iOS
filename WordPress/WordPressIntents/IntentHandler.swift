@@ -1,32 +1,25 @@
 import Intents
 import IntentsUI
 
-class IntentHandler: INExtension, SelectSiteIntentHandling {
-
-    // MARK: - INIntentHandlerProviding
-
-    override func handler(for intent: INIntent) -> Any {
-        return self
+class SitesDataProvider {
+    private(set) var sites = [Site]()
+    
+    init() {
+        initializeSites()
     }
-
-    // MARK: - SelectSiteIntentHandling
-
-    func defaultSite(for intent: SelectSiteIntent) -> Site? {
-        return nil
+    
+    var defaultSite: Site {
+        // TODO: return the default site correctly... this is lazy :P
+        sites[0]
     }
-
-    func resolveSite(for intent: SelectSiteIntent, with completion: @escaping (SiteResolutionResult) -> Void) {
-        // Not sure yet what this is for... but we can't remove it because it causes a build error.
-        // - diegoreymendez
-    }
-
-    func provideSiteOptionsCollection(for intent: SelectSiteIntent, with completion: @escaping (INObjectCollection<Site>?, Error?) -> Void) {
-
+    
+    private func initializeSites() {
         guard let data = HomeWidgetTodayData.read() else {
+            sites = []
             return
         }
 
-        let sites = data.map { (key: Int, data: HomeWidgetTodayData) -> Site in
+        sites = data.map { (key: Int, data: HomeWidgetTodayData) -> Site in
             let icon = self.icon(from: data)
 
             return Site(
@@ -35,13 +28,9 @@ class IntentHandler: INExtension, SelectSiteIntentHandling {
                 subtitle: nil,
                 image: icon)
         }
-
-        let sitesCollection = INObjectCollection<Site>(items: sites)
-
-        completion(sitesCollection, nil)
     }
-
-    // MARK: - Site Image
+    
+    // MARK: - Site Icons
 
     private func icon(from data: HomeWidgetTodayData) -> INImage {
         guard let iconURL = data.iconURL,
@@ -52,5 +41,33 @@ class IntentHandler: INExtension, SelectSiteIntentHandling {
         }
 
         return image
+    }
+}
+
+class IntentHandler: INExtension, SelectSiteIntentHandling {
+
+    let sitesDataProvider = SitesDataProvider()
+    
+    // MARK: - INIntentHandlerProviding
+
+    override func handler(for intent: INIntent) -> Any {
+        return self
+    }
+
+    // MARK: - SelectSiteIntentHandling
+
+    func defaultSite(for intent: SelectSiteIntent) -> Site? {
+        return sitesDataProvider.defaultSite
+    }
+
+    func resolveSite(for intent: SelectSiteIntent, with completion: @escaping (SiteResolutionResult) -> Void) {
+        // Not sure yet what this is for... but we can't remove it because it causes a build error.
+        // - diegoreymendez
+    }
+
+    func provideSiteOptionsCollection(for intent: SelectSiteIntent, with completion: @escaping (INObjectCollection<Site>?, Error?) -> Void) {
+        let sitesCollection = INObjectCollection<Site>(items: sitesDataProvider.sites)
+
+        completion(sitesCollection, nil)
     }
 }

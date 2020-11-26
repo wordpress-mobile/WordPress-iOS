@@ -1,7 +1,7 @@
 import WidgetKit
 import SwiftUI
 
-
+/*
 struct Provider: TimelineProvider {
     // TODO - TODAYWIDGET: Kept these methods simple on purpose, for now.
     // They might complicate depending on Context
@@ -68,35 +68,80 @@ private extension Provider {
         // refresh interval of the widget, in minutes
         static let refreshInterval = 60
     }
-}
+}*/
 
 struct SiteListProvider: IntentTimelineProvider {
 
-    struct SiteDetailEntry: TimelineEntry {
-        var date: Date
-        var name: String
+    private var defaultSiteID: Int? {
+        // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
+        // This would change if the old widget gets reconfigured to a different site than the default.
+        // This will be updated with the configuration intent.
+        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
+    }
+    
+    private func widgetData(for siteID: String) -> HomeWidgetTodayData? {
+        // TODO - TODAYWIDGET: we might change this, but for now an ID equal to zero should not return any valid data
+        //HomeWidgetTodayData.read()?[siteID ?? 0]
+        
+        /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
+        guard let siteID = Int(siteID) else {
+            return nil
+        }
+        
+        return HomeWidgetTodayData.read()?[siteID]
+    }
+    
+    // TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
+    // we should define what to put in here
+    static let staticContent = HomeWidgetTodayData(siteID: 0,
+                                                   siteName: "Places you should visit",
+                                                   iconURL: nil,
+                                                   url: "",
+                                                   timeZoneName: "GMT",
+                                                   date: Date(),
+                                                   stats: TodayWidgetStats(views: 5980,
+                                                                           visitors: 4208,
+                                                                           likes: 107,
+                                                                           comments: 5))
+    
+    // refresh interval of the widget, in minutes
+    static let refreshInterval = 60
+    
+    func placeholder(in context: Context) -> HomeWidgetTodayData {
+        Self.staticContent
     }
 
-    func placeholder(in context: Context) -> SiteDetailEntry {
-        SiteDetailEntry(date: Date(), name: "Ahoi")
+    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (HomeWidgetTodayData) -> Void) {
+        
+        /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
+        ///
+        guard let site = configuration.site,
+              let siteIdentifier = site.identifier,
+              let widgetData = widgetData(for: siteIdentifier) else {
+            
+            completion(Self.staticContent)
+            return
+        }
+        
+        completion(widgetData)
     }
 
-    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (SiteDetailEntry) -> Void) {
-        completion(SiteDetailEntry(date: Date(), name: "Ahoi"))
-    }
+    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<HomeWidgetTodayData>) -> Void) {
+        
+        /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
+        ///
+        guard let site = configuration.site,
+              let siteIdentifier = site.identifier,
+              let widgetData = widgetData(for: siteIdentifier) else {
+            
+            completion(Timeline(entries: [Self.staticContent], policy: .never))
+            return
+        }
+        
+        let date = Date()
+        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Self.refreshInterval, to: date) ?? date
 
-    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<SiteDetailEntry>) -> Void) {
-
-        // Access the customized properties of the intent.
-        let sites = [
-            SiteDetailEntry(date: Date(), name: "Antonio"),
-            SiteDetailEntry(date: Date(), name: "Ruben"),
-        ]
-
-        // Create the timeline and call the completion handler. The .never reload
-        // policy indicates that the containing app will use WidgetCenter methods
-        // to reload the widget's timeline when the details change.
-        let timeline = Timeline(entries: sites, policy: .never)
+        let timeline = Timeline(entries: [widgetData], policy: .after(nextRefreshDate))
         completion(timeline)
     }
 }
@@ -111,7 +156,7 @@ struct WordPressHomeWidgetToday: Widget {
             intent: SelectSiteIntent.self,
             provider: SiteListProvider()
         ) { entry in
-            TodayWidgetView(content: Provider.Constants.staticContent)
+            TodayWidgetView(content: entry)
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")
