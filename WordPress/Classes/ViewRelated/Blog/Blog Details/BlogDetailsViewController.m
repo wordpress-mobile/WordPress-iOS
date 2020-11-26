@@ -1339,9 +1339,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
         return [self quickStartHeaderWithTitle:section.title];
-    } else {
-        return nil;
+    } else if (sectionNum == 0 && [self.blog supports:BlogFeatureJetpackSettings]) {
+        // Jetpack header shouldn't have any padding
+        BlogDetailsSectionHeaderView *headerView = (BlogDetailsSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+        headerView.ellipsisButton.hidden = YES;
+        headerView.title = @"";
+        return headerView;
     }
+
+    return nil;
 }
 
 - (UIView *)quickStartHeaderWithTitle:(NSString *)title
