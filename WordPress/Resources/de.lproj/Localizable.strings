@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-24 19:29:31+0000 */
+/* Translation-Revision-Date: 2020-11-26 18:44:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -6458,7 +6458,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 post" = "1 Beitrag konnten nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 post, %ld files" = "1 Beitrag, &Id Datei konnten nicht hochgeladen werden";
+"Unable to upload 1 post, %ld files" = "1 Beitrag, %Id Dateien konnten nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "1 Beitrag, 1 Datei konnten nicht hochgeladen werden";

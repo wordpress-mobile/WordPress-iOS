@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 00:22:35+0000 */
+/* Translation-Revision-Date: 2020-11-26 16:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -365,7 +365,7 @@
 "Activity" = "Attività";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "Log attività";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "I log di attività";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "Scegli un'ora";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "Scegli design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Scegli il dominio";
@@ -1186,7 +1186,7 @@
 "Choose images" = "Scegli immagini";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "Scegli layout";
 
 /* No comment provided by engineer. */
 "Choose video" = "Scegli video";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "Eliminazione...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "Nega";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2366,13 +2366,13 @@
 "Failed to insert media.\nPlease tap for options." = "Inserimento media fallito.\nPremi per le opzioni.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "Impossibile salvare i file.\nTocca per le opzioni.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Tentativo di richiesta di serializzazione all'API REST non riuscito.";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "Impossibile caricare i file.\nTocca per le opzioni.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";

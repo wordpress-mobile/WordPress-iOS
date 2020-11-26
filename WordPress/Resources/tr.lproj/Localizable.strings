@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 14:54:10+0000 */
+/* Translation-Revision-Date: 2020-11-26 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -365,7 +365,7 @@
 "Activity" = "Etkinlik";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "Etkinlik günlüğü";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Etkinlik kütükleri";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "Saat seçin";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "Tasarım seç";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Alan adını seç";
@@ -1186,7 +1186,7 @@
 "Choose images" = "Görsel seç";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "Düzen seç";
 
 /* No comment provided by engineer. */
 "Choose video" = "Video seç";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "Siliniyor...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "Reddet";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2366,13 +2366,13 @@
 "Failed to insert media.\nPlease tap for options." = "Ortam ekleme başarısız.\nSeçenekler için dokunun.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "Dosyalar kaydedilemedi.\nSeçenekler için lütfen dokunun.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API isteği serileştirmesi başarısız oldu.";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "Dosyalar yüklenemedi.\nSeçenekler için lütfen dokunun.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2992,7 +2992,7 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "Jetpack SSS";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
+"Jetpack Settings" = "Jetpack ayarları";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack şu anda yüklenemiyor.";
@@ -3255,7 +3255,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "E-posta adresinizle WordPress.com hesabınızda oturum açın.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "WordPress.com kullanıcı adı ve şifreniz ile oturum açın.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "WordPress'den çıkış yapmak ister misiniz?";
@@ -3588,7 +3588,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "Yeni öge";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "Yeni parola";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Yeni yazılar";
@@ -4046,7 +4046,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "Sayfa Ayarları";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sayfa sonu bloku. %s";
@@ -5410,7 +5410,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "Site yönlendirme";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "Site Ayarları";
 
 /* Default title for a site
    Label for site title blog setting

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 16:33:18+0000 */
+/* Translation-Revision-Date: 2020-11-26 08:30:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -2276,7 +2276,7 @@
 "Error sending verification email. Check your connection and try again." = "Gabim në dërgimin e email-it të verifikimit. Kontrolloni lidhjen tuaj dhe riprovoni.";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
-"Error updating %@." = "Gabim gjatë përditësimit të @%.";
+"Error updating %@." = "Gabim gjatë përditësimit të %@.";
 
 /* Title of error dialog when updating jetpack settins fail. */
 "Error updating Jetpack settings" = "Gabim në përditësim rregullimesh Jetpack-u";

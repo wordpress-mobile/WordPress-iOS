@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 21:07:26+0000 */
+/* Translation-Revision-Date: 2020-11-26 14:50:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -640,7 +640,7 @@
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
-"App Icon" = "App icoon";
+"App Icon" = "App pictogram";
 
 /* App Settings Title
    Link to App Settings section
@@ -7387,7 +7387,7 @@ translators: sample content for \"Services\" page template */
 "Your Sites" = "Jouw sites";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
-"Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Jouw WordPress.com site ondersteunt het gebruik van Accelerated Mobile Pages, een initiatief van Google die de laadtijd versnelt op mobiele apparaten.";
+"Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Je WordPress.com site ondersteunt het gebruik van Accelerated Mobile Pages, een initiatief van Google die de laadtijd versnelt op mobiele apparaten.";
 
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Jouw account heeft geen rechten om media naar deze site te uploaden. De sitebeheerder kan deze rechten aanpassen.";
@@ -7441,7 +7441,7 @@ translators: sample content for \"Services\" page template */
 "Your site will be ready shortly" = "Je site is binnen enkele ogenblikken gereed";
 
 /* Explanatory text bellow the Disconnect from WordPress.com button */
-"Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Jouw site zal geen data meer versturen naar WordPress.com en Jetpack functies zullen niet meer werken. Je zal geen toegang meer hebben tot de site via de app en je moet deze opnieuw toevoegen met de inloggegevens van de site.";
+"Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Je site zal geen gegevens meer versturen naar WordPress.com en Jetpack functies zullen niet meer werken. Je zal geen toegang meer hebben tot de site via de app en je moet deze opnieuw toevoegen met de inloggegevens van de site.";
 
 /* Description of a Quick Start Tour */
 "Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look." = "Je bezoekers zien je pictogram in hun browser. Voeg een aangepast pictogram toe voor een stijlvolle, professionele look.";
