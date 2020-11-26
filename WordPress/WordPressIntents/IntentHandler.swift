@@ -3,12 +3,14 @@ import IntentsUI
 
 class IntentHandler: INExtension, SelectSiteIntentHandling {
 
+    // MARK: - INIntentHandlerProviding
+
     override func handler(for intent: INIntent) -> Any {
         return self
     }
-    
+
     // MARK: - SelectSiteIntentHandling
-    
+
     func defaultSite(for intent: SelectSiteIntent) -> Site? {
         return nil
     }
@@ -45,11 +47,10 @@ class IntentHandler: INExtension, SelectSiteIntentHandling {
         guard let iconURL = data.iconURL,
               let url = URL(string: iconURL),
               let image = INImage(url: url) else {
-            
+
             return INImage(named: "blavatar-default")
         }
 
         return image
     }
 }
-
