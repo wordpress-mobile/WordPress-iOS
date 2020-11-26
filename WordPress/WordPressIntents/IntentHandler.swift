@@ -1,15 +1,21 @@
 import Intents
+import IntentsUI
 
-class IntentHandler: INExtension, /* INSendMessageIntentHandling, INSearchForMessagesIntentHandling, INSetMessageAttributeIntentHandling,*/ SelectSiteIntentHandling {
+class IntentHandler: INExtension, SelectSiteIntentHandling {
 
     override func handler(for intent: INIntent) -> Any {
         return self
     }
     
     // MARK: - SelectSiteIntentHandling
+    
+    func defaultSite(for intent: SelectSiteIntent) -> Site? {
+        return nil
+    }
 
     func resolveSite(for intent: SelectSiteIntent, with completion: @escaping (SiteResolutionResult) -> Void) {
-        print("asd!")
+        // Not sure yet what this is for... but we can't remove it because it causes a build error.
+        // - diegoreymendez
     }
 
     func provideSiteOptionsCollection(for intent: SelectSiteIntent, with completion: @escaping (INObjectCollection<Site>?, Error?) -> Void) {
@@ -35,12 +41,15 @@ class IntentHandler: INExtension, /* INSendMessageIntentHandling, INSearchForMes
 
     // MARK: - Site Image
 
-    private func icon(from data: HomeWidgetTodayData) -> INImage? {
+    private func icon(from data: HomeWidgetTodayData) -> INImage {
         guard let iconURL = data.iconURL,
-              let url = URL(string: iconURL) else {
-            return nil
+              let url = URL(string: iconURL),
+              let image = INImage(url: url) else {
+            
+            return INImage(named: "blavatar-default")
         }
 
-        return INImage(url: url)
+        return image
     }
 }
+
