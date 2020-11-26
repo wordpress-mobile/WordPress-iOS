@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 14:54:10+0000 */
+/* Translation-Revision-Date: 2020-11-26 03:48:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -942,7 +942,7 @@
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
-"By setting up Jetpack you agree to our\n%@" = "Dengan menyiapkan Jetpack, Anda menyetujui\n&@";
+"By setting up Jetpack you agree to our\n%@" = "Dengan menyiapkan Jetpack, Anda menyetujui\n%@";
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Dengan mendaftar, berarti Anda menyetujui _Ketentuan Layanan_ kami.";
@@ -3381,7 +3381,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "Media diunggah (%ld file)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "Media diunggah (%ld file)";
+"Media uploaded (1 file)" = "Media diunggah (1 file)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";

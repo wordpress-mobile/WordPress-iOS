@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-21 14:37:40+0000 */
+/* Translation-Revision-Date: 2020-11-25 22:26:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -2802,7 +2802,7 @@ translators: sample content for \"Team\" page template */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
-"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Hvis du fjerner %1$@, vil den brukeren ikke lenger ha tilgang til siden, men innhold som ble laget av %1$@ vil bli værende på siden.";
+"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Hvis du fjerner %1$@, vil den brukeren ikke lenger ha tilgang til nettstedet, men innhold som ble laget av %2$@ vil bli værende på nettstedet.";
 
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Hvis du fjerner denne leseren vil han eller hun ikke kunne besøke siden lenger.";

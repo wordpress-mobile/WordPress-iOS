@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-24 18:04:15+0000 */
+/* Translation-Revision-Date: 2020-11-25 21:07:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -140,7 +140,7 @@
 "%d days" = "%d dagen";
 
 /* Age between dates over one hour. */
-"%d hours" = "%d uur";
+"%d hours" = "%d uren";
 
 /* Age between dates over one month. */
 "%d months" = "%d maanden";
@@ -152,7 +152,7 @@
 "%d posts" = "%d berichten";
 
 /* Age between dates over one year. */
-"%d years" = "%d jaar";
+"%d years" = "%d jaren";
 
 /* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
 "%dd" = "%dd";
@@ -368,7 +368,7 @@
 "Activity Log" = "Activiteitenlog";
 
 /* Option in Support view to see activity logs. */
-"Activity Logs" = "Activiteiten Logs";
+"Activity Logs" = "Activiteiten logs";
 
 /* Remove asset from media picker list */
 "Add" = "Voeg toe";
@@ -1426,7 +1426,7 @@
 
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Verbinden van";
+"Connecting %@" = "Verbinden met %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Door te verbinden met %1$@ wordt de huidige verbinding vervangen door %2$@.";
@@ -5399,7 +5399,7 @@ translators: sample content for \"Services\" page template */
 "Site Icon" = "Site icoon";
 
 /* Title for the Language Picker View */
-"Site Language" = "Websitetaal";
+"Site Language" = "Site taal";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -5417,10 +5417,10 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
-"Site Title" = "Websitetitel";
+"Site Title" = "Site titel";
 
 /* The accessibility label for the followed sites search field */
-"Site URL" = "Website URL";
+"Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Prestaties voor de site";
@@ -5688,7 +5688,7 @@ translators: sample content for \"Services\" page template */
 /* Support button that appears in the Theme Browser Header
    Theme Support action title
    View title for Support page. */
-"Support" = "Support";
+"Support" = "Ondersteuning";
 
 /* Action button to switch the blog to which you'll be posting */
 "Switch Blog" = "Kies blog";
@@ -5933,7 +5933,7 @@ translators: sample content for \"Services\" page template */
 "The item could not be added to the Media Library." = "Het item kon niet worden toegevoegd aan de mediabibliotheek.";
 
 /* Accessibility hint for list */
-"The kinds of sites that can be created" = "Soorten websites die gemaakt kunnen worden";
+"The kinds of sites that can be created" = "Soorten sites die gemaakt kunnen worden";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "De taal waarin deze site hoofdzakelijk is geschreven.";
@@ -5957,10 +5957,10 @@ translators: sample content for \"Services\" page template */
 "The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je reader. Tik om ongedaan te maken.";
 
 /* No comment provided by engineer. */
-"The site address must be shorter than 64 characters." = "De site-adres moet korter zijn dan 64 karakters.";
+"The site address must be shorter than 64 characters." = "Het site adres moet korter zijn dan 64 karakters.";
 
 /* No comment provided by engineer. */
-"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "De site op %1$@ gebruikt WordPress %2$@. Wij raden aan om up te daten naar de laatste versie, of minimaal %3$@";
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "De site op %1$@ gebruikt WordPress %2$@. Wij raden aan om te updaten naar de laatste versie, of minimaal %3$@";
 
 /* Error message shown a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "De site op dit adres is geen WordPress site. Om door ons verbinding te kunnen maken, moet de site WordPress gebruiken.";
@@ -6416,7 +6416,7 @@ translators: sample content for \"Services\" page template */
 
 /* Default title shown for no-results when the device is offline.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
-"Unable to load this content right now." = "Deze content kan momenteel niet geladen worden.";
+"Unable to load this content right now." = "Deze inhoud kan momenteel niet geladen worden.";
 
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Kan video niet laden.";
@@ -7146,13 +7146,13 @@ translators: sample content for \"Services\" page template */
 "WordPress Blog" = "WordPress blog";
 
 /* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress Forums";
+"WordPress Forums" = "WordPress forums";
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress ondersteuning";
 
 /* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress Help Centrum";
+"WordPress Help Center" = "WordPress help centrum";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress media";
@@ -7381,7 +7381,7 @@ translators: sample content for \"Services\" page template */
 "Your Domains" = "Jouw domeinen";
 
 /* The item to select during a guided tour. */
-"Your Site Icon" = "Jouw favicon";
+"Your Site Icon" = "Je site pictogram";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Jouw sites";

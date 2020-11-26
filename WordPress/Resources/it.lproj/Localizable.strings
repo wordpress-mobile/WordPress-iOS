@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 14:54:10+0000 */
+/* Translation-Revision-Date: 2020-11-26 00:22:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -1661,7 +1661,7 @@
 "Creates a new site with the given information." = "Crea un nuovo sito con le informazioni fornite.";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "Crea un nuovo articolo o una nuova pagina";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "Crea un nuovo articolo oppure una nuova pagina o storia";
@@ -2802,7 +2802,7 @@ translators: sample content for \"Team\" page template */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Se continui con Apple o Google e non hai già un account WordPress.com, crei un account e accetti i nostri _Termini di servizio_.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
-"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Se effettui la rimozione, tale utente non potrà più accedere a questo sito, ma qualsiasi contenuto da questi creato rimarrà sul sito.";
+"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Se rimuovi %1$@, tale utente non potrà più accedere a questo sito, ma qualsiasi contenuto creato da %2$@ rimarrà sul sito.";
 
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "La rimozione impedirà al visitatore di visitare il sito.";
@@ -3255,7 +3255,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "Accedi al tuo account WordPress.com con il tuo indirizzo e-mail.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "Accedi con il nome utente e la password di WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Desideri disconnetterti da WordPress?";
@@ -3588,7 +3588,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "Nuova voce";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "Nuova password";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Nuovi articoli";
@@ -4046,7 +4046,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "Impostazioni pagina";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blocco Interruzione di pagina. %s";
@@ -5410,7 +5410,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "Redirect del sito";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "Impostazioni sito";
 
 /* Default title for a site
    Label for site title blog setting
@@ -7222,7 +7222,7 @@ translators: sample content for \"Services\" page template */
 "Would you like to hide all WordPress.com Sites?" = "Vuoi davvero nascondere tutti i siti WordPress.com?";
 
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
-"Would you still like to remove this person?" = "Desideri ancora rimuovere %@?";
+"Would you still like to remove this person?" = "Desideri ancora rimuovere questa persona?";
 
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */

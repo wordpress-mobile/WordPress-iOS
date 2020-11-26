@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2018-08-14 08:12:57+0000 */
+/* Translation-Revision-Date: 2020-11-25 22:35:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt */
@@ -5960,7 +5960,7 @@ translators: sample content for \"Services\" page template */
 "The site address must be shorter than 64 characters." = "O endereço do site deve ter menos de 64 caracteres.";
 
 /* No comment provided by engineer. */
-"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão 3%$@";
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* Error message shown a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress.";
@@ -7185,7 +7185,7 @@ translators: sample content for \"Services\" page template */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
 
 /* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@";
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "A versão do WordPress é muito antiga. O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
    NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */

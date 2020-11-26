@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-03 03:16:13+0000 */
+/* Translation-Revision-Date: 2020-11-25 23:55:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -3381,7 +3381,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "미디어 업로드됨(%ld개 파일)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "미디어 업로드됨(%ld개 파일)";
+"Media uploaded (1 file)" = "미디어 업로드됨(1개 파일)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";

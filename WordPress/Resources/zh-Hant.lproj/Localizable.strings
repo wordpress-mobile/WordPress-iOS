@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 13:54:09+0000 */
+/* Translation-Revision-Date: 2020-11-25 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -365,7 +365,7 @@
 "Activity" = "活動";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "活動記錄";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "活動記錄";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "選擇時間";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "選擇設計";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "選擇網域";
@@ -1186,7 +1186,7 @@
 "Choose images" = "選擇圖片";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "選擇版面配置";
 
 /* No comment provided by engineer. */
 "Choose video" = "選擇視訊";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "正在刪除…";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "拒絕";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2366,13 +2366,13 @@
 "Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "存檔失敗。\n請點選以顯示選項。";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API 無法序列化要求。";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "上傳檔案失敗。\n請點選以顯示選項。";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -3255,7 +3255,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "使用電子郵件地址登入 WordPress.com 帳號。";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "請使用你的 WordPress.com 使用者名稱和密碼登入。";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "是否要登出 WordPress？";
@@ -3588,7 +3588,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "新增項目";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "新密碼";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "新文章";
@@ -4046,7 +4046,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "頁面設定";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分頁符號區塊。%s";
@@ -5410,7 +5410,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "網站重新導向";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "網站設定";
 
 /* Default title for a site
    Label for site title blog setting
