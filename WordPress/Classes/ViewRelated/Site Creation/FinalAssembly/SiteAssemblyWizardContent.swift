@@ -63,7 +63,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         hidesBottomBarWhenPushed = true
         installButtonViewController()
-        SiteCreationAnalyticsHelper.trackSiteCreationSuccessViewed(siteCreator.design)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
     }
 
     override func viewWillAppear(_ animated: Bool) {

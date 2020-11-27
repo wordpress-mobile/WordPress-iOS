@@ -31,16 +31,16 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Final Assembly
-    static func trackSiteCreationSuccessViewed(_ siteDesign: RemoteSiteDesign?) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign))
+    static func trackSiteCreationSuccessLoading(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessLoading, withProperties: commonProperties(siteDesign))
     }
 
-    static func trackSiteCreationSuccessLoading(_ siteDesign: RemoteSiteDesign?) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign))
+    static func trackSiteCreationSuccessPreviewViewed(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed, withProperties: commonProperties(siteDesign))
     }
 
     static func trackSiteCreationSuccessLoaded(_ siteDesign: RemoteSiteDesign?) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded, withProperties: commonProperties(siteDesign))
     }
 
     // MARK: - Error

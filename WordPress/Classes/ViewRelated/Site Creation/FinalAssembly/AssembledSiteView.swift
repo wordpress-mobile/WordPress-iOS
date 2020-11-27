@@ -197,7 +197,7 @@ extension AssembledSiteView: UIGestureRecognizerDelegate {
 extension AssembledSiteView: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewViewed(siteCreator.design)
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
