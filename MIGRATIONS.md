@@ -3,13 +3,6 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 103
-
-@guarani 2020-11-25
-
-- Add a new `SiteSuggestion` entity to support Gutenberg's xpost implementation
-- Add a one-to-many relationship between `Blog` and `SiteSuggestion`
-
 ## WordPress 101
 
 @emilylaguna 2020-10-09
