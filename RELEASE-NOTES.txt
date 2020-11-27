@@ -6,8 +6,8 @@
 * [**] Block Editor: Button block - Add link picker to the block settings [https://github.com/WordPress/gutenberg/pull/26206]
 * [***] Block Editor: Adding support for selecting different unit of value in Cover and Columns blocks [https://github.com/WordPress/gutenberg/pull/26161]
 * [*] Block Editor: Fix theme colors syncing with the editor [https://github.com/WordPress/gutenberg/pull/26821]
-
-
+* [*] My Site > Settings > Start Over. Correcting a translation error in the detailed instructions on the Start Over view. [#15358]
+ 
 16.2
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
