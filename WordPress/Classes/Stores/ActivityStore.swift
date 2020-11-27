@@ -9,6 +9,7 @@ enum ActivityAction: Action {
     case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?)
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
+    case resetActivities(site: JetpackSiteRef)
 
     case rewind(site: JetpackSiteRef, rewindID: String)
     case rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String)
@@ -157,6 +158,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             receiveActivitiesFailed(site: site, error: error)
         case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
             refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        case .resetActivities(let site):
+            resetActivities(site: site)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
         case .rewindStarted(let site, let rewindID, let restoreID):
@@ -253,6 +256,15 @@ private extension ActivityStore {
             return
         }
         fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+    }
+
+    func resetActivities(site: JetpackSiteRef) {
+        transaction { state in
+            state.activities[site] = []
+            state.fetchingActivities[site] = false
+            state.lastFetch[site] = Date()
+            state.hasMore = false
+        }
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {

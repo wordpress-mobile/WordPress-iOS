@@ -66,6 +66,21 @@ class ActivityStoreTests: XCTestCase {
         XCTAssertTrue(store.state.hasMore)
     }
 
+    // resetActivities remove all activities
+    //
+    func testResetActivities() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        store.state.activities[jetpackSiteRef] = [Activity.mock()]
+        activityServiceMock.activitiesToReturn = [Activity.mock(), Activity.mock()]
+        activityServiceMock.hasMore = true
+
+        dispatch(.resetActivities(site: jetpackSiteRef))
+
+        XCTAssertTrue(store.state.activities[jetpackSiteRef]!.isEmpty)
+        XCTAssertFalse(store.state.fetchingActivities[jetpackSiteRef]!)
+        XCTAssertFalse(store.state.hasMore)
+    }
+
     // MARK: - Helpers
 
     private func dispatch(_ action: ActivityAction) {
