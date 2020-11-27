@@ -346,7 +346,7 @@ private extension ActivityListViewController {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
         } else {
-            noResultsViewController?.removeFromView()
+            noResultsViewController?.view.isHidden = true
         }
     }
 
@@ -354,23 +354,25 @@ private extension ActivityListViewController {
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
+
+            guard let noResultsViewController = noResultsViewController else {
+                return
+            }
+
+            noResultsViewController.bindViewModel(viewModel)
+
+            if noResultsViewController.view.superview != tableView {
+                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            }
+
+            addChild(noResultsViewController)
+            noResultsViewController.didMove(toParent: self)
+
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
 
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.bindViewModel(viewModel)
-
-        if noResultsViewController.view.superview != tableView {
-            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        }
-
-        addChild(noResultsViewController)
-        noResultsViewController.didMove(toParent: self)
-
-        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        tableView.pinSubviewToSafeArea(noResultsViewController.view)
+        noResultsViewController?.view.isHidden = false
     }
 
 }
