@@ -64,6 +64,19 @@ class ActivityListViewModelTests: XCTestCase {
 
         XCTAssertNil(activityStoreMock.dispatchedAction)
     }
+
+    // When filtering, remove all current activities
+    //
+    func testRefreshRemoveAllActivities() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
+        let activityStoreMock = ActivityStoreMock()
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
+        activityStoreMock.isFetching = true
+
+        activityListViewModel.refresh(after: Date(), before: Date())
+
+        XCTAssertEqual(activityStoreMock.dispatchedAction, "resetActivities")
+    }
 }
 
 class ActivityStoreMock: ActivityStore {
@@ -92,6 +105,8 @@ class ActivityStoreMock: ActivityStore {
             self.offset = offset
             self.afterDate = afterDate
             self.beforeDate = beforeDate
+        case .resetActivities(let site):
+            dispatchedAction = "resetActivities"
         default:
             break
         }

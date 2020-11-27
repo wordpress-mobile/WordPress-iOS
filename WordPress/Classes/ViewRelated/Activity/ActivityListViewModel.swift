@@ -59,6 +59,11 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil) {
+        if after != self.after || before != self.before {
+            // If a new filter is being applied, remove all activities
+            ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
+        }
+
         self.after = after
         self.before = before
 
