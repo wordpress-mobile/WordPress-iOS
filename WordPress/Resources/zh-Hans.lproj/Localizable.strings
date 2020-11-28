@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 11:35:49+0000 */
+/* Translation-Revision-Date: 2020-11-27 04:30:39+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -185,7 +185,7 @@
 "%ld files successfully uploaded" = "已成功上传 %ld 个文件";
 
 /* Displays the number of words and characters in text */
-"%li words, %li characters" = "%1$l 个字词，%2$l 个字符";
+"%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
@@ -669,7 +669,7 @@
 "Are you sure you want to cancel and discard changes?" = "是否确定要取消并放弃更改？";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "您确定要继续吗？\n %1$@的所有站点数据将从您的 %1$@中删除。";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "您确定要继续吗？\n%1$@的所有站点数据将从您的%2$@中删除。";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "是否确定要继续？\n即将删除您 %@ 上的所有站点数据。";
@@ -712,7 +712,7 @@
 "Are you sure you want to remove %1$@?" = "是否确定要删除 %1$@？";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "您确定要将您的站点回溯到％@？\n这将会删除所有您自当时起创建的所有内容与设定。";
+"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "您确定要将您的站点回溯到%@？\n这将会删除所有您自当时起创建的所有内容与设定。";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "是否确定要保存为草稿？";
@@ -733,7 +733,7 @@
 "Are you sure you want to update?" = "是否确定要更新？";
 
 /* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "是否确定要删除主题“％@”？";
+"Are you sure you wish to remove the topic '%@'?" = "您确定要删除主题“%@”?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "自 2018 年 8 月 1 日起，Facebook 不再允许直接将文章共享到 Facebook 个人资料。与 Facebook 页面的关联保持不变。";
@@ -2635,9 +2635,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "太棒了！\n您用得开心，我们也开心。\n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "太棒了！您可以留下好评吗？\n\n您的评价非常重要。";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "增加您的受众";
@@ -3381,7 +3378,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "已上传媒体（%ld 个文件）";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "已上传媒体（%ld 个文件）";
+"Media uploaded (1 file)" = "已上传媒体（1个文件）";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "中";

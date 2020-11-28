@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 14:50:08+0000 */
+/* Translation-Revision-Date: 2020-11-27 22:40:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -2153,7 +2153,7 @@
 "Enable site notifications?" = "Site meldingen inschakelen?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
-"Encrypted Logs" = "Versleutelde logboeken";
+"Encrypted Logs" = "Versleutelde logs";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Volledig scherm openen";
@@ -2593,7 +2593,7 @@ translators: sample content for \"Team\" page template */
 "Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Ontvang je meldingen sneller";
+"Get your notifications faster" = "Ontvang je berichten sneller";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Ga aan de slag met je site";
@@ -2634,9 +2634,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Geweldig!\n We houden van blije gebruikers \n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Fantastisch! Zou jij een mooie beoordeling achter willen laten?\n\nHet helpt écht.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -5186,7 +5183,7 @@ translators: sample content for \"Services\" page template */
 "Send Link by Email" = "Link per e-mail verzenden";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
-"Send Log Message" = "Logboekbericht verzenden";
+"Send Log Message" = "Logbericht verzenden";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Stuur Pingbacks";
