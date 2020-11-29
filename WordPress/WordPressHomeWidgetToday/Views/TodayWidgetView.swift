@@ -47,7 +47,7 @@ struct TodayWidgetView_Previews: PreviewProvider {
     static let staticContent = HomeWidgetTodayData(siteID: 0,
                                                    siteName: "Places you should visit",
                                                    url: "",
-                                                   timeZoneName: "GMT",
+                                                   timeZone: TimeZone.current,
                                                    date: Date(),
                                                    stats: TodayWidgetStats(views: 5980,
                                                                            visitors: 4208,

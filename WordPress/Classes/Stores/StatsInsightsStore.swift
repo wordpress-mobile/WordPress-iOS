@@ -1008,18 +1008,18 @@ private extension InsightStoreState {
             DDLogError("HomeWidgetToday: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
             homeWidgetTodayCache.removeValue(forKey: siteID.intValue)
-            HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+            HomeWidgetTodayData.write(items: homeWidgetTodayCache)
             return
         }
         // refresh stats and update any blog info, if they had changed
         homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                            siteName: blog.title ?? oldData.siteName,
                                                            url: blog.url ?? oldData.url,
-                                                           timeZoneName: blogService.timeZone(for: blog).identifier,
+                                                           timeZone: blogService.timeZone(for: blog),
                                                            date: Date(),
                                                            stats: stats)
 
-        HomeWidgetTodayData.write(data: homeWidgetTodayCache)
+        HomeWidgetTodayData.write(items: homeWidgetTodayCache)
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
     }
 
@@ -1034,12 +1034,12 @@ private extension InsightStoreState {
                let blog = blogService.blog(byBlogId: blogID) {
                 // set the title to the site title, if it's not nil and not empty; otherwise use the site url
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZoneName = blogService.timeZone(for: blog).identifier
+                let timeZone = blogService.timeZone(for: blog)
 
                 result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
                                                                   url: url,
-                                                                  timeZoneName: timeZoneName,
+                                                                  timeZone: timeZone,
                                                                   date: Date(),
                                                                   stats: TodayWidgetStats())
             }
