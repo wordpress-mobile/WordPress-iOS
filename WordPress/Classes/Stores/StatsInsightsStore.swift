@@ -1041,7 +1041,7 @@ private extension InsightStoreState {
                                                               siteName: title,
                                                               iconURL: blog.icon,
                                                               url: url,
-                                                              timeZoneName: timeZoneName,
+                                                              timeZone: timeZone,
                                                               date: Date(),
                                                               stats: TodayWidgetStats())
             }
