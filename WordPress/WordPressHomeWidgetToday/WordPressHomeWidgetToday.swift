@@ -62,34 +62,8 @@ private extension Provider {
             completion(timeline)
         }
     }
-
-    private var widgetData: HomeWidgetTodayData? {
-        // TODO - TODAYWIDGET: we might change this, but for now an ID equal to zero should not return any valid data
-        HomeWidgetTodayData.read()?[defaultSiteID ?? 0]
-    }
 }
-
-// MARK: - Constants
-private extension Provider {
-    enum Constants {
-        // TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
-        // we should define what to put in here
-        static let staticContent = HomeWidgetTodayData(siteID: 0,
-                                                       siteName: "Places you should visit",
-                                                       iconURL: nil,
-                                                       url: "",
-                                                       timeZone: TimeZone.current,
-                                                       date: Date(),
-                                                       stats: TodayWidgetStats(views: 5980,
-                                                                               visitors: 4208,
-                                                                               likes: 107,
-                                                                               comments: 5))
-        // refresh interval of the widget, in minutes
-        static let refreshInterval = 60
-        // minimum elapsed time, in minutes, before new data are fetched from the backend.
-        static let minElapsedTimeToRefresh = 10
-    }
-}*/
+ */
 
 struct SiteListProvider: IntentTimelineProvider {
 
@@ -124,6 +98,9 @@ struct SiteListProvider: IntentTimelineProvider {
 
     // refresh interval of the widget, in minutes
     static let refreshInterval = 60
+
+    // minimum elapsed time, in minutes, before new data are fetched from the backend.
+    static let minElapsedTimeToRefresh = 10
 
     func placeholder(in context: Context) -> HomeWidgetTodayData {
         Self.staticContent
