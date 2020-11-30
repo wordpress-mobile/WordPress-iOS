@@ -21,9 +21,12 @@ open class QuickStartTourGuide: NSObject {
 
 
         let createTour = QuickStartCreateTour()
-        let themeTour = QuickStartThemeTour()
         completed(tour: createTour, for: blog)
-        completed(tour: themeTour, for: blog)
+
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            let themeTour = QuickStartThemeTour()
+            completed(tour: themeTour, for: blog)
+        }
     }
 
     @objc func remove(from blog: Blog) {
