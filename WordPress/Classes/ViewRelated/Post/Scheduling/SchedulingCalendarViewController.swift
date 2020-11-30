@@ -166,6 +166,11 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
 
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
+
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
+
         datePicker.datePickerMode = .time
         datePicker.timeZone = coordinator?.timeZone
         datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)

@@ -1,0 +1,5 @@
+Todo sobre Jetpack: Accede a todas las características de Jetpack rápida y fácilmente, incluyendo tus estadísticas, registro de actividad y ajustes.
+
+Obtener ayuda y soporte: Hemos corregido algunos problemas que ocurrían si intentabas contactar con nuestro equipo de soporte. Cuando contactes con nosotros, ahora puedes incluir caracteres no alfabéticos y tu aplicación ya no se bloqueará al introducir tu dirección de correo electrónico.
+
+Actualizaciones del lector: También hemos corregido un problema de visualización en el lector y los comentarios ya no aparecen por defecto en cursiva.

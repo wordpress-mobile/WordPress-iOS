@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 21:03:37+0000 */
+/* Translation-Revision-Date: 2020-11-25 22:52:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_GB */
@@ -106,7 +106,7 @@
 "%@. %d posts." = "%1$@. %2$d posts.";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). */
-"%@. 1 post." = "%@. 1 post.";
+"%@. 1 post." = "%@. One post.";
 
 /* Label displaying value in billions. Ex: 66.6B. */
 "%@B" = "%@B";
@@ -232,7 +232,7 @@
 "1 post uploaded" = "1 post uploaded";
 
 /* Alert displayed to the user when multiple media items attached to a post have failed to upload. */
-"1 post, %ld files not uploaded" = "1 post, %ld files not uploaded";
+"1 post, %ld files not uploaded" = "One post, %ld files not uploaded";
 
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 post, 1 file not uploaded";
@@ -2634,9 +2634,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Great! Could you leave us a nice review?\n\n\nIt really helps.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -6449,7 +6446,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 draft post" = "Unable to upload 1 draft post";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 draft post, %ld files" = "Unable to upload 1 draft post, %ld files";
+"Unable to upload 1 draft post, %ld files" = "Unable to upload one draft post, %ld files";
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 draft post, 1 file" = "Unable to upload 1 draft post, 1 file";
@@ -6458,7 +6455,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 post" = "Unable to upload 1 post";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 post, %ld files" = "Unable to upload 1 post, %ld files";
+"Unable to upload 1 post, %ld files" = "Unable to upload one post, %ld files";
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Unable to upload 1 post, 1 file";
@@ -6617,13 +6614,13 @@ translators: sample content for \"Services\" page template */
 "Uploaded" = "Uploaded";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
-"Uploaded 1 draft post, %ld files" = "Uploaded 1 draft post, %ld files";
+"Uploaded 1 draft post, %ld files" = "Uploaded one draft post, %ld files";
 
 /* Local notification displayed to the user when a single draft post and 1 file has been uploaded successfully. */
 "Uploaded 1 draft post, 1 file" = "Uploaded 1 draft post, 1 file";
 
 /* System notification displayed to the user when a single post and multiple files have uploaded successfully. */
-"Uploaded 1 post, %ld files" = "Uploaded 1 post, %ld files";
+"Uploaded 1 post, %ld files" = "Uploaded one post, %ld files";
 
 /* System notification displayed to the user when a single post and 1 file has uploaded successfully. */
 "Uploaded 1 post, 1 file" = "Uploaded 1 post, 1 file";

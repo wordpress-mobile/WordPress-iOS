@@ -255,12 +255,14 @@ open class JetpackSettingsViewController: UITableViewController {
                                                                // viewWillAppear will trigger a refresh, maybe before
                                                                // the new IPs are saved, so lets refresh again here
                                                                self?.refreshSettings()
+                                                            WPAnalytics.track(.jetpackWhitelistedIpsChanged)
                                                            },
                                                            failure: { [weak self] (_) in
                                                                self?.refreshSettingsAfterSavingError()
                                                            })
             }
             self.navigationController?.pushViewController(settingsViewController, animated: true)
+            WPAnalytics.track(.jetpackWhitelistedIpsViewed)
         }
     }
 
