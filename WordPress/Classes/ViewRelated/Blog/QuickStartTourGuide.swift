@@ -16,12 +16,16 @@ open class QuickStartTourGuide: NSObject {
 
     private override init() {}
 
-    func setup(for blog: Blog) {
+    func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
         didShowUpgradeToV2Notice(for: blog)
 
 
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
+
+        steps.forEach { (tour) in
+            completed(tour: tour, for: blog)
+        }
     }
 
     @objc func remove(from blog: Blog) {
