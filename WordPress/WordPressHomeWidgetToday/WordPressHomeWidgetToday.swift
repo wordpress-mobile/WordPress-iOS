@@ -63,13 +63,6 @@ private extension Provider {
         }
     }
 
-    private var defaultSiteID: Int? {
-        // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
-        // This would change if the old widget gets reconfigured to a different site than the default.
-        // This will be updated with the configuration intent.
-        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
-    }
-
     private var widgetData: HomeWidgetTodayData? {
         // TODO - TODAYWIDGET: we might change this, but for now an ID equal to zero should not return any valid data
         HomeWidgetTodayData.read()?[defaultSiteID ?? 0]

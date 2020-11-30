@@ -8,9 +8,20 @@ class SitesDataProvider {
         initializeSites()
     }
 
-    var defaultSite: Site {
-        // TODO: return the default site correctly... this is lazy :P
-        sites[0]
+    // MARK: - Default Site
+    
+    private var defaultSiteID: Int? {
+        // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
+        // This would change if the old widget gets reconfigured to a different site than the default.
+        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
+    }
+    
+    var defaultSite: Site? {
+        guard let defaultSiteID = self.defaultSiteID else {
+            return nil
+        }
+        
+        return sites[defaultSiteID]
     }
 
     private func initializeSites() {
