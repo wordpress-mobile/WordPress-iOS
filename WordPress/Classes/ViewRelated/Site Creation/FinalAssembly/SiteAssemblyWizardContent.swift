@@ -230,7 +230,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         var completedTourSteps: [QuickStartTour] = []
 
         guard FeatureFlag.siteCreationHomePagePicker.enabled else { return completedTourSteps }
-        /// Only make the theme tour completed if the user didn't select skip
+        /// Only mark the theme tour as completed if the user didn't select the skip
         if siteCreator.design != nil {
             completedTourSteps.append(QuickStartThemeTour())
         }
