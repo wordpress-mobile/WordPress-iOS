@@ -124,9 +124,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         // TODO: - READERNAV - Update this check once the old reader is removed
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
-        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved, FeatureFlag.newReaderNavigation.enabled {
+        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
             actionOrigin = .savedStream
-
         } else {
             actionOrigin = .otherStream
         }

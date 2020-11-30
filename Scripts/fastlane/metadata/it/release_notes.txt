@@ -1,3 +1,5 @@
-- Scegli tra svariati modelli di pagina predefiniti quando crei una nuova pagina su un sito abilitato Gutenberg.
-- Crea articoli e pagine direttamente dall'elenco degli articoli e delle pagine con il pulsante di azione sempre presente.
-- È stato risolto un problema che causava la visualizzazione del controllo di aggiornamento in cima all'elenco dei siti.
+Tutto su Jetpack: Accedi a tutte le funzionalità di Jetpack in modo rapido e semplice, comprese le statistiche, il registro delle attività e le impostazioni.
+
+Ottieni aiuto e assistenza Abbiamo risolto alcuni problemi che si verificavano se cercavi di contattare il nostro team di supporto. Quando ci contatti, ora puoi includere caratteri non alfabetici e l'app non si blocca più quando inserisci il tuo indirizzo e-mail.
+
+Aggiornamenti del Reader: Abbiamo anche risolto un problema di visualizzazione nel Reader e i commenti non sono più in corsivo per impostazione predefinita.

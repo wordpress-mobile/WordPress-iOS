@@ -231,8 +231,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     CommentViewController *vc   = [CommentViewController new];
     vc.comment                  = comment;
-        
+
     [self.navigationController pushViewController:vc animated:YES];
+    [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -303,6 +304,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)approveComment:(Comment *)comment
 {
+    [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
         
     [self.tableView setEditing:NO animated:YES];
@@ -313,6 +315,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)unapproveComment:(Comment *)comment
 {
+    [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     
     [self.tableView setEditing:NO animated:YES];
@@ -323,6 +326,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)deleteComment:(Comment *)comment
 {
+    [CommentAnalytics trackCommentTrashedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     
     [self.tableView setEditing:NO animated:YES];

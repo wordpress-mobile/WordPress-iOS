@@ -61,11 +61,7 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
-                                guard !FeatureFlag.newReaderNavigation.enabled else {
                                     WPTabBarController.sharedInstance().switchToSavedPosts()
-                                    return
-                                }
-                                self.showAll()
         })
 
         present(notice)
@@ -103,7 +99,4 @@ final class ReaderSaveForLaterAction {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    private func showAll() {
-        NotificationCenter.default.post(name: .showAllSavedForLaterPosts, object: self, userInfo: nil)
-    }
 }

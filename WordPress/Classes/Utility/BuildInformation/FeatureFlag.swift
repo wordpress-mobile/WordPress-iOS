@@ -6,7 +6,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case newReaderNavigation
     case swiftCoreData
     case homepageSettings
     case gutenbergMentions
@@ -32,8 +31,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .unifiedAuth:
             return true
-        case .newReaderNavigation:
-            return true
         case .swiftCoreData:
             return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
@@ -51,7 +48,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .stories:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
-            return false
+            return true
         }
     }
 
@@ -88,8 +85,6 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .newReaderNavigation:
-            return "New Reader Navigation"
         case .swiftCoreData:
             return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
@@ -114,8 +109,6 @@ extension FeatureFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .newReaderNavigation:
             return false
         case .swiftCoreData:
             return false
