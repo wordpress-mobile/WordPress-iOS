@@ -1,5 +1,6 @@
 16.3
 -----
+* [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
 * [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-30+%22Home+Page+Picker%22&type=Issues)
 * [*] Fixed an issue where `tel:` and `mailto:` links weren't launching actions in the webview found in Reader > post > more > Visit. [#15310]
 * [*] Reader bug fix: tapping a telephone, sms or email link in a detail post in Reader will now respond with the correct action. [#15307]
@@ -14,6 +15,7 @@
 * [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
 * [*] Fixed an issue where comments viewed in the Reader would always be italicized.
 * [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
+* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392] 
 
 16.1
 -----

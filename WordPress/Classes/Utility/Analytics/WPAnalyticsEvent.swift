@@ -89,6 +89,8 @@ import Foundation
     case jetpackManageConnectionViewed
     case jetpackDisconnectTapped
     case jetpackDisconnectRequested
+    case jetpackWhitelistedIpsViewed
+    case jetpackWhitelistedIpsChanged
 
     // Comments
     case commentViewed
@@ -248,6 +250,10 @@ import Foundation
             return "jetpack_disconnect_tapped"
         case .jetpackDisconnectRequested:
             return "jetpack_disconnect_requested"
+        case .jetpackWhitelistedIpsViewed:
+            return "jetpack_whitelisted_ips_viewed"
+        case .jetpackWhitelistedIpsChanged:
+            return "jetpack_whitelisted_ips_changed"
 
         // Comments
         case .commentViewed:

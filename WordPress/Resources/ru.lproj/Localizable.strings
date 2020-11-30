@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 21:13:22+0000 */
+/* Translation-Revision-Date: 2020-11-27 12:26:16+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -2635,9 +2635,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Отлично!\nОбожаем отзывы счастливых пользователей\n 😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Замечательно! Не могли бы вы оставить нам хороший отзыв?\n\nЗаранее благодарим.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Увеличьте аудиторию";
@@ -3854,7 +3851,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Непрочитанные уведомления";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Истории доступны для всех";
+"Now stories are for everyone" = "Истории теперь доступны всем";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Теперь, когда Jetpack установлен, нам нужно настроить, это займет всего минуту.";

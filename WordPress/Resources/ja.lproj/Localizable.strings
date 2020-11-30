@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 16:54:08+0000 */
+/* Translation-Revision-Date: 2020-11-26 00:52:41+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -7,7 +7,7 @@
 "\nPlease send us an email to have your content cleared out." = "\nコンテンツを全て消去するには、メールを送信してください。";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
-"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n確認のため、消去するサイトのサイトアドレス(URL)を再度入力してください。\n";
+"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n確認のため、消去の前にサイトのアドレス (URL) を再入力してください。\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "画像の「遅延読み込み」";
@@ -365,7 +365,7 @@
 "Activity" = "アクティビティ";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "アクティビティログ";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "アクティビティログ";
@@ -712,7 +712,7 @@
 "Are you sure you want to remove %1$@?" = "%1$@ を削除してもよいですか ?";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "%@までサイトの状態を巻き戻ししますか？\n巻き戻しをすると%@以降に加えられた変更や作成されたサイトコンテンツは全て削除されます。";
+"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "お使いのサイトを%@に巻き戻してもよいですか ?\nこの操作により、作成やしたすべてのコンテンツとオプション、および作成後に行ったすべての変更が削除されます。";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "下書きとして保存してもよいですか ?";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "時間を選択";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "デザインを選択";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "ドメインを選択";
@@ -1186,7 +1186,7 @@
 "Choose images" = "画像を選択";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "レイアウトを選択";
 
 /* No comment provided by engineer. */
 "Choose video" = "動画を選択";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "削除しています…";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "非承認";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2366,13 +2366,13 @@
 "Failed to insert media.\nPlease tap for options." = "メディアの挿入に失敗しました。\nオプションを選択するにはタップしてください。";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "ファイルの保存に失敗しました。\nタップすると、オプションが表示されます。";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API へのリクエストをシリアライズできませんでした。";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "ファイルのアップロードに失敗しました。\nタップすると、オプションが表示されます。";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2634,9 +2634,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "よかったです !\nユーザーの皆さんに喜んでもらえるのが何よりです。\n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "ありがとうございます。良い評価をつけていただけませんか ?\n\nとても助かります。";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -3255,7 +3252,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "メールアドレスで WordPress.com アカウントにログインします。";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "WordPress.com のユーザー名とパスワードでログインしてください。";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "WordPress からログアウトしますか ?";
@@ -3588,7 +3585,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "新規項目";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "新規パスワード";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "新規投稿";
@@ -4046,7 +4043,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "ページ設定";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "改ページブロック。%s";
@@ -5410,7 +5407,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "サイト転送";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "サイト設定";
 
 /* Default title for a site
    Label for site title blog setting
