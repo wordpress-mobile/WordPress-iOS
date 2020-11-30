@@ -20,7 +20,6 @@ ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress.WordPressAllTimeWidget",
       "org.wordpress.WordPressThisWeekWidget",
       "org.wordpress.WordPressIntents",
-      "org.wordpress.WordPressIntentsUI",
     ]
 
 # Use this instead of getting values from ENV directly
