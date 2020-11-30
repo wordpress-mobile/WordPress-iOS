@@ -1,5 +1,3 @@
-In this update, you’ll notice some fun enhancements and improvements when both creating and consuming content that make the entire app experience better!
-
-The latest with the block editor: When composing posts, you’ll notice there’s now full-width and wide alignment support for the Video, Latest Posts, Gallery, Media & Text, and Pullquote blocks. We also made a few tweaks: one fixed an issue affecting the Classic block on Jetpack sites, and another fix resolved an issue involving unsupported blocks when a device was rotated.
-
-Your Reader, redesigned: The recently refreshed Reader includes a number of changes, including a cleaner reading experience of individual posts. Images display beautifully, and we strongly encourage you to add a featured image to all of your posts so they stand out in the feed! Reading and discovering other people’s content is all part of the creative process. In the Discover tab, we now display recommended sites to explore, and you can select interests relevant to you to see more of the content you like.
+- Choose from a variety of predesigned page templates when you create a new page on a Gutenberg-enabled site.
+- Create posts and pages right from the posts and pages list with the ever-present action button.
+- Fixed an issue that caused refresh control to appear on top of the list of sites.

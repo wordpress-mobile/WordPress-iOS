@@ -30,6 +30,9 @@ class NotificationService: UNNotificationServiceExtension {
         let username = readExtensionUsername()
         tracks.wpcomUsername = username
 
+        let userID = readExtensionUserID()
+        tracks.wpcomUserID = userID
+
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
 
@@ -155,5 +158,20 @@ private extension NotificationService {
         }
 
         return username
+    }
+
+    /// Retrieves the WPCOM userID, meant for Extension usage.
+    ///
+    /// - Returns: the userID if found; `nil` otherwise
+    ///
+    func readExtensionUserID() -> String? {
+        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUserIDKey,
+                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                            accessGroup: WPAppKeychainAccessGroup) else {
+            debugPrint("Unable to retrieve Notification Service Extension userID")
+            return nil
+        }
+
+        return userID
     }
 }

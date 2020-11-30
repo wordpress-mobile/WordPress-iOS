@@ -1,5 +1,3 @@
-En esta actualización, notarás algunas divertidas mejoras al crear y consumir contenido ¡que hacen mejor toda la experiencia con la aplicación!
-
-Lo último en el editor de bloques: Al componer entradas, notarás que ahora hay compatibilidad de alineación de ancho completo y amplio para los bloques de video, últimas entradas, galería, medios y texto y cita rápida. También hemos hecho algunos retoques: uno ha corregido un problema que afectaba al bloque clásico en los sitios Jetpack y otro ha resuelto un problema que implicaba a bloques no compatibles cuando se giraba un dispositivo.
-
-Tu Lector, rediseñado: El recientemente renovado Lector incluye varios cambios, incluyendo una experiencia de lectura más limpia de las entradas individuales. Las imágenes se ven muy bien y te recomendamos encarecidamente que añadas una imagen destacada a todas tus entradas ¡para que destaquen en el feed! Leer y descubrir el contenido de otras personas es parte de todo el proceso creativo. En la pestaña Descubrir, ahora mostramos los sitios recomendados para explorar y puedes seleccionar los intereses relevantes para ti para ver más contenido que te gusta.
+- Elige entre una variedad de plantillas de páginas prediseñadas cuando crees una nueva página en un sitio con Gutenberg activado.
+- Crea entradas y páginas directamente desde la lista de entradas y páginas con el botón de acción siempre presente.
+- Corregido un problema que causaba que el control de recarga apareciera en la parte superior de la lista de sitios.

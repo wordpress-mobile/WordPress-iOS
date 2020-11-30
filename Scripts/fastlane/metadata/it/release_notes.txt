@@ -1,5 +1,3 @@
-In questa aggiornamento, noterai alcuni divertenti arricchimenti e potenziamenti quando crei e utilizzi i contenuti che rendono migliore l'intera esperienza con l'app.
-
-Le novità dell'editor a blocchi: quando scrivi gli articoli, noterai che è disponibile il supporto per l'allineamento Wide e Full width per i blocchi Video, Articoli recenti, Galleria, Media e testo e Citazione evidenziata. Abbiamo anche apportato alcune modifiche: abbiamo corretto un problema che influenzava il blocco Classico sui siti Jetpack e un'altra correzione ha risolto un problema relativo a blocchi non supportati da un dispositivo ruotato.
-
-Il Reader, riprogettato: il Reader aggiornato di recente include una serie di modifiche, tra cui un'esperienza di lettura più pulita dei singoli articoli. Le immagine sono visualizzate in maniera meravigliosa e incoraggiamo fortemente ad aggiungere un'immagine in evidenza a tutti gli articoli che si distinguono nel feed. Leggere e scoprire i contenuti di altre persone è parte del processo creativo. Nella scheda Scopri, ora vengono visualizzati i siti consigliati da esplorare e puoi selezionare gli interessi per te stimolanti per vedere più contenuti che ti piacciono.
+- Scegli tra svariati modelli di pagina predefiniti quando crei una nuova pagina su un sito abilitato Gutenberg.
+- Crea articoli e pagine direttamente dall'elenco degli articoli e delle pagine con il pulsante di azione sempre presente.
+- È stato risolto un problema che causava la visualizzazione del controllo di aggiornamento in cima all'elenco dei siti.

@@ -159,6 +159,36 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        var actions: [ActionSheetItem] = [
+            PostAction(handler: { [weak self] in
+                    self?.dismiss(animated: false, completion: nil)
+                    self?.createPost()
+            })
+        ]
+        if Feature.enabled(.stories) && blog.supports(.stories) {
+            actions.append(
+                StoryAction(handler: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
+                })
+            )
+        }
+        return CreateButtonCoordinator(self, actions: actions)
+    }()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -167,8 +197,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureCompactOrDefault()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        } else {
+            createButtonCoordinator.hideCreateButton()
+        }
+    }
+
     func configureNavigationButtons() {
-        navigationItem.rightBarButtonItems = [addButton, postsViewButtonItem]
+        navigationItem.rightBarButtonItems = [postsViewButtonItem]
     }
 
     @objc func togglePostsView() {
