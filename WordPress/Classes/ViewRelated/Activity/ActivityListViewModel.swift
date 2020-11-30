@@ -88,7 +88,11 @@ class ActivityListViewModel: Observable {
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
-            return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
+            if dateFilterIsActive {
+                return NoResultsViewController.Model(title: NoResultsText.noMatchingTitle, subtitle: NoResultsText.noMatchingSubtitle)
+            } else {
+                return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
+            }
         }
 
         let appDelegate = WordPressAppDelegate.shared
@@ -185,6 +189,8 @@ class ActivityListViewModel: Observable {
         static let loadingTitle = NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site")
         static let noActivitiesTitle = NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log")
         static let noActivitiesSubtitle = NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
+        static let noMatchingTitle = NSLocalizedString("No matching events found.", comment: "Title for the view when there aren't any Activities to display in the Activity Log for a given filter.")
+        static let noMatchingSubtitle = NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
         static let errorSubtitle = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
