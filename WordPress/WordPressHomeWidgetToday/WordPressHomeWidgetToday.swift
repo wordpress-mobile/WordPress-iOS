@@ -108,9 +108,6 @@ struct SiteListProvider: IntentTimelineProvider {
     }
 
     private func widgetData(for siteID: String) -> HomeWidgetTodayData? {
-        // TODO - TODAYWIDGET: we might change this, but for now an ID equal to zero should not return any valid data
-        //HomeWidgetTodayData.read()?[siteID ?? 0]
-
         /// - TODO: we should not really be needing to do this conversion.  Maybe we can evaluate a better mechanism for site identification.
         guard let siteID = Int(siteID) else {
             return nil
