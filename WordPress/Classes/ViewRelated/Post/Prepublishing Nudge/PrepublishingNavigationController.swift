@@ -14,9 +14,26 @@ class PrepublishingNavigationController: LightNavigationController {
         }
     }
 
+    // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
+    override public var preferredContentSize: CGSize {
+        set {
+            viewControllers.last?.preferredContentSize = newValue
+        }
+        get {
+            if UIDevice.isPad() {
+                return Constants.iPadPreferredContentSize
+            }
+
+            guard  let visibleViewController = viewControllers.last else {
+                return .zero
+            }
+
+            return visibleViewController.preferredContentSize
+        }
+    }
+
     private enum Constants {
-        static let height: CGFloat = 290
-        static let iPadPreferredContentSize = CGSize(width: 300, height: 240)
+        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 300.0)
     }
 }
 
@@ -33,7 +50,7 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .contentHeight(Constants.height)
+        return .intrinsicHeight
     }
 
     var scrollableView: UIScrollView? {

@@ -7,14 +7,16 @@ end
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '11.0'
+app_ios_deployment_target = Gem::Version.new('11.0')
+
+platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.12.0'
+    pod 'WordPressShared', '~> 1.13.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -33,7 +35,7 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.7.1'
+    pod 'WordPressUI', '~> 1.7.3'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -41,11 +43,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.20.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    pod 'WordPressKit', '~> 4.21.0'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -68,7 +70,7 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -152,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.40.0'
+    gutenberg :tag => 'v1.41.1'
 
     ## Third party libraries
     ## =====================
@@ -164,7 +166,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.0.0'
+    pod 'ZendeskSupportSDK', '5.1.1'
     pod 'AlamofireImage', '3.5.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
@@ -194,9 +196,9 @@ target 'WordPress' do
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 1.0.1'
+    pod 'Gridicons', '~> 1.0.2'
 
-    pod 'WordPressAuthenticator', '~> 1.27.0'
+    pod 'WordPressAuthenticator', '~> 1.29.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -217,7 +219,7 @@ target 'WordPress' do
     end
 
 
-    post_install do
+    post_install do |installer|
         project_root = File.dirname(__FILE__)
 
         puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
@@ -271,6 +273,17 @@ target 'WordPress' do
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
         File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+
+        # Let Pods targets inherit deployment target from the app
+        # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+        # =====================================
+        #
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |configuration|
+               pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+               configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+            end
+        end
     end
 end
 

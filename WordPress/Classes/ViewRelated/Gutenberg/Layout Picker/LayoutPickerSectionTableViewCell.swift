@@ -43,7 +43,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier)
+        collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
@@ -96,9 +96,9 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellReuseIdentifier = LayoutPickerCollectionViewCell.cellReuseIdentifier
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? LayoutPickerCollectionViewCell else {
-            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
+        let cellReuseIdentifier = CollapsableHeaderCollectionViewCell.cellReuseIdentifier
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? CollapsableHeaderCollectionViewCell else {
+            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CollapsableHeaderCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
         }
         guard !isGhostCell else {
             cell.startGhostAnimation(style: GhostCellStyle.muriel)
@@ -106,7 +106,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
         }
 
         let layout = layouts[indexPath.row]
-        cell.layout = layout
+        cell.previewURL = layout.preview
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = layout.slug
         return cell

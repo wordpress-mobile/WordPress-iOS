@@ -1,6 +1,15 @@
+16.3
+-----
+* [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
+ 
 16.2
 -----
- 
+* [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
+* [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+* [*] Fixed an issue where comments viewed in the Reader would always be italicized.
+* [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
+* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392] 
+
 16.1
 -----
 * [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.

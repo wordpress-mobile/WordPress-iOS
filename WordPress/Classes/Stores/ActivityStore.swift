@@ -5,8 +5,9 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
-    case refreshActivities(site: JetpackSiteRef)
-    case receiveActivities(site: JetpackSiteRef, activities: [Activity])
+    case refreshActivities(site: JetpackSiteRef, quantity: Int)
+    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int)
+    case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
 
     case rewind(site: JetpackSiteRef, rewindID: String)
@@ -38,6 +39,7 @@ struct ActivityStoreState {
     var activities = [JetpackSiteRef: [Activity]]()
     var lastFetch = [JetpackSiteRef: Date]()
     var fetchingActivities = [JetpackSiteRef: Bool]()
+    var hasMore = false
 
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
@@ -59,15 +61,18 @@ private enum ActivityStoreError: Error {
 
 class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
-    fileprivate let refreshInterval: TimeInterval = 60 // seconds
+    private let refreshInterval: TimeInterval = 60
+
+    private let activityServiceRemote: ActivityServiceRemote?
 
     override func queriesChanged() {
         super.queriesChanged()
         processQueries()
     }
 
-    init() {
-        super.init(initialState: ActivityStoreState())
+    init(dispatcher: ActionDispatcher = .global, activityServiceRemote: ActivityServiceRemote? = nil) {
+        self.activityServiceRemote = activityServiceRemote
+        super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 
     override func logError(_ error: String) {
@@ -144,12 +149,14 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         }
 
         switch activityAction {
-        case .receiveActivities(let site, let activities):
-            receiveActivities(site: site, activities: activities)
+        case .receiveActivities(let site, let activities, let hasMore, let loadingMore):
+            receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore)
+        case .loadMoreActivities(let site, let quantity, let offset):
+            loadMoreActivities(site: site, quantity: quantity, offset: offset)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
-        case .refreshActivities(let site):
-            refreshActivities(site: site)
+        case .refreshActivities(let site, let quantity):
+            refreshActivities(site: site, quantity: quantity)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
         case .rewindStarted(let site, let rewindID, let restoreID):
@@ -193,25 +200,29 @@ extension ActivityStore {
 }
 
 private extension ActivityStore {
-    func fetchActivities(site: JetpackSiteRef, count: Int = 1000) {
+    func fetchActivities(site: JetpackSiteRef, count: Int = 20, offset: Int = 0) {
         state.fetchingActivities[site] = true
 
         remote(site: site)?.getActivityForSite(
             site.siteID,
+            offset: offset,
             count: count,
-            success: { [actionDispatcher] (activities, _ /* hasMore */) in
-                actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities))
+            success: { [actionDispatcher] (activities, hasMore) in
+                let loadingMore = offset > 0
+                actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
         },
             failure: { [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.receiveActivitiesFailed(site: site, error: error))
         })
     }
 
-    func receiveActivities(site: JetpackSiteRef, activities: [Activity]) {
+    func receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool = false, loadingMore: Bool = false) {
         transaction { state in
-            state.activities[site] = activities
+            let allActivities = loadingMore ? (state.activities[site] ?? []) + activities : activities
+            state.activities[site] = allActivities
             state.fetchingActivities[site] = false
             state.lastFetch[site] = Date()
+            state.hasMore = hasMore
         }
     }
 
@@ -222,12 +233,20 @@ private extension ActivityStore {
         }
     }
 
-    func refreshActivities(site: JetpackSiteRef) {
+    func refreshActivities(site: JetpackSiteRef, quantity: Int) {
         guard !isFetching(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site)
+        fetchActivities(site: site, count: quantity)
+    }
+
+    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int) {
+        guard !isFetching(site: site) else {
+            DDLogInfo("Activity Log refresh triggered while one was in progress")
+            return
+        }
+        fetchActivities(site: site, count: quantity, offset: offset)
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
@@ -376,6 +395,10 @@ private extension ActivityStore {
     // MARK: - Helpers
 
     func remote(site: JetpackSiteRef) -> ActivityServiceRemote? {
+        guard activityServiceRemote == nil else {
+            return activityServiceRemote
+        }
+
         guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }

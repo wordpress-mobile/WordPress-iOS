@@ -119,7 +119,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if QuickStartTourGuide.find()?.isCurrentElement(.newPage) ?? false {
+        if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
             updateFilterWithPostStatus(.publish)
         }
 
@@ -477,7 +477,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
         present(editorViewController, animated: false)
 
-        QuickStartTourGuide.find()?.visited(.newPage)
+        QuickStartTourGuide.shared.visited(.newPage)
     }
 
     fileprivate func editPage(_ page: Page) {
@@ -610,6 +610,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.retryPage(page)
                 })
             } else {
+                addEditAction(to: alertController, for: page)
+
                 alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -652,6 +654,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.retryPage(page)
                 })
             } else {
+                addEditAction(to: alertController, for: page)
+
                 alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -693,6 +697,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
+    }
+
+    private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
+        if page.status == .trash {
+            return
+        }
+
+        let buttonTitle = NSLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
+        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.editPage(page)
+            }
+        })
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {

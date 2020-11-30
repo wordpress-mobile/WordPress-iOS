@@ -10,6 +10,7 @@ private enum PrepublishingIdentifier {
     case schedule
     case visibility
     case tags
+    case categories
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -33,7 +34,8 @@ class PrepublishingViewController: UITableViewController {
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
+        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags")),
+        PrepublishingOption(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"))
     ]
 
     private var didTapPublish = false
@@ -66,6 +68,8 @@ class PrepublishingViewController: UITableViewController {
         setupFooterSeparator()
 
         announcePublishButton()
+
+        preferredContentSize = tableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -119,6 +123,8 @@ class PrepublishingViewController: UITableViewController {
             configureVisibilityCell(cell)
         case .schedule:
             configureScheduleCell(cell)
+        case .categories:
+            configureCategoriesCell(cell)
         }
 
         return cell
@@ -132,6 +138,8 @@ class PrepublishingViewController: UITableViewController {
             didTapVisibilityCell()
         case .schedule:
             didTapSchedule(indexPath)
+        case .categories:
+            didTapCategoriesCell()
         }
     }
 
@@ -155,8 +163,31 @@ class PrepublishingViewController: UITableViewController {
             self?.reloadData()
         }
 
+        tagPickerViewController.onContentViewHeightDetermined = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+        }
+
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
+
+    private func configureCategoriesCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = post.categories?.array.map { $0.categoryName }.joined(separator: ",")
+    }
+
+    private func didTapCategoriesCell() {
+        let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: post.categories?.array, selectionMode: .post)
+        categoriesViewController.delegate = self
+        categoriesViewController.onCategoriesChanged = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+            self?.tableView.reloadData()
+        }
+
+        categoriesViewController.onTableViewHeightDetermined = { [weak self] in
+            self?.presentedVC?.containerViewWillLayoutSubviews()
+        }
+
+        navigationController?.pushViewController(categoriesViewController, animated: true)
+       }
 
     // MARK: - Visibility
 
@@ -324,5 +355,23 @@ extension PrepublishingViewController: PrepublishingDismissible {
         }
 
         post.status = originalStatus
+    }
+}
+extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
+    func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
+        WPAnalytics.track(.editorPostCategoryChanged, properties: ["via": "prepublishing_nudges"])
+
+        // Save changes.
+        guard let categories = categories as? Set<PostCategory> else {
+             return
+        }
+        post.categories = categories
+        post.save()
+    }
+}
+
+extension Set {
+    var array: [Element] {
+        return Array(self)
     }
 }

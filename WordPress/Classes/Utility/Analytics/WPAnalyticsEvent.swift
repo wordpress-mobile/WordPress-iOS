@@ -84,6 +84,14 @@ import Foundation
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
 
+    // Jetpack
+    case jetpackSettingsViewed
+    case jetpackManageConnectionViewed
+    case jetpackDisconnectTapped
+    case jetpackDisconnectRequested
+    case jetpackWhitelistedIpsViewed
+    case jetpackWhitelistedIpsChanged
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -220,6 +228,20 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+
+        // Jetpack
+        case .jetpackSettingsViewed:
+            return "jetpack_settings_viewed"
+        case .jetpackManageConnectionViewed:
+            return "jetpack_manage_connection_viewed"
+        case .jetpackDisconnectTapped:
+            return "jetpack_disconnect_tapped"
+        case .jetpackDisconnectRequested:
+            return "jetpack_disconnect_requested"
+        case .jetpackWhitelistedIpsViewed:
+            return "jetpack_whitelisted_ips_viewed"
+        case .jetpackWhitelistedIpsChanged:
+            return "jetpack_whitelisted_ips_changed"
         }
     }
 

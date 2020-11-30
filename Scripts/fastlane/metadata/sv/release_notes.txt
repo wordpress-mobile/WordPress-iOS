@@ -1,3 +1,5 @@
-- Du kan välja bland ett antal fördesignade sidmallar när du skapar en ny sida på en webbplats som använder Gutenberg.
-- Skapa inlägg och sidor direkt från listan med inlägg och sidor via den ständigt närvarande åtgärdsknappen.
-- Rättat ett problem som gjorde att styrningen av uppdateringar visades längst upp i listan över webbplatser.
+Allt om Jetpack: Du når alla funktioner i Jetpack snabbt och enkelt, inklusive din statistik, aktivitetsloggen och dina inställningar.
+
+Få hjälp och support: Vi har korrigerat några problem som kunde uppstå när du försökte kontakta vårt supportteam. När du kontaktar oss kan du nu använda andra tecken än bara engelska alfabetet, så att appen t.ex. inte längre låser sig när du skriver in din e-postadress.
+
+Uppdateringar i läsaren: Vidare har vi rättat ett visningsproblem i läsaren. Kommentarer visas inte längre kursivt som standard.
