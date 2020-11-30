@@ -66,7 +66,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("🔴 ReaderFollowedSitesVC > viewDidLoad")
+
         self.title = NSLocalizedString("Manage", comment: "Page title for the screen to manage your list of followed sites.")
         setupTableView()
         setupTableViewHandler()
