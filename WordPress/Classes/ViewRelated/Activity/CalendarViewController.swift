@@ -58,7 +58,6 @@ class CalendarViewController: UIViewController {
         let header = startEndDateHeader()
         let stackView = UIStackView(arrangedSubviews: [
                                             header,
-                                            WeekdaysHeaderView(calendar: calendar),
                                             calendarCollectionView
         ])
         stackView.axis = .vertical
@@ -111,11 +110,14 @@ class CalendarViewController: UIViewController {
 
         startDateLabel.text = formatter.string(from: startDate)
         startDateLabel.textColor = .text
+        startDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
 
         if let endDate = endDate {
             endDateLabel.text = formatter.string(from: endDate)
             endDateLabel.textColor = .text
+            endDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
             separatorDateLabel.textColor = .text
+            separatorDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         } else {
             endDateLabel.textColor = .textSubtle
             separatorDateLabel.textColor = .textSubtle
@@ -174,13 +176,15 @@ class CalendarViewController: UIViewController {
 
     private func resetLabels() {
         startDateLabel.text = NSLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
-        startDateLabel.textColor = .textSubtle
 
         separatorDateLabel.text = "-"
-        separatorDateLabel.textColor = .textSubtle
 
         endDateLabel.text = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
-        endDateLabel.textColor = .textSubtle
+
+        [startDateLabel, separatorDateLabel, endDateLabel].forEach { label in
+            label?.textColor = .textSubtle
+            label?.font = .preferredFont(forTextStyle: .body)
+        }
     }
 
     @objc private func done() {

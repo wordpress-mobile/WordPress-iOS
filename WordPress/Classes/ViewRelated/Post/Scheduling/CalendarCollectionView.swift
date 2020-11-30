@@ -187,7 +187,7 @@ extension CalendarDataSource: JTACMonthViewDelegate {
     func calendar(_ calendar: JTACMonthView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTACMonthReusableView {
         let date = range.start
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM YYYY"
+        formatter.dateFormat = "MMMM yyyy"
         let header = calendar.dequeueReusableJTAppleSupplementaryView(withReuseIdentifier: CalendarYearHeaderView.reuseIdentifier, for: indexPath)
         (header as! CalendarYearHeaderView).titleLabel.text = formatter.string(from: date)
         return header
@@ -358,13 +358,32 @@ class CalendarYearHeaderView: JTACMonthReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToSafeArea(titleLabel, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = Constants.stackViewSpacing
+
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewToSafeArea(stackView)
+
+        stackView.addArrangedSubview(titleLabel)
         titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = Constants.titleColor
+
+        let weekdaysView = WeekdaysHeaderView(calendar: Calendar.current)
+        stackView.addArrangedSubview(weekdaysView)
+
+        stackView.setCustomSpacing(Constants.spacingAfterWeekdays, after: weekdaysView)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private enum Constants {
+        static let stackViewSpacing: CGFloat = 16
+        static let spacingAfterWeekdays: CGFloat = 8
+        static let titleColor = UIColor(light: .gray(.shade70), dark: .textSubtle)
     }
 }
