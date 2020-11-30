@@ -22,14 +22,22 @@ struct HomeWidgetCache<T: HomeWidgetData> {
         return try PropertyListDecoder().decode([Int: T].self, from: data)
     }
 
-    func write(widgetData: [Int: T]) throws {
+    func write(items: [Int: T]) throws {
 
         guard let fileURL = fileURL else {
                 return
         }
 
-        let encodedData = try PropertyListEncoder().encode(widgetData)
+        let encodedData = try PropertyListEncoder().encode(items)
         try encodedData.write(to: fileURL)
+    }
+
+    func setItem(item: T) throws {
+        var cachedItems = try read() ?? [Int: T]()
+
+        cachedItems[item.siteID] = item
+
+        try write(items: cachedItems)
     }
 
     func delete() throws {

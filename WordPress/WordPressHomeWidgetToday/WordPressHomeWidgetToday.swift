@@ -3,8 +3,9 @@ import SwiftUI
 
 /*
 struct Provider: TimelineProvider {
-    // TODO - TODAYWIDGET: Kept these methods simple on purpose, for now.
-    // They might complicate depending on Context
+
+    let service = HomeWidgetTodayRemoteService()
+
     func placeholder(in context: Context) -> HomeWidgetTodayData {
         Constants.staticContent
     }
@@ -31,10 +32,35 @@ private extension Provider {
         let date = Date()
         let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date) ?? date
 
-        let entry = widgetData ?? Constants.staticContent
+        var entry = widgetData ?? Constants.staticContent
 
-        let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
-        completion(timeline)
+        let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: entry.date, to: date).minute ?? 0)
+
+        // if cached data are "too old", refresh them from the backend, otherwise keep them
+        guard elapsedTime > Constants.minElapsedTimeToRefresh else {
+
+            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
+            completion(timeline)
+            return
+        }
+
+        service.fetchStats(for: entry) { result in
+
+            switch result {
+            case .failure(let error):
+                DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
+            case .success(let widgetData):
+
+                DispatchQueue.global().async {
+                    // update the item in the local cache
+                    HomeWidgetTodayData.setItem(item: entry)
+                }
+                entry = widgetData
+            }
+
+            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
+            completion(timeline)
+        }
     }
 
     private var defaultSiteID: Int? {
@@ -59,7 +85,7 @@ private extension Provider {
                                                        siteName: "Places you should visit",
                                                        iconURL: nil,
                                                        url: "",
-                                                       timeZoneName: "GMT",
+                                                       timeZone: TimeZone.current,
                                                        date: Date(),
                                                        stats: TodayWidgetStats(views: 5980,
                                                                                visitors: 4208,
@@ -67,6 +93,8 @@ private extension Provider {
                                                                                comments: 5))
         // refresh interval of the widget, in minutes
         static let refreshInterval = 60
+        // minimum elapsed time, in minutes, before new data are fetched from the backend.
+        static let minElapsedTimeToRefresh = 10
     }
 }*/
 

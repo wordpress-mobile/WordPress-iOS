@@ -47,7 +47,7 @@ struct TodayWidgetView_Previews: PreviewProvider {
                                                    siteName: "Places you should visit",
                                                    iconURL: nil,
                                                    url: "",
-                                                   timeZoneName: "GMT",
+                                                   timeZone: TimeZone.current,
                                                    date: Date(),
                                                    stats: TodayWidgetStats(views: 5980,
                                                                            visitors: 4208,
