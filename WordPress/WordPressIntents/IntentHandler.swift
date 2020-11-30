@@ -61,8 +61,7 @@ class IntentHandler: INExtension, SelectSiteIntentHandling {
     }
 
     func resolveSite(for intent: SelectSiteIntent, with completion: @escaping (SiteResolutionResult) -> Void) {
-        // Not sure yet what this is for... but we can't remove it because it causes a build error.
-        // - diegoreymendez
+        /// - TODO: I have to test if this method can be called by interacting with Siri, and define an implementation.  This is probably called whenever you ask the selected site, since the value can theoretically be requested through Siri.  Check out Widgets.intentdefinition.
     }
 
     func provideSiteOptionsCollection(for intent: SelectSiteIntent, with completion: @escaping (INObjectCollection<Site>?, Error?) -> Void) {
