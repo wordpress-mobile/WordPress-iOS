@@ -44,6 +44,7 @@ final class SiteCreationWizardLauncher {
         if FeatureFlag.siteCreationHomePagePicker.enabled {
             if #available(iOS 13.0, *) {
                 wizardContent.modalPresentationStyle = .pageSheet
+                wizardContent.isModalInPresentation = true
             } else {
                 // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
                 wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
@@ -51,6 +52,7 @@ final class SiteCreationWizardLauncher {
         } else {
             wizardContent.modalPresentationStyle = .fullScreen
         }
+
         return wizardContent
     }()
 }

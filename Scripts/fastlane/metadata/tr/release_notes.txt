@@ -1,3 +1,5 @@
-- Gutenberg özellikli bir sitede yeni bir sayfa oluştururken, önceden tasarlanmış çeşitli sayfa şablonlarından seçim yapın.
-- Her zaman mevcut işlem düğmesiyle doğrudan yazılar ve sayfalar listesinden yazılar ve sayfalar oluşturun.
-- Yenileme kontrolünün site listesinin en üstünde görünmesine neden olan bir sorun düzeltildi.
+Jetpack Hakkında Her Şey: İstatistikleriniz, etkinlik günlüğünüz ve ayarlarınız dahil olmak üzere tüm Jetpack özelliklerinize hızlı ve kolay bir şekilde erişin.
+
+Yardım ve Destek Alma: Destek ekibimizle iletişim kurmaya çalışmanız durumunda oluşan birkaç sorun çözüldü. Bizimle iletişime geçtiğinizde, artık alfa olmayan karakterler ekleyebilirsiniz ve uygulamanız artık e-posta adresinizi girerken kilitlenmeyecektir.
+
+Okuyucu Güncellemeleri: Okuyucu'daki bir görüntü sorunu da düzeltildi, yorumlar artık varsayılan olarak italik yazı tipinde gösterilmiyor.

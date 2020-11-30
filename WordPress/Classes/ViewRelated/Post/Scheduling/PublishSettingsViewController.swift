@@ -51,7 +51,7 @@ struct PublishSettingsViewModel {
         title = post.postTitle
 
         dateFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .none, managedObjectContext: context)
-        dateTimeFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .short, managedObjectContext: context)
+        dateTimeFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .medium, timeStyle: .short, managedObjectContext: context)
 
         let blogService = BlogService(managedObjectContext: context)
         timeZone = blogService.timeZone(for: post.blog)
