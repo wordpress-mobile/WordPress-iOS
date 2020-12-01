@@ -20,6 +20,8 @@ enum ActivityAction: Action {
     case rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus)
     case rewindStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
+
+    case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
 }
 
 enum ActivityQuery {
@@ -41,6 +43,8 @@ struct ActivityStoreState {
     var lastFetch = [JetpackSiteRef: Date]()
     var fetchingActivities = [JetpackSiteRef: Bool]()
     var hasMore = false
+
+    var groups = [JetpackSiteRef: [ActivityGroup]]()
 
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
@@ -184,6 +188,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                                                              comment: "Text displayed when a site restore takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
+        case .refreshGroups(let site, let afterDate, let beforeDate):
+            refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
         }
     }
 }
@@ -407,6 +413,24 @@ private extension ActivityStore {
             if shouldPostStateUpdates(for: site) {
                 actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
             }
+        }
+    }
+
+    func refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?) {
+        remote(site: site)?.getActivityGroupsForSite(
+            site.siteID,
+            after: afterDate,
+            before: beforeDate,
+            success: { [weak self] groups in
+                self?.receiveGroups(site: site, groups: groups)
+            }, failure: { error in
+                
+            })
+    }
+
+    func receiveGroups(site: JetpackSiteRef, groups: [ActivityGroup]) {
+        transaction { state in
+            state.groups[site] = groups
         }
     }
 
