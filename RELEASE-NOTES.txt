@@ -1,3 +1,7 @@
+16.4
+-----
+* [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
+
 16.3
 -----
 * [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
