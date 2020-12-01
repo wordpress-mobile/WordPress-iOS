@@ -1,71 +1,9 @@
 import WidgetKit
 import SwiftUI
 
-/*
-struct Provider: TimelineProvider {
+struct SiteListProvider: IntentTimelineProvider {
 
     let service = HomeWidgetTodayRemoteService()
-
-    func placeholder(in context: Context) -> HomeWidgetTodayData {
-        Constants.staticContent
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (HomeWidgetTodayData) -> ()) {
-        getSnapshotData(completion: completion)
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        getTimelineData(completion: completion)
-    }
-}
-
-// MARK: - Widget data
-private extension Provider {
-
-    func getSnapshotData(completion: @escaping (HomeWidgetTodayData) -> ()) {
-
-        completion(widgetData ?? Constants.staticContent)
-    }
-
-    func getTimelineData(completion: @escaping (Timeline<Entry>) -> ()) {
-
-        let date = Date()
-        let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Constants.refreshInterval, to: date) ?? date
-
-        var entry = widgetData ?? Constants.staticContent
-
-        let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: entry.date, to: date).minute ?? 0)
-
-        // if cached data are "too old", refresh them from the backend, otherwise keep them
-        guard elapsedTime > Constants.minElapsedTimeToRefresh else {
-
-            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
-            completion(timeline)
-            return
-        }
-
-        service.fetchStats(for: entry) { result in
-
-            switch result {
-            case .failure(let error):
-                DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-            case .success(let widgetData):
-
-                DispatchQueue.global().async {
-                    // update the item in the local cache
-                    HomeWidgetTodayData.setItem(item: entry)
-                }
-                entry = widgetData
-            }
-
-            let timeline = Timeline(entries: [entry], policy: .after(nextRefreshDate))
-            completion(timeline)
-        }
-    }
-}
- */
-
-struct SiteListProvider: IntentTimelineProvider {
 
     private var defaultSiteID: Int? {
         // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
@@ -129,15 +67,44 @@ struct SiteListProvider: IntentTimelineProvider {
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
 
-            completion(Timeline(entries: [Self.staticContent], policy: .never))
+            let timeline = Timeline(entries: [Self.staticContent], policy: .never)
+            completion(timeline)
             return
         }
 
         let date = Date()
         let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: Self.refreshInterval, to: date) ?? date
+        let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
 
-        let timeline = Timeline(entries: [widgetData], policy: .after(nextRefreshDate))
-        completion(timeline)
+        let privateCompletion = { (widgetData: HomeWidgetTodayData) in
+            let timeline = Timeline(entries: [widgetData], policy: .after(nextRefreshDate))
+            completion(timeline)
+        }
+
+        // if cached data are "too old", refresh them from the backend, otherwise keep them
+        guard elapsedTime > Self.minElapsedTimeToRefresh else {
+
+            privateCompletion(widgetData)
+            return
+        }
+
+        service.fetchStats(for: widgetData) { result in
+
+            switch result {
+            case .failure(let error):
+                DDLogError("HomeWidgetToday: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
+
+                privateCompletion(widgetData)
+            case .success(let widgetData):
+
+                DispatchQueue.global().async {
+                    // update the item in the local cache
+                    HomeWidgetTodayData.setItem(item: widgetData)
+                }
+
+                privateCompletion(widgetData)
+            }
+        }
     }
 }
 
