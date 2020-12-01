@@ -21,9 +21,11 @@ extern NSString * const WPAppAnalyticsKeyFollowAction;
 extern NSString * const WPAppAnalyticsKeySource;
 extern NSString * const WPAppAnalyticsKeyPostType;
 extern NSString * const WPAppAnalyticsKeyTapSource;
+extern NSString * const WPAppAnalyticsKeyReplyingTo;
 extern NSString * const WPAppAnalyticsKeySiteType;
 extern NSString * const WPAppAnalyticsValueSiteTypeBlog;
 extern NSString * const WPAppAnalyticsValueSiteTypeP2;
+
 /**
  *  @class      WPAppAnalytics
  *  @brief      This is a container for the app-specific analytics logic.

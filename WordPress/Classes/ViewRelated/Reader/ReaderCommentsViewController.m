@@ -250,13 +250,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [WPAppAnalytics track: stat withProperties:properties];
 }
 
--(void)trackReplyToComment {
+-(void)trackReplyTo:(BOOL)replyTarget {
     ReaderPost *post = self.post;
     NSDictionary *railcar = post.railcarDictionary;
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyBlogID] = post.siteID;
     properties[WPAppAnalyticsKeyPostID] = post.postID;
     properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+    properties[WPAppAnalyticsKeyReplyingTo] = replyTarget ? @"comment" : @"post";
     if (post.feedID && post.feedItemID) {
         properties[WPAppAnalyticsKeyFeedID] = post.feedID;
         properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
@@ -792,6 +793,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __typeof(self) __weak weakSelf = self;
 
+    BOOL replyToComment = self.indexPathForCommentRepliedTo != nil;
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
 
@@ -800,7 +802,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
         [weakSelf displayNoticeWithTitle:successMessage message:nil];
 
-        [weakSelf trackReplyToComment];
+        [weakSelf trackReplyTo:replyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
@@ -818,7 +820,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
 
-    if (self.indexPathForCommentRepliedTo) {
+    if (replyToComment) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
         [service replyToHierarchicalCommentWithID:comment.commentID
                                              post:self.post
