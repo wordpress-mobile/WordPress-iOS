@@ -1,17 +1,23 @@
 import Foundation
 import WordPressFlux
 
+protocol ActivityTypeSelectorDelegate: class {
+    func didCancel()
+    func didSelect(groups: [ActivityGroup])
+}
+
 class ActivityTypeSelectorViewController: UITableViewController {
     private let store: ActivityStore!
     private let site: JetpackSiteRef!
 
     private var storeReceipt: Receipt?
+    private var selectedGroupsKeys: [String] = []
 
     private var groups: [ActivityGroup] {
         return store.state.groups[site] ?? []
     }
 
-    private var selectedGroups: [String] = []
+    weak var delegate: ActivityTypeSelectorDelegate?
 
     init(site: JetpackSiteRef, store: ActivityStore) {
         self.site = site
@@ -28,11 +34,15 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         configureTableView()
 
+        setupNavButtons()
+
         store.actionDispatcher.dispatch(ActivityAction.refreshGroups(site: self.site, afterDate: nil, beforeDate: nil))
 
         storeReceipt = store.onChange {
             self.tableView.reloadData()
         }
+
+        title = NSLocalizedString("Filter by activity type", comment: "Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users)")
     }
 
     private func configureTableView() {
@@ -41,8 +51,19 @@ class ActivityTypeSelectorViewController: UITableViewController {
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
-    private enum Constants {
-        static let groupCellIdentifier = "GroupCellIdentifier"
+    private func setupNavButtons() {
+        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        navigationItem.setRightBarButton(doneButton, animated: false)
+
+        navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel)), animated: false)
+    }
+
+    @objc private func done() {
+        delegate?.didSelect(groups: groups.filter { selectedGroupsKeys.contains($0.key) })
+    }
+
+    @objc private func cancel() {
+        delegate?.didCancel()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,6 +77,8 @@ class ActivityTypeSelectorViewController: UITableViewController {
         }
 
         cell.textLabel?.text = "\(activityGroup.name) (\(activityGroup.count))"
+        cell.accessoryType = selectedGroupsKeys.contains(activityGroup.key) ? .checkmark : .none
+
         return cell
     }
 
@@ -66,12 +89,16 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         let selectedGroupKey = groups[indexPath.row].key
 
-        if selectedGroups.contains(selectedGroupKey) {
+        if selectedGroupsKeys.contains(selectedGroupKey) {
             cell?.accessoryType = .none
-            selectedGroups = selectedGroups.filter { $0 != selectedGroupKey }
+            selectedGroupsKeys = selectedGroupsKeys.filter { $0 != selectedGroupKey }
         } else {
             cell?.accessoryType = .checkmark
-            selectedGroups.append(selectedGroupKey)
+            selectedGroupsKeys.append(selectedGroupKey)
         }
+    }
+
+    private enum Constants {
+        static let groupCellIdentifier = "GroupCellIdentifier"
     }
 }
