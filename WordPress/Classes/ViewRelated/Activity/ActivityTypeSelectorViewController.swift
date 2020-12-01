@@ -2,8 +2,8 @@ import Foundation
 import WordPressFlux
 
 protocol ActivityTypeSelectorDelegate: class {
-    func didCancel()
-    func didSelect(groups: [ActivityGroup])
+    func didCancel(selectorViewController: ActivityTypeSelectorViewController)
+    func didSelect(selectorViewController: ActivityTypeSelectorViewController, groups: [ActivityGroup])
 }
 
 class ActivityTypeSelectorViewController: UITableViewController {
@@ -59,11 +59,11 @@ class ActivityTypeSelectorViewController: UITableViewController {
     }
 
     @objc private func done() {
-        delegate?.didSelect(groups: groups.filter { selectedGroupsKeys.contains($0.key) })
+        delegate?.didSelect(selectorViewController: self, groups: groups.filter { selectedGroupsKeys.contains($0.key) })
     }
 
     @objc private func cancel() {
-        delegate?.didCancel()
+        delegate?.didCancel(selectorViewController: self)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

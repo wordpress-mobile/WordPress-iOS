@@ -198,6 +198,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             }
 
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(site: self.site, store: self.store)
+            activityTypeSelectorViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
             self.present(navigationController, animated: true, completion: nil)
         }
@@ -404,4 +405,18 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
         viewModel.refresh(after: startDate, before: endDate)
         calendar.dismiss(animated: true, completion: nil)
     }
+}
+
+// MARK: - Activity type filter handling
+extension ActivityListViewController: ActivityTypeSelectorDelegate {
+    func didCancel(selectorViewController: ActivityTypeSelectorViewController) {
+        selectorViewController.dismiss(animated: true, completion: nil)
+    }
+
+    func didSelect(selectorViewController: ActivityTypeSelectorViewController, groups: [ActivityGroup]) {
+        selectorViewController.dismiss(animated: true, completion: nil)
+        print("$$ \(groups)")
+    }
+
+    
 }
