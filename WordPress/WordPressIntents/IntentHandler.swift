@@ -1,5 +1,4 @@
 import Intents
-import IntentsUI
 
 class IntentHandler: INExtension, SelectSiteIntentHandling {
 

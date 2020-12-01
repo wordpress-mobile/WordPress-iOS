@@ -16,13 +16,29 @@ class SitesDataProvider {
         }
 
         sites = data.map { (key: Int, data: HomeWidgetTodayData) -> Site in
-            let icon = self.icon(from: data)
+
+            // Note: the image for the site was being set through:
+            //
+            // icon(from: data)
+            //
+            // Unfortunately, this had to be turned off for now since images aren't working very well in the
+            // customizer as reported here: https://github.com/wordpress-mobile/WordPress-iOS/pull/15397#pullrequestreview-539474644
+
+            let siteDomain: String?
+
+            if let urlComponents = URLComponents(string: data.url),
+               let host = urlComponents.host {
+
+                siteDomain = host
+            } else {
+                siteDomain = nil
+            }
 
             return Site(
                 identifier: String(key),
                 display: data.siteName,
-                subtitle: nil,
-                image: icon)
+                subtitle: siteDomain,
+                image: nil)
         }
     }
 
