@@ -193,8 +193,13 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     private func setupActivityTypeFilter() {
         activityTypeFilterChip.tapped = { [weak self] in
-            let navigationController = UINavigationController(rootViewController: ActivityTypeSelectorViewController())
-            self?.present(navigationController, animated: true, completion: nil)
+            guard let self = self else {
+                return
+            }
+
+            let activityTypeSelectorViewController = ActivityTypeSelectorViewController(site: self.site, store: self.store)
+            let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
+            self.present(navigationController, animated: true, completion: nil)
         }
     }
 
