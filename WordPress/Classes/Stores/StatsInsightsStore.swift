@@ -1013,12 +1013,12 @@ private extension InsightStoreState {
         }
         // refresh stats and update any blog info, if they had changed
         homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                           siteName: blog.title ?? oldData.siteName,
-                                                           iconURL: blog.icon ?? oldData.iconURL,
-                                                           url: blog.url ?? oldData.url,
-                                                           timeZone: blogService.timeZone(for: blog),
-                                                           date: Date(),
-                                                           stats: stats)
+                                                                    siteName: blog.title ?? oldData.siteName,
+                                                                    iconURL: blog.icon ?? oldData.iconURL,
+                                                                    url: blog.url ?? oldData.url,
+                                                                    timeZone: blogService.timeZone(for: blog),
+                                                                    date: Date(),
+                                                                    stats: stats)
 
         HomeWidgetTodayData.write(items: homeWidgetTodayCache)
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
