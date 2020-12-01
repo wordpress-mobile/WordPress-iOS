@@ -72,23 +72,13 @@ extension WPTabBarController {
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let controller = kanvasService.controller()
+            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext)
 
-            storyService = KanvasStoryService(blog: blog, posted: { [weak self, weak controller] result in
+            storyService = KanvasStoryService(post: controller.post as! Post, updated: { [weak self, weak controller] result in
                 switch result {
                 case .success(let post):
-                    let prepublishing = PrepublishingViewController(post: post, identifiers: [.title, .visibility, .schedule, .tags]) { [weak self] post in
-                        let coordinator = PostCoordinator.shared
-                        coordinator.save(post, forceDraftIfCreating: true) { result in
-                            storyService?.poster?.update(post: post)
-                        }
-                        self?.dismiss(animated: true, completion: nil)
-                    }
-                    let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
-                    let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
-                    if let controller = controller {
-                        bottomSheet.show(from: controller.topmostPresentedViewController, sourceView: controller.view)
-                    }
+                    controller?.post = post
+                    controller?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat: .editorPublishedPost)
                 case .failure(let error):
                     self?.dismiss(animated: true, completion: nil)
                     let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)

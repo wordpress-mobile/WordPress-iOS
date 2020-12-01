@@ -8,6 +8,8 @@ class StoryPoster {
     struct MediaItem {
         let url: URL
         let size: CGSize
+        let archive: URL
+        let original: URL
 
         var mimeType: String {
             return url.mimeType
@@ -37,27 +39,38 @@ class StoryPoster {
     enum StoryPosterError: Error {
         case jsonEncodeError(Error) // JSON from the draft post cannot be decoded. The Error contains the original decoding error
         case jsonDecodeError(Error) // JSON from the draft post cannot be decoded. The Error contains the original decoding error
+        case contentDataEncodingError // JSON from the draft post couldn't be converted to utf8 encoded data.
     }
 
-    /// Posts the media to a blog with the given parameters.
-    /// - Parameters:
-    ///   - media: The set of MediaItems which compose the story.
-    ///   - title: The title of the story.
-    ///   - blog: The blog to publish the post to.
-    /// - Returns: A `Result` containing either the created `Post` or an `Error`.
-    func post(media: [MediaItem], title: String, to blog: Blog) -> Result<Post, Error> {
+    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping ([Media]) -> Void) {
+        var media = [Media?](repeating: nil, count: assets.count)
+        assets.enumerated().forEach { (idx, asset) in
+            let upload = MediaCoordinator.shared.addMedia(from: asset, to: post)
+            MediaCoordinator.shared.addObserver({ (item, state) in
+                DispatchQueue.main.async {
+                    switch state {
+                    case .ended:
+                        media[idx] = item
+                        if media.contains(nil) == false {
+                            completion(media.compactMap({return $0}))
+                        }
+                    default:
+                        ()
+                    }
+                }
+            }, for: upload)
+        }
+    }
 
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-
-        let mediaFiles: [MediaFile] = media.map { item in
-            return MediaFile(alt: "",
-                             caption: "",
-                             id: 0,
-                             link: "",
-                             mime: item.mimeType,
-                             type: String(item.mimeType.split(separator: "/").first ?? ""),
-                             url: item.url.absoluteString
-            )
+    func updateContent(post: Post, media: [Media]) {
+        let mediaFiles: [MediaFile] = media.map { media -> MediaFile in
+            return MediaFile(alt: media.alt ?? "",
+                             caption: media.caption ?? "",
+                             id: media.mediaID?.doubleValue ?? 0,
+                             link: media.remoteURL ?? "",
+                             mime: media.mimeType() ?? "",
+                             type: String(media.mimeType()?.split(separator: "/").first ?? ""),
+                             url: media.remoteURL ?? "")
         }
 
         do {
@@ -67,15 +80,78 @@ class StoryPoster {
             CrashLogging.logMessage("Failed to encode Story")
             let error = StoryPosterError.jsonEncodeError(error)
             CrashLogging.logError(error)
-            return .failure(error)
+        }
+    }
+
+    func move(mediaItems: [MediaItem], to newMedia: [Media]) {
+        let urls = mediaItems.compactMap { item in
+            return item.url.deletingPathExtension()
         }
 
-        media.forEach { item in
-            let asset = item.url as ExportableAsset
-            MediaCoordinator.shared.addMedia(from: asset, to: post)
+        zip(urls, newMedia).forEach({ (url, media) in
+            let newURL = StoryPoster.filePath.appendingPathComponent("\(media.mediaID?.intValue ?? 0)")
+            try! FileManager.default.moveItem(at: url, to: newURL)
+        })
+    }
+
+    /// Posts the media to a blog with the given parameters.
+    /// - Parameters:
+    ///   - media: The set of MediaItems which compose the story.
+    ///   - title: The title of the story.
+    ///   - blog: The blog to publish the post to.
+    /// - Returns: A `Result` containing either the created `Post` or an `Error`.
+    func post(mediaItems: [MediaItem], title: String, to blog: Blog, post: Post? = nil, inserter: GutenbergMediaInserterHelper? = nil, completion: @escaping (Result<Post, Error>) -> Void) {
+
+        let post = post ?? PostService(managedObjectContext: context).createDraftPost(for: blog)
+
+        let assets = mediaItems.map { item in
+            return item.url as ExportableAsset
         }
 
-        return .success(post)
+        upload(assets: assets, post: post, completion: { [weak self] media in
+            self?.move(mediaItems: mediaItems, to: media)
+            self?.updateContent(post: post, media: media)
+            completion(.success(post))
+        })
+    }
+
+    func updateMedia<T: Collection>(content: String, media: T) throws -> String where T.Element == Media {
+        let storyJSON = StoryBlock.parse(content)
+
+        guard let jsonData = storyJSON?.data(using: .utf8) else {
+            throw StoryPosterError.contentDataEncodingError
+        }
+
+        let decoder = JSONDecoder()
+        let mediaItems = try decoder.decode(Story.self, from: jsonData).mediaFiles
+
+        let urls = mediaItems.compactMap { item in
+            return URL(string: item.url)
+        }
+
+        let newFiles: [MediaFile] = mediaItems.compactMap { file in
+            guard let media = media.first(where: { media in
+                return match(media: media, mediaFile: file)
+            }) else {
+                CrashLogging.logMessage("Failed to find matching Story in draft")
+                return nil
+            }
+            return MediaFile(alt: media.alt ?? "",
+                             caption: media.caption ?? "",
+                             id: media.mediaID?.doubleValue ?? 0,
+                             link: media.remoteURL ?? "",
+                             mime: media.mimeType() ?? "",
+                             type: String(media.mimeType()?.split(separator: "/").first ?? ""),
+                             url: media.remoteURL ?? "")
+        }
+
+        zip(urls, newFiles).forEach({ (url, file) in
+            let newURL = StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
+            try! FileManager.default.moveItem(at: url, to: newURL)
+        })
+
+        let mediaJSON = try json(files: newFiles)
+        return StoryBlock.wrap(mediaJSON)
     }
 
     /// Updates the Post content with the new media details after they have finished uploading. These values are not known until the post is saved and uploaded.
@@ -86,35 +162,8 @@ class StoryPoster {
         }
 
         do {
-            let storyJSON = StoryBlock.parse(content)
-
-            guard let jsonData = storyJSON?.data(using: .utf8) else {
-                return
-            }
-
-            let decoder = JSONDecoder()
-            let mediaItems = try decoder.decode(Story.self, from: jsonData).mediaFiles
-
-            let newFiles: [MediaFile] = mediaItems.compactMap { file in
-                guard let media = post.media.first(where: { media in
-                    match(media: media, mediaFile: file)
-                }) else {
-                    CrashLogging.logMessage("Failed to find matching Story in draft")
-                    return nil
-                }
-                return MediaFile(alt: media.alt ?? "",
-                                 caption: media.caption ?? "",
-                                 id: media.mediaID?.doubleValue ?? 0,
-                                 link: media.remoteURL ?? "",
-                                 mime: media.mimeType() ?? "",
-                                 type: String(media.mimeType()?.split(separator: "/").first ?? ""),
-                                 url: media.remoteURL ?? "")
-
-            }
-
-            let mediaJSON = try json(files: newFiles)
-            post.content = StoryBlock.wrap(mediaJSON)
-            post.status = .publish
+            post.content = try updateMedia(content: content, media: post.media)
+//            post.status = .publish
             PostCoordinator.shared.save(post)
         } catch let error {
             CrashLogging.logMessage("Failed to decode Story")
@@ -129,8 +178,9 @@ class StoryPoster {
     ///   - mediaFile: The MediaFile whose filename should be matched.
     /// - Returns: Whether the Media and MediaFile's filename matches.
     private func match(media: Media, mediaFile: MediaFile) -> Bool {
-        let itemFilename = URL(string: mediaFile.url)?.lastPathComponent ?? ""
-        return media.filename?.caseInsensitiveCompare(itemFilename) == .orderedSame
+        let itemFilename = URL(string: mediaFile.url)?.deletingPathExtension().lastPathComponent ?? ""
+        let filename = URL(string: media.filename ?? "")?.deletingPathExtension().lastPathComponent ?? ""
+        return filename.caseInsensitiveCompare(itemFilename) == .orderedSame
     }
 
     /// Returns only the Story JSON by fetching it from the Story block.
@@ -142,6 +192,12 @@ class StoryPoster {
         let json = String(data: (try encoder.encode(story)), encoding: .utf8) ?? ""
         return json
     }
+
+    static var filePath: URL = {
+        let media = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("KanvasMedia")
+        try! FileManager.default.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
+        return media
+    }()
 }
 
 struct StoryBlock {

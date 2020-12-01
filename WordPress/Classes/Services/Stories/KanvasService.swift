@@ -9,7 +9,7 @@ protocol CameraHandlerDelegate: class {
 class KanvasService {
     weak var delegate: CameraHandlerDelegate?
 
-    var cameraSettings: CameraSettings {
+    static var cameraSettings: CameraSettings {
         let settings = CameraSettings()
         settings.features.ghostFrame = true
         settings.features.metalPreview = true
@@ -40,10 +40,21 @@ class KanvasService {
         return settings
     }
 
-    func controller() -> CameraController {
+    func controller(blog: Blog, context: NSManagedObjectContext) -> StoryEditor {
+        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        return controller(post: post)
+    }
+
+    func controller(post: AbstractPost) -> StoryEditor {
         KanvasCameraColors.shared = KanvasCameraCustomUI.shared.cameraColors()
         KanvasCameraFonts.shared = KanvasCameraCustomUI.shared.cameraFonts()
-        let controller = CameraController(settings: cameraSettings, stickerProvider: EmojiStickerProvider(), analyticsProvider: KanvasCameraAnalyticsStub(), quickBlogSelectorCoordinator: nil, tagCollection: nil)
+        let controller = StoryEditor(post: post,
+                                     onClose: nil,
+                                     settings: KanvasService.cameraSettings,
+                                     stickerProvider: EmojiStickerProvider(),
+                                     analyticsProvider: KanvasCameraAnalyticsStub(),
+                                     quickBlogSelectorCoordinator: nil,
+                                     tagCollection: nil)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve
@@ -57,14 +68,21 @@ extension KanvasService: CameraControllerDelegate {
     }
 
     func dismissButtonPressed(_ cameraController: CameraController) {
-        cameraController.dismiss(animated: true, completion: nil)
+        if let editor = cameraController as? StoryEditor {
+            editor.cancelEditing()
+        } else {
+            cameraController.dismiss(animated: true, completion: nil)
+        }
     }
 
     func tagButtonPressed() {
 
     }
 
-    func editorDismissed() {
+    func editorDismissed(_ cameraController: CameraController) {
+        if let editor = cameraController as? StoryEditor {
+            editor.cancelEditing()
+        }
     }
 
     func didDismissWelcomeTooltip() {
@@ -92,7 +110,6 @@ extension KanvasService: CameraControllerDelegate {
     }
 
     func provideMediaPickerThumbnail(targetSize: CGSize, completion: @escaping (UIImage?) -> Void) {
-
         PHPhotoLibrary.requestAuthorization { status in
             completion(nil)
         }

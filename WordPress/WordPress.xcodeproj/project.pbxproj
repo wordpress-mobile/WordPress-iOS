@@ -2192,6 +2192,7 @@
 		F514D59C25002DE400422BB5 /* UIColor+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F514D59B25002DE400422BB5 /* UIColor+Colors.swift */; };
 		F514D59E25002DE900422BB5 /* UIFont+Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F514D59D25002DE900422BB5 /* UIFont+Fonts.swift */; };
 		F514D5A025002DEF00422BB5 /* stickers.json in Resources */ = {isa = PBXBuildFile; fileRef = F514D59F25002DEF00422BB5 /* stickers.json */; };
+		F51CC7AB2575AB7D00F48571 /* StoriesPostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CC7AA2575AB7D00F48571 /* StoriesPostEditor.swift */; };
 		F52CACCA244FA7AA00661380 /* ReaderManageScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52CACC9244FA7AA00661380 /* ReaderManageScenePresenter.swift */; };
 		F52CACCC24512EA700661380 /* EmptyActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52CACCB24512EA700661380 /* EmptyActionView.swift */; };
 		F532AD61253B81320013B42E /* StoriesIntroDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F532AD60253B81320013B42E /* StoriesIntroDataSource.swift */; };
@@ -4981,6 +4982,7 @@
 		F514D59B25002DE400422BB5 /* UIColor+Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Colors.swift"; sourceTree = "<group>"; };
 		F514D59D25002DE900422BB5 /* UIFont+Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Fonts.swift"; sourceTree = "<group>"; };
 		F514D59F25002DEF00422BB5 /* stickers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stickers.json; sourceTree = "<group>"; };
+		F51CC7AA2575AB7D00F48571 /* StoriesPostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesPostEditor.swift; sourceTree = "<group>"; };
 		F52CACC9244FA7AA00661380 /* ReaderManageScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderManageScenePresenter.swift; sourceTree = "<group>"; };
 		F52CACCB24512EA700661380 /* EmptyActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActionView.swift; sourceTree = "<group>"; };
 		F532AD60253B81320013B42E /* StoriesIntroDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesIntroDataSource.swift; sourceTree = "<group>"; };
@@ -10869,6 +10871,7 @@
 				F514D58E25002C7E00422BB5 /* KanvasService.swift */,
 				F514D59025002CD600422BB5 /* KanvasStoryService.swift */,
 				F514D59225002CFD00422BB5 /* StoryPoster.swift */,
+				F51CC7AA2575AB7D00F48571 /* StoriesPostEditor.swift */,
 			);
 			path = Stories;
 			sourceTree = "<group>";
@@ -12289,17 +12292,17 @@
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/gutenberg-observer.js",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
-				"${PODS_ROOT}/Gutenberg/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
-				"${PODS_ROOT}/Gutenberg/src/block-support/supported-blocks.json",
-				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/extra-localstorage-entries.js",
-				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/remove-nux.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/content-functions.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/editor-style-overrides.css",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/gutenberg-observer.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/inject-css.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/insert-block.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/local-storage-overrides.json",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/prevent-autosaves.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/gutenberg/packages/react-native-bridge/common/gutenberg-web-single-block/wp-bar-override.css",
+				"${PODS_ROOT}/../../gutenberg-mobile/src/block-support/supported-blocks.json",
+				"${PODS_ROOT}/../../gutenberg-mobile/resources/unsupported-block-editor/extra-localstorage-entries.js",
+				"${PODS_ROOT}/../../gutenberg-mobile/resources/unsupported-block-editor/remove-nux.js",
 				"${PODS_CONFIGURATION_BUILD_DIR}/KanvasCamera/KanvasCamera.bundle",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Drawing/MediaEditorDrawing.storyboard",
 				"${PODS_ROOT}/MediaEditor/Sources/Capabilities/Filters/MediaEditorFilters.storyboard",
@@ -13355,6 +13358,7 @@
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
 				8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */,
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
+				F51CC7AB2575AB7D00F48571 /* StoriesPostEditor.swift in Sources */,
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,

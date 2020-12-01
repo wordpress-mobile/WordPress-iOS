@@ -58,7 +58,7 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
-    init(post: Post, identifiers: [PrepublishingIdentifier] = [.visibility, .schedule, .tags], completion: @escaping (AbstractPost) -> ()) {
+    init(post: Post, identifiers: [PrepublishingIdentifier], completion: @escaping (AbstractPost) -> ()) {
         self.post = post
         self.options = identifiers.map { identifier in
             return PrepublishingViewController.option(for: identifier)
