@@ -46,8 +46,6 @@ struct SiteListProvider: IntentTimelineProvider {
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (HomeWidgetTodayData) -> Void) {
 
-        /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
-        ///
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
