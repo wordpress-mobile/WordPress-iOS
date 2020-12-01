@@ -55,7 +55,7 @@ class ActivityListViewModel: Observable {
 
     private func updateState() {
         changeDispatcher.dispatch()
-        refreshing = store.isFetching(site: site)
+        refreshing = store.isFetchingActivities(site: site)
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil) {
@@ -71,7 +71,7 @@ class ActivityListViewModel: Observable {
     }
 
     public func loadMore() {
-        if !store.isFetching(site: site) {
+        if !store.isFetchingActivities(site: site) {
             offset = store.state.activities[site]?.count ?? 0
             ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before))
         }
@@ -83,7 +83,7 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        if store.isFetching(site: site) {
+        if store.isFetchingActivities(site: site) {
             return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 

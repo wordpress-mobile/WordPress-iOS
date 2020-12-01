@@ -140,11 +140,11 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let currentlyFetching = isFetching(site: site)
+        let currentlyFetching = isFetchingActivities(site: site)
         return needsRefresh && !currentlyFetching
     }
 
-    func isFetching(site: JetpackSiteRef) -> Bool {
+    func isFetchingActivities(site: JetpackSiteRef) -> Bool {
         return state.fetchingActivities[site, default: false]
     }
 
@@ -249,7 +249,7 @@ private extension ActivityStore {
     }
 
     func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?) {
-        guard !isFetching(site: site) else {
+        guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
@@ -257,7 +257,7 @@ private extension ActivityStore {
     }
 
     func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?) {
-        guard !isFetching(site: site) else {
+        guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }

@@ -88,7 +88,7 @@ class ActivityStoreMock: ActivityStore {
     var afterDate: Date?
     var beforeDate: Date?
 
-    override func isFetching(site: JetpackSiteRef) -> Bool {
+    override func isFetchingActivities(site: JetpackSiteRef) -> Bool {
         return isFetching
     }
 
