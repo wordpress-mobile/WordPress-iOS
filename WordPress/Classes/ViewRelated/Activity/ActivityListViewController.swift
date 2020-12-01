@@ -76,15 +76,6 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     // MARK: - View lifecycle
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        let calendarViewController = CalendarViewController()
-        calendarViewController.delegate = self
-        let navigationController = UINavigationController(rootViewController: calendarViewController)
-        present(navigationController, animated: true, completion: nil)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
