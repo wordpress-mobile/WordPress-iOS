@@ -27,17 +27,12 @@ class FollowCommentsService: NSObject {
 
     /// Returns a Bool indicating whether or not the comments on the post can be followed.
     ///
-    /// Older a8c internal P2s do not contain the isWPForTeams flag.
-    /// In case we can't find a flag that marks an old P2 site as being a P2,
-    /// we can assume that blogs in the Reader's Automattic tab are P2s.
-    /// i.e. Posts with a topic of type ReaderTeamTopic.
-    ///
-    /// Note that blogs in the Reader's Automattic tab are only available to Automatticians.
     @objc var canFollowConversation: Bool {
-        guard let blog = post.blog else {
-            return false
+        if (post.isJetpack || post.isWPCom) {
+            return true
         }
-        return blog.isWPForTeams() || ReaderHelpers.topicType(post.topic) == .team
+
+        return false
     }
 
     /// Fetches the subscription status of the specified post for the current user.
