@@ -124,6 +124,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchHeader.addConstraints([top, bottom, leading, trailing])
         searchHeader.addTopBorder(withColor: .divider)
         searchHeader.addBottomBorder(withColor: .divider)
+        searchHeader.backgroundColor = searchTextField.backgroundColor
     }
 
     override func viewWillAppear(_ animated: Bool) {
