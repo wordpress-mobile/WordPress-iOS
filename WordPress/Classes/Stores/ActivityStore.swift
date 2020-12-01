@@ -45,6 +45,7 @@ struct ActivityStoreState {
     var hasMore = false
 
     var groups = [JetpackSiteRef: [ActivityGroup]]()
+    var fetchingGroups = [JetpackSiteRef: Bool]()
 
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
@@ -417,6 +418,13 @@ private extension ActivityStore {
     }
 
     func refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?) {
+        guard !isFetchingGroups(site: site) else {
+            DDLogInfo("Activity Log fetch groups triggered while one was in progress")
+            return
+        }
+
+        state.fetchingGroups[site] = true
+
         remote(site: site)?.getActivityGroupsForSite(
             site.siteID,
             after: afterDate,
@@ -430,8 +438,13 @@ private extension ActivityStore {
 
     func receiveGroups(site: JetpackSiteRef, groups: [ActivityGroup]) {
         transaction { state in
+            state.fetchingGroups[site] = false
             state.groups[site] = groups
         }
+    }
+
+    func isFetchingGroups(site: JetpackSiteRef) -> Bool {
+        return state.fetchingGroups[site, default: false]
     }
 
     // MARK: - Helpers

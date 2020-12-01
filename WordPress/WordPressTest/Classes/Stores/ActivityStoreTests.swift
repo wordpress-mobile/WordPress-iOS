@@ -83,6 +83,7 @@ class ActivityStoreTests: XCTestCase {
     }
 
     // refreshGroups call the service with the correct params
+    //
     func testRefreshGroups() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         let afterDate = Date()
@@ -96,6 +97,7 @@ class ActivityStoreTests: XCTestCase {
     }
 
     // refreshGroups stores the returned groups
+    //
     func testRefreshGroupsStoreGroups() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         activityServiceMock.groupsToReturn = [try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])]
@@ -104,6 +106,29 @@ class ActivityStoreTests: XCTestCase {
 
         XCTAssertEqual(store.state.groups[jetpackSiteRef]?.count, 1)
         XCTAssertTrue(store.state.groups[jetpackSiteRef]!.contains(where: { $0.key == "post" && $0.name == "Posts and Pages" && $0.count == 5}))
+    }
+
+    // refreshGroups does not produce multiple requests
+    //
+    func testRefreshGroupsDoesNotProduceMultipleRequests() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+
+        XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 1)
+    }
+
+    // When a request succeeds the subsequent one is correctly made
+    //
+    func testRefreshGroupsRequestsAgainIfTheFirstSucceeds() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        activityServiceMock.groupsToReturn = [try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])]
+
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+
+        XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 2)
     }
 
     // MARK: - Helpers
@@ -123,6 +148,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
     var getActivityGroupsForSiteCalledWithSiteID: Int?
     var getActivityGroupsForSiteCalledWithAfterDate: Date?
     var getActivityGroupsForSiteCalledWithBeforeDate: Date?
+    var getActivityGroupsForSiteCalledTimes = 0
 
     var activitiesToReturn: [Activity]?
     var hasMore = false
@@ -152,6 +178,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         getActivityGroupsForSiteCalledWithSiteID = siteID
         getActivityGroupsForSiteCalledWithAfterDate = after
         getActivityGroupsForSiteCalledWithBeforeDate = before
+        getActivityGroupsForSiteCalledTimes += 1
 
         if let groupsToReturn = groupsToReturn {
             success(groupsToReturn)
