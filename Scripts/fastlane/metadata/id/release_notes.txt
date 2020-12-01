@@ -1,0 +1,5 @@
+Perihal Jetpack: Akses semua fitur Jetpack Anda dengan cepat dan mudah, termasuk statistik, log aktivitas, dan pengaturan ANda.
+
+Bantuan & Dukungan: Kami telah memperbaiki beberapa masalah yang terjadi saat Anda mencoba menghubungi tim dukungan kami. Saat menghubungi kami, sekarang Anda dapat memasukkan karakter selain abjad, dan aplikasi tidak akan macet lagi saat Anda memasukkan alamat email.
+
+Pembaruan Pemabaca: Kami juga telah memperbaiki masalah tampilan pada Pembaca, dan komentar tidak akan lagi dicetak miring dalam pengaturan asal.
