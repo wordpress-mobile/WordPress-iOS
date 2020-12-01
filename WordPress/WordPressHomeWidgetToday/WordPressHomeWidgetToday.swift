@@ -122,15 +122,4 @@ struct WordPressHomeWidgetToday: Widget {
         .description("Stay up to date with today's activity on your WordPress site.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
-
-    /*
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: WPHomeWidgetTodayKind, provider: Provider()) { entry in
-            TodayWidgetView(content: entry)
-        }
-        .configurationDisplayName("Today")
-        .description("Stay up to date with today's activity on your WordPress site.")
-        .supportedFamilies([.systemSmall, .systemMedium])
-    }
- */
 }
