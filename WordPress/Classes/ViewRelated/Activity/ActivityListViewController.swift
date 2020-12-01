@@ -16,6 +16,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let filterStackView = UIStackView()
     let dateFilterChip = FilterChipButton()
+    let activityTypeFilterChip = FilterChipButton()
 
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
@@ -156,11 +157,14 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             dateFilterChip.disableResetButton()
             dateFilterChip.title = "Date Range"
         }
+
+        activityTypeFilterChip.title = "Activity Type"
     }
 
     private func setupFilterBar() {
         let scrollView = UIScrollView()
         filterStackView.addArrangedSubview(dateFilterChip)
+        filterStackView.addArrangedSubview(activityTypeFilterChip)
         scrollView.addSubview(filterStackView)
         containerStackView.addArrangedSubview(scrollView)
         filterStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +176,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         ])
 
         setupDateFilter()
+
+        setupActivityTypeFilter()
     }
 
     private func setupDateFilter() {
@@ -182,6 +188,13 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         dateFilterChip.resetTapped = { [weak self] in
             self?.viewModel.refresh()
             self?.dateFilterChip.disableResetButton()
+        }
+    }
+
+    private func setupActivityTypeFilter() {
+        activityTypeFilterChip.tapped = { [weak self] in
+            let navigationController = UINavigationController(rootViewController: ActivityTypeSelectorViewController())
+            self?.present(navigationController, animated: true, completion: nil)
         }
     }
 
