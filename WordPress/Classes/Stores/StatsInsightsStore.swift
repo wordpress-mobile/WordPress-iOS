@@ -1029,7 +1029,7 @@ private extension InsightStoreState {
 
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
-        return blogService.blogsForAllAccounts().reduce(into: [Int: HomeWidgetTodayData]()) { result, element in
+        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: HomeWidgetTodayData]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
                let blog = blogService.blog(byBlogId: blogID) {

@@ -39,7 +39,7 @@ class SitesDataProvider {
                 display: data.siteName,
                 subtitle: siteDomain,
                 image: nil)
-        }
+        }.sorted(by: { $0.displayString.lowercased() < $1.displayString.lowercased() })
     }
 
     // MARK: - Default Site
