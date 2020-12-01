@@ -70,7 +70,7 @@ extension Gutenberg.MediaType {
     }
 
     private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
-        return allTypes.filter{ UTTypeConformsTo($0 as CFString, uttype) }
+        return allTypes.filter { UTTypeConformsTo($0 as CFString, uttype) }
     }
 
     private var typeIdentifier: CFString? {
