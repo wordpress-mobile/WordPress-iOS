@@ -191,3 +191,9 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         }
     }
 }
+
+extension ActivityGroup {
+    class func mock() -> ActivityGroup {
+        try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])
+    }
+}

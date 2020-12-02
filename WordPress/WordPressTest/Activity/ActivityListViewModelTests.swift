@@ -34,7 +34,7 @@ class ActivityListViewModelTests: XCTestCase {
         XCTAssertEqual(activityStoreMock.offset, 3)
     }
 
-    // Check if `loadMore` dispatchs the correct after and before date
+    // Check if `loadMore` dispatchs the correct after/before date and groups
     //
     func testloadMoreAfterBeforeDate() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
@@ -43,13 +43,15 @@ class ActivityListViewModelTests: XCTestCase {
         activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
         let afterDate = Date()
         let beforeDate = Date(timeIntervalSinceNow: 86400)
-        activityListViewModel.refresh(after: afterDate, before: beforeDate)
+        let activityGroup = ActivityGroup.mock()
+        activityListViewModel.refresh(after: afterDate, before: beforeDate, group: [activityGroup])
 
         activityListViewModel.loadMore()
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.afterDate, afterDate)
         XCTAssertEqual(activityStoreMock.beforeDate, beforeDate)
+        XCTAssertEqual(activityStoreMock.group, [activityGroup.key])
     }
 
     // Should not load more if already loading

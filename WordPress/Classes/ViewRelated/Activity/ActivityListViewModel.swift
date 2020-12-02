@@ -23,6 +23,7 @@ class ActivityListViewModel: Observable {
     private var offset = 0
     private(set) var after: Date?
     private(set) var before: Date?
+    private(set) var group: [ActivityGroup] = []
 
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
@@ -58,22 +59,29 @@ class ActivityListViewModel: Observable {
         refreshing = store.isFetchingActivities(site: site)
     }
 
-    public func refresh(after: Date? = nil, before: Date? = nil) {
-        if after != self.after || before != self.before {
+    public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
+        if applyingNewFilter(after: after, before: before, group: group) {
             // If a new filter is being applied, remove all activities
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
         }
 
         self.after = after
         self.before = before
+        self.group = group
 
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: []))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
+    }
+
+    private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
+        let isSameGroup = group.count == self.group.count && self.group.elementsEqual(group, by: { $0.key == $1.key })
+
+        return after != self.after || before != self.before || !isSameGroup
     }
 
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: []))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: group.map { $0.key }))
         }
     }
 
