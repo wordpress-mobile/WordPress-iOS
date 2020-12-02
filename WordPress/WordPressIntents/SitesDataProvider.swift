@@ -39,7 +39,20 @@ class SitesDataProvider {
                 display: data.siteName,
                 subtitle: siteDomain,
                 image: nil)
-        }
+        }.sorted(by: { (firstSite, secondSite) -> Bool in
+            let firstTitle = firstSite.displayString.lowercased()
+            let secondTitle = secondSite.displayString.lowercased()
+
+            guard firstTitle != secondTitle else {
+                let firstSubtitle = firstSite.subtitleString?.lowercased() ?? ""
+                let secondSubtitle = secondSite.subtitleString?.lowercased() ?? ""
+
+                return firstSubtitle <= secondSubtitle
+            }
+
+            return firstTitle < secondTitle
+
+        })
     }
 
     // MARK: - Default Site
