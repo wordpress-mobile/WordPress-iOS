@@ -46,6 +46,9 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
      */
     private static let emptyResultsErrorCode = 7
 
+    /// Overrides the default quantity in the server request,
+    private let domainRequestQuantity = 20
+
     /// The existing service for retrieving DomainSuggestions
     private let domainsService: DomainsService
 
@@ -73,6 +76,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
         domainsService.getDomainSuggestions(base: query,
                                             segmentID: segmentID,
+                                            quantity: domainRequestQuantity,
                                             success: { domainSuggestions in
                                                 completion(Result.success(domainSuggestions))
         },
@@ -88,6 +92,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
         domainsService.getDomainSuggestions(base: query,
+                                            quantity: domainRequestQuantity,
                                             domainSuggestionType: .onlyWordPressDotCom,
                                             success: { domainSuggestions in
                                                 completion(Result.success(domainSuggestions))
