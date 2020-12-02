@@ -28,6 +28,8 @@ NSString * const WPAppAnalyticsKeyPostType                          = @"post_typ
 NSString * const WPAppAnalyticsKeyTapSource                          = @"tap_source";
 
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
+NSString * const WPAppAnalyticsKeyHasStoriesBlocks                  = @"has_wp_stories_blocks";
+
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
 
@@ -282,6 +284,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
         mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
     }
     mutableProperties[WPAppAnalyticsKeyHasGutenbergBlocks] = @([postOrPage containsGutenbergBlocks]);
+    mutableProperties[WPAppAnalyticsKeyHasStoriesBlocks] = @([postOrPage containsStoriesBlocks]);
 
     [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
 }

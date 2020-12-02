@@ -24,7 +24,7 @@ class StoryEditor: CameraController {
     var verificationPromptHelper: VerificationPromptHelper? = nil
 
     var analyticsEditorSource: String {
-        return "Stories.Editor"
+        return "wp_stories_creator"
     }
 
     init(post: AbstractPost,
