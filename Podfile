@@ -53,10 +53,10 @@ end
 def kanvas
   #pod 'Kanvas', ''
   #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :tag => ''
-  #pod 'KanvasCamera', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'stories/build'
+  pod 'KanvasCamera', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'stories/build'
   #pod 'KanvasCamera', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :branch => 'stories/build'
   #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :commit => ''
-  pod 'KanvasCamera', :path => '../Kanvas-iOS'
+  #pod 'KanvasCamera', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
@@ -163,7 +163,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.41.1'
+    gutenberg :commit => '090fa67d'
 
     ## Third party libraries
     ## =====================
