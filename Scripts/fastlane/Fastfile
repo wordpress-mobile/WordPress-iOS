@@ -18,7 +18,8 @@ ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress.WordPressNotificationServiceExtension",
       "org.wordpress.WordPressNotificationContentExtension",
       "org.wordpress.WordPressAllTimeWidget",
-      "org.wordpress.WordPressThisWeekWidget"
+      "org.wordpress.WordPressThisWeekWidget",
+      "org.wordpress.WordPressIntents",
     ]
 
 # Use this instead of getting values from ENV directly

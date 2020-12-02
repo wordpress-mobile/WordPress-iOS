@@ -1013,11 +1013,12 @@ private extension InsightStoreState {
         }
         // refresh stats and update any blog info, if they had changed
         homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                           siteName: blog.title ?? oldData.siteName,
-                                                           url: blog.url ?? oldData.url,
-                                                           timeZone: blogService.timeZone(for: blog),
-                                                           date: Date(),
-                                                           stats: stats)
+                                                                    siteName: blog.title ?? oldData.siteName,
+                                                                    iconURL: blog.icon ?? oldData.iconURL,
+                                                                    url: blog.url ?? oldData.url,
+                                                                    timeZone: blogService.timeZone(for: blog),
+                                                                    date: Date(),
+                                                                    stats: stats)
 
         HomeWidgetTodayData.write(items: homeWidgetTodayCache)
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
@@ -1037,11 +1038,12 @@ private extension InsightStoreState {
                 let timeZone = blogService.timeZone(for: blog)
 
                 result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone,
-                                                                  date: Date(),
-                                                                  stats: TodayWidgetStats())
+                                                              siteName: title,
+                                                              iconURL: blog.icon,
+                                                              url: url,
+                                                              timeZone: timeZone,
+                                                              date: Date(),
+                                                              stats: TodayWidgetStats())
             }
         }
     }
