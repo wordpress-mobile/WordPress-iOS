@@ -1,3 +1,5 @@
-- Pilih dari beragam templat desain halaman saat Anda membuat halaman baru pada situs yang fungsi Gutenberg-nya diaktifkan.
-- Buat pos dan halaman langsung dari daftar pos dan halaman dengan tombol tindakan yang ada.
-- Memperbaiki masalah yang meyebabkan kontrol muat ulang muncul di atas daftar situs.
+Perihal Jetpack: Akses semua fitur Jetpack Anda dengan cepat dan mudah, termasuk statistik, log aktivitas, dan pengaturan ANda.
+
+Bantuan & Dukungan: Kami telah memperbaiki beberapa masalah yang terjadi saat Anda mencoba menghubungi tim dukungan kami. Saat menghubungi kami, sekarang Anda dapat memasukkan karakter selain abjad, dan aplikasi tidak akan macet lagi saat Anda memasukkan alamat email.
+
+Pembaruan Pemabaca: Kami juga telah memperbaiki masalah tampilan pada Pembaca, dan komentar tidak akan lagi dicetak miring dalam pengaturan asal.

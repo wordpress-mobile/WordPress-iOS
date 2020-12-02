@@ -29,7 +29,7 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption)
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename)
         }
         callback(formattedMedia)
     }
@@ -249,8 +249,6 @@ class GutenbergMediaInserterHelper: NSObject {
                 break
             }
             switch media.mediaType {
-            case .image:
-                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             case .video:
                 EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                     guard let strongSelf = self else {
@@ -264,7 +262,7 @@ class GutenbergMediaInserterHelper: NSObject {
                     }
                 }
             default:
-                break
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             }
         case .failed(let error):
             if error.code == NSURLErrorCancelled {

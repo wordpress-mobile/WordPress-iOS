@@ -304,6 +304,10 @@ class PostCoordinator: NSObject {
         var gutenbergProcessors = [Processor]()
         var aztecProcessors = [Processor]()
 
+        // File block can upload any kind of media.
+        let gutenbergFileProcessor = GutenbergFileUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        gutenbergProcessors.append(gutenbergFileProcessor)
+
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)

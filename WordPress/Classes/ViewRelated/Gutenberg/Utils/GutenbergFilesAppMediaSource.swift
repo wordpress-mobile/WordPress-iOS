@@ -11,12 +11,15 @@ class GutenbergFilesAppMediaSource: NSObject {
         self.gutenberg = gutenberg
     }
 
-    func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let uttypeFilters = filters.compactMap { $0.typeIdentifier }
+    func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+
+        let uttypeFilters = filters.contains(.any) ? allowedTypesOnBlog : filters.compactMap { $0.typeIdentifier }
+
         mediaPickerCallback = callback
         let docPicker = UIDocumentPickerViewController(documentTypes: uttypeFilters, in: .import)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
+
         origin.present(docPicker, animated: true)
     }
 }
@@ -48,7 +51,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)
+            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString, title: url.lastPathComponent)
         })
 
         callback(mediaInfo)
@@ -64,7 +67,7 @@ extension Gutenberg.MediaType {
             return String(kUTTypeMovie)
         case .audio:
             return String(kUTTypeAudio)
-        case .other:
+        case .other, .any: // needs to be specified by the blog's allowed types.
             return nil
         }
     }

@@ -132,8 +132,7 @@ import WordPressFlux
     }
 
     private var isLoadingDiscover: Bool {
-        return FeatureFlag.newReaderNavigation.enabled &&
-            readerTopic == nil &&
+        return readerTopic == nil &&
             contentType == .topic &&
             siteID == ReaderHelpers.discoverSiteID
     }
@@ -198,7 +197,7 @@ import WordPressFlux
     ///
     @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
         // if a default discover topic is provided, treat it as a site to retrieve the header
-        if ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.newReaderNavigation.enabled {
+        if ReaderHelpers.topicIsDiscover(topic) {
             return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
         }
 
@@ -531,13 +530,11 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        if FeatureFlag.newReaderNavigation.enabled {
-            headerWidthConstraint.priority = UILayoutPriority(999)
-        }
+        headerWidthConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             centerConstraint,
@@ -574,8 +571,9 @@ import WordPressFlux
             // need to refresh.
             tableViewController.refreshControl = nil
         }
+
         // saved posts are local so do not need a pull to refresh
-        if FeatureFlag.newReaderNavigation.enabled, contentType == .saved {
+        if contentType == .saved {
             tableViewController.refreshControl = nil
         }
 
@@ -750,15 +748,7 @@ import WordPressFlux
     }
 
     private func showFollowing() {
-        guard !FeatureFlag.newReaderNavigation.enabled else {
-            WPTabBarController.sharedInstance().switchToFollowedSites()
-            return
-        }
-        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
-            return
-        }
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: true)
+        WPTabBarController.sharedInstance().switchToFollowedSites()
     }
 
     // MARK: - Blocking
@@ -1215,7 +1205,6 @@ import WordPressFlux
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
         postCellActions?.isLoggedIn = isLoggedIn
-        postCellActions?.savedPostsDelegate = self
 
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
@@ -1858,17 +1847,6 @@ extension ReaderStreamViewController: ReaderContentViewController {
     }
 }
 
-
-// MARK: - Saved Posts Delegate
-extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: ReaderPostCardCell) {
-        if let cellIndex = tableView.indexPath(for: cell) {
-            tableView.reloadRows(at: [cellIndex], with: .fade)
-        }
-    }
-}
-
-
 // MARK: - Undo
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
@@ -1884,9 +1862,6 @@ extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
 private extension ReaderStreamViewController {
 
     var shouldDisplayNoTopicController: Bool {
-        guard FeatureFlag.newReaderNavigation.enabled else {
-            return false
-        }
         switch contentType {
         case .selfHostedFollowing:
             displaySelfHostedFollowingController()
