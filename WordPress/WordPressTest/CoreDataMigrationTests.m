@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
+#import "AbstractPost.h"
 
 @interface CoreDataMigrationTests : XCTestCase
 
@@ -1188,6 +1189,95 @@
     XCTAssertEqual(blog3Posts.count, 1);
     XCTAssertNil([blog3Posts.anyObject valueForKey:@"status"]);
     XCTAssertNil([blog3Posts.anyObject valueForKey:@"statusAfterSync"]);
+}
+
+/// In model 104, we updated transformables to use the NSSecureUnarchiveFromData transformer type.
+/// Here we'll check that they're still accessible after a migration. Most of our transformable properties
+/// are arrays or dictionaries, so we'll test a couple of representative examples.
+///
+- (void)testMigrationFrom103To104Transformables
+{
+    // Arrange
+    NSURL *model103Url = [self urlForModelName:@"WordPress 103" inDirectory:nil];
+    NSURL *model104Url = [self urlForModelName:@"WordPress 104" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress103.sqlite"];
+
+    // Load a Model 103 Stack
+    NSManagedObjectModel *model103 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model103Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model103];
+
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption       : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption : @(YES)
+    };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    XCTAssertNil(error, @"Error while loading the PSC for Model 91");
+    XCTAssertNotNil(ps);
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    // Create a dictionary-backed transformable
+    NSNumber *blog1ID = @(987);
+    Blog *blog1 = (Blog *)[self insertDummyBlogInContext:context blogID:blog1ID];
+    NSDictionary *blogOptions = @{
+        @"allowed_file_types": @[
+                @"pdf", @"xls", @"jpg"
+        ]
+    };
+    blog1.options = blogOptions;
+
+    // Create an array-backed transformable
+    AbstractPost *post1 = (AbstractPost *)[self insertDummyPostInContext:context blog:blog1];
+    NSArray *revisions = @[ @123, @124 ];
+    post1.revisions = revisions;
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    psc = nil;
+
+    // Migrate to Model 104
+    NSManagedObjectModel *model104 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model104Url];
+    [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:storeUrl
+                                                     storeType:NSSQLiteStoreType
+                                                            to:model104
+                                                         using:@[@"WordPress 103", @"WordPress 104"]
+                                                         error:&error];
+
+    if (error != nil) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertNil(error);
+
+    // Load a Model 104 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model104];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    // Check that our properties persisted
+    Blog *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog1ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog1);
+
+    NSSet<AbstractPost *> *blog1Posts = [fetchedBlog1 valueForKey:@"posts"];
+    XCTAssertEqual(blog1Posts.count, 1);
+    XCTAssertTrue([fetchedBlog1.options isEqualToDictionary:blogOptions]);
+
+    AbstractPost *fetchedPost1 = [blog1Posts anyObject];
+    XCTAssertTrue([fetchedPost1.revisions isEqualToArray:revisions]);
 }
 
 #pragma mark - Private Helpers
