@@ -87,6 +87,7 @@ class ActivityStoreMock: ActivityStore {
     var isFetching = false
     var afterDate: Date?
     var beforeDate: Date?
+    var group: [String]?
 
     override func isFetchingActivities(site: JetpackSiteRef) -> Bool {
         return isFetching
@@ -98,14 +99,15 @@ class ActivityStoreMock: ActivityStore {
         }
 
         switch activityAction {
-        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate, let group):
             dispatchedAction = "loadMoreActivities"
             self.site = site
             self.quantity = quantity
             self.offset = offset
             self.afterDate = afterDate
             self.beforeDate = beforeDate
-        case .resetActivities(let site):
+            self.group = group
+        case .resetActivities(_):
             dispatchedAction = "resetActivities"
         default:
             break

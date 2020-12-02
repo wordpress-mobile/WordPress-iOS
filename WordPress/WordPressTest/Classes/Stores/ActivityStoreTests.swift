@@ -30,11 +30,13 @@ class ActivityStoreTests: XCTestCase {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         let afterDate = Date()
         let beforeDate = Date(timeIntervalSinceNow: 86400)
+        let group = ["post"]
 
-        dispatch(.refreshActivities(site: jetpackSiteRef, quantity: 10, afterDate: afterDate, beforeDate: beforeDate))
+        dispatch(.refreshActivities(site: jetpackSiteRef, quantity: 10, afterDate: afterDate, beforeDate: beforeDate, group: group))
 
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithAfterDate, afterDate)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithBeforeDate, beforeDate)
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithGroup, group)
     }
 
     // Check if loadMoreActivities call the service with the correct params
@@ -43,14 +45,16 @@ class ActivityStoreTests: XCTestCase {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         let afterDate = Date()
         let beforeDate = Date(timeIntervalSinceNow: 86400)
+        let group = ["post", "user"]
 
-        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: afterDate, beforeDate: beforeDate))
+        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: afterDate, beforeDate: beforeDate, group: group))
 
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithSiteID, 9)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithCount, 10)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithOffset, 20)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithAfterDate, afterDate)
         XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithBeforeDate, beforeDate)
+        XCTAssertEqual(activityServiceMock.getActivityForSiteCalledWithGroup, group)
     }
 
     // Check if loadMoreActivities keep the activies and add the new retrieved ones
@@ -61,7 +65,7 @@ class ActivityStoreTests: XCTestCase {
         activityServiceMock.activitiesToReturn = [Activity.mock(), Activity.mock()]
         activityServiceMock.hasMore = true
 
-        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil))
+        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil, group: []))
 
         XCTAssertEqual(store.state.activities[jetpackSiteRef]?.count, 3)
         XCTAssertTrue(store.state.hasMore)
@@ -144,6 +148,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
     var getActivityForSiteCalledWithCount: Int?
     var getActivityForSiteCalledWithAfterDate: Date?
     var getActivityForSiteCalledWithBeforeDate: Date?
+    var getActivityForSiteCalledWithGroup: [String]?
 
     var getActivityGroupsForSiteCalledWithSiteID: Int?
     var getActivityGroupsForSiteCalledWithAfterDate: Date?
@@ -168,6 +173,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         getActivityForSiteCalledWithOffset = offset
         getActivityForSiteCalledWithAfterDate = after
         getActivityForSiteCalledWithBeforeDate = before
+        getActivityForSiteCalledWithGroup = group
 
         if let activitiesToReturn = activitiesToReturn {
             success(activitiesToReturn, hasMore)

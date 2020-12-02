@@ -5,8 +5,8 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
-    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?)
-    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?)
+    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?, group: [String])
+    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?, group: [String])
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
     case resetActivities(site: JetpackSiteRef)
@@ -157,12 +157,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         switch activityAction {
         case .receiveActivities(let site, let activities, let hasMore, let loadingMore):
             receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore)
-        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
-            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate, let group):
+            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate, group: group)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
-        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
-            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate, let group):
+            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate, group: group)
         case .resetActivities(let site):
             resetActivities(site: site)
         case .rewind(let site, let rewindID):
@@ -214,7 +214,8 @@ private extension ActivityStore {
                          count: Int = 20,
                          offset: Int = 0,
                          afterDate: Date? = nil,
-                         beforeDate: Date? = nil) {
+                         beforeDate: Date? = nil,
+                         group: [String] = []) {
         state.fetchingActivities[site] = true
 
         remote(site: site)?.getActivityForSite(
@@ -223,6 +224,7 @@ private extension ActivityStore {
             count: count,
             after: afterDate,
             before: beforeDate,
+            group: group,
             success: { [actionDispatcher] (activities, hasMore) in
                 let loadingMore = offset > 0
                 actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
@@ -249,20 +251,20 @@ private extension ActivityStore {
         }
     }
 
-    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?) {
+    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?, group: [String]) {
         guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate, group: group)
     }
 
-    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?) {
+    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?, group: [String]) {
         guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate, group: group)
     }
 
     func resetActivities(site: JetpackSiteRef) {

@@ -67,13 +67,13 @@ class ActivityListViewModel: Observable {
         self.after = after
         self.before = before
 
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: []))
     }
 
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: []))
         }
     }
 
