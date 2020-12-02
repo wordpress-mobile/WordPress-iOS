@@ -140,6 +140,9 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
+        let format = isYearDifferent(between: after, and: before) ? "MMM d, yyyy" : "MMM d"
+        dateFormatter.setLocalizedDateFormatFromTemplate(format)
+
         var formattedDateRanges: [String] = []
 
         if let after = after {
@@ -151,6 +154,17 @@ class ActivityListViewModel: Observable {
         }
 
         return formattedDateRanges.joined(separator: " - ")
+    }
+
+    private func isYearDifferent(between firstDate: Date?, and secondDate: Date?) -> Bool {
+        guard let firstDate = firstDate, let secondDate = secondDate else {
+            return false
+        }
+
+        let firstDateComponents = Calendar.current.dateComponents([.year], from: firstDate)
+        let secondDateComponents = Calendar.current.dateComponents([.year], from: secondDate)
+
+        return firstDateComponents.year != secondDateComponents.year
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
@@ -209,8 +223,6 @@ class ActivityListViewModel: Observable {
     }()
 
     lazy var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d")
-        return dateFormatter
+        DateFormatter()
     }()
 }
