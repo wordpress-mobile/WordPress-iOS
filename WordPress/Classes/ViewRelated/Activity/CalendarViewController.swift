@@ -79,7 +79,7 @@ class CalendarViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        scrollToFirstSelectedDateOrToday()
+        scrollToVisibleDate()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -163,7 +163,7 @@ class CalendarViewController: UIViewController {
         return header
     }
 
-    private func scrollToFirstSelectedDateOrToday() {
+    private func scrollToVisibleDate() {
         if calendarCollectionView.frame.height == 0 {
             calendarCollectionView.superview?.layoutIfNeeded()
         }
