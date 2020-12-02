@@ -28,11 +28,7 @@ class FollowCommentsService: NSObject {
     /// Returns a Bool indicating whether or not the comments on the post can be followed.
     ///
     @objc var canFollowConversation: Bool {
-        if post.isJetpack || post.isWPCom {
-            return true
-        }
-
-        return false
+        return post.isJetpack || post.isWPCom
     }
 
     /// Fetches the subscription status of the specified post for the current user.
