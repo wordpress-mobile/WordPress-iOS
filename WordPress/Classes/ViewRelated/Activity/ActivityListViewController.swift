@@ -197,7 +197,12 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
                 return
             }
 
-            let activityTypeSelectorViewController = ActivityTypeSelectorViewController(site: self.site, store: self.store)
+            let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
+                site: self.site,
+                store: self.store,
+                afterDate: self.viewModel.after,
+                beforeDate: self.viewModel.before
+            )
             activityTypeSelectorViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
             self.present(navigationController, animated: true, completion: nil)

@@ -9,6 +9,8 @@ protocol ActivityTypeSelectorDelegate: class {
 class ActivityTypeSelectorViewController: UITableViewController {
     private let store: ActivityStore!
     private let site: JetpackSiteRef!
+    private let afterDate: Date?
+    private let beforeDate: Date?
 
     private var storeReceipt: Receipt?
     private var selectedGroupsKeys: [String] = []
@@ -19,9 +21,11 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
     weak var delegate: ActivityTypeSelectorDelegate?
 
-    init(site: JetpackSiteRef, store: ActivityStore) {
+    init(site: JetpackSiteRef, store: ActivityStore, afterDate: Date?, beforeDate: Date?) {
         self.site = site
         self.store = store
+        self.afterDate = afterDate
+        self.beforeDate = beforeDate
         super.init(style: .grouped)
     }
 
@@ -36,7 +40,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         setupNavButtons()
 
-        store.actionDispatcher.dispatch(ActivityAction.refreshGroups(site: self.site, afterDate: nil, beforeDate: nil))
+        store.actionDispatcher.dispatch(ActivityAction.refreshGroups(site: self.site, afterDate: afterDate, beforeDate: beforeDate))
 
         storeReceipt = store.onChange {
             self.tableView.reloadData()
