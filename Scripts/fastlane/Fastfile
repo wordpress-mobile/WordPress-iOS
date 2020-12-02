@@ -165,6 +165,7 @@ import "./ScreenshotFastfile"
     ios_betabuild_prechecks(options)
     ios_bump_version_beta()
     ios_update_metadata(options)
+    ios_lint_localizations(input_dir: 'WordPress/Resources')
     ios_tag_build()
   end
 
@@ -202,8 +203,11 @@ import "./ScreenshotFastfile"
   desc "Removes all the temp tags and puts the final one"
   lane :finalize_release do | options |
     ios_finalize_prechecks(options)
-    ios_update_metadata(options) unless ios_current_branch_is_hotfix
-    ios_bump_version_beta() unless ios_current_branch_is_hotfix
+    unless ios_current_branch_is_hotfix
+      ios_update_metadata(options)
+      ios_lint_localizations(input_dir: 'WordPress/Resources')
+      ios_bump_version_beta()
+    end
     ios_final_tag(options)
 
     # Wrap up
