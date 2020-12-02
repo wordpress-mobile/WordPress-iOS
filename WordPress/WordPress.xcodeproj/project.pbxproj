@@ -1159,6 +1159,7 @@
 		8B821F3C240020E2006B697E /* PostServiceUploadingListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B821F3B240020E2006B697E /* PostServiceUploadingListTests.swift */; };
 		8B8C814D2318073300A0E620 /* BasePostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C814C2318073300A0E620 /* BasePostTests.swift */; };
 		8B8FE8582343955500F9AD2E /* PostAutoUploadMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FE8562343952B00F9AD2E /* PostAutoUploadMessages.swift */; };
+		8B93412F257029F60097D0AC /* FilterChipButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93412E257029F50097D0AC /* FilterChipButton.swift */; };
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8BA77BCB2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
@@ -3692,6 +3693,7 @@
 		8B821F3B240020E2006B697E /* PostServiceUploadingListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostServiceUploadingListTests.swift; sourceTree = "<group>"; };
 		8B8C814C2318073300A0E620 /* BasePostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePostTests.swift; sourceTree = "<group>"; };
 		8B8FE8562343952B00F9AD2E /* PostAutoUploadMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAutoUploadMessages.swift; sourceTree = "<group>"; };
+		8B93412E257029F50097D0AC /* FilterChipButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChipButton.swift; sourceTree = "<group>"; };
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderCardDiscoverAttributionView.xib; sourceTree = "<group>"; };
@@ -7802,6 +7804,7 @@
 		82FC61181FA8ADAC00A1757E /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				8B93412D257029E30097D0AC /* Filter */,
 				7E4123C620F4178E00DF8486 /* FormattableContent */,
 				82FC612B1FA8B7FC00A1757E /* ActivityListRow.swift */,
 				403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */,
@@ -8164,6 +8167,14 @@
 				8B7F51C824EED804008CF5B5 /* ReaderTracker.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		8B93412D257029E30097D0AC /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				8B93412E257029F50097D0AC /* FilterChipButton.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		8BADF16324801B4B005AD038 /* Detail */ = {
@@ -12795,6 +12806,7 @@
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				57047A4F22A961BC00B461DF /* PostSearchHeader.swift in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
+				8B93412F257029F60097D0AC /* FilterChipButton.swift in Sources */,
 				40A71C68220E1952002E3D25 /* StatsRecordValue+CoreDataClass.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				9A8ECE1D2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift in Sources */,
