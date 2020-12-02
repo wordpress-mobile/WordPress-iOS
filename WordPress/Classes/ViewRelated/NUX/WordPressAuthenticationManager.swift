@@ -329,6 +329,22 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
     }
 
+    /// Indicates if the given Auth error should be handled by the host app.
+    ///
+    func shouldHandleError(_ error: Error) -> Bool {
+        // Here for protocol compliance.
+        return false
+    }
+
+    /// Handles the given error.
+    /// Called if `shouldHandleError` is true.
+    ///
+    func handleError(_ error: Error, onCompletion: @escaping (UIViewController) -> Void) {
+        // Here for protocol compliance.
+        let vc = UIViewController()
+        onCompletion(vc)
+    }
+
     /// Tracks a given Analytics Event.
     ///
     func track(event: WPAnalyticsStat) {
