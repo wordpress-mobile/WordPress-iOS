@@ -154,7 +154,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             dateFilterChip.title = viewModel.dateRangeDescription()
         } else {
             dateFilterChip.disableResetButton()
-            dateFilterChip.title = "Date Range"
+            dateFilterChip.title = NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
         }
     }
 
