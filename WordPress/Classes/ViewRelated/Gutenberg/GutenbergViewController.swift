@@ -3,6 +3,7 @@ import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
+import KanvasCamera
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -380,6 +381,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    private var storyLoader = StoryMediaLoader()
+
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
@@ -669,12 +672,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
         }
 
-        do {
-            try controller.unarchive(archiveURLs)
-        } catch let error {
-            print("Unarchive failed \(error)")
-        }
-
         storyService = KanvasStoryService(post: post as! Post, updated: { [weak self] result in
             switch result {
             case .success(let post):
@@ -694,7 +691,35 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
         controller.delegate = kanvasService
         kanvasService.delegate = storyService
-        present(controller, animated: true, completion: nil)
+
+        do {
+            try controller.unarchive(archiveURLs)
+            present(controller, animated: true, completion: nil)
+        } catch let error {
+            // No local archive found
+            print("Failed to unarchive story \(blockId): \(error)")
+            let semaphore = DispatchSemaphore(value: 0)
+            storyLoader.download(files: files, for: post) { [weak self, weak controller] output in
+                DispatchQueue.main.async {
+                    let segments = output.map { output -> CameraSegment in
+                        switch output {
+                        case .image(let image):
+                            return CameraSegment.image(image, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera))
+                        case .video(let url):
+                            return CameraSegment.video(url, nil)
+                        }
+                    }
+                    if let controller = controller {
+                        controller.show(segments: segments)
+                        self?.present(controller, animated: true, completion: {
+                        })
+                    }
+                    semaphore.signal()
+                    print(output)
+                }
+            }
+            semaphore.wait()
+        }
     }
 
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {

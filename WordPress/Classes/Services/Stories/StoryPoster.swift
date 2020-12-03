@@ -42,7 +42,7 @@ class StoryPoster {
         case contentDataEncodingError // JSON from the draft post couldn't be converted to utf8 encoded data.
     }
 
-    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping ([Media]) -> Void) {
+    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping (Result<[Media], Error>) -> Void) {
         var media = [Media?](repeating: nil, count: assets.count)
         assets.enumerated().forEach { (idx, asset) in
             let upload = MediaCoordinator.shared.addMedia(from: asset, to: post)
@@ -52,8 +52,10 @@ class StoryPoster {
                     case .ended:
                         media[idx] = item
                         if media.contains(nil) == false {
-                            completion(media.compactMap({return $0}))
+                            completion(.success(media.compactMap({ $0 })))
                         }
+                    case .failed(error: let error):
+                        completion(.failure(error))
                     default:
                         ()
                     }
@@ -83,14 +85,14 @@ class StoryPoster {
         }
     }
 
-    func move(mediaItems: [MediaItem], to newMedia: [Media]) {
+    func move(mediaItems: [MediaItem], to newMedia: [Media]) throws {
         let urls = mediaItems.compactMap { item in
             return item.url.deletingPathExtension()
         }
 
-        zip(urls, newMedia).forEach({ (url, media) in
+        try zip(urls, newMedia).forEach({ (url, media) in
             let newURL = StoryPoster.filePath.appendingPathComponent("\(media.mediaID?.intValue ?? 0)")
-            try! FileManager.default.moveItem(at: url, to: newURL)
+            try FileManager.default.moveItem(at: url, to: newURL)
         })
     }
 
@@ -108,10 +110,20 @@ class StoryPoster {
             return item.url as ExportableAsset
         }
 
-        upload(assets: assets, post: post, completion: { [weak self] media in
-            self?.move(mediaItems: mediaItems, to: media)
-            self?.updateContent(post: post, media: media)
-            completion(.success(post))
+        upload(assets: assets, post: post, completion: { [weak self] result in
+            switch result {
+            case .success(let media):
+                do {
+                    try self?.move(mediaItems: mediaItems, to: media)
+                }
+                catch let error {
+                    print("Error moving story files \(error)")
+                }
+                self?.updateContent(post: post, media: media)
+                completion(.success(post))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         })
     }
 
