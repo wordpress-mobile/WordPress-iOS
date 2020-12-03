@@ -301,6 +301,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
+- (BOOL)hasMappedDomain {
+    if (![self isHostedAtWPcom]) {
+        return NO;
+    }
+
+    NSURL *unmappedURL = [NSURL URLWithString:[self getOptionValue:@"unmapped_url"]];
+    NSURL *homeURL = [NSURL URLWithString:[self homeURL]];
+
+    return ![[unmappedURL host] isEqualToString:[homeURL host]];
+}
+
 - (BOOL)hasIcon
 {
     // A blog without an icon has the blog url in icon, so we can't directly check its
@@ -478,7 +489,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
         case BlogFeatureMentions:
-            return [self isHostedAtWPcom];
+            return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];

@@ -42,9 +42,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         super.init(scrollableView: collectionView,
                    mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can customize or change it later", comment: "Prompt for the screen to pick a design and homepage for a site."),
+                   prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
                    primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-                   hasFilterBar: false)
+                   secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design"))
     }
 
     required init?(coder: NSCoder) {
@@ -59,11 +59,16 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureCloseButton()
         configureSkipButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed()
-        navigationItem.backButtonTitle = NSLocalizedString("Choose design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateEdgeInsets()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateEdgeInsets()
     }
 
@@ -84,8 +89,10 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func updateEdgeInsets() {
-        let screenSize = view.frame.size
-        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize, itemSpacing: itemSpacing, screenSize: screenSize)
+        let screenSize = collectionView.frame.size
+        collectionViewLayout.sectionInset = SiteDesignContentCollectionViewController.edgeInsets(forCellSize: cellSize,
+                                                                                                 itemSpacing: itemSpacing,
+                                                                                                 screenSize: screenSize)
     }
 
     private func fetchSiteDesigns() {
@@ -111,7 +118,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
@@ -131,6 +138,21 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let design = siteDesigns[selectedIndexPath.row]
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(design)
         completion(design)
+    }
+
+    override func secondaryActionSelected(_ sender: Any) {
+        guard let selectedIndexPath = selectedIndexPath else { return }
+
+        let design = siteDesigns[selectedIndexPath.row]
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
+        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        if #available(iOS 13.0, *) {
+            navController.modalPresentationStyle = .pageSheet
+        } else {
+            // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+            navController.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+        }
+        navigationController?.present(navController, animated: true)
     }
 
     private func handleError(_ error: Error) {

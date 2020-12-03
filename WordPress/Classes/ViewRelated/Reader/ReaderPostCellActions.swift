@@ -14,12 +14,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     private weak var saveForLaterAction: ReaderSaveForLaterAction?
 
-    // saved posts
-    /// Posts that have been removed but not yet discarded
-    // TODO: - READERNAV - Set this property as private once the old reader class ReaderSavedPostCellActions is removed
-    var removedPosts = ReaderSaveForLaterRemovedPosts()
-
-    weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
+    /// Saved posts that have been removed but not yet discarded
+    private var removedPosts = ReaderSaveForLaterRemovedPosts()
 
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
         self.context = context
@@ -55,8 +51,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             if let post = provider as? ReaderPost {
                 removedPosts.add(post)
             }
-            savedPostsDelegate?.willRemove(cell)
-
         } else {
             guard let post = provider as? ReaderPost else {
                 return
@@ -121,12 +115,9 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
-        // TODO: - READERNAV - Update this check once the old reader is removed
-        if origin is ReaderSavedPostsViewController {
-            actionOrigin = .savedStream
-        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved, FeatureFlag.newReaderNavigation.enabled {
-            actionOrigin = .savedStream
 
+        if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
+            actionOrigin = .savedStream
         } else {
             actionOrigin = .otherStream
         }

@@ -1,0 +1,5 @@
+Tudo sobre o Jetpack: Acesse todos seus recursos do Jetpack rapidamente e facilmente, incluindo estatísticas, registro de atividades e configurações.
+
+Ajuda e suporte: Corrigimos alguns problemas que ocorriam ao tentar entrar em contato com nossa equipe de suporte. Ao entrar em contato conosco, agora é possível incluir caracteres não alfanuméricos e o aplicativo não parará de funcionar ao informar o endereço de e-mail.
+
+Atualizações no Leitor: Também corrigimos um problema de exibição no Leitor e comentários não são mais itálicos por padrão.

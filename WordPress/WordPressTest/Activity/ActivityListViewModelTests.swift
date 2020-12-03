@@ -34,6 +34,24 @@ class ActivityListViewModelTests: XCTestCase {
         XCTAssertEqual(activityStoreMock.offset, 3)
     }
 
+    // Check if `loadMore` dispatchs the correct after and before date
+    //
+    func testloadMoreAfterBeforeDate() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
+        let activityStoreMock = ActivityStoreMock()
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
+        activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
+        let afterDate = Date()
+        let beforeDate = Date(timeIntervalSinceNow: 86400)
+        activityListViewModel.refresh(after: afterDate, before: beforeDate)
+
+        activityListViewModel.loadMore()
+
+        XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
+        XCTAssertEqual(activityStoreMock.afterDate, afterDate)
+        XCTAssertEqual(activityStoreMock.beforeDate, beforeDate)
+    }
+
     // Should not load more if already loading
     //
     func testLoadMoreDoesntTriggeredWhenAlreadyFetching() {
@@ -46,6 +64,19 @@ class ActivityListViewModelTests: XCTestCase {
 
         XCTAssertNil(activityStoreMock.dispatchedAction)
     }
+
+    // When filtering, remove all current activities
+    //
+    func testRefreshRemoveAllActivities() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
+        let activityStoreMock = ActivityStoreMock()
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
+        activityStoreMock.isFetching = true
+
+        activityListViewModel.refresh(after: Date(), before: Date())
+
+        XCTAssertEqual(activityStoreMock.dispatchedAction, "resetActivities")
+    }
 }
 
 class ActivityStoreMock: ActivityStore {
@@ -54,6 +85,8 @@ class ActivityStoreMock: ActivityStore {
     var quantity: Int?
     var offset: Int?
     var isFetching = false
+    var afterDate: Date?
+    var beforeDate: Date?
 
     override func isFetching(site: JetpackSiteRef) -> Bool {
         return isFetching
@@ -65,11 +98,15 @@ class ActivityStoreMock: ActivityStore {
         }
 
         switch activityAction {
-        case .loadMoreActivities(let site, let quantity, let offset):
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
             dispatchedAction = "loadMoreActivities"
             self.site = site
             self.quantity = quantity
             self.offset = offset
+            self.afterDate = afterDate
+            self.beforeDate = beforeDate
+        case .resetActivities(let site):
+            dispatchedAction = "resetActivities"
         default:
             break
         }

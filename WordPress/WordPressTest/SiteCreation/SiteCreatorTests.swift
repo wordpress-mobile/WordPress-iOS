@@ -21,6 +21,9 @@ class SiteCreatorTests: XCTestCase {
             iconColor: "#FF0000",
             mobile: true)
 
+        let siteDesignPayload = "{\"blog_id\":183455110,\"slug\":\"alves\",\"title\":\"Alves\",\"site_url\":\"https:\\/\\/alvesstartermobile.wordpress.com\",\"demo_url\":\"https:\\/\\/public-api.wordpress.com\\/rest\\/v1\\/template\\/demo\\/alves\\/alvesstartermobile.wordpress.com\\/?language=en\",\"theme\":\"alves\",\"screenshot\":\"https:\\/\\/s0.wp.com\\/mshots\\/v1\\/public-api.wordpress.com\\/rest\\/v1\\/template\\/demo\\/alves\\/alvesstartermobile.wordpress.com\\/%3Flanguage%3Den?vpw=1200&vph=1600&w=400&h=534\",\"segment_id\":1}"
+        defaultInput.design = try! JSONDecoder().decode(RemoteSiteDesign.self, from: siteDesignPayload.data(using: .utf8)!)
+
         defaultInput.vertical = SiteVertical(identifier: "678910",
             title: "A title",
             isNew: true)
@@ -46,18 +49,6 @@ class SiteCreatorTests: XCTestCase {
 
         // Then
         XCTAssertNoThrow(try siteInput.build())
-    }
-
-    func testSiteCreator_buildFails_MissingSiteSegment() {
-        // Given
-        XCTAssertNotNil(pendingSiteInput)
-        let siteInput = pendingSiteInput!
-
-        // When
-        siteInput.segment = nil
-
-        // Then
-        XCTAssertThrowsError(try siteInput.build())
     }
 
     func testSiteCreator_buildSucceeds_MissingSiteVertical() {

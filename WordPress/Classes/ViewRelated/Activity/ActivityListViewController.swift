@@ -4,14 +4,21 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
-class ActivityListViewController: UITableViewController, ImmuTablePresenter {
-
+class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
     let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
     var isUserTriggeredRefresh: Bool = false
+
+    let containerStackView = UIStackView()
+
+    let filterStackView = UIStackView()
+    let dateFilterChip = FilterChipButton()
+
+    var tableView: UITableView = UITableView()
+    let refreshControl = UIRefreshControl()
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: self)
@@ -41,16 +48,35 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         self.isFreeWPCom = isFreeWPCom
         self.viewModel = ActivityListViewModel(site: site, store: store)
 
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
 
         self.changeReceipt = viewModel.onChange { [weak self] in
             self?.refreshModel()
         }
 
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
+        view.addSubview(containerStackView)
+        containerStackView.axis = .vertical
+
+        if FeatureFlag.activityLogFilters.enabled {
+            setupFilterBar()
+        }
+
+        containerStackView.addArrangedSubview(tableView)
+
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(containerStackView)
+
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
+    }
+
+    @objc private func showCalendar() {
+        let calendarViewController = CalendarViewController(startDate: viewModel.after, endDate: viewModel.before)
+        calendarViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: calendarViewController)
+        present(navigationController, animated: true, completion: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -95,20 +121,17 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh()
+        viewModel.refresh(after: viewModel.after, before: viewModel.before)
     }
 
     func refreshModel() {
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
+        updateFilters()
     }
 
     private func updateRefreshControl() {
-        guard let refreshControl = refreshControl else {
-            return
-        }
-
         switch (viewModel.refreshing, refreshControl.isRefreshing) {
         case (true, false):
             if isUserTriggeredRefresh {
@@ -125,13 +148,60 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
+    private func updateFilters() {
+        if viewModel.dateFilterIsActive {
+            dateFilterChip.enableResetButton()
+            dateFilterChip.title = viewModel.dateRangeDescription()
+        } else {
+            dateFilterChip.disableResetButton()
+            dateFilterChip.title = NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
+        }
+    }
+
+    private func setupFilterBar() {
+        let scrollView = UIScrollView()
+        filterStackView.addArrangedSubview(dateFilterChip)
+        scrollView.addSubview(filterStackView)
+        containerStackView.addArrangedSubview(scrollView)
+        filterStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
+        ])
+
+        setupDateFilter()
+    }
+
+    private func setupDateFilter() {
+        dateFilterChip.tapped = { [weak self] in
+            self?.showCalendar()
+        }
+
+        dateFilterChip.resetTapped = { [weak self] in
+            self?.viewModel.refresh()
+            self?.dateFilterChip.disableResetButton()
+        }
+    }
+
+}
+
+extension ActivityListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        handler.tableView(tableView, numberOfRowsInSection: section)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        handler.tableView(tableView, cellForRowAt: indexPath)
+    }
 }
 
 // MARK: - UITableViewDelegate
 
-extension ActivityListViewController {
+extension ActivityListViewController: UITableViewDelegate {
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isLastSection = handler.viewModel.sections.count == section + 1
 
         guard isFreeWPCom, isLastSection, let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
@@ -144,7 +214,7 @@ extension ActivityListViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let isLastSection = handler.viewModel.sections.count == section + 1
 
         guard isFreeWPCom, isLastSection else {
@@ -154,7 +224,7 @@ extension ActivityListViewController {
         return UITableView.automaticDimension
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
             return nil
         }
@@ -164,11 +234,11 @@ extension ActivityListViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return ActivityListSectionHeaderView.height
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow else {
             return false
         }
@@ -176,7 +246,7 @@ extension ActivityListViewController {
         return row.activity.isRewindable
     }
 
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
             return nil
         }
@@ -191,7 +261,7 @@ extension ActivityListViewController {
         return [rewindAction]
     }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let shouldLoadMore = offsetY > contentHeight - (2 * scrollView.frame.size.height) && viewModel.hasMore
@@ -276,7 +346,7 @@ private extension ActivityListViewController {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
         } else {
-            noResultsViewController?.removeFromView()
+            noResultsViewController?.view.isHidden = true
         }
     }
 
@@ -284,23 +354,36 @@ private extension ActivityListViewController {
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
+
+            guard let noResultsViewController = noResultsViewController else {
+                return
+            }
+
+            if noResultsViewController.view.superview != tableView {
+                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            }
+
+            addChild(noResultsViewController)
+
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
 
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.bindViewModel(viewModel)
-
-        if noResultsViewController.view.superview != tableView {
-            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        }
-
-        addChild(noResultsViewController)
-        noResultsViewController.didMove(toParent: self)
-
-        noResultsViewController.view.frame = tableView.frame
-        noResultsViewController.view.frame.origin.y = 0
+        noResultsViewController?.bindViewModel(viewModel)
+        noResultsViewController?.didMove(toParent: self)
+        noResultsViewController?.view.isHidden = false
     }
 
+}
+
+// MARK: - Calendar Handling
+extension ActivityListViewController: CalendarViewControllerDelegate {
+    func didCancel(calendar: CalendarViewController) {
+        calendar.dismiss(animated: true, completion: nil)
+    }
+
+    func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
+        viewModel.refresh(after: startDate, before: endDate)
+        calendar.dismiss(animated: true, completion: nil)
+    }
 }

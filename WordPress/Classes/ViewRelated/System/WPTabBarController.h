@@ -2,6 +2,9 @@
 
 extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
+extern NSString * const WPTabBarCurrentlySelectedScreenSites;
+extern NSString * const WPTabBarCurrentlySelectedScreenReader;
+extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
@@ -16,7 +19,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class MySitesCoordinator;
 @class NotificationsViewController;
 @class ReaderCoordinator;
-@class ReaderMenuViewController;
 @class ReaderTabViewModel;
 @class WPSplitViewController;
 @protocol ScenePresenter;
@@ -26,7 +28,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
 @property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
-@property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
@@ -55,8 +56,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 - (void)popNotificationsTabToRoot;
 - (void)switchNotificationsTabToNotificationSettings;
-
-- (void)switchReaderTabToSavedPosts;
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
