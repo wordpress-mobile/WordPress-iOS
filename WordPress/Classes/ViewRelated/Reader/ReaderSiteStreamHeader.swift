@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -80,7 +81,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
         detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
-        configureHeaderImage(siteTopic.siteBlavatar)
+        configureHeaderImage(siteTopic.siteBlavatar, isWPForTeams: siteTopic.isWPForTeams)
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
@@ -89,13 +90,14 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    @objc func configureHeaderImage(_ siteBlavatar: String?) {
+    @objc func configureHeaderImage(_ siteBlavatar: String?, isWPForTeams: Bool = false) {
         let placeholder = UIImage.siteIconPlaceholder
+        let p2Placeholder = UIImage.gridicon(.p2)
 
         guard
             let path = siteBlavatar,
             let url = upscaledImageURL(urlString: path) else {
-            avatarImageView.image = placeholder
+            avatarImageView.image = isWPForTeams ? p2Placeholder : placeholder
             return
         }
 
