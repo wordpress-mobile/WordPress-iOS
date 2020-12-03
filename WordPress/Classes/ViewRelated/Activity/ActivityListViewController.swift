@@ -12,6 +12,11 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     var changeReceipt: Receipt?
     var isUserTriggeredRefresh: Bool = false
 
+    let containerStackView = UIStackView()
+
+    let filterStackView = UIStackView()
+    let dateFilterChip = FilterChipButton()
+
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
 
@@ -49,14 +54,29 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             self?.refreshModel()
         }
 
-        view.addSubview(tableView)
+        view.addSubview(containerStackView)
+        containerStackView.axis = .vertical
 
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(tableView)
+        if FeatureFlag.activityLogFilters.enabled {
+            setupFilterBar()
+        }
 
+        containerStackView.addArrangedSubview(tableView)
+
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(containerStackView)
+
+        tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
+    }
+
+    @objc private func showCalendar() {
+        let calendarViewController = CalendarViewController(startDate: viewModel.after, endDate: viewModel.before)
+        calendarViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: calendarViewController)
+        present(navigationController, animated: true, completion: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -101,13 +121,14 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh()
+        viewModel.refresh(after: viewModel.after, before: viewModel.before)
     }
 
     func refreshModel() {
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
+        updateFilters()
     }
 
     private func updateRefreshControl() {
@@ -124,6 +145,43 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         default:
             tableView.tableFooterView?.isHidden = true
             break
+        }
+    }
+
+    private func updateFilters() {
+        if viewModel.dateFilterIsActive {
+            dateFilterChip.enableResetButton()
+            dateFilterChip.title = viewModel.dateRangeDescription()
+        } else {
+            dateFilterChip.disableResetButton()
+            dateFilterChip.title = NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
+        }
+    }
+
+    private func setupFilterBar() {
+        let scrollView = UIScrollView()
+        filterStackView.addArrangedSubview(dateFilterChip)
+        scrollView.addSubview(filterStackView)
+        containerStackView.addArrangedSubview(scrollView)
+        filterStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
+        ])
+
+        setupDateFilter()
+    }
+
+    private func setupDateFilter() {
+        dateFilterChip.tapped = { [weak self] in
+            self?.showCalendar()
+        }
+
+        dateFilterChip.resetTapped = { [weak self] in
+            self?.viewModel.refresh()
+            self?.dateFilterChip.disableResetButton()
         }
     }
 
@@ -288,7 +346,7 @@ private extension ActivityListViewController {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
         } else {
-            noResultsViewController?.removeFromView()
+            noResultsViewController?.view.isHidden = true
         }
     }
 
@@ -296,23 +354,36 @@ private extension ActivityListViewController {
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
+
+            guard let noResultsViewController = noResultsViewController else {
+                return
+            }
+
+            if noResultsViewController.view.superview != tableView {
+                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            }
+
+            addChild(noResultsViewController)
+
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
 
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.bindViewModel(viewModel)
-
-        if noResultsViewController.view.superview != tableView {
-            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        }
-
-        addChild(noResultsViewController)
-        noResultsViewController.didMove(toParent: self)
-
-        noResultsViewController.view.frame = tableView.frame
-        noResultsViewController.view.frame.origin.y = 0
+        noResultsViewController?.bindViewModel(viewModel)
+        noResultsViewController?.didMove(toParent: self)
+        noResultsViewController?.view.isHidden = false
     }
 
+}
+
+// MARK: - Calendar Handling
+extension ActivityListViewController: CalendarViewControllerDelegate {
+    func didCancel(calendar: CalendarViewController) {
+        calendar.dismiss(animated: true, completion: nil)
+    }
+
+    func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
+        viewModel.refresh(after: startDate, before: endDate)
+        calendar.dismiss(animated: true, completion: nil)
+    }
 }

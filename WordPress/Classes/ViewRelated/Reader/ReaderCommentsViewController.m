@@ -1235,8 +1235,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         DDLogError(@"Error toggling subscription status: %@", error);
 
         NSString *title = newIsSubscribed
-            ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
-            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
+            ? NSLocalizedString(@"Could not subscribe to comments", "The app failed to subscribe to the comments for the post")
+            : NSLocalizedString(@"Could not unsubscribe from comments", "The app failed to unsubscribe from the comments for the post");
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeError];
