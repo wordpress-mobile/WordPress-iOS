@@ -199,12 +199,12 @@
         <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="ampSupported" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsFromKnownUsersWhitelisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsMaximumLinks" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsModerationKeys" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="commentsModerationKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsPageSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsPagingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsRequireManualModeration" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -221,7 +221,7 @@
         <attribute name="iconMediaID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackBlockMaliciousLoginAttempts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackLazyLoadImages" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="jetpackMonitorEmailNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorPushNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -352,7 +352,7 @@
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="error" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Transformable" valueTransformerName="NSErrorValueTransformer" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String"/>
         <attribute name="filesize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
@@ -491,7 +491,7 @@
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
         <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="disabledPublicizeConnections" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
-        <attribute name="geolocation" optional="YES" attributeType="Transformable"/>
+        <attribute name="geolocation" optional="YES" attributeType="Transformable" valueTransformerName="CoordinateValueTransformer"/>
         <attribute name="isStickyPost" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="latitudeID" optional="YES" attributeType="String"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -844,7 +844,7 @@
         <attribute name="purchased" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stylesheet" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="themeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="themeUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trendingRank" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -910,7 +910,7 @@
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="838"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>
-        <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="855"/>
+        <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
         <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="343"/>
@@ -923,7 +923,7 @@
         <element name="FollowersCountStatsRecordValue" positionX="-291.12109375" positionY="2134.55078125" width="128" height="73"/>
         <element name="FollowersStatsRecordValue" positionX="158.42578125" positionY="2028.71875" width="128" height="103"/>
         <element name="LastPostStatsRecordValue" positionX="-141.33203125" positionY="1970.5078125" width="128" height="148"/>
-        <element name="Media" positionX="-155.23046875" positionY="83.17578125" width="128" height="435"/>
+        <element name="Media" positionX="-155.23046875" positionY="83.17578125" width="128" height="433"/>
         <element name="Menu" positionX="1276.01953125" positionY="-190.328125" width="128" height="135"/>
         <element name="MenuItem" positionX="1261.1484375" positionY="-6.04296875" width="128" height="255"/>
         <element name="MenuLocation" positionX="1072.3828125" positionY="-235.34375" width="128" height="120"/>
@@ -936,7 +936,7 @@
         <element name="Plan" positionX="-1802.80859375" positionY="-272.67578125" width="128" height="223"/>
         <element name="PlanFeature" positionX="-1656.703125" positionY="-166.43359375" width="128" height="90"/>
         <element name="PlanGroup" positionX="-1656.13671875" positionY="-275.78515625" width="128" height="90"/>
-        <element name="Post" positionX="-678.7734375" positionY="-84.65625" width="128" height="255"/>
+        <element name="Post" positionX="-678.7734375" positionY="-84.65625" width="128" height="253"/>
         <element name="PostTag" positionX="577.68359375" positionY="407.53515625" width="128" height="135"/>
         <element name="PostType" positionX="159.7578125" positionY="48.80859375" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="721.8203125" positionY="-528.5625" width="128" height="330"/>
@@ -963,13 +963,14 @@
         <element name="Role" positionX="1120.60546875" positionY="77.73046875" width="128" height="105"/>
         <element name="SearchResultsStatsRecordValue" positionX="319.87109375" positionY="1576.28125" width="128" height="73"/>
         <element name="SharingButton" positionX="635.53125" positionY="142.16796875" width="128" height="165"/>
+        <element name="SiteSuggestion" positionX="-1638" positionY="-459" width="128" height="118"/>
         <element name="SourcePostAttribution" positionX="-929.09765625" positionY="565.2421875" width="128" height="225"/>
         <element name="StatsRecord" positionX="475.08203125" positionY="1591.87109375" width="128" height="133"/>
         <element name="StatsRecordValue" positionX="-97.88671875" positionY="1666.3125" width="128" height="60"/>
         <element name="StreakInsightStatsRecordValue" positionX="319.28125" positionY="1409.96875" width="128" height="148"/>
         <element name="StreakStatsRecordValue" positionX="152.14453125" positionY="1403.62109375" width="128" height="88"/>
         <element name="TagsCategoriesStatsRecordValue" positionX="-476.7421875" positionY="1974.1484375" width="128" height="133"/>
-        <element name="Theme" positionX="331.85546875" positionY="219.17578125" width="128" height="360"/>
+        <element name="Theme" positionX="331.85546875" positionY="219.17578125" width="128" height="358"/>
         <element name="TodayStatsRecordValue" positionX="-641.8359375" positionY="1405.5078125" width="128" height="103"/>
         <element name="TopCommentedPostStatsRecordValue" positionX="-640.5" positionY="1523.6015625" width="128" height="103"/>
         <element name="TopCommentsAuthorStatsRecordValue" positionX="-486.2421875" positionY="1395.7890625" width="128" height="88"/>
@@ -978,6 +979,5 @@
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
         <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
-        <element name="SiteSuggestion" positionX="-1638" positionY="-459" width="128" height="118"/>
     </elements>
 </model>
