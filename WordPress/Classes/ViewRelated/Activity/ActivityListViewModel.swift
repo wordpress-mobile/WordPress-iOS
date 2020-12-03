@@ -68,9 +68,14 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
+        // If a new filter is being applied, remove all activities
         if applyingNewFilter(after: after, before: before, group: group) {
-            // If a new filter is being applied, remove all activities
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
+        }
+
+        // If a new date range is being applied, remove the current activity types
+        if applyingDateFilter(after: after, before: before) {
+            ActionDispatcher.dispatch(ActivityAction.resetGroups(site: site))
         }
 
         self.after = after
@@ -199,7 +204,11 @@ class ActivityListViewModel: Observable {
     private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
         let isSameGroup = group.count == self.group.count && self.group.elementsEqual(group, by: { $0.key == $1.key })
 
-        return after != self.after || before != self.before || !isSameGroup
+        return applyingDateFilter(after: after, before: before) || !isSameGroup
+    }
+
+    private func applyingDateFilter(after: Date? = nil, before: Date? = nil) -> Bool {
+        after != self.after || before != self.before
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
