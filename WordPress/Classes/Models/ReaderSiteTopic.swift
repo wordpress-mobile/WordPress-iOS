@@ -9,6 +9,7 @@ import Foundation
     @NSManaged open var feedID: NSNumber
     @NSManaged open var feedURL: String
     @NSManaged open var isJetpack: Bool
+    @NSManaged open var isWPForTeams: Bool
     @NSManaged open var isPrivate: Bool
     @NSManaged open var isVisible: Bool
     @NSManaged open var postCount: NSNumber
@@ -46,6 +47,7 @@ import Foundation
         feedURL = remoteInfo.feedURL ?? ""
         following = remoteInfo.isFollowing
         isJetpack = remoteInfo.isJetpack
+        isWPForTeams = remoteInfo.isWPForTeams
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
         postCount = remoteInfo.postCount ?? 0

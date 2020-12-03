@@ -4354,6 +4354,7 @@
 		CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileHeaderView.xib; sourceTree = "<group>"; };
 		CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteBlog+Capabilities.swift"; sourceTree = "<group>"; };
 		CE46018A21139E8300F242B6 /* FooterTextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTextContent.swift; sourceTree = "<group>"; };
+		CE983577257987DA00F44D91 /* WordPress 104.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 104.xcdatamodel"; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		D1216A69ECC61E7772AB8C41 /* Pods-WordPressThisWeekWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressThisWeekWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget.debug.xcconfig"; sourceTree = "<group>"; };
@@ -17450,6 +17451,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CE983577257987DA00F44D91 /* WordPress 104.xcdatamodel */,
 				B06378AE253F619500FD45D2 /* WordPress 103.xcdatamodel */,
 				4625BC26253E285700C04AAD /* WordPress 102.xcdatamodel */,
 				327282732538BC0900C8076D /* WordPress 101.xcdatamodel */,
@@ -17554,7 +17556,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = B06378AE253F619500FD45D2 /* WordPress 103.xcdatamodel */;
+			currentVersion = CE983577257987DA00F44D91 /* WordPress 104.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
