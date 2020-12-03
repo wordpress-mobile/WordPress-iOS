@@ -5,10 +5,11 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
-    case refreshActivities(site: JetpackSiteRef, quantity: Int)
-    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int)
+    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?)
+    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?)
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
+    case resetActivities(site: JetpackSiteRef)
 
     case rewind(site: JetpackSiteRef, rewindID: String)
     case rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String)
@@ -151,12 +152,14 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         switch activityAction {
         case .receiveActivities(let site, let activities, let hasMore, let loadingMore):
             receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore)
-        case .loadMoreActivities(let site, let quantity, let offset):
-            loadMoreActivities(site: site, quantity: quantity, offset: offset)
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
+            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
-        case .refreshActivities(let site, let quantity):
-            refreshActivities(site: site, quantity: quantity)
+        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
+            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        case .resetActivities(let site):
+            resetActivities(site: site)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
         case .rewindStarted(let site, let rewindID, let restoreID):
@@ -200,13 +203,19 @@ extension ActivityStore {
 }
 
 private extension ActivityStore {
-    func fetchActivities(site: JetpackSiteRef, count: Int = 20, offset: Int = 0) {
+    func fetchActivities(site: JetpackSiteRef,
+                         count: Int = 20,
+                         offset: Int = 0,
+                         afterDate: Date? = nil,
+                         beforeDate: Date? = nil) {
         state.fetchingActivities[site] = true
 
         remote(site: site)?.getActivityForSite(
             site.siteID,
             offset: offset,
             count: count,
+            after: afterDate,
+            before: beforeDate,
             success: { [actionDispatcher] (activities, hasMore) in
                 let loadingMore = offset > 0
                 actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
@@ -233,20 +242,29 @@ private extension ActivityStore {
         }
     }
 
-    func refreshActivities(site: JetpackSiteRef, quantity: Int) {
+    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?) {
         guard !isFetching(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity)
+        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate)
     }
 
-    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int) {
+    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?) {
         guard !isFetching(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, offset: offset)
+        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+    }
+
+    func resetActivities(site: JetpackSiteRef) {
+        transaction { state in
+            state.activities[site] = []
+            state.fetchingActivities[site] = false
+            state.lastFetch[site] = Date()
+            state.hasMore = false
+        }
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
