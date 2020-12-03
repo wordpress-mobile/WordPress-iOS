@@ -97,7 +97,15 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         guard
             let path = siteBlavatar,
             let url = upscaledImageURL(urlString: path) else {
-            avatarImageView.image = isWPForTeams ? p2Placeholder : placeholder
+            if isWPForTeams {
+                avatarImageView.tintColor = UIColor.listIcon
+                avatarImageView.layer.borderColor = UIColor.listIcon.cgColor
+                avatarImageView.layer.borderWidth = 1
+                avatarImageView.image = p2Placeholder
+                return
+            }
+
+            avatarImageView.image = placeholder
             return
         }
 
