@@ -60,9 +60,9 @@
                     <rect key="frame" x="0.0" y="88" width="414" height="215.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73">
-                            <rect key="frame" x="67" y="63" width="280" height="64.5"/>
+                            <rect key="frame" x="64.5" y="63" width="285" height="64.5"/>
                             <constraints>
-                                <constraint firstAttribute="width" priority="750" constant="280" id="bav-Si-etZ"/>
+                                <constraint firstAttribute="width" priority="750" constant="285" id="bav-Si-etZ"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -102,7 +102,7 @@
                         <constraint firstAttribute="trailing" secondItem="DE5-R9-8tB" secondAttribute="trailing" id="a3z-v1-Ujv"/>
                         <constraint firstAttribute="trailing" secondItem="9w9-KC-2W9" secondAttribute="trailing" id="bqi-CI-mnl"/>
                         <constraint firstAttribute="height" constant="205.5" id="dks-Bz-gRQ"/>
-                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="20" id="guA-LW-Zer">
+                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="15" id="guA-LW-Zer">
                             <variation key="widthClass=regular" constant="170"/>
                         </constraint>
                         <constraint firstAttribute="bottom" secondItem="9w9-KC-2W9" secondAttribute="bottom" id="ntw-Of-ryN"/>

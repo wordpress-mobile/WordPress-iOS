@@ -70,24 +70,15 @@ extension ReaderSaveForLaterAction {
     }
 }
 
-extension ReaderMenuViewController {
-    func trackSavedPostsNavigation() {
-        WPAnalytics.track(.readerSavedListShown, properties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue ])
-    }
-}
-
-extension ReaderSavedPostsViewController {
-    func trackSavedPostNavigation() {
-        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
-    }
-}
-
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
-        if FeatureFlag.newReaderNavigation.enabled, contentType == .saved {
-            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
+        if contentType == .saved {
+            WPAppAnalytics.track(.readerSavedPostOpened,
+                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue])
         } else {
-            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue ])
+            // TODO: - READERNAV - See refactor note in ReaderSaveForLater+Analytics.viewAllPostsValue.
+            WPAppAnalytics.track(.readerSavedPostOpened,
+                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue])
         }
     }
 }

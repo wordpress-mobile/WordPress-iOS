@@ -32,7 +32,6 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <constraints>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="QB9-fd-Zsn"/>
-                <constraint firstItem="hQm-TV-IDW" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="eud-Yr-hp5"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hQm-TV-IDW" secondAttribute="trailing" constant="55" id="pJe-WK-HF0"/>
             </constraints>
             <connections>

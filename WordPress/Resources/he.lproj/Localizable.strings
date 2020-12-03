@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 15:54:08+0000 */
+/* Translation-Revision-Date: 2020-11-25 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -365,7 +365,7 @@
 "Activity" = "פעילות";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "יומן פעילות";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "פעילות";
@@ -1162,7 +1162,7 @@
 "Choose a time" = "לבחור שעה";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
+"Choose design" = "בחירת עיצוב";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "בחירת דומיין";
@@ -1186,7 +1186,7 @@
 "Choose images" = "לבחור תמונות";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "בחירת פריסה";
 
 /* No comment provided by engineer. */
 "Choose video" = "לבחור וידאו";
@@ -1821,7 +1821,7 @@
 "Deleting..." = "מוחק...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "דחייה";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2366,13 +2366,13 @@
 "Failed to insert media.\nPlease tap for options." = "שילוב פירטי המדיה נכשל.\nיש להקיש לאפשרויות.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "שמירת קבצים נכשלה.\nיש להקיש לאפשרויות.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "לא הצלחנו לערוך בסדרה בקשה אל REST API.";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "העלאת קבצים נכשלה.\nיש להקיש לאפשרויות.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2634,9 +2634,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "נהדר!\n אנחנו שמחים כשהמשתמשים שלנו מרוצים \n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "נהדר! האם תוכל להשאיר לנו סקירה חדשה?\n\nכל משוב יעזור.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -3255,7 +3252,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "יש להתחבר לחשבון שלך ב-WordPress.com באמצעות כתובת האימייל שלך.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "יש להתחבר באמצעות שם המשתמש והסיסמה של WordPress.com.‏";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "האם להתנתק מ-WordPress?";
@@ -3588,7 +3585,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "פריט חדש";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "סיסמה חדשה";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "פוסטים חדשים";
@@ -4046,7 +4043,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "הגדרות עמוד";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "בלוק של מעבר דף. %s";
@@ -5410,7 +5407,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "Site Redirect";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "הגדרות אתר";
 
 /* Default title for a site
    Label for site title blog setting

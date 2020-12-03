@@ -1,0 +1,5 @@
+Alles rund um Jetpack: Greife schnell und einfach auf all deine Jetpack-Funktionen zu, darunter auch auf die Statistiken, dein Aktivitätsprotokoll und die Einstellungen.
+
+Hilfe und Support: Wir haben ein paar Fehler behoben, die bei der Kontaktaufnahme mit unserem Support-Team auftraten. Wenn du uns kontaktierst, kannst du jetzt auch nicht-alphanumerische Zeichen nutzen. Außerdem stürzt deine App nicht mehr ab, wenn du deine E-Mail-Adresse eingibst.
+
+Updates am Reader: Wir haben einen Anzeigefehler im Reader behoben und Kommentare sind nicht mehr standardmäßig kursiv.

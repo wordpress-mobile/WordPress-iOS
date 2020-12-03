@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 21:58:41+0000 */
+/* Translation-Revision-Date: 2020-11-26 09:05:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -1171,7 +1171,7 @@
 "Choose from My Device" = "Choisir depuis mon appareil";
 
 /* Explanatory text for Homepage Settings homepage type selection. */
-"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choisir une page d’accueil listant les dernier articles (blog classique) ou un page fixe \/ statique.";
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Choisir une page d’accueil listant les dernier articles (blog classique) ou un page fixe\/statique.";
 
 /* No comment provided by engineer. */
 "Choose from device" = "Choisir depuis l’appareil";
@@ -1207,7 +1207,7 @@
 "Classic Blog" = "Blog classique";
 
 /* Label for button that clears all media cache. */
-"Clear Device Media Cache" = "Effacez le cache multimédia de l'appareil";
+"Clear Device Media Cache" = "Effacez le cache multimédia de l’appareil";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Effacer vos anciennes archives de log.";
@@ -1519,7 +1519,7 @@
 "Could Not Follow Topic" = "Impossible de suivre le sujet";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Remove Topic" = "Impossible d'enlever le sujet";
+"Could Not Remove Topic" = "Impossible de retirer le sujet";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Impossible d'enregistrer les modifications";
@@ -2537,7 +2537,7 @@
 "Free Photo Library" = "Bibliothèque de photos gratuites";
 
 /* Explanatory text for clearing device media cache. */
-"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Libérez de l'espace de stockage sur cet appareil en supprimant des fichiers multimédias temporaires. Cela n'aura aucune incidence sur le support de votre site.";
+"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Libérez de l’espace de stockage sur cet appareil en supprimant des fichiers multimédias temporaires. Cela n’aura aucune incidence sur le support de votre site.";
 
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Foire Aux Questions";
@@ -2634,9 +2634,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Super !\nNous adorons écouter les utilisateurs contents";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Bien! Pouvez-vous nous laisser un commentaire?\n\n\nCela nous aide vraiment.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -3372,7 +3369,7 @@ translators: sample content for \"Services\" page template */
 "Media doesn't have an associated file to upload." = "Le média n’a pas de fichier associé à téléverser.";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
-"Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La taille du fichier média est trop importante pour téléverser. Le maximum autorisé est %2$@";
+"Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La taille du fichier média (%1$@) est trop importante pour téléverser. Le maximum autorisé est %2$@";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "L’aperçu du média a échoué.";
@@ -5480,7 +5477,7 @@ translators: sample content for \"Services\" page template */
 "Social" = "Social";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
-"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Certains téléversements de média ont échoués. Cette action va supprimer tous ces médias de l'article. \nEnregistrer quand même ?";
+"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Certains téléversements de média ont échoués. Cette action va supprimer tous ces médias de l’article. \nEnregistrer quand même ?";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Something went wrong, please try again." = "Il y a eu un problème. Veuillez réessayer.";
@@ -6019,7 +6016,7 @@ translators: sample content for \"Services\" page template */
 "There has been an unexpected error while sending your Invitation" = "Une erreur inattendue est survenue lors de l'envoi de votre invitation";
 
 /* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Une erreur inattendue est survenue lors de l'envoi de votre réponse :\n« %@ »";
+"There has been an unexpected error while sending your reply" = "Une erreur inattendue est survenue lors de l’envoi de votre réponse :";
 
 /* The app failed to subscribe to the comments for the post */
 "There has been an unexpected error while subscribing to the comments" = "Une erreur inattendue est survenue lors de l’abonnement aux commentaires.";
@@ -6128,7 +6125,7 @@ translators: sample content for \"Services\" page template */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à l'appareil photo et capturer de nouveaux médias. Pour ce faire, veuillez modifier les paramètres de confidentialité.";
 
 /* Explaining to the user why the app needs access to the device media library. */
-"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la médiathèque de votre appareil, afin d'ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les réglages de confidentialité.";
+"This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Cette application nécessite une autorisation pour accéder à la médiathèque de votre appareil, afin d’ajouter des photos et\/ou une vidéo à vos articles. Pour ce faire, veuillez modifier les réglages de confidentialité.";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Cette adresse e-mail n’est pas enregistrée sur WordPress.com.";
@@ -7107,7 +7104,7 @@ translators: sample content for \"Services\" page template */
 "When you follow sites, you’ll see their content here." = "Lorsque vous suivez des sites, vous voyez leur contenu ici.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Lorsque vous apportez des modifications à votre %@, vous pouvez voir l'historique ici.";
+"When you make changes in the editor you'll be able to see the history here" = "Lorsque vous apportez des modifications dans l’éditeur, vous pouvez voir l’historique ici.";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Quand vous faites des changements à votre site vous pourrez voir l’historique de votre activité ici.";
@@ -7185,7 +7182,7 @@ translators: sample content for \"Services\" page template */
 "WordPress version too old" = "La version de WordPress est trop ancienne";
 
 /* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Votre version de WordPress est trop ancienne. Le site sur %1$@ utilise WordPress %2$@. Nous vous recommandons de mettre à jour à la dernière version ou au moins %2$@.";
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Votre version de WordPress est trop ancienne. Le site sur %1$@ utilise WordPress %2$@. Nous vous recommandons de mettre à jour à la dernière version ou au moins %3$@.";
 
 /* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
    NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
@@ -7511,7 +7508,7 @@ translators: sample content for \"Services\" page template */
 "in \"Upgrade\"" = "dans \"Mise à jour\"";
 
 /* Relative time format */
-"just now" = "à l'instant";
+"just now" = "à l’instant";
 
 /* Later today */
 "later today" = "ultérieurement aujourd'hui";
@@ -7572,7 +7569,7 @@ translators: sample content for \"Services\" page template */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "Votre nouveau domaine est en cours de mise en place. Votre site fait des sauts d’excitation !";
+"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "Votre nouveau domaine %@ est en cours de configuration. Votre site fait des bonds d’excitation !";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Connectez-vous avec Google.";

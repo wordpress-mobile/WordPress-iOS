@@ -71,6 +71,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     private func configureWebView() {
         guard let demoURL = URL(string: siteDesign.demoURL) else { return }
         let request = URLRequest(url: demoURL)
+        webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(request)
     }
 
@@ -107,7 +108,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading()
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -119,7 +120,7 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded()
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign)
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
     }

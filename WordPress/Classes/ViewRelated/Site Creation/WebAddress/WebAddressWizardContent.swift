@@ -124,6 +124,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         searchHeader.addConstraints([top, bottom, leading, trailing])
         searchHeader.addTopBorder(withColor: .divider)
         searchHeader.addBottomBorder(withColor: .divider)
+        searchHeader.backgroundColor = searchTextField.backgroundColor
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -202,6 +203,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
+        if !resultsHavePreviousSelection {
+            clearSelectionAndCreateSiteButton()
+        }
+
         self.data = data
         if data.isEmpty {
             noResultsLabel.isHidden = false
