@@ -409,7 +409,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
-        viewModel.refresh(after: startDate, before: endDate)
+        viewModel.refresh(after: startDate, before: endDate, group: viewModel.group)
         calendar.dismiss(animated: true, completion: nil)
     }
 }
