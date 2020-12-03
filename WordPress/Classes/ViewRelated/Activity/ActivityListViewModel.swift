@@ -42,6 +42,10 @@ class ActivityListViewModel: Observable {
         return after != nil || before != nil
     }
 
+    var groupFilterIsActive: Bool {
+        return !group.isEmpty
+    }
+
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
         self.site = site
         self.store = store
@@ -72,17 +76,19 @@ class ActivityListViewModel: Observable {
         ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
     }
 
-    private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
-        let isSameGroup = group.count == self.group.count && self.group.elementsEqual(group, by: { $0.key == $1.key })
-
-        return after != self.after || before != self.before || !isSameGroup
-    }
-
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             offset = store.state.activities[site]?.count ?? 0
             ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: group.map { $0.key }))
         }
+    }
+
+    public func removeDateFilter() {
+        refresh(after: nil, before: nil, group: group)
+    }
+
+    public func removeGroupFilter() {
+        refresh(after: after, before: before, group: [])
     }
 
     func noResultsViewModel() -> NoResultsViewController.Model? {
@@ -145,7 +151,7 @@ class ActivityListViewModel: Observable {
 
     func dateRangeDescription() -> String? {
         guard after != nil || before != nil else {
-            return nil
+            return NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
         }
 
         let format = shouldDisplayFullYear(with: after, and: before) ? "MMM d, yyyy" : "MMM d"
@@ -164,6 +170,16 @@ class ActivityListViewModel: Observable {
         return formattedDateRanges.joined(separator: " - ")
     }
 
+    func activityTypeDescription() -> String? {
+        if group.isEmpty {
+            return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
+        } else if group.count > 1 {
+            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), group.count)
+        }
+
+        return group.first?.name
+    }
+
     private func shouldDisplayFullYear(with firstDate: Date?, and secondDate: Date?) -> Bool {
         guard let firstDate = firstDate, let secondDate = secondDate else {
             return false
@@ -174,6 +190,12 @@ class ActivityListViewModel: Observable {
         let secondYear = Calendar.current.dateComponents([.year], from: secondDate).year
 
         return firstYear != currentYear || secondYear != currentYear
+    }
+
+    private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
+        let isSameGroup = group.count == self.group.count && self.group.elementsEqual(group, by: { $0.key == $1.key })
+
+        return after != self.after || before != self.before || !isSameGroup
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {

@@ -150,15 +150,11 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func updateFilters() {
-        if viewModel.dateFilterIsActive {
-            dateFilterChip.enableResetButton()
-            dateFilterChip.title = viewModel.dateRangeDescription()
-        } else {
-            dateFilterChip.disableResetButton()
-            dateFilterChip.title = NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
-        }
+        viewModel.dateFilterIsActive ? dateFilterChip.enableResetButton() : dateFilterChip.disableResetButton()
+        dateFilterChip.title = viewModel.dateRangeDescription()
 
-        activityTypeFilterChip.title = "Activity Type"
+        viewModel.groupFilterIsActive ? activityTypeFilterChip.enableResetButton() : activityTypeFilterChip.disableResetButton()
+        activityTypeFilterChip.title = viewModel.activityTypeDescription()
     }
 
     private func setupFilterBar() {
@@ -186,7 +182,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         dateFilterChip.resetTapped = { [weak self] in
-            self?.viewModel.refresh()
+            self?.viewModel.removeDateFilter()
             self?.dateFilterChip.disableResetButton()
         }
     }
@@ -206,6 +202,11 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             activityTypeSelectorViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
             self.present(navigationController, animated: true, completion: nil)
+        }
+
+        activityTypeFilterChip.resetTapped = { [weak self] in
+            self?.viewModel.removeGroupFilter()
+            self?.activityTypeFilterChip.disableResetButton()
         }
     }
 
