@@ -21,11 +21,12 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
     weak var delegate: ActivityTypeSelectorDelegate?
 
-    init(site: JetpackSiteRef, store: ActivityStore, afterDate: Date?, beforeDate: Date?) {
+    init(site: JetpackSiteRef, store: ActivityStore, afterDate: Date?, beforeDate: Date?, selectedGroupsKeys: [String]) {
         self.site = site
         self.store = store
         self.afterDate = afterDate
         self.beforeDate = beforeDate
+        self.selectedGroupsKeys = selectedGroupsKeys
         super.init(style: .grouped)
     }
 

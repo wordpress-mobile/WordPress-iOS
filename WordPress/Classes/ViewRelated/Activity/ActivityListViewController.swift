@@ -197,7 +197,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
                 site: self.site,
                 store: self.store,
                 afterDate: self.viewModel.after,
-                beforeDate: self.viewModel.before
+                beforeDate: self.viewModel.before,
+                selectedGroupsKeys: self.viewModel.group.map { $0.key }
             )
             activityTypeSelectorViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
