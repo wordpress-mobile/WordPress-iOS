@@ -505,7 +505,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.31.0-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/add-property-to-remote-model`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `b127b42`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.13.0)
   - WordPressUI (~> 1.7.4-beta.1)
@@ -655,7 +655,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.43.0-alpha2
   WordPressKit:
-    :branch: feature/add-property-to-remote-model
+    :commit: b127b42
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0-alpha2/third-party-podspecs/Yoga.podspec.json
@@ -676,7 +676,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.43.0-alpha2
   WordPressKit:
-    :commit: bcd4b059bb8937ff64370ed815177111334bcbc9
+    :commit: b127b42
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -774,6 +774,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 2f8b4b282cca39894e6637827c39020f9cc80573
+PODFILE CHECKSUM: 128774db0ad4736a12a8d7a2aecb6ce5e4295dc5
 
 COCOAPODS: 1.9.3
