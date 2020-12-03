@@ -99,7 +99,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             let url = upscaledImageURL(urlString: path) else {
             if isWPForTeams {
                 avatarImageView.tintColor = UIColor.listIcon
-                avatarImageView.layer.borderColor = UIColor.listIcon.cgColor
+                avatarImageView.layer.borderColor = UIColor.divider.cgColor
                 avatarImageView.layer.borderWidth = 1
                 avatarImageView.image = p2Placeholder
                 return
