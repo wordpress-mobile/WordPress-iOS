@@ -347,14 +347,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
-    __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [self.blogService syncBlogAndAllMetadata:_blog
-                           completionHandler:^{
-                               [weakSelf configureTableViewData];
-                               [weakSelf reloadTableViewPreservingSelection];
-                           }];
+    [self preloadMetadata];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
