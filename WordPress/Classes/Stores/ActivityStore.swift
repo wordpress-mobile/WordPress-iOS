@@ -22,6 +22,7 @@ enum ActivityAction: Action {
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
 
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
+    case resetGroups(site: JetpackSiteRef)
 }
 
 enum ActivityQuery {
@@ -191,6 +192,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             }
         case .refreshGroups(let site, let afterDate, let beforeDate):
             refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
+        case .resetGroups(let site):
+            resetGroups(site: site)
         }
     }
 }
@@ -427,21 +430,32 @@ private extension ActivityStore {
 
         state.fetchingGroups[site] = true
 
-        remote(site: site)?.getActivityGroupsForSite(
-            site.siteID,
-            after: afterDate,
-            before: beforeDate,
-            success: { [weak self] groups in
-                self?.receiveGroups(site: site, groups: groups)
-            }, failure: { error in
-                
-            })
+        if state.groups[site]?.isEmpty ?? true {
+            remote(site: site)?.getActivityGroupsForSite(
+                site.siteID,
+                after: afterDate,
+                before: beforeDate,
+                success: { [weak self] groups in
+                    self?.receiveGroups(site: site, groups: groups)
+                }, failure: { error in
+
+                })
+        } else {
+            receiveGroups(site: site, groups: state.groups[site] ?? [])
+        }
     }
 
     func receiveGroups(site: JetpackSiteRef, groups: [ActivityGroup]) {
         transaction { state in
             state.fetchingGroups[site] = false
-            state.groups[site] = groups
+            state.groups[site] = groups.sorted { $0.count > $1.count }
+        }
+    }
+
+    func resetGroups(site: JetpackSiteRef) {
+        transaction { state in
+            state.groups[site] = []
+            state.fetchingGroups[site] = false
         }
     }
 

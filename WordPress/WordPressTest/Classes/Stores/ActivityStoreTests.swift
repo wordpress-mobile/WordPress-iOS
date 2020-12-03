@@ -123,14 +123,28 @@ class ActivityStoreTests: XCTestCase {
         XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 1)
     }
 
-    // When a request succeeds the subsequent one is correctly made
+    // When a previous request for Activity types has suceeded, return the cached groups
     //
-    func testRefreshGroupsRequestsAgainIfTheFirstSucceeds() {
+    func testRefreshGroupsUseCache() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
         activityServiceMock.groupsToReturn = [try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])]
 
         dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
         dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+
+        XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 1)
+        XCTAssertTrue(store.state.groups[jetpackSiteRef]!.contains(where: { $0.key == "post" && $0.name == "Posts and Pages" && $0.count == 5}))
+    }
+
+    // Request groups endpoint again if the cache expired
+    //
+    func testRefreshGroupsRequestsAgainIfTheFirstSucceeds() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        activityServiceMock.groupsToReturn = [try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])]
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: nil, beforeDate: nil))
+
+        dispatch(.resetGroups(site: jetpackSiteRef))
+        dispatch(.refreshGroups(site: jetpackSiteRef, afterDate: Date(), beforeDate: nil))
 
         XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 2)
     }
