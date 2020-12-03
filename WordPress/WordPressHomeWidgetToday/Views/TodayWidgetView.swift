@@ -8,22 +8,26 @@ struct TodayWidgetView: View {
 
     @ViewBuilder
     var body: some View {
-        switch family {
-        case .systemSmall:
-            TodayWidgetSmallView(content: content,
-                                 widgetTitle: Constants.widgetTitle,
-                                 viewsTitle: Constants.viewsTitle)
-                .padding()
-        case .systemMedium:
-            TodayWidgetMediumView(content: content,
-                                  widgetTitle: Constants.widgetTitle,
-                                  viewsTitle: Constants.viewsTitle,
-                                  visitorsTitle: Constants.visitorsTitle,
-                                  likesTitle: Constants.likesTitle,
-                                  commentsTitle: Constants.commentsTitle)
-                .padding()
-        default:
-            Text("View is unavailable")
+        if content.siteID == 0 {
+            UnconfiguredView()
+        } else {
+            switch family {
+            case .systemSmall:
+                TodayWidgetSmallView(content: content,
+                                     widgetTitle: Constants.widgetTitle,
+                                     viewsTitle: Constants.viewsTitle)
+                    .padding()
+            case .systemMedium:
+                TodayWidgetMediumView(content: content,
+                                      widgetTitle: Constants.widgetTitle,
+                                      viewsTitle: Constants.viewsTitle,
+                                      visitorsTitle: Constants.visitorsTitle,
+                                      likesTitle: Constants.likesTitle,
+                                      commentsTitle: Constants.commentsTitle)
+                    .padding()
+            default:
+                Text("View is unavailable")
+            }
         }
     }
 }
