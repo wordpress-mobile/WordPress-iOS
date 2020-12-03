@@ -70,19 +70,6 @@ extension ReaderSaveForLaterAction {
     }
 }
 
-extension ReaderMenuViewController {
-    func trackSavedPostsNavigation() {
-        WPAnalytics.track(.readerSavedListShown, properties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue ])
-    }
-}
-
-// TODO: - READERNAV - nix this with ReaderSavedPostsViewController.
-extension ReaderSavedPostsViewController {
-    func trackSavedPostNavigation() {
-        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
-    }
-}
-
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
         if contentType == .saved {

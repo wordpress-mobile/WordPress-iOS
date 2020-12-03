@@ -148,6 +148,9 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
+        let format = shouldDisplayFullYear(with: after, and: before) ? "MMM d, yyyy" : "MMM d"
+        dateFormatter.setLocalizedDateFormatFromTemplate(format)
+
         var formattedDateRanges: [String] = []
 
         if let after = after {
@@ -159,6 +162,18 @@ class ActivityListViewModel: Observable {
         }
 
         return formattedDateRanges.joined(separator: " - ")
+    }
+
+    private func shouldDisplayFullYear(with firstDate: Date?, and secondDate: Date?) -> Bool {
+        guard let firstDate = firstDate, let secondDate = secondDate else {
+            return false
+        }
+
+        let currentYear = Calendar.current.dateComponents([.year], from: Date()).year
+        let firstYear = Calendar.current.dateComponents([.year], from: firstDate).year
+        let secondYear = Calendar.current.dateComponents([.year], from: secondDate).year
+
+        return firstYear != currentYear || secondYear != currentYear
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
@@ -217,8 +232,6 @@ class ActivityListViewModel: Observable {
     }()
 
     lazy var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d")
-        return dateFormatter
+        DateFormatter()
     }()
 }
