@@ -21,6 +21,8 @@ class ActivityListViewModel: Observable {
 
     private let count = 20
     private var offset = 0
+    private(set) var after: Date?
+    private(set) var before: Date?
 
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
@@ -33,6 +35,10 @@ class ActivityListViewModel: Observable {
 
     var hasMore: Bool {
         store.state.hasMore
+    }
+
+    var dateFilterIsActive: Bool {
+        return after != nil || before != nil
     }
 
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
@@ -52,14 +58,22 @@ class ActivityListViewModel: Observable {
         refreshing = store.isFetching(site: site)
     }
 
-    public func refresh() {
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count))
+    public func refresh(after: Date? = nil, before: Date? = nil) {
+        if after != self.after || before != self.before {
+            // If a new filter is being applied, remove all activities
+            ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
+        }
+
+        self.after = after
+        self.before = before
+
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before))
     }
 
     public func loadMore() {
         if !store.isFetching(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before))
         }
     }
 
@@ -74,7 +88,11 @@ class ActivityListViewModel: Observable {
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
-            return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
+            if dateFilterIsActive {
+                return NoResultsViewController.Model(title: NoResultsText.noMatchingTitle, subtitle: NoResultsText.noMatchingSubtitle)
+            } else {
+                return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
+            }
         }
 
         let appDelegate = WordPressAppDelegate.shared
@@ -117,6 +135,39 @@ class ActivityListViewModel: Observable {
         // showing plugin updates/CTA's and other things like this.
     }
 
+    func dateRangeDescription() -> String? {
+        guard after != nil || before != nil else {
+            return nil
+        }
+
+        let format = shouldDisplayFullYear(with: after, and: before) ? "MMM d, yyyy" : "MMM d"
+        dateFormatter.setLocalizedDateFormatFromTemplate(format)
+
+        var formattedDateRanges: [String] = []
+
+        if let after = after {
+            formattedDateRanges.append(dateFormatter.string(from: after))
+        }
+
+        if let before = before {
+            formattedDateRanges.append(dateFormatter.string(from: before))
+        }
+
+        return formattedDateRanges.joined(separator: " - ")
+    }
+
+    private func shouldDisplayFullYear(with firstDate: Date?, and secondDate: Date?) -> Bool {
+        guard let firstDate = firstDate, let secondDate = secondDate else {
+            return false
+        }
+
+        let currentYear = Calendar.current.dateComponents([.year], from: Date()).year
+        let firstYear = Calendar.current.dateComponents([.year], from: firstDate).year
+        let secondYear = Calendar.current.dateComponents([.year], from: secondDate).year
+
+        return firstYear != currentYear || secondYear != currentYear
+    }
+
     private func restoreStatusSection() -> ImmuTableSection? {
         guard let restore = store.getRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
@@ -153,6 +204,8 @@ class ActivityListViewModel: Observable {
         static let loadingTitle = NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site")
         static let noActivitiesTitle = NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log")
         static let noActivitiesSubtitle = NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
+        static let noMatchingTitle = NSLocalizedString("No matching events found.", comment: "Title for the view when there aren't any Activities to display in the Activity Log for a given filter.")
+        static let noMatchingSubtitle = NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
         static let errorSubtitle = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
@@ -168,5 +221,9 @@ class ActivityListViewModel: Observable {
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
+    }()
+
+    lazy var dateFormatter: DateFormatter = {
+        DateFormatter()
     }()
 }
