@@ -15,6 +15,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedPrologueCarousel
     case stories
     case siteCreationHomePagePicker
+    case jetpackScan
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -49,6 +50,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
             return true
+        case .jetpackScan:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -103,6 +106,8 @@ extension FeatureFlag {
             return "Stories"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
+        case .jetpackScan:
+            return "Jetpack Scan"
         }
     }
 

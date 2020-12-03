@@ -1455,6 +1455,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 /// Pings the network to determine which Jetpack features a blog supports
 - (void)syncJetpackFeaturesAvailable
 {
+    if(![Feature enabled:FeatureFlagJetpackScan]) {
+        return;
+    }
+
     __weak __typeof(self) weakSelf = self;
 
     [self.jetpackScanService getScanAvailableFor:self.blog success:^(BOOL available) {
