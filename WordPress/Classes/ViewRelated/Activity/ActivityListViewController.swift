@@ -122,7 +122,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh(after: viewModel.after, before: viewModel.before)
+        viewModel.refresh(after: viewModel.after, before: viewModel.before, group: viewModel.group)
     }
 
     func refreshModel() {
