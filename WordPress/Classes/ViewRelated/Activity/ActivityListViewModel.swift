@@ -46,6 +46,10 @@ class ActivityListViewModel: Observable {
         return !group.isEmpty
     }
 
+    var isAnyFilterActive: Bool {
+        return dateFilterIsActive || groupFilterIsActive
+    }
+
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
         self.site = site
         self.store = store
@@ -102,7 +106,7 @@ class ActivityListViewModel: Observable {
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
-            if dateFilterIsActive {
+            if isAnyFilterActive {
                 return NoResultsViewController.Model(title: NoResultsText.noMatchingTitle, subtitle: NoResultsText.noMatchingSubtitle)
             } else {
                 return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
