@@ -5,6 +5,8 @@ struct SiteListProvider: IntentTimelineProvider {
 
     let service = HomeWidgetTodayRemoteService()
 
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
     private var defaultSiteID: Int? {
         // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
         // This would change if the old widget gets reconfigured to a different site than the default.
@@ -61,6 +63,15 @@ struct SiteListProvider: IntentTimelineProvider {
 
         /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
         ///
+        WidgetCenter.shared.getCurrentConfigurations { result in
+            switch result {
+            case .success(let widgetInfo):
+                tracks.trackWidgetInstalled(widgetInfo: widgetInfo)
+                print(widgetInfo)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
