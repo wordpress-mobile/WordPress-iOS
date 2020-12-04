@@ -1,5 +1,0 @@
-Alles over Jetpack: krijg snel en eenvoudig toegang tot al je Jetpack functies, inclusief je statistieken, activiteiten log en instellingen.
-
-Krijg hulp en ondersteuning: we hebben een aantal problemen opgelost die optraden als je contact opnam met ons ondersteuningsteam. Wanneer je contact met ons opneemt, kan je nu niet-alfa tekens gebruiken en je app zal niet langer crashen bij het invoeren van je e-mailadres.
-
-Reader updates: we hebben ook een weergaveprobleem in de Reader opgelost en reacties worden niet langer standaard cursief weergegeven.
