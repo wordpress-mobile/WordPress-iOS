@@ -27,21 +27,40 @@ class StoryEditor: CameraController {
         return "wp_stories_creator"
     }
 
+    var storyService: KanvasStoryService?
+
     init(post: AbstractPost,
                      onClose: ((Bool, Bool) -> Void)?,
                      settings: CameraSettings,
                      stickerProvider: StickerProvider?,
                      analyticsProvider: KanvasCameraAnalyticsProvider?,
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
-                     tagCollection: UIView?) {
+                     tagCollection: UIView?,
+                     publishOnCompletion: Bool,
+                     completion: @escaping (Result<Post, Error>) -> Void) {
         self.post = post
         self.onClose = onClose
+
+        let saveDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
         super.init(settings: KanvasService.cameraSettings,
                  stickerProvider: EmojiStickerProvider(),
                  analyticsProvider: KanvasCameraAnalyticsStub(),
                  quickBlogSelectorCoordinator: nil,
-                 tagCollection: nil)
+                 tagCollection: nil,
+                 saveDirectory: saveDirectory)
+
+        self.storyService = KanvasStoryService(post: post as! Post, updated: { [weak self] result in
+            switch result {
+            case .success(let post):
+                self?.post = post
+                self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat: .editorPublishedPost)
+            case .failure:
+                ()
+            }
+            self?.hideLoading()
+            completion(result)
+        })
     }
 }
 

@@ -1,4 +1,3 @@
-var storyService: KanvasStoryService?
 let kanvasService = KanvasService()
 
 extension WPTabBarController {
@@ -72,13 +71,10 @@ extension WPTabBarController {
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext)
-
-            storyService = KanvasStoryService(post: controller.post as! Post, updated: { [weak self, weak controller] result in
+            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext) { [weak self] result in
                 switch result {
                 case .success(let post):
-                    controller?.post = post
-                    controller?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat: .editorPublishedPost)
+                    ()
                 case .failure(let error):
                     self?.dismiss(animated: true, completion: nil)
                     let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
@@ -88,8 +84,9 @@ extension WPTabBarController {
                     controller.addAction(dismiss)
                     self?.present(controller, animated: true, completion: nil)
                 }
-            })
-            kanvasService.delegate = storyService
+            }
+
+            kanvasService.delegate = controller.storyService
             present(controller, animated: true, completion: nil)
         }
     }

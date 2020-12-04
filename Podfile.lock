@@ -672,7 +672,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   KanvasCamera:
-    :commit: c1cbd7307a6cce330185e3bc4ed28e40d799abdf
+    :commit: 627fdf09f0ee7aaf5f1e2bc5ed5833b3a807f557
     :git: "git@github.com:tumblr/kanvas-ios.git"
   RNCMaskedView:
     :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
