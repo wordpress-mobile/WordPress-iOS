@@ -28,6 +28,7 @@ class StoryEditor: CameraController {
     }
 
     var storyService: KanvasStoryService?
+    var storyLoader: StoryMediaLoader? = StoryMediaLoader()
 
     init(post: AbstractPost,
                      onClose: ((Bool, Bool) -> Void)?,
@@ -54,13 +55,29 @@ class StoryEditor: CameraController {
             switch result {
             case .success(let post):
                 self?.post = post
-                self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat: .editorPublishedPost)
+                if publishOnCompletion {
+                    self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
+                                        .editorPublishedPost)
+                }
             case .failure:
                 ()
             }
             self?.hideLoading()
             completion(result)
         })
+    }
+
+    func populate(with files: [StoryPoster.MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
+        let semaphore = DispatchSemaphore(value: 1)
+        storyLoader?.download(files: files, for: post) { [weak self] output in
+            DispatchQueue.main.async {
+                self?.show(media: output)
+                completion(.success(()))
+                semaphore.signal()
+                print(output)
+            }
+        }
+        semaphore.wait()
     }
 }
 

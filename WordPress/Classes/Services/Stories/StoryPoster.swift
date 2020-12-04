@@ -87,7 +87,7 @@ class StoryPoster {
 
     func move(mediaItems: [MediaItem], to newMedia: [Media]) throws {
         let urls = mediaItems.compactMap { item in
-            return item.url.deletingPathExtension()
+            return item.archive.deletingPathExtension()
         }
 
         try zip(urls, newMedia).forEach({ (url, media) in

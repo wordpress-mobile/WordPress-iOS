@@ -380,8 +380,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
-    private var storyLoader = StoryMediaLoader()
-
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
@@ -661,7 +659,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
-        let controller = kanvas.controller(post: post) { [weak self] result in
+        let controller = kanvas.controller(post: post, publishOnCompletion: false) { [weak self] result in
             switch result {
             case .success(let post):
                 if let content = post.content {
@@ -683,41 +681,17 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return StoryPoster.MediaFile(alt: content["alt"] as! String, caption: content["caption"] as! String, id: content["id"] as! Double, link: content["link"] as! String, mime: content["mime"] as! String, type: content["type"] as! String, url: content["url"] as! String)
         })
 
-        let archiveURLs = files.compactMap { file in
-            return StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
-        }
-
         controller.delegate = kanvasService
         kanvasService.delegate = controller.storyService
 
-        do {
-            try controller.unarchive(archiveURLs)
-            present(controller, animated: true, completion: nil)
-        } catch let error {
-            // No local archive found
-            print("Failed to unarchive story \(blockId): \(error)")
-            let semaphore = DispatchSemaphore(value: 1)
-            storyLoader.download(files: files, for: post) { [weak self, weak controller] output in
-                DispatchQueue.main.async {
-                    let segments = output.map { output -> CameraSegment in
-                        switch output {
-                        case .image(let image):
-                            return CameraSegment.image(image, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera))
-                        case .video(let url):
-                            return CameraSegment.video(url, nil)
-                        }
-                    }
-                    if let controller = controller {
-                        controller.show(segments: segments)
-                        self?.present(controller, animated: true, completion: {
-                        })
-                    }
-                    semaphore.signal()
-                    print(output)
-                }
+        controller.populate(with: files, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.present(controller, animated: true, completion: {})
+            case .failure(let error):
+                os_log(.error, "Failed to populate Kanvas controller %@", error.localizedDescription)
             }
-            semaphore.wait()
-        }
+        })
     }
 
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {

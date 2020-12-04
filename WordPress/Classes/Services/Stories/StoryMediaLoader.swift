@@ -1,14 +1,19 @@
+import KanvasCamera
+
 class StoryMediaLoader {
 
-    enum Output {
-        case image(UIImage)
-        case video(URL)
-    }
+    typealias Output = (CameraSegment, Data?)
 
     var completion: (([Output]) -> Void)?
 
     var downloadTasks: [ImageDownloaderTask] = []
-    var results: [Output?] = []
+    var results: [Output?] = [] {
+        didSet {
+            if results.contains(where: { $0 == nil }) == false {
+                completion?(results.compactMap { $0 })
+            }
+        }
+    }
 
     private let mediaUtility = EditorMediaUtility()
     private let queue = DispatchQueue.global(qos: .userInitiated)
@@ -21,6 +26,18 @@ class StoryMediaLoader {
 
         let service = MediaService(managedObjectContext: ContextManager.shared.mainContext)
         files.enumerated().forEach { (idx, file) in
+
+            do {
+                let archive = try unarchive(file: file)
+
+                if let archive = archive {
+                    results[idx] = archive
+                    return
+                }
+            } catch let error {
+                print("Error unarchiving \(file.url) - \(error)")
+            }
+
             service.getMediaWithID(NSNumber(value: file.id), in: post.blog, success: { [weak self] media in
                 guard let self = self else { return }
                 let mediaType = media.mediaType
@@ -29,15 +46,13 @@ class StoryMediaLoader {
                     let size = media.pixelSize()
                     let task = self.mediaUtility.downloadImage(from: URL(string: file.url)!, size: size, scale: 1, post: post, success: { [weak self] image in
                         self?.queue.async {
-                            self?.results[idx] = .image(image)
-                            self?.completed()
+                            self?.results[idx] = (CameraSegment.image(image, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera)), nil)
                         }
                     }, onFailure: { error in
                         print("Failed image download")
                     })
                     self.downloadTasks.append(task)
                 case .video:
-
                     //videoAssetWithCompletionHandler
                     EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] result in
                         switch result {
@@ -45,9 +60,8 @@ class StoryMediaLoader {
                             self?.queue.async {
 //                                if let url = url {
                                     //TODO: Move video file?
-                                    self?.results[idx] = .video(videoURL)
+                                    self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
 //                                }
-                                self?.completed()
                             }
                         case .failure(let error):
                             print("Failed video download \(error)")
@@ -63,10 +77,9 @@ class StoryMediaLoader {
         }
     }
 
-    private func completed() {
-        if results.contains(where: { $0 == nil }) == false {
-            completion?(results.compactMap { $0 })
-        }
+    func unarchive(file: StoryPoster.MediaFile) throws -> (CameraSegment, Data?)? {
+        let archiveURL = StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
+        return try CameraController.unarchive(archiveURL)
     }
 
     func cancel() {
