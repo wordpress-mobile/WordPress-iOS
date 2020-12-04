@@ -7,7 +7,7 @@ class CoreDataManager: CoreDataStack {
     /// Only for tests, do not use this method directly
     init(fileLocationManager: CoreDataFileLocationManager) {
         self.fileLocationManager = fileLocationManager
-        
+
         observe()
     }
 
@@ -76,17 +76,17 @@ class CoreDataManager: CoreDataStack {
         }
         return container
     }()
-    
+
     // MARK: - File Locations
 
     private var modelURL: URL {
         fileLocationManager.modelURL
     }
-    
+
     private var storeURL: URL {
         fileLocationManager.storeURL
     }
-    
+
     // MARK: - Contexts
 
     private func childContext(with concurrencyType: NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {

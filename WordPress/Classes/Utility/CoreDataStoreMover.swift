@@ -2,7 +2,7 @@ import Foundation
 
 class CoreDataStoreMover {
     private let modelLocation: URL
-    
+
     enum MoveError: Error {
         case destinationFileExists(url: URL)
         case sourceFileDoesNotExist(url: URL)
@@ -26,7 +26,7 @@ class CoreDataStoreMover {
         guard !FileManager.default.fileExists(atPath: targetLocation.absoluteString) else {
             return .failure(.destinationFileExists(url: targetLocation))
         }
-        
+
         guard FileManager.default.fileExists(atPath: sourceLocation.absoluteString) else {
             return .failure(.sourceFileDoesNotExist(url: sourceLocation))
         }
@@ -36,23 +36,23 @@ class CoreDataStoreMover {
         }
 
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-        
+
         guard let oldStore = coordinator.persistentStore(for: sourceLocation) else {
             return .failure(.couldNotLoadSourceStore(url: sourceLocation))
         }
-        
+
         do {
             try CoreDataIterativeMigrator.backupDatabase(at: sourceLocation)
         } catch {
             return .failure(.couldNotBackupDatabase(error: error))
         }
-        
+
         do {
             try coordinator.migratePersistentStore(oldStore, to: sourceLocation, options: nil, withType: NSSQLiteStoreType)
         } catch {
             return .failure(.couldNotMigrateStore(error: error))
         }
-        
+
         // I don't love what I did here.  Normally I'd prefer to avoid writing code in a way that the
         // unit tests behave differently... but since our unit tests can run any code from the App, I believe
         // we need to make sure that the unit tests don't delete our stores when running.  Please feel free
@@ -64,7 +64,7 @@ class CoreDataStoreMover {
                 return .failure(.couldNotRemoveOldStore(error: error))
             }
         }
-        
+
         return .success(targetLocation)
     }
 }

@@ -2,7 +2,7 @@ import Foundation
 
 @testable import WordPress
 
-class CoreDataManagerMock: CoreDataManager, ManagerMock {    
+class CoreDataManagerMock: CoreDataManager, ManagerMock {
     init() {
         super.init(fileLocationManager: CoreDataFileLocationManagerMock())
         ContextManager.overrideSharedInstance(self)
@@ -109,7 +109,7 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
 @objc
 class CoreDataFileLocationManagerMock: NSObject, CoreDataFileLocationManager {
     // MARK: - File Locations
-    
+
     /// The path of the model file.
     ///
     @objc
@@ -117,17 +117,17 @@ class CoreDataFileLocationManagerMock: NSObject, CoreDataFileLocationManager {
         guard let path = Bundle.main.path(forResource: "WordPress", ofType: "momd") else {
             fatalError("Data model missing!")
         }
-        
+
         return path
     }
-    
+
     /// The URL of the model file.
     ///
     @objc
     var modelURL: URL {
         URL(fileURLWithPath: modelPath)
     }
-    
+
     @objc
     var storeURL: URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
