@@ -22,6 +22,8 @@ static ContextManager *_override;
 @property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
 
+@property (nonatomic, retain) id<CoreDataFileLocationManager> fileLocationManager;
+
 @end
 
 
@@ -29,10 +31,12 @@ static ContextManager *_override;
 //
 @implementation ContextManager
 
-- (instancetype)init
+- (instancetype)initWithCoreDataFileLocationManager:(id<CoreDataFileLocationManager>)fileLocationManager
 {
     self = [super init];
     if (self) {
+        _fileLocationManager = fileLocationManager;
+        
         [self startListeningToMainContextNotifications];
     }
 
@@ -43,10 +47,27 @@ static ContextManager *_override;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[ContextManager alloc] init];
+        _instance = [[ContextManager alloc] initWithCoreDataFileLocationManager:[ProductionCoreDataFileLocationManager new]];
     });
 
     return _override ?: _instance;
+}
+
+#pragma mark - File Location
+
+- (NSString *)modelPath
+{
+    return self.fileLocationManager.modelPath;
+}
+
+- (NSURL *)modelURL
+{
+    return self.fileLocationManager.modelURL;
+}
+
+- (NSURL *)storeURL
+{
+    return self.fileLocationManager.storeURL;
 }
 
 #pragma mark - Contexts
@@ -259,8 +280,8 @@ static ContextManager *_override;
     if (_managedObjectModel) {
         return _managedObjectModel;
     }
-    NSString *modelPath = [self modelPath];
-    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
+
+    NSURL *modelURL = self.modelURL;
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -307,15 +328,15 @@ static ContextManager *_override;
 
 - (void)migrateDataModelsIfNecessary:(SentryStartupEvent *)sentryEvent
 {
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[[self storeURL] path]]) {
-        DDLogInfo(@"No store exists at URL %@.  Skipping migration.", [self storeURL]);
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[self.storeURL path]]) {
+        DDLogInfo(@"No store exists at URL %@.  Skipping migration.", self.storeURL);
         return;
     }
     
     NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-                                                               URL:[self storeURL]
-                                                           options:nil
-                                                             error:nil];
+                                                                                        URL:self.storeURL
+                                                                                    options:nil
+                                                                                      error:nil];
     BOOL migrationNeeded = ![self.managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:metadata];
     
     if (migrationNeeded) {
@@ -323,11 +344,11 @@ static ContextManager *_override;
         NSError *error = nil;
         NSArray *sortedModelNames = [self sortedModelNames];
 
-        [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:[self storeURL]
-        storeType:NSSQLiteStoreType
-               to:self.managedObjectModel
-            using:sortedModelNames
-            error:&error];
+        [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:self.storeURL
+                                                         storeType:NSSQLiteStoreType
+                                                                to:self.managedObjectModel
+                                                             using:sortedModelNames
+                                                             error:&error];
 
         if (error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
@@ -339,7 +360,7 @@ static ContextManager *_override;
 
 - (NSArray *)sortedModelNames
 {
-    NSString *modelPath = [self modelPath];
+    NSString *modelPath = self.modelPath;
     NSString *versionPath = [modelPath stringByAppendingPathComponent:@"VersionInfo.plist"];
     NSDictionary *versionInfo = [NSDictionary dictionaryWithContentsOfFile:versionPath];
     NSArray *modelNames = [[versionInfo[@"NSManagedObjectModel_VersionHashes"] allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -347,20 +368,6 @@ static ContextManager *_override;
     }];
     
     return modelNames;
-}
-
-- (NSURL *)storeURL
-{
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                        NSUserDomainMask,
-                                                                        YES) lastObject];
-    
-    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
-}
-
-- (NSString *)modelPath
-{
-    return [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
 }
 
 @end

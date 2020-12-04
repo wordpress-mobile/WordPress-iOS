@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
+
 - (NSManagedObjectContext *const)newDerivedContext;
 - (NSManagedObjectContext *const)newMainContextChildContext;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;

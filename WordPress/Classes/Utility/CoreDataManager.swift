@@ -1,10 +1,13 @@
 /// Handles the core data stack for the whole app
 class CoreDataManager: CoreDataStack {
 
-    static let shared = CoreDataManager()
+    static let shared = CoreDataManager(fileLocationManager: ProductionCoreDataFileLocationManager())
+    private let fileLocationManager: CoreDataFileLocationManager
 
     /// Only for tests, do not use this method directly
-    init() {
+    init(fileLocationManager: CoreDataFileLocationManager) {
+        self.fileLocationManager = fileLocationManager
+        
         observe()
     }
 
@@ -73,13 +76,18 @@ class CoreDataManager: CoreDataStack {
         }
         return container
     }()
+    
+    // MARK: - File Locations
 
-    var storeURL: URL {
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Missing Documents Folder")
-        }
-        return url.appendingPathComponent(Constants.name + ".sqlite")
+    private var modelURL: URL {
+        fileLocationManager.modelURL
     }
+    
+    private var storeURL: URL {
+        fileLocationManager.storeURL
+    }
+    
+    // MARK: - Contexts
 
     private func childContext(with concurrencyType: NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
         let childManagedObjectContext = NSManagedObjectContext(concurrencyType: concurrencyType)
@@ -267,8 +275,8 @@ extension CoreDataManager {
     }
 }
 
-
 // MARK: - Private properties
+
 extension CoreDataManager {
 
     private var storeDescription: NSPersistentStoreDescription {
@@ -276,13 +284,6 @@ extension CoreDataManager {
         description.shouldAddStoreAsynchronously = false
         description.shouldMigrateStoreAutomatically = false
         return description
-    }
-
-    private var modelURL: URL {
-        guard let url = Bundle.main.url(forResource: Constants.name, withExtension: "momd") else {
-            fatalError("Missing Model Resource")
-        }
-        return url
     }
 }
 

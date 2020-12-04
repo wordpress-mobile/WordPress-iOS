@@ -10,6 +10,11 @@
   ],
   "defaultOptions" : {
     "codeCoverage" : false,
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "isTesting"
+      }
+    ],
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
