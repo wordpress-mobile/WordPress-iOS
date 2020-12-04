@@ -110,9 +110,8 @@ extension UIImageView {
     func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
 
-            let standardSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
-
             if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
+                let standardSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
                 image = UIImage.gridicon(.p2, size: standardSize)
                 return
             }
