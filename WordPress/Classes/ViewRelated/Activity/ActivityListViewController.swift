@@ -405,7 +405,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
-        guard startDate != viewModel.after && endDate != viewModel.before else {
+        guard startDate != viewModel.after || endDate != viewModel.before else {
             calendar.dismiss(animated: true, completion: nil)
             return
         }
