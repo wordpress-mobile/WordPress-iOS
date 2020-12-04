@@ -122,7 +122,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh(after: viewModel.after, before: viewModel.before, group: viewModel.group)
+        viewModel.refresh(after: viewModel.after, before: viewModel.before, group: viewModel.selectedGroups)
     }
 
     func refreshModel() {
@@ -194,11 +194,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             }
 
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
-                site: self.site,
-                store: self.store,
-                afterDate: self.viewModel.after,
-                beforeDate: self.viewModel.before,
-                selectedGroupsKeys: self.viewModel.group.map { $0.key }
+                viewModel: self.viewModel
             )
             activityTypeSelectorViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
@@ -409,7 +405,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
-        viewModel.refresh(after: startDate, before: endDate, group: viewModel.group)
+        viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
     }
 }

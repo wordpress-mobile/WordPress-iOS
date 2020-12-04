@@ -23,7 +23,7 @@ class ActivityListViewModel: Observable {
     private var offset = 0
     private(set) var after: Date?
     private(set) var before: Date?
-    private(set) var group: [ActivityGroup] = []
+    private(set) var selectedGroups: [ActivityGroup] = []
 
     var errorViewModel: NoResultsViewController.Model?
     private(set) var refreshing = false {
@@ -43,11 +43,15 @@ class ActivityListViewModel: Observable {
     }
 
     var groupFilterIsActive: Bool {
-        return !group.isEmpty
+        return !selectedGroups.isEmpty
     }
 
     var isAnyFilterActive: Bool {
         return dateFilterIsActive || groupFilterIsActive
+    }
+
+    var groups: [ActivityGroup] {
+        return store.state.groups[site] ?? []
     }
 
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
@@ -80,7 +84,7 @@ class ActivityListViewModel: Observable {
 
         self.after = after
         self.before = before
-        self.group = group
+        self.selectedGroups = group
 
         ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
     }
@@ -88,16 +92,20 @@ class ActivityListViewModel: Observable {
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             offset = store.state.activities[site]?.count ?? 0
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: group.map { $0.key }))
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
         }
     }
 
     public func removeDateFilter() {
-        refresh(after: nil, before: nil, group: group)
+        refresh(after: nil, before: nil, group: selectedGroups)
     }
 
     public func removeGroupFilter() {
         refresh(after: after, before: before, group: [])
+    }
+
+    public func refreshGroups() {
+        ActionDispatcher.dispatch(ActivityAction.refreshGroups(site: site, afterDate: after, beforeDate: before))
     }
 
     func noResultsViewModel() -> NoResultsViewController.Model? {
@@ -180,13 +188,13 @@ class ActivityListViewModel: Observable {
     }
 
     func activityTypeDescription() -> String? {
-        if group.isEmpty {
+        if selectedGroups.isEmpty {
             return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
-        } else if group.count > 1 {
-            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), group.count)
+        } else if selectedGroups.count > 1 {
+            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), selectedGroups.count)
         }
 
-        return group.first?.name
+        return selectedGroups.first?.name
     }
 
     private func shouldDisplayFullYear(with firstDate: Date?, and secondDate: Date?) -> Bool {
@@ -202,7 +210,7 @@ class ActivityListViewModel: Observable {
     }
 
     private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
-        let isSameGroup = group.count == self.group.count && self.group.elementsEqual(group, by: { $0.key == $1.key })
+        let isSameGroup = group.count == self.selectedGroups.count && self.selectedGroups.elementsEqual(group, by: { $0.key == $1.key })
 
         return applyingDateFilter(after: after, before: before) || !isSameGroup
     }

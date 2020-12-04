@@ -7,26 +7,16 @@ protocol ActivityTypeSelectorDelegate: class {
 }
 
 class ActivityTypeSelectorViewController: UITableViewController {
-    private let store: ActivityStore!
-    private let site: JetpackSiteRef!
-    private let afterDate: Date?
-    private let beforeDate: Date?
+    private let viewModel: ActivityListViewModel!
 
     private var storeReceipt: Receipt?
     private var selectedGroupsKeys: [String] = []
 
-    private var groups: [ActivityGroup] {
-        return store.state.groups[site] ?? []
-    }
-
     weak var delegate: ActivityTypeSelectorDelegate?
 
-    init(site: JetpackSiteRef, store: ActivityStore, afterDate: Date?, beforeDate: Date?, selectedGroupsKeys: [String]) {
-        self.site = site
-        self.store = store
-        self.afterDate = afterDate
-        self.beforeDate = beforeDate
-        self.selectedGroupsKeys = selectedGroupsKeys
+    init(viewModel: ActivityListViewModel) {
+        self.viewModel = viewModel
+        self.selectedGroupsKeys = viewModel.selectedGroups.map { $0.key }
         super.init(style: .grouped)
     }
 
@@ -41,9 +31,9 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         setupNavButtons()
 
-        store.actionDispatcher.dispatch(ActivityAction.refreshGroups(site: self.site, afterDate: afterDate, beforeDate: beforeDate))
+        viewModel.refreshGroups()
 
-        storeReceipt = store.onChange {
+        storeReceipt = viewModel.store.onChange {
             self.tableView.reloadData()
         }
 
@@ -64,7 +54,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
     }
 
     @objc private func done() {
-        delegate?.didSelect(selectorViewController: self, groups: groups.filter { selectedGroupsKeys.contains($0.key) })
+        delegate?.didSelect(selectorViewController: self, groups: viewModel.groups.filter { selectedGroupsKeys.contains($0.key) })
     }
 
     @objc private func cancel() {
@@ -72,14 +62,15 @@ class ActivityTypeSelectorViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return viewModel.groups.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? WPTableViewCell,
-              let activityGroup = store.state.groups[site]?[indexPath.row] else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? WPTableViewCell else {
             return UITableViewCell()
         }
+
+        let activityGroup = viewModel.groups[indexPath.row]
 
         cell.textLabel?.text = "\(activityGroup.name) (\(activityGroup.count))"
         cell.accessoryType = selectedGroupsKeys.contains(activityGroup.key) ? .checkmark : .none
@@ -92,7 +83,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         let cell = tableView.cellForRow(at: indexPath)
 
-        let selectedGroupKey = groups[indexPath.row].key
+        let selectedGroupKey = viewModel.groups[indexPath.row].key
 
         if selectedGroupsKeys.contains(selectedGroupKey) {
             cell?.accessoryType = .none
