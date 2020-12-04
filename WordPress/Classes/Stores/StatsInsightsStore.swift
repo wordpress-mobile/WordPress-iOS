@@ -116,7 +116,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
-        observeAccountChanges()
+        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -1052,7 +1052,7 @@ private extension InsightStoreState {
 
 // refresh iOS 14 widgets at login/logout
 private extension StatsInsightsStore {
-    func observeAccountChanges() {
+    func observeAccountChangesForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
         }
