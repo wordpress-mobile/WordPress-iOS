@@ -1,7 +1,7 @@
 steps:
   - label: "Step 1"
     command: echo "Hello World!"
-  - label: "Install Ruby (if needed"
+  - label: "Install Ruby (if needed)"
     command: "rbenv install -s"
   - label: "Install gems"
     command: "bundle install"
