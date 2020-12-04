@@ -109,7 +109,7 @@ class ActivityStoreMock: ActivityStore {
             self.afterDate = afterDate
             self.beforeDate = beforeDate
             self.group = group
-        case .resetActivities(_):
+        case .resetActivities:
             dispatchedAction = "resetActivities"
         default:
             break
