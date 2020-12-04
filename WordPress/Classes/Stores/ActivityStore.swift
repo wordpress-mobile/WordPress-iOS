@@ -150,6 +150,10 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         return state.fetchingActivities[site, default: false]
     }
 
+    func isFetchingGroups(site: JetpackSiteRef) -> Bool {
+        return state.fetchingGroups[site, default: false]
+    }
+
     override func onDispatch(_ action: Action) {
         guard let activityAction = action as? ActivityAction else {
             return
@@ -201,6 +205,10 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 extension ActivityStore {
     func getActivities(site: JetpackSiteRef) -> [Activity]? {
         return state.activities[site] ?? nil
+    }
+
+    func getGroups(site: JetpackSiteRef) -> [ActivityGroup]? {
+        return state.groups[site] ?? nil
     }
 
     func getActivity(site: JetpackSiteRef, rewindID: String) -> Activity? {
@@ -437,8 +445,8 @@ private extension ActivityStore {
                 before: beforeDate,
                 success: { [weak self] groups in
                     self?.receiveGroups(site: site, groups: groups)
-                }, failure: { error in
-
+                }, failure: { [weak self] error in
+                    self?.failedGroups(site: site)
                 })
         } else {
             receiveGroups(site: site, groups: state.groups[site] ?? [])
@@ -452,15 +460,18 @@ private extension ActivityStore {
         }
     }
 
+    func failedGroups(site: JetpackSiteRef) {
+        transaction { state in
+            state.fetchingGroups[site] = false
+            state.groups[site] = nil
+        }
+    }
+
     func resetGroups(site: JetpackSiteRef) {
         transaction { state in
             state.groups[site] = []
             state.fetchingGroups[site] = false
         }
-    }
-
-    func isFetchingGroups(site: JetpackSiteRef) -> Bool {
-        return state.fetchingGroups[site, default: false]
     }
 
     // MARK: - Helpers

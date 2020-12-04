@@ -136,6 +136,30 @@ class ActivityListViewModel: Observable {
         }
     }
 
+    func noResultsGroupsViewModel() -> NoResultsViewController.Model? {
+        guard store.getGroups(site: site) == nil ||
+              store.getGroups(site: site)?.isEmpty == true else {
+            return nil
+        }
+
+        if store.isFetchingGroups(site: site) {
+            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+
+        if let groups = store.getGroups(site: site), groups.isEmpty {
+            return NoResultsViewController.Model(title: NoResultsText.noGroupsTitle, subtitle: NoResultsText.noGroupsSubtitle)
+        }
+
+        let appDelegate = WordPressAppDelegate.shared
+        if (appDelegate?.connectionAvailable)! {
+            return NoResultsViewController.Model(title: NoResultsText.errorTitle,
+                                                 subtitle: NoResultsText.errorSubtitle,
+                                                 buttonText: NoResultsText.groupsErrorButtonText)
+        } else {
+            return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle, subtitle: NoResultsText.noConnectionSubtitle)
+        }
+    }
+
     func tableViewModel(presenter: ActivityDetailPresenter) -> ImmuTable {
         guard let activities = store.getActivities(site: site) else {
             return .Empty
@@ -262,6 +286,9 @@ class ActivityListViewModel: Observable {
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
         static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
         static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection.")
+        static let noGroupsTitle = NSLocalizedString("No activities available", comment: "Title for the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        static let noGroupsSubtitle = NSLocalizedString("No activities recorded in the selected date range.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        static let groupsErrorButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the activities type again")
     }
 
     // MARK: - Date/Time handling

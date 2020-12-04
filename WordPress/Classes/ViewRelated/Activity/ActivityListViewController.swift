@@ -420,6 +420,4 @@ extension ActivityListViewController: ActivityTypeSelectorDelegate {
         viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
         selectorViewController.dismiss(animated: true, completion: nil)
     }
-
-    
 }

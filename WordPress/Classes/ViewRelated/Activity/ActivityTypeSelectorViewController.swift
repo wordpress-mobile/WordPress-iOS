@@ -12,6 +12,8 @@ class ActivityTypeSelectorViewController: UITableViewController {
     private var storeReceipt: Receipt?
     private var selectedGroupsKeys: [String] = []
 
+    private var noResultsViewController: NoResultsViewController?
+
     weak var delegate: ActivityTypeSelectorDelegate?
 
     init(viewModel: ActivityListViewModel) {
@@ -33,8 +35,11 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
         viewModel.refreshGroups()
 
-        storeReceipt = viewModel.store.onChange {
-            self.tableView.reloadData()
+        updateNoResults()
+
+        storeReceipt = viewModel.store.onChange { [weak self] in
+            self?.tableView.reloadData()
+            self?.updateNoResults()
         }
 
         title = NSLocalizedString("Filter by activity type", comment: "Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users)")
@@ -96,5 +101,51 @@ class ActivityTypeSelectorViewController: UITableViewController {
 
     private enum Constants {
         static let groupCellIdentifier = "GroupCellIdentifier"
+    }
+}
+
+// MARK: - NoResults Handling
+
+private extension ActivityTypeSelectorViewController {
+
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsGroupsViewModel() {
+            showNoResults(noResultsViewModel)
+        } else {
+            noResultsViewController?.view.isHidden = true
+        }
+    }
+
+    func showNoResults(_ viewModel: NoResultsViewController.Model) {
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
+
+            guard let noResultsViewController = noResultsViewController else {
+                return
+            }
+
+            if noResultsViewController.view.superview != tableView {
+                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            }
+
+            addChild(noResultsViewController)
+
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewToSafeArea(noResultsViewController.view)
+        }
+
+        noResultsViewController?.bindViewModel(viewModel)
+        noResultsViewController?.didMove(toParent: self)
+        noResultsViewController?.view.isHidden = false
+    }
+
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension ActivityTypeSelectorViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        viewModel.refreshGroups()
     }
 }
