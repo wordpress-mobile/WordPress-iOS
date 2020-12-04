@@ -22,19 +22,24 @@
 }
 
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSSecureCoding
+
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    [encoder encodeDouble:_coordinate.latitude forKey:@"latitude"];
-    [encoder encodeDouble:_coordinate.longitude forKey:@"longitude"];
+    [encoder encodeObject:@(_coordinate.latitude) forKey:@"latitude"];
+    [encoder encodeObject:@(_coordinate.longitude) forKey:@"longitude"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init]) {
-        _coordinate.latitude = [decoder decodeDoubleForKey:@"latitude"];
-        _coordinate.longitude = [decoder decodeDoubleForKey:@"longitude"];
+        _coordinate.latitude = [[decoder decodeObjectOfClass:[NSNumber class] forKey:@"latitude"] doubleValue];
+        _coordinate.longitude = [[decoder decodeObjectOfClass:[NSNumber class] forKey:@"longitude"] doubleValue];
     }
 
     return self;
