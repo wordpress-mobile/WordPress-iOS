@@ -22,7 +22,7 @@ static ContextManager *_override;
 @property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
 
-@property (nonatomic, retain) id<CoreDataFileLocationManager> fileLocationManager;
+@property (nonatomic, retain) CoreDataFileLocationManager *fileLocationManager;
 
 @end
 
@@ -31,7 +31,7 @@ static ContextManager *_override;
 //
 @implementation ContextManager
 
-- (instancetype)initWithCoreDataFileLocationManager:(id<CoreDataFileLocationManager>)fileLocationManager
+- (instancetype)initWithCoreDataFileLocationManager:(CoreDataFileLocationManager *)fileLocationManager
 {
     self = [super init];
     if (self) {
@@ -47,7 +47,7 @@ static ContextManager *_override;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[ContextManager alloc] initWithCoreDataFileLocationManager:[ProductionCoreDataFileLocationManager new]];
+        _instance = [[ContextManager alloc] initWithCoreDataFileLocationManager:[CoreDataFileLocationManager production]];
     });
 
     return _override ?: _instance;
@@ -57,7 +57,7 @@ static ContextManager *_override;
 
 - (NSString *)modelPath
 {
-    return self.fileLocationManager.modelPath;
+    return [self.fileLocationManager.modelURL path];
 }
 
 - (NSURL *)modelURL

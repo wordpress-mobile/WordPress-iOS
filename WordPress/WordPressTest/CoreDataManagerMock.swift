@@ -2,9 +2,9 @@ import Foundation
 
 @testable import WordPress
 
-class CoreDataManagerMock: CoreDataManager, ManagerMock {
-    init() {
-        super.init(fileLocationManager: CoreDataFileLocationManagerMock())
+class CoreDataManagerMock: CoreDataManager, ManagerMock {    
+    override init(fileLocationManager: CoreDataFileLocationManager) {
+        super.init(fileLocationManager: fileLocationManager)
         ContextManager.overrideSharedInstance(self)
     }
 
@@ -107,39 +107,33 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
 }
 
 @objc
-class CoreDataFileLocationManagerMock: NSObject, CoreDataFileLocationManager {
-    // MARK: - File Locations
-
-    /// The path of the model file.
-    ///
-    @objc
-    var modelPath: String {
-        guard let path = Bundle.main.path(forResource: "WordPress", ofType: "momd") else {
-            fatalError("Data model missing!")
-        }
-
-        return path
-    }
+extension CoreDataFileLocationManager {
 
     /// The URL of the model file.
     ///
-    @objc
-    var modelURL: URL {
-        URL(fileURLWithPath: modelPath)
+    private static var testingModelURL: URL {
+        guard let modelPath = Bundle.main.path(forResource: "WordPress", ofType: "momd") else {
+            fatalError("Data model missing!")
+        }
+        
+        return URL(fileURLWithPath: modelPath)
     }
 
-    @objc
-    var storeURL: URL {
+    private static var testingStoreURL: URL {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Missing Documents Folder")
         }
         return url.appendingPathComponent("WordPressTest.sqlite")
+    }
+    
+    static func testing() -> CoreDataFileLocationManager {
+        return CoreDataFileLocationManager(modelURL: testingModelURL, storeURL: testingStoreURL)
     }
 }
 
 // Expose CoreDataManagerMock
 @objc class SwiftManagerMock: NSObject {
     @objc static func instance() -> CoreDataStack & ManagerMock {
-        return CoreDataManagerMock()
+        return CoreDataManagerMock(fileLocationManager: CoreDataFileLocationManager.testing())
     }
 }
