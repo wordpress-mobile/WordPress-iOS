@@ -8,6 +8,7 @@ struct TodayWidgetView: View {
 
     @ViewBuilder
     var body: some View {
+        /// - TODO: TODAYWIDGET - this condition might need to change or just be a validation flag inside the HomeWidgetTodayData type
         if content.siteID == 0 {
             UnconfiguredView()
         } else {
