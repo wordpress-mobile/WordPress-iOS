@@ -5,18 +5,8 @@ class CoreDataManager: CoreDataStack {
 
     /// Only for tests, do not use this method directly
     init() {
-        registerCustomTransformers()
+        ValueTransformer.registerCustomTransformers()
         observe()
-    }
-
-    private func registerCustomTransformers() {
-        guard #available(iOS 12.0, *) else {
-            return
-        }
-
-        CoordinateValueTransformer.register()
-        NSErrorValueTransformer.register()
-        SetValueTransformer.register()
     }
 
     private lazy var writerContext: NSManagedObjectContext = {

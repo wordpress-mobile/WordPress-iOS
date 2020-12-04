@@ -33,7 +33,7 @@ static ContextManager *_override;
 {
     self = [super init];
     if (self) {
-        [self registerCustomTransformers];
+        [NSValueTransformer registerCustomTransformers];
         [self startListeningToMainContextNotifications];
     }
 
@@ -48,15 +48,6 @@ static ContextManager *_override;
     });
 
     return _override ?: _instance;
-}
-
-- (void)registerCustomTransformers
-{
-    if (@available(iOS 12.0, *)) {
-        [CoordinateValueTransformer register];
-        [NSErrorValueTransformer register];
-        [SetValueTransformer register];
-    }
 }
 
 #pragma mark - Contexts
