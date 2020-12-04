@@ -405,6 +405,11 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
+        guard startDate != viewModel.after && endDate != viewModel.before else {
+            calendar.dismiss(animated: true, completion: nil)
+            return
+        }
+
         viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
     }
@@ -417,6 +422,11 @@ extension ActivityListViewController: ActivityTypeSelectorDelegate {
     }
 
     func didSelect(selectorViewController: ActivityTypeSelectorViewController, groups: [ActivityGroup]) {
+        guard groups != viewModel.selectedGroups else {
+            selectorViewController.dismiss(animated: true, completion: nil)
+            return
+        }
+
         viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
         selectorViewController.dismiss(animated: true, completion: nil)
     }

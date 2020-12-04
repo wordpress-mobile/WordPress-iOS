@@ -305,3 +305,9 @@ class ActivityListViewModel: Observable {
         DateFormatter()
     }()
 }
+
+extension ActivityGroup: Equatable {
+    public static func == (lhs: ActivityGroup, rhs: ActivityGroup) -> Bool {
+        lhs.key == rhs.key
+    }
+}
