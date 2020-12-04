@@ -1,0 +1,11 @@
+steps:
+  - label: "Step 1"
+    command: echo "Hello World!"
+  - label: "Install Ruby (if needed"
+    command: "rbenv install -s"
+  - label: "Install gems"
+    command: "bundle install"
+  - label: "Install Pods"
+    command: "bundle exec pod install"
+  - label: "Build for Testing"
+    command: "cd Scripts && bundle exec fastlane build_for_testing"
