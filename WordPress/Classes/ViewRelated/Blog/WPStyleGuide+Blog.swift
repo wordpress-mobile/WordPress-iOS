@@ -11,8 +11,8 @@ extension WPStyleGuide {
         cell.detailTextLabel?.sizeToFit()
         cell.detailTextLabel?.textColor = .textSubtle
 
-        cell.imageView?.layer.borderColor = UIColor.white.cgColor
-        cell.imageView?.layer.borderWidth = 1
+        cell.imageView?.layer.borderColor = UIColor.divider.cgColor
+        cell.imageView?.layer.borderWidth = .hairlineBorderWidth
         cell.imageView?.tintColor = .listIcon
 
         cell.backgroundColor = UIColor.listForeground
