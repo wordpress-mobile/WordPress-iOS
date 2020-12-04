@@ -106,7 +106,6 @@ class CoreDataManagerMock: CoreDataManager, ManagerMock {
     var testExpectation: XCTestExpectation?
 }
 
-@objc
 extension CoreDataFileLocationManager {
 
     /// The URL of the model file.

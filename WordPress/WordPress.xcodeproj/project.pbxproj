@@ -9871,11 +9871,11 @@
 				3FD83CBD246C74B800381999 /* Migrator */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
-				F15328F62579616D00AA722D /* CoreDataFileLocationManager.swift */,
-				F15328D625791F1100AA722D /* CoreDataStoreMover.swift */,
 				E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */,
+				F15328F62579616D00AA722D /* CoreDataFileLocationManager.swift */,
 				B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */,
 				3F4C6E1E246F4DDE00F8022C /* CoreDataManager.swift */,
+				F15328D625791F1100AA722D /* CoreDataStoreMover.swift */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
