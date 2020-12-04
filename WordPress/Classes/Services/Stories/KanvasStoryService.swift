@@ -29,7 +29,7 @@ class KanvasStoryService: CameraHandlerDelegate {
     }
 
     func didCreateMedia(media: [(KanvasCameraMedia?, Error?)]) {
-        poster = StoryPoster(context: ContextManager.shared.mainContext)
+        poster = StoryPoster(context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
         let postMedia: [StoryPoster.MediaItem] = media.compactMap { (item, error) in
             guard let item = item else { return nil }
             return StoryPoster.MediaItem(url: item.output, size: item.size, archive: item.archive, original: item.unmodified)
