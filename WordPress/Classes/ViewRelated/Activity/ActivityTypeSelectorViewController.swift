@@ -130,13 +130,12 @@ private extension ActivityTypeSelectorViewController {
             }
 
             addChild(noResultsViewController)
-
-            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
 
         noResultsViewController?.bindViewModel(viewModel)
         noResultsViewController?.didMove(toParent: self)
+        noResultsViewController?.view.translatesAutoresizingMaskIntoConstraints = false
+        tableView.pinSubviewToSafeArea(noResultsViewController!.view)
         noResultsViewController?.view.isHidden = false
     }
 
