@@ -6,6 +6,6 @@ steps:
   - label: "Install gems"
     command: "bundle install"
   - label: "Install Pods"
-    command: "bundle exec pod install"
+    command: "bundle exec pod install --repo-update"
   - label: "Build for Testing"
     command: "cd Scripts && bundle exec fastlane build_for_testing"
