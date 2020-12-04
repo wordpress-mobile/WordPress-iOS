@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 11:54:07+0000 */
+/* Translation-Revision-Date: 2020-12-01 18:59:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -669,7 +669,7 @@
 "Are you sure you want to cancel and discard changes?" = "בחרת לבטל את השינויים - האם ההחלטה סופית?";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "האם ברצונך להמשיך?\n כל נתוני האתר של ‎%1$‎‎@‎ יוסרו מה-%2$‎@‎ שלך.";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "האם ברצונך להמשיך?\n כל נתוני האתר של %1$@ יוסרו מה-%2$@ שלך.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "בחרת להמשיך - האם ההחלטה סופית?\n כל נתוני האתר יוסרו מה-%@ שלך.";
@@ -1469,7 +1469,7 @@
 "Contact us at %@" = "ניתן ליצור אתנו קשר בכתובת %@";
 
 /* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$l⁩i, מילים: %2$li, תווים: %3$li";
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$li⁩, מילים: %2$li, תווים: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "תוכן...";

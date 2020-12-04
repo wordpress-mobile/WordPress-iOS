@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 23:14:46+0000 */
+/* Translation-Revision-Date: 2020-12-03 10:07:31+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -185,7 +185,7 @@
 "%ld files successfully uploaded" = "تم رفع %ld من الملفات بنجاح";
 
 /* Displays the number of words and characters in text */
-"%li words, %li characters" = "%1$lكلمات i و%2$lحروف i";
+"%li words, %li characters" = "%1$li كلمات، %2$li أحرف";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s خيارات المكوِّن";
@@ -354,7 +354,7 @@
 "Active" = "نشط";
 
 /* The plugin is active on the site and has not enabled automatic updates */
-"Active, Autoupdates off" = "نشط، التحديثات التلقائية قيد إيقاف التشغيل";
+"Active, Autoupdates off" = "نشط، التحديثات التلقائية متوقفة";
 
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "نشط، التحديثات التلقائية قيد التشغيل";
@@ -672,7 +672,7 @@
 "Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "هل أنت متأكد من أنك تريد المتابعة؟\nجميع بيانات الموقع لـ %1$@ ستتم إزالتها من %2$@ الخاص بك.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data will be removed from your %@." = "هل أنت متأكد من رغبتك في المتابعة؟\n ستتم إزالة جميع بيانات الموقع من ‎‏‎%‎@‎‏ الخاص بك.";
+"Are you sure you want to continue?\n All site data will be removed from your %@." = "هل أنت متأكد من رغبتك في المتابعة؟\n ستتم إزالة جميع بيانات الموقع من الـ %@ الخاص بك.";
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "هل أنت متأكد من رغبتك في حذف القائمة؟";
@@ -935,7 +935,7 @@
 "By %@." = "بواسطة %@.";
 
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
-"By continuing, you agree to our _Terms of Service_." = "بالمتابعة، أنت توافق على_شروط الخدمة_.";
+"By continuing, you agree to our _Terms of Service_." = "بالمتابعة، فإنك توافق على _شروط الخدمة_ الخاصة بنا.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "عن طريق تسجيل هذا النطاق، أنت توافق على <a>شروط الخدمة<\/a> التي نُقرها.";
@@ -1192,7 +1192,7 @@
 "Choose video" = "اختيار فيديو";
 
 /* Reader select interests subtitle label text */
-"Choose your interests" = "اختيار اهتماماتك";
+"Choose your interests" = "اختر اهتماماتك";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "سيؤدي اختيار موقع مختلف إلى فقد التعديلات التي تمت على محتوى موقع معين مثل الوسائط والتصنيفات. هل أنت متأكد من ذلك؟";
@@ -1207,7 +1207,7 @@
 "Classic Blog" = "المدونة التقليدية";
 
 /* Label for button that clears all media cache. */
-"Clear Device Media Cache" = "محو ذاكرة التخزين المؤقت في وسائط الجهاز";
+"Clear Device Media Cache" = "مسح ذاكرة التخزين المؤقت لوسائط الجهاز";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "مسح سجلات النشاط القديمة";
@@ -1469,7 +1469,7 @@
 "Contact us at %@" = "اتصل بنا على %@";
 
 /* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "هيكل المحتوى \nالمكوِّنات: ⁦%1$l⁩i، الكلمات: %2$li، الأحرف: %3$li";
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "بنية المحتوى \nالمكوِّنات: %1$li، الكلمات: %2$li، الأحرف: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "المحتوى…";
@@ -1878,7 +1878,7 @@
 "Discover Sites" = "اكتشاف المواقع";
 
 /* Reader select interests title label text */
-"Discover and follow blogs you love" = "اكتشاف المدونات التي تحبها ومتابعتها";
+"Discover and follow blogs you love" = "اكتشف وتابع المدوَّنات التي تحبها";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2462,7 +2462,7 @@
 "Follow Site" = "متابعة الموقع";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "متابعة المحادثة";
+"Follow conversation" = "تابع المحادثة";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "متابعة مواقع أخرى";
@@ -2473,10 +2473,10 @@
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
-"Followed Sites" = "المواقع التي تمت متابعتها";
+"Followed Sites" = "مواقع تمّت متابعتها";
 
 /* Followed Topics Title */
-"Followed Topics" = "موضوعات تتم متابعتها";
+"Followed Topics" = "مواضيع تمّت متابعتها";
 
 /* User followed a site. */
 "Followed site" = "موقع تتم متابعته";
@@ -2537,7 +2537,7 @@
 "Free Photo Library" = "مكتبة الصور المجانية";
 
 /* Explanatory text for clearing device media cache. */
-"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "يمكنك توفير مساحة تخزين على هذا الجهاز عن طريق حذف ملفات الوسائط المؤقتة. لن يؤثر هذا في الوسائط الموجودة على موقعك.";
+"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "يمكنك توفير مساحة تخزين على هذا الجهاز عن طريق حذف ملفات الوسائط المؤقتة. لن يؤثر هذا على الوسائط الموجودة على موقعك.";
 
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "الأسئلة الشائعة";
@@ -2850,7 +2850,7 @@ translators: sample content for \"Team\" page template */
 "Inactive" = "غير مفعل";
 
 /* The plugin is not active on the site and has not enabled automatic updates */
-"Inactive, Autoupdates off" = "غير نشط، التحديثات التلقائية قيد إيقاف التشغيل";
+"Inactive, Autoupdates off" = "غير نشط، التحديثات التلقائية متوقفة";
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "غير نشط، التحديثات التلقائية قيد التشغيل";
@@ -3328,10 +3328,10 @@ translators: sample content for \"Services\" page template */
 "Match accounts using email" = "مطابقة الحسابات باستخدام البريد الإلكتروني";
 
 /* Title for the image size settings option. */
-"Max Image Upload Size" = "الحد الأقصى لحجم الصورة التي سيتم رفعها";
+"Max Image Upload Size" = "أقصى حجم لرفع الصور";
 
 /* Title for the video size settings option. */
-"Max Video Upload Size" = "الحد الأقصى لحجم مقطع الفيديو الذي سيتم رفعه";
+"Max Video Upload Size" = "أقصى حجم لمقطع الفيديو الذي سيتم رفعه";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -3346,7 +3346,7 @@ translators: sample content for \"Services\" page template */
 "Media" = "وسائط";
 
 /* Label for size of media cache in the app. */
-"Media Cache Size" = "حجم ذاكرة التخزين المؤقت في الوسائط";
+"Media Cache Size" = "حجم ذاكرة التخزين المؤقت للوسائط";
 
 /* Title for alert when access to media capture is not granted */
 "Media Capture" = "التقاط الوسائط";
@@ -3378,7 +3378,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "الوسائط المرفوعة (%ld الملفات)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "الوسائط المرفوعة (%ld الملف)";
+"Media uploaded (1 file)" = "الوسائط المرفوعة (ملف واحد)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "متوسط";
@@ -4561,7 +4561,7 @@ translators: sample content for \"Services\" page template */
 "Published just now on" = "تم النشر للتو بتاريخ";
 
 /* Published on [date] */
-"Published on" = "نشر في";
+"Published on" = "تمّ النشر في";
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "نشر إلى";
@@ -4713,7 +4713,7 @@ translators: sample content for \"Services\" page template */
 "Remove Link" = "إزالة الرابط";
 
 /* Option to enable the removal of location information/gps from photos and videos */
-"Remove Location From Media" = "إزالة الموقع من الوسائط";
+"Remove Location From Media" = "إزالة معلومات المكان من الوسائط";
 
 /* Title for action that will remove the next steps/quick start menus. */
 "Remove Next Steps" = "إزالة الخطوات التالية";
@@ -5258,7 +5258,7 @@ translators: sample content for \"Services\" page template */
    Share the post.
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
-"Share" = "شارك";
+"Share" = "مشاركة";
 
 /* Label for action to share post. */
 "Share Post" = "مشاركة المقالة";
@@ -5390,7 +5390,7 @@ translators: sample content for \"Services\" page template */
 "Siri Reset Confirmation" = "تم مسح اقتراحات Siri Shortcut بنجاح";
 
 /* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "تم مسح اقتراحات Siri Shortcut";
+"Siri Reset Prompt" = "مسح اقتراحات Siri Shortcut";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "أيقونة الموقع";
@@ -6786,10 +6786,10 @@ translators: sample content for \"Services\" page template */
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
-"Visibility" = "الظهور:";
+"Visibility" = "الظهور";
 
 /* An option to visit the site to which a specific post belongs */
-"Visit" = "تفضل بزيارة";
+"Visit" = "زيارة";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "تفضل بزيارة %@";
@@ -7313,7 +7313,7 @@ translators: sample content for \"Services\" page template */
 "You don't have any trashed posts" = "ليس لديك أي مقالات تم وضعها في سلة المهملات";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "لديك %l مواقع WordPress مخفاة.";
+"You have %lu hidden WordPress sites." = "لديك %lu مواقع ووردبريس مخفية.";
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "لديك موقع WordPress واحد مخفى.";
@@ -7329,7 +7329,7 @@ translators: sample content for \"Services\" page template */
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
-"You have unsaved changes." = "لقد قمت بإلغاء حفظ التغييرات.";
+"You have unsaved changes." = "لديك تغييرات لم تحفظ.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
 "You haven't published any pages yet" = "لم تَنشُر أي صفحات حتى الآن";
@@ -7354,7 +7354,7 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$@\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "لقد قمتَ بالرد على هذا التعليق.";
@@ -7575,7 +7575,7 @@ translators: sample content for \"Services\" page template */
 "{G} Log in with Google." = "{G} تسجيل الدخول باستخدام Google.";
 
 /* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %@ Automattic, Inc.";
+"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• نطاقات";

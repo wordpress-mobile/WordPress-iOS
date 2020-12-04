@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 11:54:07+0000 */
+/* Translation-Revision-Date: 2020-12-01 15:12:57+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -185,7 +185,7 @@
 "%ld files successfully uploaded" = "成功上傳 %ld 個檔案";
 
 /* Displays the number of words and characters in text */
-"%li words, %li characters" = "%1$l 個字、%2$l 個字元";
+"%li words, %li characters" = "%1$li 個字、%2$li 個字元";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 區塊選項";
@@ -2799,7 +2799,7 @@ translators: sample content for \"Team\" page template */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果你繼續使用 Apple 或 Google 操作且尚未擁有 WordPress.com 帳號，即表示你正在建立帳號，並同意我們的_服務條款_。";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
-"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除，該使用者將無法再存取此網站，但其建立的所有內容仍會保留在網站上。";
+"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除 %1$@，該使用者將無法再存取此網站，但 %2$@ 建立的所有內容仍會保留在網站上。";
 
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "如果移除這位瀏覽者，對方將無法造訪此網站。";

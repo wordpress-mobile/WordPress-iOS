@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-27 04:30:39+0000 */
+/* Translation-Revision-Date: 2020-12-02 04:27:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -73,7 +73,7 @@
 "%@ of %@ on your site" = "你的网站%2$@中的%1$@ ";
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
-"%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$";
+"%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
 
 /* Plan yearly price */
 "%@ per year" = "每年 %@";
@@ -7313,7 +7313,7 @@ translators: sample content for \"Services\" page template */
 "You don't have any trashed posts" = "您没有任何已放入垃圾桶的文章";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "您有 %l 个隐藏的 WordPress 站点。";
+"You have %lu hidden WordPress sites." = "您有 %lu个隐藏的 WordPress 站点。";
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "您有 1 个隐藏的 WordPress 站点。";
