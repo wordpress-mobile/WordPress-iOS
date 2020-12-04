@@ -42,6 +42,7 @@
     [self setupSubtTitleLabel];
     [self setupTitleLabel];
     [self setupAccessoryView];
+    [self prepareForVoiceOver];
 
     self.backgroundColor = [UIColor clearColor];
 
@@ -196,6 +197,14 @@
     if ([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
         [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
     }
+}
+
+#pragma mark - Accessibility
+
+- (void)prepareForVoiceOver
+{
+    self.isAccessibilityElement = YES;
+    self.accessibilityTraits = UIAccessibilityTraitButton;
 }
 
 @end

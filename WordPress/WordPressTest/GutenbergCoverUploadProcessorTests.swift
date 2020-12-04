@@ -11,9 +11,10 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     let gutenbergMediaUploadID = Int32(-1175513456)
     let mediaID = 987
-    let remoteURLStr = "http://www.wordpress.com/logo.jpg"
+    let remoteImgURLStr = "http://www.wordpress.com/logo.jpg"
+    let remoteVideoURLStr = "http://www.wordpress.com/test.mov"
 
-    func localCoverBlock(innerBlock: String, mediaID: Int32) -> String {
+    func localImgCoverBlock(innerBlock: String, mediaID: Int32) -> String {
         return """
         <!-- wp:cover {"url":"file:///usr/tmp/local.jpg","id":\(mediaID)} -->
         <div class="wp-block-cover has-background-dim" style="background-image:url(file:///usr/tmp/local.jpg)"><div class="wp-block-cover__inner-container">
@@ -23,10 +24,30 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         """
     }
 
-    func uploadedCoverBlock(innerBlock: String, mediaID: Int) -> String {
+    func uploadedImgCoverBlock(innerBlock: String, mediaID: Int) -> String {
         return """
         <!-- wp:cover {"id":\(mediaID),"url":"http:\\/\\/www.wordpress.com\\/logo.jpg"} -->
-        <div class="wp-block-cover has-background-dim" style="background-image:url(http://www.wordpress.com/logo.jpg)"><div class="wp-block-cover__inner-container">
+        <div class="wp-block-cover has-background-dim" style="background-image:url(\(remoteImgURLStr))"><div class="wp-block-cover__inner-container">
+        \(innerBlock)
+        </div></div>
+        <!-- /wp:cover -->
+        """
+    }
+
+    func localVideoCoverBlock(innerBlock: String, mediaID: Int32) -> String {
+        return """
+        <!-- wp:cover {"url":"file:///usr/tmp/-1175513456.mov","id":\(mediaID),"backgroundType":"video"} -->
+        <div class="wp-block-cover has-background-dim"><video class="wp-block-cover__video-background" autoplay muted loop playsinline src="file:///usr/tmp/-1175513456.mov"></video><div class="wp-block-cover__inner-container">
+        \(innerBlock)
+        </div></div>
+        <!-- /wp:cover -->
+        """
+    }
+
+    func uploadedVideoCoverBlock(innerBlock: String, mediaID: Int) -> String {
+        return """
+        <!-- wp:cover {"backgroundType":"video","id":\(mediaID),"url":"http:\\/\\/www.wordpress.com\\/test.mov"} -->
+        <div class="wp-block-cover has-background-dim"><video class="wp-block-cover__video-background" autoplay muted loop playsinline src="\(remoteVideoURLStr)"></video><div class="wp-block-cover__inner-container">
         \(innerBlock)
         </div></div>
         <!-- /wp:cover -->
@@ -35,10 +56,10 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     func testCoverBlockProcessor() {
 
-        let postContent = localCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
-        let postResultContent = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let postContent = localImgCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let postResultContent = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
@@ -46,16 +67,16 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     func testMultipleCoverBlocksProcessor() {
 
-        let coverBlock1 = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: 123)
-        let localBlock = localCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
-        let coverBlock2 = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: 456)
+        let coverBlock1 = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: 123)
+        let localBlock = localImgCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let coverBlock2 = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: 456)
 
         let postContent = "\(coverBlock1) \(localBlock) \(coverBlock2)"
 
-        let uploadedBlock = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let uploadedBlock = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
         let postResultContent = "\(coverBlock1) \(uploadedBlock) \(coverBlock2)"
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
@@ -63,13 +84,13 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     func testNestedCoverBlockProcessor() {
 
-        let nestedBlock = localCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
-        let postContent = uploadedCoverBlock(innerBlock: nestedBlock, mediaID: 123)
+        let nestedBlock = localImgCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let postContent = uploadedImgCoverBlock(innerBlock: nestedBlock, mediaID: 123)
 
-        let uploadedNestedBlock = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
-        let postResultContent = uploadedCoverBlock(innerBlock: uploadedNestedBlock, mediaID: 123)
+        let uploadedNestedBlock = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let postResultContent = uploadedImgCoverBlock(innerBlock: uploadedNestedBlock, mediaID: 123)
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
@@ -77,15 +98,15 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     func testDeepNestedCoverBlockProcessor() {
 
-        let nestedBlock = localCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
-        let innerBlock = uploadedCoverBlock(innerBlock: nestedBlock, mediaID: 457)
-        let postContent = uploadedCoverBlock(innerBlock: innerBlock, mediaID: 123)
+        let nestedBlock = localImgCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let innerBlock = uploadedImgCoverBlock(innerBlock: nestedBlock, mediaID: 457)
+        let postContent = uploadedImgCoverBlock(innerBlock: innerBlock, mediaID: 123)
 
-        let uploadedNestedBlock = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
-        let innerBlockWithUploadedBlock = uploadedCoverBlock(innerBlock: uploadedNestedBlock, mediaID: 457)
-        let postResultContent = uploadedCoverBlock(innerBlock: innerBlockWithUploadedBlock, mediaID: 123)
+        let uploadedNestedBlock = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let innerBlockWithUploadedBlock = uploadedImgCoverBlock(innerBlock: uploadedNestedBlock, mediaID: 457)
+        let postResultContent = uploadedImgCoverBlock(innerBlock: innerBlockWithUploadedBlock, mediaID: 123)
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
@@ -93,12 +114,12 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
 
     func testUpdateOuterCoverBlockProcessor() {
 
-        let innerBlock = uploadedCoverBlock(innerBlock: paragraphBlock, mediaID: 457)
-        let postContent = localCoverBlock(innerBlock: innerBlock, mediaID: gutenbergMediaUploadID)
+        let innerBlock = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: 457)
+        let postContent = localImgCoverBlock(innerBlock: innerBlock, mediaID: gutenbergMediaUploadID)
 
-        let postResultContent = uploadedCoverBlock(innerBlock: innerBlock, mediaID: mediaID)
+        let postResultContent = uploadedImgCoverBlock(innerBlock: innerBlock, mediaID: mediaID)
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
@@ -107,24 +128,63 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
     func testCoverBlockProcessorWithOtherAttributes() {
 
         let postContentWithOtherAttributes = """
-           <!-- wp:cover {"url":"file:///usr/tmp/-1175513456.jpg","id":\(gutenbergMediaUploadID)} -->
-           <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(file:///usr/tmp/-1175513456.jpg);align:center"><div class="wp-block-cover__inner-container">
-           \(paragraphBlock)
-           </div></div>
-           <!-- /wp:cover -->
-           """
+        <!-- wp:cover {"url":"file:///usr/tmp/-1175513456.jpg","id":\(gutenbergMediaUploadID)} -->
+        <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(file:///usr/tmp/-1175513456.jpg);align:center"><div class="wp-block-cover__inner-container">
+        \(paragraphBlock)
+        </div></div>
+        <!-- /wp:cover -->
+        """
 
         let postResultContentWithOtherAttributes = """
-           <!-- wp:cover {"id":\(mediaID),"url":"http:\\/\\/www.wordpress.com\\/logo.jpg"} -->
-           <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(http://www.wordpress.com/logo.jpg);align:center"><div class="wp-block-cover__inner-container">
-           \(paragraphBlock)
-           </div></div>
-           <!-- /wp:cover -->
-           """
+        <!-- wp:cover {"id":\(mediaID),"url":"http:\\/\\/www.wordpress.com\\/logo.jpg"} -->
+        <div class="wp-block-cover has-background-dim" style="color:black;background-image:url(http://www.wordpress.com/logo.jpg);align:center"><div class="wp-block-cover__inner-container">
+        \(paragraphBlock)
+        </div></div>
+        <!-- /wp:cover -->
+        """
 
-        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
         let resultContent = gutenbergCoverPostUploadProcessor.process(postContentWithOtherAttributes)
 
         XCTAssertEqual(resultContent, postResultContentWithOtherAttributes, "Post content should be updated correctly")
+    }
+
+    func testVideoCoverBlockProcessor() {
+
+        let postContent = localVideoCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let postResult = uploadedVideoCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteVideoURLStr)
+        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
+
+        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
+    }
+
+    func testImageCoverInVideoCoverBlockProcessor() {
+
+        let imgCover = localImgCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let postContent = uploadedVideoCoverBlock(innerBlock: imgCover, mediaID: 457)
+
+        let uploadedImgCover = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let postResult = uploadedVideoCoverBlock(innerBlock: uploadedImgCover, mediaID: 457)
+
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
+        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
+
+        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
+    }
+
+    func testVideoCoverInImageCoverBlockProcessor() {
+
+        let videoCover = localVideoCoverBlock(innerBlock: paragraphBlock, mediaID: gutenbergMediaUploadID)
+        let postContent = uploadedImgCoverBlock(innerBlock: videoCover, mediaID: 457)
+
+        let uploadedVideoCover = uploadedVideoCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
+        let postResult = uploadedImgCoverBlock(innerBlock: uploadedVideoCover, mediaID: 457)
+
+        let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteVideoURLStr)
+        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
+
+        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
     }
 }

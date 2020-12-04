@@ -137,13 +137,15 @@ extension NSNotification.Name {
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -153,17 +155,21 @@ extension NSNotification.Name {
             let newRequestConfig = self.createRequest()
             let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(newRequestController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -175,6 +181,8 @@ extension NSNotification.Name {
 
             let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
@@ -188,22 +196,46 @@ extension NSNotification.Name {
         }
     }
 
-    func cacheUnlocalizedSitePlans() {
-        guard !WordPressComLanguageDatabase().deviceLanguage.slug.hasPrefix("en") else {
-            // Don't fetch if its already "en".
-            return
-        }
-
+    func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
         let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = accountService ?? AccountService(managedObjectContext: context)
         guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
 
-        let planService = PlanService(managedObjectContext: context)
+        let planService = planService ?? PlanService(managedObjectContext: context)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
         }, failure: { error in })
+    }
+
+    func createRequest(planService: PlanService? = nil) -> RequestUiConfiguration {
+
+        let requestConfig = RequestUiConfiguration()
+
+        // Set Zendesk ticket form to use
+        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
+
+        // Set form field values
+        var ticketFields = [CustomField]()
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
+        requestConfig.customFields = ticketFields
+
+        // Set tags
+        requestConfig.tags = ZendeskUtils.getTags()
+
+        // Set the ticket subject
+        requestConfig.subject = Constants.ticketSubject
+
+        return requestConfig
     }
 
     // MARK: - Device Registration
@@ -326,19 +358,24 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    static func createIdentity(completion: @escaping (Bool) -> Void) {
+    /// Creates a Zendesk Identity from user information.
+    /// Returns two values in the completion block:
+    ///     - Bool indicating there is an identity to use.
+    ///     - Bool indicating if a _new_ identity was created.
+    ///
+    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
                 DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
-                completion(true)
+                completion(true, false)
                 return
         }
 
         // Prompt the user for information.
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
-            completion(success)
+            completion(success, success)
         }
     }
 
@@ -445,33 +482,7 @@ private extension ZendeskUtils {
         }
     }
 
-    func createRequest() -> RequestUiConfiguration {
 
-        let requestConfig = RequestUiConfiguration()
-
-        // Set Zendesk ticket form to use
-        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
-
-        // Set form field values
-        var ticketFields = [CustomField]()
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        requestConfig.customFields = ticketFields
-
-        // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
-
-        // Set the ticket subject
-        requestConfig.subject = Constants.ticketSubject
-
-        return requestConfig
-    }
 
     // MARK: - View
 
@@ -603,8 +614,7 @@ private extension ZendeskUtils {
     static func getLogFile() -> String {
 
         guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let fileLogger = appDelegate.logger?.fileLogger,
-            let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
+            let logFileInformation = appDelegate.logger.fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
             var logText = String(data: logData, encoding: .utf8) else {
                 return ""
@@ -659,11 +669,7 @@ private extension ZendeskUtils {
             return [Constants.wpComTag]
         }
 
-        // Get all unique site plans
-        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
-        if tags.count == 0 {
-            tags = allBlogs.compactMap { $0.planTitle }.unique
-        }
+        var tags = [String]()
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
@@ -795,6 +801,7 @@ private extension ZendeskUtils {
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
+            textField.keyboardType = .emailAddress
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -835,12 +842,15 @@ private extension ZendeskUtils {
     }
 
     static func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
-            let nameField = alertController.textFields?.last else {
-                return
+        guard !email.isEmpty else {
+            return
         }
 
-        guard !email.isEmpty else {
+        // Find the name text field if it's being displayed.
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
+              let textFields = alertController.textFields,
+              textFields.count > 1,
+              let nameField = textFields.last else {
             return
         }
 
@@ -850,14 +860,20 @@ private extension ZendeskUtils {
         }
     }
 
-    static func generateDisplayName(from rawEmail: String) -> String {
-
+    static func generateDisplayName(from rawEmail: String) -> String? {
         // Generate Name, using the same format as Signup.
 
         // step 1: lower case
         let email = rawEmail.lowercased()
+
         // step 2: remove the @ and everything after
-        let localPart = email.split(separator: "@")[0]
+
+        // Verify something exists before the @.
+        guard email.first != "@",
+              let localPart = email.split(separator: "@").first else {
+            return nil
+        }
+
         // step 3: remove all non-alpha characters
         let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
         // step 4: turn periods into spaces
@@ -931,6 +947,71 @@ private extension ZendeskUtils {
         }
     }
 
+    // MARK: - Plans
+
+    /// Retrieves the highest priority plan, if it exists
+    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
+
+        let availablePlans = getAvailablePlansWithPriority(planService: planService)
+        if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
+            let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
+
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.nonLocalizedName) {
+                    return availablePlan.supportName
+                }
+            }
+        } else {
+            // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
+            // and compare the localized names
+            let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+            let plans = Set(blogService.blogsForAllAccounts().compactMap { $0.planTitle })
+
+            for availablePlan in availablePlans {
+                if plans.contains(availablePlan.name) {
+                    return availablePlan.supportName
+                }
+            }
+        }
+        return ""
+    }
+
+    /// Obtains the available plans, sorted by priority
+    static func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
+        let planService = planService ?? PlanService(managedObjectContext: ContextManager.shared.mainContext)
+        return planService.allPlans().map {
+            SupportPlan(priority: $0.supportPriority,
+                        name: $0.shortname,
+                        nonLocalizedName: $0.nonLocalizedShortname,
+                        supportName: $0.supportName)
+
+        }
+        .sorted { $0.priority > $1.priority }
+    }
+
+    struct SupportPlan {
+        let priority: Int
+        let name: String
+        let nonLocalizedName: String
+        let supportName: String
+
+        // used to resolve discrepancies of unlocalized names between endpoints
+        let mappings = ["E-commerce": "eCommerce"]
+
+        init(priority: Int16,
+             name: String,
+             nonLocalizedName: String,
+             supportName: String) {
+
+            self.priority = Int(priority)
+            self.name = name
+            self.nonLocalizedName = mappings[nonLocalizedName] ?? nonLocalizedName
+            self.supportName = supportName
+        }
+    }
+
+
     // MARK: - Constants
 
     struct Constants {
@@ -962,7 +1043,7 @@ private extension ZendeskUtils {
         // Zendesk expects this as NSNumber. However, it is defined as Int64 to satisfy 32-bit devices (ex: iPhone 5).
         // Which means it has to be converted to NSNumber when sending to Zendesk.
         static let form: Int64 = 360000010286
-
+        static let plan: Int64 = 25175963
         static let appVersion: Int64 = 360000086866
         static let allBlogs: Int64 = 360000087183
         static let deviceFreeSpace: Int64 = 360000089123

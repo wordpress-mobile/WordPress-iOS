@@ -3,7 +3,27 @@ import Gridicons
 import UIKit
 import WebKit
 
-class WebKitViewController: UIViewController {
+protocol WebKitAuthenticatable {
+    var authenticator: RequestAuthenticator? { get }
+    func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void)
+}
+
+extension WebKitAuthenticatable {
+    func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
+        guard let authenticator = authenticator else {
+            return completion(URLRequest(url: url))
+        }
+
+        DispatchQueue.main.async {
+            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+            authenticator.request(url: url, cookieJar: cookieStore) { (request) in
+                completion(request)
+            }
+        }
+    }
+}
+
+class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
@@ -67,13 +87,18 @@ class WebKitViewController: UIViewController {
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
+    private var onClose: (() -> Void)?
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
     }
 
     @objc init(configuration: WebViewControllerConfiguration) {
-        webView = WKWebView()
+        let config = WKWebViewConfiguration()
+        // The default on iPad is true. We want the iPhone to be true as well.
+        config.allowsInlineMediaPlayback = true
+
+        webView = WKWebView(frame: .zero, configuration: config)
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -84,6 +109,7 @@ class WebKitViewController: UIViewController {
         navigationDelegate = configuration.navigationDelegate
         linkBehavior = configuration.linkBehavior
         opensNewInSafari = configuration.opensNewInSafari
+        onClose = configuration.onClose
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -172,26 +198,14 @@ class WebKitViewController: UIViewController {
 
     @objc func loadWebViewRequest() {
         if ReachabilityUtils.alertIsShowing() {
-            self.dismiss(animated: false)
+            dismiss(animated: false)
         }
-
-        guard let authenticator = authenticator else {
-            if let url = url {
-                load(request: URLRequest(url: url))
-            }
+        guard let url = url else {
             return
         }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-
-            if let url = strongSelf.url {
-                authenticator.request(url: url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-                    self?.load(request: request)
-                }
-            }
+        authenticatedRequest(for: url, on: webView) { [weak self] (request) in
+            self?.load(request: request)
         }
     }
 
@@ -307,7 +321,7 @@ class WebKitViewController: UIViewController {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBarBackground)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
@@ -372,7 +386,7 @@ class WebKitViewController: UIViewController {
     // MARK: User Actions
 
     @objc func close() {
-        dismiss(animated: true)
+        dismiss(animated: true, completion: onClose)
     }
 
     @objc func share() {
@@ -473,6 +487,16 @@ extension WebKitViewController: WKNavigationDelegate {
         if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
             decisionHandler(.allow)
             return
+        }
+
+        // Check for link protocols such as `tel:` and set the correct behavior
+        if let url = navigationAction.request.url, let scheme = url.scheme {
+            let linkProtocols = ["tel", "sms", "mailto"]
+            if linkProtocols.contains(scheme) && UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+                return
+            }
         }
 
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)

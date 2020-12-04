@@ -7,7 +7,6 @@
 #import "NSURL+IDN.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "PostCategoriesViewController.h"
 #import "RelatedPostsSettingsViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -1182,6 +1181,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionAdvanced:
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
+            
+            // UIKit doesn't automatically manage cell selection when a modal presentation is triggered,
+            // which is the case for Start Over when there's no paid plan, so we deselect the cell manually.
+            if (indexPath.row == SiteSettingsAdvancedStartOver) {
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
             break;
     }
 }
@@ -1328,7 +1333,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     NSParameterAssert(blog);
 
-    JetpackSecuritySettingsViewController *settings = [[JetpackSecuritySettingsViewController alloc] initWithBlog:blog];
+    JetpackSettingsViewController *settings = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
 }
 

@@ -30,12 +30,14 @@ class NotificationService: UNNotificationServiceExtension {
         let username = readExtensionUsername()
         tracks.wpcomUsername = username
 
+        let userID = readExtensionUserID()
+        tracks.wpcomUserID = userID
+
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
 
         guard let notificationContent = self.bestAttemptContent,
             let apsAlert = notificationContent.apsAlert,
-            let noteID = notificationContent.noteID,
             let notificationType = notificationContent.type,
             let notificationKind = NotificationKind(rawValue: notificationType),
             token != nil else {
@@ -68,6 +70,37 @@ class NotificationService: UNNotificationServiceExtension {
             !NotificationKind.omitsRichNotificationBody(notificationKind) {
             notificationContent.title = notificationContent.body
             notificationContent.body = ""
+        }
+
+        // If this notification is for 2fa login there won't be a noteID and there
+        // is no need to query the notification service. Just return the formatted
+        // content.
+        if notificationKind == .login {
+            let preferredFont = UIFont.preferredFont(forTextStyle: .body)
+            let descriptor = preferredFont.fontDescriptor.withSymbolicTraits(.traitBold) ?? preferredFont.fontDescriptor
+            let boldFont = UIFont(descriptor: descriptor, size: preferredFont.pointSize)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: boldFont
+            ]
+
+            let viewModel = RichNotificationViewModel(
+                attributedBody: NSAttributedString(string: notificationContent.body, attributes: attributes),
+                attributedSubject: NSAttributedString(string: notificationContent.title, attributes: attributes),
+                gravatarURLString: nil,
+                notificationIdentifier: nil,
+                notificationReadStatus: true,
+                noticon: nil)
+
+            notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
+            contentHandler(notificationContent)
+            return
+        }
+
+        // Make sure we have a noteID before proceeding.
+        guard let noteID = notificationContent.noteID else {
+            tracks.trackNotificationMalformed(hasToken: true, notificationBody: request.content.body)
+            contentHandler(request.content)
+            return
         }
 
         let api = WordPressComRestApi(oAuthToken: token)
@@ -155,5 +188,20 @@ private extension NotificationService {
         }
 
         return username
+    }
+
+    /// Retrieves the WPCOM userID, meant for Extension usage.
+    ///
+    /// - Returns: the userID if found; `nil` otherwise
+    ///
+    func readExtensionUserID() -> String? {
+        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUserIDKey,
+                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                            accessGroup: WPAppKeychainAccessGroup) else {
+            debugPrint("Unable to retrieve Notification Service Extension userID")
+            return nil
+        }
+
+        return userID
     }
 }

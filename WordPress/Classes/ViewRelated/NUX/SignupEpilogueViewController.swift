@@ -1,8 +1,11 @@
 import SVProgressHUD
 import WordPressAuthenticator
 
-
 class SignupEpilogueViewController: UIViewController {
+
+    // MARK: - Analytics Tracking
+
+    let tracker = AuthenticatorAnalyticsTracker.shared
 
     // MARK: - Public Properties
 
@@ -40,6 +43,7 @@ class SignupEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
         setTableViewMargins(forWidth: view.frame.width)
+
         WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
     }
 
@@ -122,7 +126,10 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
         epilogueUserInfo = userInfo
         performSegue(withIdentifier: SignupUsernameViewController.classNameWithoutNamespaces(), sender: self)
-        WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
+
+        tracker.track(click: .editUsername, ifTrackingNotEnabled: {
+            WordPressAuthenticator.track(.signupEpilogueUsernameTapped, properties: self.tracksProperties())
+        })
     }
 }
 
@@ -214,9 +221,11 @@ private extension SignupEpilogueViewController {
         let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
         settingsService.changeUsername(to: newUsername, success: {
             WordPressAuthenticator.track(.signupEpilogueUsernameUpdateSucceeded, properties: self.tracksProperties())
+
             finished()
         }) {
             WordPressAuthenticator.track(.signupEpilogueUsernameUpdateFailed, properties: self.tracksProperties())
+
             finished()
         }
     }
@@ -263,6 +272,8 @@ private extension SignupEpilogueViewController {
     }
 
     func dismissEpilogue() {
+        tracker.track(click: .continue)
+
         guard let onContinue = self.onContinue else {
             self.navigationController?.dismiss(animated: true)
             return

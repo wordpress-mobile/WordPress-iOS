@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 protocol EpilogueUserInfoCellViewControllerProvider {
     func viewControllerForEpilogueUserInfoCell() -> UIViewController
@@ -28,16 +29,6 @@ class EpilogueUserInfoCell: UITableViewCell {
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
 
-    private var fullNameFont: UIFont {
-        // Use New York font for full name.
-        guard #available(iOS 13, *),
-            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
-                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
-        }
-
-        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         configureImages()
@@ -52,7 +43,15 @@ class EpilogueUserInfoCell: UITableViewCell {
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
 
-        usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
+        var displayUsername: String {
+            if showEmail && !userInfo.email.isEmpty {
+                return userInfo.email
+            }
+
+            return "@\(userInfo.username)"
+        }
+
+        usernameLabel.text = displayUsername
         usernameLabel.fadeInAnimation()
 
         gravatarAddIcon.isHidden = !allowGravatarUploads
@@ -104,7 +103,7 @@ private extension EpilogueUserInfoCell {
         gravatarAddIcon.backgroundColor = .basicBackground
 
         fullNameLabel.textColor = .text
-        fullNameLabel.font = fullNameFont
+        fullNameLabel.font = WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold)
 
         usernameLabel.textColor = .textSubtle
         usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
@@ -142,6 +141,8 @@ private extension EpilogueUserInfoCell {
 //
 extension EpilogueUserInfoCell: GravatarUploader {
     @IBAction func gravatarTapped() {
+        AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+
         guard let vcProvider = viewControllerProvider else {
             return
         }

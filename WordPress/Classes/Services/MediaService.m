@@ -57,7 +57,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
         
         if (blog.allowedFileTypes != nil) {
-            allowedFileTypes = blog.allowedFileTypes;
+            // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
+            NSMutableSet *mutableAllowedFileTypes = [blog.allowedFileTypes mutableCopy];
+            [mutableAllowedFileTypes removeObject:@"heic"];
+            allowedFileTypes = mutableAllowedFileTypes;
         }
 
         if (post != nil) {
@@ -571,11 +574,28 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (void)syncMediaLibraryForBlog:(Blog *)blog
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
-{
+{    
     __block BOOL onePageLoad = NO;
     NSManagedObjectID *blogObjectID = [blog objectID];
+    
+    /// Temporary logging to try and narrow down an issue:
+    ///
+    /// REF: https://github.com/wordpress-mobile/WordPress-iOS/issues/15335
+    ///
+    if (blog == nil || blog.objectID == nil) {
+        DDLogError(@"🔴 Error: missing object ID (please contact @diegoreymendez with this log)");
+        DDLogError(@"%@", [NSThread callStackSymbols]);
+    }
+    
     [self.managedObjectContext performBlock:^{
-        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+        NSError *error = nil;
+        Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+        
+        if (!blogInContext) {
+            failure(error);
+            return;
+        }
+        
         NSSet *originalLocalMedia = blogInContext.media;
         id<MediaServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote getMediaLibraryWithPageLoad:^(NSArray *media) {

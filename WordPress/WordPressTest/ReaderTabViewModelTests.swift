@@ -68,7 +68,7 @@ class ReaderTabViewModelTests: XCTestCase {
         let setTabBarItemsExpectation = expectation(description: "tab bar items were set")
         store.getItemsExpectation = expectation(description: "Items were fetched")
         // When
-        viewModel.refreshTabBar { items, index in
+        viewModel.onTabBarItemsDidChange { items, index in
             setTabBarItemsExpectation.fulfill()
             XCTAssertEqual(index, 0)
             XCTAssertEqual(items.map { $0.title }, ["Following", "Following"])
@@ -82,112 +82,12 @@ class ReaderTabViewModelTests: XCTestCase {
         }
     }
 
-    func testShowTabNoFilter() {
-        // Given
-        let showTabExpectation = expectation(description: "tab was shown")
-
-        viewModel.setContent = { content in
-            showTabExpectation.fulfill()
-            XCTAssertNil(content.topic)
-        }
-        // When
-        viewModel.showTab(at: 0)
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
-    func testShowTabWithFilter() {
-        // Given
-        let showTabExpectation = expectation(description: "tab was shown")
-
-        let context = MockContext.getContext()!
-
-        let mainTopic = ReaderAbstractTopic(context: context)
-        mainTopic.path = "myPath/read/following"
-        mainTopic.title = "main topic"
-
-        store .items = [ReaderTabItem(ReaderContent(topic: mainTopic))]
-
-        let filterTopic = ReaderAbstractTopic(context: context)
-        filterTopic.title = "I am a test filter topic"
-
-        viewModel.selectedFilter = filterTopic
-        viewModel.setContent = { content in
-            showTabExpectation.fulfill()
-            XCTAssertNotNil(content.topic)
-            XCTAssertEqual("I am a test filter topic", content.topic!.title)
-        }
-        // When
-        viewModel.showTab(at: 0)
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
-    func testSwitchToTabWithTopic() {
-        // Given
-        let context = MockContext.getContext()!
-        switchToTabSetup(context)
-        // When
-        viewModel.switchToTab(where: {
-            ReaderHelpers.topicIsFollowing($0)
-        })
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
-    func testSwitchTabToTitle() {
-        // Given
-        let context = MockContext.getContext()!
-        switchToTabSetup(context)
-        // When
-        viewModel.switchToTab(where: {
-            $0.title == "first topic"
-        })
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
     func testPresentManage() {
         // Given
         settingsPresenter.presentExpectation = expectation(description: "Settings screen was presented")
         // When
         let controller = UIViewController()
         viewModel.presentManage(from: controller)
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
-
-    func testSettingsTapped() {
-        // Given
-        let settingsTappedExpectation = expectation(description: "Settings button was tapped")
-        viewModel.settingsTapped = { view in
-            settingsTappedExpectation.fulfill()
-            XCTAssertEqual("test view", view.accessibilityIdentifier!)
-        }
-        let view = UIView()
-        view.accessibilityIdentifier = "test view"
-        // When
-        viewModel.presentSettings(from: view)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {

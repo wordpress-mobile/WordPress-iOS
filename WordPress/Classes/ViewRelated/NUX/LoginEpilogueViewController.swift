@@ -10,6 +10,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Button Container View.
     ///
     @IBOutlet var buttonPanel: UIView!
+    @IBOutlet var blurEffectView: UIVisualEffectView!
 
     /// Line displayed atop the buttonPanel when the table is scrollable.
     ///
@@ -26,9 +27,23 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
     private var defaultTableViewMargin: CGFloat = 0
 
+    /// Blur effect on button panel
+    ///
+    private var blurEffect: UIBlurEffect.Style {
+        if #available(iOS 13.0, *) {
+            return .systemChromeMaterial
+        }
+
+        return .regular
+    }
+
     /// Links to the Epilogue TableViewController
     ///
     private var tableViewController: LoginEpilogueTableViewController?
+
+    /// Analytics Tracker
+    ///
+    private let tracker = AuthenticatorAnalyticsTracker.shared
 
     /// Closure to be executed upon dismissal.
     ///
@@ -139,11 +154,13 @@ private extension LoginEpilogueViewController {
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height >= (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = .listBackground
             topLine.isHidden = false
+            blurEffectView.effect = UIBlurEffect(style: blurEffect)
+            blurEffectView.isHidden = false
         } else {
             buttonPanel.backgroundColor = .basicBackground
             topLine.isHidden = true
+            blurEffectView.isHidden = true
         }
     }
 
@@ -173,13 +190,18 @@ private extension LoginEpilogueViewController {
     // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
+        tracker.track(click: .continue)
         onDismiss?()
         navigationController?.dismiss(animated: true)
     }
 
     func handleConnectAnotherButton() {
         onDismiss?()
-        let controller = WordPressAuthenticator.signinForWPOrg()
+
+        guard let controller = WordPressAuthenticator.signinForWPOrg() else {
+            return
+        }
+
         navigationController?.setViewControllers([controller], animated: true)
     }
 }

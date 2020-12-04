@@ -1,9 +1,0 @@
-Como siempre, hay muchas mejoras en el editor de bloques. El icono de la papelera que usas para eliminar bloques, ahora está en un menú al que se accede tocando el botón de la elipse en la barra de herramientas de bloques. También hemos añadido compatibilidad para colores superpuestos en el bloque de cubierta, compatibilidad para gradientes radiales en los bloques de botón y cubierta, animación de entrada/salida en la barra de herramientas flotante y una información emergente para los botones de selección de la plantilla de página. Y la barra de herramientas del bloque, ahora se cierra si el bloque es más estrecho que la barra de herramientas.
-
-También hemos hecho muchas correcciones para una experiencia de edición de bloques más limpia.
-La carga de medios mostrará un mensaje para «reintentar» cuando no haya conexión (en lugar de congelarse), deshacer/rehacer el trabajo de forma más fiable, tanto para los bloques como para el texto, hemos corregido un problema de fusión con los bloques de texto y hemos corregido la alineación de los botones en las plantillas de página.
-
-Hemos añadido un nuevo ajuste que te permite cambiar tu página de inicio y la página de entradas desde los ajustes del sitio.
-
-Por último, nos hemos ocupado de un problema de Gravatar que te dejaba atascado en la pantalla de edición de fotos cuando intentabas hacer una nueva foto y hemos hecho algunas actualizaciones de la interfaz de usuario en el lector.
-

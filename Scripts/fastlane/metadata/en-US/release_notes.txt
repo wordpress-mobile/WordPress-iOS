@@ -1,9 +1,0 @@
-As usual, there are lots of improvements in the block editor. Trash icon you use to remove blocks is now in a menu reachable by tapping the ellipsis button in the block toolbar. We also added support for overlay colors in the Cover block, support for radial gradients in Button and Cover blocks, enter/exit animation in the Floating Toolbar, and a tooltip for page template selection buttons. And now the block toolbar collapses if the block is narrower than the toolbar.
-
-We also made lots of fixes, for a cleaner block editor experience.
-Media upload will display a “retry” message when there’s no connection (instead of freezing), undo/redo work more reliably for both blocks and text, we corrected a merging issue with text blocks, and we corrected the button alignment in page templates.
-
-We've added a new setting that allows you to change your homepage and posts page from site settings.
-
-Finally, we dealt with a Gravatar issue that got you stuck in the photo editing screen when you tried to take a new photo, and made some UI updates in the Reader.
-

@@ -4,21 +4,23 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    private let makeReaderTabView: (ReaderTabViewModel) -> UIView
+    private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
-    private lazy var readerTabView: UIView = {
+    private lazy var readerTabView: ReaderTabView = {
         return makeReaderTabView(viewModel)
     }()
 
-    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> UIView) {
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-        setupSearchButton()
+        setupNavigationButtons()
 
         ReaderTabViewController.configureRestoration(on: self)
+
+        ReaderCardService().clean()
 
         viewModel.filterTapped = { [weak self] (fromView, completion) in
             guard let self = self else {
@@ -30,34 +32,69 @@ class ReaderTabViewController: UIViewController {
             })
         }
 
-        viewModel.settingsTapped = { [weak self] fromView in
-            guard let self = self else {
-                return
-            }
-            viewModel.presentManage(from: self)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError(ReaderTabConstants.storyBoardInitError)
     }
 
-    func setupSearchButton() {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        ReaderTracker.shared.start(.main)
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        ReaderTracker.shared.stop(.main)
+    }
+
+    func setupNavigationButtons() {
+        // Settings Button
+        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(didTapSettingsButton))
+        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
+
+        // Search Button
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
                                            target: self,
                                            action: #selector(didTapSearchButton))
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        navigationItem.rightBarButtonItem = searchButton
+        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
     }
 
     override func loadView() {
         view = readerTabView
     }
+
+    @objc func willEnterForeground() {
+        guard isViewOnScreen() else {
+            return
+        }
+
+        ReaderTracker.shared.start(.main)
+    }
 }
 
 
-// MARK: - Search
+// MARK: - Navigation Buttons
 extension ReaderTabViewController {
+    @objc private func didTapSettingsButton() {
+        viewModel.presentManage(from: self)
+    }
 
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
@@ -95,11 +132,19 @@ extension ReaderTabViewController: UIViewControllerRestoration {
     }
 }
 
+// MARK: - Notifications
+extension ReaderTabViewController {
+    // Ensure that topics and sites are synced when account changes
+    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
+        loadView()
+    }
+}
 
 // MARK: - Constants
 extension ReaderTabViewController {
     private enum ReaderTabConstants {
         static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let settingsButtonIdentifier = "ReaderSettingsButton"
         static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"

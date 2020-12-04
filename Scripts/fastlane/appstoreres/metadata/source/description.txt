@@ -6,4 +6,6 @@ WordPress for iOS is an Open Source project, which means you too can contribute 
 
 WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites running WordPress 4.0 or higher.
 
-Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.\n
+Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.
+
+View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

@@ -33,6 +33,19 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
         expect(post.status).to(equal(.pending))
     }
 
+    func testMarkAPostAsFailedKeepShouldAttemptAutoUpload() {
+        let blog = BlogBuilder(context).withAnAccount().build()
+        let post = PostBuilder(context, blog: blog)
+            .with(status: .pending)
+            .confirmedAutoUpload()
+            .build()
+        let postService = PostService()
+
+        postService.markAsFailedAndDraftIfNeeded(post: post)
+
+        expect(post.shouldAttemptAutoUpload).to(beTrue())
+    }
+
     func testMarksALocalPageAsFailedAndResetsItToDraft() {
         let page = PageBuilder(context)
             .with(status: .publish)

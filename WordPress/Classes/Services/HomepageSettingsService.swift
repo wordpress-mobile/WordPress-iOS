@@ -31,6 +31,7 @@ struct HomepageSettingsService {
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void) {
 
+        // Keep track of the original settings in case we need to revert
         let originalHomepageType = blog.homepageType
         let originalHomePageID = blog.homepagePageID
         let originalPostsPageID = blog.homepagePostsPageID
@@ -38,8 +39,20 @@ struct HomepageSettingsService {
         switch type {
         case .page:
             blog.homepageType = .page
-            blog.homepagePostsPageID = postsPageID
-            blog.homepagePageID = homePageID
+            if let postsPageID = postsPageID {
+                blog.homepagePostsPageID = postsPageID
+                if postsPageID == originalHomePageID {
+                    // Don't allow the same page to be set for both values
+                    blog.homepagePageID = 0
+                }
+            }
+            if let homePageID = homePageID {
+                blog.homepagePageID = homePageID
+                if homePageID == originalPostsPageID {
+                    // Don't allow the same page to be set for both values
+                    blog.homepagePostsPageID = 0
+                }
+            }
         case .posts:
             blog.homepageType = .posts
         }
@@ -48,8 +61,8 @@ struct HomepageSettingsService {
 
         remote.setHomepageType(type: type.remoteType,
                                for: siteID,
-                               withPostsPageID: postsPageID,
-                               homePageID: homePageID,
+                               withPostsPageID: blog.homepagePostsPageID,
+                               homePageID: blog.homepagePageID,
                                success: success,
                                failure: { error in
                                 self.context.performAndWait {

@@ -3,45 +3,18 @@ class QuickStartNavigationSettings: NSObject {
     private var spotlightView: QuickStartSpotlightView?
 
     func updateWith(navigationController: UINavigationController, andViewController viewController: UIViewController) {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
 
         switch viewController {
         case is BlogListViewController:
-            tourGuide.visited(.noSuchElement)
-            tourGuide.endCurrentTour()
-        case is ReaderMenuViewController:
-            tourGuide.visited(.readerBack)
-            removeReaderSpotlight()
-        case is ReaderSearchViewController, is ReaderStreamViewController, is ReaderSavedPostsViewController:
-            readerNav = navigationController
-            checkToSpotlightReader()
+            QuickStartTourGuide.shared.visited(.noSuchElement)
+            QuickStartTourGuide.shared.endCurrentTour()
         default:
             break
         }
     }
-
-    func shouldSkipReaderBack() -> Bool {
-        guard let readerNav = readerNav else {
-            return false
-        }
-
-        return !readerNav.hasHorizontallyCompactView()
-    }
-
 }
 
 private extension QuickStartNavigationSettings {
-
-    func checkToSpotlightReader() {
-        guard let tourGuide = QuickStartTourGuide.find(),
-            tourGuide.isCurrentElement(.readerBack) else {
-            return
-        }
-
-        spotlightReaderBackButton()
-    }
 
     func spotlightReaderBackButton() {
         guard let readerNav = readerNav else {

@@ -1,4 +1,5 @@
 import UIKit
+import AutomatticTracks
 
 class DebugMenuViewController: UITableViewController {
     private var blogService: BlogService {
@@ -28,7 +29,8 @@ class DebugMenuViewController: UITableViewController {
 
         ImmuTable.registerRows([
             SwitchWithSubtitleRow.self,
-            ButtonRow.self
+            ButtonRow.self,
+            EditableTextRow.self
         ], tableView: tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -44,7 +46,9 @@ class DebugMenuViewController: UITableViewController {
 
         handler.viewModel = ImmuTable(sections: [
             ImmuTableSection(headerText: Strings.featureFlags, rows: rows),
-            ImmuTableSection(headerText: Strings.tools, rows: toolsRows)
+            ImmuTableSection(headerText: Strings.tools, rows: toolsRows),
+            ImmuTableSection(headerText: Strings.crashLogging, rows: crashLoggingRows),
+            ImmuTableSection(headerText: Strings.reader, rows: readerRows),
         ])
     }
 
@@ -65,8 +69,38 @@ class DebugMenuViewController: UITableViewController {
         return [
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
-            })
+            }),
         ]
+    }
+
+    // MARK: Crash Logging
+
+    private var crashLoggingRows: [ImmuTableRow] {
+        return [
+            ButtonRow(title: Strings.sendLogMessage, action: { _ in
+                CrashLogging.logMessage("Debug Log Message \(UUID().uuidString)")
+                self.tableView.deselectSelectedRowWithAnimationAfterDelay(true)
+            }),
+            ButtonRow(title: Strings.sendTestCrash, action: { _ in
+                DDLogInfo("Initiating user-requested crash")
+                CrashLogging.crash()
+            }),
+            ButtonRow(title: Strings.encryptedLogging, action: { _ in
+                self.navigationController?.pushViewController(EncryptedLogTableViewController(), animated: true)
+            }),
+            SwitchWithSubtitleRow(title: Strings.alwaysSendLogs, value: shouldAlwaysSendLogs, onChange: { isOn in
+                self.shouldAlwaysSendLogs = isOn
+            }),
+        ]
+    }
+
+    var shouldAlwaysSendLogs: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "force-crash-logging")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "force-crash-logging")
+        }
     }
 
     private func displayBlogPickerForQuickStart() {
@@ -93,7 +127,25 @@ class DebugMenuViewController: UITableViewController {
     }
 
     private func enableQuickStart(for blog: Blog) {
-        QuickStartTourGuide.find()?.setup(for: blog)
+        QuickStartTourGuide.shared.setup(for: blog)
+    }
+
+    // MARK: Reader
+
+    private var readerRows: [ImmuTableRow] {
+        return [
+            EditableTextRow(title: Strings.readerCssTitle, value: ReaderCSS().customAddress ?? "") { row in
+                let textViewController = SettingsTextViewController(text: ReaderCSS().customAddress, placeholder: Strings.readerURLPlaceholder, hint: Strings.readerURLHint)
+                textViewController.title = Strings.readerCssTitle
+                textViewController.onAttributedValueChanged = { [weak self] url in
+                    var readerCSS = ReaderCSS()
+                    readerCSS.customAddress = url.string
+                    self?.reloadViewModel()
+                }
+
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            }
+        ]
     }
 
     enum Strings {
@@ -101,5 +153,14 @@ class DebugMenuViewController: UITableViewController {
         static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
         static let quickStartRow = NSLocalizedString("Enable Quick Start for Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
+        static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
+        static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
+        static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
+        static let crashLogging = NSLocalizedString("Crash Logging", comment: "Title of a section on the debug screen that shows a list of actions related to crash logging")
+        static let encryptedLogging = NSLocalizedString("Encrypted Logs", comment: "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs")
+        static let reader = NSLocalizedString("Reader", comment: "Title of the Reader section of the debug screen used in debug builds of the app")
+        static let readerCssTitle = NSLocalizedString("Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
+        static let readerURLPlaceholder = NSLocalizedString("Default URL", comment: "Placeholder for the reader CSS URL")
+        static let readerURLHint = NSLocalizedString("Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
     }
 }

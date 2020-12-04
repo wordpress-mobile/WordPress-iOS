@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
 typedef void (^SettingsTextAction)(void);
 typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
+typedef void (^SettingsTextOnDismiss)(void);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
@@ -30,6 +31,9 @@ typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
 /// Block to be executed whenever the Action, if visible, is pressed.
 ///
 @property (nullable, nonatomic, copy) SettingsTextAction onActionPress;
+/// Optional block to be executed when the viewController is dismissed.
+///
+@property (nullable, nonatomic, copy) SettingsTextOnDismiss onDismiss;
 
 /// String to be displayed at the bottom.
 ///
@@ -76,6 +80,10 @@ typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
 /// - SettingsTextModesPassword: Secure Text Entry is enabled.
 ///
 @property (nonatomic, assign) SettingsTextModes mode;
+
+/// If YES, Cancel and Save buttons will be added to the navigation bar.
+///
+@property (nonatomic, assign) BOOL displaysNavigationButtons;
 
 /// Required initializer.
 ///

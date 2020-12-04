@@ -42,7 +42,7 @@ final class TenorPicker: NSObject {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         options.allowMultipleSelection = allowMultipleSelection
         return options
     }()
@@ -157,6 +157,7 @@ extension TenorPicker: WPMediaPickerViewControllerDelegate {
             return
         }
 
+        animatedImageView.prepForReuse()
         animatedImageView.gifStrategy = .tinyGIFs
         animatedImageView.contentMode = .scaleAspectFill
         animatedImageView.clipsToBounds = true

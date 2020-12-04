@@ -80,6 +80,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         self?.mapUIContentToPostAndSave(immediate: true)
     }
 
+    var wordCount: UInt {
+        return richTextView.wordCount
+    }
+
     // MARK: - Styling Options
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
@@ -570,6 +574,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         })
 
         optionsTablePresenter.dismiss()
+
+        // Required to work around an issue present in iOS 14 beta 2
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+        if #available(iOS 14.0, *),
+            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+            dismiss(animated: true)
+        }
     }
 
     override func willMove(toParent parent: UIViewController?) {
@@ -584,7 +595,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController.delegate = self
         configureMediaProgressView(in: navigationController.navigationBar)
     }
-
 
     // MARK: - Title and Title placeholder position methods
 
@@ -808,7 +818,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func setHTML(_ html: String) {
         editorView.setHTML(html)
-
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }
@@ -1251,13 +1260,24 @@ private extension AztecPostViewController {
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
+        let settingsTitle = self.post is Page ? MoreSheetAlert.pageSettingsTitle : MoreSheetAlert.postSettingsTitle
+
+        alert.addDefaultActionWithTitle(settingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        if #available(iOS 14.0, *),
+            let button = navigationBarManager.moreBarButtonItem.customView {
+            // Required to work around an issue present in iOS 14 beta 2
+            // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+            alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)
+            alert.popoverPresentationController?.sourceView = navigationController?.navigationBar
+            alert.view.accessibilityIdentifier = MoreSheetAlert.accessibilityIdentifier
+        } else {
+            alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        }
 
         present(alert, animated: true)
     }
@@ -1840,7 +1860,7 @@ extension AztecPostViewController {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -1887,7 +1907,7 @@ extension AztecPostViewController {
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
@@ -2392,10 +2412,10 @@ extension AztecPostViewController {
         attachment?.uploadID = media.uploadID
     }
 
-    /// Sets the badge title of `attachment` to "GIF" if either the media is being imported from Giphy,
+    /// Sets the badge title of `attachment` to "GIF" if either the media is being imported from Tenor,
     /// or if it's a PHAsset with an animated playback style.
     private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
-        var isGif = [.giphy, .tenor].contains(source)
+        var isGif = source == .tenor
 
         if let asset = asset as? PHAsset,
             asset.playbackStyle == .imageAnimated {
@@ -3307,14 +3327,6 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     }
 }
 
-extension AztecPostViewController: GiphyPickerDelegate {
-    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
-        assets.forEach {
-            insert(exportableAsset: $0, source: .giphy)
-        }
-    }
-}
-
 extension AztecPostViewController: TenorPickerDelegate {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
         assets.forEach {
@@ -3386,7 +3398,9 @@ extension AztecPostViewController {
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 
     struct MediaAttachmentActionSheet {
@@ -3554,6 +3568,36 @@ extension AztecPostViewController {
     }
 
     private func edit(_ imageAttachment: ImageAttachment) {
+
+        guard imageAttachment.mediaURL?.isGif == false else {
+            confirmEditingGIF(imageAttachment)
+            return
+        }
+
+        editAttachment(imageAttachment)
+    }
+
+    private func confirmEditingGIF(_ imageAttachment: ImageAttachment) {
+        let alertController = UIAlertController(title: GIFAlertStrings.title,
+                                                message: GIFAlertStrings.message,
+                                                preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(GIFAlertStrings.cancel) { _ in
+            if imageAttachment == self.currentSelectedAttachment {
+                self.currentSelectedAttachment = nil
+                self.resetMediaAttachmentOverlay(imageAttachment)
+                self.richTextView.refresh(imageAttachment)
+            }
+        }
+
+        alertController.addActionWithTitle(GIFAlertStrings.edit, style: .destructive) { _ in
+            self.editAttachment(imageAttachment)
+        }
+
+        present(alertController, animated: true)
+    }
+
+    private func editAttachment(_ imageAttachment: ImageAttachment) {
         guard let image = imageAttachment.image else {
             return
         }
@@ -3562,13 +3606,13 @@ extension AztecPostViewController {
         mediaEditor.editingAlreadyPublishedImage = true
 
         mediaEditor.edit(from: self,
-                              onFinishEditing: { [weak self] images, actions in
-                                guard !actions.isEmpty, let image = images.first as? UIImage else {
-                                    // If the image wasn't edited, do nothing
-                                    return
-                                }
+                         onFinishEditing: { [weak self] images, actions in
+                            guard !actions.isEmpty, let image = images.first as? UIImage else {
+                                // If the image wasn't edited, do nothing
+                                return
+                            }
 
-                                self?.replace(attachment: imageAttachment, with: image, actions: actions)
+                            self?.replace(attachment: imageAttachment, with: image, actions: actions)
         })
     }
 
@@ -3584,4 +3628,5 @@ extension AztecPostViewController {
         }
         attachment.uploadID = media.uploadID
     }
+
 }

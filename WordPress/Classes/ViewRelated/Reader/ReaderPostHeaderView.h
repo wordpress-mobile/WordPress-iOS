@@ -11,9 +11,20 @@ typedef void (^ReaderPostHeaderCallback)(void);
 @property (nonatomic, copy) ReaderPostHeaderCallback onClick;
 
 /**
+ A ReaderPostHeaderFollowingCallback block to be executed whenever the user pressed this view.
+ */
+typedef void (^ReaderPostHeaderFollowingCallback)(void);
+@property (nonatomic, copy) ReaderPostHeaderFollowingCallback onFollowConversationClick;
+
+/**
  A BOOL indicating whether if this view should display a disclosure indicator, or not.
  */
 @property (nonatomic, assign) BOOL showsDisclosureIndicator;
+
+/**
+ A BOOL indicating whether if this view should display a follow conversation button, or not.
+ */
+@property (nonatomic, assign) BOOL showsFollowConversationButton;
 
 /**
  A UIImage instance to be displayed as the User's avatar.
@@ -29,5 +40,10 @@ typedef void (^ReaderPostHeaderCallback)(void);
  A NSString representing the header's subtitle.
  */
 @property (nonatomic, strong) NSString *subtitle;
+
+/**
+ A BOOL indicating whether the User is subscribed to the post, or not.
+ */
+@property (nonatomic, assign, setter=setSubscribedToPost:) BOOL isSubscribedToPost;
 
 @end

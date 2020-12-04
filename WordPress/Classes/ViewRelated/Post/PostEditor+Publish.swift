@@ -107,6 +107,12 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
+    func displayPostIsUploadingAlert() {
+        let alertController = UIAlertController(title: PostUploadingAlert.title, message: PostUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(PostUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
+    }
+
     func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
@@ -182,12 +188,8 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let originalWordCount = post.original?.content?.wordCount() ?? 0
-        let wordCount = post.content?.wordCount() ?? 0
+        let wordCount = self.wordCount
         var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSource]
-        if post.hasRemote() {
-            properties["word_diff_count"] = originalWordCount
-        }
 
         properties[WPAppAnalyticsKeyPostType] = postTypeValue
 
@@ -306,7 +308,9 @@ extension PostEditor where Self: UIViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.publishPost(action: self.editorAction(), dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                let action = self.editorAction()
+                self.postEditorStateContext.action = action
+                self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -325,7 +329,11 @@ extension PostEditor where Self: UIViewController {
             return .save
         }
 
-        return post.status == .draft ? .saveAsDraft : .publish
+        if post.isLocalDraft {
+            return .save
+        }
+
+        return post.status == .draft ? .update : .publish
     }
 }
 
@@ -495,6 +503,12 @@ struct PostEditorDebouncerConstants {
 private struct MediaUploadingAlert {
     static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
     static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+    static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+}
+
+private struct PostUploadingAlert {
+    static let title = NSLocalizedString("Uploading post", comment: "Title for alert when trying to preview a post before the uploading process is complete.")
+    static let message = NSLocalizedString("Your post is currently being uploaded. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to preview a post before the upload process is complete.")
     static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
 }
 

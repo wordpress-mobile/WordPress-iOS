@@ -181,10 +181,8 @@ private extension WPRichContentView {
         "</style>"
         let html = styleString + string
 
-        // Request the font to ensure it's loaded. Otherwise NSAttributedString
-        // falls back to Times New Roman :o
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
-        _ = WPFontManager.notoItalicFont(ofSize: 16)
+        // Ensure the noto font family is fully loaded or the font defaults to Times New Roman.
+        WPFontManager.loadNotoFontFamily()
         do {
             if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
                 return attrTxt

@@ -184,7 +184,7 @@ class NoticeView: UIView {
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.primary(.shade40), for: .normal)
+        actionButton.setTitleColor(.invertedLink, for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
@@ -239,7 +239,7 @@ class NoticeView: UIView {
         cancelBackgroundView.addTrailingBorder()
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.setTitleColor(notice.style.titleColor, for: .normal)
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
@@ -356,7 +356,7 @@ fileprivate extension UIView {
 
     func makeBorderView() -> UIView {
         let borderView = UIView()
-        borderView.backgroundColor = Constants.borderColor
+        borderView.backgroundColor = .invertedSeparator
         borderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(borderView)
 
@@ -364,7 +364,6 @@ fileprivate extension UIView {
     }
 
     struct Constants {
-        static let borderColor = UIColor.white.withAlphaComponent(0.25)
         static let visualEffect = UIBlurEffect(style: .extraLight)
     }
 }

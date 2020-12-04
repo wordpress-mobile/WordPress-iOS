@@ -22,7 +22,7 @@ class PrivacySettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
-            InfoRow.self,
+            PaddedInfoRow.self,
             SwitchRow.self,
             PaddedLinkRow.self
             ], tableView: self.tableView)
@@ -56,12 +56,11 @@ class PrivacySettingsViewController: UITableViewController {
             title: NSLocalizedString("Collect information", comment: "Label for switch to turn on/off sending app usage data"),
             value: !WPAppAnalytics.userHasOptedOut(),
             icon: .gridicon(.stats),
-            onChange: usageTrackingChanged()
+            onChange: usageTrackingChanged
         )
 
-        let shareInfoText = InfoRow(
-            title: NSLocalizedString("Share information with our analytics tool about your use of services while logged in to your WordPress.com account.", comment: "Informational text for Collect Information setting"),
-            icon: .gridicon(.info)
+        let shareInfoText = PaddedInfoRow(
+            title: NSLocalizedString("Share information with our analytics tool about your use of services while logged in to your WordPress.com account.", comment: "Informational text for Collect Information setting")
         )
 
         let shareInfoLink = PaddedLinkRow(
@@ -69,9 +68,8 @@ class PrivacySettingsViewController: UITableViewController {
             action: openCookiePolicy()
         )
 
-        let privacyText = InfoRow(
-            title: NSLocalizedString("This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.", comment: "Informational text for the privacy policy link"),
-            icon: .gridicon(.userCircle)
+        let privacyText = PaddedInfoRow(
+            title: NSLocalizedString("This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.", comment: "Informational text for the privacy policy link")
         )
 
         let privacyLink = PaddedLinkRow(
@@ -79,9 +77,13 @@ class PrivacySettingsViewController: UITableViewController {
             action: openPrivacyPolicy()
         )
 
-        let otherTracking = InfoRow(
-            title: NSLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools"),
-            icon: .gridicon(.briefcase)
+        let ccpaLink = PaddedLinkRow(
+            title: NSLocalizedString("Privacy notice for California users", comment: "Link to the CCPA privacy notice for residents of California."),
+            action: openCCPANotice()
+        )
+
+        let otherTracking = PaddedInfoRow(
+            title: NSLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools")
         )
 
         let otherTrackingLink = PaddedLinkRow(
@@ -89,44 +91,61 @@ class PrivacySettingsViewController: UITableViewController {
             action: openCookiePolicy()
         )
 
+        let reportCrashes = SwitchRow(
+            title: NSLocalizedString("Crash reports", comment: "Label for switch to turn on/off sending crashes info"),
+            value: !WPCrashLoggingProvider.userHasOptedOut,
+            icon: .gridicon(.bug),
+            onChange: crashReportingChanged
+        )
+
+        let reportCrashesInfoText = PaddedInfoRow(
+            title: NSLocalizedString("To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports.", comment: "Informational text for Report Crashes setting")
+        )
+
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
                 collectInformation,
                 shareInfoText,
-                shareInfoLink
-                ]),
-            ImmuTableSection(rows: [
+                shareInfoLink,
                 privacyText,
-                privacyLink
-                ]),
-            ImmuTableSection(rows: [
+                privacyLink,
+                ccpaLink,
                 otherTracking,
                 otherTrackingLink
-                ])
+                ]),
+            ImmuTableSection(rows: [
+                reportCrashes,
+                reportCrashesInfoText
             ])
+        ])
     }
 
-    func usageTrackingChanged() -> (Bool) -> Void {
-        return { enabled in
-            let appAnalytics = WordPressAppDelegate.shared?.analytics
-            appAnalytics?.setUserHasOptedOut(!enabled)
+    func usageTrackingChanged(_ enabled: Bool) {
+        let appAnalytics = WordPressAppDelegate.shared?.analytics
+        appAnalytics?.setUserHasOptedOut(!enabled)
 
-            let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
-
-            CrashLogging.setNeedsDataRefresh()
-        }
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
     }
 
     func openCookiePolicy() -> ImmuTableAction {
         return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
             self?.displayWebView(WPAutomatticCookiesURL)
         }
     }
 
     func openPrivacyPolicy() -> ImmuTableAction {
         return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
             self?.displayWebView(WPAutomatticPrivacyURL)
+        }
+    }
+
+    func openCCPANotice() -> ImmuTableAction {
+        return { [weak self] _ in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
+            self?.displayWebView(WPAutomatticCCPAPrivacyNoticeURL)
         }
     }
 
@@ -137,6 +156,11 @@ class PrivacySettingsViewController: UITableViewController {
         let webViewController = WebViewControllerFactory.controller(url: url)
         let navigation = UINavigationController(rootViewController: webViewController)
         present(navigation, animated: true)
+    }
+
+    func crashReportingChanged(_ enabled: Bool) {
+      WPCrashLoggingProvider.userHasOptedOut = !enabled
+      CrashLogging.setNeedsDataRefresh()
     }
 
 }
@@ -180,17 +204,16 @@ private class InfoCell: WPTableViewCellDefault {
     }
 }
 
-private struct InfoRow: ImmuTableRow {
+private struct PaddedInfoRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(InfoCell.self)
 
     let title: String
-    let icon: UIImage
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.textLabel?.numberOfLines = 10
-        cell.imageView?.image = icon
+        cell.imageView?.image = UIImage(color: .clear, havingSize: Gridicon.defaultSize)
         cell.selectionStyle = .none
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -208,5 +231,6 @@ private struct PaddedLinkRow: ImmuTableRow {
         cell.imageView?.image = UIImage(color: .clear, havingSize: Gridicon.defaultSize)
 
         WPStyleGuide.configureTableViewActionCell(cell)
+        cell.textLabel?.textColor = .primary
     }
 }

@@ -23,7 +23,7 @@ class AztecNavigationController: UINavigationController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return WPStyleGuide.preferredStatusBarStyle
     }
 
     // MARK: - Overriden Methods

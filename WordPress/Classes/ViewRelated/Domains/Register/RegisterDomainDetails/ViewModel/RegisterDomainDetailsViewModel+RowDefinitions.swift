@@ -40,6 +40,7 @@ extension RegisterDomainDetailsViewModel {
         }
         var validationBlock: RowValidationBlock?
         var errorMessage: String?
+        var serverSideErrorMessage: String?
         var context: Context
         var validationStateChanged: ValidationStateChangedHandler?
 
@@ -67,6 +68,7 @@ extension RegisterDomainDetailsViewModel {
 
             typealias ValidationStateChangedHandler = ((EditableKeyValueRow, ValidationRule) -> Void)
             typealias ValueChangeHandler = ((EditableKeyValueRow) -> Void)
+            typealias ValueSanitizerBlock = (_ value: String?) -> String?
 
             enum EditingStyle: Int {
                 case inline
@@ -99,13 +101,15 @@ extension RegisterDomainDetailsViewModel {
                 }
             }
             var valueChangeHandler: ValueChangeHandler?
+            var valueSanitizer: ValueSanitizerBlock?
 
             init(key: String,
                  jsonKey: String,
                  value: String?,
                  placeholder: String?,
                  editingStyle: EditingStyle,
-                 validationRules: [ValidationRule] = []) {
+                 validationRules: [ValidationRule] = [],
+                 valueSanitizer: ValueSanitizerBlock? = nil) {
 
                 self.key = key
                 self.jsonKey = jsonKey
@@ -113,6 +117,7 @@ extension RegisterDomainDetailsViewModel {
                 self.placeholder = placeholder
                 self.editingStyle = editingStyle
                 self.validationRules = validationRules
+                self.valueSanitizer = valueSanitizer
             }
 
             private func registerForValidationStateChangedEvent() {
@@ -140,8 +145,8 @@ extension RegisterDomainDetailsViewModel {
 
             func validationErrors(forContext context: ValidationRule.Context) -> [String] {
                 return validationRules
-                    .filter { return $0.context == context && !$0.isValid }
-                    .compactMap { $0.errorMessage }
+                    .filter { return $0.context == context && !$0.isValid && $0.errorMessage != nil }
+                    .compactMap { "\($0.errorMessage ?? ""). \($0.serverSideErrorMessage ?? "")" }
             }
 
             func isValid(inContext context: ValidationRule.Context) -> Bool {

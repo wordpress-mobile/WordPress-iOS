@@ -20,6 +20,15 @@ import AutomatticTracks
         }
     }
 
+    // MARK: - Image Dimensions Support
+    typealias ImageLoaderDimensionsBlock = (ImageDimensionFormat, CGSize) -> Void
+
+    /// Called if the imageLoader is able to determine the image format, and dimensions
+    /// for the image prior to it being downloaded.
+    /// Note: Set the property prior to calling any load method
+    public var imageDimensionsHandler: ImageLoaderDimensionsBlock?
+    private var imageDimensionsFetcher: ImageDimensionsFetcher? = nil
+
     // MARK: Private Fields
 
     private unowned let imageView: CachedAnimatedImageView
@@ -98,6 +107,16 @@ import AutomatticTracks
     func loadImage(with url: URL, from post: AbstractPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         let host = MediaHost(with: post, failure: { error in
+            CrashLogging.logError(error)
+        })
+
+        loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
+    }
+
+    @objc(loadImageWithURL:fromReaderPost:preferredSize:placeholder:success:error:)
+    func loadImage(with url: URL, from readerPost: ReaderPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+
+        let host = MediaHost(with: readerPost, failure: { error in
             CrashLogging.logError(error)
         })
 
@@ -186,9 +205,39 @@ import AutomatticTracks
         return photonURL
     }
 
+
+    /// Triggers the image dimensions fetcher if the `imageDimensionsHandler` property is set
+    private func calculateImageDimensionsIfNeeded(from request: URLRequest) {
+        guard let imageDimensionsHandler = imageDimensionsHandler else {
+            return
+        }
+
+        let fetcher = ImageDimensionsFetcher(request: request, success: { (format, size) in
+            guard let size = size, size != .zero else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                imageDimensionsHandler(format, size)
+            }
+        })
+
+        fetcher.start()
+
+        imageDimensionsFetcher = fetcher
+    }
+
+    /// Stop the image dimension calculation
+    private func cancelImageDimensionCalculation() {
+        imageDimensionsFetcher?.cancel()
+        imageDimensionsFetcher = nil
+    }
+
     /// Download the animated image from the given URL Request.
     ///
     private func downloadGif(from request: URLRequest) {
+        calculateImageDimensionsIfNeeded(from: request)
+
         imageView.startLoadingAnimation()
         imageView.setAnimatedImage(request, placeholderImage: placeholder, success: { [weak self] in
             self?.callSuccessHandler()
@@ -200,6 +249,8 @@ import AutomatticTracks
     /// Downloads the image from the given URL Request.
     ///
     private func downloadImage(from request: URLRequest) {
+        calculateImageDimensionsIfNeeded(from: request)
+
         imageView.startLoadingAnimation()
         imageView.af_setImage(withURLRequest: request, completion: { [weak self] dataResponse in
             guard let self = self else {
@@ -223,6 +274,8 @@ import AutomatticTracks
     }
 
     private func callSuccessHandler() {
+        cancelImageDimensionCalculation()
+
         imageView.stopLoadingAnimation()
         guard successHandler != nil else {
             return
@@ -236,6 +289,8 @@ import AutomatticTracks
         if let error = error, (error as NSError).code == NSURLErrorCancelled {
             return
         }
+
+        cancelImageDimensionCalculation()
 
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {

@@ -2,8 +2,18 @@ struct ActionSheetButton {
     let title: String
     let image: UIImage
     let identifier: String
-    let target: Any?
-    let selector: Selector
+    let highlight: Bool
+    let badge: UIView?
+    let action: () -> Void
+
+    init(title: String, image: UIImage, identifier: String, highlight: Bool = false, badge: UIView? = nil, action: @escaping () -> Void) {
+        self.title = title
+        self.image = image
+        self.identifier = identifier
+        self.highlight = highlight
+        self.badge = badge
+        self.action = action
+    }
 }
 
 class ActionSheetViewController: UIViewController {
@@ -27,6 +37,7 @@ class ActionSheetViewController: UIViewController {
             static let imageTintColor: UIColor = .neutral(.shade30)
             static let font: UIFont = .preferredFont(forTextStyle: .callout)
             static let textColor: UIColor = .text
+            static let badgeHorizontalPadding: CGFloat = 10
         }
 
         enum Stack {
@@ -119,22 +130,58 @@ class ActionSheetViewController: UIViewController {
         NSLayoutConstraint.activate(stackViewConstraints + [bottomAnchor])
     }
 
-    func button(_ info: ActionSheetButton) -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setTitle(info.title, for: .normal)
+    private func createButton(_ handler: @escaping () -> Void) -> UIButton {
+        let button: UIButton
+        if #available(iOS 14.0, *) {
+            button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in handler() }))
+        } else {
+            button = ClosureButton(frame: .zero, closure: {
+                handler()
+            })
+        }
+
         button.titleLabel?.font = Constants.Button.font
         button.setTitleColor(Constants.Button.textColor, for: .normal)
-        button.setImage(info.image, for: .normal)
         button.imageView?.tintColor = Constants.Button.imageTintColor
         button.setBackgroundImage(UIImage(color: .divider), for: .highlighted)
         button.titleEdgeInsets = Constants.Button.titleInsets
         button.naturalContentHorizontalAlignment = .leading
         button.contentEdgeInsets = Constants.Button.contentInsets
-        button.addTarget(info.target, action: info.selector, for: .touchUpInside)
-        button.accessibilityIdentifier = info.identifier
         button.translatesAutoresizingMaskIntoConstraints = false
         button.flipInsetsForRightToLeftLayoutDirection()
         return button
+    }
+
+    private func button(_ info: ActionSheetButton) -> UIButton {
+        let button = createButton(info.action)
+
+        button.setTitle(info.title, for: .normal)
+        button.setImage(info.image, for: .normal)
+        button.accessibilityIdentifier = info.identifier
+
+        if let badge = info.badge {
+            button.addSubview(badge)
+            button.addConstraints([
+                badge.constrain(attribute: .left, toAttribute: .right, ofView: button.titleLabel!, relatedBy: .equal, constant: Constants.Button.badgeHorizontalPadding),
+                badge.constrainToSuperview(attribute: .centerY, relatedBy: .equal, constant: 0)
+            ])
+        }
+
+        if info.highlight {
+            addSpotlight(to: button)
+        }
+        return button
+    }
+
+    private func addSpotlight(to button: UIButton) {
+        let spotlight = QuickStartSpotlightView()
+        spotlight.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(spotlight)
+
+        NSLayoutConstraint.activate([
+            spotlight.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -Constants.Header.insets.right),
+            spotlight.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

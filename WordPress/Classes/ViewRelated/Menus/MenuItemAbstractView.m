@@ -126,6 +126,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     label.adjustsFontForContentSizeCategory = YES;
     label.backgroundColor = [UIColor clearColor];
 
+    // Taps are handled by the UITouches API.
+    // Marking this label as a button is the simplest way to show tappability to a VoiceOver user.
+    label.accessibilityTraits = UIAccessibilityTraitButton;
+
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
 

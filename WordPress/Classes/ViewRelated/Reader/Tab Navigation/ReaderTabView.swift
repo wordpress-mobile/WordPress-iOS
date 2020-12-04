@@ -7,10 +7,9 @@ class ReaderTabView: UIView {
     private let tabBar: FilterTabBar
     private let filterButton: PostMetaButton
     private let resetFilterButton: UIButton
-    private let settingsButton: UIButton
-    private let verticalDivider: UIView
     private let horizontalDivider: UIView
     private let containerView: UIView
+    private var loadingView: UIView?
 
     private let viewModel: ReaderTabViewModel
 
@@ -21,8 +20,6 @@ class ReaderTabView: UIView {
         tabBar = FilterTabBar()
         filterButton = PostMetaButton(type: .custom)
         resetFilterButton = UIButton(type: .custom)
-        settingsButton = UIButton(type: .custom)
-        verticalDivider = UIView()
         horizontalDivider = UIView()
         containerView = UIView()
 
@@ -35,10 +32,11 @@ class ReaderTabView: UIView {
             self?.toggleButtonsView()
         }
 
-        viewModel.refreshTabBar { [weak self] tabItems, index in
+        viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
             self?.tabBar.items = tabItems
             self?.tabBar.setSelectedIndex(index)
             self?.configureTabBarElements()
+            self?.hideGhost()
             self?.addContentToContainerView()
         }
         setupViewElements()
@@ -46,6 +44,16 @@ class ReaderTabView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func selectDiscover() {
+        guard let discoverIndex = tabBar.items
+            .firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") }) else {
+            return
+        }
+
+        tabBar.setSelectedIndex(discoverIndex)
+        selectedTabDidChange(tabBar)
     }
 }
 
@@ -64,9 +72,7 @@ extension ReaderTabView {
         setupButtonsView()
         setupFilterButton()
         setupResetFilterButton()
-        setupVerticalDivider(verticalDivider)
         setupHorizontalDivider(horizontalDivider)
-        setupSettingsButton()
         activateConstraints()
     }
 
@@ -93,8 +99,6 @@ extension ReaderTabView {
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         horizontalDivider.isHidden = tabItem.shouldHideButtonsView
-        settingsButton.isHidden = tabItem.shouldHideSettingsButton
-        verticalDivider.isHidden = tabItem.shouldHideSettingsButton
     }
 
     private func setupButtonsView() {
@@ -104,8 +108,6 @@ extension ReaderTabView {
         buttonsStackView.alignment = .fill
         buttonsStackView.addArrangedSubview(filterButton)
         buttonsStackView.addArrangedSubview(resetFilterButton)
-        buttonsStackView.addArrangedSubview(verticalDivider)
-        buttonsStackView.addArrangedSubview(settingsButton)
         buttonsStackView.isHidden = true
     }
 
@@ -133,33 +135,9 @@ extension ReaderTabView {
         resetFilterButton.accessibilityLabel = Accessibility.resetFilterButtonLabel
     }
 
-    private func setupVerticalDivider(_ divider: UIView) {
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        let dividerView = UIView()
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        dividerView.backgroundColor = Appearance.dividerColor
-        divider.addSubview(dividerView)
-        NSLayoutConstraint.activate([
-            dividerView.centerYAnchor.constraint(equalTo: divider.centerYAnchor),
-            dividerView.heightAnchor.constraint(equalTo: divider.heightAnchor, multiplier: Appearance.verticalDividerHeightMultiplier),
-            dividerView.leadingAnchor.constraint(equalTo: divider.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: divider.trailingAnchor)
-        ])
-    }
-
     private func setupHorizontalDivider(_ divider: UIView) {
         divider.translatesAutoresizingMaskIntoConstraints = false
         divider.backgroundColor = Appearance.dividerColor
-    }
-
-    private func setupSettingsButton() {
-        settingsButton.accessibilityLabel = Appearance.settingsButtonAccessibilitylabel
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
-        WPStyleGuide.applyReaderSettingsButtonStyle(settingsButton)
-        settingsButton.accessibilityIdentifier = Accessibility.settingsButtonIdentifier
-        settingsButton.accessibilityLabel = Accessibility.settingsButtonLabel
-        settingsButton.accessibilityHint = Accessibility.settingsButtonHint
     }
 
     private func addContentToContainerView() {
@@ -183,10 +161,8 @@ extension ReaderTabView {
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
-            verticalDivider.widthAnchor.constraint(equalToConstant: Appearance.dividerWidth),
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
-            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
-            settingsButton.widthAnchor.constraint(equalToConstant: Appearance.settingsButtonWidth)
+            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor)
         ])
     }
 }
@@ -195,6 +171,7 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+        addContentToContainerView()
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
@@ -232,21 +209,59 @@ extension ReaderTabView {
         }
         viewModel.resetFilter(selectedItem: tabItem)
     }
+}
 
-    @objc private func didTapSettingsButton() {
-        viewModel.presentSettings(from: settingsButton)
+
+// MARK: - Ghost
+private extension ReaderTabView {
+
+    /// Build the ghost tab bar
+    func makeGhostTabBar() -> FilterTabBar {
+        let ghostTabBar = FilterTabBar()
+
+        ghostTabBar.items = Appearance.ghostTabItems
+        ghostTabBar.isUserInteractionEnabled = false
+        ghostTabBar.tabBarHeight = Appearance.barHeight
+        ghostTabBar.dividerColor = .clear
+
+        return ghostTabBar
+    }
+
+    /// Show the ghost tab bar
+    func showGhost() {
+        let ghostTabBar = makeGhostTabBar()
+        tabBar.addSubview(ghostTabBar)
+        tabBar.pinSubviewToAllEdges(ghostTabBar)
+
+        loadingView = ghostTabBar
+
+        ghostTabBar.startGhostAnimation(style: GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                                                          beatStartColor: .placeholderElement,
+                                                          beatEndColor: .placeholderElementFaded))
+
+    }
+
+    /// Hide the ghost tab bar
+    func hideGhost() {
+        loadingView?.stopGhostAnimation()
+        loadingView?.removeFromSuperview()
+        loadingView = nil
+    }
+
+    struct GhostTabItem: FilterTabBarItem {
+        var title: String
+        let accessibilityIdentifier = ""
     }
 }
 
 // MARK: - Appearance
-extension ReaderTabView {
+private extension ReaderTabView {
 
-    private enum Appearance {
+    enum Appearance {
         static let barHeight: CGFloat = 48
 
         static let tabBarAnimationsDuration = 0.2
 
-        static let settingsButtonAccessibilitylabel = NSLocalizedString("Manage", comment: "Label for managing sites and filters in the Reader tab")
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
         static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
@@ -256,11 +271,11 @@ extension ReaderTabView {
 
         static let resetButtonWidth: CGFloat = 32
         static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
-        static let settingsButtonWidth: CGFloat = 56
 
         static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
-        static let verticalDividerHeightMultiplier: CGFloat = 0.6
+        // "ghost" titles are set to the default english titles, as they won't be visible anyway
+        static let ghostTabItems = [GhostTabItem(title: "Following"), GhostTabItem(title: "Discover"), GhostTabItem(title: "Likes"), GhostTabItem(title: "Saved")]
     }
 }
 
@@ -271,8 +286,5 @@ extension ReaderTabView {
         static let filterButtonIdentifier = "ReaderFilterButton"
         static let resetButtonIdentifier = "ReaderResetButton"
         static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
-        static let settingsButtonIdentifier = "ReaderSettingsButton"
-        static let settingsButtonLabel = NSLocalizedString("Manage", comment: "Accessibility label for the settings button in the reader.")
-        static let settingsButtonHint = NSLocalizedString("Manage followed sites and tags", comment: "Accessibility hint for the settings button in the reader.")
     }
 }

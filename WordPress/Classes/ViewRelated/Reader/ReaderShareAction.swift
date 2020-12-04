@@ -6,6 +6,7 @@ final class ReaderShareAction {
             let sharingController = PostSharingController()
 
             sharingController.shareReaderPost(post, fromView: anchor, inViewController: vc)
+            WPAnalytics.track(.itemSharedReader, properties: ["blogId": post.siteID as Any])
         }
     }
 }

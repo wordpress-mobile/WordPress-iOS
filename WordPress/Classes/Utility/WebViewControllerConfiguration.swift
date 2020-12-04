@@ -16,6 +16,7 @@ class WebViewControllerConfiguration: NSObject {
     @objc var customTitle: String?
     @objc var authenticator: RequestAuthenticator?
     @objc weak var navigationDelegate: WebNavigationDelegate?
+    var onClose: (() -> Void)?
 
     @objc init(url: URL?) {
         self.url = url

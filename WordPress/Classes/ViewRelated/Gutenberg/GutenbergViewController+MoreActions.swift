@@ -12,13 +12,12 @@ extension GutenbergViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        //TODO: Comment in when bridge is ready
-        /*if mode == .richText {
+        if mode == .richText, let contentInfo = contentInfo {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-            let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
+            let textCounterTitle = String(format: NSLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
 
             alert.title = textCounterTitle
-        }*/
+        }
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
@@ -54,13 +53,25 @@ extension GutenbergViewController {
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
+
+        let settingsTitle = self.post is Page ? MoreSheetAlert.pageSettingsTitle : MoreSheetAlert.postSettingsTitle
+
+        alert.addDefaultActionWithTitle(settingsTitle) { [weak self] _ in
             self?.displayPostSettings()
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        if #available(iOS 14.0, *),
+            let button = navigationBarManager.moreBarButtonItem.customView {
+            // Required to work around an issue present in iOS 14 beta 2
+            // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
+            alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)
+            alert.popoverPresentationController?.sourceView = navigationController?.navigationBar
+            alert.view.accessibilityIdentifier = MoreSheetAlert.accessibilityIdentifier
+        } else {
+            alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
+        }
 
         present(alert, animated: true)
     }
@@ -93,7 +104,7 @@ extension GutenbergViewController {
 // MARK: - Constants
 
 extension GutenbergViewController {
-    private struct MoreSheetAlert {
+    struct MoreSheetAlert {
         static let classicTitle = NSLocalizedString(
             "Switch to classic editor",
             comment: "Switches from Gutenberg mobile to the classic editor"
@@ -103,6 +114,8 @@ extension GutenbergViewController {
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 }

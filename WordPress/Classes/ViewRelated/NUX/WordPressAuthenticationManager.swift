@@ -37,8 +37,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
+                                                                enableSignupWithGoogle: true,
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
-                                                                enableUnifiedSiteAddress: FeatureFlag.unifiedSiteAddress.enabled)
+                                                                enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -63,12 +64,24 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
+                                                navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // NEWBARS - This is temporary while we support old style nav bars in some of the auth flows
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted,
-                                                statusBarStyle: .lightContent)
+                                                prologueTitleColor: .textInverted)
+
+        let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
+                                                              errorColor: .error,
+                                                              textColor: .text,
+                                                              textSubtleColor: .textSubtle,
+                                                              textButtonColor: .primary,
+                                                              textButtonHighlightColor: .primaryDark,
+                                                              viewControllerBackgroundColor: .basicBackground,
+                                                              navBarBackgroundColor: .basicBackground,  // TODO: NEWBARS -  Replace with .appBarBackground once new nav bar styles are merged
+                                                              navButtonTextColor: .brand,   // TODO: NEWBARS - Replace with .appBarTint
+                                                              navTitleTextColor: .text)     // TODO: NEWBARS - Replace with .appBarText
 
         WordPressAuthenticator.initialize(configuration: configuration,
-                                          style: style)
+                                          style: style,
+                                          unifiedStyle: unifiedStyle)
     }
 }
 
@@ -161,6 +174,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return ZendeskUtils.showSupportNotificationIndicator
     }
 
+    private var tracker: AuthenticatorAnalyticsTracker {
+        AuthenticatorAnalyticsTracker.shared
+    }
+
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
@@ -170,7 +187,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-        let controller = SupportTableViewController()
+        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
+        WPStyleGuide.configureNavigationAppearance()
+
+        // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
+        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
+        // it here manually before tracking the new step.
+        let step = tracker.state.lastStep
+
+        tracker.track(step: .help)
+
+        let controller = SupportTableViewController { [weak self] in
+            self?.tracker.track(click: .dismiss)
+            self?.tracker.set(step: step)
+        }
         controller.sourceTag = sourceTag
 
         let navController = UINavigationController(rootViewController: controller)
@@ -192,8 +222,9 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - site: passes in the site information to the delegate method.
     ///     - onCompletion: Closure to be executed on completion.
     ///
-    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (Error?, Bool) -> Void) {
-        onCompletion(nil, true)
+    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
+        let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
+        onCompletion(result)
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.

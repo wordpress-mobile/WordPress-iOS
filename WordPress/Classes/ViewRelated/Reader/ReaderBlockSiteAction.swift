@@ -22,6 +22,7 @@ final class ReaderBlockSiteAction {
                                                                     preferredStyle: .alert)
                             alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                             alertController.presentFromRootViewController()
+                            WPAnalytics.track(.readerBlogBlocked, properties: ["blogId": post.siteID as Any])
         })
 
     }

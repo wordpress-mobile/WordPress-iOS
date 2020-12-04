@@ -110,11 +110,13 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
-        ReaderFollowAction().execute(with: post, context: context) { [weak self] in
-            if toFollow {
-                self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-            }
-        }
+        ReaderFollowAction().execute(with: post, context: context,
+                                     completion: { [weak self] in
+                                        if toFollow {
+                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+                                        }
+                                     },
+                                     failure: nil)
     }
 
     func toggleSavedForLater(for post: ReaderPost) {
@@ -122,9 +124,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         // TODO: - READERNAV - Update this check once the old reader is removed
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
-        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved, FeatureFlag.newReaderNavigation.enabled {
+        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
             actionOrigin = .savedStream
-
         } else {
             actionOrigin = .otherStream
         }
@@ -137,7 +138,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
         let saveAction = ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation)
 
-        saveAction.execute(with: post, context: context, origin: actionOrigin)
+        saveAction.execute(with: post, context: context, origin: actionOrigin, viewController: origin)
         saveForLaterAction = saveAction
     }
 

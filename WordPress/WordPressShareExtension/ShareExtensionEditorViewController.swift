@@ -931,7 +931,7 @@ extension ShareExtensionEditorViewController {
         stopEditing()
         tracks.trackExtensionCancelled()
         cleanUpSharedContainerAndCache()
-        dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        dismissalCompletionBlock?(false)
     }
 
     @objc func nextWasPressed() {

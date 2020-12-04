@@ -157,9 +157,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
+    ///     - userInteraction: Indicates if the user interacted with the Push Notification
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    @objc func handleNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+    @objc func handleNotification(_ userInfo: NSDictionary, userInteraction: Bool = false, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
         DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
@@ -184,7 +185,7 @@ final public class PushNotificationsManager: NSObject {
                         handleQuickStartLocalNotification]
 
         for handler in handlers {
-            if handler(userInfo, completionHandler) {
+            if handler(userInfo, userInteraction, completionHandler) {
                 break
             }
         }
@@ -230,7 +231,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleSupportNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleSupportNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
 
         guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
             type == ZendeskUtils.PushNotificationIdentifiers.type else {
@@ -263,7 +264,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleAuthenticationNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleAuthenticationNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -274,12 +275,36 @@ extension PushNotificationsManager {
             return false
         }
 
-        if applicationState != .background {
+        /// This is a (hopefully temporary) workaround. A Push Authentication must be dealt with whenever:
+        ///
+        ///     1.  When the user interacts with a Push Notification
+        ///     2.  When the App is in Foreground
+        ///
+        /// As per iOS 13 there are certain scenarios in which the `applicationState` may be `.background` when the user pressed over the Alert.
+        /// By means of the `userInteraction` flag, we're just working around the new SDK behavior.
+        ///
+        /// Proper fix involves a full refactor, and definitely stop checking on `applicationState`, since it's not reliable anymore.
+        ///
+        if applicationState != .background || userInteraction {
             authenticationManager.handleAuthenticationNotification(userInfo)
         }
 
         completionHandler?(.newData)
 
+        return true
+    }
+
+    /// A handler for a 2fa auth notification approval action.
+    ///
+    /// - Parameter userInfo: The Notification's Payload
+    /// - Returns: True if successful. False otherwise.
+    ///
+    @objc func handleAuthenticationApprovedAction(_ userInfo: NSDictionary) -> Bool {
+        let authenticationManager = PushAuthenticationManager()
+        guard authenticationManager.isAuthenticationNotification(userInfo) else {
+            return false
+        }
+        authenticationManager.handleAuthenticationApprovedAction(userInfo)
         return true
     }
 
@@ -295,7 +320,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleInactiveNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleInactiveNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard applicationState == .inactive else {
             return false
         }
@@ -322,7 +347,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleBackgroundNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard userInfo.number(forKey: Notification.identifierKey)?.stringValue != nil else {
             return false
         }
@@ -389,7 +414,7 @@ extension PushNotificationsManager {
     ///     - completionHandler: A callback, to be executed on completion
     ///
     /// - Returns: True when handled. False otherwise
-    @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard let type = userInfo.string(forKey: Notification.typeKey),
             type == Notification.local else {
                 return false

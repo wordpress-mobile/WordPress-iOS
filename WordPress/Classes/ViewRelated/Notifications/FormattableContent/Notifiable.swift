@@ -15,6 +15,7 @@ enum NotificationKind: String {
     case newPost        = "new_post"
     case post           = "post"
     case user           = "user"
+    case login          = "push_auth"
     case unknown        = "unknown"
 }
 
@@ -24,13 +25,15 @@ extension NotificationKind {
         .comment,
         .commentLike,
         .like,
-        .matcher
+        .matcher,
+        .login,
     ]
 
     /// Enumerates the Kinds of rich notifications that include body text
     private static var kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
         .commentLike,
         .like,
+        .login,
     ]
 
     /// Indicates whether or not a given kind of rich notification has a body support.
@@ -56,7 +59,7 @@ extension NotificationKind {
     ///
     var contentExtensionCategoryIdentifier: String? {
         switch self {
-        case .commentLike, .like, .matcher:
+        case .commentLike, .like, .matcher, .login:
             return rawValue
         default:
             return nil

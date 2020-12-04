@@ -1,9 +1,0 @@
-Som vanligt har vi gjort många förbättringar i blockredigeraren. Knappen för att ta bort block ligger nu i en meny som du når genom att trycka på knappen med tre punkter i blockets verktygsfält. Vi har också lagt till stöd för överläggsfärger i omslagsblocket, stöd för radiella gradienter i blocken för knappar och omslag, animering in/ut av det flytande verktygsfältet och en inforuta för knapparna vid val av sidmall. Blockets verktygsfält minieras om blocket är smalare än verktygsfältet.
-
-Vi har rättat mycket för att skapa en renare upplevelse i blockredigeraren.
-Om förbindelse saknas visar uppladning av media meddelandet ”Försök igen” (i stället för att fastna), ångra/gör om fungerar mer tillförlitligt för både block och text, vi har rättat ett problem vid sammanslagning av textblock och knapparnas justering i sidmallar.
-
-En ny inställning låter dig välja startsida och inläggssida under webbplatsinställningarna.
-
-Slutligen har vi tagit hand om ett problem med Gravatar där man kunde fastna i fotoredigeringen när man försökte ta en ny bild samt gjort några uppdateringar i läsaren.
-

@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressOrgXMLRPCApi;
 @class Role;
 @class QuickStartTourState;
+@class UserSuggestion;
+@class PageTemplateCategory;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -72,7 +74,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support Stock Photos feature (free photos library)
     BlogFeatureStockPhotos,
     /// Does the blog support setting the homepage type and pages?
-    BlogFeatureHomepageSettings
+    BlogFeatureHomepageSettings,
+    /// Does the blog support stories?
+    BlogFeatureStories
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -98,6 +102,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
+@property (nonatomic, strong, readwrite, nullable) NSSet<UserSuggestion *> *userSuggestions;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
@@ -134,7 +139,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 /// Disk quota for site, this is only available for WP.com sites
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
-
+@property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
@@ -192,6 +197,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 #pragma mark - Blog information
 
 - (BOOL)isAtomic;
+- (BOOL)isWPForTeams;
 - (BOOL)isAutomatedTransfer;
 - (BOOL)isPrivate;
 - (BOOL)isPrivateAtWPCom;
@@ -207,6 +213,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
+- (BOOL)hasMappedDomain;
 
 /**
  *  Returnst the text description for a post format code

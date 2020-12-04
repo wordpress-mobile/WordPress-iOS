@@ -27,7 +27,6 @@
         }
 
         post.remoteStatus = .failed
-        post.author = post.blog.account?.displayName
 
         if !post.hasRemote() && post is Page {
             post.status = .draft

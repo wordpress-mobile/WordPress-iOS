@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qXf-xc-H3f" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nsd-8V-md1">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="880"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fY2-jE-UjJ" customClass="CircularImageView" customModule="WordPress">
+                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="X9c-2x-dql"/>
+                                <constraint firstAttribute="height" priority="999" constant="20" id="uuI-y3-TOa"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jy0-LM-JGD">
+                            <rect key="frame" x="28" y="0.0" width="80.5" height="20.5"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="cRG-GY-3Wn" userLabel="View (spacer)">
+                            <rect key="frame" x="116.5" y="0.0" width="297.5" height="0.0"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="nsd-8V-md1" firstAttribute="leading" secondItem="qXf-xc-H3f" secondAttribute="leading" id="1Cn-JY-hJi"/>
+                <constraint firstItem="nsd-8V-md1" firstAttribute="top" secondItem="qXf-xc-H3f" secondAttribute="top" id="AOg-SZ-KJI"/>
+                <constraint firstAttribute="bottom" secondItem="nsd-8V-md1" secondAttribute="bottom" priority="999" constant="16" id="CeH-O3-cpE"/>
+                <constraint firstAttribute="trailing" secondItem="nsd-8V-md1" secondAttribute="trailing" id="UWP-cy-9A4"/>
+            </constraints>
+            <connections>
+                <outlet property="imageView" destination="fY2-jE-UjJ" id="1cB-qH-1NY"/>
+                <outlet property="textLabel" destination="Jy0-LM-JGD" id="FN5-bu-OUO"/>
+            </connections>
+            <point key="canvasLocation" x="155" y="-90"/>
+        </view>
+    </objects>
+</document>

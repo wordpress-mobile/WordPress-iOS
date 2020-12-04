@@ -1038,11 +1038,15 @@ private extension StatsPeriodStore {
     // MARK: - Helpers
 
     func statsRemote() -> StatsServiceRemoteV2? {
-
-        if statsServiceRemote == nil {
+        // initialize the service if it's nil
+        guard let statsService = statsServiceRemote else {
+            initializeStatsRemote()
+            return statsServiceRemote
+        }
+        // also re-initialize the service if the site has changed
+        if let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue, siteID != statsService.siteID {
             initializeStatsRemote()
         }
-
         return statsServiceRemote
     }
 
@@ -1062,12 +1066,8 @@ private extension StatsPeriodStore {
     func cancelQueries() {
         operationQueue.cancelAllOperations()
 
-        statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+        statsServiceRemote?.wordPressComRestApi.cancelTasks()
         setAllFetchingStatus(.idle)
-
-        // `invalidateAndCancelTasks` invalidates the SessionManager,
-        // so we need to recreate it to run queries.
-        initializeStatsRemote()
     }
 
     func shouldFetchOverview() -> Bool {

@@ -140,8 +140,17 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         // Single Section Mode: A single section will contain all of the rows
         if singleSectionMode {
-            return [Section(rows: rows)]
+            // Switch on stream type to provide descriptive text in footer for more context
+            switch stream.kind {
+            case .Device:
+                return [Section(rows: rows, footerText: NSLocalizedString("Settings for push notifications that appear on your mobile device.", comment: "Descriptive text for the Push Notifications Settings"))]
+            case .Email:
+                return [Section(rows: rows, footerText: NSLocalizedString("Settings for notifications that are sent to the email tied to your account.", comment: "Descriptive text for the Email Notifications Settings"))]
+            case .Timeline:
+                return [Section(rows: rows, footerText: NSLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
+            }
         }
+
 
         // Multi Section Mode: We'll have one Section per Row
         var sections = [Section]()

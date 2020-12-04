@@ -16,7 +16,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate let post: AbstractPost
     fileprivate unowned let context: UIViewController
-    fileprivate unowned var navigationPicker: WPNavigationMediaPickerViewController?
+    fileprivate weak var navigationPicker: WPNavigationMediaPickerViewController?
     fileprivate let noResultsView = NoResultsViewController.controller()
 
     /// Media Library Data Source
@@ -39,7 +39,7 @@ class GutenbergMediaPickerHelper: NSObject {
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
         options.allowMultipleSelection = false
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         return options
     }()
 
@@ -104,6 +104,7 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
         cameraPicker.options.filter = filter
+        cameraPicker.options.allowMultipleSelection = false
         cameraPicker.showCapture()
     }
 }

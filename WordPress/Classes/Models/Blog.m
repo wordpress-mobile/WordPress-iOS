@@ -27,6 +27,7 @@ NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
+NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 @interface Blog ()
 
@@ -53,6 +54,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 @dynamic domains;
 @dynamic themes;
 @dynamic media;
+@dynamic userSuggestions;
 @dynamic menus;
 @dynamic menuLocations;
 @dynamic roles;
@@ -83,6 +85,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -117,6 +120,12 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 - (BOOL)isAtomic
 {
     NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
+    return [value boolValue];
+}
+
+- (BOOL)isWPForTeams
+{
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsWPForTeams];
     return [value boolValue];
 }
 
@@ -290,6 +299,17 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 - (NSString *)defaultPostFormatText
 {
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
+}
+
+- (BOOL)hasMappedDomain {
+    if (![self isHostedAtWPcom]) {
+        return NO;
+    }
+
+    NSURL *unmappedURL = [NSURL URLWithString:[self getOptionValue:@"unmapped_url"]];
+    NSURL *homeURL = [NSURL URLWithString:[self homeURL]];
+
+    return ![[unmappedURL host] isEqualToString:[homeURL host]];
 }
 
 - (BOOL)hasIcon
@@ -469,7 +489,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
         case BlogFeatureMentions:
-            return [self isHostedAtWPcom];
+            return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
@@ -509,6 +529,8 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureStories:
+            return [self supportsStories];
     }
 }
 
@@ -575,6 +597,12 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
         && self.isAdmin;
 
     return isTransferrable || hasRequiredJetpack;
+}
+
+- (BOOL)supportsStories
+{
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"9.1"];
+    return hasRequiredJetpack || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount

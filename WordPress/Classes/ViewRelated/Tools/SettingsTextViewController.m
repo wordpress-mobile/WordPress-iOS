@@ -144,6 +144,17 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 #pragma mark - NavigationItem Buttons
 
+- (void)setDisplaysNavigationButtons:(BOOL)displaysNavigationButtons
+{
+    if (displaysNavigationButtons) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(confirm)];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
 - (void)cancel
 {
     self.shouldNotifyValue = NO;
@@ -331,7 +342,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)dismissViewController
 {
     if (self.isModal) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:self.onDismiss];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }

@@ -77,6 +77,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     internal var jetpackLoginViewController: JetpackLoginViewController? = nil
 
+    /// Timestamp of the most recent note before updates
+    /// Used to count notifications to show the second notifications prompt
+    ///
+    private var timestampBeforeUpdatesForSecondAlert: String?
+
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
@@ -170,6 +175,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         markWelcomeNotificationAsSeenIfNeeded()
 
+        if userDefaults.notificationsTabAccessCount < Constants.inlineTabAccessCount {
+            userDefaults.notificationsTabAccessCount += 1
+        }
+
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
@@ -177,6 +186,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             self.showInlinePrompt()
         }
         showNotificationPrimerAlertIfNeeded()
+        showSecondNotificationsAlertIfNeeded()
+
+        if FeatureFlag.whatIsNew.enabled {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -656,6 +670,7 @@ extension NotificationsViewController {
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
+
             return
         }
 
@@ -984,18 +999,24 @@ extension NotificationsViewController {
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
-        // If we don't currently have a selected notification and there is a notification
-        // in the list, then select it.
-        if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
-            if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
-                let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
-                selectRow(for: firstNotification, animated: false, scrollPosition: .none)
-                self.tableView(tableView, didSelectRowAt: indexPath)
-            } else {
-                // If there's no notification to select, we should wipe out
-                // any detail view controller that may be present.
-                showDetailViewController(UIViewController(), sender: nil)
-            }
+        guard !splitViewControllerIsHorizontallyCompact && selectedNotification == nil else {
+            return
+        }
+
+        // If we don't currently have a selected notification and there is a notification in the list, then select it.
+        if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
+            selectRow(for: firstNotification, animated: false, scrollPosition: .none)
+            self.tableView(tableView, didSelectRowAt: indexPath)
+            return
+        }
+
+        // If we're not showing the Jetpack prompt or the fullscreen No Results View,
+        // then clear any detail view controller that may be present.
+        // (i.e. don't add an empty detail VC if the primary is full width)
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            splitViewController.wpPrimaryColumnWidth != WPSplitViewControllerPrimaryColumnWidth.full {
+            showDetailViewController(UIViewController(), sender: nil)
         }
     }
 
@@ -1084,6 +1105,22 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return Notification.classNameWithoutNamespaces()
     }
 
+    private var shouldCountNotificationsForSecondAlert: Bool {
+        userDefaults.notificationPrimerInlineWasAcknowledged &&
+            userDefaults.secondNotificationsAlertCount != Constants.secondNotificationsAlertDisabled
+    }
+
+    func tableViewWillChangeContent(_ tableView: UITableView) {
+        guard shouldCountNotificationsForSecondAlert,
+            let notification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+            let timestamp = notification.timestamp else {
+                timestampBeforeUpdatesForSecondAlert = nil
+                return
+        }
+
+        timestampBeforeUpdatesForSecondAlert = timestamp
+    }
+
     func tableViewDidChangeContent(_ tableView: UITableView) {
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
@@ -1107,6 +1144,32 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         } else {
             selectFirstNotificationIfAppropriate()
         }
+        // count new notifications for second alert
+        guard shouldCountNotificationsForSecondAlert else {
+            return
+        }
+
+        userDefaults.secondNotificationsAlertCount += newNotificationsForSecondAlert
+
+        if isViewOnScreen() {
+            showSecondNotificationsAlertIfNeeded()
+        }
+    }
+
+    // counts the new notifications for the second alert
+    private var newNotificationsForSecondAlert: Int {
+
+        guard let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
+            let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+
+            return 0
+        }
+        for notification in notifications.enumerated() {
+            if let timestamp = notification.element.timestamp, timestamp <= previousTimestamp {
+                return notification.offset
+            }
+        }
+        return 0
     }
 
     private static func accessibilityHint(for note: Notification) -> String? {
@@ -1209,15 +1272,18 @@ private extension NotificationsViewController {
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
-        if let splitViewController = splitViewController as? WPSplitViewController {
-            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
-            if splitViewController.wpPrimaryColumnWidth != columnWidth {
-                splitViewController.wpPrimaryColumnWidth = columnWidth
-            }
+        guard let splitViewController = splitViewController as? WPSplitViewController else {
+            return
+        }
 
-            if columnWidth == .default {
-                splitViewController.dimDetailViewController(shouldDimDetailViewController)
-            }
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+
+        if splitViewController.wpPrimaryColumnWidth != columnWidth {
+            splitViewController.wpPrimaryColumnWidth = columnWidth
+        }
+
+        if columnWidth == .default {
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
         }
     }
 
@@ -1256,6 +1322,7 @@ private extension NotificationsViewController {
     var shouldDimDetailViewController: Bool {
         return shouldDisplayNoResultsView && filter != .none
     }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -1281,7 +1348,9 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull, UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+        guard inlinePromptView.alpha != WPAlphaFull,
+            userDefaults.notificationPrimerAlertWasDisplayed,
+            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
             return
         }
 
@@ -1637,17 +1706,35 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func showNotificationPrimerAlertIfNeeded() {
-        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+
+        guard !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.displayAlertDelay) {
                 self.showNotificationPrimerAlert()
         }
     }
 
-    private func showNotificationPrimerAlert() {
+    private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
+        InteractiveNotificationsManager.shared.requestAuthorization {
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+        }
+    }
 
+    private func showNotificationPrimerAlert() {
+        let alertController = FancyAlertViewController.makeNotificationPrimerAlertController(approveAction: notificationAlertApproveAction(_:))
+        showNotificationAlert(alertController)
+    }
+
+    private func showSecondNotificationAlert() {
+        let alertController = FancyAlertViewController.makeNotificationSecondAlertController(approveAction: notificationAlertApproveAction(_:))
+        showNotificationAlert(alertController)
+    }
+
+    private func showNotificationAlert(_ alertController: FancyAlertViewController) {
         let mainContext = ContextManager.shared.mainContext
         let accountService = AccountService(managedObjectContext: mainContext)
 
@@ -1661,16 +1748,26 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
             UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
 
-            let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
-                InteractiveNotificationsManager.shared.requestAuthorization {
-                    DispatchQueue.main.async {
-                        controller.dismiss(animated: true)
-                    }
-                }
-            }
+            let alert = alertController
             alert.modalPresentationStyle = .custom
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private func showSecondNotificationsAlertIfNeeded() {
+        guard userDefaults.secondNotificationsAlertCount >= Constants.secondNotificationsAlertThreshold else {
+            return
+        }
+        showSecondNotificationAlert()
+        userDefaults.secondNotificationsAlertCount = Constants.secondNotificationsAlertDisabled
+    }
+
+    private enum Constants {
+        static let inlineTabAccessCount = 6
+        static let displayAlertDelay = 0.2
+        // number of notifications after which the second alert will show up
+        static let secondNotificationsAlertThreshold = 10
+        static let secondNotificationsAlertDisabled = -1
     }
 }

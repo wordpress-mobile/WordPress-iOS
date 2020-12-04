@@ -1,9 +1,11 @@
-WordPress blogunuzu veya web sitenizi doğrudan iOS cihazınızdan yönetin veya oluşturun: yazılar ve sayfalar oluşturun ve düzenleyin, beğendiğiniz fotoğraflarınızı ve videolarınızı yükleyin, istatistikleri görüntüleyin ve yorumlara cevap verin.
+WordPress blogunuzu veya web sitenizi doğrudan iOS cihazınızdan yönetin veya oluşturun: Gönderiler ve sayfalar oluşturun ve düzenleyin, en sevdiğiniz fotoğraf ve videoları yükleyin, istatistikleri görüntüleyin ve yorumları yanıtlayın.
 
-iOS için WordPress ile yayımcılığın gücünü avucunuzda tutarsınız. Kanepede otururken hemen o anda bir haiku yazın. Öğle tatilinde fotoğraf çekin ve yayımlayın. En son yorumlarınıza yanıt verin veya bugünün okuyucularının hangi yeni ülkelerden geldiğini görmek için istatistiklerinizi kontrol edin.
+İOS için WordPress ile yayınlama gücü avucunuzun içinde. Koltuğunuzdan doğaçlama bir haiku hazırlayın. Öğlen tatilinizde bir fotoğraf çekin ve yayınlayın. En son yorumlara yanıt verin veya bugünkü ziyaretçilerin hangi yeni ülkelerden geldiğini görmek için istatistiklerinizi kontrol edin.
 
-iOS için WordPress bir açık kaynak projesidir, bu da sizin gelişimine katkıda bulunabileceğiniz anlamına gelir. https://apps.wordpress.com/contribute/ adresinden daha fazla bilgi edinin.
+İOS için WordPress bir Açık Kaynak projesidir, yani siz de geliştirilmesine katkıda bulunabilirsiniz. https://apps.wordpress.com/contribute/ adresinden daha fazla bilgi edinin.
 
-iOS için WordPress, WordPress.com ve kendi kendine barındırılan WordPress 4.0 veya daha yüksek bir sürümünü çalıştıran WordPress.org sitelerini destekler.
+İOS için WordPress, WordPress.com'u ve WordPress 4.0 veya daha üstünü çalıştıran, kendi kendine barındırılan WordPress.org sitelerini destekler.
 
-Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org/ adresinde forumları ziyaret edin veya @WordPressiOS adresinden bize tweet atın.
+Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org/ adresindeki forumları ziyaret edin veya @WordPressiOS etiketiyle bize tweet atın.
+
+Kaliforniya'daki Kullanıcılar Gizlilik Bildirimi'ni https://automattic.com/privacy/#california-consumer-privacy-act-ccpa adresinden görüntüleyebilirler.

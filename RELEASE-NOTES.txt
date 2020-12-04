@@ -1,6 +1,136 @@
-15.1
+16.4
 -----
  
+16.3
+-----
+* [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
+* [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-30+%22Home+Page+Picker%22&type=Issues)
+* [*] Fixed an issue where `tel:` and `mailto:` links weren't launching actions in the webview found in Reader > post > more > Visit. [#15310]
+* [*] Reader bug fix: tapping a telephone, sms or email link in a detail post in Reader will now respond with the correct action. [#15307]
+* [**] Block Editor: Button block - Add link picker to the block settings [https://github.com/WordPress/gutenberg/pull/26206]
+* [***] Block Editor: Adding support for selecting different unit of value in Cover and Columns blocks [https://github.com/WordPress/gutenberg/pull/26161]
+* [*] Block Editor: Fix theme colors syncing with the editor [https://github.com/WordPress/gutenberg/pull/26821]
+* [*] My Site > Settings > Start Over. Correcting a translation error in the detailed instructions on the Start Over view. [#15358]
+ 
+16.2
+-----
+* [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
+* [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
+* [*] Fixed an issue where comments viewed in the Reader would always be italicized.
+* [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
+* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392] 
+
+16.1
+-----
+* [***] Block Editor: Adds new option to select from a variety of predefined page templates when creating a new page for a Gutenberg site.
+* [*] Fixed an issue that was causing the refresh control to show up on top of the list of sites. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15136]
+* [***] The "Floating Action Button" now appears on the list of posts and pages for quick and convenient creation. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15149l]
+
+16.0
+-----
+* [***] Block Editor: Full-width and wide alignment support for Video, Latest-posts, Gallery, Media & text, and Pullquote block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2605]
+* [***] Block Editor: Fix unsupported block bottom sheet is triggered when device is rotated. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2710]
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack site. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2709]
+* [**] Reader: Select interests is now displayed under the Discover tab. [#15097]
+* [**] Reader: The reader now displays site recommendations in the Discover feed [#15116]
+* [***] Reader: The new redesigned Reader detail shows your post as beautiful as ever. And if you add a featured image it would be twice as beautiful! [#15107]
+
+15.9
+-----
+* [*] Fixed issue that caused duplicate views to be displayed when requesting a login link. [#14975]
+* [internal] Modified feature flags that show unified Site Address, Google, Apple, WordPress views and iCloud keychain login. Could cause regressions. [#14954, #14969, #14970, #14971, #14972]
+* [*] Fixed an issue that caused page editor to become an invisible overlay. [#15012]
+* [**] Block Editor: Increase tap-target of primary action on unsupported blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2608]
+* [***] Block Editor: On Jetpack connected sites, Unsupported Block Editor can be enabled via enabling Jetpack SSO setting directly from within the missing block alert. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2610]
+* [***] Block Editor: Add support for selecting user's post when configuring the link [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2484]
+* [*] Reader: Fixed an issue that resulted in no action when tapping a link with an anchor. [#15027]
+* [***] Block Editor: Unsupported Block Editor: Fixed issue when cannot view or interact with the classic block on Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/issues/2695]
+
+15.8
+-----
+* [*] Image Preview: Fixes an issue where an image would be incorrectly positioned after changing device orientation.
+* [***] Block Editor: Full-width and wide alignment support for Group, Cover and Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2559]
+* [**] Block Editor: Add support for rounded style in Image block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2591]
+* [*] Fixed an issue where the username didn't display on the Signup Epilogue after signing up with Apple and hiding the email address. [#14882]
+* [*] Login: display correct error message when the max number of failed login attempts is reached. [#14914]
+* [**] Block Editor: Fixed a case where adding a block made the toolbar jump [https://github.com/WordPress/gutenberg/pull/24573]
+
+15.7
+-----
+* [**] Updated UI when connecting a self-hosted site from Login Epilogue, My Sites, and Post Signup Interstitial. (#14742)
+* [**] You can now follow conversations for P2 sites
+* [**] Block Editor: Block settings now immediately reflect changes from menu sliders.
+* [**] Simplified authentication and updated UI.(#14845, #14831, #14825, #14817).
+       Now when an email address is entered, the app automatically determines the next step and directs the user accordingly. (i.e. signup or login with the appropriate login view).
+* [**] Added iCloud Keychain login functionality. (#14770)
+* [***] Reader: We’re introducing a new Reader experience that allows users to tailor their Discover feed to their chosen interests.
+* [*] Media editing: Reduced memory usage when marking up an image, which could cause a crash.
+* [**] Block Editor: Fixed Dark Mode transition for editor menus.
+
+15.6
+-----
+* [***] Block Editor: Fixed empty text fields on RTL layout. Now they are selectable and placeholders are visible.
+* [**] Block Editor: Add settings to allow changing column widths
+* [**] Block Editor: Media editing support in Gallery block.
+* [**] Updated UI when logging in with a Site Address.
+* [**] Updated UI when logging in/signing up with Apple.
+* [**] Updated UI when logging in/signing up with Google.
+* [**] Simplified Google authentication. If signup is attempted with an existing WordPress account, automatically redirects to login. If login is attempted without a matching WordPress account, automatically redirects to signup.
+* [**] Fixes issue where the stats were not updating when switching between sites in My Sites.
+* [*] Block Editor: Improved logic for creating undo levels.
+* [*] Social account login: Fixed an issue that could have inadvertently linked two social accounts.
+
+15.5
+-----
+* [*] Reader: revamped UI for your site header.
+* [***] Block Editor: New feature for WordPress.com and Jetpack sites: auto-complete username mentions. An auto-complete popup will show up when the user types the @ character in the block editor.
+* [*] Block Editor: Media editing support in Cover block.
+* [*] Block Editor: Fixed a bug on the Heading block, where a heading with a link and string formatting showed a white shadow in dark mode.
+
+15.4
+-----
+ * [**] Fixes issue where the new page editor wouldn't always show when selected from the "My Site" page on iOS versions 12.4 and below.
+ * [***] Block Editor: Media editing support in Media & Text block.
+ * [***] Block Editor: New block: Social Icons
+ * [*] Block Editor: Cover block placeholder is updated to allow users to start the block with a background color
+ * [**] Improved support for the Classic block to give folks a smooth transition from the classic editor to the block editor
+
+15.3
+-----
+* [***] Block Editor: Adds Copy, Cut, Paste, and Duplicate functionality to blocks
+* [***] Block Editor: Users can now individually edit unsupported blocks found in posts or pages. Not available on selfhosted sites or sites defaulting to classic editor.
+* [*] Block Editor: Improved editor loading experience with Ghost Effect.
+
+15.2
+----
+* [*] Block editor: Display content metrics information (blocks, words, characters count).
+* [*] Fixed a crash that results in navigating to the block editor quickly after logging out and immediately back in.
+* [***] Reader content improved: a lot of fixes in how the content appears when you're reading a post.
+* [**] A site's title can now be changed by tapping on the title in the site detail screen.
+* [**] Added a new Quick Start task to set a title for a new site.
+* [**] Block editor: Add support for customizing gradient type and angle in Buttons and Cover blocks.
+
+-----
+
+15.1
+-----
+* [**] Block Editor: Add support to upload videos to Cover Blocks after the editor has closed.
+* [*] Block Editor: Display the animation of animated GIFs while editing image blocks.
+* [**] Block editor: Adds support for theme colors and gradients.
+* [*] App Settings: Added an app-level toggle for light or dark appearance.
+* [*] Fix a bug where the Latest Post date on Insights Stats was being calculated incorrectly.
+* Block editor: [*] Support for breaking out of captions/citation authors by pressing enter on the following blocks: image, video, gallery, quote, and pullquote.
+* Block editor: [**] Adds editor support for theme defined colors and theme defined gradients on cover and button blocks.
+* [*] Fixed a bug where "Follow another site" was using the wrong steps in the "Grow Your Audience" Quick Start tour.
+* [*] Fix a bug where Quick Start completed tasks were not communicated to VoiceOver users.
+* [**] Quick Start: added VoiceOver support to the Next Steps section.
+* [*] Fixed a bug where the "Publish a post" Quick Start tour didn't reflect the app's new information architecture
+* [***] Free GIFs can now be added to the media library, posts, and pages.
+* [**] You can now set pages as your site's homepage or posts page directly from the Pages list.
+* [**] Fixed a bug that prevented some logins via 'Continue with Apple'.
+* [**] Reader: Fixed a bug where tapping on the more menu may not present the menu
+* [*] Block editor: Fix 'Take a Photo' option failing after adding an image to gallery block
+
 15.0
 -----
 * [**] Block editor: Fix media upload progress when there's no connection.
@@ -38,15 +168,13 @@
 * Support the superscript and subscript HTML formatting on the Block Editor and Classic Editor.
 * [***] You can now draw on images to annotate them using the Edit image feature in the post editor.
 * [*] Fixed a bug on the editors where changing a featured image didn't trigger that the post/page changed.
- 
+
 14.8.1
 -----
 * Fix adding and removing of featured images to posts.
 
 14.8
 -----
-* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
-
 * Block editor: Prefill caption for image blocks when available on the Media library
 * Block editor: New block: Buttons. From now you’ll be able to add the individual Button block only inside the Buttons block
 * Block editor: Fix bug where whitespaces at start of text blocks were being removed
@@ -59,7 +187,7 @@
 * [internal] the "send magic link" screen has navigation changes that can cause regressions. See https://git.io/Jfqiz for testing details.
 * Updated UI for Login and Signup epilogues.
 * Fixes delayed split view resizing while rotating your device.
- 
+
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
@@ -78,9 +206,9 @@
 * Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
 * You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
 
-* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
-* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
- 
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites.
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
+
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.

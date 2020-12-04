@@ -10,7 +10,6 @@
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
@@ -58,6 +57,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
+@property (nonatomic, strong) FollowCommentsService *followCommentsService;
 
 @end
 
@@ -160,8 +160,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewDidAppear:animated];
     [self.tableView reloadData];
-}
 
+    if(self.promptToAddComment){
+        [self.replyTextView becomeFirstResponder];
+
+        // Reset the value to prevent prompting again if the user leaves and comes back
+        self.promptToAddComment = NO;
+    }
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -244,13 +250,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [WPAppAnalytics track: stat withProperties:properties];
 }
 
--(void)trackReplyToComment {
+-(void)trackReplyTo:(BOOL)replyTarget {
     ReaderPost *post = self.post;
     NSDictionary *railcar = post.railcarDictionary;
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyBlogID] = post.siteID;
     properties[WPAppAnalyticsKeyPostID] = post.postID;
     properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+    properties[WPAppAnalyticsKeyReplyingTo] = replyTarget ? @"comment" : @"post";
     if (post.feedID && post.feedItemID) {
         properties[WPAppAnalyticsKeyFeedID] = post.feedID;
         properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
@@ -286,6 +293,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] init];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
+    };
+    headerView.onFollowConversationClick = ^{
+        [weakSelf handleFollowConversationButtonTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
@@ -376,9 +386,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSNumber *siteID = self.siteID;
     NSParameterAssert(siteID);
 
-    self.suggestionsTableView = [SuggestionsTableView new];
-    self.suggestionsTableView.siteID = siteID;
-    self.suggestionsTableView.suggestionsDelegate = self;
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:siteID suggestionType:SuggestionTypeMention delegate:self];
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
 }
@@ -530,6 +538,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
+
+    _followCommentsService = [FollowCommentsService createServiceWith:_post];
 }
 
 - (NSNumber *)siteID
@@ -563,6 +573,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return self.post.commentsOpen && self.isLoggedIn;
 }
 
+- (BOOL)canFollowConversation
+{
+    return [self.followCommentsService canFollowConversation];
+}
+
 - (BOOL)shouldDisplayReplyTextView
 {
     return self.canComment;
@@ -570,7 +585,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)shouldDisplaySuggestionsTableView
 {
-    return self.shouldDisplayReplyTextView && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
+    return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
 
@@ -579,6 +594,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
+    [self refreshSubscriptionStatusIfNeeded];
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
@@ -609,6 +625,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
+    
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+}
+
+- (void)refreshSubscriptionStatusIfNeeded
+{
+    if (!self.canFollowConversation) {
+        return;
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
+        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error fetching subscription status for post: %@", error);
+    }];
 }
 
 - (void)refreshReplyTextView
@@ -761,6 +793,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __typeof(self) __weak weakSelf = self;
 
+    BOOL replyToComment = self.indexPathForCommentRepliedTo != nil;
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
 
@@ -769,7 +802,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
         [weakSelf displayNoticeWithTitle:successMessage message:nil];
 
-        [weakSelf trackReplyToComment];
+        [weakSelf trackReplyTo:replyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
@@ -787,7 +820,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
 
-    if (self.indexPathForCommentRepliedTo) {
+    if (replyToComment) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
         [service replyToHierarchicalCommentWithID:comment.commentID
                                              post:self.post
@@ -1171,12 +1204,61 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - PostHeaderView helpers
 
+- (void)handleFollowConversationButtonTapped
+{
+    __typeof(self) __weak weakSelf = self;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
+    // Keep previous subscription status in case of failure
+    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL newIsSubscribed = !oldIsSubscribed;
+
+    // Optimistically toggle subscription status
+    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+
+    // Define success block
+    void (^successBlock)(void) = ^void() {
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
+            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+        });
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"Error toggling subscription status: %@", error);
+
+        NSString *title = newIsSubscribed
+            ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
+            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [generator notificationOccurred:UINotificationFeedbackTypeError];
+            [weakSelf displayNoticeWithTitle:title message:nil];
+
+            // If the request fails, fall back to the old subscription status
+            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+        });
+    };
+
+    // Call the service to toggle the subscription status
+    [self.followCommentsService toggleSubscribed:oldIsSubscribed
+                                         success:successBlock
+                                         failure:failureBlock];
+}
+
 - (void)handleHeaderTapped
 {
     if (!self.allowsPushingPostDetails) {
         return;
     }
-    
+
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
     ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
     controller.shouldHideComments = YES;

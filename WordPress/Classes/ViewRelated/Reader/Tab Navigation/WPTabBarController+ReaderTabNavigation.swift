@@ -3,10 +3,25 @@ protocol ReaderContentViewController: UIViewController {
     func setContent(_ content: ReaderContent)
 }
 
+// MARK: - DefinesVariableStatusBarStyle Support
+extension WPTabBarController {
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+    override open var childForStatusBarStyle: UIViewController? {
+        guard
+            let topViewController = readerNavigationController?.topViewController,
+            ((topViewController as? DefinesVariableStatusBarStyle) != nil)
+        else {
+            return nil
+        }
+        return topViewController
+    }
+}
 
 // MARK: - Reader Factory
 extension WPTabBarController {
-
     var readerTabViewController: ReaderTabViewController? {
         readerNavigationController?.topViewController as? ReaderTabViewController
     }
@@ -25,7 +40,9 @@ extension WPTabBarController {
 
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
 
-        if let topic = content.topic {
+        if content.topicType == .discover, let topic = content.topic {
+            return ReaderCardsStreamViewController.controller(topic: topic)
+        } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
             return ReaderStreamViewController.controllerForContentType(content.type)

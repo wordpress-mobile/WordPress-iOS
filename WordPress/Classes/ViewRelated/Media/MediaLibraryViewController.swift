@@ -71,7 +71,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.showSearchBar = true
         options.showActionBar = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.preferredStatusBarStyle = .lightContent
+        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
 
         return options
     }
@@ -656,27 +656,10 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
         }
 
         let mediaCoordinator = MediaCoordinator.shared
-        assets.forEach {
+        assets.forEach { stockPhoto in
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.stockPhotos), selectionMethod: .fullScreenPicker)
-            mediaCoordinator.addMedia(from: $0, to: blog, analyticsInfo: info)
+            mediaCoordinator.addMedia(from: stockPhoto, to: blog, analyticsInfo: info)
             WPAnalytics.track(.stockMediaUploaded)
-        }
-    }
-}
-
-// MARK: Giphy Picker Delegate
-
-extension MediaLibraryViewController: GiphyPickerDelegate {
-    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
-        guard assets.count > 0 else {
-            return
-        }
-
-        let mediaCoordinator = MediaCoordinator.shared
-        assets.forEach { giphyMedia in
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.giphy), selectionMethod: .fullScreenPicker)
-            mediaCoordinator.addMedia(from: giphyMedia, to: blog, analyticsInfo: info)
-            WPAnalytics.track(.giphyUploaded)
         }
     }
 }

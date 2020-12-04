@@ -156,19 +156,13 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     }
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
-        var completionCount = 0
-
-        func completionIncrement() {
-            completionCount += 1
-
-            if completionCount >= cookies.count {
-                completion()
-            }
+        guard let cookie = cookies.last else {
+            return completion()
         }
 
-        for cookie in cookies {
-            DispatchQueue.main.async {
-                self.setCookie(cookie, completionHandler: completionIncrement)
+        DispatchQueue.main.async {
+            self.setCookie(cookie) { [weak self] in
+                self?.setCookies(cookies.dropLast(), completion: completion)
             }
         }
     }

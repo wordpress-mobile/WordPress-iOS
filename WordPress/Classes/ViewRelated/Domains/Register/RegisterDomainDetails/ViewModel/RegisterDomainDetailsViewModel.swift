@@ -560,11 +560,10 @@ extension RegisterDomainDetailsViewModel {
     fileprivate func updateContactInformationValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
         let rows = sections[SectionIndex.contactInformation.rawValue].rows
         for (index, row) in rows.enumerated() {
-            if let editableRow = row.editableRow,
+            if let rule = row.editableRow?.firstRule(forContext: .serverSide),
                 let cellIndex = CellIndex.ContactInformation(rawValue: index) {
-                editableRow.firstRule(
-                    forContext: .serverSide
-                    )?.isValid = messages.isValid(for: cellIndex)
+                let serverSideErrorMessage = messages.serverSideErrorMessage(for: cellIndex)
+                update(rule: rule, with: serverSideErrorMessage)
             }
         }
     }
@@ -572,13 +571,17 @@ extension RegisterDomainDetailsViewModel {
     fileprivate func updateAddressSectionValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
         let rows = sections[SectionIndex.address.rawValue].rows
         for (index, row) in rows.enumerated() {
-            if let editableRow = row.editableRow {
+            if let rule = row.editableRow?.firstRule(forContext: .serverSide) {
                 let addressField = addressSectionIndexHelper.addressField(for: index)
-                editableRow.firstRule(
-                    forContext: .serverSide
-                    )?.isValid = messages.isValid(addressField: addressField)
+                let serverSideErrorMessage = messages.serverSideErrorMessage(addressField: addressField)
+                update(rule: rule, with: serverSideErrorMessage)
             }
         }
+    }
+
+    fileprivate func update(rule: ValidationRule, with serverSideErrorMessage: String?) {
+        rule.isValid = (serverSideErrorMessage == nil)
+        rule.serverSideErrorMessage = serverSideErrorMessage
     }
 }
 
@@ -588,18 +591,18 @@ extension ValidateDomainContactInformationResponse.Messages {
     typealias AddressField = RegisterDomainDetailsViewModel.CellIndex.AddressField
     typealias PhoneNumber = RegisterDomainDetailsViewModel.CellIndex.PhoneNumber
 
-    func isValid(for index: ContactInformation) -> Bool {
+    func serverSideErrorMessage(for index: ContactInformation) -> String? {
         switch index {
         case .country:
-            return countryCode?.isEmpty ?? true
+            return countryCode?.first
         case .email:
-            return email?.isEmpty ?? true
+            return email?.first
         case .firstName:
-            return firstName?.isEmpty ?? true
+            return firstName?.first
         case .lastName:
-            return lastName?.isEmpty ?? true
+            return lastName?.first
         default:
-            return true
+            return nil
         }
     }
 
@@ -607,18 +610,21 @@ extension ValidateDomainContactInformationResponse.Messages {
         return phone?.isEmpty ?? true
     }
 
-    func isValid(addressField: AddressField) -> Bool {
+    func serverSideErrorMessage(addressField: AddressField) -> String? {
         switch addressField {
-        case .addressLine:
-            return address1?.isEmpty ?? true
+        case .addressLine1:
+            return address1?.first
+        case .addressLine2:
+            return address2?.first
         case .city:
-            return city?.isEmpty ?? true
+            return city?.first
         case .postalCode:
-            return postalCode?.isEmpty ?? true
+            return postalCode?.first
         case .state:
-            return state?.isEmpty ?? true
+            return state?.first
         default:
-            return true
+            return nil
         }
     }
+
 }

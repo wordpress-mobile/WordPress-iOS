@@ -1,9 +1,0 @@
-Es gibt wie immer viele Verbesserungen im Block-Editor. Papierkorbsymbol zum Entfernen von Blöcken wird nun in einem Menü angezeigt, das durch Tippen auf das Dreipunktmenü in der Block-Toolbar erreicht werden kann. Support für Overlay-Farben im Cover-Block und radiale Farbverläufe in Button- und Cover-Blöcken hinzugefügt; Möglichkeit zum Starten/Verlassen der Animation in der unverankerten Toolbar und Tooltip für Auswahlbuttons für die Seitenvorlage hinzugefügt. Die Block-Toolbar wird nun minimiert, wenn der Block schmaler als die Toolbar ist.
-
-Außerdem wurden viele Korrekturen für ein besseres Erlebnis mit dem Block-Editor vorgenommen.
-Der Media Uploader zeigt die Nachricht „Erneut versuchen“ an, wenn keine Verbindung besteht (anstatt einzufrieren); Arbeit rückgängig machen/wiederholen ist für Blöcke und Text zuverlässiger; Problem beim Mergen von Text-Blöcken und bei der Button-Ausrichtung in Seitenvorlagen wurde behoben.
-
-Eine neue Einstellung wurde hinzugefügt, über die du deine Startseite und Beitragsseite über die Website-Einstellungen ändern kannst.
-
-Ein Gravatar-Problem wurde behoben, wodurch du im Fotobearbeitungsbildschirm stecken geblieben bist, wenn du ein neues Fotos aufnehmen wolltest; im Reader wurden einige UI-Updates vorgenommen.
-

@@ -197,6 +197,48 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    @available(iOS 13.0, *)
+    func pushAppearanceSettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let values = UIUserInterfaceStyle.allStyles
+
+            let rawValues = values.map({ $0.rawValue })
+            let titles = values.map({ $0.appearanceDescription })
+
+            let currentStyle = AppAppearance.current
+
+            let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: AppAppearance.default.rawValue,
+                                                  SettingsSelectionCurrentValueKey: currentStyle.rawValue,
+                                                  SettingsSelectionTitleKey: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: rawValues] as [String: Any]
+
+            let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
+
+            viewController?.onItemSelected = { [weak self] (style: Any!) -> () in
+                guard let style = style as? Int,
+                    let newStyle = UIUserInterfaceStyle(rawValue: style) else {
+                        return
+                }
+
+                self?.overrideAppAppearance(with: newStyle)
+            }
+
+            self?.navigationController?.pushViewController(viewController!, animated: true)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func overrideAppAppearance(with style: UIUserInterfaceStyle) {
+        let transitionView: UIView = WordPressAppDelegate.shared?.window ?? view
+        UIView.transition(with: transitionView,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            AppAppearance.overrideAppearance(with: style)
+        })
+    }
+
     func pushDebugMenu() -> ImmuTableAction {
         return { [weak self] row in
             let controller = DebugMenuViewController()
@@ -258,6 +300,16 @@ class AppSettingsViewController: UITableViewController {
             let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
                                 feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
+    }
+
+    func presentWhatIsNew() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
         }
     }
 }
@@ -419,7 +471,7 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
-        var rows = [settingsRow, aboutRow]
+        var rows: [ImmuTableRow] = [settingsRow, aboutRow]
         if #available(iOS 10.3, *),
             UIApplication.shared.supportsAlternateIcons {
                 rows.insert(iconRow, at: 0)
@@ -427,6 +479,21 @@ private extension AppSettingsViewController {
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
+        }
+
+        if FeatureFlag.whatIsNew.enabled,
+            let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+            presenter.versionHasAnnouncements {
+            let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
+                                                                          comment: "Opens the What's New / Feature Announcement modal"),
+                                                 action: presentWhatIsNew())
+            rows.append(whatIsNewRow)
+        }
+
+        if #available(iOS 13.0, *) {
+            let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+
+            rows.insert(appearanceRow, at: 0)
         }
 
         return ImmuTableSection(

@@ -1,9 +1,0 @@
-Er zijn, zoals gewoonlijk, verbeteringen aan de blokeditor aangebracht. Het prullenbakpictogram dat je gebruikt om blokken te verwijderen, staat nu in een menu dat geopend kan worden door op de drie puntjes in de blokwerkbalk te tikken. We hebben ook ondersteuning voor overlay-kleuren in het Omslagblok, ondersteuning voor radiale gradiënten in het Knop- en Omslagblok, het starten/afsluiten van animatie in de zwevende werkbalk en een tooltip voor selectieknoppen van paginasjablonen toegevoegd. De blokwerkbalk wordt nu ook ingeklapt als het blok smaller is dan de werkbalk.
-
-We hebben ook een groot aantal fixes doorgevoerd, voor een meer opgeruimde blokeditor-ervaring.
-Bij een media-upload wordt een melding 'opnieuw proberen' weergegeven wanneer er geen verbinding is (in plaats van dat de upload vastloopt), ongedaan maken/opnieuw uitvoeren werkt nu betrouwbaarder voor zowel blokken als tekst, we hebben een samenvoegprobleem met tekstblokken verholpen en de knopuitlijning in paginasjablonen gecorrigeerd.
-
-We hebben een nieuwe instelling toegevoegd waarmee je je homepage en berichtpagina vanuit de site-instellingen kunt wijzigen.
-
-Tot slot hebben we een Gravatar-probleem opgelost waarmee je vastliep in het fotobewerkingsscherm als je probeerde een nieuwe foto te maken, en we hebben een aantal UI-updates doorgevoerd in de Reader.
-

@@ -1,0 +1,2110 @@
+{
+    "success": true,
+    "tags": ["dogs", "cats"],
+    "sort": "date",
+    "posts_count": 8,
+    "date_range": {
+        "after": null,
+        "before": null
+    },
+    "page": 1,
+    "cards": [{
+            "type": "interests_you_may_like",
+            "data": [{
+                    "title": "Activism",
+                    "slug": "activism"
+                },
+                {
+                    "title": "Advice",
+                    "slug": "advice"
+                }
+            ]
+        },
+        {
+            "type": "recommended_blogs",
+            "data": [{
+                "description": "Lorem Ipsum Sit Dolor Amet",
+                "feed_ID": 123456789,
+                "feed_URL": "http://loremipsum.wordpress.com",
+                "icon": {
+                    "img": "http://loremipsum.wordpress.com/wp-content/uploads/2020/10/example.png",
+                    "ico": "http://loremipsum.wordpress.com/wp-content/uploads/2020/10/example.png?w=16"
+                },
+                "ID": 987654321,
+                "is_private": false,
+                "jetpack": false,
+                "name": "Lipsum's Blog",
+                "prefer_feed": false,
+                "subscribers_count": 123,
+                "subscription": {
+                    "delivery_methods": {
+                        "email": null,
+                        "notification": {
+                            "send_posts": false
+                        }
+                    }
+                },
+                "URL": "http://loremipsum.wordpress.com"
+            }]
+        },
+        {
+            "type": "unknown_type",
+            "data": []
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 8349,
+                "site_ID": 11856292,
+                "author": {
+                    "ID": 12191064,
+                    "login": "rhcwilliams",
+                    "email": false,
+                    "name": "rhcwilliams",
+                    "first_name": "Ruth",
+                    "last_name": "Williams",
+                    "nice_name": "rhcwilliams",
+                    "URL": "http:\/\/praypower4today.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/f76059cbb7b0caa64512e43f3ec67a17?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/rhcwilliams",
+                    "site_ID": 19404300,
+                    "has_avatar": true
+                },
+                "date": "2020-07-27T10:00:37-04:00",
+                "modified": "2020-07-09T21:25:35-04:00",
+                "title": "Pats, Please",
+                "URL": "https:\/\/grace-gratitude.blog\/2020\/07\/27\/pats-please\/",
+                "short_URL": "https:\/\/wp.me\/pNKmw-2aF",
+                "content": "\n<figure class=\"wp-block-image\"><img src=\"https:\/\/preview.redd.it\/z8vwaw7z7ax41.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=b35ce43172e1231b896f0a9648534c9abcb03b9f\" alt=\"r\/rarepuppers - u got any scratches?\" \/><figcaption>credit: <a href=\"https:\/\/www.reddit.com\/r\/rarepuppers\/comments\/gf0v6i\/u_got_any_scratches\/\">reddit.com<\/a><\/figcaption><\/figure>\n\n\n\n<blockquote class=\"wp-block-quote has-text-align-center is-style-large\"><p>&#8220;U got any scratches?&#8221;<\/p><\/blockquote>\n",
+                "excerpt": "<p>&#8220;U got any scratches?&#8221;<\/p>\n",
+                "slug": "pats-please",
+                "guid": "http:\/\/grace-gratitude.blog\/?p=8349",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 2,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "6d53df6607bcea8fe1b8afb70888d5dd",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "tags": {
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 227,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 342,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": false,
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/11856292\/posts\/8349",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/posts\/8349\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/posts\/8349\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/posts\/8349\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 72401381,
+                "feed_URL": "http:\/\/grace-gratitude.blog",
+                "feed_item_id": 2829535152,
+                "pseudo_ID": "6d53df6607bcea8fe1b8afb70888d5dd",
+                "is_external": false,
+                "site_name": "Grace &amp; Gratitude",
+                "site_URL": "https:\/\/grace-gratitude.blog",
+                "site_is_private": false,
+                "featured_media": {},
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 6243,
+                "site_ID": 38546394,
+                "author": {
+                    "ID": 37975024,
+                    "login": "oldmainer",
+                    "email": false,
+                    "name": "oldmainer",
+                    "first_name": "Bob",
+                    "last_name": "Quigley",
+                    "nice_name": "oldmainer",
+                    "URL": "http:\/\/oldmainer.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/315ae047df9af715d10190ed02e7fb52?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/oldmainer",
+                    "site_ID": 38546394,
+                    "has_avatar": true
+                },
+                "date": "2020-07-27T08:36:08-04:00",
+                "modified": "2020-07-27T08:36:08-04:00",
+                "title": "Kramer&#8217;s Korner",
+                "URL": "https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/",
+                "short_URL": "https:\/\/wp.me\/p2BJG2-1CH",
+                "content": "<p><img data-attachment-id=\"5879\" data-permalink=\"https:\/\/oldmainer.wordpress.com\/2020\/04\/20\/kramers-korner-3\/20200408_172610\/\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg\" data-orig-size=\"2448,3264\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1586366770&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;400&quot;,&quot;shutter_speed&quot;:&quot;0.066666666666667&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200408_172610\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=225\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=768\" class=\"  wp-image-5879 aligncenter\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg\" alt=\"20200408_172610\" width=\"214\" height=\"286\" srcset=\"https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=214&amp;h=286 214w, https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=428&amp;h=572 428w, https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=113&amp;h=150 113w, https:\/\/oldmainer.files.wordpress.com\/2020\/04\/20200408_172610.jpg?w=225&amp;h=300 225w\" sizes=\"(max-width: 214px) 100vw, 214px\" \/><\/p>\n<p><em><strong>Hello again to all my faithful fans<\/strong><\/em><\/p>\n<p><em><strong>The past two weeks have not been as eventful as some.\u00a0 It&#8217;s mostly because of the heat. It has been so hot that yesterday I saw the neighbors dog chasing a cat and they were both walking.\u00a0 Just kidding. Bob only takes me with him if he doesn&#8217;t have to leave me in the car.\u00a0 We have had several days in the 90&#8217;s, so you can imagine how hot the car would get even with the windows cracked, and, for some reason, Bob does not want to leave me in the car while it is running. Chuckle.<\/strong><\/em><\/p>\n<p><div class=\"tiled-gallery type-rectangular tiled-gallery-unresized\" data-original-width=\"500\" data-carousel-extra='{&quot;blog_id&quot;:38546394,&quot;permalink&quot;:&quot;https:\\\/\\\/oldmainer.wordpress.com\\\/2020\\\/07\\\/27\\\/kramers-korner-10\\\/&quot;,&quot;likes_blog_id&quot;:38546394}' itemscope itemtype=\"http:\/\/schema.org\/ImageGallery\" > <div class=\"gallery-row\" style=\"width: 500px; height: 135px;\" data-original-width=\"500\" data-original-height=\"135\" > <div class=\"gallery-group images-1\" style=\"width: 102px; height: 135px;\" data-original-width=\"102\" data-original-height=\"135\" > <div class=\"tiled-gallery-item tiled-gallery-item-small\" itemprop=\"associatedMedia\" itemscope itemtype=\"http:\/\/schema.org\/ImageObject\"> <a href=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200718_135203\/\" border=\"0\" itemprop=\"url\"> <meta itemprop=\"width\" content=\"98\"> <meta itemprop=\"height\" content=\"131\"> <img data-attachment-id=\"6250\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg\" data-orig-size=\"2448,3264\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1595080323&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;50&quot;,&quot;shutter_speed&quot;:&quot;0.00065963060686016&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200718_135203\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=225\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=768\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=98&#038;h=131\" width=\"98\" height=\"131\" data-original-width=\"98\" data-original-height=\"131\" itemprop=\"http:\/\/schema.org\/image\" title=\"20200718_135203\" alt=\"20200718_135203\" style=\"width: 98px; height: 131px;\" \/> <\/a> <\/div> <\/div> <!-- close group --> <div class=\"gallery-group images-1\" style=\"width: 157px; height: 135px;\" data-original-width=\"157\" data-original-height=\"135\" > <div class=\"tiled-gallery-item tiled-gallery-item-small\" itemprop=\"associatedMedia\" itemscope itemtype=\"http:\/\/schema.org\/ImageObject\"> <a href=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200627_122701\/\" border=\"0\" itemprop=\"url\"> <meta itemprop=\"width\" content=\"153\"> <meta itemprop=\"height\" content=\"131\"> <img data-attachment-id=\"6248\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg\" data-orig-size=\"827,708\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1593260821&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;50&quot;,&quot;shutter_speed&quot;:&quot;0.0035211267605634&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200627_122701\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=300\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=827\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=153&#038;h=131\" width=\"153\" height=\"131\" data-original-width=\"153\" data-original-height=\"131\" itemprop=\"http:\/\/schema.org\/image\" title=\"20200627_122701\" alt=\"20200627_122701\" style=\"width: 153px; height: 131px;\" \/> <\/a> <\/div> <\/div> <!-- close group --> <div class=\"gallery-group images-1\" style=\"width: 108px; height: 135px;\" data-original-width=\"108\" data-original-height=\"135\" > <div class=\"tiled-gallery-item tiled-gallery-item-small\" itemprop=\"associatedMedia\" itemscope itemtype=\"http:\/\/schema.org\/ImageObject\"> <a href=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200627_123902\/\" border=\"0\" itemprop=\"url\"> <meta itemprop=\"width\" content=\"104\"> <meta itemprop=\"height\" content=\"131\"> <img data-attachment-id=\"6249\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg\" data-orig-size=\"1854,2326\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1593261541&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;50&quot;,&quot;shutter_speed&quot;:&quot;0.0083333333333333&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200627_123902\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=239\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=816\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=104&#038;h=131\" width=\"104\" height=\"131\" data-original-width=\"104\" data-original-height=\"131\" itemprop=\"http:\/\/schema.org\/image\" title=\"20200627_123902\" alt=\"20200627_123902\" style=\"width: 104px; height: 131px;\" \/> <\/a> <\/div> <\/div> <!-- close group --> <div class=\"gallery-group images-1\" style=\"width: 133px; height: 135px;\" data-original-width=\"133\" data-original-height=\"135\" > <div class=\"tiled-gallery-item tiled-gallery-item-small\" itemprop=\"associatedMedia\" itemscope itemtype=\"http:\/\/schema.org\/ImageObject\"> <a href=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200627_124015\/\" border=\"0\" itemprop=\"url\"> <meta itemprop=\"width\" content=\"129\"> <meta itemprop=\"height\" content=\"131\"> <img data-attachment-id=\"6247\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg\" data-orig-size=\"2130,2171\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1593261615&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;50&quot;,&quot;shutter_speed&quot;:&quot;0.0083333333333333&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200627_124015\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=294\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=1005\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=129&#038;h=131\" width=\"129\" height=\"131\" data-original-width=\"129\" data-original-height=\"131\" itemprop=\"http:\/\/schema.org\/image\" title=\"20200627_124015\" alt=\"20200627_124015\" style=\"width: 129px; height: 131px;\" \/> <\/a> <\/div> <\/div> <!-- close group --> <\/div> <!-- close row --> <\/div><\/p>\n<p><em><strong>I did however get to go back to the Royal River Park a week ago.\u00a0 I love that place. So nice and shady.\u00a0 So much to see and, a lot of other dogs bring their people.\u00a0 Bob bought me a stake out so that he doesn&#8217;t have to hold me on my leash.\u00a0 Instead, he pounds this thing into the ground and fastens my leash to it.\u00a0 I can go in a six foot full circle.\u00a0 Bob did get a little frustrated that of all the places I could go, I chose to lay in the dirt, sipping on a container of water. I wish he had brought some snacks.<\/strong><\/em><\/p>\n<p><em><strong><img data-attachment-id=\"6252\" data-permalink=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200718_140619-3\/\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg\" data-orig-size=\"1656,1951\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1595081179&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;50&quot;,&quot;shutter_speed&quot;:&quot;0.033333333333333&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200718_140619\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=255\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=869\" class=\"alignnone  wp-image-6252 aligncenter\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=510\" alt=\"20200718_140619\" width=\"173\" height=\"204\" srcset=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=173 173w, https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=346 346w, https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=127 127w, https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=255 255w\" sizes=\"(max-width: 173px) 100vw, 173px\" \/><\/strong><\/em><\/p>\n<p><em><strong>We have all been worried about Scooter.\u00a0 He wasn&#8217;t doing too well a week ago and stopped eating. We took him to the Vet for a series of ex rays and blood tests.\u00a0 Fortunately, most everything looked normal except for his liver.\u00a0 So Bob took him to a specialist for an ultra sound. and the liver thing may be age related.\u00a0 I am happy to say his appetite has returned, but he is now on a special diet and will require some dental surgery.<\/strong><\/em><\/p>\n<p><em><strong>Not to be outdone, I managed to get myself diagnosed with allergies.\u00a0 I was doing a lot of scratching so Bob had me checked out.\u00a0 Now, I too have my own medication.\u00a0 In just a matter of weeks, the three of us have managed to all have different pills and frequencies, and we are all now eating different dog foods.\u00a0 Bob says he feels like he is running a cafeteria for dogs.\u00a0 He also said a couple more trips to the Vet and we will all be living in a tent, whatever that means.<\/strong><\/em><\/p>\n<p><em><strong>Today, Scooter and I are off to the groomers.\u00a0 Sophie&#8217;s fur doesn&#8217;t grow as fast as ours does, so she gets to stay home.\u00a0 This will be my third trip.\u00a0 Haven&#8217;t decided how I will act yet, but we will probably have a little issue with my nails. I&#8217;ll let you know next time.<\/strong><\/em><\/p>\n<p><em><strong>I guess that&#8217;s about all for now.\u00a0 Publishing a blog is very tiring so I think while Bob finishes this up, I&#8217;ll take a little nap.<\/strong><\/em><br \/>\n<em><strong><img data-attachment-id=\"6254\" data-permalink=\"https:\/\/oldmainer.wordpress.com\/2020\/07\/27\/kramers-korner-10\/20200720_141648\/\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg\" data-orig-size=\"2347,2467\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.2&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;LML413DL&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1595254607&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;3.2&quot;,&quot;iso&quot;:&quot;350&quot;,&quot;shutter_speed&quot;:&quot;0.066666666666667&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"20200720_141648\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=285\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=974\" class=\"alignnone size-medium wp-image-6254 aligncenter\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=570\" alt=\"20200720_141648\" width=\"285\" height=\"300\" srcset=\"https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=570 570w, https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=285 285w, https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=143 143w\" sizes=\"(max-width: 285px) 100vw, 285px\" \/>Til next time, this is Kramer saying keep a smile on your face and a treat in your pocket, and to my homeless friends, keep the faith.<\/strong><\/em><\/p>\n<p><em><strong>Your buddy<\/strong><\/em><br \/>\n<em><strong>Kramer<\/strong><\/em><br \/>\n<img data-attachment-id=\"6067\" data-permalink=\"https:\/\/oldmainer.wordpress.com\/2020\/06\/01\/kramers-korner-6\/paw-prints\/\" data-orig-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png\" data-orig-size=\"680,340\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}\" data-image-title=\"Paw Prints\" data-image-description=\"\" data-medium-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png?w=300\" data-large-file=\"https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png?w=680\" class=\"alignnone size-thumbnail wp-image-6067\" src=\"https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png?w=300\" alt=\"Paw Prints\" width=\"150\" height=\"75\" srcset=\"https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png?w=300 300w, https:\/\/oldmainer.files.wordpress.com\/2020\/05\/paw-prints.png?w=150 150w\" sizes=\"(max-width: 150px) 100vw, 150px\" \/><\/p>\n<p>&nbsp;<\/p>\n<p>&nbsp;<\/p>\n",
+                "excerpt": "<p>Hello again to all my faithful fans The past two weeks have not been as eventful as some.\u00a0 It&#8217;s mostly because of the heat. It has been so hot that yesterday I saw the neighbors dog chasing a cat and they were both walking.\u00a0 Just kidding. Bob only takes me with him if he doesn&#8217;t [&hellip;]<\/p>\n",
+                "slug": "kramers-korner-10",
+                "guid": "https:\/\/oldmainer.wordpress.com\/?p=6243",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 3
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 11,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "8227de59a7e6e211bdc1953fa814ec76",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "tags": {
+                    "Dogs": {
+                        "ID": 305,
+                        "name": "Dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 17,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Humor": {
+                        "ID": 376,
+                        "name": "Humor",
+                        "slug": "humor",
+                        "description": "",
+                        "post_count": 85,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:humor",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:humor\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Life": {
+                        "ID": 124,
+                        "name": "Life",
+                        "slug": "life",
+                        "description": "",
+                        "post_count": 295,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:life",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:life\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Observations": {
+                        "ID": 90,
+                        "name": "Observations",
+                        "slug": "observations",
+                        "description": "Things I think about when my mind is in neutral",
+                        "post_count": 185,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:observations",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:observations\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Random Thoughts": {
+                        "ID": 161,
+                        "name": "Random Thoughts",
+                        "slug": "random-thoughts",
+                        "description": "Kind of like Observations, but many of these just come to me",
+                        "post_count": 174,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:random-thoughts",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:random-thoughts\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Relationships": {
+                        "ID": 197,
+                        "name": "Relationships",
+                        "slug": "relationships",
+                        "description": "",
+                        "post_count": 80,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/tags\/slug:relationships",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/tags\/slug:relationships\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "Dogs": {
+                        "ID": 305,
+                        "name": "Dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 18,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Family": {
+                        "ID": 406,
+                        "name": "Family",
+                        "slug": "family",
+                        "description": "",
+                        "post_count": 56,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:family",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:family\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Friendship": {
+                        "ID": 4902,
+                        "name": "Friendship",
+                        "slug": "friendship",
+                        "description": "",
+                        "post_count": 58,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:friendship",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:friendship\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Home": {
+                        "ID": 400,
+                        "name": "Home",
+                        "slug": "home",
+                        "description": "",
+                        "post_count": 104,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:home",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:home\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Humor": {
+                        "ID": 376,
+                        "name": "Humor",
+                        "slug": "humor",
+                        "description": "",
+                        "post_count": 129,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:humor",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:humor\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Life": {
+                        "ID": 124,
+                        "name": "Life",
+                        "slug": "life",
+                        "description": "",
+                        "post_count": 340,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:life",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:life\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Random Thoughts": {
+                        "ID": 161,
+                        "name": "Random Thoughts",
+                        "slug": "random-thoughts",
+                        "description": "",
+                        "post_count": 179,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:random-thoughts",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:random-thoughts\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Reflection": {
+                        "ID": 8408,
+                        "name": "Reflection",
+                        "slug": "reflection",
+                        "description": "",
+                        "post_count": 612,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:reflection",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:reflection\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    },
+                    "Relationships": {
+                        "ID": 197,
+                        "name": "Relationships",
+                        "slug": "relationships",
+                        "description": "",
+                        "post_count": 74,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/categories\/slug:relationships",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/categories\/slug:relationships\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394"
+                            }
+                        }
+                    }
+                },
+                "attachments": {
+                    "6254": {
+                        "ID": 6254,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg",
+                        "date": "2020-07-20T14:20:16-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200720_141648.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200720_141648",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=143",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=285",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg?w=974",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg"
+                        },
+                        "height": 2467,
+                        "width": 2347,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1595254607",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "350",
+                            "shutter_speed": "0.066666666666667",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6254",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6254\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6252": {
+                        "ID": 6252,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg",
+                        "date": "2020-07-20T14:04:36-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200718_140619-2.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200718_140619",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=127",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=255",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg?w=869",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-2.jpg"
+                        },
+                        "height": 1951,
+                        "width": 1656,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1595081179",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.033333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6252",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6252\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6251": {
+                        "ID": 6251,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg",
+                        "date": "2020-07-20T14:03:21-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200718_140619-1.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200718_140619",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg?w=127",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg?w=255",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg?w=869",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619-1.jpg"
+                        },
+                        "height": 1951,
+                        "width": 1656,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1595081179",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.033333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6251",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6251\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6250": {
+                        "ID": 6250,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg",
+                        "date": "2020-07-20T14:01:02-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200718_135203.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200718_135203",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=113",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=225",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg?w=768",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_135203.jpg"
+                        },
+                        "height": 3264,
+                        "width": 2448,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1595080323",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.00065963060686016",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6250",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6250\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6249": {
+                        "ID": 6249,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg",
+                        "date": "2020-07-20T14:00:11-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200627_123902.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200627_123902",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=120",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=239",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg?w=816",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_123902.jpg"
+                        },
+                        "height": 2326,
+                        "width": 1854,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1593261541",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.0083333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6249",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6249\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6248": {
+                        "ID": 6248,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg",
+                        "date": "2020-07-20T13:59:17-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200627_122701.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200627_122701",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=150",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=300",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg?w=827",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_122701.jpg"
+                        },
+                        "height": 708,
+                        "width": 827,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1593260821",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.0035211267605634",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6248",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6248\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6247": {
+                        "ID": 6247,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg",
+                        "date": "2020-07-20T13:58:58-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200627_124015.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200627_124015",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=147",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=294",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg?w=1005",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200627_124015.jpg"
+                        },
+                        "height": 2171,
+                        "width": 2130,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1593261615",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.0083333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6247",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6247\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    },
+                    "6246": {
+                        "ID": 6246,
+                        "URL": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg",
+                        "guid": "http:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg",
+                        "date": "2020-07-20T13:45:16-04:00",
+                        "post_ID": 6243,
+                        "author_ID": 37975024,
+                        "file": "20200718_140619.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "20200718_140619",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg?w=113",
+                            "medium": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg?w=225",
+                            "large": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg?w=768",
+                            "full": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200718_140619.jpg"
+                        },
+                        "height": 3264,
+                        "width": 2448,
+                        "exif": {
+                            "aperture": "2.2",
+                            "credit": "",
+                            "camera": "LML413DL",
+                            "caption": "",
+                            "created_timestamp": "1595081179",
+                            "copyright": "",
+                            "focal_length": "3.2",
+                            "iso": "50",
+                            "shutter_speed": "0.033333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": []
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394\/media\/6246",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/media\/6246\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243"
+                            }
+                        }
+                    }
+                },
+                "attachment_count": 8,
+                "metadata": false,
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/38546394\/posts\/6243",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/38546394\/posts\/6243\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/38546394",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/38546394\/posts\/6243\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 6445317,
+                "feed_URL": "http:\/\/oldmainer.wordpress.com",
+                "feed_item_id": 2829425714,
+                "pseudo_ID": "8227de59a7e6e211bdc1953fa814ec76",
+                "is_external": false,
+                "site_name": "oldmainer",
+                "site_URL": "https:\/\/oldmainer.wordpress.com",
+                "site_is_private": false,
+                "featured_media": {
+                    "uri": "https:\/\/oldmainer.files.wordpress.com\/2020\/07\/20200720_141648.jpg",
+                    "width": 2347,
+                    "height": 2467,
+                    "type": "image"
+                },
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 460,
+                "site_ID": 178379744,
+                "author": {
+                    "ID": 187406346,
+                    "login": "hoyapluto",
+                    "email": false,
+                    "name": "Hoya Pluto",
+                    "first_name": "Hoya",
+                    "last_name": "Pluto",
+                    "nice_name": "hoyapluto",
+                    "URL": "http:\/\/hoyapluto.wordpress.com",
+                    "avatar_URL": "https:\/\/2.gravatar.com\/avatar\/be5683a2c96fecaf67623f8cdfaa5543?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/hoyapluto",
+                    "site_ID": 178379744,
+                    "has_avatar": true
+                },
+                "date": "2020-07-27T01:20:32+00:00",
+                "modified": "2020-07-27T01:25:00+00:00",
+                "title": "You would be Surprised|How many dog owners still keep their dogs in&nbsp;chains",
+                "URL": "https:\/\/hoyapluto.wordpress.com\/2020\/07\/27\/you-would-be-surprisedmany-dog-owners-still-keep-their-dogs-in-chains\/",
+                "short_URL": "https:\/\/wp.me\/pc4sIE-7q",
+                "content": "\n<blockquote class=\"wp-block-quote\"><p>A wise soul once said, there is no cure for foolishness. <\/p><cite>Dogs out of all animals love, mostly need to run around in order to maintain their mental health. Will you accept if you&#8217;re not allowed to use your legs anymore, despite them working fine. Think of it as you are forbidden to use your legs. Will you be in the right mind if it&#8217;s done to you year after year, by force? <\/cite><\/blockquote>\n\n\n\n<h1>Something to <em>think<\/em> about, isn&#8217;t it. We sure reached the moon <strong>yet<\/strong> failing at <em>basics of life<\/em>.<\/h1>\n",
+                "excerpt": "<p>A wise soul once said, there is no cure for foolishness. Dogs out of all animals love, mostly need to run around in order to maintain their mental health. Will you accept if you&#8217;re not allowed to use your legs anymore, despite them working fine. Think of it as you are forbidden to use your [&hellip;]<\/p>\n",
+                "slug": "you-would-be-surprisedmany-dog-owners-still-keep-their-dogs-in-chains",
+                "guid": "https:\/\/hoyapluto.wordpress.com\/2020\/07\/27\/you-would-be-surprisedmany-dog-owners-still-keep-their-dogs-in-chains\/",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 0,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "d4fb587574bfc4ecf35f1cb56c9738e3",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "tags": {
+                    "dog behaviour": {
+                        "ID": 555896,
+                        "name": "dog behaviour",
+                        "slug": "dog-behaviour",
+                        "description": "",
+                        "post_count": 5,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/tags\/slug:dog-behaviour",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/tags\/slug:dog-behaviour\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    },
+                    "dog owner": {
+                        "ID": 2186036,
+                        "name": "dog owner",
+                        "slug": "dog-owner",
+                        "description": "",
+                        "post_count": 3,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/tags\/slug:dog-owner",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/tags\/slug:dog-owner\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    },
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 5,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    },
+                    "human and dogs": {
+                        "ID": 512774915,
+                        "name": "human and dogs",
+                        "slug": "human-and-dogs",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/tags\/slug:human-and-dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/tags\/slug:human-and-dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    },
+                    "pet owner": {
+                        "ID": 1939090,
+                        "name": "pet owner",
+                        "slug": "pet-owner",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/tags\/slug:pet-owner",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/tags\/slug:pet-owner\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 5,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    },
+                    "Learn about Dogs": {
+                        "ID": 23624245,
+                        "name": "Learn about Dogs",
+                        "slug": "learn-about-dogs",
+                        "description": "",
+                        "post_count": 4,
+                        "parent": 305,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/categories\/slug:learn-about-dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/categories\/slug:learn-about-dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": false,
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/178379744\/posts\/460",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/178379744\/posts\/460\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/178379744",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/posts\/460\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/178379744\/posts\/460\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 106545340,
+                "feed_URL": "http:\/\/hoyapluto.wordpress.com",
+                "feed_item_id": 2828647630,
+                "pseudo_ID": "d4fb587574bfc4ecf35f1cb56c9738e3",
+                "is_external": false,
+                "site_name": "Hoya Pluto",
+                "site_URL": "https:\/\/hoyapluto.wordpress.com",
+                "site_is_private": false,
+                "featured_media": {},
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 2835,
+                "site_ID": 111231448,
+                "author": {
+                    "ID": 99605579,
+                    "login": "kbadamson",
+                    "email": false,
+                    "name": "adamson",
+                    "first_name": "",
+                    "last_name": "Adamson",
+                    "nice_name": "kbadamson",
+                    "URL": "http:\/\/thewritingsofkbadamson.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/05814cb5533d4f08560a19c8577bd757?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/kbadamson",
+                    "site_ID": 111231448,
+                    "has_avatar": true
+                },
+                "date": "2020-07-26T17:38:49-04:00",
+                "modified": "2020-07-26T17:38:49-04:00",
+                "title": "Happy&#8217;s Thought of the Day: Flesh and&nbsp;Blood",
+                "URL": "https:\/\/kbadamsonsfavoriteblogs.wordpress.com\/2020\/07\/26\/happys-thought-of-the-day-flesh-and-blood\/",
+                "short_URL": "https:\/\/wp.me\/p7wInC-JJ",
+                "content": "<p>via <a href=\"https:\/\/maketimeforhappy101.com\/2017\/12\/10\/happys-thought-of-the-day-flesh-and-blood\/\">Happy&#8217;s Thought of the Day: Flesh and Blood<\/a><\/p>\n",
+                "excerpt": "<p>via Happy&#8217;s Thought of the Day: Flesh and Blood<\/p>\n",
+                "slug": "happys-thought-of-the-day-flesh-and-blood",
+                "guid": "https:\/\/kbadamsonsfavoriteblogs.wordpress.com\/?p=2835",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 0,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "61e2af6c58d12a914b2c71a8c355da27",
+                "featured_image": "https:\/\/kbadamsonsfavoriteblogs.files.wordpress.com\/2019\/10\/img_3480.jpg",
+                "post_thumbnail": {
+                    "ID": 2531,
+                    "URL": "https:\/\/kbadamsonsfavoriteblogs.files.wordpress.com\/2019\/10\/img_3480.jpg",
+                    "guid": "http:\/\/kbadamsonsfavoriteblogs.files.wordpress.com\/2019\/10\/img_3480.jpg",
+                    "mime_type": "image\/jpeg",
+                    "width": 6000,
+                    "height": 4000
+                },
+                "format": "quote",
+                "tags": {
+                    "animal adventures": {
+                        "ID": 846210,
+                        "name": "animal adventures",
+                        "slug": "animal-adventures",
+                        "description": "",
+                        "post_count": 52,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:animal-adventures",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:animal-adventures\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "dog fun": {
+                        "ID": 980062,
+                        "name": "dog fun",
+                        "slug": "dog-fun",
+                        "description": "",
+                        "post_count": 39,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:dog-fun",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:dog-fun\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "dog humor": {
+                        "ID": 108408,
+                        "name": "dog humor",
+                        "slug": "dog-humor",
+                        "description": "",
+                        "post_count": 20,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:dog-humor",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:dog-humor\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 204,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "fun": {
+                        "ID": 272,
+                        "name": "fun",
+                        "slug": "fun",
+                        "description": "",
+                        "post_count": 102,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:fun",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:fun\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "humor": {
+                        "ID": 376,
+                        "name": "humor",
+                        "slug": "humor",
+                        "description": "",
+                        "post_count": 43,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:humor",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:humor\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "life": {
+                        "ID": 124,
+                        "name": "life",
+                        "slug": "life",
+                        "description": "",
+                        "post_count": 49,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:life",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:life\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "Pet Adventures": {
+                        "ID": 4816956,
+                        "name": "Pet Adventures",
+                        "slug": "pet-adventures",
+                        "description": "",
+                        "post_count": 53,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:pet-adventures",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:pet-adventures\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "pet fun": {
+                        "ID": 8005289,
+                        "name": "pet fun",
+                        "slug": "pet-fun",
+                        "description": "",
+                        "post_count": 32,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:pet-fun",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:pet-fun\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "writing": {
+                        "ID": 349,
+                        "name": "writing",
+                        "slug": "writing",
+                        "description": "",
+                        "post_count": 114,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/tags\/slug:writing",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/tags\/slug:writing\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 170,
+                        "parent": 4816956,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    },
+                    "Pet Adventures": {
+                        "ID": 4816956,
+                        "name": "Pet Adventures",
+                        "slug": "pet-adventures",
+                        "description": "",
+                        "post_count": 200,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/categories\/slug:pet-adventures",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/categories\/slug:pet-adventures\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": [],
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/111231448\/posts\/2835",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/111231448\/posts\/2835\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/111231448",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/posts\/2835\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/111231448\/posts\/2835\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 48262126,
+                "feed_URL": "http:\/\/kbadamsonsfavoriteblogs.wordpress.com",
+                "feed_item_id": 2828532627,
+                "pseudo_ID": "61e2af6c58d12a914b2c71a8c355da27",
+                "is_external": false,
+                "site_name": "kbadamsonsfavoriteblogs",
+                "site_URL": "https:\/\/kbadamsonsfavoriteblogs.wordpress.com",
+                "site_is_private": false,
+                "featured_media": {},
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 783,
+                "site_ID": 157623596,
+                "author": {
+                    "ID": 37009351,
+                    "login": "xine133",
+                    "email": false,
+                    "name": "xine133",
+                    "first_name": "Xine",
+                    "last_name": "Segalas",
+                    "nice_name": "xine133",
+                    "URL": "https:\/\/segalascreatives.com\/",
+                    "avatar_URL": "https:\/\/2.gravatar.com\/avatar\/55748af4a04e15e5e52112bd1d6607c0?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/xine133",
+                    "site_ID": 157623596,
+                    "has_avatar": true
+                },
+                "date": "2020-07-26T16:01:29-04:00",
+                "modified": "2020-07-26T16:01:29-04:00",
+                "title": "Silent Sunday 7\u202226\u202220",
+                "URL": "https:\/\/xinespack.com\/2020\/07\/26\/silent-sunday-7%e2%80%a226%e2%80%a220\/",
+                "short_URL": "https:\/\/wp.me\/paFn64-cD",
+                "content": "\n<figure class=\"wp-block-image size-large\"><img data-attachment-id=\"784\" data-permalink=\"https:\/\/xinespack.com\/6tvbcedksecqmvz2xv3hqw\/\" data-orig-file=\"https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg\" data-orig-size=\"4032,3024\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.4&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;iPhone 11 Pro Max&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1595758940&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;1.54&quot;,&quot;iso&quot;:&quot;1600&quot;,&quot;shutter_speed&quot;:&quot;0.033333333333333&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"6tvbcedksecqmvz2xv3hqw\" data-image-description=\"\" data-medium-file=\"https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=300\" data-large-file=\"https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=1024\" src=\"https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=1024\" alt=\"\" class=\"wp-image-784\" srcset=\"https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=1024 1024w, https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=2048 2048w, https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=150 150w, https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=300 300w, https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg?w=768 768w\" sizes=\"(max-width: 1024px) 100vw, 1024px\" \/><figcaption>Kona and Gunner<\/figcaption><\/figure>\n",
+                "excerpt": "",
+                "slug": "silent-sunday-7%e2%80%a226%e2%80%a220",
+                "guid": "http:\/\/xinespack.com\/?p=783",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 1,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "db9dbaf73489cd2bd50b7fe8c383eab8",
+                "featured_image": "https:\/\/xinespack.files.wordpress.com\/2020\/07\/vulcofptsiujmwy5nsgosa.jpg",
+                "post_thumbnail": {
+                    "ID": 785,
+                    "URL": "https:\/\/xinespack.files.wordpress.com\/2020\/07\/vulcofptsiujmwy5nsgosa.jpg",
+                    "guid": "http:\/\/xinespack.files.wordpress.com\/2020\/07\/vulcofptsiujmwy5nsgosa.jpg",
+                    "mime_type": "image\/jpeg",
+                    "width": 4032,
+                    "height": 3024
+                },
+                "format": "standard",
+                "tags": {
+                    "dog photography": {
+                        "ID": 1450642,
+                        "name": "dog photography",
+                        "slug": "dog-photography",
+                        "description": "",
+                        "post_count": 4,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/tags\/slug:dog-photography",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/tags\/slug:dog-photography\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    },
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 6,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    },
+                    "goldendoodles": {
+                        "ID": 370117,
+                        "name": "goldendoodles",
+                        "slug": "goldendoodles",
+                        "description": "",
+                        "post_count": 2,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/tags\/slug:goldendoodles",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/tags\/slug:goldendoodles\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    },
+                    "silent sunday": {
+                        "ID": 544635,
+                        "name": "silent sunday",
+                        "slug": "silent-sunday",
+                        "description": "",
+                        "post_count": 4,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/tags\/slug:silent-sunday",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/tags\/slug:silent-sunday\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 9,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    },
+                    "Silent Sundays": {
+                        "ID": 1754007,
+                        "name": "Silent Sundays",
+                        "slug": "silent-sundays",
+                        "description": "",
+                        "post_count": 5,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/categories\/slug:silent-sundays",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/categories\/slug:silent-sundays\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": [],
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/157623596\/posts\/783",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/157623596\/posts\/783\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/157623596",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/posts\/783\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/157623596\/posts\/783\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 93044535,
+                "feed_URL": "http:\/\/xinespack.com",
+                "feed_item_id": 2828370420,
+                "pseudo_ID": "db9dbaf73489cd2bd50b7fe8c383eab8",
+                "is_external": false,
+                "site_name": "Xine&#039;s Pack",
+                "site_URL": "https:\/\/xinespack.com",
+                "site_is_private": false,
+                "featured_media": {
+                    "uri": "https:\/\/xinespack.files.wordpress.com\/2020\/07\/6tvbcedksecqmvz2xv3hqw.jpg",
+                    "width": 0,
+                    "height": 0,
+                    "type": "image"
+                },
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 5033,
+                "site_ID": 158175122,
+                "author": {
+                    "ID": 152468972,
+                    "login": "merylruth2448",
+                    "email": false,
+                    "name": "Psychology Girl",
+                    "first_name": "Meryl",
+                    "last_name": "Martin",
+                    "nice_name": "merylruth2448",
+                    "URL": "http:\/\/merylmartinsblog.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/90ba6215993166c148e05499c471eae5?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/merylruth2448",
+                    "site_ID": 158175122,
+                    "has_avatar": true
+                },
+                "date": "2020-07-26T09:10:36-07:00",
+                "modified": "2020-07-26T09:10:36-07:00",
+                "title": "Maggie Started a Training Class Yesterday, Plus We Went On a&nbsp;Hike",
+                "URL": "https:\/\/merylmartins.blog\/2020\/07\/26\/maggie-started-a-training-class-yesterday-plus-we-went-on-a-hike\/",
+                "short_URL": "https:\/\/wp.me\/paHGzE-1jb",
+                "content": "\n<p>Maggie really is a big ball of energy these days. She&#8217;s currently running circles around the house.  We&#8217;re doing everything we can to train her and to do fun things with her to get that energy out.<\/p>\n\n\n\n<p>Yesterday she started a training class for teenage dogs.  It was in person, and it was pretty interesting.  There were only 4 dogs in the class and everyone was separated by wooden walls that opened out so that you could see the instructor. Because of the pandemic the puppies were not allowed to interact, which was kind of sad. But Maggie still had fun anyways, and was very interested at least in the other dogs.  We worked on look, touch, and recall, and will be working on those commands this week.  Maggie had already learned those commands earlier through her private puppy classes, but this was a little more in depth, so it worked out.  She did really well in class and after with the commands, and we&#8217;ll be practicing them all this week!<\/p>\n\n\n\n<p>After her training class we took her for a hike off of the Mountain Loop Highway (The Old Sauk River Hike). I&#8217;d heard on one of my hiking groups that it&#8217;s easy and flat, so it sounded perfect for a puppy. It was pretty nice, although you didn&#8217;t get to see the river until about 3\/4 of a mile in, and we didn&#8217;t want to walk more than 2 miles with her. So we didn&#8217;t get to see the river as much as we wanted.  Next year, when she&#8217;s older, we&#8217;ll come back and do the full six miles of the hike.  It&#8217;s also a hike that&#8217;s open more of the year than some of the higher elevation hikes, so we could go back this fall or winter when it&#8217;s still open.<\/p>\n\n\n\n<figure class=\"wp-block-image size-large\"><img data-attachment-id=\"5034\" data-permalink=\"https:\/\/merylmartins.blog\/maggies-first-hike-in-the-national-forest\/\" data-orig-file=\"https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg\" data-orig-size=\"1080,1080\" data-comments-opened=\"0\" data-image-meta=\"{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}\" data-image-title=\"maggies-first-hike-in-the-national-forest\" data-image-description=\"\" data-medium-file=\"https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=300\" data-large-file=\"https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=1024\" src=\"https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=1024\" alt=\"\" class=\"wp-image-5034\" srcset=\"https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=1024 1024w, https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=150 150w, https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=300 300w, https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg?w=768 768w, https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg 1080w\" sizes=\"(max-width: 1024px) 100vw, 1024px\" \/><figcaption>Me and Maggie hiking yesterday<\/figcaption><\/figure>\n\n\n\n<p>She also did really well with the hour long car ride to and from the hike.  I&#8217;ve heard that some doodles get upset stomachs on long car rides but Maggie doesn&#8217;t seem to.<\/p>\n\n\n\n<p>The other thing that happened yesterday is that Patrick had to go to the vet in the morning.  He didn&#8217;t eat the night before and was obviously not feeling well. It turns out that he&#8217;s anemic, which they think is a result of his chemotherapy.  I&#8217;m going to have to make an appointment with his Oncologist to get him a iron shot.<\/p>\n\n\n\n<p>I&#8217;m also pretty worried about finances right now. Patrick has been having to go into the vet quite often lately and he needs an MRI and cardio workup next month, which is going to be really expensive.  Luckily he does have health insurance so we&#8217;ll get at least half of the money back, but still. We&#8217;re spending a lot on him right now.  Hopefully once we get diagnostics out of the way the costs will go down, but I&#8217;m not sure. He might need radiation for his brain tumor. The thing is that we are going to be buying a house in the near future, so we&#8217;re trying to save as much money as we can, and that isn&#8217;t easy when you have a cat who&#8217;s as sick as Patrick.  We might buy a townhouse with a lawn to save some money, as long as it doesn&#8217;t have mold issues.<\/p>\n\n\n\n<p>Well, Patrick is crawling onto my lap as I write this, so I&#8217;d better wrap it up for  the day. I hope that this post finds everyone well. <\/p>\n\n\n\n<p>Thanks for reading! Feel free to comment below.<\/p>\n\n\n\n<p><\/p>\n",
+                "excerpt": "<p>Maggie really is a big ball of energy these days. She&#8217;s currently running circles around the house. We&#8217;re doing everything we can to train her and to do fun things with her to get that energy out. Yesterday she started a training class for teenage dogs. It was in person, and it was pretty interesting. [&hellip;]<\/p>\n",
+                "slug": "maggie-started-a-training-class-yesterday-plus-we-went-on-a-hike",
+                "guid": "http:\/\/merylmartins.blog\/?p=5033",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 0
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 3,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "f16347d4b22c3b0feca1aca2177da4a2",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "standard",
+                "tags": {
+                    "cats with cancer": {
+                        "ID": 123752211,
+                        "name": "cats with cancer",
+                        "slug": "cats-with-cancer",
+                        "description": "",
+                        "post_count": 34,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/tags\/slug:cats-with-cancer",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/tags\/slug:cats-with-cancer\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "dog training": {
+                        "ID": 21621,
+                        "name": "dog training",
+                        "slug": "dog-training",
+                        "description": "",
+                        "post_count": 31,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/tags\/slug:dog-training",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/tags\/slug:dog-training\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 31,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "hiking": {
+                        "ID": 7815,
+                        "name": "hiking",
+                        "slug": "hiking",
+                        "description": "",
+                        "post_count": 4,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/tags\/slug:hiking",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/tags\/slug:hiking\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "cats with cancer": {
+                        "ID": 123752211,
+                        "name": "cats with cancer",
+                        "slug": "cats-with-cancer",
+                        "description": "",
+                        "post_count": 35,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/categories\/slug:cats-with-cancer",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/categories\/slug:cats-with-cancer\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "dog training": {
+                        "ID": 21621,
+                        "name": "dog training",
+                        "slug": "dog-training",
+                        "description": "",
+                        "post_count": 33,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/categories\/slug:dog-training",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/categories\/slug:dog-training\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "dogs": {
+                        "ID": 305,
+                        "name": "dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 42,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    },
+                    "hiking": {
+                        "ID": 7815,
+                        "name": "hiking",
+                        "slug": "hiking",
+                        "description": "",
+                        "post_count": 4,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/categories\/slug:hiking",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/categories\/slug:hiking\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": [],
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/158175122\/posts\/5033",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158175122\/posts\/5033\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158175122",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/posts\/5033\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158175122\/posts\/5033\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 93622874,
+                "feed_URL": "http:\/\/merylmartins.blog",
+                "feed_item_id": 2828130137,
+                "pseudo_ID": "f16347d4b22c3b0feca1aca2177da4a2",
+                "is_external": false,
+                "site_name": "My life after Alcoholics Anonymous",
+                "site_URL": "https:\/\/merylmartins.blog",
+                "site_is_private": false,
+                "featured_media": {
+                    "uri": "https:\/\/merylmartinsblog.files.wordpress.com\/2020\/07\/maggies-first-hike-in-the-national-forest.jpg",
+                    "width": 0,
+                    "height": 0,
+                    "type": "image"
+                },
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 8347,
+                "site_ID": 11856292,
+                "author": {
+                    "ID": 12191064,
+                    "login": "rhcwilliams",
+                    "email": false,
+                    "name": "rhcwilliams",
+                    "first_name": "Ruth",
+                    "last_name": "Williams",
+                    "nice_name": "rhcwilliams",
+                    "URL": "http:\/\/praypower4today.wordpress.com",
+                    "avatar_URL": "https:\/\/0.gravatar.com\/avatar\/f76059cbb7b0caa64512e43f3ec67a17?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/rhcwilliams",
+                    "site_ID": 19404300,
+                    "has_avatar": true
+                },
+                "date": "2020-07-26T10:00:36-04:00",
+                "modified": "2020-07-09T21:22:17-04:00",
+                "title": "New Friend",
+                "URL": "https:\/\/grace-gratitude.blog\/2020\/07\/26\/new-friend-3\/",
+                "short_URL": "https:\/\/wp.me\/pNKmw-2aD",
+                "content": "\n<figure class=\"wp-block-image\"><img src=\"https:\/\/preview.redd.it\/zjoiu9z86u051.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=711dca62811813b5d65d9646330ea0fd0c97d42d\" alt=\"r\/aww - This is a stray cat we found behind where I work, just walked up to us.\" \/><figcaption>credit: <a href=\"https:\/\/www.reddit.com\/r\/aww\/comments\/gq453c\/this_is_a_stray_cat_we_found_behind_where_i_work\/\">reddit.com<\/a><\/figcaption><\/figure>\n\n\n\n<blockquote class=\"wp-block-quote has-text-align-center is-style-large\"><p>&#8220;This is a stray cat we found behind where I work, just walked up to us.&#8221;<\/p><\/blockquote>\n",
+                "excerpt": "<p>&#8220;This is a stray cat we found behind where I work, just walked up to us.&#8221;<\/p>\n",
+                "slug": "new-friend-3",
+                "guid": "http:\/\/grace-gratitude.blog\/?p=8347",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 1
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 4,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "2b32f7c5d62f5c73af700ffa1c259333",
+                "featured_image": "",
+                "post_thumbnail": null,
+                "format": "image",
+                "tags": {
+                    "Cats": {
+                        "ID": 306,
+                        "name": "Cats",
+                        "slug": "cats",
+                        "description": "",
+                        "post_count": 266,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/tags\/slug:cats",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/tags\/slug:cats\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "Cats": {
+                        "ID": 306,
+                        "name": "Cats",
+                        "slug": "cats",
+                        "description": "",
+                        "post_count": 424,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/categories\/slug:cats",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/categories\/slug:cats\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292"
+                            }
+                        }
+                    }
+                },
+                "attachments": {},
+                "attachment_count": 0,
+                "metadata": false,
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/11856292\/posts\/8347",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/11856292\/posts\/8347\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/11856292",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/posts\/8347\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/11856292\/posts\/8347\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 72401381,
+                "feed_URL": "http:\/\/grace-gratitude.blog",
+                "feed_item_id": 2828003285,
+                "pseudo_ID": "2b32f7c5d62f5c73af700ffa1c259333",
+                "is_external": false,
+                "site_name": "Grace &amp; Gratitude",
+                "site_URL": "https:\/\/grace-gratitude.blog",
+                "site_is_private": false,
+                "featured_media": {},
+                "use_excerpt": false
+            }
+        },
+        {
+            "type": "post",
+            "data": {
+                "ID": 208,
+                "site_ID": 158302153,
+                "author": {
+                    "ID": 152622857,
+                    "login": "tinataylor24",
+                    "email": false,
+                    "name": "Tina Taylor",
+                    "first_name": "Christina",
+                    "last_name": "Taylor",
+                    "nice_name": "tinataylor24",
+                    "URL": "http:\/\/ahumanandahound.wordpress.com",
+                    "avatar_URL": "https:\/\/2.gravatar.com\/avatar\/5a20e2b20cf1521b2e0fa73085005e76?s=96&d=identicon&r=G",
+                    "profile_URL": "https:\/\/en.gravatar.com\/tinataylor24",
+                    "site_ID": 158302153,
+                    "has_avatar": true
+                },
+                "date": "2020-07-26T13:55:03+01:00",
+                "modified": "2020-07-26T19:52:22+01:00",
+                "title": "I would rather&nbsp;Starve",
+                "URL": "https:\/\/ahoundandahuman.com\/2020\/07\/26\/i-would-rather-starve\/",
+                "short_URL": "https:\/\/wp.me\/paIdCx-3m",
+                "content": "\n<p>It must nearly be breakfast. I can hear the birds singing and the sun has finally risen. My stomach is rumbling and I cannot hear anyone. I am starving and beginning to feel faint. I need food.<\/p>\n\n\n\n<p>Finally, I hear some commotion upstairs, so they are awake at least. I am rather impatient when it comes to breakfast time. I just love my food and right now it feels like I have not eaten in weeks.<\/p>\n\n\n\n<p>I wonder what tasty treat she will serve up this morning. She has always been so tentative towards my appetite. I have food allergies, so I have to have the same dry food and she usually tops it with their food cut into small, bite sized pieces or on the odd occasion it may have to be topped with dog meat. Either way, mealtimes are my favourite part of the day.&nbsp; I do not mind what she provides, although I do prefer the vegetables to be carrots or peas. The broccoli and cauliflower remind me of eating her plants from the flower beds in the garden. They require a lot of effort and are very chewy. To be honest, I really do not enjoy eating her plants. They give me the most awful indigestion but if there is less for her to look after in the garden, it means she has more time to look after me. I am so hungry and starting to feel faint.<\/p>\n\n\n\n<p>I must focus on something else and take my mind off breakfast. Oh my! I have just seen my reflection in my metal bowl. My tummy seems smaller, a lot smaller. My skin seems to sag less. I must have lost some weight since last night, a few pounds at least. I am shrinking. I need food. I am wasting away.<\/p>\n\n\n\n<p>When she was cooking last night, I did not smell any meat. Usually I get an aroma but yesterday there was nothing. I do wonder what will grace my bowl this morning.<\/p>\n\n\n\n<p>\u2018Come on Lillia, let me get you breakfast\u2019<\/p>\n\n\n\n<p>Finally, she is here. I manage to find the energy needed to dance around her feet. I hope she appreciates it. She is moving in the right direction and going in the fridge. I hope she comes out with chicken. I love chicken. I am so excited. The fridge door is closing. She looks down at me.<\/p>\n\n\n\n<p>\u2018What have I got for you Lillia?\u2019<\/p>\n\n\n\n<p>Oh, it sounds exciting! Although, I cannot quite see what she has got. I cannot smell anything apart from her morning breath, as the residue from that is definitely still lingering. She is putting the dry food in the bowl. Yes, something else is going in. I have another sniff of the air, still nothing apart from that breath, she needs to brush.&nbsp; I cannot see. What is it?<\/p>\n\n\n\n<p>She is holding the bowl in the air. Too high for me to see anything due to my height restrictions.<\/p>\n\n\n\n<p>&nbsp;\u2018Come on Lillia, be a good girl and sit\u2019<\/p>\n\n\n\n<p>I follow her to my water bowl near my bed. The food bowl usually sits alongside it. She waits and looks at me to sit before placing the bowl down.<\/p>\n\n\n\n<p>I do not sit and stare back at her. She repeats herself again.<\/p>\n\n\n\n<p>\u2018Sit\u2019.<\/p>\n\n\n\n<p>I look back at her. She still has not yet put the bowl down.<\/p>\n\n\n\n<p>Why we must go through this sitting thing is beyond me. I honestly do not know who she is trying to convince. She will never have me trained.<\/p>\n\n\n\n<p>I decide to \u2018Woof\u2019 at her and then sit down.<\/p>\n\n\n\n<p>The bowl is going down, I can see\u2026WHAT IS THAT?<\/p>\n\n\n\n<p>She has given me my dry dog food with what can only be described as a green leaf sat on top of it.<\/p>\n\n\n\n<p>I look at the bowl and then at her. Why?<\/p>\n\n\n\n<p>\u2018Lillia don\u2019t look at me like that. I am on a diet and it is the only thing I have in the fridge. We have not got any leftovers from last night and I have run out of dog meat or tuna. I will pick some up later. I thought as you eat every plant, I put in my flower bed you would like it. Come one Lillia, it is a lettuce. They are really delicious.\u2019<\/p>\n\n\n\n<p>And she decided to get it out my bowl and hold it near my mouth, presumably wanting me to try it. Well I am refusing to try it and I turned my nose away. She put the leaf back in the bowl. I am not going to eat the leaf and I am not going to eat the dry food. I am going to use the last bit of remaining energy I have, to walk away and sit in front of the patio doors in protest.<\/p>\n\n\n\n<figure class=\"wp-block-image size-large\"><img data-attachment-id=\"213\" data-permalink=\"https:\/\/ahoundandahuman.com\/img_6726\/\" data-orig-file=\"https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg\" data-orig-size=\"3004,3564\" data-comments-opened=\"1\" data-image-meta=\"{&quot;aperture&quot;:&quot;2.4&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;iPhone X&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1595706388&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6&quot;,&quot;iso&quot;:&quot;100&quot;,&quot;shutter_speed&quot;:&quot;0.03030303030303&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;1&quot;}\" data-image-title=\"img_6726\" data-image-description=\"\" data-medium-file=\"https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=253\" data-large-file=\"https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=863\" src=\"https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=863\" alt=\"\" class=\"wp-image-213\" srcset=\"https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=863 863w, https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=1726 1726w, https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=126 126w, https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=253 253w, https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg?w=768 768w\" sizes=\"(max-width: 863px) 100vw, 863px\" \/><\/figure>\n\n\n\n<p>I just made it to the mat in front of the doors. I am feeling so weak from hunger. How could she try to feed me a leaf? I am not a rabbit and I may be shaped like a caterpillar but come on a leaf? I am a dog for goodness sake.<\/p>\n\n\n\n<p>As I lay there accepting my fate, death by starvation, I heard a noise. A familiar noise. It was him. He was awake and he was coming downstairs. I thought about how he is always eating the leftovers.<\/p>\n\n\n\n<p>So, I made a conscious decision. I ran over to my bowl and I devoured the entire contents, including the leaf, before he decided to finish it off.<\/p>\n\n\n\n<p>\u2018Awww, I think Lillia likes the lettuce! Same again tomorrow, Lillia!\u2019<\/p>\n\n\n\n<p>If only I understood what she was saying!<\/p>\n",
+                "excerpt": "<p>It must nearly be breakfast. I can hear the birds singing and the sun has finally risen. My stomach is rumbling and I cannot hear anyone. I am starving and beginning to feel faint. I need food. Finally, I hear some commotion upstairs, so they are awake at least. I am rather impatient when it [&hellip;]<\/p>\n",
+                "slug": "i-would-rather-starve",
+                "guid": "http:\/\/ahoundandahuman.com\/?p=208",
+                "status": "publish",
+                "discussion": {
+                    "comments_open": true,
+                    "comment_status": "open",
+                    "pings_open": true,
+                    "ping_status": "open",
+                    "comment_count": 1
+                },
+                "likes_enabled": true,
+                "sharing_enabled": true,
+                "like_count": 4,
+                "i_like": false,
+                "is_reblogged": false,
+                "is_following": false,
+                "global_ID": "724b084294e499de216b3f1a495f861a",
+                "featured_image": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg",
+                "post_thumbnail": {
+                    "ID": 211,
+                    "URL": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg",
+                    "guid": "http:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg",
+                    "mime_type": "image\/jpeg",
+                    "width": 2488,
+                    "height": 3169
+                },
+                "format": "standard",
+                "tags": {
+                    "Bas": {
+                        "ID": 153235,
+                        "name": "Bas",
+                        "slug": "bas",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:bas",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:bas\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Cute Dogs": {
+                        "ID": 684752,
+                        "name": "Cute Dogs",
+                        "slug": "cute-dogs",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:cute-dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:cute-dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dog Blog": {
+                        "ID": 354151,
+                        "name": "Dog Blog",
+                        "slug": "dog-blog",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:dog-blog",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:dog-blog\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dog eating plants": {
+                        "ID": 7971448,
+                        "name": "Dog eating plants",
+                        "slug": "dog-eating-plants",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:dog-eating-plants",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:dog-eating-plants\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs": {
+                        "ID": 305,
+                        "name": "Dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs Life": {
+                        "ID": 158680,
+                        "name": "Dogs Life",
+                        "slug": "dogs-life",
+                        "description": "",
+                        "post_count": 2,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:dogs-life",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:dogs-life\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs with Attitude": {
+                        "ID": 55036301,
+                        "name": "Dogs with Attitude",
+                        "slug": "dogs-with-attitude",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:dogs-with-attitude",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:dogs-with-attitude\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Funny Dog Stories": {
+                        "ID": 6981194,
+                        "name": "Funny Dog Stories",
+                        "slug": "funny-dog-stories",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:funny-dog-stories",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:funny-dog-stories\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Humorous Dog": {
+                        "ID": 19314215,
+                        "name": "Humorous Dog",
+                        "slug": "humorous-dog",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:humorous-dog",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:humorous-dog\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Stubborn Dog": {
+                        "ID": 33829085,
+                        "name": "Stubborn Dog",
+                        "slug": "stubborn-dog",
+                        "description": "",
+                        "post_count": 1,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/tags\/slug:stubborn-dog",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/tags\/slug:stubborn-dog\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    }
+                },
+                "categories": {
+                    "Basset Hounds": {
+                        "ID": 31042,
+                        "name": "Basset Hounds",
+                        "slug": "basset-hounds",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/categories\/slug:basset-hounds",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/categories\/slug:basset-hounds\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dog Blog": {
+                        "ID": 354151,
+                        "name": "Dog Blog",
+                        "slug": "dog-blog",
+                        "description": "",
+                        "post_count": 1,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/categories\/slug:dog-blog",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/categories\/slug:dog-blog\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs": {
+                        "ID": 305,
+                        "name": "Dogs",
+                        "slug": "dogs",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/categories\/slug:dogs",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/categories\/slug:dogs\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs Life": {
+                        "ID": 158680,
+                        "name": "Dogs Life",
+                        "slug": "dogs-life",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/categories\/slug:dogs-life",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/categories\/slug:dogs-life\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    },
+                    "Dogs with Attitude": {
+                        "ID": 55036301,
+                        "name": "Dogs with Attitude",
+                        "slug": "dogs-with-attitude",
+                        "description": "",
+                        "post_count": 3,
+                        "parent": 0,
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/categories\/slug:dogs-with-attitude",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/categories\/slug:dogs-with-attitude\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153"
+                            }
+                        }
+                    }
+                },
+                "attachments": {
+                    "211": {
+                        "ID": 211,
+                        "URL": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg",
+                        "guid": "http:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg",
+                        "date": "2020-07-25T16:11:19+01:00",
+                        "post_ID": 208,
+                        "author_ID": 152622857,
+                        "file": "img_6654.jpg",
+                        "mime_type": "image\/jpeg",
+                        "extension": "jpg",
+                        "title": "IMG_6654",
+                        "caption": "",
+                        "description": "",
+                        "alt": "",
+                        "thumbnails": {
+                            "thumbnail": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg?w=118",
+                            "medium": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg?w=236",
+                            "large": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg?w=804",
+                            "full": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6654.jpg"
+                        },
+                        "height": 3169,
+                        "width": 2488,
+                        "exif": {
+                            "aperture": "1.8",
+                            "credit": "",
+                            "camera": "iPhone X",
+                            "caption": "",
+                            "created_timestamp": "1595691952",
+                            "copyright": "",
+                            "focal_length": "4",
+                            "iso": "32",
+                            "shutter_speed": "0.0083333333333333",
+                            "title": "",
+                            "orientation": "1",
+                            "keywords": [],
+                            "latitude": 53.24570555555555,
+                            "longitude": -1.4405222222222223
+                        },
+                        "meta": {
+                            "links": {
+                                "self": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153\/media\/211",
+                                "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/media\/211\/help",
+                                "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153",
+                                "parent": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/posts\/208"
+                            }
+                        }
+                    }
+                },
+                "attachment_count": 1,
+                "metadata": [],
+                "meta": {
+                    "links": {
+                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/read\/sites\/158302153\/posts\/208",
+                        "help": "https:\/\/public-api.wordpress.com\/rest\/v\/sites\/158302153\/posts\/208\/help",
+                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1.2\/sites\/158302153",
+                        "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/posts\/208\/replies\/",
+                        "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/158302153\/posts\/208\/likes\/"
+                    }
+                },
+                "capabilities": {
+                    "publish_post": false,
+                    "delete_post": false,
+                    "edit_post": false
+                },
+                "is_seen": false,
+                "feed_ID": 93691695,
+                "feed_URL": "http:\/\/ahoundandahuman.com",
+                "feed_item_id": 2827929482,
+                "pseudo_ID": "724b084294e499de216b3f1a495f861a",
+                "is_external": false,
+                "site_name": "A hound and a human",
+                "site_URL": "https:\/\/ahoundandahuman.com",
+                "site_is_private": false,
+                "featured_media": {
+                    "uri": "https:\/\/ahoundandahumandotcom.files.wordpress.com\/2020\/07\/img_6726.jpg",
+                    "width": 0,
+                    "height": 0,
+                    "type": "image"
+                },
+                "use_excerpt": false
+            }
+        }
+    ],
+    "next_page_handle": "ZnJvbT0xMCZiZWZvcmU9MjAyMC0wNy0yNlQxMyUzQTU1JTNBMDMlMkIwMSUzQTAw"
+}

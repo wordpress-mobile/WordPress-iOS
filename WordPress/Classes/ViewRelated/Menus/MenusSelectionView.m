@@ -42,6 +42,8 @@
     self.detailView.delegate = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionItemObjectWasUpdatedNotification:) name:MenusSelectionViewItemUpdatedItemObjectNotification object:nil];
+
+    [self prepareForVoiceOver];
 }
 
 
@@ -125,6 +127,8 @@
         }
 
         self.detailView.showsDesignActive = selectionItemsExpanded;
+        [self prepareForVoiceOver];
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
     }
 }
 
@@ -140,6 +144,16 @@
 }
 
 #pragma mark - private
+
+- (void)setAccessibilityLabel:(NSString *)accessibilityLabel
+{
+    self.detailView.accessibilityLabel = accessibilityLabel;
+}
+
+-(void)setAccessibilityHint:(NSString *)accessibilityHint
+{
+    self.detailView.accessibilityHint = accessibilityHint;
+}
 
 - (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionItem *)item
 {
@@ -182,6 +196,7 @@
 {
     if (self.selectedItem) {
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:self.selectedItem];
+        [self prepareForVoiceOver];
     }
 }
 
@@ -254,6 +269,7 @@
     if (updatedItem.selected) {
         // update the detailView
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:updatedItem];
+        [self prepareForVoiceOver];
     }
 
     // update any itemViews using this item
@@ -264,6 +280,22 @@
             break;
         }
     }
+}
+
+#pragma mark - accessibility
+
+- (void)prepareForVoiceOver
+{
+    NSString *expandedLocalizedString = NSLocalizedString(@"Expanded", @"Screen reader text to represent the expanded state of a UI control");
+    self.detailView.accessibilityValue = self.selectionItemsExpanded ? expandedLocalizedString : nil;
+    self.addNewItemView.accessibilityLabel = NSLocalizedString(@"Add new menu", @"Screen reader text for Menus button that adds a new menu to a site.");
+
+    [self configureAccessibilityGroups];
+}
+
+- (void)configureAccessibilityGroups
+{
+    self.accessibilityElements = self.selectionItemsExpanded ? self.stackView.arrangedSubviews : nil;
 }
 
 @end

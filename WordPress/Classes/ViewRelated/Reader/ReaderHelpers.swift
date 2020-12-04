@@ -122,7 +122,7 @@ import WordPressShared
     /// - Parameters:
     ///     - topic: A ReaderAbstractTopic
     ///
-    /// - Returns: True if the topic is for Discover
+    /// - Returns: True if the topic is for Saved For Later
     ///
     @objc open class func topicIsSavedForLater(_ topic: ReaderAbstractTopic) -> Bool {
         //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
@@ -132,15 +132,24 @@ import WordPressShared
 
     // MARK: Analytics Helpers
 
-    @objc open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
+    class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
         var stat: WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
 
+        } else if topicIsFollowing(topic) {
+            WPAnalytics.track(.readerFollowingShown, properties: properties)
+
+        } else if topicIsLiked(topic) {
+            WPAnalytics.track(.readerLikedShown, properties: properties)
+
+        } else if isTopicSite(topic) {
+            WPAnalytics.track(.readerBlogPreviewed, properties: properties)
+
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
-            stat = .readerDiscoverViewed
+            WPAnalytics.track(.readerDiscoverShown, properties: properties)
 
         } else if isTopicList(topic) {
             stat = .readerListLoaded

@@ -446,10 +446,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatDomainCreditRedemptionTapped:
             eventName = @"domain_credit_redemption_tapped";
             break;
-        case WPAnalyticsStatEditorAddedPhotoViaGiphy:
-            eventName = @"editor_photo_added";
-            eventProperties = @{ @"via" : @"giphy" };
-            break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"local_library" };
@@ -669,6 +665,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSegmentsSelected:
             eventName = @"enhanced_site_creation_segments_selected";
             break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignViewed:
+            eventName = @"enhanced_site_creation_site_design_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignSelected:
+            eventName = @"enhanced_site_creation_site_design_selected";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignSkipped:
+            eventName = @"enhanced_site_creation_site_design_skipped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewViewed:
+            eventName = @"enhanced_site_creation_site_design_preview_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoading:
+            eventName = @"enhanced_site_creation_site_design_preview_loading";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
+            eventName = @"enhanced_site_creation_site_design_preview_loaded";
+            break;
         case WPAnalyticsStatEnhancedSiteCreationVerticalsViewed:
             eventName = @"enhanced_site_creation_verticals_viewed";
             break;
@@ -707,15 +721,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEnhancedSiteCreationErrorShown:
             eventName = @"enhanced_site_creation_error_shown";
-            break;
-        case WPAnalyticsStatGiphyAccessed:
-            eventName = @"giphy_accessed";
-            break;
-        case WPAnalyticsStatGiphySearched:
-            eventName = @"giphy_searched";
-            break;
-        case WPAnalyticsStatGiphyUploaded:
-            eventName = @"giphy_uploaded";
             break;
         case WPAnalyticsStatGravatarCropped:
             eventName = @"me_gravatar_cropped";
@@ -880,10 +885,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"media_library_photo_added";
             eventProperties = @{ @"via" : @"device_library" };
             break;
-        case WPAnalyticsStatMediaLibraryAddedPhotoViaGiphy:
-            eventName = @"media_library_photo_added";
-            eventProperties = @{ @"via" : @"giphy" };
-            break;
         case WPAnalyticsStatMediaLibraryAddedPhotoViaOtherApps:
             eventName = @"media_library_photo_added";
             eventProperties = @{ @"via" : @"other_library" };
@@ -961,15 +962,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatMySitesTabAccessed:
             eventName = @"my_site_tab_accessed";
-            break;
-        case WPAnalyticsStatNewsCardViewed:
-            eventName = @"news_card_shown";
-            break;
-        case WPAnalyticsStatNewsCardDismissed:
-            eventName = @"news_card_dismissed";
-            break;
-        case WPAnalyticsStatNewsCardRequestedExtendedInfo:
-            eventName = @"news_card_extended_info_requested";
             break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";

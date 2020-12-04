@@ -62,13 +62,19 @@ class WPSplitViewController: UISplitViewController {
             preferredPrimaryColumnWidthFraction = UISplitViewController.automaticDimension
         case .narrow:
             let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.width(for: size)
-
             minimumPrimaryColumnWidth = columnWidth
             maximumPrimaryColumnWidth = columnWidth
-            preferredPrimaryColumnWidthFraction = size.width / columnWidth
+            preferredPrimaryColumnWidthFraction = columnWidth / size.width
         case .full:
-            maximumPrimaryColumnWidth = size.width
-            preferredPrimaryColumnWidthFraction = 1.0
+            break
+
+            // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
+            // Due to a bug where the column widths are not updating correctly when the primary column
+            // is set to full width, the empty views are not sized correctly on rotation. As a workaround,
+            // don't attempt to resize the columns for full width. These lines should be restored when
+            // the full width issue is resolved.
+            // maximumPrimaryColumnWidth = size.width
+            // preferredPrimaryColumnWidthFraction = 1.0
         }
     }
 
@@ -101,7 +107,7 @@ class WPSplitViewController: UISplitViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return WPStyleGuide.preferredStatusBarStyle
     }
 
     override var childForStatusBarStyle: UIViewController? {
@@ -227,7 +233,7 @@ class WPSplitViewController: UISplitViewController {
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
-    @objc func dimDetailViewController(_ dimmed: Bool) {
+    func dimDetailViewController(_ dimmed: Bool, withAlpha alpha: CGFloat? = nil) {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
@@ -237,7 +243,7 @@ class WPSplitViewController: UISplitViewController {
                 // Dismiss the keyboard from the detail view controller if active
                 topDetailViewController?.navigationController?.view.endEditing(true)
                 UIView.animate(withDuration: dimmingViewAnimationDuration, animations: {
-                    self.dimmingView.alpha = self.dimmingViewAlpha
+                    self.dimmingView.alpha = alpha ?? self.dimmingViewAlpha
                 })
             }
         } else if dimmingView.superview != nil {
@@ -319,24 +325,21 @@ class WPSplitViewController: UISplitViewController {
      *  detail view controller.
      */
     @objc func setInitialPrimaryViewController(_ viewController: UIViewController) {
-        var initialViewControllers = [viewController]
-
-        if let navigationController = viewController as? UINavigationController,
+        guard let navigationController = viewController as? UINavigationController,
             let rootViewController = navigationController.viewControllers.last,
-            let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
-
-            navigationController.delegate = self
-
-            initialViewControllers.append(detailViewController)
-            viewControllers = initialViewControllers
-        } else {
-            viewControllers = [viewController, UIViewController()]
+            let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) else {
+                viewControllers = [viewController, UIViewController()]
+                return
         }
+
+        navigationController.delegate = self
+        viewControllers = [viewController, detailViewController]
     }
 
     fileprivate func initialDetailViewControllerForPrimaryViewController(_ viewController: UIViewController) -> UIViewController? {
+
         guard let detailProvider = viewController as? WPSplitViewControllerDetailProvider,
-        let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self)  else {
+        let detailViewController = detailProvider.initialDetailViewControllerForSplitView(self) else {
             return nil
         }
 
@@ -366,7 +369,9 @@ class WPSplitViewController: UISplitViewController {
     ///
     /// - Parameter hidden: If `true`, hide the primary view controller.
     @objc func setPrimaryViewControllerHidden(_ hidden: Bool, animated: Bool = true) {
-        guard fullscreenDisplayEnabled else { return }
+        guard fullscreenDisplayEnabled else {
+            return
+        }
 
         let updateDisplayMode = {
             self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
@@ -423,6 +428,12 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         guard let primaryNavigationController = primaryViewController as? UINavigationController else {
             assertionFailure("Split view's primary view controller should be a navigation controller!")
             return nil
+        }
+
+        // If the primary view is full width (i.e. when the No Results View is displayed),
+        // don't show a detail view as it will be rendered on top of (thus covering) the primary view.
+        if wpPrimaryColumnWidth == .full {
+            return primaryNavigationController
         }
 
         var viewControllers: [UIViewController] = []

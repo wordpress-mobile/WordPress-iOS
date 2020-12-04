@@ -29,7 +29,9 @@ msgid ""
 "\n"
 "WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites running WordPress 4.0 or higher.\n"
 "\n"
-"Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.\n\n"
+"Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.\n"
+"\n"
+"View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
@@ -38,17 +40,13 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v15.0-whats-new"
+msgctxt "v16.2-whats-new"
 msgid ""
-"As usual, there are lots of improvements in the block editor. Trash icon you use to remove blocks is now in a menu reachable by tapping the ellipsis button in the block toolbar. We also added support for overlay colors in the Cover block, support for radial gradients in Button and Cover blocks, enter/exit animation in the Floating Toolbar, and a tooltip for page template selection buttons. And now the block toolbar collapses if the block is narrower than the toolbar.\n"
+"All About Jetpack: Access all of your Jetpack features quickly and easily, including your stats, activity log, and settings.\n"
 "\n"
-"We also made lots of fixes, for a cleaner block editor experience.\n"
-"Media upload will display a “retry” message when there’s no connection (instead of freezing), undo/redo work more reliably for both blocks and text, we corrected a merging issue with text blocks, and we corrected the button alignment in page templates.\n"
+"Getting Help & Support: We fixed a few issues that occurred if you tried to contact our support team. When contacting us, you can now include non-alpha characters, and your app will no longer crash when entering your email address.\n"
 "\n"
-"We've added a new setting that allows you to change your homepage and posts page from site settings.\n"
-"\n"
-"Finally, we dealt with a Gravatar issue that got you stuck in the photo editing screen when you tried to take a new photo, and made some UI updates in the Reader.\n"
-"\n"
+"Reader Updates: We also fixed a display issue in the Reader, and comments are no longer italicized by default.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -79,40 +77,63 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
 msgid ""
-"Enjoy your\n"
-"favorite sites\n"
+"The world’s most\n"
+"popular website\n"
+"builder\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
 msgid ""
-"Get notified\n"
-"in real-time\n"
+"Create a site or\n"
+"start a blog\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
 msgid ""
-"Manage your site\n"
-"everywhere you go\n"
+"Discover\n"
+"new reads\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
 msgid ""
-"Share your ideas\n"
-"with the world\n"
+"Build an\n"
+"audience\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
 msgid ""
-"All the stats\n"
-"in your hand\n"
+"Keep tabs on\n"
+"your site\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-6"
+msgid ""
+"Reply in\n"
+"real time\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-7"
+msgid ""
+"Upload\n"
+"on the go\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-8"
+msgid "Write without compromises"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.

@@ -1,9 +1,0 @@
-Her zamanki gibi, blok düzenleyicide bir sürü iyileştirme var. Blokları kaldırmak için kullandığınız çöp kutusu simgesi artık, blok araç çubuğundaki üç nokta düğmesine dokunarak ulaşabileceğiniz bir menüde. Ayrıca Kapak blokundaki katman renkleri için destek, Düğme ve Kapak bloklarındaki dairesel gradyanlar için destek, Kayan Araç Çubuğunda giriş/çıkış animasyonu ve sayfa şablonu seçim düğmeleri için araç ipucu ekledik. Ve artık blok, blok araç çubuğundan daha dar olduğunda araç çubuğu daralıyor.
-
-Daha toplu bir blok düzenleyici deneyimi için pek çok düzeltme de yaptık.
-Medya karşıya yüklerken bağlantı olmadığında donmak yerine bir “yeniden deneme” mesajı görüntülenecek, hem bloklar hem de metin için geri al / yinele daha güvenilir bir biçimde çalışacak, metin bloklarıyla ilgili bir birleştirme sorununu düzelttik ve sayfa şablonlarındaki düğme hizalamasını düzelttik.
-
-Site ayarlarından ana sayfanızı ve gönderiler sayfanızı değiştirmenize imkan veren yeni bir ayar ekledik.
-
-Son olarak, yeni bir fotoğraf çekmeye çalıştığınızda fotoğraf düzenleme ekranında sıkışmanıza neden olan bir Gravatar sorununu düzelttik ve Reader’da bazı kullanıcı arayüzü güncellemeleri yaptık.
-

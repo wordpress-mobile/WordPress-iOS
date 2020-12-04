@@ -163,12 +163,15 @@ struct MediaProgressCoordinatorNoticeViewModel {
         }
 
         let context = ContextManager.sharedInstance().mainContext
+        var blog: Blog? = nil
 
-        var blog = media.blog
-        if blog.managedObjectContext != context,
-            let objectInContext = try? context.existingObject(with: blog.objectID),
-            let blogInContext = objectInContext as? Blog {
-            blog = blogInContext
+        context.performAndWait {
+            guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
+                DDLogError("The media object no longer exists")
+                return
+            }
+
+            blog = mediaInContext.blog
         }
 
         return blog

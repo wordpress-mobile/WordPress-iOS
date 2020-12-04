@@ -41,6 +41,10 @@ class QuickStartChecklistCell: UITableViewCell {
                 titleLabel.attributedText = NSAttributedString(string: titleText,
                                                                attributes: [.strikethroughStyle: 1,
                                                                             .foregroundColor: UIColor.neutral(.shade30)])
+                // Overrides the existing accessibility hint in the tour property observer,
+                // because users don't need the hint repeated to them after a task is completed.
+                accessibilityHint = nil
+                accessibilityLabel = tour?.titleMarkedCompleted
                 descriptionLabel.textColor = .neutral(.shade30)
                 iconView?.tintColor = .neutral(.shade30)
             } else {

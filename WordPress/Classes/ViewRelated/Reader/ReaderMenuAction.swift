@@ -10,11 +10,10 @@ final class ReaderMenuAction {
             return
         }
 
-        let service = ReaderTopicService(managedObjectContext: context)
-        if let topic = service.findSiteTopic(withSiteID: post.siteID) {
-            showMenuForPost(post, context: context, topic: topic, readerTopic: readerTopic, fromView: anchor, vc: vc)
-            return
-        }
+        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
+        let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
+
+        showMenuForPost(post, context: context, topic: siteTopic, readerTopic: readerTopic, fromView: anchor, vc: vc)
     }
 
     fileprivate func showMenuForPost(_ post: ReaderPost, context: NSManagedObjectContext, topic: ReaderSiteTopic? = nil, readerTopic: ReaderAbstractTopic?, fromView anchorView: UIView, vc: UIViewController) {

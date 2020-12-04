@@ -13,13 +13,15 @@ extension SiteCreationRequest {
     ///
     /// - Parameters:
     ///   - segmentIdentifier: the segment ID for the pending site
+    ///   - siteDesign: the starter site's slug for the pending site
     ///   - verticalIdentifier: the vertical ID for the pending site
     ///   - title: title of the pending site for the pending site
     ///   - tagline: tagline for the pending site
     ///   - siteURLString: the URL string for the pending site
     ///   - isPublic: whether or not the pending site should be public
     ///
-    init(segmentIdentifier: Int64,
+    init(segmentIdentifier: Int64?,
+         siteDesign: String?,
          verticalIdentifier: String?,
          title: String,
          tagline: String?,
@@ -27,6 +29,7 @@ extension SiteCreationRequest {
          isPublic: Bool) {
 
         self.init(segmentIdentifier: segmentIdentifier,
+                  siteDesign: siteDesign,
                   verticalIdentifier: verticalIdentifier,
                   title: title,
                   tagline: tagline,
@@ -47,6 +50,7 @@ extension SiteCreationRequest {
     ///
     init(request: SiteCreationRequest) {
         self.init(segmentIdentifier: request.segmentIdentifier,
+                  siteDesign: request.siteDesign,
                   verticalIdentifier: request.verticalIdentifier,
                   title: request.title,
                   tagline: request.tagline,

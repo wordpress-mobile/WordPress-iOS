@@ -14,6 +14,11 @@ class SupportTableViewController: UITableViewController {
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserDefaults.standard
 
+    /// This closure is called when this VC is about to be dismissed due to the user
+    /// tapping the dismiss button.
+    ///
+    private var dismissTapped: (() -> ())?
+
     // MARK: - Init
 
     override init(style: UITableView.Style) {
@@ -24,8 +29,9 @@ class SupportTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required convenience init() {
+    required convenience init(dismissTapped: (() -> ())? = nil) {
         self.init(style: .grouped)
+        self.dismissTapped = dismissTapped
     }
 
     // MARK: - View
@@ -69,6 +75,7 @@ class SupportTableViewController: UITableViewController {
     // MARK: - Button Actions
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
+        dismissTapped?()
         dismiss(animated: true)
     }
 
@@ -184,7 +191,11 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+                    if identityUpdated {
+                        reloadViewModel()
+                    }
+                }
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -202,7 +213,11 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag)
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+                if identityUpdated {
+                    reloadViewModel()
+                }
+            }
         }
     }
 
@@ -316,7 +331,7 @@ private extension SupportTableViewController {
         static let viewTitle = NSLocalizedString("Support", comment: "View title for Support page.")
         static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
+        static let contactUs = NSLocalizedString("Contact Support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")

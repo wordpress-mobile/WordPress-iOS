@@ -1,8 +1,0 @@
-Comme d’habitude, il y a beaucoup d’améliorations dans l’éditeur de bloc. L’icône de la corbeille que vous utilisez pour supprimer des blocs se trouve maintenant dans un menu accessible en appuyant sur le bouton de la barre d’outils des blocs. Nous avons également ajouté la prise en charge des couleurs de superposition dans le bloc Couverture, la prise en charge des dégradés radiaux dans les blocs Bouton et Couverture, l’animation entrée-sortie dans la barre d’outils flottante, et une info-bulle pour les boutons de sélection des modèles de page. Et maintenant, la barre d’outils des blocs se réduit si le bloc est plus étroit que la barre d’outils.
-
-Nous avons aussi fait beaucoup de corrections, pour une expérience plus propre de l’éditeur de blocs.
-Le téléchargement de médias affichera le message « réessayez » lorsqu’il n’y a pas de connexion (au lieu de se figer), le travail d’annulation/rétablissement est plus fiable pour les blocs et le texte, nous avons corrigé un problème de fusion avec les blocs de texte, et nous avons corrigé l’alignement des boutons dans les modèles de page.
-
-Nous avons ajouté un nouveau paramètre qui vous permet de modifier votre page d’accueil et votre page de messages à partir des paramètres du site.
-
-Enfin, nous avons traité un problème de Gravatar qui vous bloquait dans l’écran de retouche photo lorsque vous essayiez de prendre une nouvelle photo, et nous avons fait quelques mises à jour de l’interface utilisateur dans le Lecteur.

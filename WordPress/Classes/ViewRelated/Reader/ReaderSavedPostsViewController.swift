@@ -259,20 +259,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             }
         }
 
-        var controller: ReaderDetailViewController
-        if post.sourceAttributionStyle() == .post &&
-            post.sourceAttribution.postID != nil &&
-            post.sourceAttribution.blogID != nil {
-
-            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-
-        } else if post.isCross() {
-            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-
-        } else {
-            controller = ReaderDetailViewController.controllerWithPost(post)
-
-        }
+        let controller = ReaderDetailViewController.controllerWithPost(post)
 
         trackSavedPostNavigation()
 

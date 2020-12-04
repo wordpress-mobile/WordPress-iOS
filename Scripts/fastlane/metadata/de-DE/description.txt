@@ -1,10 +1,11 @@
-Verwalte oder kreiere deinen WordPress-Blog oder deine Website direkt auf deinem iOS-Gerät. Erstelle und editiere Beiträge und Seiten, lade deine Lieblingsfotos und Videos hoch, sieh dir Statistiken an und antworte auf Kommentare.
+Verwalte oder erstelle dein WordPress-Blog oder deine WordPress.com-Website direkt auf deinem iOS-Gerät: Hier kannst du Beiträge und Seiten erstellen und bearbeiten, deine Lieblingsfotos und -videos hochladen, Statistiken anzeigen und auf Kommentare antworten.
 
-Mit WordPress für iOS hältst du das Werkzeug, um Texte zu veröffentlichen direkt in deiner Hand. Entwirf einen spontanen Haiku auf deiner Couch. Schieß ein Foto in der Mittagspause und zeig es allen. Antworte auf einen neuen Kommentar oder schau dir an, aus welchen Ländern deine neuesten Besucher kommen.
+Mit WordPress für iOS hast du die Möglichkeit zum Veröffentlichen direkt in deiner Hand. Entwirf ein spontanes Haiku auf der Couch. Schieße in deiner Mittagspause ein Foto und lade es gleich hoch. Reagiere auf die neuesten Kommentare oder rufe deine Statistiken dazu ab, aus welchen neuen Ländern die heutigen Besucher kommen.
 
-WordPress für iOS ist ein Open-Source-Projekt, an dessen Entwicklung du dich beteiligen kannst. Um mehr zu erfahren, schau unter https://apps.wordpress.com/contribute/ nach.
+WordPress für iOS ist ein Open Source-Projekt, du kannst dich also an der Entwicklung beteiligen. Weitere Informationen erhältst du unter https://apps.wordpress.com/contribute/.
 
-WordPress für iOS unterstützt WordPress.com und selbst gehostete WordPress.org-Websites ab WordPress&nbsp;4.0.
+WordPress für iOS unterstützt WordPress.com sowie selbst gehostete WordPress.org-Websites mit WordPress 4.0 oder höher.
 
-Wenn du Hilfe zur App brauchst, findest du Informationen in den Foren unter https://ios.forums.wordpress.org/. Du kannst uns aber auch einen Tweet an @WordPressiOS schicken.
+Du benötigst Hilfe mit der App? Besuche die Foren unter https://ios.forums.wordpress.org/ oder kontaktiere uns per Twitter unter @WordPressiOS.
 
+Den Datenschutzhinweis für Benutzer in Kalifornien kannst du unter  https://automattic.com/privacy/#california-consumer-privacy-act-ccpa anzeigen.

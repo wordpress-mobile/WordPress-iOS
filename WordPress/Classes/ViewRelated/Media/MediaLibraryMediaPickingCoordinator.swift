@@ -3,22 +3,18 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate
-                                & GiphyPickerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
 
-    private let stockPhotos = StockPhotosPicker()
-    private var giphy = GiphyPicker()
+    private var stockPhotos: StockPhotosPicker?
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
     init(delegate: PickersDelegate) {
         self.delegate = delegate
 
-        stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
-        giphy.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -43,10 +39,7 @@ final class MediaLibraryMediaPickingCoordinator {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.tenor.enabled {
-            menuAlert.addAction(tenorAction(origin: origin, blog: blog))
-        }
-
+        menuAlert.addAction(tenorAction(origin: origin, blog: blog))
         menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         menuAlert.addAction(cancelAction())
 
@@ -75,13 +68,6 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
-
-    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
-            self?.showGiphy(origin: origin, blog: blog)
-        })
-    }
-
     private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
             self?.showTenor(origin: origin, blog: blog)
@@ -103,17 +89,12 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
-        stockPhotos.presentPicker(origin: origin, blog: blog)
-    }
-
-    private func showGiphy(origin: UIViewController, blog: Blog) {
-        let delegate = giphy.delegate
-
-        // Create a new GiphyPicker each time so we don't save state
-        giphy = GiphyPicker()
-        giphy.delegate = delegate
-
-        giphy.presentPicker(origin: origin, blog: blog)
+        let picker = StockPhotosPicker()
+        // add delegate conformance, allow release of picker in the same manner as the tenor picker
+        // in order to prevent duplicated uploads and botched de-selection on second upload
+        picker.delegate = self
+        picker.presentPicker(origin: origin, blog: blog)
+        stockPhotos = picker
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
@@ -142,5 +123,12 @@ extension MediaLibraryMediaPickingCoordinator: TenorPickerDelegate {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
         delegate?.tenorPicker(picker, didFinishPicking: assets)
         tenor = nil
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        delegate?.stockPhotosPicker(picker, didFinishPicking: assets)
+        stockPhotos = nil
     }
 }

@@ -10,17 +10,7 @@ extension ReaderStreamViewController {
         var message: String
     }
 
-    func checkNewsCardAvailability(topic: ReaderAbstractTopic) {
-        let containerIdentifier = Identifier(value: topic.title)
-        let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
-        let notificationName: NSNotification.Name = mustBadge ? .NewsCardAvailable : .NewsCardNotAvailable
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
-            NotificationCenter.default.post(name: notificationName, object: nil)
-        })
-    }
-
-    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic, including News Card, or nil if there is not one.
+    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic.
     /// The header is returned already configured
     ///
     /// - Parameter topic: A ReaderTopic
@@ -29,13 +19,11 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+    func headerForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
 
         let header = headerForStream(topic)
         configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-        let containerIdentifier = Identifier(value: topic.title)
-
-        return news.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
+        return header
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
@@ -46,26 +34,18 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
-        if ReaderHelpers.topicIsFollowing(topic), !FeatureFlag.newReaderNavigation.enabled {
-            return Bundle.main.loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
+        if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
+            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)?.first as? ReaderTagStreamHeader
         }
 
-        // if tag
-        if ReaderHelpers.isTopicTag(topic) {
-            return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
-        }
-
-        // if list
         if ReaderHelpers.isTopicList(topic) {
-            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)!.first as! ReaderListStreamHeader
+            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
         }
 
-        // if site
         if ReaderHelpers.isTopicSite(topic) {
-            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)!.first as! ReaderSiteStreamHeader
+            return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
         }
 
-        // if anything else return nil
         return nil
     }
 
@@ -188,6 +168,6 @@ extension ReaderStreamViewController {
 // MARK: - Tracks
 extension ReaderStreamViewController {
     func trackSavedListAccessed() {
-        WPAppAnalytics.track(.readerSavedListViewed, withProperties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
+        WPAnalytics.track(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
     }
 }

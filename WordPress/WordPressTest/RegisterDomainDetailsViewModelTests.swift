@@ -2,13 +2,13 @@
 import XCTest
 
 extension JetpackSiteRef {
-    static func mock(siteID: Int, username: String) -> JetpackSiteRef {
+    static func mock(siteID: Int = 9001, username: String = "test") -> JetpackSiteRef {
         let payload: NSString = """
         {
-            "siteID": 9001,
-            "username": "test"
+            "siteID": \(siteID),
+            "username": "\(username)"
         }
-        """
+        """ as NSString
 
 
         return try! JSONDecoder().decode(JetpackSiteRef.self, from: payload.data(using: 8)!)
@@ -188,5 +188,15 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
 
         XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value == MockData.phoneCountryCode)
         XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value == MockData.phoneNumber)
+    }
+
+    func testValueSanitizer() {
+        let latin1SupplementAndLatinExtendedALetters = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſ"
+
+        let latinASCIIApproximates = "AAAAAAAECEEEEIIIIDNOOOOOOUUUUYTHssaaaaaaaeceeeeiiiidnoooooouuuuythyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKkqLlLlLlLlLlNnNnNn'nNnOoOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs"
+
+        let result = RegisterDomainDetailsViewModel.transformToLatinASCII(value: latin1SupplementAndLatinExtendedALetters)
+
+        XCTAssertEqual(result, latinASCIIApproximates)
     }
 }

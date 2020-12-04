@@ -352,10 +352,6 @@ public protocol ThemePresenter: class {
         unregisterForKeyboardNotifications()
     }
 
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     fileprivate func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)),
@@ -764,6 +760,8 @@ public protocol ThemePresenter: class {
     }
 
     // MARK: - ThemePresenter
+    // optional closure that will be executed when the presented WebkitViewController closes
+    @objc var onWebkitViewControllerClose: (() -> Void)?
 
     @objc open func activateTheme(_ theme: Theme?) {
         guard let theme = theme, !theme.isCurrentTheme() else {
@@ -816,7 +814,7 @@ public protocol ThemePresenter: class {
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
-        QuickStartTourGuide.find()?.visited(.customize)
+        QuickStartTourGuide.shared.visited(.customize)
 
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
@@ -843,10 +841,10 @@ public protocol ThemePresenter: class {
 
     @objc open func presentViewForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesDemoAccessed, with: self.blog)
-        presentUrlForTheme(theme, url: theme?.viewUrl())
+        presentUrlForTheme(theme, url: theme?.viewUrl(), onClose: onWebkitViewControllerClose)
     }
 
-    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet) {
+    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet, onClose: (() -> Void)? = nil) {
         guard let theme = theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
@@ -859,6 +857,7 @@ public protocol ThemePresenter: class {
         configuration.customTitle = theme.name
         configuration.addsHideMasterbarParameters = false
         configuration.navigationDelegate = customizerNavigationDelegate
+        configuration.onClose = onClose
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)
         var buttons: [UIBarButtonItem]?
         if activeButton && !theme.isCurrentTheme() {

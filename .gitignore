@@ -93,9 +93,3 @@ derived-data/
 WordPress/Credentials/wpcom_app_credentials
 WordPress/Credentials/wpcom_alpha_app_credentials
 WordPress/Credentials/wpcom_internal_app_credentials
-
-# We use yarn to manage Danger
-# https://yarnpkg.com/
-# https://danger.systems/js/
-yarn-error.log
-node_modules

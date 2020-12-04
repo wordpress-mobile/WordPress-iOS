@@ -32,6 +32,77 @@ import Foundation
     case editorPostLocationChanged
     case editorPostSlugChanged
     case editorPostExcerptChanged
+    case editorPostSiteChanged
+
+    // App Settings
+    case appSettingsAppearanceChanged
+
+    // Gutenberg Features
+    case gutenbergUnsupportedBlockWebViewShown
+    case gutenbergUnsupportedBlockWebViewClosed
+
+    // Notifications Permissions
+    case pushNotificationsPrimerSeen
+    case pushNotificationsPrimerAllowTapped
+    case pushNotificationsPrimerNoTapped
+    case secondNotificationsAlertSeen
+    case secondNotificationsAlertAllowTapped
+    case secondNotificationsAlertNoTapped
+
+    // Reader
+    case selectInterestsShown
+    case selectInterestsPicked
+    case readerDiscoverShown
+    case readerFollowingShown
+    case readerSavedListShown
+    case readerLikedShown
+    case readerBlogPreviewed
+    case readerDiscoverPaginated
+    case readerPostCardTapped
+    case readerPullToRefresh
+    case readerDiscoverTopicTapped
+    case postCardMoreTapped
+    case followedBlogNotificationsReaderMenuOff
+    case followedBlogNotificationsReaderMenuOn
+    case readerArticleVisited
+    case itemSharedReader
+    case readerBlogBlocked
+    case readerChipsMoreToggled
+    case readerToggleFollowConversation
+    case readerPostReported
+    case readerArticleDetailMoreTapped
+    case readerSharedItem
+    case readerSuggestedSiteVisited
+    case readerSuggestedSiteToggleFollow
+    case readerDiscoverContentPresented
+
+    // What's New - Feature announcements
+    case featureAnnouncementShown
+    case featureAnnouncementButtonTapped
+    // Stories
+    case storyIntroShown
+    case storyIntroDismissed
+    case storyIntroCreateStoryButtonTapped
+
+    // Jetpack
+    case jetpackSettingsViewed
+    case jetpackManageConnectionViewed
+    case jetpackDisconnectTapped
+    case jetpackDisconnectRequested
+    case jetpackWhitelistedIpsViewed
+    case jetpackWhitelistedIpsChanged
+
+    // Comments
+    case commentViewed
+    case commentApproved
+    case commentUnApproved
+    case commentLiked
+    case commentUnliked
+    case commentTrashed
+    case commentSpammed
+    case commentEditorOpened
+    case commentEdited
+    case commentRepliedTo
 
     /// A String that represents the event
     var value: String {
@@ -85,6 +156,127 @@ import Foundation
             return "editor_post_slug_changed"
         case .editorPostExcerptChanged:
             return "editor_post_excerpt_changed"
+        case .editorPostSiteChanged:
+            return "editor_post_site_changed"
+        case .appSettingsAppearanceChanged:
+            return "app_settings_appearance_changed"
+        case .gutenbergUnsupportedBlockWebViewShown:
+            return "gutenberg_unsupported_block_webview_shown"
+        case .gutenbergUnsupportedBlockWebViewClosed:
+            return "gutenberg_unsupported_block_webview_closed"
+        // Notifications permissions
+        case .pushNotificationsPrimerSeen:
+            return "notifications_primer_seen"
+        case .pushNotificationsPrimerAllowTapped:
+            return "notifications_primer_allow_tapped"
+        case .pushNotificationsPrimerNoTapped:
+            return "notifications_primer_no_tapped"
+        case .secondNotificationsAlertSeen:
+            return "notifications_second_alert_seen"
+        case .secondNotificationsAlertAllowTapped:
+            return "notifications_second_alert_allow_tapped"
+        case .secondNotificationsAlertNoTapped:
+            return "notifications_second_alert_no_tapped"
+        // Reader
+        case .selectInterestsShown:
+            return "select_interests_shown"
+        case .selectInterestsPicked:
+            return "select_interests_picked"
+        case .readerDiscoverShown:
+            return "reader_discover_shown"
+        case .readerFollowingShown:
+            return "reader_following_shown"
+        case .readerLikedShown:
+            return "reader_liked_shown"
+        case .readerSavedListShown:
+            return "reader_saved_list_shown"
+        case .readerBlogPreviewed:
+            return "reader_blog_previewed"
+        case .readerDiscoverPaginated:
+            return "reader_discover_paginated"
+        case .readerPostCardTapped:
+            return "reader_post_card_tapped"
+        case .readerPullToRefresh:
+            return "reader_pull_to_refresh"
+        case .readerDiscoverTopicTapped:
+            return "reader_discover_topic_tapped"
+        case .postCardMoreTapped:
+            return "post_card_more_tapped"
+        case .followedBlogNotificationsReaderMenuOff:
+            return "followed_blog_notifications_reader_menu_off"
+        case .followedBlogNotificationsReaderMenuOn:
+            return "followed_blog_notifications_reader_menu_on"
+        case .readerArticleVisited:
+            return "reader_article_visited"
+        case .itemSharedReader:
+            return "item_shared_reader"
+        case .readerBlogBlocked:
+            return "reader_blog_blocked"
+        case .readerChipsMoreToggled:
+            return "reader_chips_more_toggled"
+        case .readerToggleFollowConversation:
+            return "reader_toggle_follow_conversation"
+        case .readerPostReported:
+            return "reader_post_reported"
+        case .readerArticleDetailMoreTapped:
+            return "reader_article_detail_more_tapped"
+        case .readerSharedItem:
+            return "reader_shared_item"
+        case .readerSuggestedSiteVisited:
+            return "reader_suggested_site_visited"
+        case .readerSuggestedSiteToggleFollow:
+            return "reader_suggested_site_toggle_follow"
+        case .readerDiscoverContentPresented:
+            return "reader_discover_content_presented"
+        // What's New - Feature announcements
+        case .featureAnnouncementShown:
+            return "feature_announcement_shown"
+        case .featureAnnouncementButtonTapped:
+            return "feature_announcement_button_tapped"
+        // Stories
+        case .storyIntroShown:
+            return "story_intro_shown"
+        case .storyIntroDismissed:
+            return "story_intro_dismissed"
+        case .storyIntroCreateStoryButtonTapped:
+            return "story_intro_create_story_button_tapped"
+
+        // Jetpack
+        case .jetpackSettingsViewed:
+            return "jetpack_settings_viewed"
+        case .jetpackManageConnectionViewed:
+            return "jetpack_manage_connection_viewed"
+        case .jetpackDisconnectTapped:
+            return "jetpack_disconnect_tapped"
+        case .jetpackDisconnectRequested:
+            return "jetpack_disconnect_requested"
+        case .jetpackWhitelistedIpsViewed:
+            return "jetpack_whitelisted_ips_viewed"
+        case .jetpackWhitelistedIpsChanged:
+            return "jetpack_whitelisted_ips_changed"
+
+        // Comments
+        case .commentViewed:
+            return "comment_viewed"
+        case .commentApproved:
+            return "comment_approved"
+        case .commentUnApproved:
+            return "comment_unapproved"
+        case .commentLiked:
+            return "comment_liked"
+        case .commentUnliked:
+            return "comment_unliked"
+        case .commentTrashed:
+            return "comment_trashed"
+        case .commentSpammed:
+            return "comment_spammed"
+        case .commentEditorOpened:
+            return "comment_editor_opened"
+        case .commentEdited:
+            return "comment_edited"
+        case .commentRepliedTo:
+            return "comment_replied_to"
+
         }
     }
 
@@ -142,6 +334,7 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 

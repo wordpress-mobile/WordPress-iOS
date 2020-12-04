@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import Gridicons
+import AMScrollingNavbar
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -96,25 +97,13 @@ extension WPStyleGuide {
         ]
     }
 
-    /// Returns a the system serif font (New York) for iOS 13+ but defaults to noto for older devices
-    private class func serifFontForTextStyle(_ style: UIFont.TextStyle,
-                                             fontWeight weight: UIFont.Weight = .regular) -> UIFont {
-        guard #available(iOS 13, *),
-            let fontDescriptor = WPStyleGuide.fontForTextStyle(style, fontWeight: weight).fontDescriptor.withDesign(.serif)
-        else {
-            return WPStyleGuide.notoFontForTextStyle(style)
-        }
-
-        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
-    }
-
     @objc public class func readerCardTitleAttributes() -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(Cards.titleTextStyle, fontWeight: .semibold)
+            .font: WPStyleGuide.serifFontForTextStyle(Cards.titleTextStyle, fontWeight: .semibold)
         ]
     }
 
@@ -140,15 +129,10 @@ extension WPStyleGuide {
     // MARK: - Detail styles
 
     @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Detail.titleTextStyle)
-
-        let lineHeight = font.pointSize + 10.0
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.maximumLineHeight = lineHeight
+        let style: UIFont.TextStyle = UIDevice.isPad() ? .title1 : .title2
+        let font = WPStyleGuide.serifFontForTextStyle(style, fontWeight: .semibold)
 
         return [
-            .paragraphStyle: paragraphStyle,
             .font: font
         ]
     }
@@ -159,7 +143,7 @@ extension WPStyleGuide {
 
         return [
             .paragraphStyle: paragraphStyle,
-            .font: serifFontForTextStyle(.title3),
+            .font: WPStyleGuide.serifFontForTextStyle(.title3),
 
         ]
     }
@@ -175,22 +159,6 @@ extension WPStyleGuide {
                                       dark: .muriel(color: .gray, .shade20))
         ]
     }
-
-    // MARK: - Stream Header Attributed Text Attributes
-
-    @objc public class func readerStreamHeaderDescriptionAttributes() -> [NSAttributedString.Key: Any] {
-        let font = WPStyleGuide.notoFontForTextStyle(Cards.contentTextStyle)
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Cards.defaultLineSpacing
-        paragraphStyle.alignment = .center
-
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: font
-        ]
-    }
-
 
     // MARK: - Apply Card Styles
 
@@ -228,14 +196,6 @@ extension WPStyleGuide {
         label.textColor = UIColor(light: .gray(.shade80), dark: .textSubtle)
     }
 
-    @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
-        button.setTitleColor(.primary, for: UIControl.State())
-        button.setTitleColor(.primaryDark, for: .highlighted)
-        button.titleLabel?.allowsDefaultTighteningForTruncation = false
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
-    }
-
     @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
         guard let titleLabel = button.titleLabel else {
             return
@@ -248,22 +208,22 @@ extension WPStyleGuide {
     // MARK: - Apply Stream Header Styles
 
     @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
+        label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
         label.textColor = .text
     }
 
     @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        label.font = fontForTextStyle(.subheadline, fontWeight: .regular)
         label.textColor = .textSubtle
     }
 
     @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabelForNotoFont(label, textStyle: .subheadline)
+        label.font = fontForTextStyle(.body, fontWeight: .regular)
         label.textColor = .text
     }
 
     @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.contentTextStyle)
         label.textColor = .textSubtle
     }
 
@@ -309,32 +269,89 @@ extension WPStyleGuide {
         button.setTitleColor(disabledColor, for: .disabled)
     }
 
+    @objc public class func applyReaderFollowConversationButtonStyle(_ button: UIButton) {
+        // General
+        button.naturalContentHorizontalAlignment = .leading
+        button.backgroundColor = .clear
+        button.titleLabel?.font = fontForTextStyle(.footnote)
+
+        // Color(s)
+        let normalColor = UIColor.primary
+        let highlightedColor =  UIColor.neutral
+        let selectedColor = UIColor.success
+
+        button.setTitleColor(normalColor, for: .normal)
+        button.setTitleColor(selectedColor, for: .selected)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+
+        // Image(s)
+        let side = WPStyleGuide.fontSizeForTextStyle(.headline)
+        let size = CGSize(width: side, height: side)
+        let followIcon = UIImage.gridicon(.readerFollowConversation, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowingConversation, size: size)
+
+        button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
+        button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
+        button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
+        button.imageEdgeInsets = FollowConversationButton.Style.imageEdgeInsets
+        button.contentEdgeInsets = FollowConversationButton.Style.contentEdgeInsets
+    }
+
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
-        let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
+        let side = WPStyleGuide.fontSizeForTextStyle(.callout)
         let size = CGSize(width: side, height: side)
 
         let followIcon = UIImage.gridicon(.readerFollow, size: size)
         let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
-        let normalColor = UIColor.primary
-        let highlightedColor = UIColor.primaryDark
-        let selectedColor = UIColor.success
+        let followFont: UIFont = fontForTextStyle(.callout, fontWeight: .semibold)
+        let followingFont: UIFont = fontForTextStyle(.callout, fontWeight: .regular)
+        button.titleLabel?.font = button.isSelected ? followingFont : followFont
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(normalColor)
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(selectedColor)
-        let highlightIcon = followingIcon.imageWithTintColor(highlightedColor)
+        button.layer.cornerRadius = 4.0
+        button.layer.borderColor = UIColor.primaryButtonBorder.cgColor
+
+        button.backgroundColor = button.isSelected ? FollowButton.Style.followingBackgroundColor : FollowButton.Style.followBackgroundColor
+        button.tintColor = button.isSelected ? FollowButton.Style.followingIconColor : FollowButton.Style.followTextColor
+
+        button.setTitleColor(FollowButton.Style.followTextColor, for: .normal)
+        button.setTitleColor(FollowButton.Style.followingTextColor, for: .selected)
+
+        button.imageEdgeInsets = FollowButton.Style.imageEdgeInsets
+        button.titleEdgeInsets = FollowButton.Style.titleEdgeInsets
+        button.contentEdgeInsets = FollowButton.Style.contentEdgeInsets
+
+        let tintedFollowIcon = followIcon.imageWithTintColor(FollowButton.Style.followTextColor)
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(FollowButton.Style.followingTextColor)
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
-        button.setImage(highlightIcon, for: .highlighted)
 
-        button.setTitle(followStringForDisplay, for: UIControl.State())
-        button.setTitle(followingStringForDisplay, for: .selected)
-        button.setTitle(followingStringForDisplay, for: .highlighted)
+        button.setTitle(FollowButton.Text.followStringForDisplay, for: .normal)
+        button.setTitle(FollowButton.Text.followingStringForDisplay, for: .selected)
 
-        button.setTitleColor(normalColor, for: UIControl.State())
-        button.setTitleColor(highlightedColor, for: .highlighted)
-        button.setTitleColor(selectedColor, for: .selected)
+        button.layer.borderWidth = button.isSelected ? 1.0 : 0.0
+
+        // Default accessibility label and hint.
+        button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
+        button.accessibilityHint = FollowButton.Text.accessibilityHint
+    }
+
+    @objc public class func applyReaderIconFollowButtonStyle(_ button: UIButton) {
+        let followIcon = UIImage.gridicon(.readerFollow)
+        let followingIcon = UIImage.gridicon(.readerFollowing)
+
+        button.backgroundColor = .clear
+
+        let tintedFollowIcon = followIcon.imageWithTintColor(.accent(.shade40))
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(.gray(.shade40))
+
+        button.setImage(tintedFollowIcon, for: .normal)
+        button.setImage(tintedFollowingIcon, for: .selected)
+
+        // Default accessibility label and hint.
+        button.accessibilityLabel = button.isSelected ? FollowButton.Text.followingStringForDisplay : FollowButton.Text.followStringForDisplay
+        button.accessibilityHint = FollowButton.Text.accessibilityHint
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
@@ -364,8 +381,8 @@ extension WPStyleGuide {
         applyReaderStreamActionButtonStyle(button)
     }
 
-    @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton) {
-        let size = Cards.actionButtonSize
+    @objc public class func applyReaderCardCommentButtonStyle(_ button: UIButton, defaultSize: Bool = false) {
+        let size = defaultSize ? Gridicon.defaultSize : Cards.actionButtonSize
         let icon = UIImage(named: "icon-reader-comment-outline")?.imageFlippedForRightToLeftLayoutDirection()
         let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 
@@ -474,14 +491,6 @@ extension WPStyleGuide {
         }
     }
 
-    @objc public static var followStringForDisplay: String {
-        return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-    }
-
-    @objc public static var followingStringForDisplay: String {
-        return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-    }
-
     @objc public class func savePostStringForDisplay(_ isSaved: Bool) -> String {
         if isSaved {
             return NSLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
@@ -558,8 +567,41 @@ extension WPStyleGuide {
     }
 
     public struct Detail {
-        public static let titleTextStyle: UIFont.TextStyle = .title1
+        public static let titleTextStyle: UIFont.TextStyle = .title2
         public static let contentTextStyle: UIFont.TextStyle = .callout
     }
 
+    public struct FollowButton {
+        struct Style {
+            static let followBackgroundColor: UIColor = .primaryButtonBackground
+            static let followTextColor: UIColor = .white
+            static let followingBackgroundColor: UIColor = .clear
+            static let followingIconColor: UIColor = .buttonIcon
+            static let followingTextColor: UIColor = .textSubtle
+
+            static let imageTitleSpace: CGFloat = 2.0
+            static let imageEdgeInsets = UIEdgeInsets(top: 0, left: -imageTitleSpace, bottom: 0, right: imageTitleSpace)
+            static let titleEdgeInsets = UIEdgeInsets(top: 0, left: imageTitleSpace, bottom: 0, right: -imageTitleSpace)
+            static let contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 12.0, bottom: 6.0, right: 12.0)
+        }
+
+        struct Text {
+            static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
+            static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+            static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        }
+    }
+
+    public struct FollowConversationButton {
+        struct Style {
+            static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
+            static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
+        }
+    }
+}
+
+extension ScrollingNavigationController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return WPStyleGuide.preferredStatusBarStyle
+    }
 }

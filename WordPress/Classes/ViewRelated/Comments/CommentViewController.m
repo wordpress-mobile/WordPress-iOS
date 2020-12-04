@@ -9,7 +9,7 @@
 #import "PostService.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
-#import "SuggestionService.h"
+#import "WordPress-Swift.h"
 #import <WordPressUI/WordPressUI.h>
 
 
@@ -104,9 +104,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
     
-    self.suggestionsTableView = [SuggestionsTableView new];
-    self.suggestionsTableView.siteID = self.comment.blog.dotComID;
-    self.suggestionsTableView.suggestionsDelegate = self;
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.dotComID suggestionType:SuggestionTypeMention delegate:self];
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
 }
@@ -440,7 +438,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
 
-    if (!self.comment.isLiked) {
+    if (self.comment.isLiked) {
+        [CommentAnalytics trackCommentLikedWithComment:[self comment]];
+    } else {
+        [CommentAnalytics trackCommentUnLikedWithComment:[self comment]];
         [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
     }
 
@@ -452,12 +453,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                        failure:^(NSError *error) {
                                            [weakSelf reloadData];
                                        }];
+
 }
 
 - (void)approveComment
 {
     __typeof(self) __weak weakSelf = self;
 
+    [CommentAnalytics trackCommentApprovedWithComment:[self comment]];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService approveComment:self.comment success:nil failure:^(NSError *error) {
@@ -471,6 +474,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
 
+    [CommentAnalytics trackCommentUnApprovedWithComment:[self comment]];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
@@ -483,7 +487,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)trashComment
 {
     __typeof(self) __weak weakSelf = self;
-    
+
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
     
@@ -497,7 +501,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete")
                                                            style:UIAlertActionStyleDestructive
-                                                         handler:^(UIAlertAction *action){
+                                                         handler:^(UIAlertAction *action) {
                                                              NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                                              CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
                                                              
@@ -508,7 +512,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                                                  DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
                                                                  return;
                                                              }
-                                                             
+
+                                                             [CommentAnalytics trackCommentTrashedWithComment:[weakSelf comment]];
                                                              [commentService deleteComment:reloadedComment success:nil failure:nil];
                                                              
                                                              // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
@@ -536,18 +541,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     UIAlertAction *spamAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Spam", @"Spam")
                                                          style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction *action){
+                                                       handler:^(UIAlertAction *action) {
                                                            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                                            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
                                                            
                                                            NSError *error = nil;
                                                            Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
-                                                           
+
                                                            if (error) {
                                                                DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
                                                                return;
                                                            }
-                                                           
+
+                                                           [CommentAnalytics trackCommentSpammedWithComment:reloadedComment];
                                                            [commentService spamComment:reloadedComment success:nil failure:nil];
                                                        }];
     [alertController addAction:cancelAction];
@@ -578,6 +584,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     navController.navigationBar.translucent = NO;
 
     [self presentViewController:navController animated:true completion:nil];
+
+    [CommentAnalytics trackCommentEditorOpenedWithComment:[self comment]];
 }
 
 - (void)updateCommentForNewContent:(NSString *)content
@@ -585,6 +593,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     // Set the new Content Data
     self.comment.content = content;
     [self reloadData];
+
+    // Regardless of success or failure track the user's intent to save a change.
+    [CommentAnalytics trackCommentEditedWithComment:[self comment]];
     
     // Hit the backend
     __typeof(self) __weak weakSelf = self;
@@ -632,6 +643,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     Comment *reply = [commentService createReplyForComment:self.comment];
     reply.content = content;
     [commentService uploadComment:reply success:successBlock failure:failureBlock];
+    [CommentAnalytics trackCommentRepliedToComment:[self comment]];
 }
 
 
@@ -698,7 +710,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
+    return [self shouldShowSuggestionsFor:self.comment.blog.dotComID];
 }
 
 - (void)reloadData

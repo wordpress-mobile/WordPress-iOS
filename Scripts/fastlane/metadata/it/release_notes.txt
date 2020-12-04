@@ -1,9 +1,0 @@
-Come al solito, sono presenti molti miglioramenti nell'editor a blocchi. L'icona del cestino che usi per rimuovere i blocchi ora è in un menu raggiungibile toccando il pulsante a ellissi nella barra degli strumenti del blocco. Abbiamo anche aggiunto il supporto per i colori di sovrapposizione nel blocco Copertina, il supporto per la sfumatura radiale nei blocchi Pulsante e Copertina, l'animazione di ingresso/uscita nella barra degli strumenti mobile e un tooltip per i pulsanti di selezione del modello di pagina. Ora la barra degli strumenti del blocco si riduce se il blocco è più stretto della barra degli strumenti.
-
-Abbiamo anche eseguito molte correzioni, per un'esperienza con l'editor a blocchi più chiara.
-Il caricamento multimediale mostrerà un messaggio "riprova" quando non è presente alcuna connessione (anziché il congelamento), "annulla/ripristina" funzionano in modo più affidabile sia per i blocchi che per il testo, abbiamo corretto un problema di unione con blocchi Testo e abbiamo corretto l'allineamento dei pulsanti nei modelli di pagina.
-
-Abbiamo aggiunto una nuova impostazione che ti consente di modificare la tua homepage e la pagina degli articoli dalle impostazioni del sito.
-
-Infine, abbiamo risolto un problema con Gravatar che ti ha bloccato nella schermata di modifica delle foto quando hai provato a scattare una nuova foto e abbiamo apportato alcuni aggiornamenti dell'interfaccia utente del Reader.
-

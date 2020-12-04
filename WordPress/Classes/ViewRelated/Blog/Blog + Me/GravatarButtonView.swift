@@ -35,11 +35,11 @@ extension GravatarButtonView {
     private struct AnimationConfiguration {
         static let startAlpha: CGFloat = 0.5
         static let endAlpha: CGFloat = 1.0
-        static let aimationDuration: TimeInterval = 0.3
+        static let animationDuration: TimeInterval = 0.3
     }
     /// animates the change of opacity from the current value to AnimationConfiguration.endAlpha
     private func restoreAlpha() {
-        UIView.animate(withDuration: AnimationConfiguration.aimationDuration) {
+        UIView.animate(withDuration: AnimationConfiguration.animationDuration) {
             self.alpha = AnimationConfiguration.endAlpha
         }
     }
@@ -66,8 +66,25 @@ extension GravatarButtonView {
 extension GravatarButtonView {
 
     private struct StandardBorder {
-        static let color = UIColor.white
-        static let width = CGFloat(2)
+        static var color: UIColor {
+            guard FeatureFlag.newNavBarAppearance.enabled else {
+                return .white
+            }
+
+            if #available(iOS 13, *) {
+                return .separator
+            }
+
+            return .gray(.shade20)
+        }
+
+        static var width: CGFloat {
+            guard FeatureFlag.newNavBarAppearance.enabled else {
+                return 2.0
+            }
+
+            return 0.5
+        }
     }
     /// sets border color and width to the circular image view. Defaults to StandardBorder values
     func setBorder(color: UIColor = StandardBorder.color, width: CGFloat = StandardBorder.width) {

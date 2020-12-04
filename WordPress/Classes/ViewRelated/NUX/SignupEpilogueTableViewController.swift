@@ -88,7 +88,7 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
 
         cell.titleLabel?.numberOfLines = 0
         cell.topConstraint.constant = Constants.footerTopMargin
-        cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+        cell.titleLabel?.text = NSLocalizedString("You can always log in with a link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
         cell.accessibilityLabel = cell.titleLabel?.text
 
         return cell

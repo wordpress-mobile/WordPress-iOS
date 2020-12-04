@@ -3,16 +3,13 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
-    typealias PickersDelegate = StockPhotosPickerDelegate & GiphyPickerDelegate & TenorPickerDelegate
+    typealias PickersDelegate = StockPhotosPickerDelegate & TenorPickerDelegate
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
-
-    private let giphy = GiphyPicker()
     private let stockPhotos = StockPhotosPicker()
 
     init(delegate: PickersDelegate) {
         self.delegate = delegate
-        giphy.delegate = delegate
         stockPhotos.delegate = delegate
     }
 
@@ -29,10 +26,7 @@ final class AztecMediaPickingCoordinator {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.tenor.enabled {
-            alertController.addAction(tenorAction(origin: origin, blog: blog))
-        }
-
+        alertController.addAction(tenorAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 
@@ -46,12 +40,6 @@ final class AztecMediaPickingCoordinator {
     private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
             self?.showStockPhotos(origin: origin, blog: blog)
-        })
-    }
-
-    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
-            self?.showGiphy(origin: origin, blog: blog)
         })
     }
 
@@ -73,10 +61,6 @@ final class AztecMediaPickingCoordinator {
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         stockPhotos.presentPicker(origin: origin, blog: blog)
-    }
-
-    private func showGiphy(origin: UIViewController, blog: Blog) {
-        giphy.presentPicker(origin: origin, blog: blog)
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {

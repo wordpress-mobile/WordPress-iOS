@@ -1,17 +1,26 @@
 #import <UIKit/UIKit.h>
 
+typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
+    SuggestionTypeMention
+};
+
 @protocol SuggestionsTableViewDelegate;
 
-@interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
+@interface SuggestionsTableView : UIView <UITableViewDataSource>
 
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 @property (nonatomic, nullable, strong) NSNumber *siteID;
+@property (nonatomic, assign) SuggestionType suggestionType;
+@property (nonatomic, nonnull, strong) NSMutableArray *searchResults;
+@property (nonatomic, nullable, strong) NSArray *suggestions;
+@property (nonatomic, nonnull, strong) NSString *searchText;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
 @property (nonatomic) BOOL showLoading;
 
-- (nonnull instancetype)init;
-
+- (nonnull instancetype)initWithSiteID:(NSNumber *_Nullable)siteID
+                         suggestionType:(SuggestionType)suggestionType
+                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
 
 /**
   Enables or disables the SuggestionsTableView component.
@@ -66,6 +75,11 @@
 /// This method is called every the header view above the suggestion is tapped.
 /// @param suggestionsTableView the suggestion view.
 - (void)suggestionsTableViewDidTapHeader:(nonnull SuggestionsTableView *)suggestionsTableView;
+
+/// This method returns the header view minimum height.
+/// Can be used as a hit area for the user to dismiss the suggestions list.
+/// @param suggestionsTableView the suggestion view.
+- (CGFloat)suggestionsTableViewHeaderMinimumHeight:(nonnull SuggestionsTableView *)suggestionsTableView;
 
 
 @end

@@ -146,14 +146,14 @@ extension ReaderTagTopic {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
-                return NSLocalizedString("Tags", comment: "Tags Filter Tab Title")
+                return NSLocalizedString("Topics", comment: "Topics Filter Tab Title")
             case .ready(let items):
-                return String(format: NSLocalizedString("Tags (%lu)", comment: "Tags Filter Tab Title with Count"), items.count)
+                return String(format: NSLocalizedString("Topics (%lu)", comment: "Topics Filter Tab Title with Count"), items.count)
             }
         }
 
-        let emptyTitle = NSLocalizedString("Add a tag", comment: "No Tags View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a tag.", comment: "No Tags View Label")
+        let emptyTitle = NSLocalizedString("Add a topic", comment: "No Topics View Button Label")
+        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a topic.", comment: "No Topics View Label")
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",
@@ -180,8 +180,9 @@ extension ReaderTagTopic {
 
     static var tagsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTagTopic")
-        fetchRequest.predicate = NSPredicate(format: "following == %@ AND showInMenu == YES AND type == 'tag'",
-                                             NSNumber(value: ReaderHelpers.isLoggedIn()))
+        // Only show following tags, even if the user is logged out
+        fetchRequest.predicate = NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
+
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))]
         return fetchRequest
     }

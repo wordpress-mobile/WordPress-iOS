@@ -6,6 +6,7 @@
 #import "WPTabBarController.h"
 #import "ApiCredentials.h"
 #import "AccountService.h"
+#import "BlogService.h"
 #import "Blog.h"
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
@@ -22,12 +23,20 @@ NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_s
 NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
+NSString * const WPAppAnalyticsKeyFollowAction                      = @"follow_action";
 NSString * const WPAppAnalyticsKeySource                            = @"source";
 NSString * const WPAppAnalyticsKeyPostType                          = @"post_type";
+NSString * const WPAppAnalyticsKeyTapSource                         = @"tap_source";
+NSString * const WPAppAnalyticsKeyReplyingTo                        = @"replying_to";
+NSString * const WPAppAnalyticsKeySiteType                          = @"site_type";
 
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
+
+NSString * const WPAppAnalyticsValueSiteTypeBlog                    = @"blog";
+NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
+
 
 @interface WPAppAnalytics ()
 
@@ -100,6 +109,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
 {
     [WPAnalytics clearQueuedEvents];
     [WPAnalytics clearTrackers];
+}
+
++ (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID
+{
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Blog *blog = [service blogByBlogId:blogID];
+    return [blog isWPForTeams] ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog;
 }
 
 #pragma mark - Notifications
@@ -184,9 +200,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
         analyticsProperties[WPAppAnalyticsKeyTimeInApp] = @(timeInApp);
         self.applicationOpenedTime = nil;
     }
+
+    [[ReaderTracker shared] stopAll];
+    [analyticsProperties addEntriesFromDictionary: [[ReaderTracker shared] data]];
     
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
     [WPAnalytics endSession];
+    [[ReaderTracker shared] reset];
 }
 
 /**
@@ -251,6 +271,9 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     
     if (blogID) {
         [mutableProperties setObject:blogID forKey:WPAppAnalyticsKeyBlogID];
+
+        NSString *siteType = [self siteTypeForBlogWithID:blogID];
+        [mutableProperties setObject:siteType forKey:WPAppAnalyticsKeySiteType];
     }
     
     if ([mutableProperties count] > 0) {

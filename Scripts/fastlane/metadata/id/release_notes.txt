@@ -1,9 +1,0 @@
-Seperti biasa, terdapat banyak peningkatan pada penyunting blok. Ikon Tempat Sampah yang Anda gunakan untuk menghapus blok kini berada di menu yang dapat diakses dengan mengetuk tombol elipsis pada bilah peralatan blok. Kami juga menambahkan dukungan untuk warna pelapis (overlay) pada blok Sampul, dukungan untuk gradien radial pada blok Tombol dan Sampul, animasi masuk/keluar pada Bilah Peralatan Mengambang, dan tip alat untuk tombol pemilihan template halaman. Dan sekarang bilah peralatan blok akan menghilang apabila blok lebih kecil daripada bilah peralatan.
-
-Kami juga melakukan banyak perbaikan untuk pengalaman penyunting blok yang lebih sederhana.
-Unggahan media akan menampilkan pesan "coba lagi" saat tidak ada koneksi internet (dan bukan layar berhenti), urungkan (undo)/batalkan untuk mengurungkan (redo) pekerjaan dengan lebih andal untuk blok dan teks, kami memperbaiki masalah penggabungan pada blok teks, dan kami telah memperbaiki perataan tombol pada template halaman.
-
-Kami menambahkan pengaturan baru yang memungkinkan Anda mengubah beranda dan halaman pos Anda dari pengaturan situs.
-
-Yang terakhir, kami juga telah mengatasi masalah Gravatar yang membuat Anda terjebak di layar penyuntingan foto ketika Anda mencoba mengambil foto baru dan melakukan sejumlah pembaruan UI pada Pembaca.
-

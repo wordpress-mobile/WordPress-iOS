@@ -52,10 +52,6 @@ final class SiteAssemblyWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-
     override func loadView() {
         super.loadView()
         view = contentView
@@ -223,10 +219,23 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
                 return
             }
             WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
-            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+            WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)
         }
+    }
+
+    /// Returns a list of completed tour items that were taken care of as part of the site creation flow.
+    private var completedTourSteps: [QuickStartTour] {
+        var completedTourSteps: [QuickStartTour] = []
+
+        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return completedTourSteps }
+        /// Only mark the theme tour as completed if the user didn't select the skip
+        if siteCreator.design != nil {
+            completedTourSteps.append(QuickStartThemeTour())
+        }
+
+        return completedTourSteps
     }
 
     private func showQuickStartAlert(for blog: Blog) {
@@ -238,7 +247,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog, withCompletedSteps: completedTourSteps)
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
         tabBar.present(fancyAlert, animated: true)

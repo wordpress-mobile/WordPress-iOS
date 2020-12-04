@@ -8,6 +8,14 @@ var isIpad: Bool {
     return UIDevice.current.userInterfaceIdiom == .pad
 }
 
+var isDarkMode: Bool {
+    if #available(iOS 12.0, *) {
+        return UIViewController().traitCollection.userInterfaceStyle == .dark
+    } else {
+        return false
+    }
+}
+
 let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
 
 extension XCUIElement {
@@ -31,6 +39,23 @@ extension XCUIElement {
         self.typeText(text)
     }
 
+    /**
+     Pastes text from clipboard to the field
+     Useful for scenarios where typing is problematic, e.g. secure text fields in Russian.
+     - Parameter text: the text to paste into the field
+     */
+    func pasteText(_ text: String) -> Void {
+        let previousPasteboardContents = UIPasteboard.general.string
+        UIPasteboard.general.string = text
+
+        self.press(forDuration: 1.2)
+        XCUIApplication().menuItems.firstMatch.tap()
+
+        if let string = previousPasteboardContents {
+            UIPasteboard.general.string = string
+        }
+    }
+
     var stringValue: String? {
         return self.value as? String
     }
@@ -49,7 +74,13 @@ extension XCTestCase {
         app.activate()
 
         // Media permissions alert handler
-        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+        let alertButtonTitle: String
+        if #available(iOS 14.0, *) {
+            alertButtonTitle = "Allow Access to All Photos"
+        } else {
+            alertButtonTitle = "OK"
+        }
+        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
     }
 
     public func takeScreenshotOfFailedTest() {

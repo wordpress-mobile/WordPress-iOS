@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opk-iy-IwF" customClass="ReaderDetailToolbar" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-0W-AQZ">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                    <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="ikP-PI-Is1"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="TSN-68-1mv">
+                    <rect key="frame" x="28" y="426" width="358" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-HZ-8zf">
+                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="fqQ-GT-Dks"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="sbH-ur-3hQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
+                            <state key="normal" title="0" image="icon-reader-comment">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapSaveForLater:" destination="opk-iy-IwF" eventType="touchUpInside" id="PDn-1T-rlh"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVh-aP-o67" customClass="PostMetaButton">
+                            <rect key="frame" x="100.5" y="0.0" width="48" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Z2e-Ky-bYe"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="j4t-0h-sz7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="-4" maxY="0.0"/>
+                            <state key="normal" title="Reblog">
+                                <color key="titleShadowColor" red="0.50196078430000002" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapReblog:" destination="opk-iy-IwF" eventType="touchUpInside" id="4SX-vl-xza"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ndi-cj-PVP" customClass="PostMetaButton">
+                            <rect key="frame" x="205.5" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="GbG-ii-IcP"/>
+                                <constraint firstAttribute="height" constant="44" id="qNK-wQ-gIc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                            <state key="normal" title="0" image="icon-reader-comment">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapComment:" destination="opk-iy-IwF" eventType="touchUpInside" id="QGB-ei-h8b"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ht-4U-b7J" customClass="PostMetaButton">
+                            <rect key="frame" x="306" y="0.0" width="52" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Fio-gF-mFy"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="JqZ-KF-mxs"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                            <state key="normal" title="Like" image="icon-reader-like">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapLike:" destination="opk-iy-IwF" eventType="touchUpInside" id="GcL-iJ-QE5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="TSN-68-1mv" firstAttribute="centerY" secondItem="opk-iy-IwF" secondAttribute="centerY" id="12d-dS-uUK"/>
+                <constraint firstAttribute="trailingMargin" secondItem="TSN-68-1mv" secondAttribute="trailing" constant="8" id="ibp-zt-iup"/>
+                <constraint firstItem="RGe-0W-AQZ" firstAttribute="top" secondItem="opk-iy-IwF" secondAttribute="top" id="p1n-uB-ayF"/>
+                <constraint firstAttribute="trailing" secondItem="RGe-0W-AQZ" secondAttribute="trailing" id="p2i-u4-L3o"/>
+                <constraint firstItem="TSN-68-1mv" firstAttribute="leading" secondItem="opk-iy-IwF" secondAttribute="leadingMargin" constant="8" id="sW1-Ik-cCa"/>
+                <constraint firstItem="RGe-0W-AQZ" firstAttribute="leading" secondItem="opk-iy-IwF" secondAttribute="leading" id="z4Y-xe-owz"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="commentButton" destination="Ndi-cj-PVP" id="xFQ-Uo-73x"/>
+                <outlet property="dividerView" destination="RGe-0W-AQZ" id="jlw-3l-w15"/>
+                <outlet property="likeButton" destination="1Ht-4U-b7J" id="cZs-ZL-BT4"/>
+                <outlet property="reblogButton" destination="TVh-aP-o67" id="iyb-fz-V0I"/>
+                <outlet property="saveForLaterButton" destination="kYk-HZ-8zf" id="YaG-nx-qsB"/>
+            </connections>
+            <point key="canvasLocation" x="167" y="-132"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-reader-comment" width="24" height="24"/>
+        <image name="icon-reader-like" width="24" height="24"/>
+    </resources>
+</document>

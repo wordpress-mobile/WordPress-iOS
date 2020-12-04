@@ -17,14 +17,6 @@ final class SearchTextField: UITextField {
         static let textInset        = CGFloat(56)
     }
 
-    // MARK: Becoming First Responder
-
-    var allowFirstResponderStatus: Bool = true
-
-    override var canBecomeFirstResponder: Bool {
-        return allowFirstResponderStatus
-    }
-
     // MARK: UIView
 
     init() {
@@ -82,9 +74,6 @@ final class SearchTextField: UITextField {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
             ])
-
-        addTopBorder(withColor: .divider)
-        addBottomBorder(withColor: .divider)
     }
 
     private lazy var searchIconImageView: UIImageView = {

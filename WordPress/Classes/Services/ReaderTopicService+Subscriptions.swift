@@ -53,9 +53,15 @@ extension ReaderTopicService {
         switch action {
         case .notifications(let siteId):
             if subscribe {
-                service.subscribeSiteNotifications(with: siteId, successBlock, failure)
+                service.subscribeSiteNotifications(with: siteId, {
+                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOn, properties: ["blogId": siteId])
+                    successBlock()
+                }, failure)
             } else {
-                service.unsubscribeSiteNotifications(with: siteId, successBlock, failure)
+                service.unsubscribeSiteNotifications(with: siteId, {
+                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOff, properties: ["blog_id": siteId])
+                    successBlock()
+                }, failure)
             }
 
         case .postsEmail(let siteId):

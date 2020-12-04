@@ -13,6 +13,7 @@ NSString *const WPMobileReaderDetailURL                             = @"https://
 NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
+NSString *const WPAutomatticCCPAPrivacyNoticeURL                    = @"https://automattic.com/privacy/#california-consumer-privacy-act-ccpa";
 NSString *const WPAutomatticCookiesURL                              = @"https://automattic.com/cookies/";
 NSString *const WPAutomatticAppsBlogURL                             = @"https://blog.wordpress.com";
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
@@ -54,6 +55,7 @@ NSString *const WPNotificationContentExtensionKeychainUsernameKey   = @"Username
 NSString *const WPNotificationServiceExtensionKeychainServiceName   = @"NotificationServiceExtension";
 NSString *const WPNotificationServiceExtensionKeychainTokenKey      = @"OAuth2Token";
 NSString *const WPNotificationServiceExtensionKeychainUsernameKey   = @"Username";
+NSString *const WPNotificationServiceExtensionKeychainUserIDKey     = @"UserID";
 
 /// Share Extension Constants
 ///
