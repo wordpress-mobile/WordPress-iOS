@@ -2,11 +2,9 @@ steps:
   - label: "Set up Ruby (if needed)"
     command: "rbenv install -s"
   - label: "Build for Testing"
-    - commands:
+    commands:
       - "bundle install --jobs=3 --retry=3 --no-prune"
       - "bundle exec pod install --repo-update"
       - "cd Scripts && bundle exec fastlane build_for_testing"
     env:
       CI: true
-
-
