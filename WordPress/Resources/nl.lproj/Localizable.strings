@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-28 17:04:06+0000 */
+/* Translation-Revision-Date: 2020-12-04 09:12:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 van 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Door aan te melden, ga je akkoord met onze _algemene voorwaarden_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "KIES EEN BESTAND";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "AANPASSEN";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Kies een ontwerp";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Kies een domeinnaam voor je site";
+/* Select domain name. Title */
+"Choose a domain" = "Kies een domein";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Kies een thema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Kies ontwerp";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Kies domein";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Blok kopieren";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Kopieer bestands URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan beter";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Maak je site";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Creëert een nieuwe site met de opgegeven informatie.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Maakt een nieuw bericht of pagina";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beschrijving";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Ontwerp";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Bewerk bericht";
+
+/* No comment provided by engineer. */
+"Edit file" = "Bestand bewerken";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bewerk nieuwe berichten en pagina's met de blok-editor.";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Bestandsdownloads";
 
+/* No comment provided by engineer. */
+"File block settings" = " Blok-instellingen bestand";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Bestandsnaam";
 
@@ -2772,7 +2779,7 @@ translators: sample content for \"Team\" page template */
 "Homepage Settings" = "Homepage-instellingen";
 
 /* Message informing the user that their static homepage page was set successfully */
-"Homepage successfully updated" = "Startpagina met succes bijgewerkt";
+"Homepage successfully updated" = "Homepage met succes bijgewerkt";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Als je deze bezoeker verwijdert, zal hij of zij je site niet meer kunnen bezoeken.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Als je een site wilt, maar niet de berichten en pagina's die je nu hebt, kan ons ondersteuningsteam je berichten, pagina's, media en reacties voor je verwijderen.\n\nHiermee blijft je site en URL actief maar kan je van vooraf aan beginnen met het maken van content. Neem contact met ons op als je je huidige content wilt verwijderen.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Als je een site wil, maar niet de berichten en pagina's die je nu hebt, kan ons ondersteuningsteam je berichten, pagina's, media en reacties voor je verwijderen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Als je niet zeker weet wat er wordt verwijderd of als je hulp nodig hebt, wees gerust! Ons ondersteuningsteam staat voor je klaar om al je vragen te beantwoorden.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Media invoeren";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Voeg vermelding in";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Invoegen geselecteerd";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Kies een gebruikersnaam";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Kies je favoriete homepage-opmaak. Je kan deze later altijd nog aanpassen of wijzigen";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Kies je favoriete homepage lay-out. Je kunt hem bewerken of later aanpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Abonnement";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Voorbeeld";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dit is voorbeeldinhoud, meegeleverd bij het sjabloon om alle functies te demonstreren. Verwijder de inhoud of vervang deze door je eigen woorden en media.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Dit is de plek waar mensen je online kunnen vinden";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Dit is waar mensen je kunnen vinden op het internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dit media-item is verwijderd.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Dit zal alle geassocieerde bestanden en data verwijderen.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Hiermee wordt je site en URL actief gehouden, maar kan je van vooraf aan beginnen met het maken van inhoud. Neem contact met ons op als je je huidige inhoud wil verwijderen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Vertaal";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Prullenmand";
 
