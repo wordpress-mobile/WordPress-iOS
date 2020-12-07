@@ -215,7 +215,7 @@ class ActivityListViewModel: Observable {
         if selectedGroups.isEmpty {
             return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
         } else if selectedGroups.count > 1 {
-            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), selectedGroups.count)
+            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%1$d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), selectedGroups.count)
         }
 
         return selectedGroups.first?.name
