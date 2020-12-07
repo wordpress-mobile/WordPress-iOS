@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 21:13:22+0000 */
+/* Translation-Revision-Date: 2020-12-04 08:03:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 из 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Регистрируясь вы соглашаетесь с нашими _Правилами пользования_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "ВЫБРАТЬ ФАЙЛ";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "НАСТРОИТЬ";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Выбрать оформление";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Выберите доменное имя для вашего сайта";
+/* Select domain name. Title */
+"Choose a domain" = "Выбрать домен";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Выберите тему";
 
 /* Label for Publish time picker */
 "Choose a time" = "Выберите время";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Выбрать оформление";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Выберите домен";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Копировать блок";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Скопировать URL файла";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Нужно доработать";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Создайте свой сайт";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Создание нового сайта с данной информацией.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Создать запись или страницу";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Описание";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Оформление";
 
 /* Title for the desktop web preview */
 "Desktop" = "ПК";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Редактировать запись";
+
+/* No comment provided by engineer. */
+"Edit file" = "Изменить файл";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Редактировать новые записи и страницы в редаторе блоков.";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Скачанные файлы";
 
+/* No comment provided by engineer. */
+"File block settings" = "Настройки блока файла";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Имя файла";
 
@@ -2635,9 +2642,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Отлично!\nОбожаем отзывы счастливых пользователей\n 😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Замечательно! Не могли бы вы оставить нам хороший отзыв?\n\nЗаранее благодарим.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Увеличьте аудиторию";
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Если удалить этого обозревателя, он больше не сможет зайти на ваш сайт.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Если вы хотите удалить все записи, страницы, медиафайлы и комментарии с сайта и при этом сохранить его, свяжитесь с нашей службой поддержки.\n\nЭто позволит начать блог сначала на том же сайте (для которого сохранится прежний URL-адрес). Свяжитесь с нами, чтобы мы удалили все его содержимое.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Если вы хотите удалить все записи, страницы, мультимедиа файлы и комментарии с сайта и при этом сохранить его, свяжитесь с нашей службой поддержки.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Если у вас появятся вопросы по поводу удаления отдельных элементов или другие сложности, обращайтесь в службу поддержки. Мы всегда рады вам помочь.";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Вставить файл";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Вставить упоминание";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Выбрана вставка";
@@ -3854,7 +3855,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Непрочитанные уведомления";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Истории доступны для всех";
+"Now stories are for everyone" = "Истории теперь доступны всем";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Теперь, когда Jetpack установлен, нам нужно настроить, это займет всего минуту.";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Выберите имя пользователя";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Выберите макет главной страницы. Его можно настроить или изменить позже.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Выберите макет главной страницы. Его можно настроить или изменить позже.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Тариф";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Просмотр";
 
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Это шаблонное содержимое для иллюстрации возможностей. Удалите или замените его своим.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Это то, где люди найдут вас в сети";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Это место, где люди найдут вас в сети.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Этот медиафайл удалён.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Это удалит все ассоциированные файлы и данные.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Это сохранит ваш сайт и его адрес, но позволит начать его заново с чистого листа. Свяжитесь с нами для очистки содержимого вашего сайта.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Перевести";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "В корзину";
 

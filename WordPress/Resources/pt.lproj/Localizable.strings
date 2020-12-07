@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2018-08-14 08:12:57+0000 */
+/* Translation-Revision-Date: 2020-12-04 08:57:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt */
@@ -243,9 +243,6 @@
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 of 2";
-
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
@@ -313,7 +310,7 @@
 "ADD VIDEO" = "ADD VIDEO";
 
 /* Register Domain - Address information field section header title */
-"ADDRESS" = "ADDRESS";
+"ADDRESS" = "MORADA";
 
 /* About this app (information page title) */
 "About" = "Sobre";
@@ -438,7 +435,7 @@
 "Add a shortcode…" = "Add a shortcode…";
 
 /* No Tags View Button Label */
-"Add a site" = "Add a site";
+"Add a site" = "Adicionar site";
 
 /* No Topics View Button Label */
 "Add a topic" = "Add a topic";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Ao registar-se, concorda com os nossos _Termos de Serviço_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "CUSTOMIZE";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1029,7 +1030,7 @@
 "Cancel sharing" = "Cancelar partilha";
 
 /* The action was canceled */
-"Canceled" = "Canceled";
+"Canceled" = "Cancelado";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Canceling...";
@@ -1152,8 +1153,8 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Choose a design";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Choose a domain name for your site";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Choose a theme";
@@ -1161,11 +1162,8 @@
 /* Label for Publish time picker */
 "Choose a time" = "Choose a time";
 
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
-
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "Choose domain";
+"Choose domain" = "Escolher domínio";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Choose from My Device";
@@ -1198,7 +1196,7 @@
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?";
 
 /* Register Domain - Address information field City */
-"City" = "City";
+"City" = "Cidade";
 
 /* translators: sample content for \"Contact\" page template */
 "City, 10100" = "City, 10100";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Copy block";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Poderia ser melhor";
 
@@ -1589,7 +1590,7 @@
 "Country" = "País";
 
 /* Register Domain - Address information field Country Code */
-"Country Code" = "Country Code";
+"Country Code" = "Código do país";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Crash Logging";
@@ -1614,11 +1615,11 @@
 
 /* Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
-"Create Page" = "Create Page";
+"Create Page" = "Criar página";
 
 /* Button title, encourages users to create post on their blog.
    Label for action to create a new post. */
-"Create Post" = "Create Post";
+"Create Post" = "Criar artigo";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title */
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Create your site";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Creates a new site with the given information.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Creates new post, or page";
@@ -1818,7 +1816,7 @@
 "Deleting site…" = "A eliminar site...";
 
 /* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Apagando...";
+"Deleting..." = "A eliminar...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Descrição";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2068,6 +2069,9 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editar artigo";
 
+/* No comment provided by engineer. */
+"Edit file" = "Editar ficheiro";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
 
@@ -2090,7 +2094,7 @@
 "Edits a comment" = "Edita um comentário";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
-"Edits the comment." = "Edits the comment.";
+"Edits the comment." = "Edita o comentário.";
 
 /* Screen reader hint for button to edit a menu item */
 "Edits this menu item" = "Edits this menu item";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "File Downloads";
 
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Nome do ficheiro";
 
@@ -2447,7 +2454,7 @@
 "Finding blogs and stories you’ll love..." = "Finding blogs and stories you’ll love...";
 
 /* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "A procurar a sua localização...";
+"Finding your location..." = "A encontrar a sua localização...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -2513,7 +2520,7 @@
 "Follows blog" = "Follows blog";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Follows the blog.";
+"Follows the blog." = "Segue o blogue.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
 "Follows the comments on a post." = "Follows the comments on a post.";
@@ -2634,9 +2641,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Óptimo! Poderia deixar-nos uma boa avaliação?\n\nA sua ajuda é preciosa.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -2759,7 +2763,7 @@ translators: sample content for \"Team\" page template */
 
 /* Displays the History screen from the editor's alert sheet
    Title of the post history screen */
-"History" = "History";
+"History" = "Histórico";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "If you remove this viewer, he or she will not be able to visit this site.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have.";
@@ -2889,9 +2893,6 @@ translators: sample content for \"Team\" page template */
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Inserir multimédia";
 
-/* No comment provided by engineer. */
-"Insert mention" = "Insert mention";
-
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Insert selected";
 
@@ -2910,7 +2911,7 @@ translators: sample content for \"Team\" page template */
 "Install Jetpack" = "Install Jetpack";
 
 /* Install Plugin dialog title. */
-"Install Plugin" = "Install Plugin";
+"Install Plugin" = "Instalar plugin";
 
 /* Title of section that contains plugins' installation instruction */
 "Installation" = "Installation";
@@ -3150,7 +3151,7 @@ translators: sample content for \"Services\" page template */
 "Lists" = "Listas";
 
 /* Title of the screen that load selected the revisions. */
-"Load" = "Load";
+"Load" = "Carregar";
 
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Carregar mais conteúdos";
@@ -3159,7 +3160,7 @@ translators: sample content for \"Services\" page template */
 "Loading Activities..." = "A carregar actividades...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
-"Loading GIFs..." = "Loading GIFs...";
+"Loading GIFs..." = "A carregar GIFs...";
 
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "A carregar menus...";
@@ -3168,7 +3169,7 @@ translators: sample content for \"Services\" page template */
 "Loading People..." = "Loading People...";
 
 /* Phrase to show when the user has searched for images and they are being loaded. */
-"Loading Photos..." = "Loading Photos...";
+"Loading Photos..." = "A carregar as fotografias...";
 
 /* Text displayed while loading plans details */
 "Loading Plan..." = "A carregar plano...";
@@ -3497,7 +3498,7 @@ translators: sample content for \"Services\" page template */
 "Move up" = "Move up";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
-"Moves the comment to the Trash." = "Moves the comment to the Trash.";
+"Moves the comment to the Trash." = "Move o comentário para o lixo.";
 
 /* No comment provided by engineer. */
 "My Document Setting Panel" = "My Document Setting Panel";
@@ -3793,7 +3794,7 @@ translators: sample content for \"Services\" page template */
 "North" = "Norte";
 
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Not Connected";
+"Not Connected" = "Não ligado";
 
 /* Nicer dialog answer for \"No\". */
 "Not Now" = "Agora não";
@@ -3863,7 +3864,7 @@ translators: sample content for \"Services\" page template */
 "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast.";
 
 /* Register Domain - Address information field Number */
-"Number" = "Number";
+"Number" = "Número";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
@@ -3995,10 +3996,10 @@ translators: sample content for \"Services\" page template */
 "Ordered List" = "Lista ordenada";
 
 /* Register Domain - Domain contact information field Organization */
-"Organization" = "Organization";
+"Organization" = "Organização";
 
 /* Register Domain - Domain contact information field placeholder for Organization */
-"Organization (Optional)" = "Organization (Optional)";
+"Organization (Optional)" = "Organização (Opcional)";
 
 /* Indicates a video will use its original size when uploaded.
    Indicates an image will use its original size when uploaded. */
@@ -4029,7 +4030,7 @@ translators: sample content for \"Services\" page template */
 "Overridden" = "Overridden";
 
 /* Register Domain - Phone number section header title */
-"PHONE" = "PHONE";
+"PHONE" = "TELEFONE";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Pick username";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -4336,7 +4337,7 @@ translators: sample content for \"Services\" page template */
 "Post by %@, from %@" = "Post by %@, from %@";
 
 /* The footer text appears within the footer displaying when the post has been created. */
-"Post created on %@" = "Post created on %@";
+"Post created on %@" = "Artigo criado em %@";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post draft uploaded" = "Post draft uploaded";
@@ -4369,7 +4370,7 @@ translators: sample content for \"Services\" page template */
 "Post title. Empty" = "Post title. Empty";
 
 /* Register Domain - Address information field Postal Code */
-"Postal Code" = "Postal Code";
+"Postal Code" = "Código postal";
 
 /* Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date */
 "Posted in %@, at %@, by %@, %@" = "Posted in %@, at %@, by %@, %@";
@@ -4424,9 +4425,11 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
-"Preview" = "Pré-visualização";
+"Preview" = "Pré-visualizar";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
 "Preview %@" = "Preview %@";
@@ -4459,7 +4462,7 @@ translators: sample content for \"Services\" page template */
 "Privacy Policy" = "Política de privacidade";
 
 /* Register Domain - Privacy Protection section header title */
-"Privacy Protection" = "Privacy Protection";
+"Privacy Protection" = "Protecção de privacidade";
 
 /* Link to privacy settings page
    Privacy Settings Title */
@@ -4670,7 +4673,7 @@ translators: sample content for \"Services\" page template */
    Register domain - Title for the Register domain button
    Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
-"Register domain" = "Register domain";
+"Register domain" = "Registar domínio";
 
 /* Register Domain - Register publicly option title */
 "Register publicly" = "Register publicly";
@@ -4767,13 +4770,13 @@ translators: sample content for \"Services\" page template */
 "Replace Current Block" = "Replace Current Block";
 
 /* No comment provided by engineer. */
-"Replace image or video" = "Replace image or video";
+"Replace image or video" = "Substituir imagem ou vídeo";
 
 /* No comment provided by engineer. */
-"Replace video" = "Replace video";
+"Replace video" = "Substituir vídeo";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
-"Replies to a comment." = "Replies to a comment.";
+"Replies to a comment." = "Responde a um comentário";
 
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Respostas aos seus comentários";
@@ -4875,7 +4878,7 @@ translators: sample content for \"Services\" page template */
 "Revert Pending Change" = "Reverter alteração pendente";
 
 /* Title of the screen that shows the revisions. */
-"Revision" = "Revision";
+"Revision" = "Revisão";
 
 /* Title displayed when user swipes on a rewind cell
    Title for button allowing user to rewind their Jetpack site
@@ -5105,7 +5108,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to upload a new one." = "Select %@ to upload a new one.";
 
 /* Register Domain - Domain contact information field placeholder for Country */
-"Select Country" = "Select Country";
+"Select Country" = "Seleccionar país";
 
 /* Blog Picker's Title */
 "Select Site" = "Seleccionar site";
@@ -5264,7 +5267,7 @@ translators: sample content for \"Services\" page template */
 "Share" = "Partilhar";
 
 /* Label for action to share post. */
-"Share Post" = "Share Post";
+"Share Post" = "Partilhar artigo";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Share information with our analytics tool about your use of services while logged in to your WordPress.com account.";
@@ -5438,7 +5441,7 @@ translators: sample content for \"Services\" page template */
 "Site follows" = "Seguidores do site";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
-"Site not found" = "Site not found";
+"Site not found" = "Site não encontrado";
 
 /* Create new Site Page button title */
 "Site page" = "Site page";
@@ -5960,7 +5963,7 @@ translators: sample content for \"Services\" page template */
 "The site address must be shorter than 64 characters." = "O endereço do site deve ter menos de 64 caracteres.";
 
 /* No comment provided by engineer. */
-"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão 3%$@";
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* Error message shown a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress.";
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "This is where people will find you on the internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este item multimédia foi eliminado.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "This will delete all associated files and data.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Translate";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Lixo";
 
@@ -6766,10 +6773,10 @@ translators: sample content for \"Services\" page template */
    Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
-"View more" = "View more";
+"View more" = "Ver mais";
 
 /* Title of a Quick Start Tour */
-"View your site" = "View your site";
+"View your site" = "Ver o seu site";
 
 /* User role badge */
 "Viewer" = "Visitante";
@@ -7149,7 +7156,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Forums" = "Fórum WordPress";
 
 /* Siri Suggestion to open Support */
-"WordPress Help" = "WordPress Help";
+"WordPress Help" = "Ajuda do WordPress";
 
 /* Option in Support view to launch the Help Center. */
 "WordPress Help Center" = "Centro de ajuda do WordPress";
@@ -7164,7 +7171,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Notification Settings" = "WordPress Notification Settings";
 
 /* Siri Suggestion to open Notifications */
-"WordPress Notifications" = "WordPress Notifications";
+"WordPress Notifications" = "Notificações do WordPress";
 
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "WordPress Profile";
@@ -7185,7 +7192,7 @@ translators: sample content for \"Services\" page template */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
 
 /* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@";
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "A versão do WordPress é muito antiga. O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. 
    NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location. */
@@ -7253,7 +7260,7 @@ translators: sample content for \"Services\" page template */
 "Yes, Help Me" = "Yes, Help Me";
 
 /* Phrase displayed to begin a quick start tour that's been suggested. */
-"Yes, show me" = "Yes, show me";
+"Yes, show me" = "Sim, mostrar-me";
 
 /* Notifications Yesterday Section Header */
 "Yesterday" = "Ontem";
@@ -7547,7 +7554,7 @@ translators: sample content for \"Services\" page template */
 "viewer" = "visitante";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
-"will be unavailable in the future." = "will be unavailable in the future.";
+"will be unavailable in the future." = "irá estar indisponível de futuro.";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, help, support, faq, questions, debug, logs, help center, contact";

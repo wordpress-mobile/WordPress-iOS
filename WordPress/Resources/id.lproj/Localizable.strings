@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 14:54:10+0000 */
+/* Translation-Revision-Date: 2020-11-27 10:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -243,9 +243,6 @@
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 dari 2";
-
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
@@ -365,7 +362,7 @@
 "Activity" = "Aktivitas";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "Log Aktivitas";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Catatan Aktivitas";
@@ -942,10 +939,13 @@
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
-"By setting up Jetpack you agree to our\n%@" = "Dengan menyiapkan Jetpack, Anda menyetujui\n&@";
+"By setting up Jetpack you agree to our\n%@" = "Dengan menyiapkan Jetpack, Anda menyetujui\n%@";
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Dengan mendaftar, berarti Anda menyetujui _Ketentuan Layanan_ kami.";
+
+/* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "SESUAIKAN";
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Pilih desain";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Pilih nama domain untuk situs Anda";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Pilih tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Pilih waktu";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Pilih domain";
@@ -1186,7 +1184,7 @@
 "Choose images" = "Pilih gambar";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "Pilih tata letak";
 
 /* No comment provided by engineer. */
 "Choose video" = "Pilih video";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Salin blok";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Bisa Lebih Baik";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Buat situs Anda";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Membuat situs baru dengan informasi yang ditentukan.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Creates new post, or page";
@@ -1821,12 +1819,15 @@
 "Deleting..." = "Menghapus...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "Tolak";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Deskripsi";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Sunting Postingan";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Sunting pos dan halaman baru dengan penyunting blok.";
@@ -2366,13 +2370,13 @@
 "Failed to insert media.\nPlease tap for options." = "Gagal memasukkan media.\nHarap ketuk untuk melihat pilihan.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "Gagal menyimpan file.\nKetuk untuk melihat pilihan.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Gagal menyambungkan permintaan ke REST API.";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "Gagal mengunggah file.\nKetuk untuk melihat pilihan.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Unduhan File";
+
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Nama file";
@@ -2635,9 +2642,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Hebat!\nKami senang mendengar dari pengguna yang bahagia\n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Bagus! Dapatkah Anda memberi kami ulasan yang menarik?\n\nIni benar-benar membantu.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Tumbuhkan Audiens Anda";
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Jika Anda menghapus pemirsa ini, dia tidak akan dapat mengunjungi situs ini.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Jika Anda menginginkan sebuah situs tetapi tidak menginginkan beberapa pos dan halaman yang Anda miliki saat ini, tim dukungan kami dapat menghapus pos, halaman, media, dan komentar untuk Anda.\n\nTindakan ini akan membuat situs dan URL Anda tetap aktif, tetapi memberi Anda titik awal yang segar di pembuatan konten. Cukup hubungi kami untuk membersihkan konten Anda saat ini.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Jika Anda tidak yakin tentang apa yang akan dihapus atau memerlukan bantuan, jangan khawatir, tim dukungan kami di sini untuk menjawab pertanyaan Anda.";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Sisipkan media";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Sertakan penyebutan";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Penyisipan dipilih";
@@ -2992,7 +2993,7 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "FAQ Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
+"Jetpack Settings" = "Pengaturan Jetpack";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack tidak dapat diinstal untuk saat ini.";
@@ -3255,7 +3256,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "Login ke akun WordPress.com Anda dengan alamat email.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "Login dengan nama pengguna dan kata sandi WordPress.com Anda.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Logout dari WordPress?";
@@ -3381,7 +3382,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "Media diunggah (%ld file)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "Media diunggah (%ld file)";
+"Media uploaded (1 file)" = "Media diunggah (1 file)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -3588,7 +3589,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "Item baru";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "Kata sandi baru";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "Pos baru";
@@ -4046,7 +4047,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "Pengaturan Halaman";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok pemisah halaman. %s";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Pilih nama pengguna";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pilih tata letak halaman beranda favorit Anda. Anda dapat menyesuaikan atau mengubahnya nanti.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Paket";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Pratampil";
 
@@ -5410,7 +5413,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "Pengalihan Situs";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "Pengaturan Situs";
 
 /* Default title for a site
    Label for site title blog setting
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Ini adalah konten contoh, yang disertakan bersama template untuk mengilustrasikan fiturnya. Hapus atau ganti dengan kata-kata dan media Anda sendiri.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Inilah tempat orang akan mencari Anda di internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Item media ini sudah dihapus.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Tindakan ini akan menghapus semua file dan data terkait.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Terjemahan";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Buang";
 

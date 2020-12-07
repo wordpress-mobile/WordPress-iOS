@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-18 16:05:40+0000 */
+/* Translation-Revision-Date: 2020-12-04 07:54:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 de 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Al registrarte aceptas nuestros _Términos del servicio_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "ELEGIR UN ARCHIVO";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "PERSONALIZAR";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Elige un diseño";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Elige un nombre de dominio para tu sitio ";
+/* Select domain name. Title */
+"Choose a domain" = "Elegir un dominio";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Elige un tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Elige una hora";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Elegir diseño";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Elegir dominio";
@@ -1186,7 +1184,7 @@
 "Choose images" = "Elegir imágenes";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Elegir estructura";
+"Choose layout" = "Elegir la estructura";
 
 /* No comment provided by engineer. */
 "Choose video" = "Elegir un vídeo";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Copiar bloque";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copiar la URL del archivo";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Podría ser mejor";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Crea tu sitio";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Crea un nuevo sitio con la información facilitada.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Crea una nueva entrada o página";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Descripción";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Diseño";
 
 /* Title for the desktop web preview */
 "Desktop" = "Escritorio";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editar entrada";
+
+/* No comment provided by engineer. */
+"Edit file" = "Editar el archivo";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edita nuevas entradas y páginas con el editor de bloques.";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Descargas de archivos";
 
+/* No comment provided by engineer. */
+"File block settings" = "Ajustes del bloque de archivo";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Nombre del archivo";
 
@@ -2635,9 +2642,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "¡Fantástico!\nNos encanta tener noticias de usuarios felices\n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "¡Fantástico! ¿Podrías escribirnos una reseña positiva?\n\nRealmente ayuda.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Haz crecer tu audiencia";
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Si eliminas a este lector, él o ella no podrá visitar este sitio.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Si quieres conservar un sitio pero no las entradas no las páginas que tienes ahora, nuestro equipo de soporte puede eliminar tus entradas, páginas, elementos multimedia y comentarios por ti.\n\nEsto mantendrá activos tu sitio y su URL y, al mismo tiempo, podrás comenzar a crear contenido desde cero. Solo tienes que ponerte en contacto con nosotros para borrar el contenido actual que tengas.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Si quieres un sitio, pero no quieres ninguna de las entradas y páginas que tienes ahora, nuestro equipo de soporte puede borrar por ti tus entradas, páginas, medios y comentarios.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Si no sabes qué contenido se eliminará o necesitas asistencia, no te preocupes; nuestro equipo de ayuda está a tu disposición para resolver todas las dudas que puedas tener.";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Insertar un archivo multimedia";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Insertar una mención";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Insertar lo seleccionado";
@@ -3255,7 +3256,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "Accede a tu cuenta de WordPress.com con tu dirección de correo electrónico.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Accede con tu usuario y contraseña de WordPress.com.";
+"Log in with your WordPress.com username and password." = "Accede con tu nombre de usuario y contraseña de WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "¿Salir de WordPress?";
@@ -4046,7 +4047,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Ajustes de página";
+"Page Settings" = "Ajustes de la página";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bloque de salto de página. %s";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Elige un nombre de usuario";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Elige el diseño de página de inicio que prefieras. Puedes personalizarlo o cambiarlo más adelante.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Elige tu diseño favorito para la página de inicio. Puedes editarlo y personalizarlo más tarde.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Vista previa";
 
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Este es un contenido de ejemplo, incluido con la plantilla para ilustrar sus características. Elimínalo o sustitúyelo por tus propias palabras y medios.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Aquí es donde las personas te encontrarán en Internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Aquí es donde las personas te encontrarán en Internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este elemento multimedia ha sido borrado.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Esto borrará todos los datos y archivos asociados.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Esto mantendrá tu sitio y tu URL activos, pero te dará un nuevo comienzo en la creación de tu contenido. Simplemente contacta con nosotros para que vaciemos tu contenido actual.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Traducir";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Papelera";
 

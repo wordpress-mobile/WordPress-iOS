@@ -216,6 +216,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
 
+@property (nonatomic, strong) JetpackScanService *jetpackScanService;
+
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
 @property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
@@ -347,14 +349,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
-    __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [self.blogService syncBlogAndAllMetadata:_blog
-                           completionHandler:^{
-                               [weakSelf configureTableViewData];
-                               [weakSelf reloadTableViewPreservingSelection];
-                           }];
+    [self preloadMetadata];
+
+    self.jetpackScanService = [[JetpackScanService alloc] initWithManagedObjectContext:context];
+
+    [self syncJetpackFeaturesAvailable];
+
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -832,6 +834,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
+    if ([self.blog supports:BlogFeatureJetpackScan]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                     callback:^{
+                                                         [weakSelf showActivity];
+                                                     }]];
+    }
+
     if ([self.blog supports:BlogFeatureJetpackSettings]) {
         BlogDetailsRow *settingsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Jetpack Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                          identifier:BlogDetailsSettingsCellIdentifier
@@ -843,8 +853,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         [rows addObject:settingsRow];
     }
+    NSString *title = @"";
 
-    NSString *title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    if ([self.blog supports:BlogFeatureJetpackSettings]) {
+        title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
+    }
+
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryJetpack];
 }
 
@@ -1335,9 +1349,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
         return [self quickStartHeaderWithTitle:section.title];
-    } else {
-        return nil;
+    } else if (sectionNum == 0 && [self.blog supports:BlogFeatureJetpackSettings]) {
+        // Jetpack header shouldn't have any padding
+        BlogDetailsSectionHeaderView *headerView = (BlogDetailsSectionHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+        headerView.ellipsisButton.hidden = YES;
+        headerView.title = @"";
+        return headerView;
     }
+
+    return nil;
 }
 
 - (UIView *)quickStartHeaderWithTitle:(NSString *)title
@@ -1428,6 +1448,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadComments];
         [self preloadMetadata];
     }
+
+    [self syncJetpackFeaturesAvailable];
+}
+
+/// Pings the network to determine which Jetpack features a blog supports
+- (void)syncJetpackFeaturesAvailable
+{
+    if(![Feature enabled:FeatureFlagJetpackScan]) {
+        return;
+    }
+
+    __weak __typeof(self) weakSelf = self;
+
+    [self.jetpackScanService getScanAvailableFor:self.blog success:^(BOOL available) {
+        weakSelf.blog.supportsJetpackScan = available;
+
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"An error occurred while checking Jetpack Scan availablity: %@", error);
+    }];
 }
 
 - (void)preloadPosts

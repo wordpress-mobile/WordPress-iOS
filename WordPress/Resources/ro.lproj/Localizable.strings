@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-18 15:35:55+0000 */
+/* Translation-Revision-Date: 2020-12-04 07:38:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 din 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Prin înregistrare, ești de acord cu _Termenii noștri de utilizare ai serviciului_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "ALEGE UN FIȘIER";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "PERSONALIZEAZĂ";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Alege un design";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Alege un nume de domeniu pentru situl tău";
+/* Select domain name. Title */
+"Choose a domain" = "Alege un domeniu";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Alege o temă";
 
 /* Label for Publish time picker */
 "Choose a time" = "Alege o oră";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Alege designul";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Alege domeniul";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Copiază blocul";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copiază URL-ul fișierului";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Poate fi mai bine";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Creează-ți situl";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Creează un sit nou cu informațiile date.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Creează un articol nou sau o pagină nouă";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Descriere";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editează articolul";
+
+/* No comment provided by engineer. */
+"Edit file" = "Editează fișierul";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editează articole și pagini noi cu editorul de blocuri.";
@@ -2425,6 +2429,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Descărcări de fișiere";
 
+/* No comment provided by engineer. */
+"File block settings" = "Setări bloc fișier";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Nume fișier";
 
@@ -2638,9 +2645,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Excelent!\n Ne place să primim vești de la utilizatori mulțumiți \n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Foarte bine! Poți să ne lași un comentariu drăguț?vvE de mare ajutor.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Crește-ți audiența";
@@ -2810,8 +2814,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Dacă înlături acest vizitator, el sau ea nu va putea să viziteze acest sit.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Dacă-ți dorești un sit dar nu mai vrei nimic din articolele și paginile pe care le ai acum, echipa noastră de suport poate să-ți șteargă articolele, paginile, media și comentariile.\n\nAsta îți va păstra situl și URL-ul active, dar îți va da un start proaspăt în a creea conținut. Doar contactează-ne pentru a-ți curăța conținutul curent.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Dacă vrei un sit, unul fără niciunul dintre articolele și niciuna dintre paginile pe care le ai acum, echipa noastră de suport îți poate șterge articolele, paginile, elementele media și comentariile.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Dacă nu știi sigur ce va fi șters sau ai nevoie de ajutor, nu-ți face griji, echipa noastră de suport este aici pentru a-ți răspunde la orice fel de întrebări.";
@@ -2891,9 +2895,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Inserează media";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Inserează mențiunea";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Inserează cele selectate";
@@ -2995,7 +2996,7 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "Întrebări frecvente Jetpack";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
+"Jetpack Settings" = "Setări Jetpack";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack nu a putut fi instalat în acest moment.";
@@ -4159,7 +4160,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Alege numele de utilizator";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Alege aranjamentul preferat pentru prima pagină. Îl poți personaliza sau modifica mai târziu";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Alege aranjamentul preferat pentru prima pagină. Îl poți edita sau personaliza mai târziu.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -4427,7 +4428,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Previzualizare";
 
@@ -6148,8 +6151,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Acesta este un exemplu de conținut, inclus în șablon, pentru a ilustra funcționalitățile. Înlătură-l sau înlocuiește-l cu propriile cuvinte și elemente media.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Aici te va găsi lumea pe internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Aici te va găsi lumea pe internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Acest element media a fost șters.";
@@ -6178,6 +6181,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Asta va șterge toate fișierele și datele asociate.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Acest lucru va menține situl și URL-ul active, dar îți dă un nou început pentru crearea de conținut. Contactează-ne dacă vrei să elimini conținutul actual.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6316,7 +6322,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Tradu";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Coș de gunoi";
 

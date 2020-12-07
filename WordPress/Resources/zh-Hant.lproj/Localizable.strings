@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-13 13:54:09+0000 */
+/* Translation-Revision-Date: 2020-12-01 15:12:57+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -185,7 +185,7 @@
 "%ld files successfully uploaded" = "成功上傳 %ld 個檔案";
 
 /* Displays the number of words and characters in text */
-"%li words, %li characters" = "%1$l 個字、%2$l 個字元";
+"%li words, %li characters" = "%1$li 個字、%2$li 個字元";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 區塊選項";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "第2 步，共 2 步";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -365,7 +362,7 @@
 "Activity" = "活動";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "活動記錄";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "活動記錄";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "註冊即代表你同意我們的「服務條款」。";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "自訂";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "選擇一款設計";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "選擇網站的網域名稱";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "選擇佈景主題";
 
 /* Label for Publish time picker */
 "Choose a time" = "選擇時間";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "選擇網域";
@@ -1186,7 +1184,7 @@
 "Choose images" = "選擇圖片";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "選擇版面配置";
 
 /* No comment provided by engineer. */
 "Choose video" = "選擇視訊";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "複製區塊";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "可以再好一點";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "建立網站";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "使用提供的資訊建立新網站。";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Creates new post, or page";
@@ -1821,12 +1819,15 @@
 "Deleting..." = "正在刪除…";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "拒絕";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "敘述";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "桌上型電腦";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "編輯文章";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
@@ -2366,13 +2370,13 @@
 "Failed to insert media.\nPlease tap for options." = "Failed to insert media.\nPlease tap for options.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "存檔失敗。\n請點選以顯示選項。";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API 無法序列化要求。";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "上傳檔案失敗。\n請點選以顯示選項。";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "檔案下載";
+
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "檔案名稱";
@@ -2635,9 +2642,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "太棒了！\n我們樂於聆聽使用者的開心反饋\n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "太棒了！你可以給個好評嗎？\n\n這對我們來說很有幫助。";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "拓展你的讀者群";
@@ -2802,13 +2806,13 @@ translators: sample content for \"Team\" page template */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果你繼續使用 Apple 或 Google 操作且尚未擁有 WordPress.com 帳號，即表示你正在建立帳號，並同意我們的_服務條款_。";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
-"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除，該使用者將無法再存取此網站，但其建立的所有內容仍會保留在網站上。";
+"If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除 %1$@，該使用者將無法再存取此網站，但 %2$@ 建立的所有內容仍會保留在網站上。";
 
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "如果移除這位瀏覽者，對方將無法造訪此網站。";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "如果你想保留網站，但不想保留現有的文章和頁面，我們的支援團隊可以為你刪除網站上的文章、頁面、媒體及留言。\n\n這能讓你保留網站和 URL，但重新開始建立內容。若要清除目前的內容，請與我們聯絡。";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "如果你不確定會刪除哪些內容，或是需要任何協助，別擔心，我們的支援團隊隨時準備好為你解答所有問題。";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒體";
-
-/* No comment provided by engineer. */
-"Insert mention" = "插入標記";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "插入選取的項目";
@@ -3255,7 +3256,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "使用電子郵件地址登入 WordPress.com 帳號。";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "請使用你的 WordPress.com 使用者名稱和密碼登入。";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "是否要登出 WordPress？";
@@ -3588,7 +3589,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "新增項目";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "新密碼";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "新文章";
@@ -4046,7 +4047,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "頁面設定";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分頁符號區塊。%s";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "挑選使用者名稱";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "選擇你喜愛的首頁版面配置。 你之後可以隨時自訂或變更";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "方案";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "預覽";
 
@@ -5410,7 +5413,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "網站重新導向";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "網站設定";
 
 /* Default title for a site
    Label for site title blog setting
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "這是範本內含的範例內容，用於說明功能。你可以加以移除，或用自己的說法和媒體取代該內容。";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "這是人們在網際網路上尋找你的地方";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "此媒體項目已刪除。";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "這將會刪除所有相關的檔案及資料。";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "翻譯";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "移至垃圾桶";
 

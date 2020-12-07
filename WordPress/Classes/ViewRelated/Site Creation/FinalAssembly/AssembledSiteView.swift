@@ -140,7 +140,7 @@ final class AssembledSiteView: UIView {
         self.initialSiteRequest = siteRequest
 
         generator.prepare()
-
+        webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(siteRequest)
     }
 
@@ -208,7 +208,6 @@ extension AssembledSiteView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
-        webView.prepareWPComPreview()
         generator.notificationOccurred(.success)
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
