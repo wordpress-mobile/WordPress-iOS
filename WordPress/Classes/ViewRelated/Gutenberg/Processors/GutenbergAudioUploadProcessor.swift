@@ -3,7 +3,7 @@ import Aztec
 
 class GutenbergAudioUploadProcessor: Processor {
     private struct AudioBlockKeys {
-        static var name = "wp:audio"
+        static let name = "wp:audio"
         static var id = "id"
         static var src = "src"
     }
