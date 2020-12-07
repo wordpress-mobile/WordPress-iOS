@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H15" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -704,6 +704,7 @@
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isWPForTeams" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="siteBlavatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -955,7 +956,7 @@
         <element name="ReaderSearchTopic" positionX="-1657.08984375" positionY="930.36328125" width="128" height="45"/>
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>
         <element name="ReaderSiteInfoSubscriptionPost" positionX="-1845.87109375" positionY="1035.71484375" width="128" height="75"/>
-        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="253"/>
+        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="268"/>
         <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="103"/>
         <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="60"/>
         <element name="ReferrerStatsRecordValue" positionX="-273.765625" positionY="1398.2265625" width="128" height="133"/>
