@@ -6,11 +6,16 @@ class FollowCommentsService: NSObject {
     let post: ReaderPost
     let remote: ReaderPostServiceRemote
 
+    private let coreDataStack: CoreDataStack
+    private let readerTopicService: ReaderTopicService
+
     fileprivate let postID: Int
     fileprivate let siteID: Int
 
     @objc required init?(post: ReaderPost,
-                         remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
+                         remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+                         coreDataStack: CoreDataStack = ContextManager.shared,
+                         readerTopicService: ReaderTopicService? = nil) {
         guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
             return nil
         }
@@ -19,6 +24,8 @@ class FollowCommentsService: NSObject {
         self.postID = postID
         self.siteID = siteID
         self.remote = remote
+        self.coreDataStack = coreDataStack
+        self.readerTopicService = ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
     @objc class func createService(with post: ReaderPost) -> FollowCommentsService? {
@@ -60,7 +67,7 @@ class FollowCommentsService: NSObject {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
             properties[WPAppAnalyticsKeyBlogID] = self.siteID
-            WPAnalytics.track(.readerToggleFollowConversation, properties: properties)
+            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties, service: self.readerTopicService)
 
             success()
         }
