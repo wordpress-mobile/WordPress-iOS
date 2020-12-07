@@ -65,7 +65,10 @@ struct SiteListProvider: IntentTimelineProvider {
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
 
-            let timeline = Timeline(entries: [Self.staticContent], policy: .never)
+            /// - TODO: TODAYWIDGET - This is here because configuration is not updated when the site list changes. It might be a WidgetKit bug. More to come on a separate issue.
+            let content = HomeWidgetTodayData.read()?[defaultSiteID ?? 0] ?? Self.staticContent
+
+            let timeline = Timeline(entries: [content], policy: .never)
             completion(timeline)
             return
         }
