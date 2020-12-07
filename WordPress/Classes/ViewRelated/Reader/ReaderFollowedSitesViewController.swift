@@ -394,10 +394,17 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
-        cell.imageView?.image = .siteIconPlaceholder
+        var placeholderImage: UIImage = .siteIconPlaceholder
+        if site.isWPForTeams {
+            placeholderImage = UIImage.gridicon(.p2, size: CGSize(width: 40, height: 40))
+            cell.imageView?.layer.borderColor = UIColor.divider.cgColor
+            cell.imageView?.layer.borderWidth = .hairlineBorderWidth
+        }
 
-        cell.imageView?.backgroundColor = .neutral(.shade5)
+        // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
+        cell.imageView?.image = placeholderImage
+        cell.imageView?.tintColor = .listIcon
+        cell.imageView?.backgroundColor = UIColor.listForeground
 
         if showsAccessoryFollowButtons {
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -414,7 +421,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         cell.textLabel?.text = site.title
         cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
-        cell.imageView?.downloadSiteIcon(at: site.siteBlavatar)
+        cell.imageView?.downloadSiteIcon(at: site.siteBlavatar, placeholderImage: placeholderImage)
 
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         cell.layoutSubviews()
