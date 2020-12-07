@@ -349,6 +349,18 @@ extension WPAnalytics {
         WPAnalytics.track(event, properties: props)
     }
 
+    /// Track a Reader stat
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any], service: ReaderTopicService) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        WPAnalytics.track(stat, withProperties: props)
+    }
+
     /// Track a event in Obj-C
     ///
     /// This will call each registered tracker and fire the given event
@@ -382,6 +394,18 @@ extension WPAnalytics {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
         WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader stat in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given stat
+    /// - Parameter stat: a `String` that represents the Reader stat name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any], service: ReaderTopicService) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        WPAnalytics.track(stat, withProperties: props)
     }
 
 }
