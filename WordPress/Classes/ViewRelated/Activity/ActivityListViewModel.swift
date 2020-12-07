@@ -73,12 +73,12 @@ class ActivityListViewModel: Observable {
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
         // If a new filter is being applied, remove all activities
-        if applyingNewFilter(after: after, before: before, group: group) {
+        if isApplyingNewFilter(after: after, before: before, group: group) {
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
         }
 
         // If a new date range is being applied, remove the current activity types
-        if applyingDateFilter(after: after, before: before) {
+        if isApplyingDateFilter(after: after, before: before) {
             ActionDispatcher.dispatch(ActivityAction.resetGroups(site: site))
         }
 
@@ -233,13 +233,13 @@ class ActivityListViewModel: Observable {
         return firstYear != currentYear || secondYear != currentYear
     }
 
-    private func applyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
+    private func isApplyingNewFilter(after: Date? = nil, before: Date? = nil, group: [ActivityGroup]) -> Bool {
         let isSameGroup = group.count == self.selectedGroups.count && self.selectedGroups.elementsEqual(group, by: { $0.key == $1.key })
 
-        return applyingDateFilter(after: after, before: before) || !isSameGroup
+        return isApplyingDateFilter(after: after, before: before) || !isSameGroup
     }
 
-    private func applyingDateFilter(after: Date? = nil, before: Date? = nil) -> Bool {
+    private func isApplyingDateFilter(after: Date? = nil, before: Date? = nil) -> Bool {
         after != self.after || before != self.before
     }
 
