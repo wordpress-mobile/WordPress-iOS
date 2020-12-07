@@ -5,7 +5,7 @@ class GutenbergAudioUploadProcessor: Processor {
     private struct AudioBlockKeys {
         static let name = "wp:audio"
         static let id = "id"
-        static var src = "src"
+        static let src = "src"
     }
 
     let mediaUploadID: Int32
