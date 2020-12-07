@@ -13,6 +13,7 @@ extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
 extern NSString * const WPAppAnalyticsKeySessionCount;
+extern NSString * const WPAppAnalyticsKeySubscriptionCount;
 extern NSString * const WPAppAnalyticsKeyEditorSource;
 extern NSString * const WPAppAnalyticsKeyCommentID;
 extern NSString * const WPAppAnalyticsKeyLegacyQuickAction;
