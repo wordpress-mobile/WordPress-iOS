@@ -16,20 +16,41 @@ extension Tracks {
         trackExtensionEvent(.loginLaunched)
     }
 
-    public func trackWidgetInstalled(widgetInfo: [WidgetInfo]) {
-        var properties = [String: AnyObject]()
-        widgetInfo.enumerated().forEach {
-            properties["kind - \($0.offset)"] = $0.element.kind as AnyObject
-            properties["family - \($0.offset)"] = $0.element.family as AnyObject
-            //properties["id - \($0.offset)"] = $0.element.id as AnyObject
-            properties["siteID - \($0.offset)"] = "Null" as AnyObject
+    public func trackWidgetUpdated() {
 
-            if let siteIntent = $0.element.configuration as? SelectSiteIntent, let site = siteIntent.site, let siteID = site.identifier {
-                properties["siteID - \($0.offset)"] = siteID as AnyObject
+        DispatchQueue.global().async {
+            WidgetCenter.shared.getCurrentConfigurations { result in
+
+                switch result {
+
+                case .success(let widgetInfo):
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetInfo)
+
+                case .failure(let error):
+                    DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
+                }
             }
         }
-        let widgetCount = ["widget_count": widgetInfo.count]
-        trackExtensionEvent(.widgetInstalled, properties: widgetCount as [String: AnyObject]?)
+    }
+
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo]) {
+        /// - TODO: TODAYWIDGET - This might need to change depending on wether or not we use one extension for multiple widgets
+
+        let previousCount = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPHomeWidgetTodayCount) as? Int ?? 0
+        let newCount = widgetInfo.count
+        
+        guard previousCount != newCount else {
+            return
+        }
+
+        UserDefaults(suiteName: WPAppGroupName)?.set(newCount, forKey: WPHomeWidgetTodayCount)
+
+        let properties = ["total_widgets": newCount,
+                          "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
+                          "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
+                          "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
+
+        trackExtensionEvent(.widgetUpdated, properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -47,6 +68,6 @@ extension Tracks {
         // User taps widget to login to the app
         case loginLaunched  = "wpios_today_home_extension_login_launched"
         // User installs an instance of the widget
-        case widgetInstalled = "wpios_today_home_extension_widget_installed"
+        case widgetUpdated = "wpios_today_home_extension_widget_updated"
     }
 }

@@ -63,21 +63,13 @@ struct SiteListProvider: IntentTimelineProvider {
 
         /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
         ///
-        WidgetCenter.shared.getCurrentConfigurations { result in
-            switch result {
-            case .success(let widgetInfo):
-                tracks.trackWidgetInstalled(widgetInfo: widgetInfo)
-                print(widgetInfo)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
 
             let timeline = Timeline(entries: [Self.staticContent], policy: .never)
             completion(timeline)
+            tracks.trackWidgetUpdated()
             return
         }
 
@@ -88,6 +80,7 @@ struct SiteListProvider: IntentTimelineProvider {
         let privateCompletion = { (widgetData: HomeWidgetTodayData) in
             let timeline = Timeline(entries: [widgetData], policy: .after(nextRefreshDate))
             completion(timeline)
+            tracks.trackWidgetUpdated()
         }
 
         // if cached data are "too old", refresh them from the backend, otherwise keep them
