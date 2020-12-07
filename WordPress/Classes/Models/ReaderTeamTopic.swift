@@ -4,7 +4,7 @@ import Foundation
     @NSManaged open var slug: String
 
     override open class var TopicType: String {
-        return "team"
+        return "organization"
     }
 
     @objc open var icon: UIImage? {
