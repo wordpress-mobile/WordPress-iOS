@@ -3,6 +3,35 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 105
+
+@scoutharris 2020-12-04
+
+- Added `isWPForTeams` property to  `ReaderPost`.
+
+## WordPress 104
+
+@frosty 2020-12-03
+
+- Set the following `Transformable` properties to use the `NSSecureUnarchiveFromData`:
+  - AbstractPost.revisions
+  - Blog.capabilities
+  - Blog.options
+  - Blog.postFormats
+  - MenuItem.classes
+  - Notification.body
+  - Notification.header
+  - Notification.meta
+  - Notification.subject
+  - Post.disabledPublicizeConnections
+  - Theme.tags
+- Set custom transformers on the following properties:
+  - BlogSettings.commentsBlacklistKeys -> SetValueTransformer
+  - BlogSettings.commentsModerationKeys -> SetValueTransformer
+  - BlogSettings.jetpackLoginWhiteListedIPAddresses -> SetValueTransformer
+  - Media.error -> NSErrorValueTransformer
+  - Post.geolocation -> LocationValueTransformer
+
 ## WordPress 103
 
 @guarani 2020-11-25

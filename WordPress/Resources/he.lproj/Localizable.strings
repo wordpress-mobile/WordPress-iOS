@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 11:54:07+0000 */
+/* Translation-Revision-Date: 2020-12-01 18:59:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 מתוך 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -669,7 +666,7 @@
 "Are you sure you want to cancel and discard changes?" = "בחרת לבטל את השינויים - האם ההחלטה סופית?";
 
 /* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "האם ברצונך להמשיך?\n כל נתוני האתר של ‎%1$‎‎@‎ יוסרו מה-%2$‎@‎ שלך.";
+"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "האם ברצונך להמשיך?\n כל נתוני האתר של %1$@ יוסרו מה-%2$@ שלך.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "בחרת להמשיך - האם ההחלטה סופית?\n כל נתוני האתר יוסרו מה-%@ שלך.";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "ביצוע ההרשמה מהווה את הסכמתך לתנאי השימוש שלנו.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "התאמה אישית";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "לבחור עיצוב";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "בחירת דומיין לאתר שלך";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "בחירת ערכת עיצוב";
 
 /* Label for Publish time picker */
 "Choose a time" = "לבחור שעה";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "בחירת עיצוב";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "בחירת דומיין";
@@ -1469,7 +1467,7 @@
 "Contact us at %@" = "ניתן ליצור אתנו קשר בכתובת %@";
 
 /* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$l⁩i, מילים: %2$li, תווים: %3$li";
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$li⁩, מילים: %2$li, תווים: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "תוכן...";
@@ -1511,6 +1509,9 @@
 
 /* No comment provided by engineer. */
 "Copy block" = "להעתיק בלוק";
+
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "יכול להיות יותר טוב";
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "יצירת האתר שלך";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "הפעולה יוצרת אתר חדש באמצעות המידע שסופק.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "יצירת פוסט או עמוד חדש";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "תיאור";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "מחשב שולחני";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "ערוך פוסט";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "הורדות קבצים";
+
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "שם קובץ";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "לאחר הסרת צופה זה, הוא או היא לא יוכלו לבקר יותר באתר זה.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "אם ברצונך להשתמש באתר בלי הפוסטים והעמודים שהוא מכיל, צוות התמיכה שלנו יכול למחוק את הפוסטים, העמודים, המדיה והתגובות עבורך.\n\nכך האתר וכתובת ה-URL שלך יישארו פעילים אבל תהיה לך אפשרות להתחיל ליצור תוכן מחדש. נותר לך רק לפנות אלינו כדי למחוק את התוכן הקיים.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "אם עוד לא הגעת להחלטה סופית לגבי התוכן שברצונך למחוק או אם דרושה לך עזרה כלשהי, אל דאגה - צוות התמיכה שלנו יענה לכל שאלה שלך.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "הוספת פריטי מדיה";
-
-/* No comment provided by engineer. */
-"Insert mention" = "להוסיף אזכור";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "להוסיף את הפריטים שנבחרו";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "בחירת שם משתמש";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "יש לבחור את הפריסה המועדפת עליך לעמוד הבית. אפשר להתאים אותה אישית או לשנות אותה בהמשך";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "תוכנית";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "תצוגה מקדימה";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "זהו תוכן לדוגמה שכלול בתבנית כדי לשקף את התכונות שלה. אפשר להסיר או להחליף אותו עם טקסט או מדיה משלך.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "כאן הגולשים ימצאו אותך באינטרנט";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "פריט המדיה נמחק.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "פעולה זו תמחק את הקבצים והנתונים המקושרים.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "לתרגם";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "לאשפה";
 

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface Coordinate : NSObject <NSCoding> {
+@interface Coordinate : NSObject <NSSecureCoding> {
     CLLocationCoordinate2D _coordinate;
 }
 

@@ -1,5 +1,0 @@
-Tout sur Jetpack : Accédez à toutes vos fonctionnalités Jetpack facilement et rapidement, incluant vos statistiques, journal des activités et réglages.
-
-Obtenez de l’aide : Nous avons corrigé quelques problèmes qui arrivaient quand vous essayiez de contacter notre équipe d’assistance. Quand vous nous contactez, vous pouvez maintenant utiliser des caractères non-alphabétiques et l’application ne plantera plus lors de la saisie de l’adresse e-mail.
-
-Mises à jour du Lecteur : Nous avons également corrigé un problème d’affichage du Lecteur et les commentaires ne sont plus mis en italique par défaut.

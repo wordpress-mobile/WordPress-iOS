@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
+#import "AbstractPost.h"
 
 @interface CoreDataMigrationTests : XCTestCase
 
@@ -1190,6 +1191,188 @@
     XCTAssertNil([blog3Posts.anyObject valueForKey:@"statusAfterSync"]);
 }
 
+/// In model 104, we updated transformables to use the NSSecureUnarchiveFromData transformer type.
+/// Here we'll check that they're still accessible after a migration. Most of our transformable properties
+/// are arrays or dictionaries, so we'll test a couple of representative examples.
+///
+- (void)testMigrationFrom103To104Transformables
+{
+    // Arrange
+    NSURL *model103Url = [self urlForModelName:@"WordPress 103" inDirectory:nil];
+    NSURL *model104Url = [self urlForModelName:@"WordPress 104" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress103.sqlite"];
+
+    // Load a Model 103 Stack
+    NSManagedObjectModel *model103 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model103Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model103];
+
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption       : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption : @(YES)
+    };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    XCTAssertNil(error, @"Error while loading the PSC for Model 103");
+    XCTAssertNotNil(ps);
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    // Create a dictionary-backed transformable
+    NSNumber *blog1ID = @(987);
+    Blog *blog1 = (Blog *)[self insertDummyBlogInContext:context blogID:blog1ID];
+    NSDictionary *blogOptions = @{
+        @"allowed_file_types": @[
+                @"pdf", @"xls", @"jpg"
+        ]
+    };
+    blog1.options = blogOptions;
+
+    // Create an array-backed transformable
+    AbstractPost *post1 = (AbstractPost *)[self insertDummyPostInContext:context blog:blog1];
+    NSArray *revisions = @[ @123, @124 ];
+    post1.revisions = revisions;
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    psc = nil;
+
+    // Migrate to Model 104
+    NSManagedObjectModel *model104 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model104Url];
+    [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:storeUrl
+                                                     storeType:NSSQLiteStoreType
+                                                            to:model104
+                                                         using:@[@"WordPress 103", @"WordPress 104"]
+                                                         error:&error];
+
+    if (error != nil) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertNil(error);
+
+    // Load a Model 104 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model104];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    // Check that our properties persisted
+    Blog *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog1ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog1);
+
+    NSSet<AbstractPost *> *blog1Posts = [fetchedBlog1 valueForKey:@"posts"];
+    XCTAssertEqual(blog1Posts.count, 1);
+    XCTAssertTrue([fetchedBlog1.options isEqualToDictionary:blogOptions]);
+
+    AbstractPost *fetchedPost1 = [blog1Posts anyObject];
+    XCTAssertTrue([fetchedPost1.revisions isEqualToArray:revisions]);
+}
+
+/// In model 104, we updated some transformables to use custom Transformer subclasses.
+/// Here we'll check that they're still accessible after a migration.
+///
+- (void)testMigrationFrom103To104CustomTransformers
+{
+    // Arrange
+    NSURL *model103Url = [self urlForModelName:@"WordPress 103" inDirectory:nil];
+    NSURL *model104Url = [self urlForModelName:@"WordPress 104" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress103-1.sqlite"];
+
+    // Load a Model 103 Stack
+    NSManagedObjectModel *model103 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model103Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model103];
+
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption       : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption : @(YES)
+    };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    XCTAssertNil(error, @"Error while loading the PSC for Model 103");
+    XCTAssertNotNil(ps);
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    // Post has a Geolocation transformer
+    Blog *blog1 = (Blog *)[self insertDummyBlogInContext:context blogID:@123];
+    Post *post1 = (Post *)[self insertDummyPostInContext:context blog:blog1];
+    Coordinate *coordinate1 = [[Coordinate alloc] initWithCoordinate:CLLocationCoordinate2DMake(37.784316, -122.397402)];
+    post1.geolocation = coordinate1;
+
+    // BlogSettings uses Set transformers
+    BlogSettings *settings1 = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:[BlogSettings entityName] inManagedObjectContext:context];
+    settings1.commentsModerationKeys = [NSSet setWithArray:@[ @"purple", @"monkey", @"dishwasher" ]];
+    blog1.settings = settings1;
+
+    // Media has an Error transformer
+    Media *media1 = (Media *)[NSEntityDescription insertNewObjectForEntityForName:[Media entityName] inManagedObjectContext:context];
+    media1.blog = blog1;
+    NSError *error1 = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ @"reason": @"test" }];
+    media1.error = error1;
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    psc = nil;
+
+    // Migrate to Model 104
+    NSManagedObjectModel *model104 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model104Url];
+    [CoreDataIterativeMigrator iterativeMigrateWithSourceStore:storeUrl
+                                                     storeType:NSSQLiteStoreType
+                                                            to:model104
+                                                         using:@[@"WordPress 103", @"WordPress 104"]
+                                                         error:&error];
+
+    if (error != nil) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertNil(error);
+
+    // Load a Model 104 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model104];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    // Check that our properties persisted
+    Media *fetchedMedia1 = [context fetch:@"Media" withPredicate:nil arguments:nil].firstObject;
+    XCTAssert([fetchedMedia1.error isEqual:error1]);
+
+    Blog *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[@123]].firstObject;
+    XCTAssertNotNil(fetchedBlog1);
+    XCTAssertTrue([fetchedBlog1.settings.commentsModerationKeys isEqualToSet:settings1.commentsModerationKeys]);
+
+    NSSet<Post *> *blog1Posts = [fetchedBlog1 valueForKey:@"posts"];
+    Post *fetchedPost1 = [blog1Posts anyObject];
+    Coordinate *fetchedCoordinate1 = fetchedPost1.geolocation;
+    XCTAssertEqual(fetchedCoordinate1.coordinate.latitude, coordinate1.coordinate.latitude);
+    XCTAssertEqual(fetchedCoordinate1.coordinate.longitude, coordinate1.coordinate.longitude);
+}
+
 #pragma mark - Private Helpers
 
 // Returns the URL for a model file with the given name in the given directory.
@@ -1229,7 +1412,6 @@
     
     return storeURL;
 }
-
 
 - (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context
 {
@@ -1349,7 +1531,10 @@
 - (NSArray *)fetch:(NSString *)entityName withPredicate:(NSString *)predicate arguments:(NSArray *)arguments
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:predicate argumentArray:arguments];
+
+    if (predicate && arguments) {
+        request.predicate = [NSPredicate predicateWithFormat:predicate argumentArray:arguments];
+    }
 
     NSError *error = nil;
     NSArray *result = [self executeFetchRequest:request error:&error];
