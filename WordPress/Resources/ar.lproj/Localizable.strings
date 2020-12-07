@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-17 23:14:46+0000 */
+/* Translation-Revision-Date: 2020-12-03 10:07:31+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -185,7 +185,7 @@
 "%ld files successfully uploaded" = "تم رفع %ld من الملفات بنجاح";
 
 /* Displays the number of words and characters in text */
-"%li words, %li characters" = "%1$lكلمات i و%2$lحروف i";
+"%li words, %li characters" = "%1$li كلمات، %2$li أحرف";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s خيارات المكوِّن";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 من 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -354,7 +351,7 @@
 "Active" = "نشط";
 
 /* The plugin is active on the site and has not enabled automatic updates */
-"Active, Autoupdates off" = "نشط، التحديثات التلقائية قيد إيقاف التشغيل";
+"Active, Autoupdates off" = "نشط، التحديثات التلقائية متوقفة";
 
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "نشط، التحديثات التلقائية قيد التشغيل";
@@ -672,7 +669,7 @@
 "Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "هل أنت متأكد من أنك تريد المتابعة؟\nجميع بيانات الموقع لـ %1$@ ستتم إزالتها من %2$@ الخاص بك.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data will be removed from your %@." = "هل أنت متأكد من رغبتك في المتابعة؟\n ستتم إزالة جميع بيانات الموقع من ‎‏‎%‎@‎‏ الخاص بك.";
+"Are you sure you want to continue?\n All site data will be removed from your %@." = "هل أنت متأكد من رغبتك في المتابعة؟\n ستتم إزالة جميع بيانات الموقع من الـ %@ الخاص بك.";
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "هل أنت متأكد من رغبتك في حذف القائمة؟";
@@ -935,7 +932,7 @@
 "By %@." = "بواسطة %@.";
 
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
-"By continuing, you agree to our _Terms of Service_." = "بالمتابعة، أنت توافق على_شروط الخدمة_.";
+"By continuing, you agree to our _Terms of Service_." = "بالمتابعة، فإنك توافق على _شروط الخدمة_ الخاصة بنا.";
 
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "عن طريق تسجيل هذا النطاق، أنت توافق على <a>شروط الخدمة<\/a> التي نُقرها.";
@@ -946,6 +943,9 @@
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "يعني تسجيل الدخول موافقتك على _Terms of Service_.";
+
+/* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "تخصيص";
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "اختيار تصميم";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "اختيار اسم نطاق لموقعك";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "اختيار قالب";
 
 /* Label for Publish time picker */
 "Choose a time" = "اختيار وقت";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "اختيار تصميم";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "اختيار النطاق";
@@ -1192,7 +1190,7 @@
 "Choose video" = "اختيار فيديو";
 
 /* Reader select interests subtitle label text */
-"Choose your interests" = "اختيار اهتماماتك";
+"Choose your interests" = "اختر اهتماماتك";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "سيؤدي اختيار موقع مختلف إلى فقد التعديلات التي تمت على محتوى موقع معين مثل الوسائط والتصنيفات. هل أنت متأكد من ذلك؟";
@@ -1207,7 +1205,7 @@
 "Classic Blog" = "المدونة التقليدية";
 
 /* Label for button that clears all media cache. */
-"Clear Device Media Cache" = "محو ذاكرة التخزين المؤقت في وسائط الجهاز";
+"Clear Device Media Cache" = "مسح ذاكرة التخزين المؤقت لوسائط الجهاز";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "مسح سجلات النشاط القديمة";
@@ -1469,7 +1467,7 @@
 "Contact us at %@" = "اتصل بنا على %@";
 
 /* Displays the number of blocks, words and characters in text */
-"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "هيكل المحتوى \nالمكوِّنات: ⁦%1$l⁩i، الكلمات: %2$li، الأحرف: %3$li";
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "بنية المحتوى \nالمكوِّنات: %1$li، الكلمات: %2$li، الأحرف: %3$li";
 
 /* No comment provided by engineer. */
 "Content…" = "المحتوى…";
@@ -1511,6 +1509,9 @@
 
 /* No comment provided by engineer. */
 "Copy block" = "نسخ المكوِّن";
+
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "قد يكون أفضل";
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "إنشاء موقعك";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "ينشئ موقعًا جديدًا باستخدام المعلومات المتوافرة.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "لإنشاء مقالة أو صفحة جديدة";
@@ -1828,6 +1826,9 @@
    Title of section that contains plugins' description */
 "Description" = "الوصف";
 
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
+
 /* Title for the desktop web preview */
 "Desktop" = "جهاز سطح المكتب";
 
@@ -1878,7 +1879,7 @@
 "Discover Sites" = "اكتشاف المواقع";
 
 /* Reader select interests title label text */
-"Discover and follow blogs you love" = "اكتشاف المدونات التي تحبها ومتابعتها";
+"Discover and follow blogs you love" = "اكتشف وتابع المدوَّنات التي تحبها";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "تحرير المقالة";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "تنزيلات الملفات";
 
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "اسم الملف";
 
@@ -2462,7 +2469,7 @@
 "Follow Site" = "متابعة الموقع";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "متابعة المحادثة";
+"Follow conversation" = "تابع المحادثة";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "متابعة مواقع أخرى";
@@ -2473,10 +2480,10 @@
 /* Displayed in the Notification Settings View
    Followed Sites Title
    Section title for sites the user has followed. */
-"Followed Sites" = "المواقع التي تمت متابعتها";
+"Followed Sites" = "مواقع تمّت متابعتها";
 
 /* Followed Topics Title */
-"Followed Topics" = "موضوعات تتم متابعتها";
+"Followed Topics" = "مواضيع تمّت متابعتها";
 
 /* User followed a site. */
 "Followed site" = "موقع تتم متابعته";
@@ -2537,7 +2544,7 @@
 "Free Photo Library" = "مكتبة الصور المجانية";
 
 /* Explanatory text for clearing device media cache. */
-"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "يمكنك توفير مساحة تخزين على هذا الجهاز عن طريق حذف ملفات الوسائط المؤقتة. لن يؤثر هذا في الوسائط الموجودة على موقعك.";
+"Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "يمكنك توفير مساحة تخزين على هذا الجهاز عن طريق حذف ملفات الوسائط المؤقتة. لن يؤثر هذا على الوسائط الموجودة على موقعك.";
 
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "الأسئلة الشائعة";
@@ -2634,9 +2641,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "عظيم!\nنحن نحب أن نعلم بمدى سعادة مستخدمينا السعداء\n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "رائع! هل بإمكانك ترك رأي مفيد؟\n\nإنه مفيد حقًا.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "في حال إزالة هذا المشاهد، لن يتمكن من زيارة هذا الموقع.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "إذا كنت تريد موقعًا ولا تريد أيًا من المقالات أو الصفحات التي لديك الآن، فيمكن لفريق الدعم لدينا حذف المقالات والصفحات والوسائط والتعليقات الخاصة بك.\n\nسيبقي ذلك على موقعك وعنوان URL في حالة نشطة، ولكنه يعطيك بداية جديدة عند إنشاء المحتوى الخاص بك. اتصل بنا فقط لحذف المحتوى الحالي الخاص بك.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "إذا كنت غير متأكد ممّا سيُحذف أو كنت بحاجة إلى المساعدة، فلا تقلق، ففريق الدعم لدينا جاهز للإجابة عن أي أسئلة لديك.";
@@ -2853,7 +2857,7 @@ translators: sample content for \"Team\" page template */
 "Inactive" = "غير مفعل";
 
 /* The plugin is not active on the site and has not enabled automatic updates */
-"Inactive, Autoupdates off" = "غير نشط، التحديثات التلقائية قيد إيقاف التشغيل";
+"Inactive, Autoupdates off" = "غير نشط، التحديثات التلقائية متوقفة";
 
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "غير نشط، التحديثات التلقائية قيد التشغيل";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "إدراج وسائط";
-
-/* No comment provided by engineer. */
-"Insert mention" = "إدراج إشارة";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "إدراج المحدَّد";
@@ -3331,10 +3332,10 @@ translators: sample content for \"Services\" page template */
 "Match accounts using email" = "مطابقة الحسابات باستخدام البريد الإلكتروني";
 
 /* Title for the image size settings option. */
-"Max Image Upload Size" = "الحد الأقصى لحجم الصورة التي سيتم رفعها";
+"Max Image Upload Size" = "أقصى حجم لرفع الصور";
 
 /* Title for the video size settings option. */
-"Max Video Upload Size" = "الحد الأقصى لحجم مقطع الفيديو الذي سيتم رفعه";
+"Max Video Upload Size" = "أقصى حجم لمقطع الفيديو الذي سيتم رفعه";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -3349,7 +3350,7 @@ translators: sample content for \"Services\" page template */
 "Media" = "وسائط";
 
 /* Label for size of media cache in the app. */
-"Media Cache Size" = "حجم ذاكرة التخزين المؤقت في الوسائط";
+"Media Cache Size" = "حجم ذاكرة التخزين المؤقت للوسائط";
 
 /* Title for alert when access to media capture is not granted */
 "Media Capture" = "التقاط الوسائط";
@@ -3381,7 +3382,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "الوسائط المرفوعة (%ld الملفات)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "الوسائط المرفوعة (%ld الملف)";
+"Media uploaded (1 file)" = "الوسائط المرفوعة (ملف واحد)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "متوسط";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "اختيار اسم مستخدم";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "اختر تخطيط الصفحة الرئيسية المفضَّل لديك. يمكنك تخصيصه أو تغييره لاحقًا";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "الخطة";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "معاينة";
 
@@ -4564,7 +4567,7 @@ translators: sample content for \"Services\" page template */
 "Published just now on" = "تم النشر للتو بتاريخ";
 
 /* Published on [date] */
-"Published on" = "نشر في";
+"Published on" = "تمّ النشر في";
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "نشر إلى";
@@ -4716,7 +4719,7 @@ translators: sample content for \"Services\" page template */
 "Remove Link" = "إزالة الرابط";
 
 /* Option to enable the removal of location information/gps from photos and videos */
-"Remove Location From Media" = "إزالة الموقع من الوسائط";
+"Remove Location From Media" = "إزالة معلومات المكان من الوسائط";
 
 /* Title for action that will remove the next steps/quick start menus. */
 "Remove Next Steps" = "إزالة الخطوات التالية";
@@ -5261,7 +5264,7 @@ translators: sample content for \"Services\" page template */
    Share the post.
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
-"Share" = "شارك";
+"Share" = "مشاركة";
 
 /* Label for action to share post. */
 "Share Post" = "مشاركة المقالة";
@@ -5393,7 +5396,7 @@ translators: sample content for \"Services\" page template */
 "Siri Reset Confirmation" = "تم مسح اقتراحات Siri Shortcut بنجاح";
 
 /* Label for button that clears user activities donated to Siri. */
-"Siri Reset Prompt" = "تم مسح اقتراحات Siri Shortcut";
+"Siri Reset Prompt" = "مسح اقتراحات Siri Shortcut";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "أيقونة الموقع";
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "هذا هو محتوى النموذج المُضمَّن مع القالب لتوضيح ميزاته. يمكنك إزالته أو استبدال كلماتك ووسائطك الخاصة به.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "هذا هو المكان الذي سيجده الأشخاص على الإنترنت";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "تم حذف عنصر الوسائط هذا.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "سيؤدي هذا إلى حذف جميع الملفات والبيانات المرتبطة.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "الترجمة";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "سلة المهملات";
 
@@ -6789,10 +6796,10 @@ translators: sample content for \"Services\" page template */
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
-"Visibility" = "الظهور:";
+"Visibility" = "الظهور";
 
 /* An option to visit the site to which a specific post belongs */
-"Visit" = "تفضل بزيارة";
+"Visit" = "زيارة";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "تفضل بزيارة %@";
@@ -7316,7 +7323,7 @@ translators: sample content for \"Services\" page template */
 "You don't have any trashed posts" = "ليس لديك أي مقالات تم وضعها في سلة المهملات";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "لديك %l مواقع WordPress مخفاة.";
+"You have %lu hidden WordPress sites." = "لديك %lu مواقع ووردبريس مخفية.";
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "لديك موقع WordPress واحد مخفى.";
@@ -7332,7 +7339,7 @@ translators: sample content for \"Services\" page template */
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
-"You have unsaved changes." = "لقد قمت بإلغاء حفظ التغييرات.";
+"You have unsaved changes." = "لديك تغييرات لم تحفظ.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
 "You haven't published any pages yet" = "لم تَنشُر أي صفحات حتى الآن";
@@ -7357,7 +7364,7 @@ translators: sample content for \"Services\" page template */
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
+"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "لقد أجريت مؤخرًا تغييرات على هذه المقالة، ولكنك لم تحفظها. اختر نسخة لتحميلها:\n\nمن هذا الجهاز\nتم الحفظ في %1$@\n\nمن جهاز آخر\nتم الحفظ في %2$@\n";
 
 /* Notification text - below a comment notification detail */
 "You replied to this comment." = "لقد قمتَ بالرد على هذا التعليق.";
@@ -7578,7 +7585,7 @@ translators: sample content for \"Services\" page template */
 "{G} Log in with Google." = "{G} تسجيل الدخول باستخدام Google.";
 
 /* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %@ Automattic, Inc.";
+"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• نطاقات";

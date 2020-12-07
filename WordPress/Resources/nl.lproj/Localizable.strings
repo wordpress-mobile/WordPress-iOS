@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-19 17:43:59+0000 */
+/* Translation-Revision-Date: 2020-12-04 09:12:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -140,7 +140,7 @@
 "%d days" = "%d dagen";
 
 /* Age between dates over one hour. */
-"%d hours" = "%d uur";
+"%d hours" = "%d uren";
 
 /* Age between dates over one month. */
 "%d months" = "%d maanden";
@@ -152,7 +152,7 @@
 "%d posts" = "%d berichten";
 
 /* Age between dates over one year. */
-"%d years" = "%d jaar";
+"%d years" = "%d jaren";
 
 /* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
 "%dd" = "%dd";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 van 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -368,7 +365,7 @@
 "Activity Log" = "Activiteitenlog";
 
 /* Option in Support view to see activity logs. */
-"Activity Logs" = "Activiteiten Logs";
+"Activity Logs" = "Activiteiten logs";
 
 /* Remove asset from media picker list */
 "Add" = "Voeg toe";
@@ -640,7 +637,7 @@
 
 /* Navigates to picker screen to change the app's icon
    Title of screen to change the app's icon */
-"App Icon" = "App icoon";
+"App Icon" = "App pictogram";
 
 /* App Settings Title
    Link to App Settings section
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Door aan te melden, ga je akkoord met onze _algemene voorwaarden_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "KIES EEN BESTAND";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "AANPASSEN";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Kies een ontwerp";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Kies een domeinnaam voor je site";
+/* Select domain name. Title */
+"Choose a domain" = "Kies een domein";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Kies een thema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Kies ontwerp";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Kies domein";
@@ -1426,7 +1424,7 @@
 
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Verbinden van";
+"Connecting %@" = "Verbinden met %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Door te verbinden met %1$@ wordt de huidige verbinding vervangen door %2$@.";
@@ -1511,6 +1509,9 @@
 
 /* No comment provided by engineer. */
 "Copy block" = "Blok kopieren";
+
+/* No comment provided by engineer. */
+"Copy file URL" = "Kopieer bestands URL";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan beter";
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Maak je site";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Creëert een nieuwe site met de opgegeven informatie.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Maakt een nieuw bericht of pagina";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beschrijving";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Ontwerp";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2068,6 +2069,9 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Bewerk bericht";
 
+/* No comment provided by engineer. */
+"Edit file" = "Bestand bewerken";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bewerk nieuwe berichten en pagina's met de blok-editor.";
 
@@ -2153,7 +2157,7 @@
 "Enable site notifications?" = "Site meldingen inschakelen?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
-"Encrypted Logs" = "Versleutelde logboeken";
+"Encrypted Logs" = "Versleutelde logs";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Volledig scherm openen";
@@ -2422,6 +2426,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Bestandsdownloads";
 
+/* No comment provided by engineer. */
+"File block settings" = " Blok-instellingen bestand";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Bestandsnaam";
 
@@ -2593,7 +2600,7 @@ translators: sample content for \"Team\" page template */
 "Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Ontvang je meldingen sneller";
+"Get your notifications faster" = "Ontvang je berichten sneller";
 
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Ga aan de slag met je site";
@@ -2614,7 +2621,7 @@ translators: sample content for \"Team\" page template */
 "Go to Following" = "Ga naar Volgers";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
-"Go to Reader" = "Ga naar Lezer";
+"Go to Reader" = "Ga naar Reader";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -2634,9 +2641,6 @@ translators: sample content for \"Team\" page template */
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Geweldig!\n We houden van blije gebruikers \n😁";
-
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Fantastisch! Zou jij een mooie recensie willen schrijven?\n\nHet helpt écht.";
 
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
@@ -2775,7 +2779,7 @@ translators: sample content for \"Team\" page template */
 "Homepage Settings" = "Homepage-instellingen";
 
 /* Message informing the user that their static homepage page was set successfully */
-"Homepage successfully updated" = "Startpagina met succes bijgewerkt";
+"Homepage successfully updated" = "Homepage met succes bijgewerkt";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Als je deze bezoeker verwijdert, zal hij of zij je site niet meer kunnen bezoeken.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Als je een site wilt, maar niet de berichten en pagina's die je nu hebt, kan ons ondersteuningsteam je berichten, pagina's, media en reacties voor je verwijderen.\n\nHiermee blijft je site en URL actief maar kan je van vooraf aan beginnen met het maken van content. Neem contact met ons op als je je huidige content wilt verwijderen.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Als je een site wil, maar niet de berichten en pagina's die je nu hebt, kan ons ondersteuningsteam je berichten, pagina's, media en reacties voor je verwijderen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Als je niet zeker weet wat er wordt verwijderd of als je hulp nodig hebt, wees gerust! Ons ondersteuningsteam staat voor je klaar om al je vragen te beantwoorden.";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Media invoeren";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Voeg vermelding in";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Invoegen geselecteerd";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Kies een gebruikersnaam";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Kies je favoriete homepage-opmaak. Je kan deze later altijd nog aanpassen of wijzigen";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Kies je favoriete homepage lay-out. Je kunt hem bewerken of later aanpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Abonnement";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Voorbeeld";
 
@@ -4612,10 +4615,10 @@ translators: sample content for \"Services\" page template */
    The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS.
    Title of the Reader section of the debug screen used in debug builds of the app */
-"Reader" = "Lezer";
+"Reader" = "Reader";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"Reader CSS URL" = "Lezer CSS URL";
+"Reader CSS URL" = "Reader CSS URL";
 
 /* Text for the 'Reblog' button. */
 "Reblog" = "Herblog";
@@ -5186,7 +5189,7 @@ translators: sample content for \"Services\" page template */
 "Send Link by Email" = "Link per e-mail verzenden";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
-"Send Log Message" = "Logboekbericht verzenden";
+"Send Log Message" = "Logbericht verzenden";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Stuur Pingbacks";
@@ -5399,7 +5402,7 @@ translators: sample content for \"Services\" page template */
 "Site Icon" = "Site icoon";
 
 /* Title for the Language Picker View */
-"Site Language" = "Websitetaal";
+"Site Language" = "Site taal";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -5417,10 +5420,10 @@ translators: sample content for \"Services\" page template */
    Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
-"Site Title" = "Websitetitel";
+"Site Title" = "Site titel";
 
 /* The accessibility label for the followed sites search field */
-"Site URL" = "Website URL";
+"Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Prestaties voor de site";
@@ -5688,7 +5691,7 @@ translators: sample content for \"Services\" page template */
 /* Support button that appears in the Theme Browser Header
    Theme Support action title
    View title for Support page. */
-"Support" = "Support";
+"Support" = "Ondersteuning";
 
 /* Action button to switch the blog to which you'll be posting */
 "Switch Blog" = "Kies blog";
@@ -5933,7 +5936,7 @@ translators: sample content for \"Services\" page template */
 "The item could not be added to the Media Library." = "Het item kon niet worden toegevoegd aan de mediabibliotheek.";
 
 /* Accessibility hint for list */
-"The kinds of sites that can be created" = "Soorten websites die gemaakt kunnen worden";
+"The kinds of sites that can be created" = "Soorten sites die gemaakt kunnen worden";
 
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "De taal waarin deze site hoofdzakelijk is geschreven.";
@@ -5954,13 +5957,13 @@ translators: sample content for \"Services\" page template */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "De server heeft een lege respons teruggestuurd. Dat betekent meestal dat je de geheugenlimiet voor je site moet verhogen.";
 
 /* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
+"The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je reader. Tik om ongedaan te maken.";
 
 /* No comment provided by engineer. */
-"The site address must be shorter than 64 characters." = "De site-adres moet korter zijn dan 64 karakters.";
+"The site address must be shorter than 64 characters." = "Het site adres moet korter zijn dan 64 karakters.";
 
 /* No comment provided by engineer. */
-"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "De site op %1$@ gebruikt WordPress %2$@. Wij raden aan om up te daten naar de laatste versie, of minimaal %3$@";
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "De site op %1$@ gebruikt WordPress %2$@. Wij raden aan om te updaten naar de laatste versie, of minimaal %3$@";
 
 /* Error message shown a URL does not point to an existing site. */
 "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "De site op dit adres is geen WordPress site. Om door ons verbinding te kunnen maken, moet de site WordPress gebruiken.";
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dit is voorbeeldinhoud, meegeleverd bij het sjabloon om alle functies te demonstreren. Verwijder de inhoud of vervang deze door je eigen woorden en media.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Dit is de plek waar mensen je online kunnen vinden";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Dit is waar mensen je kunnen vinden op het internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dit media-item is verwijderd.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Dit zal alle geassocieerde bestanden en data verwijderen.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Hiermee wordt je site en URL actief gehouden, maar kan je van vooraf aan beginnen met het maken van inhoud. Neem contact met ons op als je je huidige inhoud wil verwijderen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Vertaal";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Prullenmand";
 
@@ -6416,7 +6423,7 @@ translators: sample content for \"Services\" page template */
 
 /* Default title shown for no-results when the device is offline.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
-"Unable to load this content right now." = "Deze content kan momenteel niet geladen worden.";
+"Unable to load this content right now." = "Deze inhoud kan momenteel niet geladen worden.";
 
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Kan video niet laden.";
@@ -7046,7 +7053,7 @@ translators: sample content for \"Services\" page template */
 "Weeks" = "Weken";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Lezer. Ontdek miljoenen blogs met je vingertoppen.";
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Reader. Ontdek miljoenen van blogs aan je vingertoppen.";
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Welkom bij WordPress";
@@ -7146,13 +7153,13 @@ translators: sample content for \"Services\" page template */
 "WordPress Blog" = "WordPress blog";
 
 /* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress Forums";
+"WordPress Forums" = "WordPress forums";
 
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress ondersteuning";
 
 /* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress Help Centrum";
+"WordPress Help Center" = "WordPress help centrum";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress media";
@@ -7170,7 +7177,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Profile" = "WordPress profiel";
 
 /* Siri Suggestion to open My Sites */
-"WordPress Reader" = "WordPress lezer";
+"WordPress Reader" = "WordPress Reader";
 
 /* Siri Suggestion to open My Sites */
 "WordPress Site Details" = "WordPress site details";
@@ -7381,13 +7388,13 @@ translators: sample content for \"Services\" page template */
 "Your Domains" = "Jouw domeinen";
 
 /* The item to select during a guided tour. */
-"Your Site Icon" = "Jouw favicon";
+"Your Site Icon" = "Je site pictogram";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Jouw sites";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
-"Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Jouw WordPress.com site ondersteunt het gebruik van Accelerated Mobile Pages, een initiatief van Google die de laadtijd versnelt op mobiele apparaten.";
+"Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Je WordPress.com site ondersteunt het gebruik van Accelerated Mobile Pages, een initiatief van Google die de laadtijd versnelt op mobiele apparaten.";
 
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Jouw account heeft geen rechten om media naar deze site te uploaden. De sitebeheerder kan deze rechten aanpassen.";
@@ -7441,7 +7448,7 @@ translators: sample content for \"Services\" page template */
 "Your site will be ready shortly" = "Je site is binnen enkele ogenblikken gereed";
 
 /* Explanatory text bellow the Disconnect from WordPress.com button */
-"Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Jouw site zal geen data meer versturen naar WordPress.com en Jetpack functies zullen niet meer werken. Je zal geen toegang meer hebben tot de site via de app en je moet deze opnieuw toevoegen met de inloggegevens van de site.";
+"Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Je site zal geen gegevens meer versturen naar WordPress.com en Jetpack functies zullen niet meer werken. Je zal geen toegang meer hebben tot de site via de app en je moet deze opnieuw toevoegen met de inloggegevens van de site.";
 
 /* Description of a Quick Start Tour */
 "Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look." = "Je bezoekers zien je pictogram in hun browser. Voeg een aangepast pictogram toe voor een stijlvolle, professionele look.";

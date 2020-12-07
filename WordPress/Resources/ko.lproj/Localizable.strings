@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-03 03:16:13+0000 */
+/* Translation-Revision-Date: 2020-12-04 04:38:34+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -243,9 +243,6 @@
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2\/2";
-
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
@@ -365,7 +362,7 @@
 "Activity" = "활동";
 
 /* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
+"Activity Log" = "활동 기록";
 
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "활동 기록";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "가입하려면 _서비스 약관_에 동의해야 합니다.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "파일 선택하기";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "사용자 정의";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "디자인 선택하기";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "사이트의 도메인 네임 선택";
+/* Select domain name. Title */
+"Choose a domain" = "도메인 선택하기";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "테마 선택";
 
 /* Label for Publish time picker */
 "Choose a time" = "시간을 선택하세요.";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Choose design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "도메인 선택";
@@ -1186,7 +1184,7 @@
 "Choose images" = "이미지 선택하기";
 
 /* Shortened version of the main title to be used in back navigation */
-"Choose layout" = "Choose layout";
+"Choose layout" = "레이아웃 선택";
 
 /* No comment provided by engineer. */
 "Choose video" = "비디오 고르기";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "블록 복사하기";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "파일 URL 복사하기";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "별로";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "사이트 작성";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "주어진 정보로 새로운 사이트를 만듭니다.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "새 글 또는 페이지 만들기";
@@ -1821,12 +1819,15 @@
 "Deleting..." = "삭제 중...";
 
 /* Verb. Denies a 2fa authentication challenge. */
-"Deny" = "Deny";
+"Deny" = "거부하기";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "설명";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "디자인";
 
 /* Title for the desktop web preview */
 "Desktop" = "데스크탑";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "글 편집";
+
+/* No comment provided by engineer. */
+"Edit file" = "파일 편집하기";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
@@ -2366,13 +2370,13 @@
 "Failed to insert media.\nPlease tap for options." = "미디어를 삽입하지 못했습니다.\n옵션을 보려면 누르세요.";
 
 /* No comment provided by engineer. */
-"Failed to save files.\nPlease tap for options." = "Failed to save files.\nPlease tap for options.";
+"Failed to save files.\nPlease tap for options." = "파일을 저장하지 못했습니다.\n옵션을 보려면 누르세요.";
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API에 요청을 일련화할 수 없습니다.";
 
 /* No comment provided by engineer. */
-"Failed to upload files.\nPlease tap for options." = "Failed to upload files.\nPlease tap for options.";
+"Failed to upload files.\nPlease tap for options." = "파일 업로드에 실패했습니다.\n옵션을 누르시기 바랍니다.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "패스트메일";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "파일 다운로드";
+
+/* No comment provided by engineer. */
+"File block settings" = "파일 블록 설정";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "파일 이름";
@@ -2635,9 +2642,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "훌륭합니다!\n 우리는 행복한 사용자의 의견을 좋아합니다 \n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "훌륭합니다! 좋은 리뷰를 남겨주시겠어요?\n\n\n많은 도움이 될 겁니다.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "방문자 수 증가";
@@ -2807,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "이 방문자를 제거하면 해당 방문자가 이 사이트에 방문할 수 없게 됩니다.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "사이트를 유지하되 현재 글과 페이지를 원하지 않는 경우 지원팀에서 글, 페이지, 미디어, 댓글을 삭제해드립니다.\n\n사이트와 URL은 활성 상태를 유지하지만 콘텐츠 생성을 처음부터 시작할 수 있게 됩니다. 현재 콘텐츠를 삭제하려면 지원팀에 문의해주세요.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "사이트를 원하지만, 지금 글이나 페이지를 가지고 있지 않다면, 글, 페이지, 미디어, 그리고 댓글을 지원팀이 지울 수 있습니다.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "삭제 대상을 잘 모르겠거나 다른 도움이 필요할 경우 언제든지 문의하시면 지원팀에서 답변해드리겠습니다.";
@@ -2888,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "미디어 삽입";
-
-/* No comment provided by engineer. */
-"Insert mention" = "멘션 삽입";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "선택한 미디어 삽입";
@@ -3255,7 +3256,7 @@ translators: sample content for \"Services\" page template */
 "Log in to your WordPress.com account with your email address." = "이메일 주소로 워드프레스닷컴 계정에 로그인하세요.";
 
 /* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
+"Log in with your WordPress.com username and password." = "워드프레스닷컴 사용자 이름과 비밀번호로 로그인합니다";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "워드프레스에서 로그아웃하시겠습니까?";
@@ -3381,7 +3382,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "미디어 업로드됨(%ld개 파일)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "미디어 업로드됨(%ld개 파일)";
+"Media uploaded (1 file)" = "미디어 업로드됨(1개 파일)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -3588,7 +3589,7 @@ translators: sample content for \"Services\" page template */
 "New item" = "새 항목";
 
 /* Placeholder text for password field */
-"New password" = "New password";
+"New password" = "새 비밀번호";
 
 /* Noun. The title of an item in a list. */
 "New posts" = "새 글";
@@ -4046,7 +4047,7 @@ translators: sample content for \"Services\" page template */
 
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
-"Page Settings" = "Page Settings";
+"Page Settings" = "페이지 설정";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "페이지 바꾸기 블록. %s";
@@ -4156,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "사용자명 선택";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "좋아하는 홈페이지 레이아웃을 고르세요. 사용자 정의하거나 나중에 바꿀 수 있습니다";
+"Pick your favorite homepage layout. You can edit and customize it later." = "마음에 드는 홈페이지 레이아웃을 선택하세요. 나중에 편집하고 원하는대로 꾸밀 수 있습니다.";
 
 /* The item to select during a guided tour. */
 "Plan" = "요금제";
@@ -4424,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "미리보기";
 
@@ -5410,7 +5413,7 @@ translators: sample content for \"Services\" page template */
 "Site Redirect" = "사이트 리디렉팅";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
+"Site Settings" = "사이트 설정";
 
 /* Default title for a site
    Label for site title blog setting
@@ -6145,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "다음은 샘플 콘텐츠이며, 기능을 설명하는 템플릿도 포함되어 있습니다. 이 콘텐츠를 제거하거나 자신만의 언어와 미디어로 바꾸세요.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "사람들이 인터넷에서 회원님을 찾을 수 있는 곳입니다.";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "사람들이 인터넷에서 회원님을 찾을 수 있는 곳입니다.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "이 미디어 항목은 삭제되었습니다.";
@@ -6175,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "연결된 파일 및 데이터가 모두 삭제됩니다.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "이는 사이트를 유지하고 URL을 활성화하지만, 콘텐츠 생성을 처음부터 시작하도록 합니다. 현재 콘텐츠를 지우려면 지원팀에 문의하세요.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6313,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "번역";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "휴지통";
 
