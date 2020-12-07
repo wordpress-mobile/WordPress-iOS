@@ -121,7 +121,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
                     // This stat is part of a funnel that provides critical information.  Before
                     // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-                    WPAnalytics.track(.createdSite)
+                    SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
                 }
 
                 self.contentView.status = status
@@ -219,7 +219,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
+            SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)

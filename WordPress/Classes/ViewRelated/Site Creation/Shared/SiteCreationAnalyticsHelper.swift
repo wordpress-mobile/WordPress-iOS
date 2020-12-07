@@ -35,12 +35,20 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSuccessLoading, withProperties: commonProperties(siteDesign))
     }
 
+    static func trackSiteCreationSuccess(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.createdSite, withProperties: commonProperties(siteDesign))
+    }
+
     static func trackSiteCreationSuccessPreviewViewed(_ siteDesign: RemoteSiteDesign?) {
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed, withProperties: commonProperties(siteDesign))
     }
 
     static func trackSiteCreationSuccessLoaded(_ siteDesign: RemoteSiteDesign?) {
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessPreviewOkButtonTapped() {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
     }
 
     // MARK: - Error
