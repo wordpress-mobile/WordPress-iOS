@@ -163,6 +163,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         })
     }
 
+    override func accessibilityPerformEscape() -> Bool {
+        navigationController?.popViewController(animated: true)
+        return true
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 

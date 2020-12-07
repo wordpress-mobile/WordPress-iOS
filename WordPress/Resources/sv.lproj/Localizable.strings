@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-25 22:24:43+0000 */
+/* Translation-Revision-Date: 2020-12-04 09:22:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 av 3";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Genom att registrera dig godkänner du våra _användarvillkor_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "VÄLJ EN FIL";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSA";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Välj en design";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Välj ett domännamn för din webbplats";
+/* Select domain name. Title */
+"Choose a domain" = "Välj en domän";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Välj ett tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Välj en tid";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Välj design";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Välj domän";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Kopiera block";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Kopiera filens URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kunde vara bättre";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Skapa din webbplats";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Skapar en ny webbplats med den angivna informationen.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Skapar nytt inlägg eller ny sida";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beskrivning";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "Stationär dator";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Redigera inlägg";
+
+/* No comment provided by engineer. */
+"Edit file" = "Redigera fil";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Redigera nya inlägg och sidor med blockredigeraren.";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Filnedladdningar";
+
+/* No comment provided by engineer. */
+"File block settings" = "Inställningar för filblock";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Filnamn";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Om du tar bort denna tittare kommer han\/hon inte att kunna besöka denna webbplats.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Om du vill ha en webbplats, men inte någon av de tjänster och sidor du har nu, kan vårt supportteam radera dina inlägg, sidor, media, och kommentarer.\n\nDetta kommer att hålla din webbplats och URL aktiva, men ger dig en nystart när det gäller innehållsskapande. Ta kontakt med oss för att få ditt nuvarande innehåll raderat.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Om du vill ha en webbplats, men inte någon av de tjänster och sidor du har nu, kan vårt supportteam radera dina inlägg, sidor, media, och kommentarer.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Om du undrar över vad som kommer att raderas eller om du behöver någon hjälp kan du lugnt kontakta vårt supportteam som är redo att besvara alla dina frågor.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Placera in mediafil";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Infoga omnämnande";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Infoga det markerade";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Välj användarnamn";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Välj favoritlayout på din startsida Du kan anpassa eller ändra det senare";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Välj favoritlayout på din startsida Du kan anpassa eller ändra det senare.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Paket";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Visa";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Detta är exempelinnehåll som medföljer mallen för att visa upp dess olika funktioner. Ta bort innehållet eller ersätt det med din egen text och dina egna mediafiler.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Det är här människor kommer hitta dig på Internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Det är här du kommer att hittas på internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Detta medieobjekt har raderats.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Detta kommer att ta bort alla tillhörande filer och data.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Med detta fortsätter din webbplats och din URL att vara aktiva, men du börjar om från början med webbplatsens innehåll. Om du vill rensa bort ditt nuvarande innehåll behöver du bara kontakta oss.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Översätt";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Kastas";
 

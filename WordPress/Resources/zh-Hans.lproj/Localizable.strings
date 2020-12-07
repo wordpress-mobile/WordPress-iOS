@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-27 04:30:39+0000 */
+/* Translation-Revision-Date: 2020-12-02 04:27:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -73,7 +73,7 @@
 "%@ of %@ on your site" = "你的网站%2$@中的%1$@ ";
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
-"%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$";
+"%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
 
 /* Plan yearly price */
 "%@ per year" = "每年 %@";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "第 2 步，共 2 步";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "注册即表示您同意我们的_服务条款_。";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "定制";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "选择设计";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "为您的站点选择一个域名";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "选择主题";
 
 /* Label for Publish time picker */
 "Choose a time" = "选择时间";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "选择设计";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "选择域";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "复制区块";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "还可以更好";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "创建站点";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "使用给定的信息创建新站点。";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "创建新文章或页面";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "描述";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "台式设备";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "编辑文章";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "文件下载";
+
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "文件名";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "如果删除该查看者，他或她将无法访问此站点。";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "如果您想要某个站点，但不想保留其中现有的任何文章和页面，我们的支持团队可以为您删除相关文章、页面、媒体以及评论。\n\n这不会影响您站点和 URL 的有效性，同时您将能够重新开始创建内容。联系我们即可清除所有当前内容。";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "如果您不确定要删除的内容或需要任何帮助，我们的支持团队可随时解答您提出的任何问题，尽请放心。";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒体";
-
-/* No comment provided by engineer. */
-"Insert mention" = "插入提及";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "插入所选内容";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "选择用户名";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "选择您喜欢的主页布局。 您以后可以随时定制或更改。";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "套餐";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "预览";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "这是示例内容，包含在模板中，用来说明其功能。删除示例内容或将示例内容替换为自己的文字和媒体。";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "人们可以通过此域名在互联网上找到您";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "此媒体项目已被删除。";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "此操作将删除所有关联文件和数据。";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "翻译";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "移到回收站";
 
@@ -7313,7 +7323,7 @@ translators: sample content for \"Services\" page template */
 "You don't have any trashed posts" = "您没有任何已放入垃圾桶的文章";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "您有 %l 个隐藏的 WordPress 站点。";
+"You have %lu hidden WordPress sites." = "您有 %lu个隐藏的 WordPress 站点。";
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "您有 1 个隐藏的 WordPress 站点。";

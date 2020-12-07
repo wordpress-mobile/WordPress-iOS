@@ -35,7 +35,7 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.7.4-beta.1'
+    pod 'WordPressUI', '~> 1.7.4'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.23-beta'
+    pod 'WordPressKit', '~> 4.23.0-beta.3'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.43.0-alpha2'
+    gutenberg :tag => 'v1.43.0-alpha3'
 
     ## Third party libraries
     ## =====================
