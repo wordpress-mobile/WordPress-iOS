@@ -36,7 +36,7 @@ class ActivityListViewModelTests: XCTestCase {
 
     // Check if `loadMore` dispatchs the correct after/before date and groups
     //
-    func testloadMoreAfterBeforeDate() {
+    func testLoadMoreAfterBeforeDate() {
         let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
         let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock)
