@@ -28,7 +28,7 @@ extension ReaderRoute: Route {
         case .a8c:
             return "/read/a8c"
         case .p2:
-            return "/read/following/p2"
+            return "/read/p2"
         case .likes:
             return "/activities/likes"
         case .manageFollowing:
