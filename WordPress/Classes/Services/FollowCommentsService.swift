@@ -67,7 +67,7 @@ class FollowCommentsService: NSObject {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
             properties[WPAppAnalyticsKeyBlogID] = self.siteID
-            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties, service: self.readerTopicService)
+            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
 
             success()
         }

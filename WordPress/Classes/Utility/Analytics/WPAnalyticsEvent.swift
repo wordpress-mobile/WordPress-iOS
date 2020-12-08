@@ -303,6 +303,8 @@ import Foundation
 
 extension WPAnalytics {
 
+    @objc static var subscriptionCount: Int = 0
+
     private static let WPAppAnalyticsKeySubscriptionCount: String = "subscription_count"
 
     /// Track a event
@@ -345,9 +347,9 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], service: ReaderTopicService) {
+    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
         var props = properties
-        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(event, properties: props)
     }
 
@@ -357,9 +359,9 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any], service: ReaderTopicService) {
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
         var props = properties
-        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
     }
 
@@ -392,9 +394,9 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    @objc static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], service: ReaderTopicService) {
+    @objc static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
         var props = properties
-        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(event, properties: props)
     }
 
@@ -404,9 +406,9 @@ extension WPAnalytics {
     /// - Parameter stat: a `String` that represents the Reader stat name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any], service: ReaderTopicService) {
+    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
         var props = properties
-        props[WPAppAnalyticsKeySubscriptionCount] = service.allSiteTopics()?.count ?? 0
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
     }
 
