@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import Gridicons
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -46,7 +47,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyStyles()
     }
 
-    @objc func applyStyles() {
+    private func applyStyles() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -90,9 +91,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    @objc func configureHeaderImage(_ siteBlavatar: String?, isWPForTeams: Bool = false) {
+    private func configureHeaderImage(_ siteBlavatar: String?, isWPForTeams: Bool = false) {
         let placeholder = UIImage.siteIconPlaceholder
-        let p2Placeholder = UIImage.gridicon(.p2)
 
         guard
             let path = siteBlavatar,
@@ -101,7 +101,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
                 avatarImageView.tintColor = UIColor.listIcon
                 avatarImageView.layer.borderColor = UIColor.divider.cgColor
                 avatarImageView.layer.borderWidth = .hairlineBorderWidth
-                avatarImageView.image = p2Placeholder
+                avatarImageView.image = UIImage.gridicon(.p2)
                 return
             }
 
@@ -112,9 +112,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
     }
 
-
-
-    @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
+    private func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 
