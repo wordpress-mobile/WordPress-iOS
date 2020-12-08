@@ -9,6 +9,7 @@
 
 16.3
 -----
+* [***] Login: Updated to new iOS 14 pasteboard APIs for 2FA auto-fill. Pasteboard prompts should be less intrusive now! [#15454]
 * [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
 * [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-30+%22Home+Page+Picker%22&type=Issues)
 * [*] Fixed an issue where `tel:` and `mailto:` links weren't launching actions in the webview found in Reader > post > more > Visit. [#15310]
