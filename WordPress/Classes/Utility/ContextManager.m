@@ -33,6 +33,7 @@ static ContextManager *_override;
 {
     self = [super init];
     if (self) {
+        [NSValueTransformer registerCustomTransformers];
         [self startListeningToMainContextNotifications];
     }
 

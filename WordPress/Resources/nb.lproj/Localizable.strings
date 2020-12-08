@@ -243,9 +243,6 @@
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 av 2";
-
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Ved å registrere deg, godtar du våre _Tjenestevilkår_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "CHOOSE A FILE";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "TILPASS";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Velg en utforming";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Velg et domenenavn for ditt nettsted";
+/* Select domain name. Title */
+"Choose a domain" = "Choose a domain";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Velg et tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Velg en tid";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Velg utforming";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Velg domene";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Kopier blokk";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Copy file URL";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan bli bedre";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Lag ditt nettsted";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Oppretter en ny side med oppgitt informasjon.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Oppretter nytt innlegg eller ny side";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beskrivelse";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Design";
 
 /* Title for the desktop web preview */
 "Desktop" = "Skrivebord";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Rediger innlegg";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edit file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Rediger nye innlegg og sider med det blokkbaserte redigeringsverktøyet.";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Filnedlastinger";
+
+/* No comment provided by engineer. */
+"File block settings" = "File block settings";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Filnavn";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Hvis du fjerner denne leseren vil han eller hun ikke kunne besøke siden lenger.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Hvis du vil beholde en side, men ikke ønsker noen av innleggene og sidene du har nå, kan kundestøtteteamet vårt slette innleggene, sidene, mediefilene og kommentarene for deg.\n\nDette vil holde siden og URLen aktiv, men gi deg en ny start på innholdsskapingen. Bare kontakt oss hvis du vil ha gjeldende innhold renset opp.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Hvis du er usikker på hva som vil bli slettet eller trenger hjelp, bare slapp av. Vårt kundestøtteteam er her for å svare på alle dine spørsmål.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Sett inn medier";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Sett inn omtale";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Sett inn valgte";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Velg brukernavn";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Abonnementspakke";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Forhåndsvisning";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Dette er hvor folk finner deg på nett";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Dette vil slette alle tilknyttede filer og data.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Oversett";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
 

@@ -1,3 +1,13 @@
+16.4
+-----
+ 
+* [internal] Removed unused Reader files. Should be no functional changes. [#15414]
+* [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
+* [**] Added shadow to thumbnail cells on Site Creation and Page Creation design pickers to add better contrast [https://github.com/wordpress-mobile/WordPress-iOS/pull/15418]
+* [*] For DotCom and Jetpack sites, you can now subscribe to comments by tapping the "Follow conversation" button in the Comments view. [#15424]
+* [**] Reader: Added 'P2s' stream. [#15442]
+* [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
+
 16.3
 -----
 * [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
@@ -8,14 +18,14 @@
 * [***] Block Editor: Adding support for selecting different unit of value in Cover and Columns blocks [https://github.com/WordPress/gutenberg/pull/26161]
 * [*] Block Editor: Fix theme colors syncing with the editor [https://github.com/WordPress/gutenberg/pull/26821]
 * [*] My Site > Settings > Start Over. Correcting a translation error in the detailed instructions on the Start Over view. [#15358]
- 
+
 16.2
 -----
 * [**] Support contact email: fixed issue that prevented non-alpha characters from being entered. [#15210]
 * [*] Support contact information prompt: fixed issue that could cause the app to crash when entering email address. [#15210]
 * [*] Fixed an issue where comments viewed in the Reader would always be italicized.
 * [**] Jetpack Section - Added quick and easy access for all the Jetpack features (Stats, Activity Log, Jetpack and Settings) [#15287].
-* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392] 
+* [*] Fixed a display issue with the time picker when scheduling posts on iOS 14. [#15392]
 
 16.1
 -----
