@@ -155,7 +155,7 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
-    fastlane-plugin-appcenter (1.8.0)
+    fastlane-plugin-appcenter (1.11.0)
     fastlane-plugin-sentry (1.6.0)
     fastlane-plugin-test_center (3.14.2)
       colorize
@@ -307,7 +307,7 @@ DEPENDENCIES
   commonmarker!
   dotenv!
   fastlane (~> 2.162)!
-  fastlane-plugin-appcenter (= 1.8.0)
+  fastlane-plugin-appcenter (~> 1.8)
   fastlane-plugin-sentry
   fastlane-plugin-test_center
   fastlane-plugin-wpmreleasetoolkit!
