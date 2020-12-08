@@ -50,7 +50,7 @@ final class ReaderCellConfiguration {
 
         postCell.loggedInActionVisibility = loggedInActionVisibility
         postCell.displayTopics = displayTopics
-        postCell.isWPForTeams = post.blog?.isWPForTeams() ?? false
+        postCell.isWPForTeams = post.isWPForTeams
         postCell.configureCell(post)
         postCell.layoutIfNeeded()
     }

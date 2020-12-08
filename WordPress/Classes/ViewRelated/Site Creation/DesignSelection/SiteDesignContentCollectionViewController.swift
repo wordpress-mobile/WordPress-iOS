@@ -4,7 +4,10 @@ import WordPressKit
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
-    let cellSize = CGSize(width: 160, height: 230)
+    static let aspectRatio: CGFloat = 0.75
+    static let cellWidth: CGFloat = 160
+    static let cellHeight: CGFloat = cellWidth / aspectRatio
+    let cellSize = CGSize(width: cellWidth, height: cellHeight)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
     let collectionView: UICollectionView
     let collectionViewLayout: UICollectionViewFlowLayout
