@@ -303,6 +303,8 @@ import Foundation
 
 extension WPAnalytics {
 
+    private static let WPAppAnalyticsKeySubscriptionCount: String = "subscription_count"
+
     /// Track a event
     ///
     /// This will call each registered tracker and fire the given event.
