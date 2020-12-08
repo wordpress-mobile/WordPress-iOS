@@ -7,5 +7,6 @@ import Foundation
         return "organization"
     }
 
-    static let a8cTeamSlug = "a8c"
+    static let a8cSlug = "a8c"
+    static let p2Slug = "p2"
 }
