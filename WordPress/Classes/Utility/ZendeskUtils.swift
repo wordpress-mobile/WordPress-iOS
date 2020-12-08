@@ -624,7 +624,14 @@ private extension ZendeskUtils {
         let logFile = LogFile(url: logFilePath)
 
         do {
-            let eventLogging = EventLogging(dataSource: dataProvider, delegate: EventLoggingDelegate())
+            let delegate = EventLoggingDelegate()
+
+            /// Some users may be opted out – let's inform support that this is the case (otherwise the UUID just wouldn't work)
+            if WPCrashLoggingProvider.userHasOptedOut {
+                return "No log file uploaded: User opted out"
+            }
+
+            let eventLogging = EventLogging(dataSource: dataProvider, delegate: delegate)
             try eventLogging.enqueueLogForUpload(log: logFile)
         }
         catch let err {
