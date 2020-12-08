@@ -66,6 +66,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         self.title = NSLocalizedString("Manage", comment: "Page title for the screen to manage your list of followed sites.")
         setupTableView()
         setupTableViewHandler()
@@ -330,7 +331,6 @@ private extension ReaderFollowedSitesViewController {
         }
 
         noResultsViewController = NoResultsViewController.controller()
-        noResultsViewController.delegate = self
 
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
@@ -351,14 +351,6 @@ private extension ReaderFollowedSitesViewController {
         }
 
         noResultsViewController.didMove(toParent: tableViewController)
-    }
-
-    func showDiscoverSites() {
-        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
-            return
-        }
-
-        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover, animated: true)
     }
 
     struct NoResultsText {
@@ -519,13 +511,5 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         }
         searchBar.text = nil
         searchBar.resignFirstResponder()
-    }
-}
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension ReaderFollowedSitesViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        showDiscoverSites()
     }
 }

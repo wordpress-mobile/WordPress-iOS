@@ -5,8 +5,12 @@ extension String {
         return NSLocalizedString("Free Photo Library", comment: "One of the options when selecting More in the Post Editor's format bar")
     }
 
-    static var files: String {
+    static var otherApps: String {
         return NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")
+    }
+
+    static var allFiles: String {
+        return NSLocalizedString("Choose from device", comment: "Menu option used for adding media from other applications.")
     }
 
     static var closePicker: String {
