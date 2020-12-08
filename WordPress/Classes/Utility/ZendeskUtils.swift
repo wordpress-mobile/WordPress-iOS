@@ -613,8 +613,7 @@ private extension ZendeskUtils {
 
     static func getLogFile() -> String {
 
-        guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let logFileInformation = appDelegate.logger.fileLogger.logFileManager.sortedLogFileInfos.first,
+        guard let logFileInformation = WPLogger.shared().fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
             var logText = String(data: logData, encoding: .utf8) else {
                 return ""
