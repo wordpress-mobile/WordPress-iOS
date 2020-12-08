@@ -836,7 +836,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog supports:BlogFeatureJetpackScan]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
-                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                        image:[UIImage imageNamed:@"jetpack-scan-menu-icon"]
                                                      callback:^{
                                                          [weakSelf showActivity];
                                                      }]];
