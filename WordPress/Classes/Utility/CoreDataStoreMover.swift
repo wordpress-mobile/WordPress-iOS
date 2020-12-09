@@ -23,12 +23,15 @@ class CoreDataStoreMover {
     ///         necessary to move any files.  An error is returned if there was a problem.
     ///
     func moveStore(from sourceLocation: URL, to targetLocation: URL) -> Result<URL, MoveError> {
-        guard !FileManager.default.fileExists(atPath: targetLocation.absoluteString) else {
-            return .failure(.destinationFileExists(url: targetLocation))
-        }
-
+        // It's important that this is checked first, since the absence of the source file could
+        // imply that the DB has not been created yet (first launch).  So we want the caller
+        // to be able to handle this scenario.
         guard FileManager.default.fileExists(atPath: sourceLocation.absoluteString) else {
             return .failure(.sourceFileDoesNotExist(url: sourceLocation))
+        }
+
+        guard !FileManager.default.fileExists(atPath: targetLocation.absoluteString) else {
+            return .failure(.destinationFileExists(url: targetLocation))
         }
 
         guard let model = NSManagedObjectModel(contentsOf: modelLocation) else {

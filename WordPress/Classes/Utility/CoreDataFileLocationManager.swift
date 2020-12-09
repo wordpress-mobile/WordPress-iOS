@@ -77,26 +77,33 @@ extension CoreDataFileLocationManager {
         moveStoreFromMainBundleToAppGroup()
     }()
 
+    private static let StoreToAppGroupMigrationIdentifier = "org.wordpress.StoreToAppGroupMigration"
+    private static let StoreToAppGroupMigrationCompleteKey = "org.wordpress.StoreToAppGroupMigrationComplete"
+
     /// Ensures that the CoreData Store is in the App Group, or moves it there if it isn't.
     ///
     private static func moveStoreFromMainBundleToAppGroup() {
+        guard !UserDefaults.standard.bool(forKey: StoreToAppGroupMigrationCompleteKey) else {
+            DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Migration already performed.")
+            return
+        }
+
         let mover = CoreDataStoreMover(modelLocation: productionModelURL)
 
         switch mover.moveStore(from: legacyMainBundleStoreURL, to: productionStoreURL) {
         case .success(let url):
-            DDLogInfo("Persistent store moved successfully to \(url)")
+            DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Persistent store moved successfully to \(url)")
+
+            UserDefaults.standard.set(true, forKey: StoreToAppGroupMigrationCompleteKey)
         case .failure(let error):
             switch error {
-            case .destinationFileExists(let url):
-                // This is considered a valid scenario in case the file has been moved already."
-                // We'll just let the CoreData stack raise any flags if needed.
-                DDLogInfo("Persistent store already exists in the App Group at \(url)")
             case .sourceFileDoesNotExist(let url):
-                // This is considered a valid scenario, in case the Database hasn't been created yet.
-                // We'll just let the CoreData stack raise any flags if needed.
-                DDLogInfo("Persistent store does not exist in the Main Bundle at \(url)")
+                // If it's the first run there will be no need to perform the migration as the source file won't exist.
+                DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Persistent store does not exist at source location \(url). We assume this is the first App run.")
+
+                UserDefaults.standard.set(true, forKey: StoreToAppGroupMigrationCompleteKey)
             default:
-                let errorMessage = "Fatal error while migrating database to App Group: \(error)"
+                let errorMessage = "🔴 \(StoreToAppGroupMigrationIdentifier): Fatal error while migrating database to App Group: \(error)"
 
                 DDLogError(errorMessage)
                 fatalError(errorMessage)
