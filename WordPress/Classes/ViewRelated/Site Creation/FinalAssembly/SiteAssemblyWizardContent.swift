@@ -21,7 +21,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private var createdBlog: Blog?
 
     /// The content view serves as the root view of this view controller.
-    private let contentView = SiteAssemblyContentView()
+    private let contentView: SiteAssemblyContentView
 
     /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
     private let buttonViewController = NUXButtonViewController.instance()
@@ -42,6 +42,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
+        self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +63,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         hidesBottomBarWhenPushed = true
         installButtonViewController()
-        WPAnalytics.track(.enhancedSiteCreationSuccessLoading)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +121,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
                     // This stat is part of a funnel that provides critical information.  Before
                     // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-                    WPAnalytics.track(.createdSite)
+                    SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
                 }
 
                 self.contentView.status = status
@@ -218,7 +219,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
+            SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)
