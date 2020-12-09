@@ -262,7 +262,7 @@ import WordPressShared
             return .tag
         }
         if topic is ReaderTeamTopic {
-            return .team
+            return .organization
         }
         return .noTopic
     }
@@ -347,7 +347,7 @@ enum ReaderTopicType {
     case search
     case site
     case tag
-    case team
+    case organization
     case noTopic
 }
 
