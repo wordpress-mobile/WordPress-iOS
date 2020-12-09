@@ -11,6 +11,7 @@ import Foundation
     @NSManaged open var isJetpack: Bool
     @NSManaged open var isPrivate: Bool
     @NSManaged open var isVisible: Bool
+    @NSManaged open var isWPForTeams: Bool
     @NSManaged open var postCount: NSNumber
     @NSManaged open var siteBlavatar: String
     @NSManaged open var siteDescription: String
@@ -48,6 +49,7 @@ import Foundation
         isJetpack = remoteInfo.isJetpack
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
+        isWPForTeams = remoteInfo.isWPForTeams
         postCount = remoteInfo.postCount ?? 0
         showInMenu = false
         siteBlavatar = remoteInfo.siteBlavatar ?? ""
