@@ -500,12 +500,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Define success block
     void (^successBlock)(void) = ^void() {
-        [self refreshPostsForFollowedTopic];
         
         // Update subscription count
         NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
         NSInteger newSubscriptionCount = newFollowValue ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
         [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
+        [self refreshPostsForFollowedTopic];
         
         if (success) {
             success();
