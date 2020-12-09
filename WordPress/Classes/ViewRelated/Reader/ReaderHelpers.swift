@@ -262,7 +262,7 @@ import WordPressShared
             return .tag
         }
         if topic is ReaderTeamTopic {
-            return .team
+            return .organization
         }
         return .noTopic
     }
@@ -291,6 +291,7 @@ extension ReaderHelpers {
             guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
                 return true
             }
+
             // first item: Following
             if topicIsFollowing(leftTopic) {
                 return true
@@ -298,6 +299,7 @@ extension ReaderHelpers {
             if topicIsFollowing(rightTopic) {
                 return false
             }
+
             // second item: Discover
             if topicIsDiscover(leftTopic) {
                 return true
@@ -305,27 +307,32 @@ extension ReaderHelpers {
             if topicIsDiscover(rightTopic) {
                 return false
             }
+
             // third item: Likes
             if topicIsLiked(leftTopic) {
                 return true
             }
             if topicIsLiked(rightTopic) {
                 return false
-            // any other items: sort them alphabetically, grouped by topic type
             }
+
+            // any other items: sort them alphabetically, grouped by topic type
             if leftTopic.type == rightTopic.type {
                 return leftTopic.title < rightTopic.title
             }
+
             return true
         }
 
         // fourth item: Saved. It's manually inserted after the sorting
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
+
         // in case of log in with a self hosted site, prepend a 'dummy' Following tab
         if !isLoggedIn() {
             mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: 0)
         }
+
         return mutableItems
     }
 }
@@ -340,6 +347,6 @@ enum ReaderTopicType {
     case search
     case site
     case tag
-    case team
+    case organization
     case noTopic
 }

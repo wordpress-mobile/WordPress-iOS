@@ -36,7 +36,7 @@ static ContextManager *_override;
     self = [super init];
     if (self) {
         _fileLocationManager = fileLocationManager;
-        
+        [NSValueTransformer registerCustomTransformers];
         [self startListeningToMainContextNotifications];
     }
 

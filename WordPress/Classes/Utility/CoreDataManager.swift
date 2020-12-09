@@ -14,7 +14,7 @@ class CoreDataManager: CoreDataStack {
     /// Only for tests, do not use this method directly
     init(fileLocationManager: CoreDataFileLocationManager) {
         self.fileLocationManager = fileLocationManager
-
+        ValueTransformer.registerCustomTransformers()
         observe()
     }
 
