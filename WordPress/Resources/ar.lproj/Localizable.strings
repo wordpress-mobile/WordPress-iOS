@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-03 10:07:31+0000 */
+/* Translation-Revision-Date: 2020-12-05 05:08:06+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -945,7 +945,7 @@
 "By signing up, you agree to our _Terms of Service_." = "يعني تسجيل الدخول موافقتك على _Terms of Service_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "اختيار ملف";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "تخصيص";
@@ -1154,7 +1154,7 @@
 "Choose a design" = "اختيار تصميم";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "اختيار نطاق";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "اختيار قالب";
@@ -1511,7 +1511,7 @@
 "Copy block" = "نسخ المكوِّن";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "نسخ رابط الملف";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "قد يكون أفضل";
@@ -1827,7 +1827,7 @@
 "Description" = "الوصف";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "التصميم";
 
 /* Title for the desktop web preview */
 "Desktop" = "جهاز سطح المكتب";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "تحرير المقالة";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "تحرير الملف";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
@@ -2427,7 +2427,7 @@
 "File Downloads" = "تنزيلات الملفات";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "إعدادات مكوّن ملف";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "اسم الملف";
@@ -2812,7 +2812,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "في حال إزالة هذا المشاهد، لن يتمكن من زيارة هذا الموقع.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "إذا كنت تريد موقعًا ولا تريد أي من المقالات أو الصفحات التي لديك الآن، فيمكن لفريق الدعم لدينا حذف مقالاتك، صفحاتك، وتعليقاتك من أجلك.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "إذا كنت غير متأكد ممّا سيُحذف أو كنت بحاجة إلى المساعدة، فلا تقلق، ففريق الدعم لدينا جاهز للإجابة عن أي أسئلة لديك.";
@@ -4157,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "اختيار اسم مستخدم";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "اختر تخطيط الصفحة الرئيسية المفضَّل لديك. يمكنك تعديله أو تخصيصه لاحقًا.";
 
 /* The item to select during a guided tour. */
 "Plan" = "الخطة";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "هذا هو محتوى النموذج المُضمَّن مع القالب لتوضيح ميزاته. يمكنك إزالته أو استبدال كلماتك ووسائطك الخاصة به.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "هذا هو المكان الذي سيجدك فيه الأشخاص على الإنترنت.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "تم حذف عنصر الوسائط هذا.";
@@ -6180,7 +6180,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "سيؤدي هذا إلى حذف جميع الملفات والبيانات المرتبطة.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "سيبقي ذلك على موقعك وعنوان URL في حالة نشطة، ولكنه يعطيك بداية جديدة على إنشاء المحتوى الخاص بك. اتصل بنا فقط لحذف المحتوى الحالي الخاص بك.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
