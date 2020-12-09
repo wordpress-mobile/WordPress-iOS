@@ -2,13 +2,13 @@
 class CoreDataManager: CoreDataStack {
 
     // MARK: - Singleton
-    
+
     /// The shared instance.
     ///
     static var shared: CoreDataManager = CoreDataManager(fileLocationManager: CoreDataFileLocationManager.production())
-    
+
     // MARK: - File Location Manager
-    
+
     private let fileLocationManager: CoreDataFileLocationManager
 
     /// Only for tests, do not use this method directly

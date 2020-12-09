@@ -11,16 +11,16 @@ class CoreDataFileLocationManager: NSObject {
 
     @objc
     var modelURL: URL
-    
+
     @objc
     var storeURL: URL
-    
+
     // MARK: - Initializer
 
     required init(modelURL: URL, storeURL: URL) {
         self.modelURL = modelURL
         self.storeURL = storeURL
-        
+
         super.init()
     }
 }
@@ -28,16 +28,16 @@ class CoreDataFileLocationManager: NSObject {
 // MARK: - Production CoreDataFileLocationManager
 
 extension CoreDataFileLocationManager {
-    
+
     @objc
     static func production() -> CoreDataFileLocationManager {
         // This syntax is a bit weird.  What it does is it allows us to execute the code in
         // `executeProductionStoreMigrations` once.
         _ = executeProductionStoreMigrations
-        
+
         return CoreDataFileLocationManager(modelURL: productionModelURL, storeURL: productionStoreURL)
     }
-    
+
     // MARK: - Production File Locations
 
     /// The URL of the production model file.
@@ -46,7 +46,7 @@ extension CoreDataFileLocationManager {
         guard let modelPath = Bundle.main.path(forResource: "WordPress", ofType: "momd") else {
             fatalError("Data model missing!")
         }
-        
+
         return URL(fileURLWithPath: modelPath)
     }
 
@@ -60,7 +60,7 @@ extension CoreDataFileLocationManager {
 
         return storeURL
     }
-    
+
     /// The legacy URL of the store back when it was located in the Main App Bundle.
     ///
     private static var legacyMainBundleStoreURL: URL {
@@ -70,13 +70,13 @@ extension CoreDataFileLocationManager {
 
         return url.appendingPathComponent("WordPress.sqlite")
     }
-    
+
     // MARK: - Store Location Migrations
-    
+
     private static var executeProductionStoreMigrations: () = {
         moveStoreFromMainBundleToAppGroup()
     }()
-    
+
     /// Ensures that the CoreData Store is in the App Group, or moves it there if it isn't.
     ///
     private static func moveStoreFromMainBundleToAppGroup() {
