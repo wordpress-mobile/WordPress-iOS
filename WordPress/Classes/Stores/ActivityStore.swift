@@ -5,8 +5,8 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
-    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?)
-    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?)
+    case refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?, group: [String])
+    case loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?, group: [String])
     case receiveActivities(site: JetpackSiteRef, activities: [Activity], hasMore: Bool, loadingMore: Bool)
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
     case resetActivities(site: JetpackSiteRef)
@@ -20,6 +20,9 @@ enum ActivityAction: Action {
     case rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus)
     case rewindStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
+
+    case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
+    case resetGroups(site: JetpackSiteRef)
 }
 
 enum ActivityQuery {
@@ -41,6 +44,9 @@ struct ActivityStoreState {
     var lastFetch = [JetpackSiteRef: Date]()
     var fetchingActivities = [JetpackSiteRef: Bool]()
     var hasMore = false
+
+    var groups = [JetpackSiteRef: [ActivityGroup]]()
+    var fetchingGroups = [JetpackSiteRef: Bool]()
 
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
@@ -136,12 +142,16 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let currentlyFetching = isFetching(site: site)
+        let currentlyFetching = isFetchingActivities(site: site)
         return needsRefresh && !currentlyFetching
     }
 
-    func isFetching(site: JetpackSiteRef) -> Bool {
+    func isFetchingActivities(site: JetpackSiteRef) -> Bool {
         return state.fetchingActivities[site, default: false]
+    }
+
+    func isFetchingGroups(site: JetpackSiteRef) -> Bool {
+        return state.fetchingGroups[site, default: false]
     }
 
     override func onDispatch(_ action: Action) {
@@ -152,12 +162,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         switch activityAction {
         case .receiveActivities(let site, let activities, let hasMore, let loadingMore):
             receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore)
-        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate):
-            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+        case .loadMoreActivities(let site, let quantity, let offset, let afterDate, let beforeDate, let group):
+            loadMoreActivities(site: site, quantity: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate, group: group)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
-        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate):
-            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        case .refreshActivities(let site, let quantity, let afterDate, let beforeDate, let group):
+            refreshActivities(site: site, quantity: quantity, afterDate: afterDate, beforeDate: beforeDate, group: group)
         case .resetActivities(let site):
             resetActivities(site: site)
         case .rewind(let site, let rewindID):
@@ -184,6 +194,10 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                                                              comment: "Text displayed when a site restore takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
+        case .refreshGroups(let site, let afterDate, let beforeDate):
+            refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
+        case .resetGroups(let site):
+            resetGroups(site: site)
         }
     }
 }
@@ -191,6 +205,10 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 extension ActivityStore {
     func getActivities(site: JetpackSiteRef) -> [Activity]? {
         return state.activities[site] ?? nil
+    }
+
+    func getGroups(site: JetpackSiteRef) -> [ActivityGroup]? {
+        return state.groups[site] ?? nil
     }
 
     func getActivity(site: JetpackSiteRef, rewindID: String) -> Activity? {
@@ -207,7 +225,8 @@ private extension ActivityStore {
                          count: Int = 20,
                          offset: Int = 0,
                          afterDate: Date? = nil,
-                         beforeDate: Date? = nil) {
+                         beforeDate: Date? = nil,
+                         group: [String] = []) {
         state.fetchingActivities[site] = true
 
         remote(site: site)?.getActivityForSite(
@@ -216,6 +235,7 @@ private extension ActivityStore {
             count: count,
             after: afterDate,
             before: beforeDate,
+            group: group,
             success: { [actionDispatcher] (activities, hasMore) in
                 let loadingMore = offset > 0
                 actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
@@ -242,20 +262,20 @@ private extension ActivityStore {
         }
     }
 
-    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?) {
-        guard !isFetching(site: site) else {
+    func refreshActivities(site: JetpackSiteRef, quantity: Int, afterDate: Date?, beforeDate: Date?, group: [String]) {
+        guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate)
+        fetchActivities(site: site, count: quantity, afterDate: afterDate, beforeDate: beforeDate, group: group)
     }
 
-    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?) {
-        guard !isFetching(site: site) else {
+    func loadMoreActivities(site: JetpackSiteRef, quantity: Int, offset: Int, afterDate: Date?, beforeDate: Date?, group: [String]) {
+        guard !isFetchingActivities(site: site) else {
             DDLogInfo("Activity Log refresh triggered while one was in progress")
             return
         }
-        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate)
+        fetchActivities(site: site, count: quantity, offset: offset, afterDate: afterDate, beforeDate: beforeDate, group: group)
     }
 
     func resetActivities(site: JetpackSiteRef) {
@@ -407,6 +427,50 @@ private extension ActivityStore {
             if shouldPostStateUpdates(for: site) {
                 actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
             }
+        }
+    }
+
+    func refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?) {
+        guard !isFetchingGroups(site: site) else {
+            DDLogInfo("Activity Log fetch groups triggered while one was in progress")
+            return
+        }
+
+        state.fetchingGroups[site] = true
+
+        if state.groups[site]?.isEmpty ?? true {
+            remote(site: site)?.getActivityGroupsForSite(
+                site.siteID,
+                after: afterDate,
+                before: beforeDate,
+                success: { [weak self] groups in
+                    self?.receiveGroups(site: site, groups: groups)
+                }, failure: { [weak self] error in
+                    self?.failedGroups(site: site)
+                })
+        } else {
+            receiveGroups(site: site, groups: state.groups[site] ?? [])
+        }
+    }
+
+    func receiveGroups(site: JetpackSiteRef, groups: [ActivityGroup]) {
+        transaction { state in
+            state.fetchingGroups[site] = false
+            state.groups[site] = groups.sorted { $0.count > $1.count }
+        }
+    }
+
+    func failedGroups(site: JetpackSiteRef) {
+        transaction { state in
+            state.fetchingGroups[site] = false
+            state.groups[site] = nil
+        }
+    }
+
+    func resetGroups(site: JetpackSiteRef) {
+        transaction { state in
+            state.groups[site] = []
+            state.fetchingGroups[site] = false
         }
     }
 
