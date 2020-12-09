@@ -770,10 +770,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     if ([remoteTopic.path rangeOfString:@"/tags/"].location != NSNotFound) {
         return [self tagTopicForRemoteTopic:remoteTopic];
+    }
 
-    } else if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
+    if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
         return [self listTopicForRemoteTopic:remoteTopic];
-    } else if ([remoteTopic.type isEqualToString:@"team"]) {
+    }
+
+    if ([remoteTopic.type isEqualToString:@"organization"]) {
         return [self teamTopicForRemoteTopic:remoteTopic];
     }
 
@@ -862,6 +865,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.feedURL = siteInfo.feedURL;
     topic.following = siteInfo.isFollowing;
     topic.isJetpack = siteInfo.isJetpack;
+    topic.isWPForTeams = siteInfo.isWPForTeams;
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
     topic.postCount = siteInfo.postCount;
