@@ -630,7 +630,3 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         return super.awakeAfter(using: aDecoder)
     }
 }
-
-// MARK: - DefinesVariableStatusBarStyle
-// Allows this VC to control the statusbar style dynamically
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
