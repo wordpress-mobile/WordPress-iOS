@@ -7,7 +7,7 @@
 * [*] For DotCom and Jetpack sites, you can now subscribe to comments by tapping the "Follow conversation" button in the Comments view. [#15424]
 * [**] Reader: Added 'P2s' stream. [#15442]
 * [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
-* [*] Block Editor: Fix Gallery block uploads when the editor is closed
+* [*] Block Editor: Fix Gallery block uploads when the editor is closed. [#15457]
 
 16.3
 -----
