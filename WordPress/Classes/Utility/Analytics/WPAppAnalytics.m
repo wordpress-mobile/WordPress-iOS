@@ -19,6 +19,7 @@ NSString * const WPAppAnalyticsKeyFeedID                            = @"feed_id"
 NSString * const WPAppAnalyticsKeyFeedItemID                        = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack                         = @"is_jetpack";
 NSString * const WPAppAnalyticsKeySessionCount                      = @"session_count";
+NSString * const WPAppAnalyticsKeySubscriptionCount                 = @"subscription_count";
 NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_source";
 NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";

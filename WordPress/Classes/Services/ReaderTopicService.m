@@ -51,6 +51,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
+        [WPAnalytics setSubscriptionCount: sites.count];
         [self mergeFollowedSites:sites withSuccess:success];
     } failure:^(NSError *error) {
         if (failure) {
@@ -499,7 +500,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Define success block
     void (^successBlock)(void) = ^void() {
+        
+        // Update subscription count
+        NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
+        NSInteger newSubscriptionCount = newFollowValue ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
+        [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
         [self refreshPostsForFollowedTopic];
+        
         if (success) {
             success();
         }
