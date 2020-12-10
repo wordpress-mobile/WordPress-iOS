@@ -4,9 +4,58 @@ import CoreData
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
 ///
 class CoreDataIterativeMigrator: NSObject {
+    static let versionInfoPlist = "VersionInfo.plist"
+    static let versionHashesKey = "NSManagedObjectModel_VersionHashes"
 
     private static func error(with code: IterativeMigratorErrorCodes, description: String) -> NSError {
         return NSError(domain: "IterativeMigrator", code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: description])
+    }
+
+    @objc
+    static func migrateStoreToLatestModel(storeURL: URL, modelURL: URL) {
+        guard FileManager.default.fileExists(atPath: storeURL.path) else {
+            DDLogInfo("No store exists at URL \(storeURL).  Skipping migration.")
+            return
+        }
+
+        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil) else {
+            return
+        }
+
+        guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Could not load model")
+        }
+
+        guard model.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) == false else {
+            // Configuration is compatible, no migration necessary.
+            return
+        }
+
+        DDLogWarn("⚠️ [CoreDataManager] Migration required for persistent store")
+
+        // Extract model names
+        let versionPath = modelURL.appendingPathComponent(versionInfoPlist).path
+        guard let versionInfo = NSDictionary(contentsOfFile: versionPath),
+              let modelNames = versionInfo[versionHashesKey] as? NSDictionary,
+              let allKeys = modelNames.allKeys as? [String] else {
+
+            return
+        }
+
+        let sortedKeys = allKeys.sorted { (string1, string2) -> Bool in
+            return string1.compare(string2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
+        }
+
+        do {
+            try iterativeMigrate(
+                sourceStore: storeURL,
+                storeType: NSSQLiteStoreType,
+                to: model,
+                using: sortedKeys)
+        } catch {
+            DDLogError("☠️ [CoreDataManager] Unable to migrate store with error: \(error)")
+            SentryStartupEvent().add(error: error)
+        }
     }
 
     /// Migrates a store to a particular model using the list of models to do it iteratively, if required.

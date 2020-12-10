@@ -6,8 +6,10 @@ class CoreDataStoreMover {
     enum MoveError: Error {
         case destinationFileExists(url: URL)
         case sourceFileDoesNotExist(url: URL)
+        case couldNotLoadMetadataForStore(url: URL, error: Error)
         case couldNotLoadModel(url: URL)
-        case couldNotLoadSourceStore(url: URL)
+        case couldNotLoadSourceStore(url: URL, error: Error)
+        case sourceStoreLoadedButNotAvailable(url: URL)
         case couldNotBackupDatabase(error: Error)
         case couldNotMigrateStore(error: Error)
         case couldNotRemoveOldStore(error: Error)
@@ -26,32 +28,40 @@ class CoreDataStoreMover {
         // It's important that this is checked first, since the absence of the source file could
         // imply that the DB has not been created yet (first launch).  So we want the caller
         // to be able to handle this scenario.
-        guard FileManager.default.fileExists(atPath: sourceLocation.absoluteString) else {
+        guard FileManager.default.fileExists(atPath: sourceLocation.path) else {
             return .failure(.sourceFileDoesNotExist(url: sourceLocation))
         }
 
-        guard !FileManager.default.fileExists(atPath: targetLocation.absoluteString) else {
+        guard !FileManager.default.fileExists(atPath: targetLocation.path) else {
             return .failure(.destinationFileExists(url: targetLocation))
         }
 
-        guard let model = NSManagedObjectModel(contentsOf: modelLocation) else {
+        let metadata: [String: Any]
+
+        do {
+            metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: sourceLocation, options: nil)
+        } catch {
+            return .failure(.couldNotLoadMetadataForStore(url: sourceLocation, error: error))
+        }
+
+        guard let model = NSManagedObjectModel.mergedModel(from: nil, forStoreMetadata: metadata) else {
             return .failure(.couldNotLoadModel(url: modelLocation))
         }
 
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
 
-        guard let oldStore = coordinator.persistentStore(for: sourceLocation) else {
-            return .failure(.couldNotLoadSourceStore(url: sourceLocation))
-        }
-
         do {
-            try CoreDataIterativeMigrator.backupDatabase(at: sourceLocation)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: sourceLocation, options: nil)
         } catch {
-            return .failure(.couldNotBackupDatabase(error: error))
+            return .failure(.couldNotLoadSourceStore(url: sourceLocation, error: error))
+        }
+
+        guard let store = coordinator.persistentStore(for: sourceLocation) else {
+            return .failure(.sourceStoreLoadedButNotAvailable(url: sourceLocation))
         }
 
         do {
-            try coordinator.migratePersistentStore(oldStore, to: sourceLocation, options: nil, withType: NSSQLiteStoreType)
+            try coordinator.migratePersistentStore(store, to: targetLocation, options: [NSReadOnlyPersistentStoreOption: true], withType: NSSQLiteStoreType)
         } catch {
             return .failure(.couldNotMigrateStore(error: error))
         }
@@ -62,7 +72,7 @@ class CoreDataStoreMover {
         // to suggest improvements to this approach.
         if !CommandLine.arguments.contains("isTesting") {
             do {
-                try coordinator.remove(oldStore)
+                try coordinator.destroyPersistentStore(at: sourceLocation, ofType: NSSQLiteStoreType, options: nil)
             } catch {
                 return .failure(.couldNotRemoveOldStore(error: error))
             }

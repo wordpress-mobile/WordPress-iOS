@@ -105,7 +105,6 @@ extension CoreDataFileLocationManager {
             default:
                 let errorMessage = "🔴 \(StoreToAppGroupMigrationIdentifier): Fatal error while migrating database to App Group: \(error)"
 
-                DDLogError(errorMessage)
                 fatalError(errorMessage)
             }
         }
