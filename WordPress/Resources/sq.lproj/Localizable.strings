@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 08:30:59+0000 */
+/* Translation-Revision-Date: 2020-12-06 08:33:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -945,7 +945,7 @@
 "By signing up, you agree to our _Terms of Service_." = "Duke u regjistruar, pajtoheni me _Kushtet tona të Shërbimit_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "ZGJIDHNI NJË KARTELË";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PËRSHTATENI";
@@ -1154,7 +1154,7 @@
 "Choose a design" = "Zgjidhni një skemë";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "Zgjidhni përkatësi";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Zgjidhni një temë";
@@ -1511,7 +1511,7 @@
 "Copy block" = "Kopjoje bllokun";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "Kopjo URL kartele";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Mund të Bëhet Më i Mirë";
@@ -1827,7 +1827,7 @@
 "Description" = "Përshkrim";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "Dizajn";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "Përpunoni Postimin";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Përpunoni kartelën";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Përpunoni postime dhe faqe të reja me përpunuesin me blloqe.";
@@ -2427,7 +2427,7 @@
 "File Downloads" = "Shkarkime Kartelash";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "Rregullime blloku kartelash";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Emër kartele";
@@ -2812,7 +2812,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "Nëse e hiqni këtë shikues, ai ose ajo s’do të jenë në gjendje të vizitojnë këtë sajt.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Nëse doni një sajt, por pa postimet dhe faqet që keni tani, ekipi ynë i asistencës mund të fshijë për ju postime, faqet, media dhe komentet tuaja.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Nëse jeni i pasigurt se ç’do të fshihet, ose ju duhet ndihmë tjetër, mos u merakosni, ekipi ynë i asistencë është këtu që t’i përgjigjet çfarëdo pyetjeje që mund të keni.";
@@ -4157,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Zgjidhni emër përdoruesi";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Zgjidhni skemën e parapëlqyer për faqen tuaj hyrëse. Mund ta përpunoni dhe përshtatni më vonë.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Ky është një shembull lënde, i përfshirë me gjedhen për ilustrim të veçorive të saj. Hiqeni ose zëvendësojeni me fjalët dhe median tuaj.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Ky është vendi ku do t’ju gjejnë njerëzit në internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ky objekt media është fshirë.";
@@ -6180,7 +6180,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "Kjo do të fshijë krejt kartelat dhe të dhënat përshoqëruar asaj.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Kjo do t’i mbajë aktive sajtin dhe URL-në tuaj, por do t’ju ofrojë një fillim të ri për krijimin e lëndës tuaj. Thjesht lidhuni me ne që të pastrojmë lëndën tuaj të tanishme.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
