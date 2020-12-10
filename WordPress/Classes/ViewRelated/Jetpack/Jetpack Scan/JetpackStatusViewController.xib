@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackStatusViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="defaultButton" destination="dwy-la-0vB" id="gZP-C7-cDa"/>
+                <outlet property="iconContainerView" destination="JB0-PB-Zvz" id="6RL-NM-d9I"/>
+                <outlet property="iconImageView" destination="sZR-y4-ffm" id="drz-w8-14W"/>
+                <outlet property="secondaryButton" destination="tod-7S-qx1" id="jqk-dt-YR4"/>
+                <outlet property="titleLabel" destination="nB7-Oi-ycX" id="T2d-TN-2YE"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="441" height="293"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZIS-ON-Qka">
+                    <rect key="frame" x="0.0" y="0.0" width="441" height="293"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JB0-PB-Zvz" userLabel="Header View">
+                            <rect key="frame" x="20" y="15" width="401" height="48"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="jetpack-scan-state-okay" translatesAutoresizingMaskIntoConstraints="NO" id="sZR-y4-ffm">
+                                    <rect key="frame" x="0.0" y="2" width="36" height="44"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="sZR-y4-ffm" firstAttribute="leading" secondItem="JB0-PB-Zvz" secondAttribute="leading" id="1xj-iA-7dP"/>
+                                <constraint firstAttribute="height" constant="48" id="b8p-x8-5bt"/>
+                                <constraint firstItem="sZR-y4-ffm" firstAttribute="centerY" secondItem="JB0-PB-Zvz" secondAttribute="centerY" id="vmA-gQ-URf"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Preparing to scan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB7-Oi-ycX">
+                            <rect key="frame" x="20" y="73" width="401" height="20.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqb-pV-lWp">
+                            <rect key="frame" x="20" y="103.5" width="401" height="81.5"/>
+                            <string key="text">We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dwy-la-0vB" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="20" y="195" width="401" height="34"/>
+                            <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
+                            <state key="normal" title="Fix All">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tod-7S-qx1" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="20" y="239" width="401" height="34"/>
+                            <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
+                            <state key="normal" title="Scan Again">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <edgeInsets key="layoutMargins" top="15" left="20" bottom="20" right="20"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="ZIS-ON-Qka" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="HR4-e2-MSp"/>
+                <constraint firstAttribute="trailing" secondItem="ZIS-ON-Qka" secondAttribute="trailing" id="xwu-KR-E6d"/>
+                <constraint firstItem="ZIS-ON-Qka" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zVW-yM-224"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-341.304347826087" y="-40.513392857142854"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="jetpack-scan-state-okay" width="36" height="44"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
