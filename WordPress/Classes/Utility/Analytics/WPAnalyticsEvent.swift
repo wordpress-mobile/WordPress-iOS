@@ -303,6 +303,10 @@ import Foundation
 
 extension WPAnalytics {
 
+    @objc static var subscriptionCount: Int = 0
+
+    private static let WPAppAnalyticsKeySubscriptionCount: String = "subscription_count"
+
     /// Track a event
     ///
     /// This will call each registered tracker and fire the given event.
@@ -325,7 +329,6 @@ extension WPAnalytics {
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
 
-
     /// This will call each registered tracker and fire the given event.
     /// - Parameters:
     ///   - event: a `String` that represents the event name
@@ -336,6 +339,30 @@ extension WPAnalytics {
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
         props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader event
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader stat
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(stat, withProperties: props)
     }
 
     /// Track a event in Obj-C
@@ -359,6 +386,30 @@ extension WPAnalytics {
 
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    }
+
+    /// Track a Reader event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader stat in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given stat
+    /// - Parameter stat: a `String` that represents the Reader stat name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(stat, withProperties: props)
     }
 
 }

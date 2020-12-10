@@ -60,6 +60,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         if let blog = blog,
             blog.hasIcon == true {
             siteIconView.imageView.downloadSiteIcon(for: blog)
+        } else if let blog = blog,
+            blog.isWPForTeams() {
+            siteIconView.imageView.tintColor = UIColor.listIcon
+            siteIconView.imageView.image = UIImage.gridicon(.p2)
         } else {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
@@ -88,6 +92,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
+        static let siteIconSize = CGSize(width: 64, height: 64)
     }
 
     convenience init(items: [ActionRow.Item]) {

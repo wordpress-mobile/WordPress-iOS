@@ -4,10 +4,16 @@ import XCTest
 
 class SiteAssemblyViewTests: XCTestCase {
 
-    func testContentView_ViewIsCorrect_WhenStatusIsIdle() {
-        // Given
-        let contentView = SiteAssemblyContentView()
+    var contentView: SiteAssemblyContentView!
+    var siteCreator: SiteCreator!
 
+    override func setUp() {
+        super.setUp()
+        siteCreator = SiteCreator()
+        contentView = SiteAssemblyContentView(siteCreator: siteCreator)
+    }
+
+    func testContentView_ViewIsCorrect_WhenStatusIsIdle() {
         // When
         contentView.status = .idle
         contentView.layoutIfNeeded()
@@ -22,9 +28,6 @@ class SiteAssemblyViewTests: XCTestCase {
     }
 
     func testContentView_ViewIsCorrect_WhenStatusIsInProgress() {
-        // Given
-        let contentView = SiteAssemblyContentView()
-
         // When
         contentView.status = .inProgress
         contentView.layoutIfNeeded()
@@ -36,9 +39,6 @@ class SiteAssemblyViewTests: XCTestCase {
     }
 
     func testContentView_ViewIsCorrect_WhenStatusIsSucceeded() {
-        // Given
-        let contentView = SiteAssemblyContentView()
-
         // When
         contentView.status = .succeeded
         contentView.layoutIfNeeded()
@@ -53,9 +53,6 @@ class SiteAssemblyViewTests: XCTestCase {
     }
 
     func testContentView_AssembledSiteView_IsProperlyInstalled() {
-        // Given
-        let contentView = SiteAssemblyContentView()
-
         // When
         contentView.siteURLString = "https://wordpress.com"
         contentView.siteName = "wordpress.com"
@@ -65,9 +62,6 @@ class SiteAssemblyViewTests: XCTestCase {
     }
 
     func testContentView_ButtonContainerView_IsProperlyInstalled() {
-        // Given
-        let contentView = SiteAssemblyContentView()
-
         // When
         contentView.buttonContainerView = UIView()
 

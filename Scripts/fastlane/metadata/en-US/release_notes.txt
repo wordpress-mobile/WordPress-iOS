@@ -1,5 +1,0 @@
-All About Jetpack: Access all of your Jetpack features quickly and easily, including your stats, activity log, and settings.
-
-Getting Help & Support: We fixed a few issues that occurred if you tried to contact our support team. When contacting us, you can now include non-alpha characters, and your app will no longer crash when entering your email address.
-
-Reader Updates: We also fixed a display issue in the Reader, and comments are no longer italicized by default.
