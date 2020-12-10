@@ -29,10 +29,10 @@ struct SiteListProvider: IntentTimelineProvider {
                                                         url: "",
                                                         timeZone: TimeZone.current,
                                                         date: Date(),
-                                                        stats: TodayWidgetStats(views: -1,
-                                                                                visitors: -1,
-                                                                                likes: -1,
-                                                                                comments: -1))
+                                                        stats: TodayWidgetStats(views: 572,
+                                                                                visitors: 649,
+                                                                                likes: 16,
+                                                                                comments: 8))
 
     // refresh interval of the widget, in minutes
     static let refreshInterval = 60
