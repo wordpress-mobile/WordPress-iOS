@@ -577,6 +577,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         PostListEditorPresenter.handle(post: post, in: self)
     }
 
+    private func editDuplicatePost(apost: AbstractPost) {
+        guard let post = apost as? Post else {
+            return
+        }
+
+        PostListEditorPresenter.handleCopy(post: post, in: self)
+    }
+
     func presentAlertForPostBeingUploaded() {
         let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
 
@@ -638,7 +646,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         editPost(apost: post)
     }
 
@@ -653,13 +660,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func duplicate(_ post: AbstractPost) {
-        WPAppAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics(), with: post)
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let newPost = postService.createDraftPost(for: post.blog)
-        newPost.postTitle = post.postTitle
-        newPost.content = post.content
-        editPost(apost: newPost)
+        editDuplicatePost(apost: post)
     }
 
     func publish(_ post: AbstractPost) {
