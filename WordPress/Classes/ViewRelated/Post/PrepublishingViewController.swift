@@ -30,11 +30,11 @@ class PrepublishingViewController: UITableViewController {
     }()
 
     private let completion: (AbstractPost) -> ()
-    
+
     private func rowTitle(rowID: PrepublishingIdentifier) ->  NSAttributedString {
         switch rowID {
         case .visibility:
-            return NSAttributedString(string:NSLocalizedString("Visibility", comment: "Label for Visibility"), attributes: nil)
+            return NSAttributedString(string: NSLocalizedString("Visibility", comment: "Label for Visibility"), attributes: nil)
         case .schedule:
             return NSAttributedString(string: Constants.publishDateLabel, attributes: nil)
         case .tags:
@@ -43,11 +43,11 @@ class PrepublishingViewController: UITableViewController {
                 .font: font,
                 .foregroundColor: UIColor.textSubtle,
             ]
-            
+
             let firstString = NSMutableAttributedString(string: "Tags ", attributes: nil)
             let secondString = NSAttributedString(string: "(Grow your audience)", attributes: attributes)
             firstString.append(secondString)
-            
+
             return firstString
         case .categories:
             let font = UIFont.systemFont(ofSize: 12.0)
@@ -58,11 +58,11 @@ class PrepublishingViewController: UITableViewController {
             let firstString = NSMutableAttributedString(string: "Categories ", attributes: nil)
             let secondString = NSAttributedString(string: "(Group your posts)", attributes: attributes)
             firstString.append(secondString)
-            
+
             return firstString
         }
     }
-    
+
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
