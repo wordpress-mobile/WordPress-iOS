@@ -12,19 +12,19 @@
         VStack(alignment: .leading) {
             FlexibleCard(axis: .horizontal,
                          title: widgetTitle,
-                         value: content.siteName)
+                         value: .description(content.siteName))
             Spacer()
             HStack {
                 makeColumn(upperTitle: viewsTitle,
-                           upperValue: "\(content.stats.views.abbreviatedString())",
+                           upperValue: content.stats.views,
                            lowerTitle: likesTitle,
-                           lowerValue: "\(content.stats.likes.abbreviatedString())")
+                           lowerValue: content.stats.likes)
                 Spacer()
                 Spacer()
                 makeColumn(upperTitle: visitorsTitle,
-                           upperValue: "\(content.stats.visitors.abbreviatedString())",
+                           upperValue: content.stats.visitors,
                            lowerTitle: commentsTitle,
-                           lowerValue: "\(content.stats.comments.abbreviatedString())")
+                           lowerValue: content.stats.comments)
                 Spacer()
             }
         }
@@ -32,9 +32,9 @@
 
     /// Constructs a two-card column for the medium size Today widget
     private func makeColumn(upperTitle: LocalizedStringKey,
-                            upperValue: LocalizedStringKey,
+                            upperValue: Int,
                             lowerTitle: LocalizedStringKey,
-                            lowerValue: LocalizedStringKey) -> some View {
+                            lowerValue: Int) -> some View {
         VStack(alignment: .leading) {
             VerticalCard(title: upperTitle, value: upperValue, largeText: false)
             Spacer()

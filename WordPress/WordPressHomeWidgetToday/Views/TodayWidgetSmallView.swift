@@ -8,10 +8,10 @@ struct TodayWidgetSmallView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                FlexibleCard(axis: .vertical, title: widgetTitle, value: content.siteName)
+                FlexibleCard(axis: .vertical, title: widgetTitle, value: .description(content.siteName))
 
                 Spacer()
-                VerticalCard(title: viewsTitle, value: "\(content.stats.views.abbreviatedString())", largeText: true)
+                VerticalCard(title: viewsTitle, value: content.stats.views, largeText: true)
             }
             Spacer()
         }

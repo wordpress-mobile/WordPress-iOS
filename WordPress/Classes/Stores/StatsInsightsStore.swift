@@ -116,6 +116,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
+        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -1045,6 +1046,23 @@ private extension InsightStoreState {
                                                               date: Date(),
                                                               stats: TodayWidgetStats())
             }
+        }
+    }
+}
+
+// refresh iOS 14 widgets at login/logout
+private extension StatsInsightsStore {
+    func observeAccountChangesForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+
+        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
+                                               object: nil,
+                                               queue: nil) { notification in
+            HomeWidgetTodayData.delete()
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
         }
     }
 }
