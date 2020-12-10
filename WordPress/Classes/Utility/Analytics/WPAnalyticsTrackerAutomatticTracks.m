@@ -1179,6 +1179,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"edit" };
             break;
+        case WPAnalyticsStatPostListDuplicateAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"copy" }; // Property aligned with Android
+            break;
         case WPAnalyticsStatPostListExcessiveLoadMoreDetected:
             eventName = @"post_list_excessive_load_more_detected";
             break;

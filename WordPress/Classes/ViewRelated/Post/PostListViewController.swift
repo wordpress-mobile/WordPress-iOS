@@ -638,6 +638,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
         editPost(apost: post)
     }
 
@@ -652,6 +653,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func duplicate(_ post: AbstractPost) {
+        WPAppAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics(), with: post)
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let newPost = postService.createDraftPost(for: post.blog)
