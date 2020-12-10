@@ -45,14 +45,7 @@ class PostActionSheet {
                     }
                 case .duplicate:
                     actionSheetController.addDefaultActionWithTitle(Titles.duplicate) { [weak self] _ in
-                        let context = ContextManager.sharedInstance().mainContext
-                        let postService = PostService(managedObjectContext: context)
-                        let newPost = postService.createDraftPost(for: post.blog)
-                        newPost.postTitle = post.postTitle
-                        newPost.content = post.content
-                        newPost.setPostFormatText(post.postFormat ?? PostFormatStandard)
-                        newPost.categories = post.categories
-                        self?.interactivePostViewDelegate?.edit(newPost)
+                        self?.interactivePostViewDelegate?.duplicate(post)
                     }
                 case .publish:
                     actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in

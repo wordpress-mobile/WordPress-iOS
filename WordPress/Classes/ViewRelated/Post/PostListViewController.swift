@@ -651,6 +651,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func duplicate(_ post: AbstractPost) {
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let newPost = postService.createDraftPost(for: post.blog)
+        newPost.postTitle = post.postTitle
+        newPost.content = post.content
+        editPost(apost: newPost)
+    }
+
     func publish(_ post: AbstractPost) {
         publishPost(post)
     }
