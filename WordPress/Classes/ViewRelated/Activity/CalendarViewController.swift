@@ -171,10 +171,18 @@ class CalendarViewController: UIViewController {
             calendarCollectionView.superview?.layoutIfNeeded()
         }
 
-        calendarCollectionView.scrollToDate(startDate ?? Date(),
-                                            animateScroll: true,
-                                            preferredScrollPosition: .centeredVertically,
-                                            extraAddedOffset: -(self.calendarCollectionView.frame.height / 2))
+        if let startDate = startDate {
+            calendarCollectionView.scrollToDate(startDate,
+                                                animateScroll: true,
+                                                preferredScrollPosition: .centeredVertically,
+                                                extraAddedOffset: -(self.calendarCollectionView.frame.height / 2))
+        } else {
+            calendarCollectionView.setContentOffset(CGPoint(
+                                                        x: 0,
+                                                        y: calendarCollectionView.contentSize.height - calendarCollectionView.frame.size.height
+            ), animated: false)
+        }
+
     }
 
     private func resetLabels() {
