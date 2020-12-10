@@ -10,8 +10,8 @@ class FilterChipButton: UIView {
         }
     }
 
-    let mainButton = UIButton(type: .system)
-    let resetButton = UIButton(type: .system)
+    let mainButton = UIButton(type: .custom)
+    let resetButton = UIButton(type: .custom)
 
     /// Callback called when the button is tapped
     var tapped: (() -> Void)?
@@ -27,7 +27,9 @@ class FilterChipButton: UIView {
 
         stackView.addArrangedSubview(mainButton)
 
-        resetButton.setTitle("X", for: .normal)
+        resetButton.setImage(UIImage.gridicon(.crossCircle).imageWithTintColor(.text), for: .normal)
+        resetButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minResetButtonWidth).isActive = true
+        resetButton.imageEdgeInsets = Constants.resetImageInsets
         resetButton.isHidden = true
         stackView.addArrangedSubview(resetButton)
 
@@ -37,6 +39,15 @@ class FilterChipButton: UIView {
         addSubview(stackView)
         pinSubviewToAllEdges(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        layer.borderColor = UIColor.textQuaternary.cgColor
+        layer.borderWidth = Constants.borderWidth
+        layer.cornerRadius = Constants.cornerRadius
+
+        mainButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
+        mainButton.setTitleColor(.text, for: .normal)
+        mainButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minButtonHeight).isActive = true
+        mainButton.contentEdgeInsets = Constants.buttonContentInset
     }
 
     required init?(coder: NSCoder) {
@@ -46,11 +57,13 @@ class FilterChipButton: UIView {
     /// Enables the reset button
     func enableResetButton() {
         resetButton.isHidden = false
+        mainButton.contentEdgeInsets = Constants.buttonContentInsetWithResetEnabled
     }
 
     /// Disables the reset button
     func disableResetButton() {
         resetButton.isHidden = true
+        mainButton.contentEdgeInsets = Constants.buttonContentInset
     }
 
     @objc private func mainButtonTapped() {
@@ -59,5 +72,15 @@ class FilterChipButton: UIView {
 
     @objc private func resetButtonTapped() {
         resetTapped?()
+    }
+
+    private enum Constants {
+        static let minResetButtonWidth: CGFloat = 32
+        static let resetImageInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 10)
+        static let borderWidth: CGFloat = 1
+        static let cornerRadius: CGFloat = 16
+        static let minButtonHeight: CGFloat = 32
+        static let buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        static let buttonContentInsetWithResetEnabled = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
     }
 }
