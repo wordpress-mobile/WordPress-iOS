@@ -16,15 +16,15 @@
             Spacer()
             HStack {
                 makeColumn(upperTitle: viewsTitle,
-                           upperValue: "\(content.stats.views.abbreviatedString())",
+                           upperValue: "\(content.stats.views.abbreviatedStringWithPlaceholder())",
                            lowerTitle: likesTitle,
-                           lowerValue: "\(content.stats.likes.abbreviatedString())")
+                           lowerValue: "\(content.stats.likes.abbreviatedStringWithPlaceholder())")
                 Spacer()
                 Spacer()
                 makeColumn(upperTitle: visitorsTitle,
-                           upperValue: "\(content.stats.visitors.abbreviatedString())",
+                           upperValue: "\(content.stats.visitors.abbreviatedStringWithPlaceholder())",
                            lowerTitle: commentsTitle,
-                           lowerValue: "\(content.stats.comments.abbreviatedString())")
+                           lowerValue: "\(content.stats.comments.abbreviatedStringWithPlaceholder())")
                 Spacer()
             }
         }

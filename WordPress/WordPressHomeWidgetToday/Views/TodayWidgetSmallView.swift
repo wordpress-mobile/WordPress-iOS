@@ -11,7 +11,7 @@ struct TodayWidgetSmallView: View {
                 FlexibleCard(axis: .vertical, title: widgetTitle, value: content.siteName)
 
                 Spacer()
-                VerticalCard(title: viewsTitle, value: "\(content.stats.views.abbreviatedString())", largeText: true)
+                VerticalCard(title: viewsTitle, value: "\(content.stats.views.abbreviatedStringWithPlaceholder())", largeText: true)
             }
             Spacer()
         }

@@ -1,6 +1,6 @@
 import WidgetKit
 
-protocol HomeWidgetData: Codable, TimelineEntry {
+protocol HomeWidgetData: Codable {
 
     associatedtype WidgetStats
 
