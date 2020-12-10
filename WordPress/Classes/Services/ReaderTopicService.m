@@ -51,6 +51,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
+        [WPAnalytics setSubscriptionCount: sites.count];
         [self mergeFollowedSites:sites withSuccess:success];
     } failure:^(NSError *error) {
         if (failure) {
@@ -499,7 +500,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Define success block
     void (^successBlock)(void) = ^void() {
+        
+        // Update subscription count
+        NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
+        NSInteger newSubscriptionCount = newFollowValue ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
+        [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
         [self refreshPostsForFollowedTopic];
+        
         if (success) {
             success();
         }
@@ -865,7 +873,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.feedURL = siteInfo.feedURL;
     topic.following = siteInfo.isFollowing;
     topic.isJetpack = siteInfo.isJetpack;
-    topic.isWPForTeams = siteInfo.isWPForTeams;
+    topic.organizationID = siteInfo.organizationID;
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
     topic.postCount = siteInfo.postCount;

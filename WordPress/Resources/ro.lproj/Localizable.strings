@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 07:38:46+0000 */
+/* Translation-Revision-Date: 2020-12-07 20:43:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -5838,7 +5838,7 @@ translators: sample content for \"Services\" page template */
 "Tapping lets you manage the sites you follow." = "Atingerea îți permite să administrezi siturile pe care le urmărești.";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Clasificare";
+"Taxonomy" = "Taxonomie";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Echipă";
