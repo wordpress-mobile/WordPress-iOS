@@ -29,8 +29,8 @@ struct SiteListProvider: IntentTimelineProvider {
                                                         url: "",
                                                         timeZone: TimeZone.current,
                                                         date: Date(),
-                                                        stats: TodayWidgetStats(views: 572,
-                                                                                visitors: 649,
+                                                        stats: TodayWidgetStats(views: 649,
+                                                                                visitors: 572,
                                                                                 likes: 16,
                                                                                 comments: 8))
 
