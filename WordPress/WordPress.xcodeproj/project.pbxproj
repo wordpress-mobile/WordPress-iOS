@@ -1709,6 +1709,8 @@
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
 		C700F9D2257FD63A0090938E /* JetpackScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C700F9D0257FD63A0090938E /* JetpackScanViewController.xib */; };
 		C700F9EE257FD64E0090938E /* JetpackScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C700F9ED257FD64E0090938E /* JetpackScanViewController.swift */; };
+		C700FAB2258020DB0090938E /* JetpackScanThreatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */; };
+		C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */; };
 		C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856749B243F462F001A995E /* TenorDataSouceTests.swift */; };
 		C81CCD63243AECA100A83E27 /* TenorClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD5E243AECA000A83E27 /* TenorClient.swift */; };
 		C81CCD64243AECA100A83E27 /* TenorMediaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD5F243AECA000A83E27 /* TenorMediaObject.swift */; };
@@ -4308,6 +4310,8 @@
 		C56636E71868D0CE00226AAB /* StatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = StatsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C700F9D0257FD63A0090938E /* JetpackScanViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanViewController.xib; sourceTree = "<group>"; };
 		C700F9ED257FD64E0090938E /* JetpackScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanViewController.swift; sourceTree = "<group>"; };
+		C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatCell.swift; sourceTree = "<group>"; };
+		C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatCell.xib; sourceTree = "<group>"; };
 		C81CCD5E243AECA000A83E27 /* TenorClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorClient.swift; sourceTree = "<group>"; };
 		C81CCD5F243AECA000A83E27 /* TenorMediaObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorMediaObject.swift; sourceTree = "<group>"; };
 		C81CCD60243AECA100A83E27 /* TenorGIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorGIF.swift; sourceTree = "<group>"; };
@@ -9933,6 +9937,8 @@
 			children = (
 				C700F9D0257FD63A0090938E /* JetpackScanViewController.xib */,
 				C700F9ED257FD64E0090938E /* JetpackScanViewController.swift */,
+				C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */,
+				C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */,
 			);
 			path = "Jetpack Scan";
 			sourceTree = "<group>";
@@ -11573,6 +11579,7 @@
 				9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */,
 				17DC4C3722C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png in Resources */,
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
+				C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */,
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				9AB36B84236B25D900FAD72A /* StatsGhostTitleCell.xib in Resources */,
@@ -13280,6 +13287,7 @@
 				17D9362724769579008B2205 /* HomepageSettingsService.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
 				8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */,
+				C700FAB2258020DB0090938E /* JetpackScanThreatCell.swift in Sources */,
 				D8C31CC62188490000A33B35 /* SiteSegmentsCell.swift in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
