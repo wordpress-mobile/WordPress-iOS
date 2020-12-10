@@ -8,6 +8,7 @@
 * [**] Reader: Added 'P2s' stream. [#15442]
 * [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
 * [*] Block Editor: Fix Gallery block uploads when the editor is closed. [#15457]
+* [**] Posts List: Adds duplicate post functionality [#15460]
 
 16.3
 -----
