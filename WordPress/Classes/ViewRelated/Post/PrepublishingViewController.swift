@@ -45,7 +45,7 @@ class PrepublishingViewController: UITableViewController {
             ]
             
             let firstString = NSMutableAttributedString(string: "Tags ", attributes: nil)
-            let secondString = NSAttributedString(string: "(Grow Your audience)", attributes: attributes)
+            let secondString = NSAttributedString(string: "(Grow your audience)", attributes: attributes)
             firstString.append(secondString)
             
             return firstString
