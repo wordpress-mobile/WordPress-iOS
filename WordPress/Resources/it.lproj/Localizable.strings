@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 16:54:07+0000 */
+/* Translation-Revision-Date: 2020-12-05 12:45:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -1790,7 +1790,7 @@
 /* Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
-"Delete Permanently" = "Cancella definitivamente";
+"Delete Permanently" = "Elimina definitivamente";
 
 /* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Cancellare definitivamente?";
