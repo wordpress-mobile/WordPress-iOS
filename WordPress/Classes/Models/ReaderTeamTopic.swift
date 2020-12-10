@@ -7,6 +7,10 @@ import Foundation
         return "organization"
     }
 
+    var shownTrackEvent: WPAnalyticsEvent {
+        return slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown
+    }
+
     static let a8cSlug = "a8c"
     static let p2Slug = "p2"
 }

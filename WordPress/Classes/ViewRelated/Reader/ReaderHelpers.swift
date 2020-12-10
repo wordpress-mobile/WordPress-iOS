@@ -157,7 +157,10 @@ import WordPressShared
         } else if isTopicTag(topic) {
             stat = .readerTagLoaded
 
+        } else if let teamTopic = topic as? ReaderTeamTopic {
+            WPAnalytics.track(teamTopic.shownTrackEvent, properties: properties)
         }
+
         if stat != nil {
             WPAnalytics.track(stat!, withProperties: properties)
         }
